@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="@dimen/dp_310"
+    android:layout_height="wrap_content">
+
+    <com.techjumper.polyhome.widget.WeatherView
+        android:id="@+id/weather_first"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:gravity="center"
+        android:background="@drawable/bg_block_top_right_bottom"
+        android:paddingTop="@dimen/dp_10"
+        android:paddingBottom="@dimen/dp_10"
+        app:weather_date="周一"
+        app:weather_temperature="31°/18°" />
+
+    <com.techjumper.polyhome.widget.WeatherView
+        android:id="@+id/weather_second"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:gravity="center"
+        android:background="@drawable/bg_block_top_right_bottom"
+        android:paddingTop="@dimen/dp_10"
+        android:paddingBottom="@dimen/dp_10"
+        app:weather_date="周二"
+        app:weather_temperature="31°/18°" />
+
+    <com.techjumper.polyhome.widget.WeatherView
+        android:id="@+id/weather_third"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:gravity="center"
+        android:background="@drawable/bg_block_top_right_bottom"
+        android:paddingTop="@dimen/dp_10"
+        android:paddingBottom="@dimen/dp_10"
+        app:weather_date="周三"
+        app:weather_temperature="31°/18°" />
+
+    <com.techjumper.polyhome.widget.WeatherView
+        android:id="@+id/weather_fourth"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:gravity="center"
+        android:background="@drawable/bg_block_top_bottom"
+        android:paddingTop="@dimen/dp_10"
+        android:paddingBottom="@dimen/dp_10"
+        app:weather_date="周四"
+        app:weather_temperature="31°/18°" />
+</LinearLayout>

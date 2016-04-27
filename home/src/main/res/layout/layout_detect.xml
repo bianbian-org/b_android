@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="@dimen/dp_150">
+
+    <FrameLayout
+        android:id="@+id/info_arrow_layout"
+        android:layout_width="@dimen/dp_93"
+        android:layout_height="@dimen/dp_150"
+        android:layout_alignParentRight="true"
+        android:background="@color/color_7de568">
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_gravity="center"
+            android:src="@mipmap/icon_arrow" />
+    </FrameLayout>
+
+    <com.techjumper.polyhome.widget.ArcDataView
+        android:id="@+id/adv_heartrate"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_marginRight="@dimen/dp_81"
+        app:data_arc_radius="@dimen/dp_241"
+        app:data_av_bg_color="@color/color_73d95e"
+        app:data_content_text="60"
+        app:data_rect_height="@dimen/dp_150"
+        app:data_rect_width="@dimen/dp_135"
+        app:data_subtitle_text="@string/info_bpm"
+        app:data_title_text="@string/info_heartrate" />
+
+    <com.techjumper.polyhome.widget.ArcDataView
+        android:id="@+id/adv_bloodsugar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_marginRight="@dimen/dp_214"
+        app:data_arc_radius="@dimen/dp_205"
+        app:data_av_bg_color="@color/color_ff6c32"
+        app:data_content_text="6.1"
+        app:data_rect_height="@dimen/dp_150"
+        app:data_rect_width="@dimen/dp_135"
+        app:data_subtitle_text="@string/info_mmol"
+        app:data_title_text="@string/info_bloodsugar" />
+
+    <com.techjumper.polyhome.widget.ArcDataView
+        android:id="@+id/adv_bloodpressure"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_marginRight="@dimen/dp_346"
+        app:data_arc_radius="@dimen/dp_173"
+        app:data_av_bg_color="@color/color_4fb939"
+        app:data_content_text="105/69"
+        app:data_rect_height="@dimen/dp_150"
+        app:data_rect_width="@dimen/dp_135"
+        app:data_subtitle_text="@string/info_mmhg"
+        app:data_title_text="@string/info_bloodpressure" />
+
+    <com.techjumper.polyhome.widget.ArcDataView
+        android:id="@+id/adv_detect"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:data_arc_radius="@dimen/dp_144"
+        app:data_av_bg_color="@color/color_42aa2c"
+        app:data_content_text="奶奶"
+        app:data_rect_height="@dimen/dp_150"
+        app:data_rect_width="@dimen/dp_141"
+        app:data_subtitle_text="@string/info_mmhg"
+        app:data_title_text="@string/info_detect" />
+</RelativeLayout>

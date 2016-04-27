@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:paddingLeft="@dimen/dp_34"
+    android:paddingRight="@dimen/dp_34"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <include
+            layout="@layout/layout_info_date"/>
+
+        <include
+            layout="@layout/layout_info_weather"
+            android:layout_height="@dimen/dp_310"
+            android:layout_width="@dimen/dp_310"
+            android:layout_marginTop="@dimen/dp_10"/>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/dp_10"
+        android:orientation="vertical">
+
+        <include layout="@layout/layout_detect" />
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/dp_10">
+
+            <com.techjumper.polyhome.widget.SquareView
+                android:id="@+id/speak"
+                android:layout_width="@dimen/dp_150"
+                android:layout_height="@dimen/dp_150"
+                app:bg_color="@color/color_6a889f"
+                app:content_img="@mipmap/bg_speak"
+                app:quarter_layout_visible="true"
+                app:quarter_text="20"
+                app:title_text="@string/title_speak" />
+
+
+            <com.techjumper.polyhome.widget.SquareView
+                android:id="@+id/setting"
+                android:layout_width="@dimen/dp_150"
+                android:layout_height="@dimen/dp_150"
+                android:layout_below="@id/speak"
+                android:layout_marginTop="@dimen/dp_10"
+                app:bg_color="@color/color_6a889f"
+                app:content_img="@mipmap/bg_setting"
+                app:title_text="@string/title_setting" />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/dp_310"
+                android:layout_marginLeft="@dimen/dp_10"
+                android:layout_toRightOf="@id/speak"
+                android:background="@mipmap/bg_stock" />
+
+        </RelativeLayout>
+    </LinearLayout>
+</LinearLayout>

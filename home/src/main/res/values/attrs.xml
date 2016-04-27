@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <declare-styleable name="SquareView">
+        <attr name="bg_color" format="color" />
+        <attr name="content_img" format="reference" />
+        <attr name="quarter_img" format="reference" />
+        <attr name="content_text" format="string" />
+        <attr name="title_text" format="string" />
+        <attr name="quarter_text" format="string" />
+        <attr name="quarter_layout_visible" format="boolean" />
+    </declare-styleable>
+
+    <declare-styleable name="ArcView">
+        <attr name="av_bg_color" format="color" />
+        <attr name="arc_radius" format="dimension" />
+        <attr name="rect_width" format="dimension" />
+        <attr name="rect_height" format="dimension" />
+        <attr name="alpha" format="integer" />
+    </declare-styleable>
+
+    <declare-styleable name="ArcDataView">
+        <attr name="data_av_bg_color" format="color" />
+        <attr name="data_arc_radius" format="dimension" />
+        <attr name="data_rect_width" format="dimension" />
+        <attr name="data_rect_height" format="dimension" />
+        <attr name="data_content_text" format="string" />
+        <attr name="data_title_text" format="string" />
+        <attr name="data_subtitle_text" format="string" />
+    </declare-styleable>
+
+    <declare-styleable name="AlmanacView">
+        <attr name="almanac_title" format="string" />
+        <attr name="almanac_text1" format="string" />
+        <attr name="almanac_text2" format="string" />
+        <attr name="almanac_text3" format="string" />
+    </declare-styleable>
+
+    <declare-styleable name="WeatherView">
+        <attr name="weather_date" format="string" />
+        <attr name="weather_temperature" format="string" />
+    </declare-styleable>
+</resources>

@@ -1,0 +1,30 @@
+<resources>
+    <string name="app_name">博力恒昌B端</string>
+    <string name="title_alarm">报警</string>
+    <string name="title_call_service">呼叫服务</string>
+    <string name="title_vedio">视频监控</string>
+    <string name="title_info">信息</string>
+
+    <string name="title_jujia">聚家</string>
+    <string name="title_smarthome">智能家居</string>
+    <string name="title_property">物业</string>
+    <string name="title_shopping">周边商店</string>
+    <string name="title_speak">对讲</string>
+    <string name="title_setting">设置</string>
+
+    <string name="info_heartrate">心率</string>
+    <string name="info_bloodpressure">血压</string>
+    <string name="info_bloodsugar">血糖</string>
+    <string name="info_detect">检测</string>
+    <string name="info_mmhg">mmhg</string>
+    <string name="info_mmol">mmol</string>
+    <string name="info_bpm">bpm</string>
+
+    <string name="almanac_ok">宜</string>
+    <string name="almanac_nope">忌</string>
+
+    <string name="family_mode_home">回家模式</string>
+    <string name="family_mode_away">离家模式</string>
+
+    <string name="notice_content">接到市供水局通知，于3月23日开始至3月24日停水一天，请业主提前储备好水源以供，于3月23日开始至3月24日停水一天，请业主提前储备好水源以供，于3月23日开始至3月24日停水一天，</string>
+</resources>

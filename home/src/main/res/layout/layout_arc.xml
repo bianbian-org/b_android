@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="wrap_content"
+    android:layout_height="150dp">
+
+    <com.techjumper.polyhome.widget.ArcView
+        android:id="@+id/arcview"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:arc_radius="180dp"
+        app:rect_height="150dp"
+        app:rect_width="140dp" />
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/content_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/color_ffffff"
+            android:textSize="@dimen/sp_24"
+            tools:text="奶奶" />
+
+        <TextView
+            android:id="@+id/subtitle_text"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="right"
+            android:layout_alignRight="@id/content_text"
+            android:layout_below="@id/content_text"
+            android:textColor="@color/color_B3ffffff"
+            android:textSize="@dimen/sp_12"
+            tools:text="mmhg" />
+    </LinearLayout>
+
+
+    <TextView
+        android:id="@+id/title_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:textColor="@color/color_ffffff"
+        android:textSize="@dimen/sp_16"
+        android:layout_marginBottom="@dimen/dp_13"
+        tools:text="9月23日 检测" />
+</RelativeLayout>
