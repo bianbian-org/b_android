@@ -5,7 +5,7 @@
     android:layout_height="wrap_content">
 
     <com.techjumper.polyhome.widget.WeatherView
-        android:id="@+id/weather_first"
+        android:id="@+id/liww_first"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_weight="1"
@@ -17,7 +17,7 @@
         app:weather_temperature="31°/18°" />
 
     <com.techjumper.polyhome.widget.WeatherView
-        android:id="@+id/weather_second"
+        android:id="@+id/liww_second"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_weight="1"
@@ -29,7 +29,7 @@
         app:weather_temperature="31°/18°" />
 
     <com.techjumper.polyhome.widget.WeatherView
-        android:id="@+id/weather_third"
+        android:id="@+id/liww_third"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_weight="1"
@@ -41,7 +41,7 @@
         app:weather_temperature="31°/18°" />
 
     <com.techjumper.polyhome.widget.WeatherView
-        android:id="@+id/weather_fourth"
+        android:id="@+id/liww_fourth"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_weight="1"

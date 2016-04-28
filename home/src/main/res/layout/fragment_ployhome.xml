@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:paddingLeft="@dimen/dp_34"
+    android:orientation="horizontal">
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:orientation="horizontal">
+
+            <com.techjumper.polyhome.widget.SquareView
+                android:id="@+id/jujia"
+                android:layout_width="@dimen/dp_150"
+                android:layout_height="@dimen/dp_150"
+                app:bg_color="@color/color_20c3f3"
+                app:content_img="@mipmap/bg_jujia"
+                app:title_text="@string/title_jujia" />
+
+            <com.techjumper.polyhome.widget.SquareView
+                android:id="@+id/smarthome"
+                android:layout_width="@dimen/dp_150"
+                android:layout_height="@dimen/dp_150"
+                android:layout_marginLeft="@dimen/dp_10"
+                app:bg_color="@color/color_20c3f3"
+                app:content_img="@mipmap/bg_smarthome"
+                app:title_text="@string/title_smarthome" />
+
+            <com.techjumper.polyhome.widget.SquareView
+                android:id="@+id/property"
+                android:layout_width="@dimen/dp_150"
+                android:layout_height="@dimen/dp_150"
+                android:layout_marginLeft="@dimen/dp_10"
+                app:bg_color="@color/color_20c3f3"
+                app:content_img="@mipmap/bg_property"
+                app:title_text="@string/title_property" />
+
+        </LinearLayout>
+
+        <ImageView
+            android:id="@+id/ad"
+            android:layout_width="@dimen/dp_470"
+            android:layout_height="@dimen/dp_310"
+            android:layout_marginTop="@dimen/dp_10"
+            android:background="@mipmap/bg_ad" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/dp_10"
+        android:orientation="horizontal">
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <include layout="@layout/layout_info_notice" />
+
+            <com.techjumper.polyhome.widget.FamilyModelView
+                android:layout_width="@dimen/dp_310"
+                android:layout_height="@dimen/dp_150"
+                android:layout_marginTop="@dimen/dp_10"/>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/dp_10"
+            android:orientation="vertical">
+
+            <com.techjumper.polyhome.widget.SquareView
+                android:layout_width="@dimen/dp_150"
+                android:layout_height="@dimen/dp_150"
+                app:bg_color="@color/color_6a889f"
+                app:content_text="18°"
+                app:quarter_img="@mipmap/bg_weather"
+                app:quarter_layout_visible="true"
+                app:title_text="pm2.0" />
+
+            <com.techjumper.polyhome.widget.SquareView
+                android:layout_width="@dimen/dp_150"
+                android:layout_height="@dimen/dp_150"
+                android:layout_marginTop="@dimen/dp_10"
+                app:bg_color="@color/color_20c3f3"
+                app:content_text="09"
+                app:title_text="周五限行" />
+
+            <com.techjumper.polyhome.widget.SquareView
+                android:layout_width="@dimen/dp_150"
+                android:layout_height="@dimen/dp_150"
+                android:layout_marginTop="@dimen/dp_10"
+                app:bg_color="@color/color_20c3f3"
+                app:content_img="@mipmap/bg_shopping"
+                app:title_text="@string/title_shopping" />
+        </LinearLayout>
+    </LinearLayout>
+
+</LinearLayout>

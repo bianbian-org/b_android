@@ -1,4 +1,4 @@
-package com.techjumper.polyhome;
+package com.techjumper.polyhome.mvp.v.activity;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -11,6 +11,7 @@ import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.techjumper.polyhome.R;
 import com.techjumper.polyhome.adapter.MyViewPagerAdapter;
 import com.techjumper.polyhome.mvp.v.fragment.InfoFragment;
 import com.techjumper.polyhome.mvp.v.fragment.PloyhomeFragment;
@@ -36,7 +37,7 @@ public class MainActivity extends AppCompatActivity {
     ImageView dotPoint;
 
     private MyViewPagerAdapter myViewPagerAdapter;
-    private List<Fragment> fragments = new ArrayList<>();
+    private List<Fragment> fragments;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,15 +52,14 @@ public class MainActivity extends AppCompatActivity {
         ButterKnife.bind(this);
 
         LayoutInflater layoutInflater = LayoutInflater.from(this);
-//
+
 //        View view1 = layoutInflater.inflate(R.layout.layout_ployhome, null);
 //        View view2 = layoutInflater.inflate(R.layout.layout_info, null);
+        InfoFragment infoFragment = new InfoFragment();
+        PloyhomeFragment ployhomeFragment = new PloyhomeFragment();
 
-        InfoFragment infoFragment = InfoFragment.getInstance();
-        PloyhomeFragment ployhomeFragment = PloyhomeFragment.getInstance();
-
-        fragments.add(ployhomeFragment);
         fragments.add(infoFragment);
+        fragments.add(ployhomeFragment);
 
         myViewPagerAdapter = new MyViewPagerAdapter(getSupportFragmentManager(), fragments);
         viewpager.setAdapter(myViewPagerAdapter);

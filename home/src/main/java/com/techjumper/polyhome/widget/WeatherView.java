@@ -5,6 +5,7 @@ import android.content.res.TypedArray;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -21,6 +22,8 @@ public class WeatherView extends RelativeLayout {
     TextView lwDate;
     @Bind(R.id.lw_temperature)
     TextView lwTemperature;
+    @Bind(R.id.lw_img)
+    ImageView lwImg;
 
     private String dateString;
     private String temperatureString;
@@ -54,5 +57,9 @@ public class WeatherView extends RelativeLayout {
 
     public void setTemperature(String temperature) {
         lwTemperature.setText(temperature == null ? "" : temperature);
+    }
+
+    public void setImg(int imgType) {
+        // TODO: 16/4/28  天气img的type和本地图片暂时没有确定
     }
 }

@@ -16,7 +16,7 @@
         app:rect_width="@dimen/dp_205" />
 
     <TextView
-        android:id="@+id/info_date_date"
+        android:id="@+id/lid_date"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignLeft="@id/arc_layout"
@@ -29,7 +29,7 @@
 
 
     <TextView
-        android:id="@+id/info_date_lunar"
+        android:id="@+id/lid_lunar"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
@@ -40,7 +40,7 @@
         android:text="丙申猴年二月初九" />
 
     <com.techjumper.polyhome.widget.AlmanacView
-        android:id="@+id/info_date_almanac_ok"
+        android:id="@+id/lid_almanac_ok"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentRight="true"
@@ -52,7 +52,7 @@
         app:almanac_title="@string/almanac_ok" />
 
     <com.techjumper.polyhome.widget.AlmanacView
-        android:id="@+id/almanac_nope"
+        android:id="@+id/lid_almanac_nope"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"

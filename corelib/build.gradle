@@ -24,6 +24,7 @@ dependencies {
     testCompile 'junit:junit:4.12'
     compile "com.android.support:support-annotations:$rootProject.supportLibraryVersion"
     compile "com.android.support:appcompat-v7:$rootProject.supportLibraryVersion"
+    compile "com.android.support:support-v4:$rootProject.supportLibraryVersion"
     compile "io.reactivex:rxjava:$rootProject.rxJava"
     compile "io.reactivex:rxandroid:$rootProject.rxAndroid"
     compile "com.jakewharton.rxbinding:rxbinding:$rootProject.rxBinding"
