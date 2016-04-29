@@ -19,6 +19,8 @@ import com.techjumper.polyhome.utils.StringUtil;
 import com.techjumper.polyhome.widget.AlmanacView;
 import com.techjumper.polyhome.widget.WeatherView;
 
+import java.util.List;
+
 import butterknife.Bind;
 import butterknife.ButterKnife;
 
@@ -94,10 +96,13 @@ public class InfoFragment extends AppBaseFragment<InfoFragmentPresenter> {
     }
 
     public void getCalendarInfo(CalendarEntity.CalendarDataEntity calendarDataEntity) {
-        // TODO: 16/4/28 有些数据需要微调，比如空起质量，适合跑步等
+        // TODO: 16/4/28 有些数据需要微调
         lidDate.setText(calendarDataEntity.getDate());
         lidLunar.setText(calendarDataEntity.getLunarYear() + calendarDataEntity.getLunar());
-        StringUtil.interceptString(calendarDataEntity.getSuit(), ".");
-        lidDate.setText(calendarDataEntity.getDate());
+
+        List<String> suits = StringUtil.interceptString(calendarDataEntity.getSuit(), ".");
+        List<String> avoids = StringUtil.interceptString(calendarDataEntity.getAvoid(), ".");
+        lidAlmanacOk.setTexts(suits);
+        lidAlmanacNope.setTexts(avoids);
     }
 }

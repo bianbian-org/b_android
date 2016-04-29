@@ -11,7 +11,7 @@ import java.util.List;
  */
 public class StringUtil {
 
-    // 类似23/15格式
+    // 拼接两个字符串，并在中间加入反斜杠 类似"23/15"格式
     public static String addSeparator(String firstString, String secondString) {
         String merge = "";
         if (!TextUtils.isEmpty(firstString) && !TextUtils.isEmpty(secondString)) {
@@ -20,6 +20,7 @@ public class StringUtil {
         return merge;
     }
 
+    // 根据某个标识截取一段字符串返回我们需要的个数（功能特殊，目前只写死3个，发现新的需求了再抽离出来）
     public static List<String> interceptString(String targetString, String indexOfString) {
         List<String> strings = new ArrayList<String>();
         int position = 0;
@@ -30,7 +31,6 @@ public class StringUtil {
                 targetString = targetString.substring(index + 1, targetString.length());
             }
         }
-
         return strings;
     }
 

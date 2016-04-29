@@ -11,6 +11,8 @@ import android.widget.TextView;
 
 import com.techjumper.polyhome.R;
 
+import java.util.List;
+
 import butterknife.Bind;
 import butterknife.ButterKnife;
 
@@ -74,6 +76,14 @@ public class AlmanacView extends RelativeLayout {
     public void setText3(String text) {
         if (!TextUtils.isEmpty(text)) {
             almanacText3.setText(text);
+        }
+    }
+
+    public void setTexts(List<String> texts) {
+        if (texts != null && texts.size() == 3) {
+            almanacText1.setText(texts.get(0));
+            almanacText2.setText(texts.get(1));
+            almanacText3.setText(texts.get(2));
         }
     }
 }
