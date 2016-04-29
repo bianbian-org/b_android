@@ -23,7 +23,7 @@ import java.util.List;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppBaseActivity {
 
     @Bind(R.id.viewpager)
     MyViewPager viewpager;
@@ -40,21 +40,18 @@ public class MainActivity extends AppCompatActivity {
     private List<Fragment> fragments;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
+    protected View inflateView(Bundle savedInstanceState) {
+        return inflate(R.layout.activity_main);
+    }
+
+    @Override
+    protected void initView(Bundle savedInstanceState) {
         //去除虚拟栏
         Window window = getWindow();
         WindowManager.LayoutParams params = window.getAttributes();
         params.systemUiVisibility = View.SYSTEM_UI_FLAG_HIDE_NAVIGATION;
         window.setAttributes(params);
 
-        setContentView(R.layout.activity_main);
-        ButterKnife.bind(this);
-
-        LayoutInflater layoutInflater = LayoutInflater.from(this);
-
-//        View view1 = layoutInflater.inflate(R.layout.layout_ployhome, null);
-//        View view2 = layoutInflater.inflate(R.layout.layout_info, null);
         InfoFragment infoFragment = new InfoFragment();
         PloyhomeFragment ployhomeFragment = new PloyhomeFragment();
 
@@ -95,12 +92,6 @@ public class MainActivity extends AppCompatActivity {
 
             }
         });
-    }
-
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        ButterKnife.unbind(this);
     }
 }
 
