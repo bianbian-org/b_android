@@ -1,0 +1,15 @@
+<resources>
+    <string name="app_name">plugin_info</string>
+
+    <string name="error_to_connect_server">网络连接失败!</string>
+    <string name="error_no_data">暂无任何内容</string>
+
+    <string name="info_title">信息中心</string>
+    <string name="info_all_title">所有信息</string>
+    <string name="info_system_title">系统信息</string>
+    <string name="info_order_title">订单信息</string>
+    <string name="info_medical_title">医疗信息</string>
+    <string name="info_system">系统</string>
+    <string name="info_order">订单</string>
+    <string name="info_medical">医疗</string>
+</resources>
