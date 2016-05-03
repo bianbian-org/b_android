@@ -8,12 +8,10 @@ import android.support.v4.app.FragmentTransaction;
 import android.text.TextUtils;
 import android.util.SparseArray;
 
-import com.techjumper.corelib.R;
 import com.techjumper.corelib.entity.BaseFragmentActivitySaveEntity;
 import com.techjumper.corelib.mvp.interfaces.IBaseActivityPresenter;
 import com.techjumper.corelib.ui.fragment.BaseFragment;
 import com.techjumper.corelib.utils.common.AcHelper;
-import com.techjumper.corelib.utils.window.KeyboardUtils;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -149,12 +147,13 @@ public abstract class BaseFragmentActivity<P extends IBaseActivityPresenter> ext
         ft.commitAllowingStateLoss();
     }
 
-//    protected void replaceFragment(int containerId, BaseFragment fragment) {
-//        addNewFragmentToSet(fragment);
-//        setCurrFragmentTag(containerId, fragment);
-//        mNoStackFragmentTag = getFragmentSignature(fragment);
-//        getSupportFragmentManager().beginTransaction().replace(containerId, fragment).commitAllowingStateLoss();
-//    }
+    protected void replaceFragment(int containerId, BaseFragment fragment) {
+        addNewFragmentToSet(fragment);
+        setCurrFragmentTag(containerId, fragment);
+        mNoStackFragmentTag = getFragmentSignature(fragment);
+        getSupportFragmentManager().beginTransaction().replace(containerId, fragment, fragment.getFragmentSignature())
+                .commitAllowingStateLoss();
+    }
 //
 
     @SuppressLint("CommitTransaction")

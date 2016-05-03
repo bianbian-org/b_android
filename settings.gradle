@@ -1,1 +1,1 @@
-include ':home', ':commonres', ':corelib', ':lib2', ':progressdialog'
+include ':home', ':commonres', ':lib2', ':progressdialog', ':corelib'
