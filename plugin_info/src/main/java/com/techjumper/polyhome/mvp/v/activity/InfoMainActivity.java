@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
+import android.widget.RadioGroup;
 import android.widget.TextView;
 
 import com.steve.creact.library.adapter.CommonRecyclerAdapter;
@@ -25,16 +26,10 @@ public class InfoMainActivity extends AppBaseActivity {
 
     @Bind(R.id.title_date)
     TextView titleDate;
-    @Bind(R.id.title_all)
-    TextView titleAll;
-    @Bind(R.id.title_system)
-    TextView titleSystem;
-    @Bind(R.id.title_order)
-    TextView titleOrder;
-    @Bind(R.id.title_medical)
-    TextView titleMedical;
     @Bind(R.id.info_list)
     RecyclerView infoList;
+    @Bind(R.id.title_rg)
+    RadioGroup titleRg;
 
     private CommonRecyclerAdapter adapter;
 
@@ -47,6 +42,22 @@ public class InfoMainActivity extends AppBaseActivity {
     protected void initView(Bundle savedInstanceState) {
         infoList.setLayoutManager(new LinearLayoutManager(this));
         adapter = new CommonRecyclerAdapter();
+
+        titleRg.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(RadioGroup group, int checkedId) {
+                switch (checkedId) {
+                    case R.id.title_all:
+                        break;
+                    case R.id.title_system:
+                        break;
+                    case R.id.title_order:
+                        break;
+                    case R.id.title_medical:
+                        break;
+                }
+            }
+        });
     }
 
     public void getList(List<InfoEntityTemporary> infoEntityTemporaries) {
