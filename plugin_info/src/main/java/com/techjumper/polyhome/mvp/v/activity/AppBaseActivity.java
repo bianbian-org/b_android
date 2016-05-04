@@ -40,6 +40,12 @@ public abstract class AppBaseActivity<T extends AppBaseActivityPresenter> extend
                 .setDimAmount(0.3F)
                 .setStyle(KProgressHUD.Style.SPIN_INDETERMINATE)
                 .setOnDismissListener(dialog -> onDialogDismiss());
+
+        //去除虚拟栏
+        Window window = getWindow();
+        WindowManager.LayoutParams params = window.getAttributes();
+        params.systemUiVisibility = View.SYSTEM_UI_FLAG_HIDE_NAVIGATION;
+        window.setAttributes(params);
     }
 
     public String getLayoutTitle() {

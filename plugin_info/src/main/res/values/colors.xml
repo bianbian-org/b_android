@@ -13,6 +13,8 @@
     <color name="color_4Dffffff">#4Dffffff</color>
     <!-- 80% -->
     <color name="color_DDffffff">#DDffffff</color>
+    <!-- 10% -->
+    <color name="color_1Affffff">#1Affffff</color>
 
     <color name="color_00f48924">#00f48924</color>
 
@@ -31,5 +33,9 @@
     <color name="color_ffad5f">#ffad5f</color>
     <color name="color_d96706">#d96706</color>
     <color name="color_f48924">#f48924</color>
+    
+    <color name="color_20C3F3">#20C3F3</color>
+    <color name="color_FF9938">#FF9938</color>
+    <color name="color_4EB738">#4EB738</color>
 
 </resources>
