@@ -27,4 +27,11 @@ public class KeyValueCreator {
         return newPair();
     }
 
+    public static KeyValuePair getInfo(String user_id, String ticket, String page, String count) {
+        return newPair()
+                .put("user_id", user_id)
+                .put("ticket", ticket)
+                .put("page", page)
+                .put("count", count);
+    }
 }

@@ -1,5 +1,6 @@
 package com.techjumper.polyhome.mvp.m;
 
+import com.techjumper.commonres.entity.InfoEntity;
 import com.techjumper.corelib.mvp.model.BaseModel;
 import com.techjumper.polyhome.InfoEntityTemporary;
 import com.techjumper.polyhome.mvp.p.activity.InfoMainActivityPresenter;
@@ -16,7 +17,7 @@ public class InfoMainActivityModel extends BaseModel<InfoMainActivityPresenter> 
         super(presenter);
     }
 
-    public List<InfoEntityTemporary> getList(){
-        return new ArrayList<InfoEntityTemporary>();
+    public List<InfoEntity.infoDataEntity> getList(){
+        return new ArrayList<InfoEntity.infoDataEntity>();
     };
 }

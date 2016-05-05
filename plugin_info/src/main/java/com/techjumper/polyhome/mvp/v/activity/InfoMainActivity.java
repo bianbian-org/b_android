@@ -4,12 +4,17 @@ import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.RadioGroup;
 import android.widget.TextView;
 
 import com.steve.creact.library.adapter.CommonRecyclerAdapter;
 import com.steve.creact.library.display.DisplayBean;
+import com.techjumper.commonres.entity.InfoEntity;
+import com.techjumper.commonres.entity.event.InfoDetailEvent;
 import com.techjumper.corelib.mvp.factory.Presenter;
+import com.techjumper.corelib.rx.tools.RxBus;
 import com.techjumper.polyhome.InfoEntityTemporary;
 import com.techjumper.polyhome.R;
 import com.techjumper.polyhome.mvp.p.activity.InfoMainActivityPresenter;
@@ -20,6 +25,8 @@ import java.util.List;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
+import rx.android.schedulers.AndroidSchedulers;
 
 @Presenter(InfoMainActivityPresenter.class)
 public class InfoMainActivity extends AppBaseActivity {
@@ -30,6 +37,24 @@ public class InfoMainActivity extends AppBaseActivity {
     RecyclerView infoList;
     @Bind(R.id.title_rg)
     RadioGroup titleRg;
+    @Bind(R.id.info_detail_title)
+    TextView infoDetailTitle;
+    @Bind(R.id.info_detail_date)
+    TextView infoDetailDate;
+    @Bind(R.id.info_detail_type)
+    TextView infoDetailType;
+    @Bind(R.id.info_detail_content)
+    TextView infoDetailContent;
+    @Bind(R.id.info_detail)
+    LinearLayout infoDetail;
+
+    @OnClick(R.id.bottom_back)
+    void back() {
+        if (infoDetail.getVisibility() == View.VISIBLE) {
+            infoDetail.setVisibility(View.GONE);
+            infoList.setVisibility(View.VISIBLE);
+        }
+    }
 
     private CommonRecyclerAdapter adapter;
 
@@ -58,9 +83,41 @@ public class InfoMainActivity extends AppBaseActivity {
                 }
             }
         });
+
+        addSubscription(
+                RxBus.INSTANCE.asObservable()
+                        .observeOn(AndroidSchedulers.mainThread())
+                        .subscribe(o -> {
+                            if (o instanceof InfoDetailEvent) {
+                                InfoDetailEvent infoDetailEvent = (InfoDetailEvent) o;
+                                infoDetail.setVisibility(View.VISIBLE);
+                                infoList.setVisibility(View.GONE);
+
+                                infoDetailTitle.setText(infoDetailEvent.getTitle());
+                                infoDetailDate.setText(infoDetailEvent.getCreated_at());
+                                infoDetailContent.setText(infoDetailEvent.getContent());
+
+                                int type = infoDetailEvent.getType();
+
+                                if (type == InfoEntity.TYPE_SYSTEM) {
+                                    infoDetailType.setBackgroundResource(R.drawable.bg_shape_radius_20c3f3);
+                                    infoDetailType.setTextColor(getResources().getColor(R.color.color_20C3F3));
+                                    infoDetailType.setText(R.string.info_system);
+                                } else if (type == InfoEntity.TYPE_ORDER) {
+                                    infoDetailType.setBackgroundResource(R.drawable.bg_shape_radius_ff9938);
+                                    infoDetailType.setTextColor(getResources().getColor(R.color.color_FF9938));
+                                    infoDetailType.setText(R.string.info_order);
+                                } else if (type == InfoEntity.TYPE_MEDICAL) {
+                                    infoDetailType.setBackgroundResource(R.drawable.bg_shape_radius_4eb738);
+                                    infoDetailType.setTextColor(getResources().getColor(R.color.color_4EB738));
+                                    infoDetailType.setText(R.string.info_medical);
+                                }
+                            }
+                        })
+        );
     }
 
-    public void getList(List<InfoEntityTemporary> infoEntityTemporaries) {
+    public void getList(List<InfoEntity.infoDataEntity> infoEntityTemporaries) {
         List<DisplayBean> displayBeans = new ArrayList<>();
         if (infoEntityTemporaries == null || infoEntityTemporaries.size() == 0)
             return;

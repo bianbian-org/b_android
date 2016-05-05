@@ -78,16 +78,24 @@
                 android:layout_marginLeft="@dimen/dp_30"
                 android:text="@string/info_medical_title" />
         </RadioGroup>
-
     </LinearLayout>
 
-    <android.support.v7.widget.RecyclerView
-        android:id="@+id/info_list"
+    <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_marginLeft="@dimen/dp_180"
         android:layout_marginRight="@dimen/dp_180"
-        android:layout_weight="1" />
+        android:layout_weight="1">
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/info_list"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginTop="@dimen/dp_10"
+            android:layout_weight="1" />
+
+        <include layout="@layout/layout_info_detail" />
+    </FrameLayout>
 
     <include layout="@layout/layout_bottom" />
 </LinearLayout>

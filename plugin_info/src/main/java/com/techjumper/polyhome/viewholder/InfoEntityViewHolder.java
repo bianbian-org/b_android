@@ -6,14 +6,17 @@ import android.widget.TextView;
 import com.steve.creact.annotation.DataBean;
 import com.steve.creact.library.listener.TextWatcherAdapter;
 import com.steve.creact.library.viewholder.BaseRecyclerViewHolder;
+import com.techjumper.commonres.entity.InfoEntity;
+import com.techjumper.commonres.entity.event.InfoDetailEvent;
+import com.techjumper.corelib.rx.tools.RxBus;
 import com.techjumper.polyhome.InfoEntityTemporary;
 import com.techjumper.polyhome.R;
 
 /**
  * Created by kevin on 16/5/4.
  */
-@DataBean(beanName = "InfoEntityBean", data = InfoEntityTemporary.class)
-public class InfoEntityViewHolder extends BaseRecyclerViewHolder<InfoEntityTemporary> {
+@DataBean(beanName = "InfoEntityBean", data = InfoEntity.infoDataEntity.class)
+public class InfoEntityViewHolder extends BaseRecyclerViewHolder<InfoEntity.infoDataEntity> {
     public static final int LAYOUT_ID = R.layout.item_info;
 
     public InfoEntityViewHolder(View itemView) {
@@ -21,33 +24,49 @@ public class InfoEntityViewHolder extends BaseRecyclerViewHolder<InfoEntityTempo
     }
 
     @Override
-    public void setData(InfoEntityTemporary data) {
+    public void setData(InfoEntity.infoDataEntity data) {
         if (data == null)
             return;
 
-        setText(R.id.info_title, data.getTitle());
-        setText(R.id.info_content, data.getContent());
-        setText(R.id.info_date, data.getDate());
-        if (data.isRead()) {
+        String title = data.getTitle();
+        String content = data.getContent();
+        String date = data.getCreated_at();
+
+        int type = data.getTypes();
+        int hasRead = data.getHas_read();
+
+        setText(R.id.info_title, title);
+        setText(R.id.info_content, content);
+        setText(R.id.info_date, date);
+
+
+        if (hasRead == InfoEntity.HASREAD_TURE) {
             setVisibility(R.id.info_isread, View.INVISIBLE);
-        } else {
+        } else if (hasRead == InfoEntity.HASREAD_FALSE){
             setVisibility(R.id.info_isread, View.VISIBLE);
         }
 
         TextView typeTextView = getView(R.id.info_type);
         // TODO: 16/5/4 当接口来的时候再抽离出来
-        if (data.getType().equals(getContext().getString(R.string.info_system))) {
+        if (type == InfoEntity.TYPE_SYSTEM) {
             typeTextView.setBackgroundResource(R.drawable.bg_shape_radius_20c3f3);
             typeTextView.setTextColor(getContext().getResources().getColor(R.color.color_20C3F3));
             typeTextView.setText(R.string.info_system);
-        } else if (data.getType().equals(getContext().getString(R.string.info_order))) {
+        } else if (type == InfoEntity.TYPE_ORDER) {
             typeTextView.setBackgroundResource(R.drawable.bg_shape_radius_ff9938);
             typeTextView.setTextColor(getContext().getResources().getColor(R.color.color_FF9938));
             typeTextView.setText(R.string.info_order);
-        } else if (data.getType().equals(getContext().getString(R.string.info_medical))) {
+        } else if (type == InfoEntity.TYPE_MEDICAL) {
             typeTextView.setBackgroundResource(R.drawable.bg_shape_radius_4eb738);
             typeTextView.setTextColor(getContext().getResources().getColor(R.color.color_4EB738));
             typeTextView.setText(R.string.info_medical);
         }
+
+        setOnItemClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                RxBus.INSTANCE.send(new InfoDetailEvent(title, content, type, date));
+            }
+        });
     }
 }
