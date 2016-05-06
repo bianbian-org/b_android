@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@mipmap/bg_main"
+    tools:context="com.techjumper.polyhome.MainActivity">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dp_35"
+        android:layout_marginLeft="@dimen/dp_40"
+        android:layout_marginTop="@dimen/dp_23">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/setting_login"
+            android:textColor="@color/color_DDffffff"
+            android:textSize="@dimen/sp_30" />
+
+        <TextView
+            android:id="@+id/date"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_centerInParent="true"
+            android:gravity="bottom"
+            android:text="3月18日  周五  22:45"
+            android:textColor="@color/color_7fffffff"
+            android:textSize="@dimen/sp_18" />
+    </RelativeLayout>
+
+    <EditText
+        android:id="@+id/login_mobile_input"
+        android:layout_width="@dimen/dp_260"
+        android:layout_height="@dimen/dp_40"
+        android:background="@color/color_99020405"
+        android:layout_marginTop="@dimen/dp_220"
+        android:paddingLeft="@dimen/dp_16"
+        android:paddingRight="@dimen/dp_16"
+        android:textColor="@color/color_ffffff"
+        android:inputType="number"
+        android:singleLine="true"
+        android:layout_centerHorizontal="true"/>
+
+    <EditText
+        android:id="@+id/login_password_input"
+        android:layout_width="@dimen/dp_260"
+        android:layout_height="@dimen/dp_40"
+        android:background="@color/color_99020405"
+        android:layout_marginTop="@dimen/dp_290"
+        android:paddingLeft="@dimen/dp_16"
+        android:paddingRight="@dimen/dp_16"
+        android:inputType="textPassword"
+        android:singleLine="true"
+        android:textColor="@color/color_ffffff"
+        android:layout_centerHorizontal="true"/>
+
+    <TextView
+        android:layout_width="@dimen/dp_260"
+        android:layout_height="wrap_content"
+        android:textSize="@dimen/sp_14"
+        android:textColor="@color/color_99ffffff"
+        android:text="@string/setting_login_tips"
+        android:layout_marginTop="@dimen/dp_160"
+        android:layout_centerHorizontal="true"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/setting_login_mobile"
+        android:gravity="center"
+        android:textColor="@color/color_B3ffffff"
+        android:layout_toLeftOf="@id/login_mobile_input"
+        android:layout_alignBottom="@id/login_mobile_input"
+        android:layout_marginRight="@dimen/dp_20"
+        android:layout_alignTop="@id/login_mobile_input"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/setting_login_password"
+        android:gravity="center"
+        android:textColor="@color/color_B3ffffff"
+        android:layout_toLeftOf="@id/login_password_input"
+        android:layout_alignBottom="@id/login_password_input"
+        android:layout_marginRight="@dimen/dp_20"
+        android:layout_alignTop="@id/login_password_input"/>
+    
+    <TextView
+        android:id="@+id/login"
+        android:layout_width="@dimen/dp_109"
+        android:layout_height="@dimen/dp_40"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="@dimen/dp_360"
+        android:background="@color/color_14ce63"
+        android:gravity="center"
+        android:text="@string/setting_login"
+        android:textColor="@color/color_ffffff"
+        android:textSize="@dimen/sp_16"
+        android:layout_alignLeft="@id/login_password_input"/>
+
+    <TextView
+        android:id="@+id/forgerpassword"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="@color/color_14ce63"
+        android:textSize="@dimen/sp_16"
+        android:text="@string/setting_login_forgetpassword"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="@dimen/dp_371"
+        android:layout_alignRight="@id/login_password_input"/>
+
+    <include
+        layout="@layout/layout_bottom"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dp_37"
+        android:layout_alignParentBottom="true" />
+</RelativeLayout>

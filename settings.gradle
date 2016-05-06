@@ -1,1 +1,1 @@
-include ':plugin_home', ':commonres', ':lib2', ':progressdialog', ':corelib', ':plugin_info'
+include ':plugin_home', ':commonres', ':lib2', ':progressdialog', ':corelib', ':plugin_info', ':plugin_setting'
