@@ -117,7 +117,7 @@ public class InfoMainActivity extends AppBaseActivity {
         );
     }
 
-    public void getList(List<InfoEntity.infoDataEntity> infoEntityTemporaries) {
+    public void getList(List<InfoEntity.InfoDataEntity.InfoItemEntity> infoEntityTemporaries) {
         List<DisplayBean> displayBeans = new ArrayList<>();
         if (infoEntityTemporaries == null || infoEntityTemporaries.size() == 0)
             return;

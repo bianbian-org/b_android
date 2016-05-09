@@ -1,12 +1,22 @@
 package com.techjumper.polyhome.mvp.m;
 
+import com.techjumper.commonres.entity.BaseArgumentsEntity;
 import com.techjumper.commonres.entity.InfoEntity;
+import com.techjumper.commonres.entity.WeatherEntity;
 import com.techjumper.corelib.mvp.model.BaseModel;
+import com.techjumper.corelib.rx.tools.CommonWrap;
+import com.techjumper.lib2.others.KeyValuePair;
+import com.techjumper.lib2.utils.RetrofitHelper;
 import com.techjumper.polyhome.InfoEntityTemporary;
 import com.techjumper.polyhome.mvp.p.activity.InfoMainActivityPresenter;
+import com.techjumper.polyhome.net.KeyValueCreator;
+import com.techjumper.polyhome.net.NetHelper;
+import com.techjumper.polyhome.net.ServiceAPI;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import rx.Observable;
 
 /**
  * Created by kevin on 16/5/4.
@@ -17,7 +27,9 @@ public class InfoMainActivityModel extends BaseModel<InfoMainActivityPresenter> 
         super(presenter);
     }
 
-    public List<InfoEntity.infoDataEntity> getList(){
-        return new ArrayList<InfoEntity.infoDataEntity>();
-    };
+    public Observable<InfoEntity> getInfo(int page) {
+        return RetrofitHelper.<ServiceAPI>createDefault()
+                .getInfo(NetHelper.createBaseArgumentsMap(KeyValueCreator.getInfo("248", "09518224d5a28d5eeef09d4459c8384a72621a30", String.valueOf(page), "10")))
+                .compose(CommonWrap.wrap());
+    }
 }

@@ -15,8 +15,8 @@ import com.techjumper.polyhome.R;
 /**
  * Created by kevin on 16/5/4.
  */
-@DataBean(beanName = "InfoEntityBean", data = InfoEntity.infoDataEntity.class)
-public class InfoEntityViewHolder extends BaseRecyclerViewHolder<InfoEntity.infoDataEntity> {
+@DataBean(beanName = "InfoEntityBean", data = InfoEntity.InfoDataEntity.InfoItemEntity.class)
+public class InfoEntityViewHolder extends BaseRecyclerViewHolder<InfoEntity.InfoDataEntity.InfoItemEntity> {
     public static final int LAYOUT_ID = R.layout.item_info;
 
     public InfoEntityViewHolder(View itemView) {
@@ -24,7 +24,7 @@ public class InfoEntityViewHolder extends BaseRecyclerViewHolder<InfoEntity.info
     }
 
     @Override
-    public void setData(InfoEntity.infoDataEntity data) {
+    public void setData(InfoEntity.InfoDataEntity.InfoItemEntity data) {
         if (data == null)
             return;
 
