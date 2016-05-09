@@ -9,4 +9,6 @@
 
     <string name="error_to_connect_server">网络连接失败!</string>
     <string name="error_no_data">暂无任何内容</string>
+    <string name="error_wrong_phone_number">手机号不正确</string>
+    <string name="error_wrong_password">密码为8~20位的字母数字符号</string>
 </resources>

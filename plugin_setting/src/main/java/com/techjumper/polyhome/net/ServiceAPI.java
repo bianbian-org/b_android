@@ -2,6 +2,7 @@ package com.techjumper.polyhome.net;
 
 import com.techjumper.commonres.entity.BaseArgumentsEntity;
 import com.techjumper.commonres.entity.InfoEntity;
+import com.techjumper.commonres.entity.LoginEntity;
 
 import java.util.Map;
 
@@ -17,6 +18,6 @@ import rx.Observable;
 public interface ServiceAPI {
 
     @POST("login")
-    Observable<InfoEntity> login(@Body BaseArgumentsEntity entity);
+    Observable<LoginEntity> login(@Body BaseArgumentsEntity entity);
 
 }
