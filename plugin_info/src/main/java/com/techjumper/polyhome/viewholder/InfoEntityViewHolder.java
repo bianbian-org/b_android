@@ -8,6 +8,7 @@ import com.steve.creact.library.listener.TextWatcherAdapter;
 import com.steve.creact.library.viewholder.BaseRecyclerViewHolder;
 import com.techjumper.commonres.entity.InfoEntity;
 import com.techjumper.commonres.entity.event.InfoDetailEvent;
+import com.techjumper.commonres.entity.event.ReadMessageEvent;
 import com.techjumper.corelib.rx.tools.RxBus;
 import com.techjumper.polyhome.InfoEntityTemporary;
 import com.techjumper.polyhome.R;
@@ -18,6 +19,7 @@ import com.techjumper.polyhome.R;
 @DataBean(beanName = "InfoEntityBean", data = InfoEntity.InfoDataEntity.InfoItemEntity.class)
 public class InfoEntityViewHolder extends BaseRecyclerViewHolder<InfoEntity.InfoDataEntity.InfoItemEntity> {
     public static final int LAYOUT_ID = R.layout.item_info;
+    int hasRead;
 
     public InfoEntityViewHolder(View itemView) {
         super(itemView);
@@ -28,12 +30,13 @@ public class InfoEntityViewHolder extends BaseRecyclerViewHolder<InfoEntity.Info
         if (data == null)
             return;
 
+        long id = data.getId();
         String title = data.getTitle();
         String content = data.getContent();
         String date = data.getCreated_at();
 
         int type = data.getTypes();
-        int hasRead = data.getHas_read();
+        hasRead = data.getHas_read();
 
         setText(R.id.info_title, title);
         setText(R.id.info_content, content);
@@ -42,7 +45,7 @@ public class InfoEntityViewHolder extends BaseRecyclerViewHolder<InfoEntity.Info
 
         if (hasRead == InfoEntity.HASREAD_TURE) {
             setVisibility(R.id.info_isread, View.INVISIBLE);
-        } else if (hasRead == InfoEntity.HASREAD_FALSE){
+        } else if (hasRead == InfoEntity.HASREAD_FALSE) {
             setVisibility(R.id.info_isread, View.VISIBLE);
         }
 
@@ -66,6 +69,11 @@ public class InfoEntityViewHolder extends BaseRecyclerViewHolder<InfoEntity.Info
             @Override
             public void onClick(View v) {
                 RxBus.INSTANCE.send(new InfoDetailEvent(title, content, type, date));
+                if (hasRead == InfoEntity.HASREAD_FALSE) {
+                    setVisibility(R.id.info_isread, View.INVISIBLE);
+                    hasRead = InfoEntity.HASREAD_TURE;
+                    RxBus.INSTANCE.send(new ReadMessageEvent(id));
+                }
             }
         });
     }

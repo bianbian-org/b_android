@@ -13,6 +13,8 @@ import com.steve.creact.library.adapter.CommonRecyclerAdapter;
 import com.steve.creact.library.display.DisplayBean;
 import com.techjumper.commonres.entity.InfoEntity;
 import com.techjumper.commonres.entity.event.InfoDetailEvent;
+import com.techjumper.commonres.entity.event.InfoTypeEvent;
+import com.techjumper.commonres.entity.event.ReadMessageEvent;
 import com.techjumper.corelib.mvp.factory.Presenter;
 import com.techjumper.corelib.rx.tools.RxBus;
 import com.techjumper.polyhome.InfoEntityTemporary;
@@ -71,16 +73,22 @@ public class InfoMainActivity extends AppBaseActivity {
         titleRg.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(RadioGroup group, int checkedId) {
+                int type = -1;
                 switch (checkedId) {
                     case R.id.title_all:
                         break;
                     case R.id.title_system:
+                        type = InfoEntity.TYPE_SYSTEM;
                         break;
                     case R.id.title_order:
+                        type = InfoEntity.TYPE_ORDER;
                         break;
                     case R.id.title_medical:
+                        type = InfoEntity.TYPE_MEDICAL;
                         break;
                 }
+
+                RxBus.INSTANCE.send(new InfoTypeEvent(type));
             }
         });
 
@@ -112,6 +120,8 @@ public class InfoMainActivity extends AppBaseActivity {
                                     infoDetailType.setTextColor(getResources().getColor(R.color.color_4EB738));
                                     infoDetailType.setText(R.string.info_medical);
                                 }
+
+
                             }
                         })
         );
@@ -129,6 +139,12 @@ public class InfoMainActivity extends AppBaseActivity {
 
         adapter.loadData(displayBeans);
         infoList.setAdapter(adapter);
+    }
+
+    public void readMessage(String result) {
+        if (Boolean.valueOf(result) == true) {
+
+        }
     }
 }
 

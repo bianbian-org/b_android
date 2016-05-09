@@ -26,19 +26,19 @@ public class InfoEntity extends BaseEntity<InfoEntity.InfoDataEntity> {
         }
 
         public static class InfoItemEntity {
-            private int id;
+            private long id;
             private String title;
             private int types; // #消息类型 1-系统信息 2-订单信息 3-医疗信息
             private String content;
-            private int obj_id; //对象id，如订单id
+            private long obj_id; //对象id，如订单id
             private int has_read; //是否阅读，0-未阅读 2-已阅读
             private String created_at;
 
-            public int getId() {
+            public long getId() {
                 return id;
             }
 
-            public void setId(int id) {
+            public void setId(long id) {
                 this.id = id;
             }
 
@@ -66,11 +66,11 @@ public class InfoEntity extends BaseEntity<InfoEntity.InfoDataEntity> {
                 this.content = content;
             }
 
-            public int getObj_id() {
+            public long getObj_id() {
                 return obj_id;
             }
 
-            public void setObj_id(int obj_id) {
+            public void setObj_id(long obj_id) {
                 this.obj_id = obj_id;
             }
 
