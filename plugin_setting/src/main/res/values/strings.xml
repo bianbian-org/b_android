@@ -6,4 +6,7 @@
     <string name="setting_login_mobile">手机号码</string>
     <string name="setting_login_password">登录密码</string>
     <string name="setting_login_forgetpassword">忘记密码？</string>
+
+    <string name="error_to_connect_server">网络连接失败!</string>
+    <string name="error_no_data">暂无任何内容</string>
 </resources>
