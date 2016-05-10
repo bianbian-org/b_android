@@ -3,6 +3,8 @@ package com.techjumper.polyhome;
 import android.text.TextUtils;
 
 import com.techjumper.commonres.entity.LoginEntity;
+import com.techjumper.commonres.entity.event.LoginEvent;
+import com.techjumper.corelib.rx.tools.RxBus;
 import com.techjumper.corelib.utils.file.PreferenceUtils;
 
 /**
@@ -66,26 +68,25 @@ public enum UserManager {
         return !TextUtils.isEmpty(ticket);
     }
 
-//    /**
-//     * 注销登陆
-//     */
-//    public void logout() {
-//        logout(true);
-//    }
-//
-//    private void logout(boolean notify) {
-//        PreferenceUtils.save(KEY_ID, "");
-//        PreferenceUtils.save(KEY_PHONE_NUMBER, "");
-//        PreferenceUtils.save(KEY_TICKET, "");
-//        PreferenceUtils.save(KEY_HAS_BINDING, "");
-//        PreferenceUtils.save(KEY_AVATAR, "");
-//        PreferenceUtils.save(KEY_USER_NAME, "");
+    /**
+     * 注销登陆
+     */
+    public void logout() {
+        logout(true);
+    }
+
+    private void logout(boolean notify) {
+        PreferenceUtils.save(KEY_ID, "");
+        PreferenceUtils.save(KEY_PHONE_NUMBER, "");
+        PreferenceUtils.save(KEY_TICKET, "");
+        PreferenceUtils.save(KEY_AVATAR, "");
+        PreferenceUtils.save(KEY_USER_NAME, "");
 //        setCurrentFamilyInfo("", "", "");
 //        HostIpHelper.getInstance().clear();
 //        DeviceDataManager.getInstance().clearDevice();
 //        if (notify)
 //            notifyLoginOrLogoutEvent(false);
-//    }
+    }
 
 //    /**
 //     * 注销登陆(不通知)
@@ -94,14 +95,14 @@ public enum UserManager {
 //        logout(false);
 //    }
 //
-//    /**
-//     * 发送登陆和登出事件
-//     *
-//     * @param isLogin true:登陆  false:登出
-//     */
-//    public void notifyLoginOrLogoutEvent(boolean isLogin) {
-//        RxBus.INSTANCE.send(new LoginEvent(isLogin));
-//    }
+    /**
+     * 发送登陆和登出事件
+     *
+     * @param isLogin true:登陆  false:登出
+     */
+    public void notifyLoginOrLogoutEvent(boolean isLogin) {
+        RxBus.INSTANCE.send(new LoginEvent(isLogin));
+    }
 
     /**
      * 得到用户信息

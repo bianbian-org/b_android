@@ -12,7 +12,7 @@ public class InfoEntity extends BaseEntity<InfoEntity.InfoDataEntity> {
     public static final int TYPE_MEDICAL = 3;
 
     public static final int HASREAD_FALSE = 0;
-    public static final int HASREAD_TURE = 2;
+    public static final int HASREAD_TURE = 1;
 
     public static class InfoDataEntity {
         List<InfoItemEntity> messages;

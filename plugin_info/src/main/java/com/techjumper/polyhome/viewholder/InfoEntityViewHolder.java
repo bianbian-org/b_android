@@ -65,15 +65,12 @@ public class InfoEntityViewHolder extends BaseRecyclerViewHolder<InfoEntity.Info
             typeTextView.setText(R.string.info_medical);
         }
 
-        setOnItemClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                RxBus.INSTANCE.send(new InfoDetailEvent(title, content, type, date));
-                if (hasRead == InfoEntity.HASREAD_FALSE) {
-                    setVisibility(R.id.info_isread, View.INVISIBLE);
-                    hasRead = InfoEntity.HASREAD_TURE;
-                    RxBus.INSTANCE.send(new ReadMessageEvent(id));
-                }
+        setOnItemClickListener(v -> {
+            RxBus.INSTANCE.send(new InfoDetailEvent(title, content, type, date));
+            if (hasRead == InfoEntity.HASREAD_FALSE) {
+                setVisibility(R.id.info_isread, View.INVISIBLE);
+                hasRead = InfoEntity.HASREAD_TURE;
+                RxBus.INSTANCE.send(new ReadMessageEvent(id));
             }
         });
     }

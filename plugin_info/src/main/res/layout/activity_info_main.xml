@@ -48,7 +48,7 @@
 
             <RadioButton
                 android:id="@+id/title_all"
-                style="@style/infoTitleStyle"
+                style="@style/InfoTitleStyle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:checked="true"
@@ -56,7 +56,7 @@
 
             <RadioButton
                 android:id="@+id/title_system"
-                style="@style/infoTitleStyle"
+                style="@style/InfoTitleStyle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="@dimen/dp_30"
@@ -64,7 +64,7 @@
 
             <RadioButton
                 android:id="@+id/title_order"
-                style="@style/infoTitleStyle"
+                style="@style/InfoTitleStyle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="@dimen/dp_30"
@@ -72,7 +72,7 @@
 
             <RadioButton
                 android:id="@+id/title_medical"
-                style="@style/infoTitleStyle"
+                style="@style/InfoTitleStyle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="@dimen/dp_30"

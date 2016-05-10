@@ -103,7 +103,8 @@ public class LoginFragmentPresenter extends AppBaseFragmentPresenter<LoginFragme
                         .subscribe(new Subscriber<LoginEntity>() {
                             @Override
                             public void onCompleted() {
-//                                getUserNickName();
+                                getView().dismissLoading();
+                                UserManager.INSTANCE.notifyLoginOrLogoutEvent(true);
                             }
 
                             @Override

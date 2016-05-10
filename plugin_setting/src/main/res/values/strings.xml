@@ -1,11 +1,33 @@
 <resources>
     <string name="app_name">Plugin_setting</string>
 
+    <string name="confirm_logout">确定退出登录?</string>
+    <string name="ok">确定</string>
+    <string name="cancel">取消</string>
+
     <string name="setting_login">登录</string>
     <string name="setting_login_tips">请先登录，若没有账号请使用手机版APP注册</string>
     <string name="setting_login_mobile">手机号码</string>
     <string name="setting_login_password">登录密码</string>
     <string name="setting_login_forgetpassword">忘记密码？</string>
+
+    <string name="setting">设置</string>
+    <string name="setting_user">用户设置</string>
+    <string name="setting_project">工程设置</string>
+    <string name="setting_save">保存</string>
+    <string name="setting_logout">解除绑定</string>
+
+    <string name="setting_user_info">个人信息</string>
+    <string name="setting_user_info_nickname">昵称</string>
+    <string name="setting_user_info_sex">性别</string>
+    <string name="setting_user_info_sex_male">男</string>
+    <string name="setting_user_info_sex_female">女</string>
+    <string name="setting_user_info_birthday">出生日期</string>
+
+    <string name="setting_password">密码修改</string>
+    <string name="setting_password_old">原密码</string>
+    <string name="setting_password_new">新密码</string>
+    <string name="setting_password_confirm">确认密码</string>
 
     <string name="error_to_connect_server">网络连接失败!</string>
     <string name="error_no_data">暂无任何内容</string>
