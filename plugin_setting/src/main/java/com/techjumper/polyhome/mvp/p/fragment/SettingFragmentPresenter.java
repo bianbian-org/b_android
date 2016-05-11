@@ -7,6 +7,7 @@ import com.techjumper.polyhome.R;
 import com.techjumper.polyhome.UserManager;
 import com.techjumper.polyhome.mvp.v.fragment.SettingFragment;
 
+import butterknife.OnCheckedChanged;
 import butterknife.OnClick;
 
 /**

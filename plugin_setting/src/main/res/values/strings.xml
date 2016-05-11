@@ -23,6 +23,7 @@
     <string name="setting_user_info_sex_male">男</string>
     <string name="setting_user_info_sex_female">女</string>
     <string name="setting_user_info_birthday">出生日期</string>
+    <string name="setting_user_info_email">电子邮件</string>
 
     <string name="setting_password">密码修改</string>
     <string name="setting_password_old">原密码</string>

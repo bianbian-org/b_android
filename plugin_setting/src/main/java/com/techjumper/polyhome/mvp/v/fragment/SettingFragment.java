@@ -4,19 +4,16 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.CheckBox;
 import android.widget.LinearLayout;
 import android.widget.RadioGroup;
-import android.widget.TextView;
 
 import com.techjumper.corelib.mvp.factory.Presenter;
-import com.techjumper.corelib.utils.window.DialogUtils;
 import com.techjumper.polyhome.R;
-import com.techjumper.polyhome.UserManager;
 import com.techjumper.polyhome.mvp.p.fragment.SettingFragmentPresenter;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
-import butterknife.OnClick;
 
 /**
  * Created by kevin on 16/5/10.
