@@ -104,7 +104,6 @@ public class LoginFragmentPresenter extends AppBaseFragmentPresenter<LoginFragme
                             @Override
                             public void onCompleted() {
                                 getView().dismissLoading();
-                                UserManager.INSTANCE.notifyLoginOrLogoutEvent(true);
                             }
 
                             @Override
@@ -120,6 +119,7 @@ public class LoginFragmentPresenter extends AppBaseFragmentPresenter<LoginFragme
                                     return;
                                 }
                                 UserManager.INSTANCE.saveUserInfo(entity);
+                                UserManager.INSTANCE.notifyLoginOrLogoutEvent(true);
                             }
                         })
         );

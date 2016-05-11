@@ -22,10 +22,13 @@ public enum UserManager {
     INSTANCE;
 
     public static final String KEY_ID = "key_id";
-    public static final String KEY_PHONE_NUMBER = "key_phone_number";
+    //    public static final String KEY_PHONE_NUMBER = "key_phone_number";
     public static final String KEY_TICKET = "key_ticket";
     public static final String KEY_USER_NAME = "key_user_name";
     public static final String KEY_AVATAR = "key_avatar";
+    public static final String KEY_SEX = "key_sex";
+    public static final String KEY_BIRTHDAY = "key_birthday";
+    public static final String KEY_EMAIL = "key_email";
 
     /**
      * 通过LoginEntity将用户信息同步到本地
@@ -33,16 +36,17 @@ public enum UserManager {
     public void saveUserInfo(LoginEntity entity) {
         LoginEntity.LoginDataEntity dataEntity = entity.getData();
         PreferenceUtils.save(KEY_ID, dataEntity.getId());
-        PreferenceUtils.save(KEY_PHONE_NUMBER, dataEntity.getMobile());
+//        PreferenceUtils.save(KEY_PHONE_NUMBER, dataEntity.getMobile());
         updateTicket(dataEntity.getTicket());
         PreferenceUtils.save(KEY_USER_NAME, dataEntity.getUsername());
         PreferenceUtils.save(KEY_AVATAR, dataEntity.getCover());
+        PreferenceUtils.save(KEY_SEX, dataEntity.getSex());
+        PreferenceUtils.save(KEY_BIRTHDAY, dataEntity.getBirthday());
+        PreferenceUtils.save(KEY_EMAIL, dataEntity.getEmail());
     }
 
     public String getUserNickName() {
-        String userName = PreferenceUtils.get(KEY_USER_NAME, "");
-        return TextUtils.isEmpty(userName)
-                ? PreferenceUtils.get(KEY_PHONE_NUMBER, "") : userName;
+        return PreferenceUtils.get(KEY_USER_NAME, "");
     }
 
     /**
@@ -77,10 +81,13 @@ public enum UserManager {
 
     private void logout(boolean notify) {
         PreferenceUtils.save(KEY_ID, "");
-        PreferenceUtils.save(KEY_PHONE_NUMBER, "");
+//        PreferenceUtils.save(KEY_PHONE_NUMBER, "");
         PreferenceUtils.save(KEY_TICKET, "");
         PreferenceUtils.save(KEY_AVATAR, "");
         PreferenceUtils.save(KEY_USER_NAME, "");
+        PreferenceUtils.save(KEY_SEX, "");
+        PreferenceUtils.save(KEY_BIRTHDAY, "");
+        PreferenceUtils.save(KEY_EMAIL, "");
 //        setCurrentFamilyInfo("", "", "");
 //        HostIpHelper.getInstance().clear();
 //        DeviceDataManager.getInstance().clearDevice();
@@ -95,6 +102,7 @@ public enum UserManager {
 //        logout(false);
 //    }
 //
+
     /**
      * 发送登陆和登出事件
      *
@@ -109,6 +117,22 @@ public enum UserManager {
      */
     public String getUserInfo(String key) {
         return PreferenceUtils.get(key, "");
+    }
+
+    /**
+     * 得到用户id
+     *
+     * @return
+     */
+    public int getUserId() {
+        return PreferenceUtils.get(KEY_ID, -1);
+    }
+
+    /**
+     * 得到用户性别
+     */
+    public int getSexId() {
+        return PreferenceUtils.get(KEY_SEX, LoginEntity.MALE);
     }
 
     /**

@@ -1,19 +1,39 @@
 package com.techjumper.polyhome.mvp.p.fragment;
 
+import android.app.DatePickerDialog;
 import android.os.Bundle;
+import android.text.TextUtils;
+import android.widget.EditText;
 
+import com.jakewharton.rxbinding.widget.RxTextView;
+import com.techjumper.commonres.entity.LoginEntity;
+import com.techjumper.corelib.utils.basic.StringUtils;
 import com.techjumper.corelib.utils.window.DialogUtils;
+import com.techjumper.corelib.utils.window.ToastUtils;
 import com.techjumper.polyhome.R;
 import com.techjumper.polyhome.UserManager;
+import com.techjumper.polyhome.mvp.m.SettingFragmentModel;
 import com.techjumper.polyhome.mvp.v.fragment.SettingFragment;
+import com.techjumper.polyhome.utils.DateUtil;
+import com.techjumper.polyhome.utils.StringUtil;
+
+import java.util.Calendar;
+import java.util.concurrent.TimeUnit;
+import java.util.regex.Pattern;
 
 import butterknife.OnCheckedChanged;
 import butterknife.OnClick;
+import rx.Subscriber;
+import rx.android.schedulers.AndroidSchedulers;
 
 /**
  * Created by kevin on 16/5/10.
  */
 public class SettingFragmentPresenter extends AppBaseFragmentPresenter<SettingFragment> {
+
+    private int sex = LoginEntity.MALE;
+
+    SettingFragmentModel settingFragmentModel = new SettingFragmentModel(this);
 
     @Override
     public void initData(Bundle savedInstanceState) {
@@ -23,11 +43,67 @@ public class SettingFragmentPresenter extends AppBaseFragmentPresenter<SettingFr
     @Override
     public void onViewInited(Bundle savedInstanceState) {
 
+        setOnTextChangeListener(getView().getSupOldpasswordInput()
+                , StringUtils.PATTERN_PASSWORD
+                , 20
+                , getView().getString(R.string.error_wrong_password));
+
+        setOnTextChangeListener(getView().getSupNewpasswordInput()
+                , StringUtils.PATTERN_PASSWORD
+                , 20
+                , getView().getString(R.string.error_wrong_password));
+
+        setOnTextChangeListener(getView().getSupConfirmpasswordInput()
+                , StringUtils.PATTERN_PASSWORD
+                , 20
+                , getView().getString(R.string.error_wrong_password));
     }
 
     @OnClick(R.id.logout)
     void logout_tv() {
         logout();
+    }
+
+    @OnClick(R.id.sui_birthday_input)
+    void getDate() {
+        pickDate();
+    }
+
+    @OnClick(R.id.sup_save)
+    void changePasswordSave() {
+        checkAndChangePassword();
+    }
+
+    @OnClick(R.id.sui_save)
+    void updateUserInfo() {
+        updateInfo();
+    }
+
+    @OnCheckedChanged(R.id.sui_female)
+    void checkFemalle(boolean isFemale){
+        if (isFemale){
+            sex = LoginEntity.FRMALE;
+        }else {
+            sex = LoginEntity.MALE;
+        }
+    }
+
+    private void checkAndChangePassword() {
+        EditText et = null;
+        if (!StringUtils.PATTERN_PASSWORD.matcher(getView().getSupOldpasswordInput().getText().toString()).matches()) {
+            et = getView().getSupOldpasswordInput();
+            getView().setText(et, et.getText());
+        }
+        if (!StringUtils.PATTERN_PASSWORD.matcher(getView().getSupNewpasswordInput().getText().toString()).matches()) {
+            et = getView().getSupNewpasswordInput();
+            getView().setText(et, et.getText());
+        }
+        if (!StringUtils.PATTERN_PASSWORD.matcher(getView().getSupConfirmpasswordInput().getText().toString()).matches()) {
+            et = getView().getSupConfirmpasswordInput();
+            getView().setText(et, et.getText());
+        }
+
+        changePassword();
     }
 
     public void logout() {
@@ -44,5 +120,130 @@ public class SettingFragmentPresenter extends AppBaseFragmentPresenter<SettingFr
                     }
                 })
                 .show();
+    }
+
+    public void pickDate() {
+        Calendar calendar = Calendar.getInstance();
+
+        new DatePickerDialog(getView().getContext(), (view, year, monthOfYear, dayOfMonth) -> {
+            getView().getSuiBirthdayInput().setText(DateUtil.getDateLink(year, monthOfYear + 1, dayOfMonth, "-"));
+        }, calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH),
+                calendar.get(Calendar.DAY_OF_MONTH)).show();
+    }
+
+    private void setOnTextChangeListener(EditText editText, Pattern pattern, int maxLength, String errorText) {
+        addSubscription(
+                RxTextView.textChanges(editText)
+                        .skip(1)
+                        .map(charSequence -> {
+                            getView().showError(editText, null);
+                            if (!TextUtils.isEmpty(charSequence)
+                                    && charSequence.length() >= maxLength + 1) {
+                                charSequence = charSequence.toString().substring(0, maxLength);
+                                editText.setText(charSequence);
+                                editText.setSelection(maxLength);
+                            }
+                            return charSequence;
+                        })
+                        .debounce(1000, TimeUnit.MILLISECONDS)
+                        .map(charSequence1 -> {
+                            if (!pattern.matcher(charSequence1.toString()).matches()) {
+                                return errorText;
+                            } else {
+                                return null;
+                            }
+                        })
+                        .subscribeOn(AndroidSchedulers.mainThread())
+                        .observeOn(AndroidSchedulers.mainThread())
+                        .subscribe(charSequence2 -> {
+                            getView().showError(editText, charSequence2);
+                        })
+        );
+    }
+
+    public void changePassword() {
+        String oldPwd = getView().getSupOldpasswordInput().getText().toString();
+        String newPwd = getView().getSupNewpasswordInput().getText().toString();
+        String confirmNewPwd = getView().getSupConfirmpasswordInput().getText().toString();
+
+        if (TextUtils.isEmpty(oldPwd)) {
+            ToastUtils.show(getView().getString(R.string.setting_password_old_null));
+            return;
+        }
+
+        if (TextUtils.isEmpty(newPwd)) {
+            ToastUtils.show(getView().getString(R.string.setting_password_new_null));
+            return;
+        }
+
+        if (TextUtils.isEmpty(confirmNewPwd)) {
+            ToastUtils.show(getView().getString(R.string.setting_password_confirm_new_null));
+            return;
+        }
+
+        getView().showLoading(false);
+        addSubscription(settingFragmentModel.changePassword(oldPwd, newPwd, confirmNewPwd)
+                .subscribe(new Subscriber<LoginEntity>() {
+                    @Override
+                    public void onCompleted() {
+                        getView().dismissLoading();
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        getView().showError(e);
+                        getView().dismissLoading();
+                    }
+
+                    @Override
+                    public void onNext(LoginEntity loginEntity) {
+                        if (!processNetworkResult(loginEntity)) {
+                            getView().dismissLoading();
+                            return;
+                        }
+                        UserManager.INSTANCE.saveUserInfo(loginEntity);
+                        UserManager.INSTANCE.notifyLoginOrLogoutEvent(false);
+
+                        ToastUtils.show(getView().getString(R.string.setting_password_success));
+                    }
+                }));
+    }
+
+    private void updateInfo() {
+        String nickname = getView().getSuiNicknameInput().getText().toString();
+        String birthday = getView().getSuiBirthdayInput().getText().toString();
+        String email = getView().getSuiEmailInput().getText().toString();
+        String sexString = String.valueOf(sex);
+
+        if (!StringUtil.isEmail(email)){
+            ToastUtils.show(getView().getString(R.string.setting_user_info_email_no));
+            return;
+        }
+
+        getView().showLoading(false);
+
+        addSubscription(settingFragmentModel.updateUserInfo(nickname,sexString,birthday,email).subscribe(new Subscriber<LoginEntity>() {
+            @Override
+            public void onCompleted() {
+                getView().dismissLoading();
+            }
+
+            @Override
+            public void onError(Throwable e) {
+                getView().showError(e);
+                getView().dismissLoading();
+            }
+
+            @Override
+            public void onNext(LoginEntity loginEntity) {
+                if (!processNetworkResult(loginEntity)) {
+                    getView().dismissLoading();
+                    return;
+                }
+                UserManager.INSTANCE.saveUserInfo(loginEntity);
+
+                ToastUtils.show(getView().getString(R.string.setting_user_info_success));
+            }
+        }));
     }
 }

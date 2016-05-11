@@ -93,7 +93,8 @@
             android:paddingLeft="@dimen/dp_16"
             android:paddingRight="@dimen/dp_16"
             android:singleLine="true"
-            android:enabled="false"
+            android:cursorVisible="false"
+            android:editable="false"
             android:textColor="@color/color_ffffff" />
 
     </LinearLayout>

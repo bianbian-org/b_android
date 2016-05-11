@@ -1,15 +1,19 @@
 package com.techjumper.polyhome.mvp.v.fragment;
 
 import android.os.Bundle;
+import android.text.Editable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.CheckBox;
+import android.widget.EditText;
 import android.widget.LinearLayout;
+import android.widget.RadioButton;
 import android.widget.RadioGroup;
 
+import com.techjumper.commonres.entity.LoginEntity;
 import com.techjumper.corelib.mvp.factory.Presenter;
 import com.techjumper.polyhome.R;
+import com.techjumper.polyhome.UserManager;
 import com.techjumper.polyhome.mvp.p.fragment.SettingFragmentPresenter;
 
 import butterknife.Bind;
@@ -31,6 +35,22 @@ public class SettingFragment extends AppBaseFragment<SettingFragmentPresenter> {
     LinearLayout supLayout;
     @Bind(R.id.sui_layout)
     LinearLayout suiLayout;
+    @Bind(R.id.sui_nickname_input)
+    EditText suiNicknameInput;
+    @Bind(R.id.sui_birthday_input)
+    EditText suiBirthdayInput;
+    @Bind(R.id.sui_email_input)
+    EditText suiEmailInput;
+    @Bind(R.id.sup_oldpassword_input)
+    EditText supOldpasswordInput;
+    @Bind(R.id.sup_newpassword_input)
+    EditText supNewpasswordInput;
+    @Bind(R.id.sup_confirmpassword_input)
+    EditText supConfirmpasswordInput;
+    @Bind(R.id.sui_male)
+    RadioButton suiMale;
+    @Bind(R.id.sui_female)
+    RadioButton suiFemale;
 
     public static SettingFragment getInstance() {
         return new SettingFragment();
@@ -60,6 +80,48 @@ public class SettingFragment extends AppBaseFragment<SettingFragmentPresenter> {
                 suiLayout.setVisibility(View.GONE);
             }
         });
+
+        suiNicknameInput.setText(UserManager.INSTANCE.getUserNickName());
+        suiBirthdayInput.setText(UserManager.INSTANCE.getUserInfo(UserManager.KEY_BIRTHDAY));
+        if (UserManager.INSTANCE.getSexId() == LoginEntity.MALE) {
+            suiMale.setChecked(true);
+        } else {
+            suiFemale.setChecked(true);
+        }
+        suiEmailInput.setText(UserManager.INSTANCE.getUserInfo(UserManager.KEY_EMAIL));
+    }
+
+    public EditText getSuiBirthdayInput() {
+        return suiBirthdayInput;
+    }
+
+    public EditText getSuiNicknameInput() {
+        return suiNicknameInput;
+    }
+
+    public EditText getSuiEmailInput() {
+        return suiEmailInput;
+    }
+
+
+    public EditText getSupOldpasswordInput() {
+        return supOldpasswordInput;
+    }
+
+    public EditText getSupNewpasswordInput() {
+        return supNewpasswordInput;
+    }
+
+    public EditText getSupConfirmpasswordInput() {
+        return supConfirmpasswordInput;
+    }
+
+    public void showError(EditText editText, CharSequence message) {
+        editText.setError(message);
+    }
+
+    public void setText(EditText et, Editable text) {
+        et.setText(text);
     }
 
     @Override

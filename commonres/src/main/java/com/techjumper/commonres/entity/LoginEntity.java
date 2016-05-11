@@ -5,12 +5,17 @@ package com.techjumper.commonres.entity;
  */
 public class LoginEntity extends BaseEntity<LoginEntity.LoginDataEntity>{
 
+    public static final int MALE = 1;
+    public static final int FRMALE = 2;
+
     public static class LoginDataEntity{
         private int id;
-        private String mobile;
-        private String username;
+        private int sex;
+        private String email;
         private String cover;
         private String ticket;
+        private String birthday;
+        private String username;
 
         public int getId() {
             return id;
@@ -20,12 +25,29 @@ public class LoginEntity extends BaseEntity<LoginEntity.LoginDataEntity>{
             this.id = id;
         }
 
-        public String getMobile() {
-            return mobile;
+
+        public int getSex() {
+            return sex;
         }
 
-        public void setMobile(String mobile) {
-            this.mobile = mobile;
+        public void setSex(int sex) {
+            this.sex = sex;
+        }
+
+        public String getEmail() {
+            return email;
+        }
+
+        public void setEmail(String email) {
+            this.email = email;
+        }
+
+        public String getBirthday() {
+            return birthday;
+        }
+
+        public void setBirthday(String birthday) {
+            this.birthday = birthday;
         }
 
         public String getUsername() {

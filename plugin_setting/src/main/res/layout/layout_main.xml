@@ -3,14 +3,14 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@mipmap/bg_main"
-    android:paddingLeft="@dimen/dp_40"
-    android:paddingRight="@dimen/dp_40"
     android:orientation="vertical">
 
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="@dimen/dp_35"
-        android:layout_marginTop="@dimen/dp_23">
+        android:layout_marginTop="@dimen/dp_23"
+        android:paddingLeft="@dimen/dp_40"
+        android:paddingRight="@dimen/dp_40">
 
         <TextView
             android:id="@+id/title"
@@ -35,11 +35,15 @@
         android:id="@+id/container"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:paddingLeft="@dimen/dp_40"
+        android:paddingRight="@dimen/dp_40"
         android:layout_weight="1"/>
 
     <include
         layout="@layout/layout_bottom"
         android:layout_width="match_parent"
         android:layout_height="@dimen/dp_37"
+        android:paddingLeft="@dimen/dp_40"
+        android:paddingRight="@dimen/dp_40"
         android:layout_alignParentBottom="true" />
 </LinearLayout>

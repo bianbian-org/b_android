@@ -20,4 +20,9 @@ public interface ServiceAPI {
     @POST("login")
     Observable<LoginEntity> login(@Body BaseArgumentsEntity entity);
 
+    @POST("user/update_password")
+    Observable<LoginEntity> changePassword(@Body BaseArgumentsEntity entity);
+
+    @POST("user/profile")
+    Observable<LoginEntity> updateUserInfo(@Body BaseArgumentsEntity entity);
 }
