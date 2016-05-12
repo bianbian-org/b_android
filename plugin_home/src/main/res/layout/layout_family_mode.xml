@@ -5,7 +5,7 @@
     android:layout_height="@dimen/dp_150"
     android:background="@color/color_ff9938">
 
-    <com.techjumper.polyhome.widget.ArcView
+    <com.techjumper.polyhome.b.home.widget.ArcView
         android:id="@+id/right_arc"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -28,7 +28,7 @@
         android:textColor="@color/color_ffffff"
         android:textSize="@dimen/sp_18" />
 
-    <com.techjumper.polyhome.widget.ArcView
+    <com.techjumper.polyhome.b.home.widget.ArcView
         android:id="@+id/left_arc"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

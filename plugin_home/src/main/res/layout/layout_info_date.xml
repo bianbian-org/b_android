@@ -6,7 +6,7 @@
     android:layout_height="@dimen/dp_150"
     android:background="@color/color_ffad5f">
 
-    <com.techjumper.polyhome.widget.ArcView
+    <com.techjumper.polyhome.b.home.widget.ArcView
         android:id="@+id/arc_layout"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -39,7 +39,7 @@
         android:textSize="@dimen/sp_16"
         android:text="丙申猴年二月初九" />
 
-    <com.techjumper.polyhome.widget.AlmanacView
+    <com.techjumper.polyhome.b.home.widget.AlmanacView
         android:id="@+id/lid_almanac_ok"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -51,7 +51,7 @@
         app:almanac_text3="婚假"
         app:almanac_title="@string/almanac_ok" />
 
-    <com.techjumper.polyhome.widget.AlmanacView
+    <com.techjumper.polyhome.b.home.widget.AlmanacView
         android:id="@+id/lid_almanac_nope"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

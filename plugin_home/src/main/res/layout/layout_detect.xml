@@ -19,7 +19,7 @@
             android:src="@mipmap/icon_arrow" />
     </FrameLayout>
 
-    <com.techjumper.polyhome.widget.ArcDataView
+    <com.techjumper.polyhome.b.home.widget.ArcDataView
         android:id="@+id/adv_heartrate"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -33,7 +33,7 @@
         app:data_subtitle_text="@string/info_bpm"
         app:data_title_text="@string/info_heartrate" />
 
-    <com.techjumper.polyhome.widget.ArcDataView
+    <com.techjumper.polyhome.b.home.widget.ArcDataView
         android:id="@+id/adv_bloodsugar"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -47,7 +47,7 @@
         app:data_subtitle_text="@string/info_mmol"
         app:data_title_text="@string/info_bloodsugar" />
 
-    <com.techjumper.polyhome.widget.ArcDataView
+    <com.techjumper.polyhome.b.home.widget.ArcDataView
         android:id="@+id/adv_bloodpressure"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -61,7 +61,7 @@
         app:data_subtitle_text="@string/info_mmhg"
         app:data_title_text="@string/info_bloodpressure" />
 
-    <com.techjumper.polyhome.widget.ArcDataView
+    <com.techjumper.polyhome.b.home.widget.ArcDataView
         android:id="@+id/adv_detect"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

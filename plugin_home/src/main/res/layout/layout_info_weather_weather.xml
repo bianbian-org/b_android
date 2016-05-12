@@ -4,7 +4,7 @@
     android:layout_width="@dimen/dp_310"
     android:layout_height="wrap_content">
 
-    <com.techjumper.polyhome.widget.WeatherView
+    <com.techjumper.polyhome.b.home.widget.WeatherView
         android:id="@+id/liww_first"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -16,7 +16,7 @@
         app:weather_date="周一"
         app:weather_temperature="31°/18°" />
 
-    <com.techjumper.polyhome.widget.WeatherView
+    <com.techjumper.polyhome.b.home.widget.WeatherView
         android:id="@+id/liww_second"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -28,7 +28,7 @@
         app:weather_date="周二"
         app:weather_temperature="31°/18°" />
 
-    <com.techjumper.polyhome.widget.WeatherView
+    <com.techjumper.polyhome.b.home.widget.WeatherView
         android:id="@+id/liww_third"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -40,7 +40,7 @@
         app:weather_date="周三"
         app:weather_temperature="31°/18°" />
 
-    <com.techjumper.polyhome.widget.WeatherView
+    <com.techjumper.polyhome.b.home.widget.WeatherView
         android:id="@+id/liww_fourth"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

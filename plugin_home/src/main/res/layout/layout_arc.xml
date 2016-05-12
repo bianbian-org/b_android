@@ -5,7 +5,7 @@
     android:layout_width="wrap_content"
     android:layout_height="150dp">
 
-    <com.techjumper.polyhome.widget.ArcView
+    <com.techjumper.polyhome.b.home.widget.ArcView
         android:id="@+id/arcview"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

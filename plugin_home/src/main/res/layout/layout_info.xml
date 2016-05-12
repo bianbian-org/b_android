@@ -35,7 +35,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/dp_10">
 
-            <com.techjumper.polyhome.widget.SquareView
+            <com.techjumper.polyhome.b.home.widget.SquareView
                 android:id="@+id/speak"
                 android:layout_width="@dimen/dp_150"
                 android:layout_height="@dimen/dp_150"
@@ -46,7 +46,7 @@
                 app:title_text="@string/title_speak" />
 
 
-            <com.techjumper.polyhome.widget.SquareView
+            <com.techjumper.polyhome.b.home.widget.SquareView
                 android:id="@+id/setting"
                 android:layout_width="@dimen/dp_150"
                 android:layout_height="@dimen/dp_150"
