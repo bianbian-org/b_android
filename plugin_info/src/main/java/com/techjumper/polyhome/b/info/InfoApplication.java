@@ -1,7 +1,7 @@
-package com.techjumper.polyhome;
+package com.techjumper.polyhome.b.info;
 
 import com.techjumper.lib2.others.Lib2Application;
-import com.techjumper.polyhome.net.ServiceAPI;
+import com.techjumper.polyhome.b.info.net.ServiceAPI;
 
 /**
  * Created by kevin on 16/4/28.

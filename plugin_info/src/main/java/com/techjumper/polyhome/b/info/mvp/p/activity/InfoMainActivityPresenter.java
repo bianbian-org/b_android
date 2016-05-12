@@ -1,22 +1,15 @@
-package com.techjumper.polyhome.mvp.p.activity;
+package com.techjumper.polyhome.b.info.mvp.p.activity;
 
 import android.os.Bundle;
-import android.view.View;
 
 import com.techjumper.commonres.entity.InfoEntity;
 import com.techjumper.commonres.entity.TrueEntity;
-import com.techjumper.commonres.entity.event.InfoDetailEvent;
 import com.techjumper.commonres.entity.event.InfoTypeEvent;
 import com.techjumper.commonres.entity.event.ReadMessageEvent;
 import com.techjumper.corelib.rx.tools.RxBus;
-import com.techjumper.polyhome.InfoEntityTemporary;
-import com.techjumper.polyhome.R;
-import com.techjumper.polyhome.mvp.m.InfoMainActivityModel;
-import com.techjumper.polyhome.mvp.v.activity.InfoMainActivity;
+import com.techjumper.polyhome.b.info.mvp.m.InfoMainActivityModel;
+import com.techjumper.polyhome.b.info.mvp.v.activity.InfoMainActivity;
 
-import java.util.List;
-
-import rx.Observer;
 import rx.Subscriber;
 import rx.android.schedulers.AndroidSchedulers;
 

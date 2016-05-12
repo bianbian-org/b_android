@@ -1,4 +1,4 @@
-package com.techjumper.polyhome;
+package com.techjumper.polyhome.b.info;
 
 /**
  * Created by kevin on 16/5/4.

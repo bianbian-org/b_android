@@ -1,21 +1,16 @@
-package com.techjumper.polyhome.mvp.m;
+package com.techjumper.polyhome.b.info.mvp.m;
 
 import com.techjumper.commonres.entity.BaseArgumentsEntity;
 import com.techjumper.commonres.entity.InfoEntity;
 import com.techjumper.commonres.entity.TrueEntity;
-import com.techjumper.commonres.entity.WeatherEntity;
 import com.techjumper.corelib.mvp.model.BaseModel;
 import com.techjumper.corelib.rx.tools.CommonWrap;
+import com.techjumper.polyhome.b.info.mvp.p.activity.InfoMainActivityPresenter;
+import com.techjumper.polyhome.b.info.net.KeyValueCreator;
+import com.techjumper.polyhome.b.info.net.NetHelper;
 import com.techjumper.lib2.others.KeyValuePair;
 import com.techjumper.lib2.utils.RetrofitHelper;
-import com.techjumper.polyhome.InfoEntityTemporary;
-import com.techjumper.polyhome.mvp.p.activity.InfoMainActivityPresenter;
-import com.techjumper.polyhome.net.KeyValueCreator;
-import com.techjumper.polyhome.net.NetHelper;
-import com.techjumper.polyhome.net.ServiceAPI;
-
-import java.util.ArrayList;
-import java.util.List;
+import com.techjumper.polyhome.b.info.net.ServiceAPI;
 
 import rx.Observable;
 

@@ -1,10 +1,9 @@
-package com.techjumper.polyhome.mvp.v.activity;
+package com.techjumper.polyhome.b.info.mvp.v.activity;
 
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RadioGroup;
 import android.widget.TextView;
@@ -14,19 +13,16 @@ import com.steve.creact.library.display.DisplayBean;
 import com.techjumper.commonres.entity.InfoEntity;
 import com.techjumper.commonres.entity.event.InfoDetailEvent;
 import com.techjumper.commonres.entity.event.InfoTypeEvent;
-import com.techjumper.commonres.entity.event.ReadMessageEvent;
 import com.techjumper.corelib.mvp.factory.Presenter;
 import com.techjumper.corelib.rx.tools.RxBus;
-import com.techjumper.polyhome.InfoEntityTemporary;
-import com.techjumper.polyhome.R;
-import com.techjumper.polyhome.mvp.p.activity.InfoMainActivityPresenter;
-import com.techjumper.polyhome.viewholder.databean.InfoEntityBean;
+import com.techjumper.polyhome.b.info.R;
+import com.techjumper.polyhome.b.info.mvp.p.activity.InfoMainActivityPresenter;
+import com.techjumper.polyhome.b.info.viewholder.databean.InfoEntityBean;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.Bind;
-import butterknife.ButterKnife;
 import butterknife.OnClick;
 import rx.android.schedulers.AndroidSchedulers;
 

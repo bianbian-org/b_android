@@ -1,4 +1,4 @@
-package com.techjumper.polyhome.mvp.v.activity;
+package com.techjumper.polyhome.b.info.mvp.v.activity;
 
 
 import android.os.Bundle;
@@ -11,8 +11,8 @@ import com.techjumper.corelib.rx.tools.RxUtils;
 import com.techjumper.corelib.ui.activity.BaseFragmentActivity;
 import com.techjumper.corelib.utils.Utils;
 import com.techjumper.corelib.utils.window.ToastUtils;
-import com.techjumper.polyhome.R;
-import com.techjumper.polyhome.mvp.p.activity.AppBaseActivityPresenter;
+import com.techjumper.polyhome.b.info.R;
+import com.techjumper.polyhome.b.info.mvp.p.activity.AppBaseActivityPresenter;
 import com.techjumper.progressdialog.KProgressHUD;
 
 import java.util.ArrayList;

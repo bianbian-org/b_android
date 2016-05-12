@@ -1,4 +1,4 @@
-package com.techjumper.polyhome.mvp.v.fragment;
+package com.techjumper.polyhome.b.info.mvp.v.fragment;
 
 
 import android.os.Bundle;
@@ -11,8 +11,8 @@ import com.techjumper.corelib.mvp.factory.Presenter;
 import com.techjumper.corelib.ui.fragment.BaseViewFragment;
 import com.techjumper.corelib.utils.Utils;
 import com.techjumper.corelib.utils.window.ToastUtils;
-import com.techjumper.polyhome.R;
-import com.techjumper.polyhome.mvp.p.fragment.AppBaseFragmentPresenter;
+import com.techjumper.polyhome.b.info.R;
+import com.techjumper.polyhome.b.info.mvp.p.fragment.AppBaseFragmentPresenter;
 import com.techjumper.progressdialog.KProgressHUD;
 
 /**

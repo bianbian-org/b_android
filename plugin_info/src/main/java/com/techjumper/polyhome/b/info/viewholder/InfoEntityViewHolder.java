@@ -1,17 +1,15 @@
-package com.techjumper.polyhome.viewholder;
+package com.techjumper.polyhome.b.info.viewholder;
 
 import android.view.View;
 import android.widget.TextView;
 
 import com.steve.creact.annotation.DataBean;
-import com.steve.creact.library.listener.TextWatcherAdapter;
 import com.steve.creact.library.viewholder.BaseRecyclerViewHolder;
 import com.techjumper.commonres.entity.InfoEntity;
 import com.techjumper.commonres.entity.event.InfoDetailEvent;
 import com.techjumper.commonres.entity.event.ReadMessageEvent;
 import com.techjumper.corelib.rx.tools.RxBus;
-import com.techjumper.polyhome.InfoEntityTemporary;
-import com.techjumper.polyhome.R;
+import com.techjumper.polyhome.b.info.R;
 
 /**
  * Created by kevin on 16/5/4.
