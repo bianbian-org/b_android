@@ -1,5 +1,6 @@
 apply plugin: 'com.android.application'
 apply plugin: 'me.tatarka.retrolambda'
+apply plugin: 'com.neenbedankt.android-apt'
 
 android {
     compileSdkVersion rootProject.compileSdkVersion
@@ -32,4 +33,9 @@ dependencies {
     compile project(':corelib')
     compile project(':lib2')
     compile project(':progressdialog')
+    compile 'com.android.support:support-v4:23.3.0'
+
+    compile 'com.creact:powerful-adapter-lib-release:1.0.0@aar'
+    provided "com.creact:powerful-adapter-annotations-release:$rootProject.powerfulAdapter"
+    apt "com.creact:powerful-adapter-complier-release:$rootProject.powerfulAdapter"
 }
