@@ -1,4 +1,4 @@
-package com.techjumper.polyhome.mvp.v.activity;
+package com.techjumper.polyhome.b.setting.mvp.v.activity;
 
 import android.os.Bundle;
 import android.view.View;
@@ -7,11 +7,11 @@ import android.widget.TextView;
 import com.techjumper.commonres.entity.event.LoginEvent;
 import com.techjumper.corelib.mvp.factory.Presenter;
 import com.techjumper.corelib.rx.tools.RxBus;
-import com.techjumper.polyhome.R;
-import com.techjumper.polyhome.UserManager;
-import com.techjumper.polyhome.mvp.p.activity.SettingActivityPresenter;
-import com.techjumper.polyhome.mvp.v.fragment.LoginFragment;
-import com.techjumper.polyhome.mvp.v.fragment.SettingFragment;
+import com.techjumper.polyhome.b.setting.R;
+import com.techjumper.polyhome.b.setting.UserManager;
+import com.techjumper.polyhome.b.setting.mvp.p.activity.SettingActivityPresenter;
+import com.techjumper.polyhome.b.setting.mvp.v.fragment.LoginFragment;
+import com.techjumper.polyhome.b.setting.mvp.v.fragment.SettingFragment;
 
 import butterknife.Bind;
 import rx.android.schedulers.AndroidSchedulers;

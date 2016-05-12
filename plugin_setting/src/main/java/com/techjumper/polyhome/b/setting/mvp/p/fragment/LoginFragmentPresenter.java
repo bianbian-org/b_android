@@ -1,4 +1,4 @@
-package com.techjumper.polyhome.mvp.p.fragment;
+package com.techjumper.polyhome.b.setting.mvp.p.fragment;
 
 import android.os.Bundle;
 import android.text.TextUtils;
@@ -8,10 +8,10 @@ import android.widget.EditText;
 import com.jakewharton.rxbinding.widget.RxTextView;
 import com.techjumper.commonres.entity.LoginEntity;
 import com.techjumper.corelib.utils.basic.StringUtils;
-import com.techjumper.polyhome.R;
-import com.techjumper.polyhome.UserManager;
-import com.techjumper.polyhome.mvp.m.LoginFragmentModel;
-import com.techjumper.polyhome.mvp.v.fragment.LoginFragment;
+import com.techjumper.polyhome.b.setting.R;
+import com.techjumper.polyhome.b.setting.UserManager;
+import com.techjumper.polyhome.b.setting.mvp.m.LoginFragmentModel;
+import com.techjumper.polyhome.b.setting.mvp.v.fragment.LoginFragment;
 
 import java.util.concurrent.TimeUnit;
 import java.util.regex.Pattern;

@@ -1,4 +1,4 @@
-package com.techjumper.polyhome.mvp.v.fragment;
+package com.techjumper.polyhome.b.setting.mvp.v.fragment;
 
 import android.os.Bundle;
 import android.text.Editable;
@@ -12,9 +12,9 @@ import android.widget.RadioGroup;
 
 import com.techjumper.commonres.entity.LoginEntity;
 import com.techjumper.corelib.mvp.factory.Presenter;
-import com.techjumper.polyhome.R;
-import com.techjumper.polyhome.UserManager;
-import com.techjumper.polyhome.mvp.p.fragment.SettingFragmentPresenter;
+import com.techjumper.polyhome.b.setting.R;
+import com.techjumper.polyhome.b.setting.UserManager;
+import com.techjumper.polyhome.b.setting.mvp.p.fragment.SettingFragmentPresenter;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;

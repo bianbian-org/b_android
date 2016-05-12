@@ -1,11 +1,11 @@
-package com.techjumper.polyhome.mvp.p.fragment;
+package com.techjumper.polyhome.b.setting.mvp.p.fragment;
 
 import com.techjumper.commonres.entity.BaseEntity;
 import com.techjumper.corelib.mvp.presenter.BaseFragmentPresenterImp;
 import com.techjumper.corelib.rx.tools.RxUtils;
-import com.techjumper.polyhome.R;
-import com.techjumper.polyhome.mvp.v.fragment.AppBaseFragment;
-import com.techjumper.polyhome.net.NetHelper;
+import com.techjumper.polyhome.b.setting.R;
+import com.techjumper.polyhome.b.setting.mvp.v.fragment.AppBaseFragment;
+import com.techjumper.polyhome.b.setting.net.NetHelper;
 
 import java.util.ArrayList;
 import java.util.List;

@@ -1,15 +1,10 @@
-package com.techjumper.polyhome.net;
+package com.techjumper.polyhome.b.setting.net;
 
 import com.techjumper.commonres.entity.BaseArgumentsEntity;
-import com.techjumper.commonres.entity.InfoEntity;
 import com.techjumper.commonres.entity.LoginEntity;
 
-import java.util.Map;
-
 import retrofit2.http.Body;
-import retrofit2.http.GET;
 import retrofit2.http.POST;
-import retrofit2.http.QueryMap;
 import rx.Observable;
 
 /**

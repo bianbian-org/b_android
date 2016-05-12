@@ -1,8 +1,8 @@
-package com.techjumper.polyhome.mvp.p.activity;
+package com.techjumper.polyhome.b.setting.mvp.p.activity;
 
 import android.os.Bundle;
 
-import com.techjumper.polyhome.mvp.v.activity.SettingActivity;
+import com.techjumper.polyhome.b.setting.mvp.v.activity.SettingActivity;
 
 /**
  * Created by kevin on 16/5/6.

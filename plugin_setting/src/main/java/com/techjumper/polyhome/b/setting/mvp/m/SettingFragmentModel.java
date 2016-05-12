@@ -1,4 +1,4 @@
-package com.techjumper.polyhome.mvp.m;
+package com.techjumper.polyhome.b.setting.mvp.m;
 
 import com.techjumper.commonres.entity.BaseArgumentsEntity;
 import com.techjumper.commonres.entity.LoginEntity;
@@ -6,12 +6,12 @@ import com.techjumper.corelib.mvp.model.BaseModel;
 import com.techjumper.corelib.rx.tools.CommonWrap;
 import com.techjumper.lib2.others.KeyValuePair;
 import com.techjumper.lib2.utils.RetrofitHelper;
-import com.techjumper.polyhome.Config;
-import com.techjumper.polyhome.UserManager;
-import com.techjumper.polyhome.mvp.p.fragment.SettingFragmentPresenter;
-import com.techjumper.polyhome.net.KeyValueCreator;
-import com.techjumper.polyhome.net.NetHelper;
-import com.techjumper.polyhome.net.ServiceAPI;
+import com.techjumper.polyhome.b.setting.Config;
+import com.techjumper.polyhome.b.setting.UserManager;
+import com.techjumper.polyhome.b.setting.mvp.p.fragment.SettingFragmentPresenter;
+import com.techjumper.polyhome.b.setting.net.KeyValueCreator;
+import com.techjumper.polyhome.b.setting.net.NetHelper;
+import com.techjumper.polyhome.b.setting.net.ServiceAPI;
 
 import rx.Observable;
 

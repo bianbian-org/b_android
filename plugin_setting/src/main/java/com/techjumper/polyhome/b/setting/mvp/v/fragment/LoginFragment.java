@@ -1,19 +1,17 @@
-package com.techjumper.polyhome.mvp.v.fragment;
+package com.techjumper.polyhome.b.setting.mvp.v.fragment;
 
 import android.os.Bundle;
 import android.text.Editable;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.TextView;
 
 import com.techjumper.corelib.mvp.factory.Presenter;
-import com.techjumper.polyhome.R;
-import com.techjumper.polyhome.mvp.p.fragment.LoginFragmentPresenter;
+import com.techjumper.polyhome.b.setting.R;
+import com.techjumper.polyhome.b.setting.mvp.p.fragment.LoginFragmentPresenter;
 
 import butterknife.Bind;
-import butterknife.ButterKnife;
 
 /**
  * Created by kevin on 16/5/6.

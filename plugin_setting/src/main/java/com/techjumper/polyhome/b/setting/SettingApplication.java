@@ -1,8 +1,7 @@
-package com.techjumper.polyhome;
+package com.techjumper.polyhome.b.setting;
 
 import com.techjumper.lib2.others.Lib2Application;
-import com.techjumper.polyhome.Config;
-import com.techjumper.polyhome.net.ServiceAPI;
+import com.techjumper.polyhome.b.setting.net.ServiceAPI;
 
 /**
  * Created by kevin on 16/5/9.

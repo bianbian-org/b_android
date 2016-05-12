@@ -1,4 +1,4 @@
-package com.techjumper.polyhome.mvp.p.fragment;
+package com.techjumper.polyhome.b.setting.mvp.p.fragment;
 
 import android.app.DatePickerDialog;
 import android.os.Bundle;
@@ -10,12 +10,12 @@ import com.techjumper.commonres.entity.LoginEntity;
 import com.techjumper.corelib.utils.basic.StringUtils;
 import com.techjumper.corelib.utils.window.DialogUtils;
 import com.techjumper.corelib.utils.window.ToastUtils;
-import com.techjumper.polyhome.R;
-import com.techjumper.polyhome.UserManager;
-import com.techjumper.polyhome.mvp.m.SettingFragmentModel;
-import com.techjumper.polyhome.mvp.v.fragment.SettingFragment;
-import com.techjumper.polyhome.utils.DateUtil;
-import com.techjumper.polyhome.utils.StringUtil;
+import com.techjumper.polyhome.b.setting.R;
+import com.techjumper.polyhome.b.setting.UserManager;
+import com.techjumper.polyhome.b.setting.mvp.m.SettingFragmentModel;
+import com.techjumper.polyhome.b.setting.mvp.v.fragment.SettingFragment;
+import com.techjumper.polyhome.b.setting.utils.DateUtil;
+import com.techjumper.polyhome.b.setting.utils.StringUtil;
 
 import java.util.Calendar;
 import java.util.concurrent.TimeUnit;

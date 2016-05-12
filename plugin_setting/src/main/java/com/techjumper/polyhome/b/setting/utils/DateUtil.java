@@ -1,4 +1,4 @@
-package com.techjumper.polyhome.utils;
+package com.techjumper.polyhome.b.setting.utils;
 
 /**
  * Created by kevin on 16/5/11.

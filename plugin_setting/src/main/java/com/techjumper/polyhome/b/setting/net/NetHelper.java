@@ -1,4 +1,4 @@
-package com.techjumper.polyhome.net;
+package com.techjumper.polyhome.b.setting.net;
 
 import com.techjumper.commonres.entity.BaseArgumentsEntity;
 import com.techjumper.commonres.entity.BaseEntity;

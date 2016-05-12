@@ -1,11 +1,11 @@
-package com.techjumper.polyhome.mvp.p.activity;
+package com.techjumper.polyhome.b.setting.mvp.p.activity;
 
 import com.techjumper.commonres.entity.BaseEntity;
 import com.techjumper.corelib.mvp.presenter.BaseActivityPresenterImp;
 import com.techjumper.corelib.rx.tools.RxUtils;
-import com.techjumper.polyhome.R;
-import com.techjumper.polyhome.mvp.v.activity.AppBaseActivity;
-import com.techjumper.polyhome.net.NetHelper;
+import com.techjumper.polyhome.b.setting.R;
+import com.techjumper.polyhome.b.setting.mvp.v.activity.AppBaseActivity;
+import com.techjumper.polyhome.b.setting.net.NetHelper;
 
 import java.util.ArrayList;
 import java.util.List;
