@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/lc_layout"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:visibility="gone"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="@dimen/dp_77"
+        android:gravity="center_vertical">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/property_repair_type"
+            android:textColor="@color/color_4Dffffff"
+            android:textSize="@dimen/sp_16" />
+
+        <com.aigestudio.wheelpicker.view.WheelCurvedPicker
+            android:id="@+id/lc_type_wheelpicker"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/dp_22"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/property_repair_device"
+            android:layout_marginLeft="@dimen/dp_45"
+            android:textColor="@color/color_4Dffffff"
+            android:textSize="@dimen/sp_16" />
+
+        <com.aigestudio.wheelpicker.view.WheelCurvedPicker
+            android:id="@+id/lc_device_wheelpicker"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/dp_22"/>
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/dp_30">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:paddingTop="@dimen/dp_10"
+            android:text="@string/property_repair_remark"
+            android:textColor="@color/color_4Dffffff"
+            android:textSize="@dimen/sp_16" />
+
+        <EditText
+            android:id="@+id/lc_content"
+            android:layout_width="@dimen/dp_344"
+            android:layout_height="@dimen/dp_121"
+            android:layout_marginLeft="@dimen/dp_22"
+            android:paddingLeft="@dimen/dp_16"
+            android:paddingRight="@dimen/dp_16"
+            android:gravity="top"
+            android:background="@color/color_99020405"/>
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/lc_submit"
+        android:layout_width="@dimen/dp_109"
+        android:layout_height="@dimen/dp_40"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="@dimen/dp_30"
+        android:layout_marginLeft="@dimen/dp_55"
+        android:background="@color/color_14ce63"
+        android:gravity="center"
+        android:text="@string/property_submit"
+        android:textColor="@color/color_ffffff"
+        android:textSize="@dimen/sp_16" />
+
+</LinearLayout>

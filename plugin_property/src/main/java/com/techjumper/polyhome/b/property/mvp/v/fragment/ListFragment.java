@@ -21,6 +21,7 @@ import com.techjumper.polyhome.b.property.hehe.AnnounHehe;
 import com.techjumper.polyhome.b.property.hehe.ComplaintHehe;
 import com.techjumper.polyhome.b.property.hehe.RepairHehe;
 import com.techjumper.polyhome.b.property.mvp.p.fragment.ListFragmentPresenter;
+import com.techjumper.polyhome.b.property.mvp.v.activity.MainActivity;
 import com.techjumper.polyhome.b.property.viewholder.databean.InfoAnnounHeheBean;
 import com.techjumper.polyhome.b.property.viewholder.databean.InfoComplaintHeheBean;
 import com.techjumper.polyhome.b.property.viewholder.databean.InfoRepairHeheBean;
@@ -46,8 +47,18 @@ public class ListFragment extends AppBaseFragment<ListFragmentPresenter> {
 
     private CommonRecyclerAdapter adapter;
 
+    private int type;
+
     public static ListFragment getInstance() {
         return new ListFragment();
+    }
+
+    public int getType() {
+        return type;
+    }
+
+    public void setType(int type) {
+        this.type = type;
     }
 
     @Override
@@ -67,6 +78,7 @@ public class ListFragment extends AppBaseFragment<ListFragmentPresenter> {
         flTitleAction.setText(R.string.property_call);
         flTitleAction.setCompoundDrawablesWithIntrinsicBounds(R.mipmap.icon_call, 0, 0, 0);
         flTitleAction.setCompoundDrawablePadding(getResources().getDimensionPixelSize(R.dimen.dp_5));
+        setType(MainActivity.ANNOUNCEMENT);
 
         List<DisplayBean> displayBeans = new ArrayList<>();
         if (infoEntityTemporaries == null || infoEntityTemporaries.size() == 0)
@@ -85,6 +97,7 @@ public class ListFragment extends AppBaseFragment<ListFragmentPresenter> {
         flTitleAction.setText(R.string.property_new_complaint);
         flTitleAction.setCompoundDrawablesWithIntrinsicBounds(R.mipmap.icon_complaint, 0, 0, 0);
         flTitleAction.setCompoundDrawablePadding(getResources().getDimensionPixelSize(R.dimen.dp_5));
+        setType(MainActivity.COMPLAINT);
 
         List<DisplayBean> displayBeans = new ArrayList<>();
         if (infoEntityTemporaries == null || infoEntityTemporaries.size() == 0)
@@ -103,6 +116,7 @@ public class ListFragment extends AppBaseFragment<ListFragmentPresenter> {
         flTitleAction.setText(R.string.property_new_repair);
         flTitleAction.setCompoundDrawablesWithIntrinsicBounds(R.mipmap.icon_repair, 0, 0, 0);
         flTitleAction.setCompoundDrawablePadding(getResources().getDimensionPixelSize(R.dimen.dp_5));
+        setType(MainActivity.REPAIR);
 
         List<DisplayBean> displayBeans = new ArrayList<>();
         if (infoEntityTemporaries == null || infoEntityTemporaries.size() == 0)

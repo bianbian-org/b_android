@@ -5,7 +5,7 @@ package com.techjumper.commonres.entity.event;
  */
 public class LoginEvent {
 
-    boolean isLogin;
+    private boolean isLogin;
 
     public LoginEvent(boolean isLogin) {
         this.isLogin = isLogin;

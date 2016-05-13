@@ -33,6 +33,7 @@ dependencies {
     compile project(':corelib')
     compile project(':lib2')
     compile project(':progressdialog')
+    compile project(':WheelPicker')
     compile 'com.android.support:support-v4:23.3.0'
 
     compile 'com.creact:powerful-adapter-lib-release:1.0.0@aar'

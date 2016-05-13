@@ -3,12 +3,4 @@
     <color name="colorPrimary">#3F51B5</color>
     <color name="colorPrimaryDark">#303F9F</color>
     <color name="colorAccent">#FF4081</color>
-
-    <!-- 60% -->
-    <color name="color_99020405">#99020405</color>
-
-    <!-- 60% fff -->
-    <color name="color_99ffffff">#99ffffff</color>
-
-    <color name="color_14ce63">#14ce63</color>
 </resources>

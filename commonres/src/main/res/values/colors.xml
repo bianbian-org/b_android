@@ -15,6 +15,11 @@
     <color name="color_DDffffff">#DDffffff</color>
     <!-- 10% -->
     <color name="color_1Affffff">#1Affffff</color>
+    <!-- 60% -->
+    <color name="color_99ffffff">#99ffffff</color>
+
+    <!-- 60% 000-->
+    <color name="color_99020405">#99020405</color>
 
     <color name="color_00f48924">#00f48924</color>
 
@@ -33,6 +38,7 @@
     <color name="color_ffad5f">#ffad5f</color>
     <color name="color_d96706">#d96706</color>
     <color name="color_f48924">#f48924</color>
+    <color name="color_14ce63">#14ce63</color>
 
     <color name="color_20C3F3">#20C3F3</color>
     <color name="color_FF9938">#FF9938</color>

@@ -34,7 +34,7 @@ public class SettingActivity extends AppBaseActivity<SettingActivityPresenter> {
 
     @Override
     protected void initView(Bundle savedInstanceState) {
-        RxBus.INSTANCE.asObservable()
+        addSubscription(RxBus.INSTANCE.asObservable()
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(o -> {
                     if (o instanceof LoginEvent) {
@@ -45,7 +45,7 @@ public class SettingActivity extends AppBaseActivity<SettingActivityPresenter> {
                             switchToLogin();
                         }
                     }
-                });
+                }));
 
         if (!UserManager.INSTANCE.isLogin()) {
             UserManager.INSTANCE.notifyLoginOrLogoutEvent(false);

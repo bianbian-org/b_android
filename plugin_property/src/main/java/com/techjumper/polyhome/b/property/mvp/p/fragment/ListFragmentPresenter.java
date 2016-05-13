@@ -2,6 +2,8 @@ package com.techjumper.polyhome.b.property.mvp.p.fragment;
 
 import android.os.Bundle;
 
+import com.techjumper.commonres.entity.event.PropertyActionEvent;
+import com.techjumper.corelib.rx.tools.RxBus;
 import com.techjumper.polyhome.b.property.R;
 import com.techjumper.polyhome.b.property.hehe.AnnounHehe;
 import com.techjumper.polyhome.b.property.hehe.ComplaintHehe;
@@ -12,6 +14,7 @@ import com.techjumper.polyhome.b.property.mvp.v.fragment.ListFragment;
 import java.util.List;
 
 import butterknife.OnCheckedChanged;
+import butterknife.OnClick;
 
 /**
  * Created by kevin on 16/5/12.
@@ -38,6 +41,14 @@ public class ListFragmentPresenter extends AppBaseFragmentPresenter<ListFragment
         if (check) {
             getView().getRepairHehes(getRepairHehes());
         }
+    }
+
+    @OnClick(R.id.fl_title_action)
+    void action_title() {
+        int type = getView().getType();
+        PropertyActionEvent propertyActionEvent = new PropertyActionEvent(true);
+        propertyActionEvent.setType(type);
+        RxBus.INSTANCE.send(propertyActionEvent);
     }
 
     @Override
