@@ -99,13 +99,6 @@ public class ListFragmentPresenter extends AppBaseFragmentPresenter<ListFragment
         complaintHehe.setTitle("个人保修-门窗: 请及时的所得税费");
         complaintHehe.setDate("10月23日");
         complaintHehe.setHasRead(ComplaintHehe.HASREAD_TURE);
-        complaintHehe.setType(ComplaintHehe.TYPE_FINISH);
-        complaintHehes.add(complaintHehe);
-
-        complaintHehe = new ComplaintHehe();
-        complaintHehe.setTitle("个人保修-门窗: 请及时的所得税费");
-        complaintHehe.setDate("10月23日");
-        complaintHehe.setHasRead(ComplaintHehe.HASREAD_TURE);
         complaintHehe.setType(ComplaintHehe.TYPE_SUBMIT);
         complaintHehes.add(complaintHehe);
 
@@ -113,14 +106,23 @@ public class ListFragmentPresenter extends AppBaseFragmentPresenter<ListFragment
         complaintHehe.setTitle("个人保修-门窗: 请及时的所得税费");
         complaintHehe.setDate("10月23日");
         complaintHehe.setHasRead(ComplaintHehe.HASREAD_TURE);
-        complaintHehe.setType(ComplaintHehe.TYPE_FINISH);
+        complaintHehe.setType(ComplaintHehe.TYPE_SUBMIT);
+        complaintHehe.setContent("尊敬的用户，您在8:24时提交的洗衣订单申请，已经被我公司接到，我们将在最快的时间内与您联系，工赶到您的家里，您在8:24时提交的洗衣订单申请，已经被我公司接到我司的");
         complaintHehes.add(complaintHehe);
 
         complaintHehe = new ComplaintHehe();
         complaintHehe.setTitle("个人保修-门窗: 请及时的所得税费");
         complaintHehe.setDate("10月23日");
         complaintHehe.setHasRead(ComplaintHehe.HASREAD_TURE);
-        complaintHehe.setType(ComplaintHehe.TYPE_SUBMIT);
+        complaintHehe.setType(ComplaintHehe.TYPE_FINISH);
+        complaintHehe.setContent("尊敬的用户，您在8:24时提交的洗衣订单申请，已经被我公司接到，我们将在最快的时间内与您联系，工赶到您的家里，您在8:24时提交的洗衣订单申请，已经被我公司接到我司的");
+        complaintHehes.add(complaintHehe);
+
+        complaintHehe = new ComplaintHehe();
+        complaintHehe.setTitle("个人保修-门窗: 请及时的所得税费");
+        complaintHehe.setDate("10月23日");
+        complaintHehe.setHasRead(ComplaintHehe.HASREAD_TURE);
+        complaintHehe.setType(ComplaintHehe.TYPE_RESPONSE);
         complaintHehes.add(complaintHehe);
 
         complaintHehe = new ComplaintHehe();
@@ -135,6 +137,7 @@ public class ListFragmentPresenter extends AppBaseFragmentPresenter<ListFragment
         complaintHehe.setDate("10月23日");
         complaintHehe.setHasRead(ComplaintHehe.HASREAD_TURE);
         complaintHehe.setType(ComplaintHehe.TYPE_FINISH);
+        complaintHehe.setContent("尊敬的用户，您在8:24时提交的洗衣订单申请，已经被我公司接到，我们将在最快的时间内与您联系，工赶到您的家里，您在8:24时提交的洗衣订单申请，已经被我公司接到我司的");
         complaintHehes.add(complaintHehe);
 
         complaintHehe = new ComplaintHehe();
@@ -168,6 +171,7 @@ public class ListFragmentPresenter extends AppBaseFragmentPresenter<ListFragment
         complaintHehe.setDate("10月23日");
         complaintHehe.setHasRead(ComplaintHehe.HASREAD_TURE);
         complaintHehe.setType(ComplaintHehe.TYPE_SUBMIT);
+        complaintHehe.setContent("尊敬的用户，您在8:24时提交的洗衣订单申请，已经被我公司接到，我们将在最快的时间内与您联系，工赶到您的家里，您在8:24时提交的洗衣订单申请，已经被我公司接到我司的");
         complaintHehes.add(complaintHehe);
 
         complaintHehe = new RepairHehe();
@@ -196,6 +200,7 @@ public class ListFragmentPresenter extends AppBaseFragmentPresenter<ListFragment
         complaintHehe.setDate("10月23日");
         complaintHehe.setHasRead(ComplaintHehe.HASREAD_TURE);
         complaintHehe.setType(ComplaintHehe.TYPE_FINISH);
+        complaintHehe.setContent("尊敬的用户，您在8:24时提交的洗衣订单申请，已经被我公司接到，我们将在最快的时间内与您联系，工赶到您的家里，您在8:24时提交的洗衣订单申请，已经被我公司接到我司的");
         complaintHehes.add(complaintHehe);
 
         complaintHehe = new RepairHehe();

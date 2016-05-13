@@ -1,6 +1,7 @@
 package com.techjumper.polyhome.b.property.mvp.v.fragment;
 
 
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
@@ -61,7 +62,12 @@ public class ListFragment extends AppBaseFragment<ListFragmentPresenter> {
         flList.setLayoutManager(new LinearLayoutManager(getContext()));
     }
 
+    // TODO: 16/5/13  看后台返回数据，根据type合并
     public void getAnnounHehes(List<AnnounHehe> infoEntityTemporaries) {
+        flTitleAction.setText(R.string.property_call);
+        flTitleAction.setCompoundDrawablesWithIntrinsicBounds(R.mipmap.icon_call, 0, 0, 0);
+        flTitleAction.setCompoundDrawablePadding(getResources().getDimensionPixelSize(R.dimen.dp_5));
+
         List<DisplayBean> displayBeans = new ArrayList<>();
         if (infoEntityTemporaries == null || infoEntityTemporaries.size() == 0)
             return;
@@ -76,6 +82,10 @@ public class ListFragment extends AppBaseFragment<ListFragmentPresenter> {
     }
 
     public void getComplaintHehes(List<ComplaintHehe> infoEntityTemporaries) {
+        flTitleAction.setText(R.string.property_new_complaint);
+        flTitleAction.setCompoundDrawablesWithIntrinsicBounds(R.mipmap.icon_complaint, 0, 0, 0);
+        flTitleAction.setCompoundDrawablePadding(getResources().getDimensionPixelSize(R.dimen.dp_5));
+
         List<DisplayBean> displayBeans = new ArrayList<>();
         if (infoEntityTemporaries == null || infoEntityTemporaries.size() == 0)
             return;
@@ -90,6 +100,10 @@ public class ListFragment extends AppBaseFragment<ListFragmentPresenter> {
     }
 
     public void getRepairHehes(List<RepairHehe> infoEntityTemporaries) {
+        flTitleAction.setText(R.string.property_new_repair);
+        flTitleAction.setCompoundDrawablesWithIntrinsicBounds(R.mipmap.icon_repair, 0, 0, 0);
+        flTitleAction.setCompoundDrawablePadding(getResources().getDimensionPixelSize(R.dimen.dp_5));
+
         List<DisplayBean> displayBeans = new ArrayList<>();
         if (infoEntityTemporaries == null || infoEntityTemporaries.size() == 0)
             return;

@@ -1,5 +1,6 @@
 package com.techjumper.polyhome.b.property.viewholder;
 
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.TextView;
 
@@ -41,7 +42,13 @@ public class RepairViewHolder extends BaseRecyclerViewHolder<RepairHehe> {
         }
 
         setText(R.id.info_title, title);
-        setText(R.id.info_content, content);
+        if (TextUtils.isEmpty(content)) {
+            setVisibility(R.id.info_content, View.GONE);
+        }else {
+            setVisibility(R.id.info_content, View.VISIBLE);
+            setText(R.id.info_content, content);
+        }
+
         setText(R.id.info_date, date);
 
         TextView typeTextView = getView(R.id.info_type);
