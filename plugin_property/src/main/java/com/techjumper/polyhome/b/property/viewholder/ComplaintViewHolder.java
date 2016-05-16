@@ -65,5 +65,11 @@ public class ComplaintViewHolder extends BaseRecyclerViewHolder<ComplaintHehe> {
             typeTextView.setTextColor(getContext().getResources().getColor(R.color.color_4EB738));
             typeTextView.setText(R.string.property_type_finish);
         }
+
+        setOnItemClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+            }
+        });
     }
 }

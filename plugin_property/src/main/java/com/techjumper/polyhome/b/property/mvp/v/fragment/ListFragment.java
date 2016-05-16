@@ -14,10 +14,8 @@ import android.widget.TextView;
 
 import com.steve.creact.library.adapter.CommonRecyclerAdapter;
 import com.steve.creact.library.display.DisplayBean;
-import com.techjumper.commonres.entity.event.BackEvent;
 import com.techjumper.commonres.entity.event.PropertyNormalDetailEvent;
 import com.techjumper.corelib.mvp.factory.Presenter;
-import com.techjumper.corelib.rx.tools.RxBus;
 import com.techjumper.polyhome.b.property.R;
 import com.techjumper.polyhome.b.property.hehe.AnnounHehe;
 import com.techjumper.polyhome.b.property.hehe.ComplaintHehe;
@@ -33,7 +31,6 @@ import java.util.List;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
-import rx.android.schedulers.AndroidSchedulers;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -55,6 +52,18 @@ public class ListFragment extends AppBaseFragment<ListFragmentPresenter> {
     TextView lndDate;
     @Bind(R.id.lnd_content)
     TextView lndContent;
+    @Bind(R.id.lmd_title)
+    TextView lmdTitle;
+    @Bind(R.id.lmd_date)
+    TextView lmdDate;
+    @Bind(R.id.lmd_type)
+    TextView lmdType;
+    @Bind(R.id.lmd_content)
+    TextView lmdContent;
+    @Bind(R.id.lmd_list)
+    RecyclerView lmdList;
+    @Bind(R.id.lmd_layout)
+    LinearLayout lmdLayout;
 
     private CommonRecyclerAdapter adapter;
     private int type;
@@ -82,6 +91,7 @@ public class ListFragment extends AppBaseFragment<ListFragmentPresenter> {
         adapter = new CommonRecyclerAdapter();
 
         flList.setLayoutManager(new LinearLayoutManager(getContext()));
+        showLmdLayout();
     }
 
     // TODO: 16/5/13  看后台返回数据，根据type合并
@@ -147,6 +157,7 @@ public class ListFragment extends AppBaseFragment<ListFragmentPresenter> {
             return;
 
         lndLayout.setVisibility(View.VISIBLE);
+        lmdLayout.setVisibility(View.GONE);
         flList.setVisibility(View.GONE);
 
         lndTitle.setText(event.getTitle());
@@ -154,8 +165,19 @@ public class ListFragment extends AppBaseFragment<ListFragmentPresenter> {
         lndContent.setText(event.getContent());
     }
 
+    public void showLmdLayout() {
+//        if (event == null)
+//            return;
+
+        lndLayout.setVisibility(View.GONE);
+        lmdLayout.setVisibility(View.VISIBLE);
+        flList.setVisibility(View.GONE);
+
+    }
+
     public void showListLayout() {
         lndLayout.setVisibility(View.GONE);
+        lmdLayout.setVisibility(View.GONE);
         flList.setVisibility(View.VISIBLE);
     }
 
