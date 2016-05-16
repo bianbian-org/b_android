@@ -2,7 +2,10 @@ package com.techjumper.polyhome.b.property.mvp.p.fragment;
 
 import android.os.Bundle;
 
+import com.techjumper.commonres.entity.event.BackEvent;
 import com.techjumper.commonres.entity.event.PropertyActionEvent;
+import com.techjumper.commonres.entity.event.PropertyListEvent;
+import com.techjumper.commonres.entity.event.PropertyNormalDetailEvent;
 import com.techjumper.corelib.rx.tools.RxBus;
 import com.techjumper.polyhome.b.property.R;
 import com.techjumper.polyhome.b.property.hehe.AnnounHehe;
@@ -15,6 +18,7 @@ import java.util.List;
 
 import butterknife.OnCheckedChanged;
 import butterknife.OnClick;
+import rx.android.schedulers.AndroidSchedulers;
 
 /**
  * Created by kevin on 16/5/12.
@@ -59,6 +63,18 @@ public class ListFragmentPresenter extends AppBaseFragmentPresenter<ListFragment
     @Override
     public void onViewInited(Bundle savedInstanceState) {
         getView().getAnnounHehes(getAnnounHehes());
+
+        addSubscription(RxBus.INSTANCE.asObservable()
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(o -> {
+                    if (o instanceof PropertyNormalDetailEvent) {
+                        PropertyNormalDetailEvent event = (PropertyNormalDetailEvent) o;
+                        getView().showLndLayout(event);
+                        RxBus.INSTANCE.send(new BackEvent(BackEvent.PROPERTY_LIST));
+                    } else if (o instanceof PropertyListEvent) {
+                        getView().showListLayout();
+                    }
+                }));
     }
 
 

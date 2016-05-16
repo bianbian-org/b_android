@@ -10,7 +10,10 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.aigestudio.wheelpicker.view.WheelCurvedPicker;
+import com.techjumper.commonres.entity.event.BackEvent;
+import com.techjumper.commonres.entity.event.PropertyActionEvent;
 import com.techjumper.corelib.mvp.factory.Presenter;
+import com.techjumper.corelib.rx.tools.RxBus;
 import com.techjumper.corelib.utils.common.RuleUtils;
 import com.techjumper.polyhome.b.property.R;
 import com.techjumper.polyhome.b.property.mvp.p.fragment.ActionFragmentPresenter;
@@ -70,6 +73,8 @@ public class ActionFragment extends AppBaseFragment<ActionFragmentPresenter> {
             lrLayout.setVisibility(View.GONE);
             lcLayout.setVisibility(View.VISIBLE);
         }
+
+        RxBus.INSTANCE.send(new BackEvent(BackEvent.PROPERTY_ACTION));
 
         // TODO: 16/5/13 到时候看是本地的还是网络层的
         List<String> strings = new ArrayList<String>();

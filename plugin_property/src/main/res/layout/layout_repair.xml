@@ -42,9 +42,11 @@
             android:layout_width="@dimen/dp_344"
             android:layout_height="@dimen/dp_121"
             android:layout_marginLeft="@dimen/dp_22"
-            android:paddingLeft="@dimen/dp_16"
-            android:paddingRight="@dimen/dp_16"
+            android:paddingLeft="@dimen/dp_5"
+            android:paddingRight="@dimen/dp_5"
             android:gravity="top"
+            android:textCursorDrawable="@null"
+            android:textColor="@color/color_ffffff"
             android:background="@color/color_99020405"/>
     </LinearLayout>
 

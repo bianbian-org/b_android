@@ -6,6 +6,8 @@ import android.view.View;
 import com.steve.creact.annotation.DataBean;
 import com.steve.creact.library.viewholder.BaseRecyclerViewHolder;
 import com.techjumper.commonres.entity.InfoEntity;
+import com.techjumper.commonres.entity.event.PropertyNormalDetailEvent;
+import com.techjumper.corelib.rx.tools.RxBus;
 import com.techjumper.polyhome.b.property.R;
 import com.techjumper.polyhome.b.property.hehe.AnnounHehe;
 
@@ -41,5 +43,9 @@ public class AnnouncementViewHolder extends BaseRecyclerViewHolder<AnnounHehe> {
         setText(R.id.info_title, title);
         setText(R.id.info_content, content);
         setText(R.id.info_date, date);
+
+        setOnItemClickListener(v -> {
+            RxBus.INSTANCE.send(new PropertyNormalDetailEvent(title, date, content));
+        });
     }
 }

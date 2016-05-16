@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/lnd_layout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/dp_50"
+        android:gravity="center_vertical">
+
+        <TextView
+            android:id="@+id/lnd_title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:textColor="@color/color_ffffff"
+            android:textSize="@dimen/sp_20"
+            tools:text="本周六开始，实行宵禁" />
+
+        <TextView
+            android:id="@+id/lnd_date"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/color_7fffffff"
+            android:textSize="@dimen/sp_16"
+            tools:text="10月23日" />
+    </LinearLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dp_1"
+        android:layout_marginTop="@dimen/dp_20"
+        android:background="@color/color_1Affffff" />
+
+    <TextView
+        android:id="@+id/lnd_content"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/dp_16"
+        android:textColor="@color/color_99ffffff"
+        android:textSize="@dimen/sp_16"
+        tools:text="您在8:24时提交的洗衣订单申请，已经被我公司接到，我们将在最快的时间内与您联系，工作人员将赶到您的家里，您在8:24时提交的洗衣订单申请，已经被我公司接到我司的...您在8:24时提交的洗衣订单申请。" />
+</LinearLayout>

@@ -61,6 +61,7 @@
     </LinearLayout>
 
     <FrameLayout
+        android:id="@+id/fl_container"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_marginLeft="@dimen/dp_180"
@@ -71,8 +72,11 @@
             android:id="@+id/fl_list"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_marginTop="@dimen/dp_10"
-            android:layout_weight="1" />
+            android:layout_marginTop="@dimen/dp_10" />
 
+        <include
+            layout="@layout/layout_normal_detail"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
     </FrameLayout>
 </LinearLayout>

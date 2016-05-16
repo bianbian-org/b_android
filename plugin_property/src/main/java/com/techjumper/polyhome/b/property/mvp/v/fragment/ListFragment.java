@@ -1,7 +1,6 @@
 package com.techjumper.polyhome.b.property.mvp.v.fragment;
 
 
-import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
@@ -9,13 +8,16 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 import android.widget.RadioGroup;
 import android.widget.TextView;
 
 import com.steve.creact.library.adapter.CommonRecyclerAdapter;
 import com.steve.creact.library.display.DisplayBean;
-import com.techjumper.commonres.entity.InfoEntity;
+import com.techjumper.commonres.entity.event.BackEvent;
+import com.techjumper.commonres.entity.event.PropertyNormalDetailEvent;
 import com.techjumper.corelib.mvp.factory.Presenter;
+import com.techjumper.corelib.rx.tools.RxBus;
 import com.techjumper.polyhome.b.property.R;
 import com.techjumper.polyhome.b.property.hehe.AnnounHehe;
 import com.techjumper.polyhome.b.property.hehe.ComplaintHehe;
@@ -31,6 +33,7 @@ import java.util.List;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
+import rx.android.schedulers.AndroidSchedulers;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -44,10 +47,18 @@ public class ListFragment extends AppBaseFragment<ListFragmentPresenter> {
     TextView flTitleAction;
     @Bind(R.id.fl_list)
     RecyclerView flList;
+    @Bind(R.id.lnd_layout)
+    LinearLayout lndLayout;
+    @Bind(R.id.lnd_title)
+    TextView lndTitle;
+    @Bind(R.id.lnd_date)
+    TextView lndDate;
+    @Bind(R.id.lnd_content)
+    TextView lndContent;
 
     private CommonRecyclerAdapter adapter;
-
     private int type;
+    private static ListFragment listFragment;
 
     public static ListFragment getInstance() {
         return new ListFragment();
@@ -129,5 +140,36 @@ public class ListFragment extends AppBaseFragment<ListFragmentPresenter> {
 
         adapter.loadData(displayBeans);
         flList.setAdapter(adapter);
+    }
+
+    public void showLndLayout(PropertyNormalDetailEvent event) {
+        if (event == null)
+            return;
+
+        lndLayout.setVisibility(View.VISIBLE);
+        flList.setVisibility(View.GONE);
+
+        lndTitle.setText(event.getTitle());
+        lndDate.setText(event.getDate());
+        lndContent.setText(event.getContent());
+    }
+
+    public void showListLayout() {
+        lndLayout.setVisibility(View.GONE);
+        flList.setVisibility(View.VISIBLE);
+    }
+
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        // TODO: inflate a fragment view
+        View rootView = super.onCreateView(inflater, container, savedInstanceState);
+        ButterKnife.bind(this, rootView);
+        return rootView;
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        ButterKnife.unbind(this);
     }
 }
