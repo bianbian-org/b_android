@@ -4,7 +4,9 @@
     <string name="error_to_connect_server">网络连接失败!</string>
     <string name="error_no_data">暂无任何内容</string>
     <string name="property_submit">提交</string>
+    <string name="property_submit_success">提交成功</string>
     <string name="property_send">发送</string>
+    <string name="property_send_success">发送成功</string>
 
     <string name="property">物业</string>
     <string name="property_announcement">物业公告</string>
@@ -17,6 +19,7 @@
     <string name="property_type_submit">已提交</string>
     <string name="property_type_finish">已完成</string>
     <string name="property_type_response">已回复</string>
+    <string name="property_type_nothing">未处理</string>
 
     <string name="property_complaint_theme">主题</string>
     <string name="property_complaint_content">内容</string>

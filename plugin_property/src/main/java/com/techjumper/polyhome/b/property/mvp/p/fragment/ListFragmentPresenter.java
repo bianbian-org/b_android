@@ -3,6 +3,7 @@ package com.techjumper.polyhome.b.property.mvp.p.fragment;
 import android.os.Bundle;
 
 import com.techjumper.commonres.entity.AnnouncementEntity;
+import com.techjumper.commonres.entity.ComplaintEntity;
 import com.techjumper.commonres.entity.event.BackEvent;
 import com.techjumper.commonres.entity.event.PropertyActionEvent;
 import com.techjumper.commonres.entity.event.PropertyListEvent;
@@ -44,7 +45,7 @@ public class ListFragmentPresenter extends AppBaseFragmentPresenter<ListFragment
     @OnCheckedChanged(R.id.fl_title_complaint)
     void checkComplaint(boolean check) {
         if (check) {
-            getView().getComplaintHehes(getComplaintHehes());
+            getComplaints(1);
         }
     }
 
@@ -100,6 +101,31 @@ public class ListFragmentPresenter extends AppBaseFragmentPresenter<ListFragment
                 getView().getAnnouncements(announcementEntity.getData().getNotices(), page);
             }
         }));
+    }
+
+    public void getComplaints(int page) {
+        addSubscription(model.getComplaints(page)
+                .subscribe(new Subscriber<ComplaintEntity>() {
+                    @Override
+                    public void onCompleted() {
+
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+
+                    }
+
+                    @Override
+                    public void onNext(ComplaintEntity complaintEntity) {
+                        if (complaintEntity == null ||
+                                complaintEntity.getData() == null ||
+                                complaintEntity.getData().getSuggestions() == null)
+                            return;
+
+                        getView().getComplaints(complaintEntity.getData().getSuggestions());
+                    }
+                }));
     }
 
     public List<ComplaintHehe> getComplaintHehes() {

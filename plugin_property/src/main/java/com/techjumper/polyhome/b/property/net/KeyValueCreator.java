@@ -33,4 +33,19 @@ public class KeyValueCreator {
                 .put("count", count);
     }
 
+    public static KeyValuePair getComplaints(String user_id, String ticket, String page, String count) {
+        return newPair()
+                .put("user_id", user_id)
+                .put("ticket", ticket)
+                .put("page", page)
+                .put("count", count);
+    }
+
+    public static KeyValuePair submitComplaint(String user_id, String ticket, String types, String content) {
+        return newPair()
+                .put("user_id", user_id)
+                .put("ticket", ticket)
+                .put("types", types)
+                .put("content", content);
+    }
 }

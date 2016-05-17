@@ -1,11 +1,16 @@
 package com.techjumper.polyhome.b.property.net;
 
 import com.techjumper.commonres.entity.AnnouncementEntity;
+import com.techjumper.commonres.entity.BaseArgumentsEntity;
+import com.techjumper.commonres.entity.ComplaintEntity;
 import com.techjumper.commonres.entity.InfoEntity;
+import com.techjumper.commonres.entity.TrueEntity;
 
 import java.util.Map;
 
+import retrofit2.http.Body;
 import retrofit2.http.GET;
+import retrofit2.http.POST;
 import retrofit2.http.QueryMap;
 import rx.Observable;
 
@@ -16,4 +21,10 @@ public interface ServiceAPI {
 
     @GET("notices")
     Observable<AnnouncementEntity> getAnnouncements(@QueryMap Map<String, String> map);
+
+    @POST("suggestions")
+    Observable<TrueEntity> submitComplaint(@Body BaseArgumentsEntity entity);
+
+    @GET("suggestions")
+    Observable<ComplaintEntity> getComplaints(@QueryMap Map<String, String> map);
 }

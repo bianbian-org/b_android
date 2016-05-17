@@ -1,6 +1,7 @@
 package com.techjumper.polyhome.b.property.mvp.m;
 
 import com.techjumper.commonres.entity.AnnouncementEntity;
+import com.techjumper.commonres.entity.ComplaintEntity;
 import com.techjumper.corelib.mvp.model.BaseModel;
 import com.techjumper.corelib.rx.tools.CommonWrap;
 import com.techjumper.lib2.utils.RetrofitHelper;
@@ -42,6 +43,13 @@ public class ListFragmentModel extends BaseModel<ListFragmentPresenter> {
 
         return RetrofitHelper.<ServiceAPI>createDefault()
                 .getAnnouncements(NetHelper.createBaseArgumentsMap(KeyValueCreator.getAnnouncements(String.valueOf(page), "10")))
+                .compose(CommonWrap.wrap());
+    }
+
+    public Observable<ComplaintEntity> getComplaints(int page) {
+
+        return RetrofitHelper.<ServiceAPI>createDefault()
+                .getComplaints(NetHelper.createBaseArgumentsMap(KeyValueCreator.getComplaints("248", "ded9133b9df5817e5f0220e0118b8ec8d8dbd8ea",String.valueOf(page), "10")))
                 .compose(CommonWrap.wrap());
     }
 }

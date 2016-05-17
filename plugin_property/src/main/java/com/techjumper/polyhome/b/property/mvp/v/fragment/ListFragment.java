@@ -15,6 +15,8 @@ import android.widget.TextView;
 import com.steve.creact.library.adapter.CommonRecyclerAdapter;
 import com.steve.creact.library.display.DisplayBean;
 import com.techjumper.commonres.entity.AnnouncementEntity;
+import com.techjumper.commonres.entity.CalendarEntity;
+import com.techjumper.commonres.entity.ComplaintEntity;
 import com.techjumper.commonres.entity.event.PropertyNormalDetailEvent;
 import com.techjumper.corelib.mvp.factory.Presenter;
 import com.techjumper.polyhome.b.property.R;
@@ -24,6 +26,7 @@ import com.techjumper.polyhome.b.property.mvp.p.fragment.ListFragmentPresenter;
 import com.techjumper.polyhome.b.property.mvp.v.activity.MainActivity;
 import com.techjumper.polyhome.b.property.utils.AdapterUtil;
 import com.techjumper.polyhome.b.property.viewholder.databean.InfoAnnouncementEntityBean;
+import com.techjumper.polyhome.b.property.viewholder.databean.InfoComplaintEntityBean;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -116,23 +119,28 @@ public class ListFragment extends AppBaseFragment<ListFragmentPresenter> {
         flList.setAdapter(adapter);
     }
 
-    public void getComplaintHehes(List<ComplaintHehe> infoEntityTemporaries) {
+    public void getComplaints(List<ComplaintEntity.ComplaintDataEntity> complaintDataEntities, int page) {
         flTitleAction.setText(R.string.property_new_complaint);
         flTitleAction.setCompoundDrawablesWithIntrinsicBounds(R.mipmap.icon_complaint, 0, 0, 0);
         flTitleAction.setCompoundDrawablePadding(getResources().getDimensionPixelSize(R.dimen.dp_5));
         setType(MainActivity.COMPLAINT);
-//
-//        List<DisplayBean> displayBeans = new ArrayList<>();
-//        if (infoEntityTemporaries == null || infoEntityTemporaries.size() == 0)
-//            return;
-//
-//
-//        for (int i = 0; i < infoEntityTemporaries.size(); i++) {
-//            displayBeans.add(new InfoComplaintHeheBean(infoEntityTemporaries.get(i)));
-//        }
-//
-//        adapter.loadData(displayBeans);
-//        flList.setAdapter(adapter);
+
+        if (complaintDataEntities.size() == 0 && page == 1) {
+            AdapterUtil.clear(adapter);
+            return;
+        }
+
+        List<DisplayBean> displayBeans = new ArrayList<>();
+        if (complaintDataEntities == null || complaintDataEntities.size() == 0)
+            return;
+
+
+        for (int i = 0; i < complaintDataEntities.size(); i++) {
+            displayBeans.add(new InfoComplaintEntityBean(complaintDataEntities.get(i)));
+        }
+
+        adapter.loadData(displayBeans);
+        flList.setAdapter(adapter);
     }
 
     public void getRepairHehes(List<RepairHehe> infoEntityTemporaries) {
@@ -140,6 +148,8 @@ public class ListFragment extends AppBaseFragment<ListFragmentPresenter> {
         flTitleAction.setCompoundDrawablesWithIntrinsicBounds(R.mipmap.icon_repair, 0, 0, 0);
         flTitleAction.setCompoundDrawablePadding(getResources().getDimensionPixelSize(R.dimen.dp_5));
         setType(MainActivity.REPAIR);
+
+
 //
 //        List<DisplayBean> displayBeans = new ArrayList<>();
 //        if (infoEntityTemporaries == null || infoEntityTemporaries.size() == 0)

@@ -6,9 +6,11 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.aigestudio.wheelpicker.core.AbstractWheelPicker;
 import com.aigestudio.wheelpicker.view.WheelCurvedPicker;
 import com.techjumper.commonres.entity.event.BackEvent;
 import com.techjumper.corelib.mvp.factory.Presenter;
@@ -17,7 +19,7 @@ import com.techjumper.corelib.utils.common.RuleUtils;
 import com.techjumper.polyhome.b.property.R;
 import com.techjumper.polyhome.b.property.mvp.p.fragment.ActionFragmentPresenter;
 
-import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import butterknife.Bind;
@@ -31,8 +33,20 @@ public class ActionFragment extends AppBaseFragment<ActionFragmentPresenter> {
     //两种类型，保修和投诉
     public static final int REPAIR = 0;
     public static final int COMPLAINT = 1;
-
     public static final String TYPE = "type";
+
+    public static final int LC_COM = 1; //投诉
+    public static final int LC_SUG = 2; //建议
+    public static final int LC_PRA = 3; //表扬
+
+    public static final int LR_TYPE_PER = 1; //个人报修
+    public static final int LR_TYPE_COM = 2; //公共报修
+
+    public static final int LR_DEVICE_DOOR = 1; //门窗类
+    public static final int LR_DEVICE_WATER = 2; //水电类
+    public static final int LR_DEVICE_LOCK = 3; //锁类
+    public static final int LR_DEVICE_LIFT = 4; //电梯类
+    public static final int LR_DEVICE_WALL = 5; //墙类
 
     @Bind(R.id.fa_title)
     TextView faTitle;
@@ -46,6 +60,26 @@ public class ActionFragment extends AppBaseFragment<ActionFragmentPresenter> {
     WheelCurvedPicker lrTypeWheelpicker;
     @Bind(R.id.lr_device_wheelpicker)
     WheelCurvedPicker lrDeviceWheelpicker;
+    @Bind(R.id.lc_content)
+    EditText lcContent;
+
+    private int lcType = LC_PRA;
+
+    public EditText getLcContent() {
+        return lcContent;
+    }
+
+    public void setLcType(int lcType) {
+        this.lcType = lcType;
+    }
+
+    public int getLcType() {
+        return lcType;
+    }
+
+    public WheelCurvedPicker getLcThemeWheelpicker() {
+        return lcThemeWheelpicker;
+    }
 
     public static ActionFragment getInstance(int type) {
         ActionFragment actionFragment = new ActionFragment();
@@ -75,38 +109,53 @@ public class ActionFragment extends AppBaseFragment<ActionFragmentPresenter> {
 
         RxBus.INSTANCE.send(new BackEvent(BackEvent.PROPERTY_ACTION));
 
-        // TODO: 16/5/13 到时候看是本地的还是网络层的
-        List<String> strings = new ArrayList<String>();
-        strings.add("表扬");
-        strings.add("投诉");
-        strings.add("建议");
-        lcThemeWheelpicker.setData(strings);
-        lcThemeWheelpicker.setTextColor(getResources().getColor(R.color.color_ffffff));
-        lcThemeWheelpicker.setCurrentTextColor(getResources().getColor(R.color.color_ffffff));
-        lcThemeWheelpicker.setItemIndex(1);
-        lcThemeWheelpicker.setItemSpace(RuleUtils.dp2Px(10));
+        String[] strings = getResources().getStringArray(R.array.complaint_type);
+        initWheelPicker(lcThemeWheelpicker, Arrays.asList(strings));
 
-        strings = new ArrayList<String>();
-        strings.add("公共报修");
-        strings.add("个人报修");
-        lrTypeWheelpicker.setData(strings);
-        lrTypeWheelpicker.setTextColor(getResources().getColor(R.color.color_ffffff));
-        lrTypeWheelpicker.setCurrentTextColor(getResources().getColor(R.color.color_ffffff));
-        lrTypeWheelpicker.setItemIndex(1);
-        lrTypeWheelpicker.setItemSpace(RuleUtils.dp2Px(10));
+        strings = getResources().getStringArray(R.array.repair_type);
+        initWheelPicker(lrTypeWheelpicker, Arrays.asList(strings));
 
-        strings = new ArrayList<String>();
-        strings.add("门窗类");
-        strings.add("水电类");
-        strings.add("电梯类");
-        strings.add("墙类");
-        strings.add("锁类");
-        lrDeviceWheelpicker.setData(strings);
-        lrDeviceWheelpicker.setTextColor(getResources().getColor(R.color.color_ffffff));
-        lrDeviceWheelpicker.setCurrentTextColor(getResources().getColor(R.color.color_ffffff));
-        lrDeviceWheelpicker.setItemIndex(2);
-        lrDeviceWheelpicker.setItemSpace(RuleUtils.dp2Px(10));
+        strings = getResources().getStringArray(R.array.repair_device);
+        initWheelPicker(lrDeviceWheelpicker, Arrays.asList(strings));
 
+        lcThemeWheelpicker.setOnWheelChangeListener(new AbstractWheelPicker.OnWheelChangeListener() {
+            @Override
+            public void onWheelScrolling(float deltaX, float deltaY) {
+
+            }
+
+            @Override
+            public void onWheelSelected(int index, String data) {
+                if (data.equals("表扬")) {
+                    setLcType(LC_PRA);
+                } else if (data.equals("投诉")) {
+                    setLcType(LC_COM);
+                } else {
+                    setLcType(LC_SUG);
+                }
+            }
+
+            @Override
+            public void onWheelScrollStateChanged(int state) {
+
+            }
+        });
+    }
+
+    private WheelCurvedPicker initWheelPicker(WheelCurvedPicker wheelCurvedPicker, List<String> names) {
+        if (wheelCurvedPicker == null)
+            return new WheelCurvedPicker(getContext());
+
+        if (names == null || names.size() == 0)
+            return new WheelCurvedPicker(getContext());
+
+        wheelCurvedPicker.setData(names);
+        wheelCurvedPicker.setTextColor(getResources().getColor(R.color.color_ffffff));
+        wheelCurvedPicker.setCurrentTextColor(getResources().getColor(R.color.color_ffffff));
+        wheelCurvedPicker.setItemIndex(0);
+        wheelCurvedPicker.setItemSpace(RuleUtils.dp2Px(10));
+
+        return wheelCurvedPicker;
     }
 
     @Override
