@@ -2,13 +2,13 @@ package com.techjumper.polyhome.b.property.mvp.p.fragment;
 
 import android.os.Bundle;
 
+import com.techjumper.commonres.entity.AnnouncementEntity;
 import com.techjumper.commonres.entity.event.BackEvent;
 import com.techjumper.commonres.entity.event.PropertyActionEvent;
 import com.techjumper.commonres.entity.event.PropertyListEvent;
 import com.techjumper.commonres.entity.event.PropertyNormalDetailEvent;
 import com.techjumper.corelib.rx.tools.RxBus;
 import com.techjumper.polyhome.b.property.R;
-import com.techjumper.polyhome.b.property.hehe.AnnounHehe;
 import com.techjumper.polyhome.b.property.hehe.ComplaintHehe;
 import com.techjumper.polyhome.b.property.hehe.RepairHehe;
 import com.techjumper.polyhome.b.property.mvp.m.ListFragmentModel;
@@ -18,6 +18,7 @@ import java.util.List;
 
 import butterknife.OnCheckedChanged;
 import butterknife.OnClick;
+import rx.Subscriber;
 import rx.android.schedulers.AndroidSchedulers;
 
 /**
@@ -29,21 +30,21 @@ public class ListFragmentPresenter extends AppBaseFragmentPresenter<ListFragment
     @OnCheckedChanged(R.id.fl_title_announcement)
     void checkAnnouncement(boolean check) {
         if (check) {
-            getView().getAnnounHehes(getAnnounHehes());
+            getAnnouncements(1);
         }
     }
 
     @OnCheckedChanged(R.id.fl_title_repair)
     void checkRepair(boolean check) {
         if (check) {
-            getView().getComplaintHehes(getComplaintHehes());
+            getView().getRepairHehes(getRepairHehes());
         }
     }
 
     @OnCheckedChanged(R.id.fl_title_complaint)
     void checkComplaint(boolean check) {
         if (check) {
-            getView().getRepairHehes(getRepairHehes());
+            getView().getComplaintHehes(getComplaintHehes());
         }
     }
 
@@ -62,7 +63,7 @@ public class ListFragmentPresenter extends AppBaseFragmentPresenter<ListFragment
 
     @Override
     public void onViewInited(Bundle savedInstanceState) {
-        getView().getAnnounHehes(getAnnounHehes());
+        getAnnouncements(1);
 
         addSubscription(RxBus.INSTANCE.asObservable()
                 .observeOn(AndroidSchedulers.mainThread())
@@ -77,47 +78,28 @@ public class ListFragmentPresenter extends AppBaseFragmentPresenter<ListFragment
                 }));
     }
 
+    public void getAnnouncements(int page) {
+        addSubscription(model.getAnnouncements(page).subscribe(new Subscriber<AnnouncementEntity>() {
+            @Override
+            public void onCompleted() {
 
-    public List<AnnounHehe> getAnnounHehes() {
-        List<AnnounHehe> announHehes = model.getAnnounHehes();
-        AnnounHehe announHehe = new AnnounHehe();
-        announHehe.setTitle("本周六八点开始实行宵禁");
-        announHehe.setContent("尊敬的用户，您在8:24时提交的洗衣订单申请，已经被我公司接到，我们将在最快的时间内与您联系，工赶到您的家里，您在8:24时提交的洗衣订单申请，已经被我公司接到我司的");
-        announHehe.setDate("10月23日");
-        announHehe.setHasRead(AnnounHehe.HASREAD_TURE);
-        announHehes.add(announHehe);
+            }
 
-        announHehe = new AnnounHehe();
-        announHehe.setTitle("本周六八点开始实行宵禁");
-        announHehe.setContent("尊敬的用户，您在8:24时提交的洗衣订单申请，已经被我公司接到，我们将在最快的时间内与您联系，工赶到您的家里，您在8:24时提交的洗衣订单申请，已经被我公司接到我司的");
-        announHehe.setDate("10月23日");
-        announHehe.setHasRead(AnnounHehe.HASREAD_FALSE);
-        announHehes.add(announHehe);
+            @Override
+            public void onError(Throwable e) {
 
-        announHehe = new AnnounHehe();
-        announHehe.setTitle("本周六八点开始实行宵禁");
-        announHehe.setContent("尊敬的用户，您在8:24时提交的洗衣订单申请，已经被我公司接到，我们将在最快的时间内与您联系，工赶到您的家里，您在8:24时提交的洗衣订单申请，已经被我公司接到我司的");
-        announHehe.setDate("10月23日");
-        announHehe.setHasRead(AnnounHehe.HASREAD_FALSE);
-        announHehes.add(announHehe);
+            }
 
-        announHehe = new AnnounHehe();
-        announHehe.setTitle("本周六八点开始实行宵禁");
-        announHehe.setContent("尊敬的用户，您在8:24时提交的洗衣订单申请，已经被我公司接到，我们将在最快的时间内与您联系，工赶到您的家里，您在8:24时提交的洗衣订单申请，已经被我公司接到我司的");
-        announHehe.setDate("10月23日");
-        announHehe.setHasRead(AnnounHehe.HASREAD_FALSE);
-        announHehes.add(announHehe);
+            @Override
+            public void onNext(AnnouncementEntity announcementEntity) {
+                if (announcementEntity == null ||
+                        announcementEntity.getData() == null ||
+                        announcementEntity.getData().getNotices() == null)
+                    return;
 
-        announHehe = new AnnounHehe();
-        announHehe.setTitle("本周六八点开始实行宵禁");
-        announHehe.setContent("尊敬的用户，您在8:24时提交的洗衣订单申请，已经被我公司接到，我们将在最快的时间内与您联系，工赶到您的家里，您在8:24时提交的洗衣订单申请，已经被我公司接到我司的");
-        announHehe.setDate("10月23日");
-        announHehe.setHasRead(AnnounHehe.HASREAD_TURE);
-        announHehes.add(announHehe);
-
-        getView().getAnnounHehes(announHehes);
-
-        return announHehes;
+                getView().getAnnouncements(announcementEntity.getData().getNotices(), page);
+            }
+        }));
     }
 
     public List<ComplaintHehe> getComplaintHehes() {

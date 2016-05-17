@@ -5,6 +5,7 @@ import android.view.View;
 
 import com.steve.creact.annotation.DataBean;
 import com.steve.creact.library.viewholder.BaseRecyclerViewHolder;
+import com.techjumper.commonres.entity.AnnouncementEntity;
 import com.techjumper.commonres.entity.InfoEntity;
 import com.techjumper.commonres.entity.event.PropertyNormalDetailEvent;
 import com.techjumper.corelib.rx.tools.RxBus;
@@ -14,8 +15,8 @@ import com.techjumper.polyhome.b.property.hehe.AnnounHehe;
 /**
  * Created by kevin on 16/5/12.
  */
-@DataBean(beanName = "InfoAnnounHeheBean", data = AnnounHehe.class)
-public class AnnouncementViewHolder extends BaseRecyclerViewHolder<AnnounHehe> {
+@DataBean(beanName = "InfoAnnouncementEntityBean", data = AnnouncementEntity.AnnouncementDataEntity.class)
+public class AnnouncementViewHolder extends BaseRecyclerViewHolder<AnnouncementEntity.AnnouncementDataEntity> {
 
     public static final int LAYOUT_ID = R.layout.item_info;
 
@@ -24,21 +25,13 @@ public class AnnouncementViewHolder extends BaseRecyclerViewHolder<AnnounHehe> {
     }
 
     @Override
-    public void setData(AnnounHehe data) {
+    public void setData(AnnouncementEntity.AnnouncementDataEntity data) {
         if (data == null)
             return;
 
         String title = data.getTitle();
         String content = data.getContent();
-        String date = data.getDate();
-
-        int hasRead = data.getHasRead();
-
-        if (hasRead == AnnounHehe.HASREAD_TURE) {
-            setVisibility(R.id.info_isread, View.INVISIBLE);
-        } else if (hasRead == AnnounHehe.HASREAD_FALSE) {
-            setVisibility(R.id.info_isread, View.VISIBLE);
-        }
+        String date = data.getTime();
 
         setText(R.id.info_title, title);
         setText(R.id.info_content, content);

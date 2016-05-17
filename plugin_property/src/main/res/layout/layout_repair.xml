@@ -13,12 +13,26 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/property_complaint_theme"
+            android:text="@string/property_repair_type"
             android:textColor="@color/color_4Dffffff"
             android:textSize="@dimen/sp_16" />
 
         <com.aigestudio.wheelpicker.view.WheelCurvedPicker
-            android:id="@+id/lr_theme_wheelpicker"
+            android:id="@+id/lr_type_wheelpicker"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/dp_22"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/property_repair_device"
+            android:layout_marginLeft="@dimen/dp_45"
+            android:textColor="@color/color_4Dffffff"
+            android:textSize="@dimen/sp_16" />
+
+        <com.aigestudio.wheelpicker.view.WheelCurvedPicker
+            android:id="@+id/lr_device_wheelpicker"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="@dimen/dp_22"/>
@@ -33,7 +47,7 @@
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:paddingTop="@dimen/dp_10"
-            android:text="@string/property_complaint_content"
+            android:text="@string/property_repair_remark"
             android:textColor="@color/color_4Dffffff"
             android:textSize="@dimen/sp_16" />
 
