@@ -31,4 +31,13 @@ public class ActionFragmentModel extends BaseModel<ActionFragmentPresenter> {
                 .submitComplaint(argument)
                 .compose(CommonWrap.wrap());
     }
+
+    public Observable<TrueEntity> submitRepair(int family_id, int repair_type, int repair_device, String note) {
+        KeyValuePair complaintPair = KeyValueCreator.submitRepair("248", "ded9133b9df5817e5f0220e0118b8ec8d8dbd8ea", String.valueOf(family_id), String.valueOf(repair_type), String.valueOf(repair_device), note);
+        BaseArgumentsEntity argument = NetHelper.createBaseArguments(complaintPair);
+
+        return RetrofitHelper.<ServiceAPI>createDefault()
+                .submitRepair(argument)
+                .compose(CommonWrap.wrap());
+    }
 }

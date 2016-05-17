@@ -62,11 +62,36 @@ public class ActionFragment extends AppBaseFragment<ActionFragmentPresenter> {
     WheelCurvedPicker lrDeviceWheelpicker;
     @Bind(R.id.lc_content)
     EditText lcContent;
+    @Bind(R.id.lr_content)
+    EditText lrContent;
 
     private int lcType = LC_PRA;
 
+    private int lrType = LR_TYPE_COM;
+    private int lrDevice = LR_DEVICE_LOCK;
+
+    public int getLrType() {
+        return lrType;
+    }
+
+    public void setLrType(int lrType) {
+        this.lrType = lrType;
+    }
+
+    public int getLrDevice() {
+        return lrDevice;
+    }
+
+    public void setLrDevice(int lrDevice) {
+        this.lrDevice = lrDevice;
+    }
+
     public EditText getLcContent() {
         return lcContent;
+    }
+
+    public EditText getLrContent() {
+        return lrContent;
     }
 
     public void setLcType(int lcType) {
@@ -75,10 +100,6 @@ public class ActionFragment extends AppBaseFragment<ActionFragmentPresenter> {
 
     public int getLcType() {
         return lcType;
-    }
-
-    public WheelCurvedPicker getLcThemeWheelpicker() {
-        return lcThemeWheelpicker;
     }
 
     public static ActionFragment getInstance(int type) {
@@ -132,6 +153,54 @@ public class ActionFragment extends AppBaseFragment<ActionFragmentPresenter> {
                     setLcType(LC_COM);
                 } else {
                     setLcType(LC_SUG);
+                }
+            }
+
+            @Override
+            public void onWheelScrollStateChanged(int state) {
+
+            }
+        });
+
+        lrTypeWheelpicker.setOnWheelChangeListener(new AbstractWheelPicker.OnWheelChangeListener() {
+            @Override
+            public void onWheelScrolling(float deltaX, float deltaY) {
+
+            }
+
+            @Override
+            public void onWheelSelected(int index, String data) {
+                if (data.equals("公共报修")) {
+                    setLrType(LR_TYPE_COM);
+                } else {
+                    setLrType(LR_TYPE_PER);
+                }
+            }
+
+            @Override
+            public void onWheelScrollStateChanged(int state) {
+
+            }
+        });
+
+        lrDeviceWheelpicker.setOnWheelChangeListener(new AbstractWheelPicker.OnWheelChangeListener() {
+            @Override
+            public void onWheelScrolling(float deltaX, float deltaY) {
+
+            }
+
+            @Override
+            public void onWheelSelected(int index, String data) {
+                if (data.equals("锁类")) {
+                    setLrDevice(LR_DEVICE_LOCK);
+                } else if (data.equals("水电类")) {
+                    setLrDevice(LR_DEVICE_WATER);
+                } else if (data.equals("门窗类")) {
+                    setLrDevice(LR_DEVICE_DOOR);
+                } else if (data.equals("墙类")) {
+                    setLrDevice(LR_DEVICE_WALL);
+                } else {
+                    setLrDevice(LR_DEVICE_LIFT);
                 }
             }
 

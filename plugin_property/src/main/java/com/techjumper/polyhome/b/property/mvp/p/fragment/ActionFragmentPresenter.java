@@ -26,6 +26,15 @@ public class ActionFragmentPresenter extends AppBaseFragmentPresenter<ActionFrag
         submitComplaint(type, content);
     }
 
+    @OnClick(R.id.lr_submit)
+    void lrSubmit() {
+        int repair_type = getView().getLrType();
+        int repair_device = getView().getLrDevice();
+        String note = getView().getLrContent().getText().toString();
+
+        submitRepair(0, repair_type, repair_device, note);
+    }
+
     @Override
     public void initData(Bundle savedInstanceState) {
 
@@ -40,6 +49,35 @@ public class ActionFragmentPresenter extends AppBaseFragmentPresenter<ActionFrag
         getView().showLoading(false);
 
         addSubscription(model.submitComplaint(type, content)
+                .subscribe(new Subscriber<TrueEntity>() {
+                    @Override
+                    public void onCompleted() {
+                        getView().dismissLoading();
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        getView().showError(e);
+                        getView().dismissLoading();
+                    }
+
+                    @Override
+                    public void onNext(TrueEntity trueEntity) {
+                        if (trueEntity == null ||
+                                trueEntity.getData() == null)
+                            return;
+
+                        if (trueEntity.getData().getResult().equals("true")) {
+                            ToastUtils.show(getView().getResources().getString(R.string.property_submit_success));
+                        }
+                    }
+                }));
+    }
+
+    public void submitRepair(int family_id, int repair_type, int repair_device, String note) {
+        getView().showLoading(false);
+
+        addSubscription(model.submitRepair(family_id, repair_type, repair_device, note)
                 .subscribe(new Subscriber<TrueEntity>() {
                     @Override
                     public void onCompleted() {

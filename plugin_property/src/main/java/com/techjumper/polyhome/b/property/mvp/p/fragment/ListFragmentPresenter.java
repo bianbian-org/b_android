@@ -4,6 +4,7 @@ import android.os.Bundle;
 
 import com.techjumper.commonres.entity.AnnouncementEntity;
 import com.techjumper.commonres.entity.ComplaintEntity;
+import com.techjumper.commonres.entity.RepairEntity;
 import com.techjumper.commonres.entity.event.BackEvent;
 import com.techjumper.commonres.entity.event.PropertyActionEvent;
 import com.techjumper.commonres.entity.event.PropertyListEvent;
@@ -38,7 +39,7 @@ public class ListFragmentPresenter extends AppBaseFragmentPresenter<ListFragment
     @OnCheckedChanged(R.id.fl_title_repair)
     void checkRepair(boolean check) {
         if (check) {
-            getView().getRepairHehes(getRepairHehes());
+            getRepairs(1);
         }
     }
 
@@ -123,135 +124,33 @@ public class ListFragmentPresenter extends AppBaseFragmentPresenter<ListFragment
                                 complaintEntity.getData().getSuggestions() == null)
                             return;
 
-                        getView().getComplaints(complaintEntity.getData().getSuggestions());
+                        getView().getComplaints(complaintEntity.getData().getSuggestions(), page);
                     }
                 }));
     }
 
-    public List<ComplaintHehe> getComplaintHehes() {
-        List<ComplaintHehe> complaintHehes = model.getComplaintHehes();
-        ComplaintHehe complaintHehe = new ComplaintHehe();
-        complaintHehe.setTitle("个人保修-门窗: 请及时的所得税费");
-        complaintHehe.setDate("10月23日");
-        complaintHehe.setHasRead(ComplaintHehe.HASREAD_TURE);
-        complaintHehe.setType(ComplaintHehe.TYPE_SUBMIT);
-        complaintHehes.add(complaintHehe);
+    public void getRepairs(int page) {
+        addSubscription(model.getRepairs(page)
+                .subscribe(new Subscriber<RepairEntity>() {
+                    @Override
+                    public void onCompleted() {
 
-        complaintHehe = new ComplaintHehe();
-        complaintHehe.setTitle("个人保修-门窗: 请及时的所得税费");
-        complaintHehe.setDate("10月23日");
-        complaintHehe.setHasRead(ComplaintHehe.HASREAD_TURE);
-        complaintHehe.setType(ComplaintHehe.TYPE_SUBMIT);
-        complaintHehe.setContent("尊敬的用户，您在8:24时提交的洗衣订单申请，已经被我公司接到，我们将在最快的时间内与您联系，工赶到您的家里，您在8:24时提交的洗衣订单申请，已经被我公司接到我司的");
-        complaintHehes.add(complaintHehe);
+                    }
 
-        complaintHehe = new ComplaintHehe();
-        complaintHehe.setTitle("个人保修-门窗: 请及时的所得税费");
-        complaintHehe.setDate("10月23日");
-        complaintHehe.setHasRead(ComplaintHehe.HASREAD_TURE);
-        complaintHehe.setType(ComplaintHehe.TYPE_FINISH);
-        complaintHehe.setContent("尊敬的用户，您在8:24时提交的洗衣订单申请，已经被我公司接到，我们将在最快的时间内与您联系，工赶到您的家里，您在8:24时提交的洗衣订单申请，已经被我公司接到我司的");
-        complaintHehes.add(complaintHehe);
+                    @Override
+                    public void onError(Throwable e) {
 
-        complaintHehe = new ComplaintHehe();
-        complaintHehe.setTitle("个人保修-门窗: 请及时的所得税费");
-        complaintHehe.setDate("10月23日");
-        complaintHehe.setHasRead(ComplaintHehe.HASREAD_TURE);
-        complaintHehe.setType(ComplaintHehe.TYPE_RESPONSE);
-        complaintHehes.add(complaintHehe);
+                    }
 
-        complaintHehe = new ComplaintHehe();
-        complaintHehe.setTitle("个人保修-门窗: 请及时的所得税费");
-        complaintHehe.setDate("10月23日");
-        complaintHehe.setHasRead(ComplaintHehe.HASREAD_TURE);
-        complaintHehe.setType(ComplaintHehe.TYPE_RESPONSE);
-        complaintHehes.add(complaintHehe);
+                    @Override
+                    public void onNext(RepairEntity repairEntity) {
+                        if (repairEntity == null ||
+                                repairEntity.getData() == null ||
+                                repairEntity.getData().getRepairs() == null)
+                            return;
 
-        complaintHehe = new ComplaintHehe();
-        complaintHehe.setTitle("个人保修-门窗: 请及时的所得税费");
-        complaintHehe.setDate("10月23日");
-        complaintHehe.setHasRead(ComplaintHehe.HASREAD_TURE);
-        complaintHehe.setType(ComplaintHehe.TYPE_FINISH);
-        complaintHehe.setContent("尊敬的用户，您在8:24时提交的洗衣订单申请，已经被我公司接到，我们将在最快的时间内与您联系，工赶到您的家里，您在8:24时提交的洗衣订单申请，已经被我公司接到我司的");
-        complaintHehes.add(complaintHehe);
-
-        complaintHehe = new ComplaintHehe();
-        complaintHehe.setTitle("个人保修-门窗: 请及时的所得税费");
-        complaintHehe.setDate("10月23日");
-        complaintHehe.setHasRead(ComplaintHehe.HASREAD_TURE);
-        complaintHehe.setType(ComplaintHehe.TYPE_RESPONSE);
-        complaintHehes.add(complaintHehe);
-
-        complaintHehe = new ComplaintHehe();
-        complaintHehe.setTitle("个人保修-门窗: 请及时的所得税费");
-        complaintHehe.setDate("10月23日");
-        complaintHehe.setHasRead(ComplaintHehe.HASREAD_TURE);
-        complaintHehe.setType(ComplaintHehe.TYPE_SUBMIT);
-        complaintHehes.add(complaintHehe);
-
-        return complaintHehes;
-    }
-
-    public List<RepairHehe> getRepairHehes() {
-        List<RepairHehe> complaintHehes = model.getRepairHehes();
-        RepairHehe complaintHehe = new RepairHehe();
-        complaintHehe.setTitle("个人保修-门窗: 请及时的所得税费");
-        complaintHehe.setDate("10月23日");
-        complaintHehe.setHasRead(ComplaintHehe.HASREAD_TURE);
-        complaintHehe.setType(ComplaintHehe.TYPE_FINISH);
-        complaintHehes.add(complaintHehe);
-
-        complaintHehe = new RepairHehe();
-        complaintHehe.setTitle("个人保修-门窗: 请及时的所得税费");
-        complaintHehe.setDate("10月23日");
-        complaintHehe.setHasRead(ComplaintHehe.HASREAD_TURE);
-        complaintHehe.setType(ComplaintHehe.TYPE_SUBMIT);
-        complaintHehe.setContent("尊敬的用户，您在8:24时提交的洗衣订单申请，已经被我公司接到，我们将在最快的时间内与您联系，工赶到您的家里，您在8:24时提交的洗衣订单申请，已经被我公司接到我司的");
-        complaintHehes.add(complaintHehe);
-
-        complaintHehe = new RepairHehe();
-        complaintHehe.setTitle("个人保修-门窗: 请及时的所得税费");
-        complaintHehe.setDate("10月23日");
-        complaintHehe.setHasRead(ComplaintHehe.HASREAD_TURE);
-        complaintHehe.setType(ComplaintHehe.TYPE_FINISH);
-        complaintHehes.add(complaintHehe);
-
-        complaintHehe = new RepairHehe();
-        complaintHehe.setTitle("个人保修-门窗: 请及时的所得税费");
-        complaintHehe.setDate("10月23日");
-        complaintHehe.setHasRead(ComplaintHehe.HASREAD_TURE);
-        complaintHehe.setType(ComplaintHehe.TYPE_SUBMIT);
-        complaintHehes.add(complaintHehe);
-
-        complaintHehe = new RepairHehe();
-        complaintHehe.setTitle("个人保修-门窗: 请及时的所得税费");
-        complaintHehe.setDate("10月23日");
-        complaintHehe.setHasRead(ComplaintHehe.HASREAD_TURE);
-        complaintHehe.setType(ComplaintHehe.TYPE_RESPONSE);
-        complaintHehes.add(complaintHehe);
-
-        complaintHehe = new RepairHehe();
-        complaintHehe.setTitle("个人保修-门窗: 请及时的所得税费");
-        complaintHehe.setDate("10月23日");
-        complaintHehe.setHasRead(ComplaintHehe.HASREAD_TURE);
-        complaintHehe.setType(ComplaintHehe.TYPE_FINISH);
-        complaintHehe.setContent("尊敬的用户，您在8:24时提交的洗衣订单申请，已经被我公司接到，我们将在最快的时间内与您联系，工赶到您的家里，您在8:24时提交的洗衣订单申请，已经被我公司接到我司的");
-        complaintHehes.add(complaintHehe);
-
-        complaintHehe = new RepairHehe();
-        complaintHehe.setTitle("个人保修-门窗: 请及时的所得税费");
-        complaintHehe.setDate("10月23日");
-        complaintHehe.setHasRead(ComplaintHehe.HASREAD_TURE);
-        complaintHehe.setType(ComplaintHehe.TYPE_RESPONSE);
-        complaintHehes.add(complaintHehe);
-
-        complaintHehe = new RepairHehe();
-        complaintHehe.setTitle("个人保修-门窗: 请及时的所得税费");
-        complaintHehe.setDate("10月23日");
-        complaintHehe.setHasRead(ComplaintHehe.HASREAD_TURE);
-        complaintHehe.setType(ComplaintHehe.TYPE_SUBMIT);
-        complaintHehes.add(complaintHehe);
-
-        return complaintHehes;
+                        getView().getRepairs(repairEntity.getData().getRepairs(), page);
+                    }
+                }));
     }
 }
