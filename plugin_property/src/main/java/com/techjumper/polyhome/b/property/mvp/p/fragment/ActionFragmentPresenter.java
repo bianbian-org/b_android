@@ -31,8 +31,8 @@ public class ActionFragmentPresenter extends AppBaseFragmentPresenter<ActionFrag
         int repair_type = getView().getLrType();
         int repair_device = getView().getLrDevice();
         String note = getView().getLrContent().getText().toString();
-
-        submitRepair(0, repair_type, repair_device, note);
+        // TODO: 16/5/18 有待商榷 
+        submitRepair(1, repair_type, repair_device, note);
     }
 
     @Override

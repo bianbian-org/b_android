@@ -11,12 +11,8 @@ import com.techjumper.commonres.entity.event.PropertyListEvent;
 import com.techjumper.commonres.entity.event.PropertyNormalDetailEvent;
 import com.techjumper.corelib.rx.tools.RxBus;
 import com.techjumper.polyhome.b.property.R;
-import com.techjumper.polyhome.b.property.hehe.ComplaintHehe;
-import com.techjumper.polyhome.b.property.hehe.RepairHehe;
 import com.techjumper.polyhome.b.property.mvp.m.ListFragmentModel;
 import com.techjumper.polyhome.b.property.mvp.v.fragment.ListFragment;
-
-import java.util.List;
 
 import butterknife.OnCheckedChanged;
 import butterknife.OnClick;

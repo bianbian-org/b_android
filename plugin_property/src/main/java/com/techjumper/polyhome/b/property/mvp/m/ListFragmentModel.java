@@ -6,16 +6,10 @@ import com.techjumper.commonres.entity.RepairEntity;
 import com.techjumper.corelib.mvp.model.BaseModel;
 import com.techjumper.corelib.rx.tools.CommonWrap;
 import com.techjumper.lib2.utils.RetrofitHelper;
-import com.techjumper.polyhome.b.property.hehe.AnnounHehe;
-import com.techjumper.polyhome.b.property.hehe.ComplaintHehe;
-import com.techjumper.polyhome.b.property.hehe.RepairHehe;
 import com.techjumper.polyhome.b.property.mvp.p.fragment.ListFragmentPresenter;
 import com.techjumper.polyhome.b.property.net.KeyValueCreator;
 import com.techjumper.polyhome.b.property.net.NetHelper;
 import com.techjumper.polyhome.b.property.net.ServiceAPI;
-
-import java.util.ArrayList;
-import java.util.List;
 
 import rx.Observable;
 
@@ -26,18 +20,6 @@ public class ListFragmentModel extends BaseModel<ListFragmentPresenter> {
 
     public ListFragmentModel(ListFragmentPresenter presenter) {
         super(presenter);
-    }
-
-    public List<AnnounHehe> getAnnounHehes() {
-        return new ArrayList<AnnounHehe>();
-    }
-
-    public List<ComplaintHehe> getComplaintHehes() {
-        return new ArrayList<ComplaintHehe>();
-    }
-
-    public List<RepairHehe> getRepairHehes() {
-        return new ArrayList<RepairHehe>();
     }
 
     public Observable<AnnouncementEntity> getAnnouncements(int page) {

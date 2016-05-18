@@ -6,11 +6,8 @@ import android.widget.TextView;
 
 import com.steve.creact.annotation.DataBean;
 import com.steve.creact.library.viewholder.BaseRecyclerViewHolder;
-import com.techjumper.commonres.entity.InfoEntity;
 import com.techjumper.commonres.entity.RepairEntity;
 import com.techjumper.polyhome.b.property.R;
-import com.techjumper.polyhome.b.property.hehe.ComplaintHehe;
-import com.techjumper.polyhome.b.property.hehe.RepairHehe;
 
 /**
  * Created by kevin on 16/5/12.
@@ -48,22 +45,22 @@ public class RepairViewHolder extends BaseRecyclerViewHolder<RepairEntity.Repair
         TextView typeTextView = getView(R.id.info_type);
         typeTextView.setVisibility(View.VISIBLE);
 
-        if (status == ComplaintHehe.TYPE_RESPONSE) {
+        if (status == RepairEntity.STATUS_RESPONSE) {
             typeTextView.setBackgroundResource(R.drawable.bg_shape_radius_20c3f3);
             typeTextView.setTextColor(getContext().getResources().getColor(R.color.color_20C3F3));
             typeTextView.setText(R.string.property_type_response);
-        } else if (status == ComplaintHehe.TYPE_SUBMIT) {
+        } else if (status == RepairEntity.STATUS_SUBMIT) {
             typeTextView.setBackgroundResource(R.drawable.bg_shape_radius_ff9938);
             typeTextView.setTextColor(getContext().getResources().getColor(R.color.color_FF9938));
             typeTextView.setText(R.string.property_type_submit);
-        } else if (status == ComplaintHehe.TYPE_FINISH) {
+        } else if (status == RepairEntity.STATUS_FINISH) {
             typeTextView.setBackgroundResource(R.drawable.bg_shape_radius_4eb738);
             typeTextView.setTextColor(getContext().getResources().getColor(R.color.color_4EB738));
             typeTextView.setText(R.string.property_type_finish);
         } else {
             typeTextView.setBackgroundResource(R.drawable.bg_shape_radius_4eb738);
             typeTextView.setTextColor(getContext().getResources().getColor(R.color.color_4EB738));
-            typeTextView.setText(R.string.property_type_nothing);
+            typeTextView.setText(R.string.property_type_close);
         }
     }
 }

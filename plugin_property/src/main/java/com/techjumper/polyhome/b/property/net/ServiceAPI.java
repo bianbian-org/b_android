@@ -34,4 +34,7 @@ public interface ServiceAPI {
 
     @GET("repairs")
     Observable<RepairEntity> getRepair(@QueryMap Map<String, String> map);
+
+//    @GET("suggestions/show")
+//    Observable<>
 }

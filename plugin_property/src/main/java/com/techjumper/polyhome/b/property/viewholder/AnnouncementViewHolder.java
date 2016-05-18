@@ -6,11 +6,9 @@ import android.view.View;
 import com.steve.creact.annotation.DataBean;
 import com.steve.creact.library.viewholder.BaseRecyclerViewHolder;
 import com.techjumper.commonres.entity.AnnouncementEntity;
-import com.techjumper.commonres.entity.InfoEntity;
 import com.techjumper.commonres.entity.event.PropertyNormalDetailEvent;
 import com.techjumper.corelib.rx.tools.RxBus;
 import com.techjumper.polyhome.b.property.R;
-import com.techjumper.polyhome.b.property.hehe.AnnounHehe;
 
 /**
  * Created by kevin on 16/5/12.

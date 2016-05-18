@@ -19,7 +19,7 @@
     <string name="property_type_submit">已提交</string>
     <string name="property_type_finish">已完成</string>
     <string name="property_type_response">已回复</string>
-    <string name="property_type_nothing">未处理</string>
+    <string name="property_type_close">已关闭</string>
 
     <string name="property_complaint_theme">主题</string>
     <string name="property_complaint_content">内容</string>
