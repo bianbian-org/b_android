@@ -15,14 +15,18 @@ import android.widget.TextView;
 import com.steve.creact.library.adapter.CommonRecyclerAdapter;
 import com.steve.creact.library.display.DisplayBean;
 import com.techjumper.commonres.entity.AnnouncementEntity;
+import com.techjumper.commonres.entity.ComplaintDetailEntity;
 import com.techjumper.commonres.entity.ComplaintEntity;
 import com.techjumper.commonres.entity.RepairEntity;
+import com.techjumper.commonres.entity.event.PropertyMessageDetailEvent;
 import com.techjumper.commonres.entity.event.PropertyNormalDetailEvent;
 import com.techjumper.corelib.mvp.factory.Presenter;
+import com.techjumper.polyhome.b.property.Constant;
 import com.techjumper.polyhome.b.property.R;
 import com.techjumper.polyhome.b.property.mvp.p.fragment.ListFragmentPresenter;
 import com.techjumper.polyhome.b.property.mvp.v.activity.MainActivity;
 import com.techjumper.polyhome.b.property.utils.AdapterUtil;
+import com.techjumper.polyhome.b.property.utils.TypeUtil;
 import com.techjumper.polyhome.b.property.viewholder.databean.InfoAnnouncementEntityBean;
 import com.techjumper.polyhome.b.property.viewholder.databean.InfoComplaintEntityBean;
 import com.techjumper.polyhome.b.property.viewholder.databean.InfoRepairEntityBean;
@@ -179,14 +183,37 @@ public class ListFragment extends AppBaseFragment<ListFragmentPresenter> {
         lndContent.setText(event.getContent());
     }
 
-    public void showLmdLayout() {
-//        if (event == null)
-//            return;
+    public void showLmdLayout(ComplaintDetailEntity.ComplaintDetailDataEntity entity) {
+        if (entity == null)
+            return;
 
         lndLayout.setVisibility(View.GONE);
         lmdLayout.setVisibility(View.VISIBLE);
         flList.setVisibility(View.GONE);
 
+        lmdTitle.setText(TypeUtil.getComplanitTypeString(entity.getTypes()));
+        lmdContent.setText(entity.getContent());
+        lmdDate.setText("10月1日");
+
+        int status = entity.getStatus();
+
+        if (status == Constant.STATUS_RESPONSE) {
+            lmdType.setBackgroundResource(R.drawable.bg_shape_radius_20c3f3);
+            lmdType.setTextColor(getContext().getResources().getColor(R.color.color_20C3F3));
+            lmdType.setText(R.string.property_type_response);
+        } else if (status == Constant.STATUS_SUBMIT) {
+            lmdType.setBackgroundResource(R.drawable.bg_shape_radius_ff9938);
+            lmdType.setTextColor(getContext().getResources().getColor(R.color.color_FF9938));
+            lmdType.setText(R.string.property_type_submit);
+        } else if (status == Constant.STATUS_FINISH) {
+            lmdType.setBackgroundResource(R.drawable.bg_shape_radius_4eb738);
+            lmdType.setTextColor(getContext().getResources().getColor(R.color.color_4EB738));
+            lmdType.setText(R.string.property_type_finish);
+        } else {
+            lmdType.setBackgroundResource(R.drawable.bg_shape_radius_4eb738);
+            lmdType.setTextColor(getContext().getResources().getColor(R.color.color_4EB738));
+            lmdType.setText(R.string.property_type_close);
+        }
     }
 
     public void showListLayout() {

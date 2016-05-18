@@ -7,11 +7,6 @@ import java.util.List;
  */
 public class RepairEntity extends BaseEntity<RepairEntity.RepairListEntity>{
 
-    public static final int STATUS_SUBMIT = 0;
-    public static final int STATUS_RESPONSE = 1;
-    public static final int STATUS_FINISH = 2;
-    public static final int STATUS_CLOSE = 3;
-
     public static class RepairListEntity {
         List<RepairDataEntity> repairs;
 

@@ -3,11 +3,13 @@ package com.techjumper.polyhome.b.property.mvp.p.fragment;
 import android.os.Bundle;
 
 import com.techjumper.commonres.entity.AnnouncementEntity;
+import com.techjumper.commonres.entity.ComplaintDetailEntity;
 import com.techjumper.commonres.entity.ComplaintEntity;
 import com.techjumper.commonres.entity.RepairEntity;
 import com.techjumper.commonres.entity.event.BackEvent;
 import com.techjumper.commonres.entity.event.PropertyActionEvent;
 import com.techjumper.commonres.entity.event.PropertyListEvent;
+import com.techjumper.commonres.entity.event.PropertyMessageDetailEvent;
 import com.techjumper.commonres.entity.event.PropertyNormalDetailEvent;
 import com.techjumper.corelib.rx.tools.RxBus;
 import com.techjumper.polyhome.b.property.R;
@@ -72,6 +74,9 @@ public class ListFragmentPresenter extends AppBaseFragmentPresenter<ListFragment
                         RxBus.INSTANCE.send(new BackEvent(BackEvent.PROPERTY_LIST));
                     } else if (o instanceof PropertyListEvent) {
                         getView().showListLayout();
+                    } else if (o instanceof PropertyMessageDetailEvent) {
+                        PropertyMessageDetailEvent event = (PropertyMessageDetailEvent) o;
+                        getComplaintDetail(event.getId());
                     }
                 }));
     }
@@ -146,6 +151,30 @@ public class ListFragmentPresenter extends AppBaseFragmentPresenter<ListFragment
                             return;
 
                         getView().getRepairs(repairEntity.getData().getRepairs(), page);
+                    }
+                }));
+    }
+
+    public void getComplaintDetail(long id) {
+        addSubscription(model.getComplaintDetail(id)
+                .subscribe(new Subscriber<ComplaintDetailEntity>() {
+                    @Override
+                    public void onCompleted() {
+
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+
+                    }
+
+                    @Override
+                    public void onNext(ComplaintDetailEntity complaintDetailEntity) {
+                        if (complaintDetailEntity == null ||
+                                complaintDetailEntity.getData() == null)
+                            return;
+
+                        getView().showLmdLayout(complaintDetailEntity.getData());
                     }
                 }));
     }

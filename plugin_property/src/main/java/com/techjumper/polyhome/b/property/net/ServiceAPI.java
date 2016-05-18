@@ -2,6 +2,7 @@ package com.techjumper.polyhome.b.property.net;
 
 import com.techjumper.commonres.entity.AnnouncementEntity;
 import com.techjumper.commonres.entity.BaseArgumentsEntity;
+import com.techjumper.commonres.entity.ComplaintDetailEntity;
 import com.techjumper.commonres.entity.ComplaintEntity;
 import com.techjumper.commonres.entity.InfoEntity;
 import com.techjumper.commonres.entity.RepairEntity;
@@ -35,6 +36,9 @@ public interface ServiceAPI {
     @GET("repairs")
     Observable<RepairEntity> getRepair(@QueryMap Map<String, String> map);
 
-//    @GET("suggestions/show")
-//    Observable<>
+    @GET("suggestions/show")
+    Observable<ComplaintDetailEntity> getComplaintDetail(@QueryMap Map<String, String> map);
+
+    @POST("suggestions/reply")
+    Observable<TrueEntity> replyComplaint(@Body BaseArgumentsEntity entity);
 }

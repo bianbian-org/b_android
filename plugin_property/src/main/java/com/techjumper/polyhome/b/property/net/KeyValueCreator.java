@@ -66,4 +66,19 @@ public class KeyValueCreator {
                 .put("repair_device", repair_device)
                 .put("note", note);
     }
+
+    public static KeyValuePair getComplaintDetail(String user_id, String ticket, String id) {
+        return newPair()
+                .put("user_id", user_id)
+                .put("ticket", ticket)
+                .put("id", id);
+    }
+
+    public static KeyValuePair replyComplaint(String user_id, String ticket, String content, String suggestion_id) {
+        return newPair()
+                .put("user_id", user_id)
+                .put("ticket", ticket)
+                .put("content", content)
+                .put("suggestion_id", suggestion_id);
+    }
 }

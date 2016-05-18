@@ -7,11 +7,6 @@ import java.util.List;
  */
 public class ComplaintEntity extends BaseEntity<ComplaintEntity.ComplaintListEntity> {
 
-    public static final int STATUS_SUBMIT = 0;
-    public static final int STATUS_RESPONSE = 1;
-    public static final int STATUS_FINISH = 2;
-    public static final int STATUS_CLOSE = 3;
-
     public static class ComplaintListEntity {
         private List<ComplaintDataEntity> suggestions;
 

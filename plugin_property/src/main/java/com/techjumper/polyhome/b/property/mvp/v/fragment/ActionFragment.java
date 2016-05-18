@@ -16,6 +16,7 @@ import com.techjumper.commonres.entity.event.BackEvent;
 import com.techjumper.corelib.mvp.factory.Presenter;
 import com.techjumper.corelib.rx.tools.RxBus;
 import com.techjumper.corelib.utils.common.RuleUtils;
+import com.techjumper.polyhome.b.property.Constant;
 import com.techjumper.polyhome.b.property.R;
 import com.techjumper.polyhome.b.property.mvp.p.fragment.ActionFragmentPresenter;
 
@@ -35,19 +36,6 @@ public class ActionFragment extends AppBaseFragment<ActionFragmentPresenter> {
     public static final int COMPLAINT = 1;
     public static final String TYPE = "type";
 
-    public static final int LC_COM = 1; //投诉
-    public static final int LC_SUG = 2; //建议
-    public static final int LC_PRA = 3; //表扬
-
-    public static final int LR_TYPE_PER = 1; //个人报修
-    public static final int LR_TYPE_COM = 2; //公共报修
-
-    public static final int LR_DEVICE_DOOR = 1; //门窗类
-    public static final int LR_DEVICE_WATER = 2; //水电类
-    public static final int LR_DEVICE_LOCK = 3; //锁类
-    public static final int LR_DEVICE_LIFT = 4; //电梯类
-    public static final int LR_DEVICE_WALL = 5; //墙类
-
     @Bind(R.id.fa_title)
     TextView faTitle;
     @Bind(R.id.lc_theme_wheelpicker)
@@ -65,10 +53,10 @@ public class ActionFragment extends AppBaseFragment<ActionFragmentPresenter> {
     @Bind(R.id.lr_content)
     EditText lrContent;
 
-    private int lcType = LC_PRA;
+    private int lcType = Constant.LC_PRA;
 
-    private int lrType = LR_TYPE_COM;
-    private int lrDevice = LR_DEVICE_LOCK;
+    private int lrType = Constant.LR_TYPE_COM;
+    private int lrDevice = Constant.LR_DEVICE_LOCK;
 
     public int getLrType() {
         return lrType;
@@ -148,11 +136,11 @@ public class ActionFragment extends AppBaseFragment<ActionFragmentPresenter> {
             @Override
             public void onWheelSelected(int index, String data) {
                 if (data.equals("表扬")) {
-                    setLcType(LC_PRA);
+                    setLcType(Constant.LC_PRA);
                 } else if (data.equals("投诉")) {
-                    setLcType(LC_COM);
+                    setLcType(Constant.LC_COM);
                 } else {
-                    setLcType(LC_SUG);
+                    setLcType(Constant.LC_SUG);
                 }
             }
 
@@ -171,9 +159,9 @@ public class ActionFragment extends AppBaseFragment<ActionFragmentPresenter> {
             @Override
             public void onWheelSelected(int index, String data) {
                 if (data.equals("公共报修")) {
-                    setLrType(LR_TYPE_COM);
+                    setLrType(Constant.LR_TYPE_COM);
                 } else {
-                    setLrType(LR_TYPE_PER);
+                    setLrType(Constant.LR_TYPE_PER);
                 }
             }
 
@@ -192,15 +180,15 @@ public class ActionFragment extends AppBaseFragment<ActionFragmentPresenter> {
             @Override
             public void onWheelSelected(int index, String data) {
                 if (data.equals("锁类")) {
-                    setLrDevice(LR_DEVICE_LOCK);
+                    setLrDevice(Constant.LR_DEVICE_LOCK);
                 } else if (data.equals("水电类")) {
-                    setLrDevice(LR_DEVICE_WATER);
+                    setLrDevice(Constant.LR_DEVICE_WATER);
                 } else if (data.equals("门窗类")) {
-                    setLrDevice(LR_DEVICE_DOOR);
+                    setLrDevice(Constant.LR_DEVICE_DOOR);
                 } else if (data.equals("墙类")) {
-                    setLrDevice(LR_DEVICE_WALL);
+                    setLrDevice(Constant.LR_DEVICE_WALL);
                 } else {
-                    setLrDevice(LR_DEVICE_LIFT);
+                    setLrDevice(Constant.LR_DEVICE_LIFT);
                 }
             }
 
