@@ -7,6 +7,8 @@
     <string name="property_submit_success">提交成功</string>
     <string name="property_send">发送</string>
     <string name="property_send_success">发送成功</string>
+    <string name="property_send_notnull">回复内容不能为空</string>
+    <string name="property_me">我</string>
 
     <string name="property">物业</string>
     <string name="property_announcement">物业公告</string>

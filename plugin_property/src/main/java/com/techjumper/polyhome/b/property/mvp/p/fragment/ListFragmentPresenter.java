@@ -1,17 +1,20 @@
 package com.techjumper.polyhome.b.property.mvp.p.fragment;
 
 import android.os.Bundle;
+import android.text.TextUtils;
 
 import com.techjumper.commonres.entity.AnnouncementEntity;
 import com.techjumper.commonres.entity.ComplaintDetailEntity;
 import com.techjumper.commonres.entity.ComplaintEntity;
 import com.techjumper.commonres.entity.RepairEntity;
+import com.techjumper.commonres.entity.TrueEntity;
 import com.techjumper.commonres.entity.event.BackEvent;
 import com.techjumper.commonres.entity.event.PropertyActionEvent;
 import com.techjumper.commonres.entity.event.PropertyListEvent;
 import com.techjumper.commonres.entity.event.PropertyMessageDetailEvent;
 import com.techjumper.commonres.entity.event.PropertyNormalDetailEvent;
 import com.techjumper.corelib.rx.tools.RxBus;
+import com.techjumper.corelib.utils.window.ToastUtils;
 import com.techjumper.polyhome.b.property.R;
 import com.techjumper.polyhome.b.property.mvp.m.ListFragmentModel;
 import com.techjumper.polyhome.b.property.mvp.v.fragment.ListFragment;
@@ -54,6 +57,21 @@ public class ListFragmentPresenter extends AppBaseFragmentPresenter<ListFragment
         PropertyActionEvent propertyActionEvent = new PropertyActionEvent(true);
         propertyActionEvent.setType(type);
         RxBus.INSTANCE.send(propertyActionEvent);
+    }
+
+    @OnClick(R.id.lmd_message_send)
+    void message_send() {
+        String message = getView().getLmdMessageContent().getText().toString();
+
+        if (TextUtils.isEmpty(message.trim())) {
+            ToastUtils.show(getView().getContext().getString(R.string.property_send_success));
+            return;
+        }
+
+        long id = getView().getSendId();
+
+        sendMessage(id, message);
+
     }
 
     @Override
@@ -175,6 +193,34 @@ public class ListFragmentPresenter extends AppBaseFragmentPresenter<ListFragment
                             return;
 
                         getView().showLmdLayout(complaintDetailEntity.getData());
+                    }
+                }));
+    }
+
+    public void sendMessage(long id, String content) {
+        addSubscription(model.replyComplaint(id, content)
+                .subscribe(new Subscriber<TrueEntity>() {
+                    @Override
+                    public void onCompleted() {
+
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        ToastUtils.show("");
+                        getView().showError(e);
+                    }
+
+                    @Override
+                    public void onNext(TrueEntity trueEntity) {
+                        if (trueEntity == null ||
+                                trueEntity.getData() == null ||
+                                TextUtils.isEmpty(trueEntity.getData().getResult()))
+                            return;
+
+                        if (trueEntity.getData().getResult().equals("true")) {
+                            ToastUtils.show(getView().getContext().getString(R.string.property_send_success));
+                        }
                     }
                 }));
     }
