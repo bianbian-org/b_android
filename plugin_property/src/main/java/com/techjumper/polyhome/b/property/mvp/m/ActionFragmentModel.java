@@ -24,7 +24,7 @@ public class ActionFragmentModel extends BaseModel<ActionFragmentPresenter> {
     }
 
     public Observable<TrueEntity> submitComplaint(int type, String content) {
-        KeyValuePair complaintPair = KeyValueCreator.submitComplaint("248", "ded9133b9df5817e5f0220e0118b8ec8d8dbd8ea", String.valueOf(type), content);
+        KeyValuePair complaintPair = KeyValueCreator.submitComplaint("248", "f9b3965276f088715608f9c8661c005acc07b3f1", String.valueOf(type), content);
         BaseArgumentsEntity argument = NetHelper.createBaseArguments(complaintPair);
 
         return RetrofitHelper.<ServiceAPI>createDefault()
@@ -33,7 +33,7 @@ public class ActionFragmentModel extends BaseModel<ActionFragmentPresenter> {
     }
 
     public Observable<TrueEntity> submitRepair(int family_id, int repair_type, int repair_device, String note) {
-        KeyValuePair complaintPair = KeyValueCreator.submitRepair("248", "ded9133b9df5817e5f0220e0118b8ec8d8dbd8ea", String.valueOf(family_id), String.valueOf(repair_type), String.valueOf(repair_device), note);
+        KeyValuePair complaintPair = KeyValueCreator.submitRepair("248", "f9b3965276f088715608f9c8661c005acc07b3f1", String.valueOf(family_id), String.valueOf(repair_type), String.valueOf(repair_device), note);
         BaseArgumentsEntity argument = NetHelper.createBaseArguments(complaintPair);
 
         return RetrofitHelper.<ServiceAPI>createDefault()

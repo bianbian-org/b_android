@@ -5,6 +5,7 @@ import com.techjumper.commonres.entity.BaseArgumentsEntity;
 import com.techjumper.commonres.entity.ComplaintDetailEntity;
 import com.techjumper.commonres.entity.ComplaintEntity;
 import com.techjumper.commonres.entity.InfoEntity;
+import com.techjumper.commonres.entity.RepairDetailEntity;
 import com.techjumper.commonres.entity.RepairEntity;
 import com.techjumper.commonres.entity.TrueEntity;
 
@@ -41,4 +42,11 @@ public interface ServiceAPI {
 
     @POST("suggestions/reply")
     Observable<TrueEntity> replyComplaint(@Body BaseArgumentsEntity entity);
+
+    @GET("repairs/show")
+    Observable<RepairDetailEntity> getRepairDetail(@QueryMap Map<String, String> map);
+
+    @POST("repairs/reply")
+    Observable<TrueEntity> replyRepair(@Body BaseArgumentsEntity entity);
+
 }

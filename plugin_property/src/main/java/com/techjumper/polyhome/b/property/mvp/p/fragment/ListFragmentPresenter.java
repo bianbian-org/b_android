@@ -2,10 +2,12 @@ package com.techjumper.polyhome.b.property.mvp.p.fragment;
 
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.util.Log;
 
 import com.techjumper.commonres.entity.AnnouncementEntity;
 import com.techjumper.commonres.entity.ComplaintDetailEntity;
 import com.techjumper.commonres.entity.ComplaintEntity;
+import com.techjumper.commonres.entity.RepairDetailEntity;
 import com.techjumper.commonres.entity.RepairEntity;
 import com.techjumper.commonres.entity.TrueEntity;
 import com.techjumper.commonres.entity.event.BackEvent;
@@ -69,8 +71,9 @@ public class ListFragmentPresenter extends AppBaseFragmentPresenter<ListFragment
         }
 
         long id = getView().getSendId();
+        int type = getView().getActionType();
 
-        sendMessage(id, message);
+        sendMessage(id, message, type);
 
     }
 
@@ -94,7 +97,7 @@ public class ListFragmentPresenter extends AppBaseFragmentPresenter<ListFragment
                         getView().showListLayout();
                     } else if (o instanceof PropertyMessageDetailEvent) {
                         PropertyMessageDetailEvent event = (PropertyMessageDetailEvent) o;
-                        getComplaintDetail(event.getId());
+                        getMessageDetail(event.getId(), event.getType());
                     }
                 }));
     }
@@ -173,32 +176,58 @@ public class ListFragmentPresenter extends AppBaseFragmentPresenter<ListFragment
                 }));
     }
 
-    public void getComplaintDetail(long id) {
-        addSubscription(model.getComplaintDetail(id)
-                .subscribe(new Subscriber<ComplaintDetailEntity>() {
-                    @Override
-                    public void onCompleted() {
+    public void getMessageDetail(long id, int type) {
+        if (type == PropertyMessageDetailEvent.COMPLAINT) {
+            addSubscription(model.getComplaintDetail(id)
+                    .subscribe(new Subscriber<ComplaintDetailEntity>() {
+                        @Override
+                        public void onCompleted() {
 
-                    }
+                        }
 
-                    @Override
-                    public void onError(Throwable e) {
-                        getView().showError(e);
-                    }
+                        @Override
+                        public void onError(Throwable e) {
+                            getView().showError(e);
+                        }
 
-                    @Override
-                    public void onNext(ComplaintDetailEntity complaintDetailEntity) {
-                        if (complaintDetailEntity == null ||
-                                complaintDetailEntity.getData() == null)
-                            return;
+                        @Override
+                        public void onNext(ComplaintDetailEntity complaintDetailEntity) {
+                            if (complaintDetailEntity == null ||
+                                    complaintDetailEntity.getData() == null)
+                                return;
 
-                        getView().showLmdLayout(complaintDetailEntity.getData());
-                    }
-                }));
+                            getView().showComplaintDetailLmdLayout(complaintDetailEntity.getData());
+                        }
+                    }));
+        } else {
+            addSubscription(model.getRepairDetail(id)
+                    .subscribe(new Subscriber<RepairDetailEntity>() {
+                        @Override
+                        public void onCompleted() {
+
+                        }
+
+                        @Override
+                        public void onError(Throwable e) {
+                            Log.d("jj", "");
+                            getView().showError(e);
+                        }
+
+                        @Override
+                        public void onNext(RepairDetailEntity repairDetailEntity) {
+                            if (repairDetailEntity == null ||
+                                    repairDetailEntity.getData() == null)
+                                return;
+
+                            getView().showRepairDetailLmdLayout(repairDetailEntity.getData());
+                        }
+                    }));
+
+        }
     }
 
-    public void sendMessage(long id, String content) {
-        addSubscription(model.replyComplaint(id, content)
+    public void sendMessage(long id, String content, int type) {
+        addSubscription(model.replyMessage(id, content, type)
                 .subscribe(new Subscriber<TrueEntity>() {
                     @Override
                     public void onCompleted() {

@@ -20,4 +20,29 @@ public class TypeUtil {
         }
         return typeString;
     }
+
+    public static String getRepairTitle(int type, int device) {
+        String typeString = "";
+        String deviceString = "";
+
+        if (type == Constant.LR_TYPE_COM) {
+            typeString = "公共报修";
+        } else {
+            typeString = "个人报修";
+        }
+
+        if (device == Constant.LR_DEVICE_LOCK) {
+            deviceString = "锁类";
+        } else if (device == Constant.LR_DEVICE_WATER) {
+            deviceString = "水电类";
+        } else if (device == Constant.LR_DEVICE_DOOR) {
+            deviceString = "门窗类";
+        } else if (device == Constant.LR_DEVICE_WALL) {
+            deviceString = "墙类";
+        } else {
+            deviceString = "电梯类";
+        }
+
+        return typeString + "-" + deviceString;
+    }
 }

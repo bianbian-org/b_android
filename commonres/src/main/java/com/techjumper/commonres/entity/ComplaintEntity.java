@@ -26,6 +26,7 @@ public class ComplaintEntity extends BaseEntity<ComplaintEntity.ComplaintListEnt
         private String user_name;
         private int status;
         private int types;
+        private String created_at;
 
         public long getId() {
             return id;
@@ -73,6 +74,14 @@ public class ComplaintEntity extends BaseEntity<ComplaintEntity.ComplaintListEnt
 
         public void setTypes(int types) {
             this.types = types;
+        }
+
+        public String getCreated_at() {
+            return created_at;
+        }
+
+        public void setCreated_at(String created_at) {
+            this.created_at = created_at;
         }
     }
 }

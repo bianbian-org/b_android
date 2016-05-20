@@ -18,6 +18,7 @@ import com.steve.creact.library.display.DisplayBean;
 import com.techjumper.commonres.entity.AnnouncementEntity;
 import com.techjumper.commonres.entity.ComplaintDetailEntity;
 import com.techjumper.commonres.entity.ComplaintEntity;
+import com.techjumper.commonres.entity.RepairDetailEntity;
 import com.techjumper.commonres.entity.RepairEntity;
 import com.techjumper.commonres.entity.ReplyEntity;
 import com.techjumper.commonres.entity.event.PropertyNormalDetailEvent;
@@ -79,8 +80,8 @@ public class ListFragment extends AppBaseFragment<ListFragmentPresenter> {
     private CommonRecyclerAdapter messageAdapter;
 
     private int type;
-
     private long sendId;
+    private int actionType;
 
     public static ListFragment getInstance() {
         return new ListFragment();
@@ -100,6 +101,14 @@ public class ListFragment extends AppBaseFragment<ListFragmentPresenter> {
 
     public void setSendId(long sendId) {
         this.sendId = sendId;
+    }
+
+    public int getActionType() {
+        return actionType;
+    }
+
+    public void setActionType(int actionType) {
+        this.actionType = actionType;
     }
 
     public EditText getLmdMessageContent() {
@@ -210,9 +219,11 @@ public class ListFragment extends AppBaseFragment<ListFragmentPresenter> {
         lndContent.setText(event.getContent());
     }
 
-    public void showLmdLayout(ComplaintDetailEntity.ComplaintDetailDataEntity entity) {
+    public void showComplaintDetailLmdLayout(ComplaintDetailEntity.ComplaintDetailDataEntity entity) {
         if (entity == null)
             return;
+
+        lmdMessageContent.setText("");
 
         long id = entity.getId();
 
@@ -222,8 +233,9 @@ public class ListFragment extends AppBaseFragment<ListFragmentPresenter> {
 
         lmdTitle.setText(TypeUtil.getComplanitTypeString(entity.getTypes()));
         lmdContent.setText(entity.getContent());
-        lmdDate.setText("10月1日");
+        lmdDate.setText(entity.getCreated_at().substring(0, 10));
         setSendId(id);
+        setActionType(ActionFragment.COMPLAINT);
 
         int status = entity.getStatus();
 
@@ -245,11 +257,70 @@ public class ListFragment extends AppBaseFragment<ListFragmentPresenter> {
             lmdType.setText(R.string.property_type_close);
         }
 
+        AdapterUtil.clear(messageAdapter);
+
         List<ReplyEntity> entities = entity.getReplies();
         if (entities.size() == 0)
             return;
 
+        List<DisplayBean> displayBeans = new ArrayList<>();
+
+        for (int i = 0; i < entities.size(); i++) {
+            if (entities.get(i).getUser_id() == id) {
+                displayBeans.add(new InfoReplyRightEntityBean(entities.get(i)));
+            } else {
+                displayBeans.add(new InfoReplyLeftEntityBean(entities.get(i)));
+            }
+        }
+
+        messageAdapter.loadData(displayBeans);
+        lmdList.setAdapter(messageAdapter);
+        lmdList.scrollToPosition(0);
+        lmdList.setNestedScrollingEnabled(false);
+    }
+
+    public void showRepairDetailLmdLayout(RepairDetailEntity.RepairDetailDataEntity entity) {
+        if (entity == null)
+            return;
+
+        lmdMessageContent.setText("");
+        long id = entity.getId();
+
+        lndLayout.setVisibility(View.GONE);
+        lmdLayout.setVisibility(View.VISIBLE);
+        flList.setVisibility(View.GONE);
+
+        lmdTitle.setText(TypeUtil.getRepairTitle(entity.getRepair_type(), entity.getRepair_device()));
+        lmdContent.setText(entity.getNote());
+        lmdDate.setText("10月1日");
+        setSendId(id);
+        setActionType(ActionFragment.REPAIR);
+
+        int status = entity.getStatus();
+
+        if (status == Constant.STATUS_RESPONSE) {
+            lmdType.setBackgroundResource(R.drawable.bg_shape_radius_20c3f3);
+            lmdType.setTextColor(getContext().getResources().getColor(R.color.color_20C3F3));
+            lmdType.setText(R.string.property_type_response);
+        } else if (status == Constant.STATUS_SUBMIT) {
+            lmdType.setBackgroundResource(R.drawable.bg_shape_radius_ff9938);
+            lmdType.setTextColor(getContext().getResources().getColor(R.color.color_FF9938));
+            lmdType.setText(R.string.property_type_submit);
+        } else if (status == Constant.STATUS_FINISH) {
+            lmdType.setBackgroundResource(R.drawable.bg_shape_radius_4eb738);
+            lmdType.setTextColor(getContext().getResources().getColor(R.color.color_4EB738));
+            lmdType.setText(R.string.property_type_finish);
+        } else {
+            lmdType.setBackgroundResource(R.drawable.bg_shape_radius_4eb738);
+            lmdType.setTextColor(getContext().getResources().getColor(R.color.color_4EB738));
+            lmdType.setText(R.string.property_type_close);
+        }
+
         AdapterUtil.clear(messageAdapter);
+
+        List<ReplyEntity> entities = entity.getReplies();
+        if (entities.size() == 0)
+            return;
 
         List<DisplayBean> displayBeans = new ArrayList<>();
 

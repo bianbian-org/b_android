@@ -42,9 +42,8 @@ public class ComplaintViewHolder extends BaseRecyclerViewHolder<ComplaintEntity.
             setText(R.id.info_content, content);
         }
 
-        // TODO: 16/5/18 日期 
-        setText(R.id.info_date, "10月1日");
-        
+        setText(R.id.info_date, data.getCreated_at().substring(0, 10));
+
         int status = data.getStatus();
 
         TextView typeTextView = getView(R.id.info_type);
@@ -69,7 +68,7 @@ public class ComplaintViewHolder extends BaseRecyclerViewHolder<ComplaintEntity.
         }
 
         setOnItemClickListener(v -> {
-            RxBus.INSTANCE.send(new PropertyMessageDetailEvent(id));
+            RxBus.INSTANCE.send(new PropertyMessageDetailEvent(id, PropertyMessageDetailEvent.COMPLAINT));
         });
     }
 }

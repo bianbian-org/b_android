@@ -14,6 +14,7 @@ public class ComplaintDetailEntity extends BaseEntity<ComplaintDetailEntity.Comp
         private int status;
         private int types;
         private long user_id;
+        private String created_at;
 
         List<ReplyEntity> replies;
 
@@ -71,6 +72,14 @@ public class ComplaintDetailEntity extends BaseEntity<ComplaintDetailEntity.Comp
 
         public void setReplies(List<ReplyEntity> replies) {
             this.replies = replies;
+        }
+
+        public String getCreated_at() {
+            return created_at;
+        }
+
+        public void setCreated_at(String created_at) {
+            this.created_at = created_at;
         }
     }
 }

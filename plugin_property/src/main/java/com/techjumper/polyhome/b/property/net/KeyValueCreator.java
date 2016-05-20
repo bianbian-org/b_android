@@ -81,4 +81,19 @@ public class KeyValueCreator {
                 .put("content", content)
                 .put("suggestion_id", suggestion_id);
     }
+
+    public static KeyValuePair getRepairDetail(String user_id, String ticket, String repair_id) {
+        return newPair()
+                .put("user_id", user_id)
+                .put("ticket", ticket)
+                .put("repair_id", repair_id);
+    }
+
+    public static KeyValuePair replyRepair(String user_id, String ticket, String content, String repair_id) {
+        return newPair()
+                .put("user_id", user_id)
+                .put("ticket", ticket)
+                .put("content", content)
+                .put("repair_id", repair_id);
+    }
 }

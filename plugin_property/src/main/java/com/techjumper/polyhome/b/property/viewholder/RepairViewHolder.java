@@ -7,8 +7,11 @@ import android.widget.TextView;
 import com.steve.creact.annotation.DataBean;
 import com.steve.creact.library.viewholder.BaseRecyclerViewHolder;
 import com.techjumper.commonres.entity.RepairEntity;
+import com.techjumper.commonres.entity.event.PropertyMessageDetailEvent;
+import com.techjumper.corelib.rx.tools.RxBus;
 import com.techjumper.polyhome.b.property.Constant;
 import com.techjumper.polyhome.b.property.R;
+import com.techjumper.polyhome.b.property.utils.TypeUtil;
 
 /**
  * Created by kevin on 16/5/12.
@@ -26,7 +29,8 @@ public class RepairViewHolder extends BaseRecyclerViewHolder<RepairEntity.Repair
     public void setData(RepairEntity.RepairDataEntity data) {
         if (data == null)
             return;
-        String title = "标题";
+        long id = data.getId();
+        String title = TypeUtil.getRepairTitle(data.getRepair_type(), data.getRepair_device());
         String content = data.getNote();
         String date = data.getRepair_date();
 
@@ -63,5 +67,9 @@ public class RepairViewHolder extends BaseRecyclerViewHolder<RepairEntity.Repair
             typeTextView.setTextColor(getContext().getResources().getColor(R.color.color_4EB738));
             typeTextView.setText(R.string.property_type_close);
         }
+
+        setOnItemClickListener(v -> {
+            RxBus.INSTANCE.send(new PropertyMessageDetailEvent(id, PropertyMessageDetailEvent.REPAIR));
+        });
     }
 }
