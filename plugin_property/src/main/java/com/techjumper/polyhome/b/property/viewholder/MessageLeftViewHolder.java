@@ -7,6 +7,7 @@ import com.steve.creact.library.viewholder.BaseRecyclerViewHolder;
 import com.techjumper.commonres.entity.AnnouncementEntity;
 import com.techjumper.commonres.entity.ReplyEntity;
 import com.techjumper.polyhome.b.property.R;
+import com.techjumper.polyhome.b.property.utils.StringUtil;
 
 /**
  * Created by kevin on 16/5/19.
@@ -30,6 +31,6 @@ public class MessageLeftViewHolder extends BaseRecyclerViewHolder<ReplyEntity> {
 
         setText(R.id.name, getContext().getString(R.string.property));
         setText(R.id.message, message);
-        setText(R.id.date, time);
+        setText(R.id.date, StringUtil.formatMessageDate(time));
     }
 }

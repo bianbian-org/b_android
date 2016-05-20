@@ -64,7 +64,7 @@ public class ListFragmentPresenter extends AppBaseFragmentPresenter<ListFragment
         String message = getView().getLmdMessageContent().getText().toString();
 
         if (TextUtils.isEmpty(message.trim())) {
-            ToastUtils.show(getView().getContext().getString(R.string.property_send_success));
+            ToastUtils.show(getView().getContext().getString(R.string.property_send_notnull));
             return;
         }
 
@@ -108,7 +108,7 @@ public class ListFragmentPresenter extends AppBaseFragmentPresenter<ListFragment
 
             @Override
             public void onError(Throwable e) {
-
+                getView().showError(e);
             }
 
             @Override
@@ -133,7 +133,7 @@ public class ListFragmentPresenter extends AppBaseFragmentPresenter<ListFragment
 
                     @Override
                     public void onError(Throwable e) {
-
+                        getView().showError(e);
                     }
 
                     @Override
@@ -158,7 +158,7 @@ public class ListFragmentPresenter extends AppBaseFragmentPresenter<ListFragment
 
                     @Override
                     public void onError(Throwable e) {
-
+                        getView().showError(e);
                     }
 
                     @Override
@@ -183,7 +183,7 @@ public class ListFragmentPresenter extends AppBaseFragmentPresenter<ListFragment
 
                     @Override
                     public void onError(Throwable e) {
-
+                        getView().showError(e);
                     }
 
                     @Override
@@ -207,7 +207,6 @@ public class ListFragmentPresenter extends AppBaseFragmentPresenter<ListFragment
 
                     @Override
                     public void onError(Throwable e) {
-                        ToastUtils.show("");
                         getView().showError(e);
                     }
 
@@ -220,6 +219,7 @@ public class ListFragmentPresenter extends AppBaseFragmentPresenter<ListFragment
 
                         if (trueEntity.getData().getResult().equals("true")) {
                             ToastUtils.show(getView().getContext().getString(R.string.property_send_success));
+                            getView().sendSuccess();
                         }
                     }
                 }));

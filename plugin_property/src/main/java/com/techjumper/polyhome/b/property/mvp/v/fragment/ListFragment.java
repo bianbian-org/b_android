@@ -76,6 +76,8 @@ public class ListFragment extends AppBaseFragment<ListFragmentPresenter> {
     EditText lmdMessageContent;
 
     private CommonRecyclerAdapter adapter;
+    private CommonRecyclerAdapter messageAdapter;
+
     private int type;
 
     private long sendId;
@@ -112,6 +114,7 @@ public class ListFragment extends AppBaseFragment<ListFragmentPresenter> {
     @Override
     protected void initView(Bundle savedInstanceState) {
         adapter = new CommonRecyclerAdapter();
+        messageAdapter = new CommonRecyclerAdapter();
 
         flList.setLayoutManager(new LinearLayoutManager(getContext()));
         lmdList.setLayoutManager(new LinearLayoutManager(getContext()));
@@ -246,7 +249,7 @@ public class ListFragment extends AppBaseFragment<ListFragmentPresenter> {
         if (entities.size() == 0)
             return;
 
-        AdapterUtil.clear(adapter);
+        AdapterUtil.clear(messageAdapter);
 
         List<DisplayBean> displayBeans = new ArrayList<>();
 
@@ -258,9 +261,21 @@ public class ListFragment extends AppBaseFragment<ListFragmentPresenter> {
             }
         }
 
-        adapter.loadData(displayBeans);
-        lmdList.setAdapter(adapter);
+        messageAdapter.loadData(displayBeans);
+        lmdList.setAdapter(messageAdapter);
         lmdList.scrollToPosition(0);
+        lmdList.setNestedScrollingEnabled(false);
+    }
+
+    public void sendSuccess() {
+        ReplyEntity entity = new ReplyEntity();
+        entity.setContent(lmdMessageContent.getText().toString());
+        entity.setTime("10:10");
+        InfoReplyRightEntityBean bean = new InfoReplyRightEntityBean(entity);
+
+        messageAdapter.insertData(0, bean);
+
+        lmdMessageContent.setText("");
     }
 
     public void showListLayout() {
