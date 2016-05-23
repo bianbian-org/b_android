@@ -5,6 +5,7 @@ import android.view.View;
 import android.widget.TextView;
 
 import com.techjumper.commonres.entity.event.LoginEvent;
+import com.techjumper.commonres.util.CommonDateUtil;
 import com.techjumper.corelib.mvp.factory.Presenter;
 import com.techjumper.corelib.rx.tools.RxBus;
 import com.techjumper.polyhome.b.setting.R;
@@ -34,6 +35,9 @@ public class SettingActivity extends AppBaseActivity<SettingActivityPresenter> {
 
     @Override
     protected void initView(Bundle savedInstanceState) {
+
+        date.setText(CommonDateUtil.getTitleDate());
+
         addSubscription(RxBus.INSTANCE.asObservable()
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(o -> {

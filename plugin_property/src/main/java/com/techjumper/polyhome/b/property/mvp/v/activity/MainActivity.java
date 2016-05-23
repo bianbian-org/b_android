@@ -8,6 +8,7 @@ import android.widget.TextView;
 
 import com.techjumper.commonres.entity.event.LoginEvent;
 import com.techjumper.commonres.entity.event.PropertyActionEvent;
+import com.techjumper.commonres.util.CommonDateUtil;
 import com.techjumper.corelib.mvp.factory.Presenter;
 import com.techjumper.corelib.rx.tools.RxBus;
 import com.techjumper.polyhome.b.property.R;
@@ -39,7 +40,7 @@ public class MainActivity extends AppBaseActivity<MainActivityPresenter> {
 
     @Override
     protected void initView(Bundle savedInstanceState) {
-        titleDate.setText("3月18日  周五  22:45");
+        titleDate.setText(CommonDateUtil.getTitleDate());
 
         switchFragment(R.id.container, ListFragment.getInstance(), false, false);
 

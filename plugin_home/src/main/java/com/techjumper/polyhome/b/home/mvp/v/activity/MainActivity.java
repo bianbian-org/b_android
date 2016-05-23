@@ -7,6 +7,7 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.techjumper.commonres.util.CommonDateUtil;
 import com.techjumper.corelib.mvp.factory.Presenter;
 import com.techjumper.polyhome.b.home.R;
 import com.techjumper.polyhome.b.home.adapter.MyViewPagerAdapter;
@@ -19,6 +20,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.Bind;
+import butterknife.ButterKnife;
 
 @Presenter(MainActivityPresenter.class)
 public class MainActivity extends AppBaseActivity {
@@ -33,6 +35,8 @@ public class MainActivity extends AppBaseActivity {
     ImageView dotHome;
     @Bind(R.id.dot_point)
     ImageView dotPoint;
+    @Bind(R.id.date)
+    TextView date;
 
     private MyViewPagerAdapter myViewPagerAdapter;
     private List<Fragment> fragments = new ArrayList<Fragment>();
@@ -44,6 +48,9 @@ public class MainActivity extends AppBaseActivity {
 
     @Override
     protected void initView(Bundle savedInstanceState) {
+
+        date.setText(CommonDateUtil.getTitleDate());
+
         InfoFragment infoFragment = InfoFragment.getInstance();
         PloyhomeFragment ployhomeFragment = PloyhomeFragment.getInstance();
 
