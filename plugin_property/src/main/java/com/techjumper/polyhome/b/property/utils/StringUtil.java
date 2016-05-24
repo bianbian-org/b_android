@@ -12,6 +12,10 @@ public class StringUtil {
             return "";
 
         int position = date.indexOf(" ");
+
+        if (position == -1)
+            return date;
+
         String messageDate = date.substring(position, date.length());
         return TextUtils.isEmpty(messageDate) ? "" : messageDate;
     }

@@ -3,6 +3,7 @@ package com.techjumper.polyhome.b.property.mvp.v.fragment;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.widget.NestedScrollView;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -75,6 +76,8 @@ public class ListFragment extends AppBaseFragment<ListFragmentPresenter> {
     LinearLayout lmdLayout;
     @Bind(R.id.lmd_message_content)
     EditText lmdMessageContent;
+    @Bind(R.id.scrollView)
+    NestedScrollView scrollView;
 
     private CommonRecyclerAdapter adapter;
     private CommonRecyclerAdapter messageAdapter;
@@ -226,6 +229,8 @@ public class ListFragment extends AppBaseFragment<ListFragmentPresenter> {
         lmdMessageContent.setText("");
 
         long id = entity.getId();
+        //// TODO: 16/5/24 需要userId;
+        long user_id = 248;
 
         lndLayout.setVisibility(View.GONE);
         lmdLayout.setVisibility(View.VISIBLE);
@@ -266,7 +271,7 @@ public class ListFragment extends AppBaseFragment<ListFragmentPresenter> {
         List<DisplayBean> displayBeans = new ArrayList<>();
 
         for (int i = 0; i < entities.size(); i++) {
-            if (entities.get(i).getUser_id() == id) {
+            if (entities.get(i).getUser_id() == user_id) {
                 displayBeans.add(new InfoReplyRightEntityBean(entities.get(i)));
             } else {
                 displayBeans.add(new InfoReplyLeftEntityBean(entities.get(i)));
@@ -275,7 +280,7 @@ public class ListFragment extends AppBaseFragment<ListFragmentPresenter> {
 
         messageAdapter.loadData(displayBeans);
         lmdList.setAdapter(messageAdapter);
-        lmdList.scrollToPosition(0);
+        scrollView.scrollTo(0, 0);
         lmdList.setNestedScrollingEnabled(false);
     }
 
@@ -284,7 +289,10 @@ public class ListFragment extends AppBaseFragment<ListFragmentPresenter> {
             return;
 
         lmdMessageContent.setText("");
+
         long id = entity.getId();
+        //// TODO: 16/5/24 需要userId;
+        long user_id = 248;
 
         lndLayout.setVisibility(View.GONE);
         lmdLayout.setVisibility(View.VISIBLE);
@@ -325,7 +333,7 @@ public class ListFragment extends AppBaseFragment<ListFragmentPresenter> {
         List<DisplayBean> displayBeans = new ArrayList<>();
 
         for (int i = 0; i < entities.size(); i++) {
-            if (entities.get(i).getUser_id() == id) {
+            if (entities.get(i).getUser_id() == user_id) {
                 displayBeans.add(new InfoReplyRightEntityBean(entities.get(i)));
             } else {
                 displayBeans.add(new InfoReplyLeftEntityBean(entities.get(i)));
@@ -334,7 +342,7 @@ public class ListFragment extends AppBaseFragment<ListFragmentPresenter> {
 
         messageAdapter.loadData(displayBeans);
         lmdList.setAdapter(messageAdapter);
-        lmdList.scrollToPosition(0);
+        scrollView.scrollTo(0, 0);
         lmdList.setNestedScrollingEnabled(false);
     }
 
