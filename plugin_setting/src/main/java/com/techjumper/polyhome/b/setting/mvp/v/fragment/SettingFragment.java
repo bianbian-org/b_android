@@ -2,6 +2,7 @@ package com.techjumper.polyhome.b.setting.mvp.v.fragment;
 
 import android.os.Bundle;
 import android.text.Editable;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -81,14 +82,15 @@ public class SettingFragment extends AppBaseFragment<SettingFragmentPresenter> {
             }
         });
 
-        suiNicknameInput.setText(UserManager.INSTANCE.getUserNickName());
-        suiBirthdayInput.setText(UserManager.INSTANCE.getUserInfo(UserManager.KEY_BIRTHDAY));
         if (UserManager.INSTANCE.getSexId() == LoginEntity.MALE) {
             suiMale.setChecked(true);
         } else {
             suiFemale.setChecked(true);
         }
-        suiEmailInput.setText(UserManager.INSTANCE.getUserInfo(UserManager.KEY_EMAIL));
+
+        setTextAndSelection(suiNicknameInput, UserManager.INSTANCE.getUserNickName());
+        setTextAndSelection(suiBirthdayInput, UserManager.INSTANCE.getUserInfo(UserManager.KEY_BIRTHDAY));
+        setTextAndSelection(suiEmailInput, UserManager.INSTANCE.getUserInfo(UserManager.KEY_EMAIL));
     }
 
     public EditText getSuiBirthdayInput() {
@@ -136,5 +138,13 @@ public class SettingFragment extends AppBaseFragment<SettingFragmentPresenter> {
     public void onDestroyView() {
         super.onDestroyView();
         ButterKnife.unbind(this);
+    }
+
+    private void setTextAndSelection(EditText editText, String content) {
+        if (editText == null || TextUtils.isEmpty(content))
+            return;
+
+        editText.setText(content);
+        editText.setSelection(content.length());
     }
 }

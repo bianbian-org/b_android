@@ -28,6 +28,7 @@
             android:paddingLeft="@dimen/dp_16"
             android:paddingRight="@dimen/dp_16"
             android:singleLine="true"
+            android:textCursorDrawable="@null"
             android:textColor="@color/color_ffffff" />
     </LinearLayout>
 
@@ -93,6 +94,7 @@
             android:paddingLeft="@dimen/dp_16"
             android:paddingRight="@dimen/dp_16"
             android:singleLine="true"
+            android:textCursorDrawable="@null"
             android:cursorVisible="false"
             android:editable="false"
             android:textColor="@color/color_ffffff" />
@@ -122,6 +124,7 @@
             android:paddingLeft="@dimen/dp_16"
             android:paddingRight="@dimen/dp_16"
             android:singleLine="true"
+            android:textCursorDrawable="@null"
             android:textColor="@color/color_ffffff" />
 
     </LinearLayout>

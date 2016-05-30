@@ -13,9 +13,9 @@ public class CommonDateUtil {
         calendar.setTimeZone(TimeZone.getTimeZone("GMT+8:00"));
         String month = String.valueOf(calendar.get(Calendar.MONTH) + 1);
         String day = String.valueOf(calendar.get(Calendar.DAY_OF_MONTH));
-        String week;
         String hour = String.valueOf(calendar.get(Calendar.HOUR_OF_DAY));
         String minute = String.valueOf(calendar.get(Calendar.MINUTE));
+        String week;
 
         switch (calendar.get(Calendar.DAY_OF_WEEK)) {
             default:
@@ -42,6 +42,13 @@ public class CommonDateUtil {
                 break;
         }
 
-        return month + "月" + day + "日" + "   周" + week + "  " + hour + ":" + minute;
+        return month + "月" + day + "日" + "   周" + week + "  " + formatHourMinute(hour) + ":" + formatHourMinute(minute);
+    }
+
+    private static String formatHourMinute(String content) {
+        if (content.length() == 1)
+            return "0".concat(content);
+
+        return content;
     }
 }
