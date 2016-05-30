@@ -54,8 +54,8 @@ public class MainActivity extends AppBaseActivity {
         InfoFragment infoFragment = InfoFragment.getInstance();
         PloyhomeFragment ployhomeFragment = PloyhomeFragment.getInstance();
 
-        fragments.add(infoFragment);
         fragments.add(ployhomeFragment);
+        fragments.add(infoFragment);
 
         myViewPagerAdapter = new MyViewPagerAdapter(getSupportFragmentManager(), fragments);
         viewpager.setAdapter(myViewPagerAdapter);
@@ -64,6 +64,14 @@ public class MainActivity extends AppBaseActivity {
 
         dotHome.setEnabled(true);
         dotPoint.setEnabled(false);
+
+        // TODO: 16/5/30  test
+        titleImg.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
 
         viewpager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override

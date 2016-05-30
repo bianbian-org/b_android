@@ -34,7 +34,19 @@ public class StringUtil {
         return strings;
     }
 
+    /**
+     * 判断长度
+     * @param string
+     * @param indexId
+     * @param position
+     * @return
+     */
     private static String subString(String string, int indexId, int position) {
-        return TextUtils.isEmpty(string) ? "" : string.substring(position, indexId);
+        if (TextUtils.isEmpty(string))
+            return "";
+
+        String result = string.substring(position, indexId);
+
+        return result.length() > 2 ? result.substring(0, 2) : result;
     }
 }
