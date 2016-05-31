@@ -1,8 +1,12 @@
 package com.techjumper.polyhome.b.setting.mvp.p.fragment;
 
+import android.app.AlertDialog;
 import android.app.DatePickerDialog;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.view.View;
+import android.view.Window;
+import android.view.WindowManager;
 import android.widget.EditText;
 
 import com.jakewharton.rxbinding.widget.RxTextView;
@@ -16,6 +20,7 @@ import com.techjumper.polyhome.b.setting.mvp.m.SettingFragmentModel;
 import com.techjumper.polyhome.b.setting.mvp.v.fragment.SettingFragment;
 import com.techjumper.polyhome.b.setting.utils.DateUtil;
 import com.techjumper.polyhome.b.setting.utils.StringUtil;
+import com.techjumper.polyhome.b.setting.widget.SettingDatePickerDialog;
 
 import java.util.Calendar;
 import java.util.concurrent.TimeUnit;
@@ -80,10 +85,10 @@ public class SettingFragmentPresenter extends AppBaseFragmentPresenter<SettingFr
     }
 
     @OnCheckedChanged(R.id.sui_female)
-    void checkFemalle(boolean isFemale){
-        if (isFemale){
+    void checkFemalle(boolean isFemale) {
+        if (isFemale) {
             sex = LoginEntity.FRMALE;
-        }else {
+        } else {
             sex = LoginEntity.MALE;
         }
     }
@@ -123,9 +128,10 @@ public class SettingFragmentPresenter extends AppBaseFragmentPresenter<SettingFr
     }
 
     public void pickDate() {
+
         Calendar calendar = Calendar.getInstance();
 
-        new DatePickerDialog(getView().getContext(), (view, year, monthOfYear, dayOfMonth) -> {
+        new SettingDatePickerDialog(getView().getActivity(), (view, year, monthOfYear, dayOfMonth) -> {
             getView().getSuiBirthdayInput().setText(DateUtil.getDateLink(year, monthOfYear + 1, dayOfMonth, "-"));
         }, calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH),
                 calendar.get(Calendar.DAY_OF_MONTH)).show();
@@ -215,14 +221,14 @@ public class SettingFragmentPresenter extends AppBaseFragmentPresenter<SettingFr
         String email = getView().getSuiEmailInput().getText().toString();
         String sexString = String.valueOf(sex);
 
-        if (!StringUtil.isEmail(email)){
+        if (!StringUtil.isEmail(email)) {
             ToastUtils.show(getView().getString(R.string.setting_user_info_email_no));
             return;
         }
 
         getView().showLoading(false);
 
-        addSubscription(settingFragmentModel.updateUserInfo(nickname,sexString,birthday,email).subscribe(new Subscriber<LoginEntity>() {
+        addSubscription(settingFragmentModel.updateUserInfo(nickname, sexString, birthday, email).subscribe(new Subscriber<LoginEntity>() {
             @Override
             public void onCompleted() {
                 getView().dismissLoading();
