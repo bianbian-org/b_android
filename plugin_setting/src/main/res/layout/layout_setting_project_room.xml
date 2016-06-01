@@ -204,31 +204,24 @@
                 android:textColor="@color/color_B3ffffff"
                 android:textSize="@dimen/sp_16" />
 
-            <EditText
+            <com.techjumper.polyhome.b.setting.widget.IPEditTextView
                 android:id="@+id/spr_service_input"
                 android:layout_width="@dimen/dp_260"
                 android:layout_height="@dimen/dp_40"
-                android:layout_centerHorizontal="true"
-                android:layout_marginLeft="@dimen/dp_20"
-                android:background="@color/color_99020405"
-                android:paddingLeft="@dimen/dp_16"
-                android:paddingRight="@dimen/dp_16"
-                android:singleLine="true"
-                android:textColor="@color/color_ffffff"
-                android:textCursorDrawable="@null"
-                android:textSize="@dimen/sp_16" />
+                android:layout_marginLeft="@dimen/dp_20" />
+
         </LinearLayout>
 
         <TextView
             android:id="@+id/spr_save"
             android:layout_width="@dimen/dp_109"
             android:layout_height="@dimen/dp_40"
+            android:layout_marginLeft="@dimen/dp_71"
             android:layout_marginTop="@dimen/dp_30"
             android:background="@color/color_14ce63"
             android:gravity="center"
             android:text="@string/setting_save"
             android:textColor="@color/color_ffffff"
-            android:layout_marginLeft="@dimen/dp_71"
             android:textSize="@dimen/sp_16" />
     </LinearLayout>
 </LinearLayout>

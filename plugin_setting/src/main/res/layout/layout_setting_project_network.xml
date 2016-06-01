@@ -33,19 +33,11 @@
                     android:textColor="@color/color_B3ffffff"
                     android:textSize="@dimen/sp_16" />
 
-                <EditText
+                <com.techjumper.polyhome.b.setting.widget.IPEditTextView
                     android:id="@+id/spn_ip_input"
                     android:layout_width="@dimen/dp_260"
                     android:layout_height="@dimen/dp_40"
-                    android:layout_centerHorizontal="true"
-                    android:layout_marginLeft="@dimen/dp_20"
-                    android:background="@color/color_99020405"
-                    android:paddingLeft="@dimen/dp_16"
-                    android:paddingRight="@dimen/dp_16"
-                    android:singleLine="true"
-                    android:textColor="@color/color_ffffff"
-                    android:textCursorDrawable="@null"
-                    android:textSize="@dimen/sp_16" />
+                    android:layout_marginLeft="@dimen/dp_20" />
             </LinearLayout>
 
             <LinearLayout
@@ -64,19 +56,12 @@
                     android:textColor="@color/color_B3ffffff"
                     android:textSize="@dimen/sp_16" />
 
-                <EditText
+                <com.techjumper.polyhome.b.setting.widget.IPEditTextView
                     android:id="@+id/spn_mask_input"
                     android:layout_width="@dimen/dp_260"
                     android:layout_height="@dimen/dp_40"
-                    android:layout_centerHorizontal="true"
-                    android:layout_marginLeft="@dimen/dp_20"
-                    android:background="@color/color_99020405"
-                    android:paddingLeft="@dimen/dp_16"
-                    android:paddingRight="@dimen/dp_16"
-                    android:singleLine="true"
-                    android:textColor="@color/color_ffffff"
-                    android:textCursorDrawable="@null"
-                    android:textSize="@dimen/sp_16" />
+                    android:layout_marginLeft="@dimen/dp_20" />
+
             </LinearLayout>
 
             <LinearLayout
@@ -93,19 +78,12 @@
                     android:textColor="@color/color_B3ffffff"
                     android:textSize="@dimen/sp_16" />
 
-                <EditText
+                <com.techjumper.polyhome.b.setting.widget.IPEditTextView
                     android:id="@+id/spn_gateway_input"
                     android:layout_width="@dimen/dp_260"
                     android:layout_height="@dimen/dp_40"
-                    android:layout_centerHorizontal="true"
-                    android:layout_marginLeft="@dimen/dp_20"
-                    android:background="@color/color_99020405"
-                    android:paddingLeft="@dimen/dp_16"
-                    android:paddingRight="@dimen/dp_16"
-                    android:singleLine="true"
-                    android:textColor="@color/color_ffffff"
-                    android:textCursorDrawable="@null"
-                    android:textSize="@dimen/sp_16" />
+                    android:layout_marginLeft="@dimen/dp_20" />
+
             </LinearLayout>
 
         </LinearLayout>
@@ -130,19 +108,12 @@
                     android:textColor="@color/color_B3ffffff"
                     android:textSize="@dimen/sp_16" />
 
-                <EditText
+                <com.techjumper.polyhome.b.setting.widget.IPEditTextView
                     android:id="@+id/spn_dns_input"
                     android:layout_width="@dimen/dp_260"
                     android:layout_height="@dimen/dp_40"
-                    android:layout_centerHorizontal="true"
-                    android:layout_marginLeft="@dimen/dp_20"
-                    android:background="@color/color_99020405"
-                    android:paddingLeft="@dimen/dp_16"
-                    android:paddingRight="@dimen/dp_16"
-                    android:singleLine="true"
-                    android:textColor="@color/color_ffffff"
-                    android:textCursorDrawable="@null"
-                    android:textSize="@dimen/sp_16" />
+                    android:layout_marginLeft="@dimen/dp_20" />
+
             </LinearLayout>
 
 
@@ -165,9 +136,9 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="@dimen/dp_20"
-                    android:checked="false"
                     android:background="@drawable/selector_enable"
-                    android:button="@null" />
+                    android:button="@null"
+                    android:checked="false" />
 
                 <TextView
                     android:id="@+id/spn_enable_tx"
