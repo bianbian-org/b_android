@@ -7,6 +7,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
+import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
@@ -52,6 +53,22 @@ public class SettingFragment extends AppBaseFragment<SettingFragmentPresenter> {
     RadioButton suiMale;
     @Bind(R.id.sui_female)
     RadioButton suiFemale;
+    @Bind(R.id.spm_title_rg)
+    RadioGroup spmTitleRg;
+    @Bind(R.id.spr_layout)
+    LinearLayout sprLayout;
+    @Bind(R.id.sps_layout)
+    LinearLayout spsLayout;
+    @Bind(R.id.spn_layout)
+    LinearLayout spnLayout;
+    @Bind(R.id.spp_layout)
+    LinearLayout sppLayout;
+    @Bind(R.id.sp_layout)
+    FrameLayout spLayout;
+    @Bind(R.id.spl_layout)
+    LinearLayout splLayout;
+    @Bind(R.id.spm_layout)
+    LinearLayout spmLayout;
 
     public static SettingFragment getInstance() {
         return new SettingFragment();
@@ -67,8 +84,10 @@ public class SettingFragment extends AppBaseFragment<SettingFragmentPresenter> {
         titleRg.setOnCheckedChangeListener((group, checkedId) -> {
             if (checkedId == R.id.title_user) {
                 suLayout.setVisibility(View.VISIBLE);
+                spLayout.setVisibility(View.GONE);
             } else if (checkedId == R.id.title_project) {
                 suLayout.setVisibility(View.GONE);
+                spLayout.setVisibility(View.VISIBLE);
             }
         });
 
@@ -81,6 +100,30 @@ public class SettingFragment extends AppBaseFragment<SettingFragmentPresenter> {
                 suiLayout.setVisibility(View.GONE);
             }
         });
+
+        spmTitleRg.setOnCheckedChangeListener(((group, checkedId) -> {
+            if (checkedId == R.id.spm_title_project_roomnum) {
+                sprLayout.setVisibility(View.VISIBLE);
+                spsLayout.setVisibility(View.GONE);
+                spnLayout.setVisibility(View.GONE);
+                sppLayout.setVisibility(View.GONE);
+            } else if (checkedId == R.id.spm_title_project_sip) {
+                sprLayout.setVisibility(View.GONE);
+                spsLayout.setVisibility(View.VISIBLE);
+                spnLayout.setVisibility(View.GONE);
+                sppLayout.setVisibility(View.GONE);
+            } else if (checkedId == R.id.spm_title_project_network) {
+                sprLayout.setVisibility(View.GONE);
+                spsLayout.setVisibility(View.GONE);
+                spnLayout.setVisibility(View.VISIBLE);
+                sppLayout.setVisibility(View.GONE);
+            } else {
+                sprLayout.setVisibility(View.GONE);
+                spsLayout.setVisibility(View.GONE);
+                spnLayout.setVisibility(View.GONE);
+                sppLayout.setVisibility(View.VISIBLE);
+            }
+        }));
 
         if (UserManager.INSTANCE.getSexId() == LoginEntity.MALE) {
             suiMale.setChecked(true);
@@ -126,25 +169,16 @@ public class SettingFragment extends AppBaseFragment<SettingFragmentPresenter> {
         et.setText(text);
     }
 
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        // TODO: inflate a fragment view
-        View rootView = super.onCreateView(inflater, container, savedInstanceState);
-        ButterKnife.bind(this, rootView);
-        return rootView;
-    }
-
-    @Override
-    public void onDestroyView() {
-        super.onDestroyView();
-        ButterKnife.unbind(this);
-    }
-
     private void setTextAndSelection(EditText editText, String content) {
         if (editText == null || TextUtils.isEmpty(content))
             return;
 
         editText.setText(content);
         editText.setSelection(content.length());
+    }
+
+    public void showSettingMain() {
+        splLayout.setVisibility(View.GONE);
+        spmLayout.setVisibility(View.VISIBLE);
     }
 }

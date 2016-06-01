@@ -1,0 +1,204 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/spn_layout"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:gravity="center_horizontal"
+    android:visibility="gone"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center_horizontal"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_vertical"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:gravity="right"
+                    android:text="@string/setting_project_network_ip"
+                    android:textColor="@color/color_B3ffffff"
+                    android:textSize="@dimen/sp_16" />
+
+                <EditText
+                    android:id="@+id/spn_ip_input"
+                    android:layout_width="@dimen/dp_260"
+                    android:layout_height="@dimen/dp_40"
+                    android:layout_centerHorizontal="true"
+                    android:layout_marginLeft="@dimen/dp_20"
+                    android:background="@color/color_99020405"
+                    android:paddingLeft="@dimen/dp_16"
+                    android:paddingRight="@dimen/dp_16"
+                    android:singleLine="true"
+                    android:textColor="@color/color_ffffff"
+                    android:textCursorDrawable="@null"
+                    android:textSize="@dimen/sp_16" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/dp_30"
+                android:gravity="center_vertical"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:gravity="right"
+                    android:text="@string/setting_project_network_mask"
+                    android:textColor="@color/color_B3ffffff"
+                    android:textSize="@dimen/sp_16" />
+
+                <EditText
+                    android:id="@+id/spn_mask_input"
+                    android:layout_width="@dimen/dp_260"
+                    android:layout_height="@dimen/dp_40"
+                    android:layout_centerHorizontal="true"
+                    android:layout_marginLeft="@dimen/dp_20"
+                    android:background="@color/color_99020405"
+                    android:paddingLeft="@dimen/dp_16"
+                    android:paddingRight="@dimen/dp_16"
+                    android:singleLine="true"
+                    android:textColor="@color/color_ffffff"
+                    android:textCursorDrawable="@null"
+                    android:textSize="@dimen/sp_16" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/dp_30"
+                android:gravity="center_vertical"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/setting_project_network_gateway"
+                    android:textColor="@color/color_B3ffffff"
+                    android:textSize="@dimen/sp_16" />
+
+                <EditText
+                    android:id="@+id/spn_gateway_input"
+                    android:layout_width="@dimen/dp_260"
+                    android:layout_height="@dimen/dp_40"
+                    android:layout_centerHorizontal="true"
+                    android:layout_marginLeft="@dimen/dp_20"
+                    android:background="@color/color_99020405"
+                    android:paddingLeft="@dimen/dp_16"
+                    android:paddingRight="@dimen/dp_16"
+                    android:singleLine="true"
+                    android:textColor="@color/color_ffffff"
+                    android:textCursorDrawable="@null"
+                    android:textSize="@dimen/sp_16" />
+            </LinearLayout>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/dp_71"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/dp_32"
+                android:gravity="center_vertical"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/setting_project_network_dns"
+                    android:textColor="@color/color_B3ffffff"
+                    android:textSize="@dimen/sp_16" />
+
+                <EditText
+                    android:id="@+id/spn_dns_input"
+                    android:layout_width="@dimen/dp_260"
+                    android:layout_height="@dimen/dp_40"
+                    android:layout_centerHorizontal="true"
+                    android:layout_marginLeft="@dimen/dp_20"
+                    android:background="@color/color_99020405"
+                    android:paddingLeft="@dimen/dp_16"
+                    android:paddingRight="@dimen/dp_16"
+                    android:singleLine="true"
+                    android:textColor="@color/color_ffffff"
+                    android:textCursorDrawable="@null"
+                    android:textSize="@dimen/sp_16" />
+            </LinearLayout>
+
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/dp_40"
+                android:gravity="center_vertical"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/setting_enable"
+                    android:textColor="@color/color_B3ffffff"
+                    android:textSize="@dimen/sp_16" />
+
+                <CheckBox
+                    android:id="@+id/spn_enable_cb"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/dp_20"
+                    android:checked="false"
+                    android:background="@drawable/selector_enable"
+                    android:button="@null" />
+
+                <TextView
+                    android:id="@+id/spn_enable_tx"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/dp_12"
+                    android:text="@string/setting_off"
+                    android:textColor="@color/color_ffffff"
+                    android:textSize="@dimen/sp_16" />
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/spn_save"
+                android:layout_width="@dimen/dp_109"
+                android:layout_height="@dimen/dp_40"
+                android:layout_marginLeft="@dimen/dp_85"
+                android:layout_marginTop="@dimen/dp_40"
+                android:background="@color/color_14ce63"
+                android:gravity="center"
+                android:text="@string/setting_save"
+                android:textColor="@color/color_ffffff"
+                android:textSize="@dimen/sp_16" />
+        </LinearLayout>
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/spn_ip_tx"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/dp_69"
+        android:text="@string/setting_project_network_ip_address"
+        android:textColor="@color/color_B3ffffff"
+        android:textSize="@dimen/sp_16" />
+</LinearLayout>

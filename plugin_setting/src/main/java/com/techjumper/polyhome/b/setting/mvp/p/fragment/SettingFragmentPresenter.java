@@ -64,26 +64,43 @@ public class SettingFragmentPresenter extends AppBaseFragmentPresenter<SettingFr
                 , getView().getString(R.string.error_wrong_password));
     }
 
+    /**
+     * 退出登录
+     */
     @OnClick(R.id.logout)
     void logout_tv() {
         logout();
     }
 
+    /**
+     * 获取日期（生日）
+     */
     @OnClick(R.id.sui_birthday_input)
     void getDate() {
         pickDate();
     }
 
+    /**
+     * 保存修改用户登录密码
+     */
     @OnClick(R.id.sup_save)
     void changePasswordSave() {
         checkAndChangePassword();
     }
 
+    /**
+     * 保存用户信息
+     */
     @OnClick(R.id.sui_save)
     void updateUserInfo() {
         updateInfo();
     }
 
+    /**
+     * 选择性别
+     *
+     * @param isFemale
+     */
     @OnCheckedChanged(R.id.sui_female)
     void checkFemalle(boolean isFemale) {
         if (isFemale) {
@@ -91,6 +108,15 @@ public class SettingFragmentPresenter extends AppBaseFragmentPresenter<SettingFr
         } else {
             sex = LoginEntity.MALE;
         }
+    }
+
+    /**
+     * 功能密码登录
+     */
+    @OnClick(R.id.spl_login)
+    void loginSpl() {
+        // TODO: 16/6/1 工程密码正确后 
+        getView().showSettingMain();
     }
 
     private void checkAndChangePassword() {

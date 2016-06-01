@@ -17,6 +17,10 @@
     <string name="setting_save">保存</string>
     <string name="setting_logout">解除绑定</string>
 
+    <string name="setting_off">Off</string>
+    <string name="setting_on">On</string>
+    <string name="setting_enable">是否启用</string>
+
     <string name="setting_user_info">个人信息</string>
     <string name="setting_user_info_nickname">昵称</string>
     <string name="setting_user_info_sex">性别</string>
@@ -25,6 +29,32 @@
     <string name="setting_user_info_birthday">出生日期</string>
     <string name="setting_user_info_email">电子邮件</string>
     <string name="setting_user_info_success">个人信息更新成功!</string>
+
+    <string name="setting_project_login_title">此处为工程人员设置用</string>
+    <string name="setting_project_roomnum">房号设置</string>
+    <string name="setting_project_sip">SIP设置</string>
+    <string name="setting_project_network">网络设置</string>
+    <string name="setting_project_password">工程密码</string>
+
+    <string name="setting_project_roomnum_house">楼栋号</string>
+    <string name="setting_project_roomnum_unit">单元号</string>
+    <string name="setting_project_roomnum_floor">楼层号</string>
+    <string name="setting_project_roomnum_roomnum">房间号</string>
+    <string name="setting_project_roomnum_devicecode">设备码</string>
+    <string name="setting_project_roomnum_synchronouscode">同步码</string>
+    <string name="setting_project_roomnum_service">服务器</string>
+
+    <string name="setting_project_sip_devicedomain">设备域</string>
+    <string name="setting_project_sip_address">Stun地址</string>
+    <string name="setting_project_sip_port">Stun端口</string>
+    <string name="setting_project_sip_username">用户名</string>
+    <string name="setting_project_sip_password">密码</string>
+
+    <string name="setting_project_network_ip">IP地址</string>
+    <string name="setting_project_network_mask">子网掩码</string>
+    <string name="setting_project_network_gateway">默认网关</string>
+    <string name="setting_project_network_dns">DNS</string>
+    <string name="setting_project_network_ip_address">当前IP地址: </string>
 
     <string name="setting_user_info_email_no">请使用正确的email格式!</string>
 

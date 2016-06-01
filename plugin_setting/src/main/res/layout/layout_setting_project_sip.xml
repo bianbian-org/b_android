@@ -1,0 +1,247 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/sps_layout"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:visibility="gone"
+    android:orientation="horizontal">
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:gravity="center_horizontal"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="right"
+                android:text="@string/setting_project_roomnum_service"
+                android:textColor="@color/color_B3ffffff"
+                android:textSize="@dimen/sp_16" />
+
+            <EditText
+                android:id="@+id/sps_service_input"
+                android:layout_width="@dimen/dp_260"
+                android:layout_height="@dimen/dp_40"
+                android:layout_centerHorizontal="true"
+                android:layout_marginLeft="@dimen/dp_20"
+                android:background="@color/color_99020405"
+                android:paddingLeft="@dimen/dp_16"
+                android:paddingRight="@dimen/dp_16"
+                android:singleLine="true"
+                android:textColor="@color/color_ffffff"
+                android:textCursorDrawable="@null"
+                android:textSize="@dimen/sp_16" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/dp_30"
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="right"
+                android:text="@string/setting_project_sip_devicedomain"
+                android:textColor="@color/color_B3ffffff"
+                android:textSize="@dimen/sp_16" />
+
+            <EditText
+                android:id="@+id/sps_devicedomain_input"
+                android:layout_width="@dimen/dp_260"
+                android:layout_height="@dimen/dp_40"
+                android:layout_centerHorizontal="true"
+                android:layout_marginLeft="@dimen/dp_20"
+                android:background="@color/color_99020405"
+                android:paddingLeft="@dimen/dp_16"
+                android:paddingRight="@dimen/dp_16"
+                android:singleLine="true"
+                android:textColor="@color/color_ffffff"
+                android:textCursorDrawable="@null"
+                android:textSize="@dimen/sp_16" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/dp_30"
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/setting_project_sip_address"
+                android:textColor="@color/color_B3ffffff"
+                android:textSize="@dimen/sp_16" />
+
+            <EditText
+                android:id="@+id/sps_address_input"
+                android:layout_width="@dimen/dp_260"
+                android:layout_height="@dimen/dp_40"
+                android:layout_centerHorizontal="true"
+                android:layout_marginLeft="@dimen/dp_20"
+                android:background="@color/color_99020405"
+                android:paddingLeft="@dimen/dp_16"
+                android:paddingRight="@dimen/dp_16"
+                android:singleLine="true"
+                android:textColor="@color/color_ffffff"
+                android:textCursorDrawable="@null"
+                android:textSize="@dimen/sp_16" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/dp_30"
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/setting_project_sip_port"
+                android:textColor="@color/color_B3ffffff"
+                android:textSize="@dimen/sp_16" />
+
+            <EditText
+                android:id="@+id/sps_port_input"
+                android:layout_width="@dimen/dp_260"
+                android:layout_height="@dimen/dp_40"
+                android:layout_centerHorizontal="true"
+                android:layout_marginLeft="@dimen/dp_20"
+                android:background="@color/color_99020405"
+                android:paddingLeft="@dimen/dp_16"
+                android:paddingRight="@dimen/dp_16"
+                android:singleLine="true"
+                android:textColor="@color/color_ffffff"
+                android:textCursorDrawable="@null"
+                android:textSize="@dimen/sp_16" />
+        </LinearLayout>
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/dp_71"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical"
+            android:layout_marginLeft="@dimen/dp_15"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/setting_project_sip_username"
+                android:textColor="@color/color_B3ffffff"
+                android:textSize="@dimen/sp_16" />
+
+            <EditText
+                android:id="@+id/sps_username_input"
+                android:layout_width="@dimen/dp_260"
+                android:layout_height="@dimen/dp_40"
+                android:layout_centerHorizontal="true"
+                android:layout_marginLeft="@dimen/dp_20"
+                android:background="@color/color_99020405"
+                android:paddingLeft="@dimen/dp_16"
+                android:paddingRight="@dimen/dp_16"
+                android:singleLine="true"
+                android:textColor="@color/color_ffffff"
+                android:textCursorDrawable="@null"
+                android:textSize="@dimen/sp_16" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/dp_30"
+            android:layout_marginLeft="@dimen/dp_32"
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="right"
+                android:text="@string/setting_project_sip_password"
+                android:textColor="@color/color_B3ffffff"
+                android:textSize="@dimen/sp_16" />
+
+            <EditText
+                android:id="@+id/sps_synchronouscode_input"
+                android:layout_width="@dimen/dp_260"
+                android:layout_height="@dimen/dp_40"
+                android:layout_centerHorizontal="true"
+                android:layout_marginLeft="@dimen/dp_20"
+                android:background="@color/color_99020405"
+                android:paddingLeft="@dimen/dp_16"
+                android:paddingRight="@dimen/dp_16"
+                android:singleLine="true"
+                android:textColor="@color/color_ffffff"
+                android:textCursorDrawable="@null"
+                android:textSize="@dimen/sp_16" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/dp_40"
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/setting_enable"
+                android:textColor="@color/color_B3ffffff"
+                android:textSize="@dimen/sp_16" />
+
+            <CheckBox
+                android:id="@+id/sps_enable_cb"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/dp_20"
+                android:background="@drawable/selector_enable"
+                android:checked="false"
+                android:button="@null" />
+
+            <TextView
+                android:id="@+id/sps_enable_tx"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/dp_12"
+                android:text="@string/setting_off"
+                android:textColor="@color/color_ffffff"
+                android:textSize="@dimen/sp_16" />
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/sps_save"
+            android:layout_width="@dimen/dp_109"
+            android:layout_height="@dimen/dp_40"
+            android:layout_marginLeft="@dimen/dp_85"
+            android:layout_marginTop="@dimen/dp_40"
+            android:background="@color/color_14ce63"
+            android:gravity="center"
+            android:text="@string/setting_save"
+            android:textColor="@color/color_ffffff"
+            android:textSize="@dimen/sp_16" />
+    </LinearLayout>
+</LinearLayout>
