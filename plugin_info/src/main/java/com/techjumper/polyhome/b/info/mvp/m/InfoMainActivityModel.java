@@ -1,5 +1,6 @@
 package com.techjumper.polyhome.b.info.mvp.m;
 
+import com.techjumper.commonres.ComConstant;
 import com.techjumper.commonres.entity.BaseArgumentsEntity;
 import com.techjumper.commonres.entity.InfoEntity;
 import com.techjumper.commonres.entity.TrueEntity;
@@ -25,18 +26,18 @@ public class InfoMainActivityModel extends BaseModel<InfoMainActivityPresenter> 
 
     public Observable<InfoEntity> getInfo(int page) {
         return RetrofitHelper.<ServiceAPI>createDefault()
-                .getInfo(NetHelper.createBaseArgumentsMap(KeyValueCreator.getInfo("248", "f9b3965276f088715608f9c8661c005acc07b3f1", String.valueOf(page), "10")))
+                .getInfo(NetHelper.createBaseArgumentsMap(KeyValueCreator.getInfo(ComConstant.defaultUserId, ComConstant.defaultTicket, String.valueOf(page), "10")))
                 .compose(CommonWrap.wrap());
     }
 
     public Observable<InfoEntity> getInfo(int type, int page) {
         return RetrofitHelper.<ServiceAPI>createDefault()
-                .getInfo(NetHelper.createBaseArgumentsMap(KeyValueCreator.getInfo("248", "f9b3965276f088715608f9c8661c005acc07b3f1", String.valueOf(type), String.valueOf(page), "10")))
+                .getInfo(NetHelper.createBaseArgumentsMap(KeyValueCreator.getInfo(ComConstant.defaultUserId, ComConstant.defaultTicket, String.valueOf(type), String.valueOf(page), "10")))
                 .compose(CommonWrap.wrap());
     }
 
     public Observable<TrueEntity> readMessage(long message_id) {
-        KeyValuePair loginPair = KeyValueCreator.readMessage("248", "f9b3965276f088715608f9c8661c005acc07b3f1", String.valueOf(message_id));
+        KeyValuePair loginPair = KeyValueCreator.readMessage(ComConstant.defaultUserId, ComConstant.defaultTicket, String.valueOf(message_id));
         BaseArgumentsEntity argument = NetHelper.createBaseArguments(loginPair);
 
         return RetrofitHelper.<ServiceAPI>createDefault()

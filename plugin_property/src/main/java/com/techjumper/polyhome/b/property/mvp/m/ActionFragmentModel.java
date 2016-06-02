@@ -1,5 +1,6 @@
 package com.techjumper.polyhome.b.property.mvp.m;
 
+import com.techjumper.commonres.ComConstant;
 import com.techjumper.commonres.entity.AnnouncementEntity;
 import com.techjumper.commonres.entity.BaseArgumentsEntity;
 import com.techjumper.commonres.entity.TrueEntity;
@@ -24,7 +25,7 @@ public class ActionFragmentModel extends BaseModel<ActionFragmentPresenter> {
     }
 
     public Observable<TrueEntity> submitComplaint(int type, String content) {
-        KeyValuePair complaintPair = KeyValueCreator.submitComplaint("248", "579108042ffc51ee135b8f6648a723d239d6b329", String.valueOf(type), content);
+        KeyValuePair complaintPair = KeyValueCreator.submitComplaint(ComConstant.defaultUserId, ComConstant.defaultTicket, String.valueOf(type), content);
         BaseArgumentsEntity argument = NetHelper.createBaseArguments(complaintPair);
 
         return RetrofitHelper.<ServiceAPI>createDefault()
@@ -33,7 +34,7 @@ public class ActionFragmentModel extends BaseModel<ActionFragmentPresenter> {
     }
 
     public Observable<TrueEntity> submitRepair(int family_id, int repair_type, int repair_device, String note) {
-        KeyValuePair complaintPair = KeyValueCreator.submitRepair("248", "579108042ffc51ee135b8f6648a723d239d6b329", String.valueOf(family_id), String.valueOf(repair_type), String.valueOf(repair_device), note);
+        KeyValuePair complaintPair = KeyValueCreator.submitRepair(ComConstant.defaultUserId, ComConstant.defaultTicket, String.valueOf(family_id), String.valueOf(repair_type), String.valueOf(repair_device), note);
         BaseArgumentsEntity argument = NetHelper.createBaseArguments(complaintPair);
 
         return RetrofitHelper.<ServiceAPI>createDefault()
