@@ -1,7 +1,9 @@
 package com.techjumper.polyhome.b.property.mvp.v.activity;
 
 import android.os.Bundle;
+import android.view.MotionEvent;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.TextView;

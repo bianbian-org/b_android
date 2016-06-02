@@ -71,7 +71,6 @@ public class ActionFragmentPresenter extends AppBaseFragmentPresenter<ActionFrag
 
                         if (trueEntity.getData().getResult().equals("true")) {
                             ToastUtils.show(getView().getResources().getString(R.string.property_submit_success));
-                            RxBus.INSTANCE.send(new PropertyListEvent());
                         }
                     }
                 }));
@@ -101,7 +100,6 @@ public class ActionFragmentPresenter extends AppBaseFragmentPresenter<ActionFrag
 
                         if (trueEntity.getData().getResult().equals("true")) {
                             ToastUtils.show(getView().getResources().getString(R.string.property_submit_success));
-                            RxBus.INSTANCE.send(new PropertyListEvent());
                         }
                     }
                 }));

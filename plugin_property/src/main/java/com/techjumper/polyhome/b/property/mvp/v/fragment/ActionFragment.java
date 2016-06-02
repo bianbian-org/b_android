@@ -4,6 +4,8 @@ package com.techjumper.polyhome.b.property.mvp.v.fragment;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -202,8 +204,7 @@ public class ActionFragment extends AppBaseFragment<ActionFragmentPresenter> {
             }
         });
 
-        lcContent.setImeOptions(EditorInfo.IME_ACTION_DONE);
-        lrContent.setImeOptions(EditorInfo.IME_ACTION_DONE);
+//        ∂
     }
 
     private WheelCurvedPicker initWheelPicker(WheelCurvedPicker wheelCurvedPicker, List<String> names) {
@@ -221,6 +222,7 @@ public class ActionFragment extends AppBaseFragment<ActionFragmentPresenter> {
 
         return wheelCurvedPicker;
     }
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {

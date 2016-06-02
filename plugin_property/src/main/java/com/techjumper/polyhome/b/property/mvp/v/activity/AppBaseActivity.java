@@ -2,9 +2,11 @@ package com.techjumper.polyhome.b.property.mvp.v.activity;
 
 
 import android.os.Bundle;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
+import android.view.inputmethod.InputMethodManager;
 
 import com.techjumper.corelib.mvp.factory.Presenter;
 import com.techjumper.corelib.rx.tools.RxUtils;
@@ -70,6 +72,15 @@ public abstract class AppBaseActivity<T extends AppBaseActivityPresenter> extend
             RxUtils.unsubscribeIfNotNull(sub);
         }
 
+    }
+
+    @Override
+    public boolean onTouchEvent(MotionEvent event) {
+        if (getCurrentFocus() != null) {
+            InputMethodManager mInputMethodManager = (InputMethodManager) getSystemService(INPUT_METHOD_SERVICE);
+            return mInputMethodManager.hideSoftInputFromWindow(this.getCurrentFocus().getWindowToken(), 0);
+        }
+        return super.onTouchEvent(event);
     }
 
     @Override
