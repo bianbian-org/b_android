@@ -135,6 +135,9 @@ public class InfoMainActivity extends AppBaseActivity {
 
         adapter.loadData(displayBeans);
         infoList.setAdapter(adapter);
+
+        infoDetail.setVisibility(View.GONE);
+        infoList.setVisibility(View.VISIBLE);
     }
 
     public void readMessage(String result) {
