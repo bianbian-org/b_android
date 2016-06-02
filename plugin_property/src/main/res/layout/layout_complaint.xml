@@ -42,6 +42,7 @@
             android:layout_width="@dimen/dp_344"
             android:layout_height="@dimen/dp_121"
             android:layout_marginLeft="@dimen/dp_22"
+            android:singleLine="true"
             android:paddingLeft="@dimen/dp_5"
             android:paddingRight="@dimen/dp_5"
             android:gravity="top"

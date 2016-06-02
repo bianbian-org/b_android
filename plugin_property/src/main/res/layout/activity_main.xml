@@ -34,8 +34,9 @@
 
     <FrameLayout
         android:id="@+id/container"
+        android:layout_weight="1"
         android:layout_width="match_parent"
-        android:layout_height="450dp" />
+        android:layout_height="match_parent" />
 
     <include layout="@layout/layout_bottom" />
 </LinearLayout>

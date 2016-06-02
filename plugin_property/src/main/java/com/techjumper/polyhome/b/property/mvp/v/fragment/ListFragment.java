@@ -1,14 +1,18 @@
 package com.techjumper.polyhome.b.property.mvp.v.fragment;
 
 
+import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.NestedScrollView;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.EditorInfo;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.RadioGroup;
@@ -132,6 +136,7 @@ public class ListFragment extends AppBaseFragment<ListFragmentPresenter> {
         lmdList.setLayoutManager(new LinearLayoutManager(getContext()));
 
         showListLayout();
+        lmdMessageContent.setImeOptions(EditorInfo.IME_ACTION_DONE);
     }
 
     public void getAnnouncements(List<AnnouncementEntity.AnnouncementDataEntity> announcementDataEntities, int page) {
@@ -355,6 +360,8 @@ public class ListFragment extends AppBaseFragment<ListFragmentPresenter> {
         messageAdapter.insertData(0, bean);
 
         lmdMessageContent.setText("");
+
+        ((InputMethodManager)getActivity().getSystemService(Context.INPUT_METHOD_SERVICE)).hideSoftInputFromWindow(lmdMessageContent.getWindowToken(),0);
     }
 
     public void showListLayout() {

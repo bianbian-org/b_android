@@ -25,18 +25,18 @@ public class InfoMainActivityModel extends BaseModel<InfoMainActivityPresenter> 
 
     public Observable<InfoEntity> getInfo(int page) {
         return RetrofitHelper.<ServiceAPI>createDefault()
-                .getInfo(NetHelper.createBaseArgumentsMap(KeyValueCreator.getInfo("248", "09518224d5a28d5eeef09d4459c8384a72621a30", String.valueOf(page), "10")))
+                .getInfo(NetHelper.createBaseArgumentsMap(KeyValueCreator.getInfo("248", "f9b3965276f088715608f9c8661c005acc07b3f1", String.valueOf(page), "10")))
                 .compose(CommonWrap.wrap());
     }
 
     public Observable<InfoEntity> getInfo(int type, int page) {
         return RetrofitHelper.<ServiceAPI>createDefault()
-                .getInfo(NetHelper.createBaseArgumentsMap(KeyValueCreator.getInfo("248", "09518224d5a28d5eeef09d4459c8384a72621a30", String.valueOf(type), String.valueOf(page), "10")))
+                .getInfo(NetHelper.createBaseArgumentsMap(KeyValueCreator.getInfo("248", "f9b3965276f088715608f9c8661c005acc07b3f1", String.valueOf(type), String.valueOf(page), "10")))
                 .compose(CommonWrap.wrap());
     }
 
     public Observable<TrueEntity> readMessage(long message_id) {
-        KeyValuePair loginPair = KeyValueCreator.readMessage("248", "09518224d5a28d5eeef09d4459c8384a72621a30", String.valueOf(message_id));
+        KeyValuePair loginPair = KeyValueCreator.readMessage("248", "f9b3965276f088715608f9c8661c005acc07b3f1", String.valueOf(message_id));
         BaseArgumentsEntity argument = NetHelper.createBaseArguments(loginPair);
 
         return RetrofitHelper.<ServiceAPI>createDefault()

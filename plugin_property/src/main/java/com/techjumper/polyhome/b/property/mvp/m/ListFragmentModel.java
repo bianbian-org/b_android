@@ -38,20 +38,20 @@ public class ListFragmentModel extends BaseModel<ListFragmentPresenter> {
     public Observable<ComplaintEntity> getComplaints(int page) {
 
         return RetrofitHelper.<ServiceAPI>createDefault()
-                .getComplaints(NetHelper.createBaseArgumentsMap(KeyValueCreator.getComplaints("248", "f9b3965276f088715608f9c8661c005acc07b3f1", String.valueOf(page), "10")))
+                .getComplaints(NetHelper.createBaseArgumentsMap(KeyValueCreator.getComplaints("248", "579108042ffc51ee135b8f6648a723d239d6b329", String.valueOf(page), "10")))
                 .compose(CommonWrap.wrap());
     }
 
     public Observable<RepairEntity> getRepairs(int page) {
 
         return RetrofitHelper.<ServiceAPI>createDefault()
-                .getRepair(NetHelper.createBaseArgumentsMap(KeyValueCreator.getComplaints("248", "f9b3965276f088715608f9c8661c005acc07b3f1", String.valueOf(page), "10")))
+                .getRepair(NetHelper.createBaseArgumentsMap(KeyValueCreator.getComplaints("248", "579108042ffc51ee135b8f6648a723d239d6b329", String.valueOf(page), "10")))
                 .compose(CommonWrap.wrap());
     }
 
     public Observable<ComplaintDetailEntity> getComplaintDetail(long id) {
         return RetrofitHelper.<ServiceAPI>createDefault()
-                .getComplaintDetail(NetHelper.createBaseArgumentsMap(KeyValueCreator.getComplaintDetail("248", "f9b3965276f088715608f9c8661c005acc07b3f1", String.valueOf(id))))
+                .getComplaintDetail(NetHelper.createBaseArgumentsMap(KeyValueCreator.getComplaintDetail("248", "579108042ffc51ee135b8f6648a723d239d6b329", String.valueOf(id))))
                 .compose(CommonWrap.wrap());
     }
 
@@ -60,13 +60,13 @@ public class ListFragmentModel extends BaseModel<ListFragmentPresenter> {
         Observable<TrueEntity> observable;
 
         if (type == ActionFragment.COMPLAINT) {
-            KeyValuePair complaintPair = KeyValueCreator.replyComplaint("248", "f9b3965276f088715608f9c8661c005acc07b3f1", content, String.valueOf(id));
+            KeyValuePair complaintPair = KeyValueCreator.replyComplaint("248", "579108042ffc51ee135b8f6648a723d239d6b329", content, String.valueOf(id));
             BaseArgumentsEntity argument = NetHelper.createBaseArguments(complaintPair);
             observable = RetrofitHelper.<ServiceAPI>createDefault()
                     .replyComplaint(argument)
                     .compose(CommonWrap.wrap());
         } else {
-            KeyValuePair repairPair = KeyValueCreator.replyRepair("248", "f9b3965276f088715608f9c8661c005acc07b3f1", content, String.valueOf(id));
+            KeyValuePair repairPair = KeyValueCreator.replyRepair("248", "579108042ffc51ee135b8f6648a723d239d6b329", content, String.valueOf(id));
             BaseArgumentsEntity argument = NetHelper.createBaseArguments(repairPair);
             observable = RetrofitHelper.<ServiceAPI>createDefault()
                     .replyRepair(argument)
@@ -78,7 +78,7 @@ public class ListFragmentModel extends BaseModel<ListFragmentPresenter> {
 
     public Observable<RepairDetailEntity> getRepairDetail(long id) {
         return RetrofitHelper.<ServiceAPI>createDefault()
-                .getRepairDetail(NetHelper.createBaseArgumentsMap(KeyValueCreator.getRepairDetail("248", "f9b3965276f088715608f9c8661c005acc07b3f1", String.valueOf(id))))
+                .getRepairDetail(NetHelper.createBaseArgumentsMap(KeyValueCreator.getRepairDetail("248", "579108042ffc51ee135b8f6648a723d239d6b329", String.valueOf(id))))
                 .compose(CommonWrap.wrap());
     }
 }

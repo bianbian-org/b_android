@@ -58,6 +58,7 @@
             android:layout_marginLeft="@dimen/dp_22"
             android:paddingLeft="@dimen/dp_5"
             android:paddingRight="@dimen/dp_5"
+            android:singleLine="true"
             android:gravity="top"
             android:textCursorDrawable="@null"
             android:textColor="@color/color_ffffff"

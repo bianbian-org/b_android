@@ -2,6 +2,7 @@ package com.techjumper.polyhome.b.setting.mvp.p.fragment;
 
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 
@@ -118,6 +119,7 @@ public class LoginFragmentPresenter extends AppBaseFragmentPresenter<LoginFragme
                                     getView().dismissLoading();
                                     return;
                                 }
+                                Log.d("haha", entity.getData().getTicket());
                                 UserManager.INSTANCE.saveUserInfo(entity);
                                 UserManager.INSTANCE.notifyLoginOrLogoutEvent(true);
                             }
