@@ -54,7 +54,7 @@
     <string name="setting_project_network_mask">子网掩码</string>
     <string name="setting_project_network_gateway">默认网关</string>
     <string name="setting_project_network_dns">DNS</string>
-    <string name="setting_project_network_ip_address">当前IP地址: </string>
+    <string name="setting_project_network_ip_address">当前IP地址: %1$s</string>
 
     <string name="setting_user_info_email_no">请使用正确的email格式!</string>
 

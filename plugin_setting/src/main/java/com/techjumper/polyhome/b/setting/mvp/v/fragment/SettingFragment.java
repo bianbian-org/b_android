@@ -11,12 +11,14 @@ import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
+import android.widget.TextView;
 
 import com.techjumper.commonres.entity.LoginEntity;
 import com.techjumper.corelib.mvp.factory.Presenter;
 import com.techjumper.polyhome.b.setting.R;
 import com.techjumper.polyhome.b.setting.UserManager;
 import com.techjumper.polyhome.b.setting.mvp.p.fragment.SettingFragmentPresenter;
+import com.techjumper.polyhome.b.setting.utils.StringUtil;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -69,6 +71,8 @@ public class SettingFragment extends AppBaseFragment<SettingFragmentPresenter> {
     LinearLayout splLayout;
     @Bind(R.id.spm_layout)
     LinearLayout spmLayout;
+    @Bind(R.id.spn_ip_tx)
+    TextView spnIpTx;
 
     public static SettingFragment getInstance() {
         return new SettingFragment();
@@ -134,6 +138,8 @@ public class SettingFragment extends AppBaseFragment<SettingFragmentPresenter> {
         setTextAndSelection(suiNicknameInput, UserManager.INSTANCE.getUserNickName());
         setTextAndSelection(suiBirthdayInput, UserManager.INSTANCE.getUserInfo(UserManager.KEY_BIRTHDAY));
         setTextAndSelection(suiEmailInput, UserManager.INSTANCE.getUserInfo(UserManager.KEY_EMAIL));
+
+        spnIpTx.setText(String.format(getString(R.string.setting_project_network_ip_address), StringUtil.getIPAddress()));
     }
 
     public EditText getSuiBirthdayInput() {
