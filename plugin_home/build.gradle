@@ -32,5 +32,6 @@ dependencies {
     compile project(':corelib')
     compile project(':lib2')
     compile project(':progressdialog')
+    compile project(':PluginCommunicateEngine')
     compile "com.android.support:support-v4:$rootProject.supportLibraryVersion"
 }

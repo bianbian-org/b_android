@@ -71,8 +71,19 @@ public class SettingFragment extends AppBaseFragment<SettingFragmentPresenter> {
     LinearLayout splLayout;
     @Bind(R.id.spm_layout)
     LinearLayout spmLayout;
+    //ip 地址显示
     @Bind(R.id.spn_ip_tx)
     TextView spnIpTx;
+    //工程密码输入栏
+    @Bind(R.id.spl_password_input)
+    EditText splPassword;
+    @Bind(R.id.spp_oldpassword_input)
+    EditText sppOldpasswordInput;
+    @Bind(R.id.spp_newpassword_input)
+    EditText sppNewpasswordInput;
+    @Bind(R.id.spp_confirmpassword_input)
+    EditText sppConfirmpasswordInput;
+
 
     public static SettingFragment getInstance() {
         return new SettingFragment();
@@ -154,6 +165,9 @@ public class SettingFragment extends AppBaseFragment<SettingFragmentPresenter> {
         return suiEmailInput;
     }
 
+    public EditText getSplPassword() {
+        return splPassword;
+    }
 
     public EditText getSupOldpasswordInput() {
         return supOldpasswordInput;
@@ -165,6 +179,18 @@ public class SettingFragment extends AppBaseFragment<SettingFragmentPresenter> {
 
     public EditText getSupConfirmpasswordInput() {
         return supConfirmpasswordInput;
+    }
+
+    public EditText getSppOldpasswordInput() {
+        return sppOldpasswordInput;
+    }
+
+    public EditText getSppNewpasswordInput() {
+        return sppNewpasswordInput;
+    }
+
+    public EditText getSppConfirmpasswordInput() {
+        return sppConfirmpasswordInput;
     }
 
     public void showError(EditText editText, CharSequence message) {

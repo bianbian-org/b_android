@@ -1,6 +1,7 @@
 package com.techjumper.polyhome.b.home;
 
 import com.techjumper.lib2.others.Lib2Application;
+import com.techjumper.plugincommunicateengine.PluginEngine;
 import com.techjumper.polyhome.b.home.net.ServiceAPI;
 
 /**
@@ -11,6 +12,7 @@ public class HomeApplication extends Lib2Application {
     @Override
     public void onCreate() {
         super.onCreate();
+        PluginEngine.getInstance().init(this);
     }
 
     @Override

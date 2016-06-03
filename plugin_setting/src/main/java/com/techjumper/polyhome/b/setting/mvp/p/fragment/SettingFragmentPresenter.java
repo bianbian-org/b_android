@@ -15,6 +15,7 @@ import com.techjumper.corelib.utils.basic.StringUtils;
 import com.techjumper.corelib.utils.window.DialogUtils;
 import com.techjumper.corelib.utils.window.ToastUtils;
 import com.techjumper.polyhome.b.setting.R;
+import com.techjumper.polyhome.b.setting.SettingManager;
 import com.techjumper.polyhome.b.setting.UserManager;
 import com.techjumper.polyhome.b.setting.mvp.m.SettingFragmentModel;
 import com.techjumper.polyhome.b.setting.mvp.v.fragment.SettingFragment;
@@ -47,6 +48,11 @@ public class SettingFragmentPresenter extends AppBaseFragmentPresenter<SettingFr
 
     @Override
     public void onViewInited(Bundle savedInstanceState) {
+
+        setOnTextChangeListener(getView().getSplPassword()
+                , StringUtils.PATTERN_PASSWORD
+                , 20
+                , getView().getString(R.string.error_wrong_password));
 
         setOnTextChangeListener(getView().getSupOldpasswordInput()
                 , StringUtils.PATTERN_PASSWORD
@@ -115,8 +121,20 @@ public class SettingFragmentPresenter extends AppBaseFragmentPresenter<SettingFr
      */
     @OnClick(R.id.spl_login)
     void loginSpl() {
-        // TODO: 16/6/1 工程密码正确后 
-        getView().showSettingMain();
+        String password = getView().getSplPassword().getText().toString();
+        if (TextUtils.isEmpty(password)) {
+            ToastUtils.show(getView().getString(R.string.setting_password_null));
+            return;
+        }
+
+        if (password.length() < 8 || password.length() > 20)
+            return;
+
+        if (SettingManager.INSTANCE.isPassword(password)) {
+            getView().showSettingMain();
+        } else {
+            ToastUtils.show(getView().getString(R.string.setting_password_error));
+        }
     }
 
     private void checkAndChangePassword() {
