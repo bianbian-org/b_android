@@ -2,8 +2,8 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/bg_main"
-    android:layout_width="@dimen/dp_150"
-    android:layout_height="@dimen/dp_150"
+    android:layout_width="@dimen/dp_160"
+    android:layout_height="@dimen/dp_160"
     android:background="@color/color_20c3f3">
 
     <LinearLayout

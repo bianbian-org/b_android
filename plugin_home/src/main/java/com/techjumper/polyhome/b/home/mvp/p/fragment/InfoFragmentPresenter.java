@@ -43,6 +43,52 @@ public class InfoFragmentPresenter extends AppBaseFragmentPresenter<InfoFragment
         });
     }
 
+    @OnClick(R.id.detect_layout)
+    void detect() {
+        PluginEngine.getInstance().start(new PluginEngine.IPluginConnection() {
+            @Override
+            public void onEngineConnected(PluginEngine.PluginExecutor pluginExecutor) {
+                String data
+                        = HostDataBuilder.startPluginBuilder()
+                        .packageName("pltk.com.medical")
+                        .build();
+                try {
+                    pluginExecutor.send(Constants.CODE_START_PLUGIN, data);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+
+            @Override
+            public void onEngineDisconnected() {
+
+            }
+        });
+    }
+
+    @OnClick(R.id.speak)
+    void speak() {
+        PluginEngine.getInstance().start(new PluginEngine.IPluginConnection() {
+            @Override
+            public void onEngineConnected(PluginEngine.PluginExecutor pluginExecutor) {
+                String data
+                        = HostDataBuilder.startPluginBuilder()
+                        .packageName("com.dnake.talk")
+                        .build();
+                try {
+                    pluginExecutor.send(Constants.CODE_START_PLUGIN, data);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+
+            @Override
+            public void onEngineDisconnected() {
+
+            }
+        });
+    }
+
     @Override
     public void initData(Bundle savedInstanceState) {
 

@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:paddingLeft="@dimen/dp_34"
-    android:paddingRight="@dimen/dp_34"
+    android:paddingLeft="@dimen/dp_8"
+    android:paddingRight="@dimen/dp_8"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
@@ -16,8 +16,8 @@
 
         <include
             layout="@layout/layout_info_weather"
-            android:layout_height="@dimen/dp_310"
-            android:layout_width="@dimen/dp_310"
+            android:layout_height="@dimen/dp_330"
+            android:layout_width="@dimen/dp_330"
             android:layout_marginTop="@dimen/dp_10"/>
 
     </LinearLayout>
@@ -37,8 +37,8 @@
 
             <com.techjumper.polyhome.b.home.widget.SquareView
                 android:id="@+id/speak"
-                android:layout_width="@dimen/dp_150"
-                android:layout_height="@dimen/dp_150"
+                android:layout_width="@dimen/dp_160"
+                android:layout_height="@dimen/dp_160"
                 app:bg_color="@color/color_6a889f"
                 app:content_img="@mipmap/bg_speak"
                 app:quarter_layout_visible="true"
@@ -48,8 +48,8 @@
 
             <com.techjumper.polyhome.b.home.widget.SquareView
                 android:id="@+id/setting"
-                android:layout_width="@dimen/dp_150"
-                android:layout_height="@dimen/dp_150"
+                android:layout_width="@dimen/dp_160"
+                android:layout_height="@dimen/dp_160"
                 android:layout_below="@id/speak"
                 android:layout_marginTop="@dimen/dp_10"
                 app:bg_color="@color/color_6a889f"
@@ -58,7 +58,7 @@
 
             <View
                 android:layout_width="match_parent"
-                android:layout_height="@dimen/dp_310"
+                android:layout_height="@dimen/dp_330"
                 android:layout_marginLeft="@dimen/dp_10"
                 android:layout_toRightOf="@id/speak"
                 android:background="@mipmap/bg_stock" />

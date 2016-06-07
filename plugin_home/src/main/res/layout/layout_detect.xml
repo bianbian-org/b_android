@@ -1,13 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:layout_width="match_parent"
-    android:layout_height="@dimen/dp_150">
+    android:id="@+id/detect_layout"
+    android:layout_width="wrap_content"
+    android:layout_height="@dimen/dp_160">
 
     <FrameLayout
         android:id="@+id/info_arrow_layout"
-        android:layout_width="@dimen/dp_93"
-        android:layout_height="@dimen/dp_150"
+        android:layout_width="102dp"
+        android:layout_height="@dimen/dp_160"
         android:layout_alignParentRight="true"
         android:background="@color/color_7de568">
 
@@ -28,8 +29,8 @@
         app:data_arc_radius="@dimen/dp_241"
         app:data_av_bg_color="@color/color_73d95e"
         app:data_content_text="60"
-        app:data_rect_height="@dimen/dp_150"
-        app:data_rect_width="@dimen/dp_135"
+        app:data_rect_height="@dimen/dp_160"
+        app:data_rect_width="142dp"
         app:data_subtitle_text="@string/info_bpm"
         app:data_title_text="@string/info_heartrate" />
 
@@ -38,12 +39,12 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentRight="true"
-        android:layout_marginRight="@dimen/dp_214"
+        android:layout_marginRight="@dimen/dp_212"
         app:data_arc_radius="@dimen/dp_205"
         app:data_av_bg_color="@color/color_ff6c32"
         app:data_content_text="6.1"
-        app:data_rect_height="@dimen/dp_150"
-        app:data_rect_width="@dimen/dp_135"
+        app:data_rect_height="@dimen/dp_160"
+        app:data_rect_width="142dp"
         app:data_subtitle_text="@string/info_mmol"
         app:data_title_text="@string/info_bloodsugar" />
 
@@ -56,8 +57,8 @@
         app:data_arc_radius="@dimen/dp_173"
         app:data_av_bg_color="@color/color_4fb939"
         app:data_content_text="105/69"
-        app:data_rect_height="@dimen/dp_150"
-        app:data_rect_width="@dimen/dp_135"
+        app:data_rect_height="@dimen/dp_160"
+        app:data_rect_width="145dp"
         app:data_subtitle_text="@string/info_mmhg"
         app:data_title_text="@string/info_bloodpressure" />
 
@@ -68,8 +69,8 @@
         app:data_arc_radius="@dimen/dp_144"
         app:data_av_bg_color="@color/color_42aa2c"
         app:data_content_text="奶奶"
-        app:data_rect_height="@dimen/dp_150"
-        app:data_rect_width="@dimen/dp_141"
+        app:data_rect_height="@dimen/dp_160"
+        app:data_rect_width="@dimen/dp_160"
         app:data_subtitle_text="@string/info_mmhg"
         app:data_title_text="@string/info_detect" />
 </RelativeLayout>

@@ -133,7 +133,7 @@ public class FamilyModelView extends RelativeLayout {
         isTouch = false;
         if (isToLeft) {
             AnimatorSet set = new AnimatorSet();
-            ObjectAnimator objectAnimator1 = ObjectAnimator.ofFloat(arrow, "translationX", 0F, -86F);
+            ObjectAnimator objectAnimator1 = ObjectAnimator.ofFloat(arrow, "translationX", 0F, -106F);
             ObjectAnimator objectAnimator2 = ObjectAnimator.ofFloat(arrow, "rotation", 0F, 180F);
 
             ObjectAnimator objectAnimator3 = ObjectAnimator.ofFloat(leftArc, "alpha", 1F, 0F);
@@ -169,7 +169,7 @@ public class FamilyModelView extends RelativeLayout {
             set.start();
         } else if (isToRight) {
             AnimatorSet set = new AnimatorSet();
-            ObjectAnimator objectAnimator1 = ObjectAnimator.ofFloat(arrow, "translationX", -86F, 0F);
+            ObjectAnimator objectAnimator1 = ObjectAnimator.ofFloat(arrow, "translationX", -106F, 0F);
             ObjectAnimator objectAnimator2 = ObjectAnimator.ofFloat(arrow, "rotation", 180F, 360F);
 
             ObjectAnimator objectAnimator3 = ObjectAnimator.ofFloat(leftArc, "alpha", 0F, 1F);

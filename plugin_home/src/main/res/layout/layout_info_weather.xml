@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="@dimen/dp_310"
-    android:layout_height="@dimen/dp_310"
+    android:layout_width="@dimen/dp_330"
+    android:layout_height="@dimen/dp_330"
     android:background="@color/color_20c3f3">
 
     <ImageView
@@ -15,7 +15,7 @@
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="@dimen/dp_205"
+        android:layout_marginLeft="@dimen/dp_225"
         android:layout_marginTop="@dimen/dp_14"
         android:orientation="vertical">
 
@@ -48,14 +48,14 @@
         layout="@layout/layout_info_weather_weather"
         android:layout_marginTop="@dimen/dp_121"
         android:layout_height="wrap_content"
-        android:layout_width="@dimen/dp_310"/>
+        android:layout_width="@dimen/dp_330"/>
 
     <TextView
         android:id="@+id/liw_running"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginLeft="@dimen/dp_22"
-        android:layout_marginTop="@dimen/dp_233"
+        android:layout_marginTop="@dimen/dp_253"
         android:drawablePadding="@dimen/dp_13"
         android:drawableTop="@mipmap/bg_running"
         android:text="适宜跑步"
@@ -66,7 +66,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginLeft="@dimen/dp_105"
-        android:layout_marginTop="@dimen/dp_282"
+        android:layout_marginTop="@dimen/dp_302"
         android:text="PM2.5"
         android:textColor="@color/color_B3ffffff"
         android:textSize="@dimen/sp_16" />
@@ -76,7 +76,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginLeft="@dimen/dp_160"
-        android:layout_marginTop="@dimen/dp_282"
+        android:layout_marginTop="@dimen/dp_302"
         android:text="97"
         android:textColor="@color/color_ffffff"
         android:textSize="@dimen/sp_16" />
@@ -86,7 +86,7 @@
         android:layout_width="@dimen/dp_97"
         android:layout_height="wrap_content"
         android:layout_marginLeft="@dimen/dp_197"
-        android:layout_marginTop="@dimen/dp_282"
+        android:layout_marginTop="@dimen/dp_302"
         android:gravity="center"
         android:text="空气质量良好"
         android:textColor="@color/color_ffffff"
@@ -97,7 +97,7 @@
         android:layout_width="@dimen/dp_81"
         android:layout_height="wrap_content"
         android:layout_marginLeft="@dimen/dp_207"
-        android:layout_marginTop="@dimen/dp_228"
+        android:layout_marginTop="@dimen/dp_248"
         android:gravity="center"
         android:text="207"
         android:textColor="@color/color_ffffff"

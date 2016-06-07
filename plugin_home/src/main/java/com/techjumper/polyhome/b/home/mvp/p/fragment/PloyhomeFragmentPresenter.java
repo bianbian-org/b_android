@@ -78,9 +78,32 @@ public class PloyhomeFragmentPresenter extends AppBaseFragmentPresenter<Ployhome
     }
 
     @OnClick(R.id.jujia)
-    void jujia(){
+    void jujia() {
         Intent intent = new Intent(getView().getActivity(), JujiaActivity.class);
         getView().startActivity(intent);
+    }
+
+    @OnClick(R.id.smarthome)
+    void smartHome() {
+        PluginEngine.getInstance().start(new PluginEngine.IPluginConnection() {
+            @Override
+            public void onEngineConnected(PluginEngine.PluginExecutor pluginExecutor) {
+                String data
+                        = HostDataBuilder.startPluginBuilder()
+                        .packageName("com.polyhome.sceneanddevice")
+                        .build();
+                try {
+                    pluginExecutor.send(Constants.CODE_START_PLUGIN, data);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+
+            @Override
+            public void onEngineDisconnected() {
+
+            }
+        });
     }
 
     @Override

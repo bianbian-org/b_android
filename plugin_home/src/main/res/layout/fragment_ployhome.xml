@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:paddingLeft="@dimen/dp_34"
+    android:paddingLeft="@dimen/dp_8"
     android:orientation="horizontal">
 
     <LinearLayout
@@ -18,16 +18,16 @@
 
             <com.techjumper.polyhome.b.home.widget.SquareView
                 android:id="@+id/jujia"
-                android:layout_width="@dimen/dp_150"
-                android:layout_height="@dimen/dp_150"
+                android:layout_width="@dimen/dp_160"
+                android:layout_height="@dimen/dp_160"
                 app:bg_color="@color/color_20c3f3"
                 app:content_img="@mipmap/bg_jujia"
                 app:title_text="@string/title_jujia" />
 
             <com.techjumper.polyhome.b.home.widget.SquareView
                 android:id="@+id/smarthome"
-                android:layout_width="@dimen/dp_150"
-                android:layout_height="@dimen/dp_150"
+                android:layout_width="@dimen/dp_160"
+                android:layout_height="@dimen/dp_160"
                 android:layout_marginLeft="@dimen/dp_10"
                 app:bg_color="@color/color_20c3f3"
                 app:content_img="@mipmap/bg_smarthome"
@@ -35,8 +35,8 @@
 
             <com.techjumper.polyhome.b.home.widget.SquareView
                 android:id="@+id/property"
-                android:layout_width="@dimen/dp_150"
-                android:layout_height="@dimen/dp_150"
+                android:layout_width="@dimen/dp_160"
+                android:layout_height="@dimen/dp_160"
                 android:layout_marginLeft="@dimen/dp_10"
                 app:bg_color="@color/color_20c3f3"
                 app:content_img="@mipmap/bg_property"
@@ -46,8 +46,8 @@
 
         <ImageView
             android:id="@+id/ad"
-            android:layout_width="@dimen/dp_470"
-            android:layout_height="@dimen/dp_310"
+            android:layout_width="@dimen/dp_500"
+            android:layout_height="@dimen/dp_330"
             android:layout_marginTop="@dimen/dp_10"
             android:background="@mipmap/bg_ad" />
     </LinearLayout>
@@ -66,8 +66,8 @@
             <include layout="@layout/layout_info_notice" />
 
             <com.techjumper.polyhome.b.home.widget.FamilyModelView
-                android:layout_width="@dimen/dp_310"
-                android:layout_height="@dimen/dp_150"
+                android:layout_width="@dimen/dp_330"
+                android:layout_height="@dimen/dp_160"
                 android:layout_marginTop="@dimen/dp_10"/>
         </LinearLayout>
 
@@ -78,8 +78,8 @@
             android:orientation="vertical">
 
             <com.techjumper.polyhome.b.home.widget.SquareView
-                android:layout_width="@dimen/dp_150"
-                android:layout_height="@dimen/dp_150"
+                android:layout_width="@dimen/dp_160"
+                android:layout_height="@dimen/dp_160"
                 app:bg_color="@color/color_6a889f"
                 app:content_text="18°"
                 app:quarter_img="@mipmap/bg_weather"
@@ -87,8 +87,8 @@
                 app:title_text="pm2.0" />
 
             <com.techjumper.polyhome.b.home.widget.SquareView
-                android:layout_width="@dimen/dp_150"
-                android:layout_height="@dimen/dp_150"
+                android:layout_width="@dimen/dp_160"
+                android:layout_height="@dimen/dp_160"
                 android:layout_marginTop="@dimen/dp_10"
                 app:bg_color="@color/color_20c3f3"
                 app:content_text="09"
@@ -96,8 +96,8 @@
 
             <com.techjumper.polyhome.b.home.widget.SquareView
                 android:id="@+id/shopping"
-                android:layout_width="@dimen/dp_150"
-                android:layout_height="@dimen/dp_150"
+                android:layout_width="@dimen/dp_160"
+                android:layout_height="@dimen/dp_160"
                 android:layout_marginTop="@dimen/dp_10"
                 app:bg_color="@color/color_20c3f3"
                 app:content_img="@mipmap/bg_shopping"

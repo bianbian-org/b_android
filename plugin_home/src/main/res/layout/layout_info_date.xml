@@ -2,8 +2,8 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="@dimen/dp_310"
-    android:layout_height="@dimen/dp_150"
+    android:layout_width="@dimen/dp_330"
+    android:layout_height="@dimen/dp_160"
     android:background="@color/color_ffad5f">
 
     <com.techjumper.polyhome.b.home.widget.ArcView
@@ -12,7 +12,7 @@
         android:layout_height="wrap_content"
         app:arc_radius="@dimen/dp_144"
         app:av_bg_color="@color/color_ff9938"
-        app:rect_height="@dimen/dp_150"
+        app:rect_height="@dimen/dp_160"
         app:rect_width="@dimen/dp_205" />
 
     <TextView

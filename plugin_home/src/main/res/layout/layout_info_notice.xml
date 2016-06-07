@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/notice_layout"
-    android:layout_width="@dimen/dp_310"
-    android:layout_height="@dimen/dp_310"
+    android:layout_width="@dimen/dp_330"
+    android:layout_height="@dimen/dp_330"
     android:background="@color/color_6a889f">
 
     <TextView
