@@ -8,6 +8,7 @@ public class BackEvent {
 
     public static final int PROPERTY_ACTION = 0;
     public static final int PROPERTY_LIST = 1;
+    public static final int FINISH = 2;
 
     private int type;
 

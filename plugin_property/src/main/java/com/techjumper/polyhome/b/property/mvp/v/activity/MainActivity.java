@@ -30,10 +30,6 @@ public class MainActivity extends AppBaseActivity<MainActivityPresenter> {
 
     @Bind(R.id.title_date)
     TextView titleDate;
-    @Bind(R.id.bottom_back)
-    ImageView bottomBack;
-    @Bind(R.id.bottom_home)
-    ImageView bottomHome;
 
     @Override
     protected View inflateView(Bundle savedInstanceState) {

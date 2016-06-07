@@ -7,9 +7,11 @@ import com.techjumper.commonres.entity.TrueEntity;
 import com.techjumper.commonres.entity.event.InfoTypeEvent;
 import com.techjumper.commonres.entity.event.ReadMessageEvent;
 import com.techjumper.corelib.rx.tools.RxBus;
+import com.techjumper.polyhome.b.info.R;
 import com.techjumper.polyhome.b.info.mvp.m.InfoMainActivityModel;
 import com.techjumper.polyhome.b.info.mvp.v.activity.InfoMainActivity;
 
+import butterknife.OnClick;
 import rx.Subscriber;
 import rx.android.schedulers.AndroidSchedulers;
 
@@ -44,6 +46,11 @@ public class InfoMainActivityPresenter extends AppBaseActivityPresenter<InfoMain
                             }
                         })
         );
+    }
+
+    @OnClick(R.id.bottom_back)
+    void back() {
+        getView().finish();
     }
 
     public void getList() {

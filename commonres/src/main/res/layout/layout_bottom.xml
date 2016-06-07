@@ -4,13 +4,21 @@
     android:layout_height="@dimen/dp_37"
     android:background="@color/color_000000">
 
-    <ImageView
+    <LinearLayout
         android:id="@+id/bottom_back"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_centerVertical="true"
-        android:layout_marginLeft="@dimen/dp_40"
-        android:src="@mipmap/icon_bottom_arrow" />
+        android:layout_height="match_parent"
+        android:layout_marginLeft="@dimen/dp_20"
+        android:paddingLeft="@dimen/dp_20"
+        android:paddingRight="@dimen/dp_20"
+        android:gravity="center_vertical">
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:src="@mipmap/icon_bottom_arrow" />
+    </LinearLayout>
+
 
     <ImageView
         android:id="@+id/bottom_home"

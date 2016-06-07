@@ -86,6 +86,8 @@ public class ListFragmentPresenter extends AppBaseFragmentPresenter<ListFragment
     public void onViewInited(Bundle savedInstanceState) {
         getAnnouncements(1);
 
+        RxBus.INSTANCE.send(new BackEvent(BackEvent.FINISH));
+
         addSubscription(RxBus.INSTANCE.asObservable()
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(o -> {
@@ -95,6 +97,7 @@ public class ListFragmentPresenter extends AppBaseFragmentPresenter<ListFragment
                         RxBus.INSTANCE.send(new BackEvent(BackEvent.PROPERTY_LIST));
                     } else if (o instanceof PropertyListEvent) {
                         getView().showListLayout();
+                        RxBus.INSTANCE.send(new BackEvent(BackEvent.FINISH));
                     } else if (o instanceof PropertyMessageDetailEvent) {
                         PropertyMessageDetailEvent event = (PropertyMessageDetailEvent) o;
                         getMessageDetail(event.getId(), event.getType());
@@ -197,6 +200,7 @@ public class ListFragmentPresenter extends AppBaseFragmentPresenter<ListFragment
                                 return;
 
                             getView().showComplaintDetailLmdLayout(complaintDetailEntity.getData());
+                            RxBus.INSTANCE.send(new BackEvent(BackEvent.PROPERTY_LIST));
                         }
                     }));
         } else {
@@ -219,7 +223,8 @@ public class ListFragmentPresenter extends AppBaseFragmentPresenter<ListFragment
                                     repairDetailEntity.getData() == null)
                                 return;
 
-                            getView().showRepairDetailLmdLayout(repairDetailEntity.getData());
+                                                                                                                                                                                                                                                                               getView().showRepairDetailLmdLayout(repairDetailEntity.getData());
+                            RxBus.INSTANCE.send(new BackEvent(BackEvent.PROPERTY_LIST));
                         }
                     }));
 

@@ -68,6 +68,21 @@ public class SettingFragmentPresenter extends AppBaseFragmentPresenter<SettingFr
                 , StringUtils.PATTERN_PASSWORD
                 , 20
                 , getView().getString(R.string.error_wrong_password));
+
+        setOnTextChangeListener(getView().getSppOldpasswordInput()
+                , StringUtils.PATTERN_PASSWORD
+                , 20
+                , getView().getString(R.string.error_wrong_password));
+
+        setOnTextChangeListener(getView().getSppNewpasswordInput()
+                , StringUtils.PATTERN_PASSWORD
+                , 20
+                , getView().getString(R.string.error_wrong_password));
+
+        setOnTextChangeListener(getView().getSppConfirmpasswordInput()
+                , StringUtils.PATTERN_PASSWORD
+                , 20
+                , getView().getString(R.string.error_wrong_password));
     }
 
     /**
@@ -137,6 +152,11 @@ public class SettingFragmentPresenter extends AppBaseFragmentPresenter<SettingFr
         }
     }
 
+    @OnClick(R.id.spp_save)
+    void saveProjectPassword() {
+
+    }
+
     private void checkAndChangePassword() {
         EditText et = null;
         if (!StringUtils.PATTERN_PASSWORD.matcher(getView().getSupOldpasswordInput().getText().toString()).matches()) {
@@ -171,6 +191,9 @@ public class SettingFragmentPresenter extends AppBaseFragmentPresenter<SettingFr
                 .show();
     }
 
+    /**
+     * 获取日期
+     */
     public void pickDate() {
 
         Calendar calendar = Calendar.getInstance();
@@ -209,6 +232,27 @@ public class SettingFragmentPresenter extends AppBaseFragmentPresenter<SettingFr
                             getView().showError(editText, charSequence2);
                         })
         );
+    }
+
+    public void changeSettingPassword() {
+        String oldPwd = getView().getSppOldpasswordInput().getText().toString();
+        String newPwd = getView().getSppNewpasswordInput().getText().toString();
+        String confirmNewPwd = getView().getSppConfirmpasswordInput().getText().toString();
+
+        if (TextUtils.isEmpty(oldPwd)) {
+            ToastUtils.show(getView().getString(R.string.setting_password_old_null));
+            return;
+        }
+
+        if (TextUtils.isEmpty(newPwd)) {
+            ToastUtils.show(getView().getString(R.string.setting_password_new_null));
+            return;
+        }
+
+        if (TextUtils.isEmpty(confirmNewPwd)) {
+            ToastUtils.show(getView().getString(R.string.setting_password_confirm_new_null));
+            return;
+        }
     }
 
     public void changePassword() {
