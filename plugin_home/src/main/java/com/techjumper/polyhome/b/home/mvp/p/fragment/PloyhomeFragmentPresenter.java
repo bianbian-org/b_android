@@ -8,6 +8,8 @@ import com.techjumper.plugincommunicateengine.HostDataBuilder;
 import com.techjumper.plugincommunicateengine.PluginEngine;
 import com.techjumper.polyhome.b.home.R;
 import com.techjumper.polyhome.b.home.mvp.v.activity.AdActivity;
+import com.techjumper.polyhome.b.home.mvp.v.activity.JujiaActivity;
+import com.techjumper.polyhome.b.home.mvp.v.activity.ShoppingActivity;
 import com.techjumper.polyhome.b.home.mvp.v.fragment.PloyhomeFragment;
 
 import butterknife.OnClick;
@@ -67,6 +69,18 @@ public class PloyhomeFragmentPresenter extends AppBaseFragmentPresenter<Ployhome
     void ad() {
         Intent intent = new Intent(getView().getActivity(), AdActivity.class);
         getView().getActivity().startActivity(intent);
+    }
+
+    @OnClick(R.id.shopping)
+    void shopping() {
+        Intent intent = new Intent(getView().getActivity(), ShoppingActivity.class);
+        getView().startActivity(intent);
+    }
+
+    @OnClick(R.id.jujia)
+    void jujia(){
+        Intent intent = new Intent(getView().getActivity(), JujiaActivity.class);
+        getView().startActivity(intent);
     }
 
     @Override

@@ -95,6 +95,7 @@
                 app:title_text="周五限行" />
 
             <com.techjumper.polyhome.b.home.widget.SquareView
+                android:id="@+id/shopping"
                 android:layout_width="@dimen/dp_150"
                 android:layout_height="@dimen/dp_150"
                 android:layout_marginTop="@dimen/dp_10"
