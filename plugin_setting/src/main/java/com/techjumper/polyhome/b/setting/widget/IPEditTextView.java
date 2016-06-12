@@ -7,10 +7,17 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.FrameLayout;
 
+import com.jakewharton.rxbinding.widget.RxTextView;
+import com.techjumper.corelib.utils.window.ToastUtils;
 import com.techjumper.polyhome.b.setting.R;
+
+import java.util.concurrent.TimeUnit;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
+import rx.Observable;
+import rx.android.schedulers.AndroidSchedulers;
+import rx.functions.Func1;
 
 /**
  * Created by kevin on 16/6/1.
@@ -44,5 +51,25 @@ public class IPEditTextView extends FrameLayout {
     private void initView(Context context) {
         View view = LayoutInflater.from(context).inflate(R.layout.layout_ipedittext, this, true);
         ButterKnife.bind(view, this);
+
+        initEditText(firstEt, secondEt);
+        initEditText(secondEt, thirdEt);
+        initEditText(thirdEt, fourthEt);
+    }
+
+    private void initEditText(EditText firstEt, EditText secondEt) {
+        RxTextView.textChanges(firstEt)
+                .map(charSequence -> {
+                    if (charSequence.length() == 3) {
+                        secondEt.requestFocus();
+                    }
+                    return charSequence;
+                })
+                .debounce(150, TimeUnit.MILLISECONDS)
+                .subscribeOn(AndroidSchedulers.mainThread())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(charSequence1 -> {
+
+                });
     }
 }
