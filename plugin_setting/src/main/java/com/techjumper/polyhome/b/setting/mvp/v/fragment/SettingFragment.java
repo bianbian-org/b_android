@@ -209,8 +209,13 @@ public class SettingFragment extends AppBaseFragment<SettingFragmentPresenter> {
         editText.setSelection(content.length());
     }
 
-    public void showSettingMain() {
-        splLayout.setVisibility(View.GONE);
-        spmLayout.setVisibility(View.VISIBLE);
+    public void showSettingMain(boolean isMain) {
+        if (isMain) {
+            splLayout.setVisibility(View.GONE);
+            spmLayout.setVisibility(View.VISIBLE);
+        } else {
+            splLayout.setVisibility(View.VISIBLE);
+            spmLayout.setVisibility(View.GONE);
+        }
     }
 }

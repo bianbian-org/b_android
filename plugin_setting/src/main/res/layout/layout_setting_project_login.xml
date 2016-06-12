@@ -36,6 +36,7 @@
             android:paddingLeft="@dimen/dp_16"
             android:paddingRight="@dimen/dp_16"
             android:singleLine="true"
+            android:inputType="textPassword"
             android:textColor="@color/color_ffffff"
             android:textCursorDrawable="@null" />
 

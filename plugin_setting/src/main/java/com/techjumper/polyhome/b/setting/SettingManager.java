@@ -15,8 +15,8 @@ public enum SettingManager {
     public static final String KEY_SIP_IS_ON = "key_sip_is_on"; //是否启用sip设置
 
 
-    private void savePassword(String password) {
-        PreferenceUtils.save(KEY_PASSWORD, password);
+    public boolean savePassword(String password) {
+        return PreferenceUtils.save(KEY_PASSWORD, password);
     }
 
     /**
@@ -27,7 +27,6 @@ public enum SettingManager {
      */
     public boolean isPassword(String password) {
         if (password.equals(PreferenceUtils.get(KEY_PASSWORD, Config.defaultPassword))) {
-            savePassword(password);
             return true;
         }
         return false;

@@ -68,6 +68,8 @@
     <string name="setting_password_new_null">新密码不能为空</string>
     <string name="setting_password_confirm_new_null">确认密码不能为空</string>
     <string name="setting_password_success">修改密码成功,请牢记!</string>
+    <string name="setting_password_not_same">新密码和确认密码不相同</string>
+    <string name="setting_password_old_error">原密码不符</string>
 
     <string name="error_to_connect_server">网络连接失败!</string>
     <string name="error_no_data">暂无任何内容</string>

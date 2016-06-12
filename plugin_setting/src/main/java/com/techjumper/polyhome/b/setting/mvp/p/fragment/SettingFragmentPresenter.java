@@ -146,15 +146,18 @@ public class SettingFragmentPresenter extends AppBaseFragmentPresenter<SettingFr
             return;
 
         if (SettingManager.INSTANCE.isPassword(password)) {
-            getView().showSettingMain();
+            getView().showSettingMain(true);
         } else {
             ToastUtils.show(getView().getString(R.string.setting_password_error));
         }
+
+        getView().getSplPassword().setText("");
+
     }
 
     @OnClick(R.id.spp_save)
     void saveProjectPassword() {
-
+        changeProjectPassword();
     }
 
     private void checkAndChangePassword() {
@@ -234,7 +237,7 @@ public class SettingFragmentPresenter extends AppBaseFragmentPresenter<SettingFr
         );
     }
 
-    public void changeSettingPassword() {
+    public void changeProjectPassword() {
         String oldPwd = getView().getSppOldpasswordInput().getText().toString();
         String newPwd = getView().getSppNewpasswordInput().getText().toString();
         String confirmNewPwd = getView().getSppConfirmpasswordInput().getText().toString();
@@ -253,6 +256,26 @@ public class SettingFragmentPresenter extends AppBaseFragmentPresenter<SettingFr
             ToastUtils.show(getView().getString(R.string.setting_password_confirm_new_null));
             return;
         }
+
+        // TODO: 16/6/12 目前是取的本地
+        if (!SettingManager.INSTANCE.isPassword(oldPwd)) {
+            ToastUtils.show(getView().getString(R.string.setting_password_old_error));
+            return;
+        }
+
+        if (!newPwd.equals(confirmNewPwd)) {
+            ToastUtils.show(getView().getString(R.string.setting_password_not_same));
+            return;
+        }
+
+        if (SettingManager.INSTANCE.savePassword(newPwd)) {
+            ToastUtils.show(getView().getString(R.string.setting_password_success));
+            getView().showSettingMain(false);
+        }
+
+        getView().getSppOldpasswordInput().setText("");
+        getView().getSppNewpasswordInput().setText("");
+        getView().getSppConfirmpasswordInput().setText("");
     }
 
     public void changePassword() {
