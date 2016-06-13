@@ -17,6 +17,11 @@ public class SettingActivityPresenter extends AppBaseActivityPresenter<SettingAc
         getView().finish();
     }
 
+    @OnClick(R.id.bottom_home)
+    void home() {
+        getView().finish();
+    }
+
     @Override
     public void initData(Bundle savedInstanceState) {
 

@@ -32,6 +32,11 @@ public class MainActivityPresenter extends AppBaseActivityPresenter<MainActivity
         }
     }
 
+    @OnClick(R.id.bottom_home)
+    void home() {
+        getView().finish();
+    }
+
     @Override
     public void initData(Bundle savedInstanceState) {
 

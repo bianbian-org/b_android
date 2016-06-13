@@ -53,6 +53,11 @@ public class InfoMainActivityPresenter extends AppBaseActivityPresenter<InfoMain
         getView().finish();
     }
 
+    @OnClick(R.id.bottom_home)
+    void home() {
+        getView().finish();
+    }
+
     public void getList() {
         addSubscription(infoMainActivityModel.getInfo(1).subscribe(new Subscriber<InfoEntity>() {
             @Override
