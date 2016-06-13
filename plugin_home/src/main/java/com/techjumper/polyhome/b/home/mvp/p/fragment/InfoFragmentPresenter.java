@@ -4,6 +4,7 @@ import android.os.Bundle;
 
 import com.techjumper.commonres.entity.CalendarEntity;
 import com.techjumper.commonres.entity.WeatherEntity;
+import com.techjumper.commonres.util.PluginEngineUtil;
 import com.techjumper.plugincommunicateengine.Constants;
 import com.techjumper.plugincommunicateengine.HostDataBuilder;
 import com.techjumper.plugincommunicateengine.PluginEngine;
@@ -22,71 +23,17 @@ public class InfoFragmentPresenter extends AppBaseFragmentPresenter<InfoFragment
 
     @OnClick(R.id.setting)
     void setting() {
-        PluginEngine.getInstance().start(new PluginEngine.IPluginConnection() {
-            @Override
-            public void onEngineConnected(PluginEngine.PluginExecutor pluginExecutor) {
-                String data
-                        = HostDataBuilder.startPluginBuilder()
-                        .packageName("com.techjumper.polyhome.b.setting")
-                        .build();
-                try {
-                    pluginExecutor.send(Constants.CODE_START_PLUGIN, data);
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-            }
-
-            @Override
-            public void onEngineDisconnected() {
-
-            }
-        });
+        PluginEngineUtil.startSetting();
     }
 
     @OnClick(R.id.detect_layout)
     void detect() {
-        PluginEngine.getInstance().start(new PluginEngine.IPluginConnection() {
-            @Override
-            public void onEngineConnected(PluginEngine.PluginExecutor pluginExecutor) {
-                String data
-                        = HostDataBuilder.startPluginBuilder()
-                        .packageName("pltk.com.medical")
-                        .build();
-                try {
-                    pluginExecutor.send(Constants.CODE_START_PLUGIN, data);
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-            }
-
-            @Override
-            public void onEngineDisconnected() {
-
-            }
-        });
+        PluginEngineUtil.startMedical();
     }
 
     @OnClick(R.id.speak)
     void speak() {
-        PluginEngine.getInstance().start(new PluginEngine.IPluginConnection() {
-            @Override
-            public void onEngineConnected(PluginEngine.PluginExecutor pluginExecutor) {
-                String data
-                        = HostDataBuilder.startPluginBuilder()
-                        .packageName("com.dnake.talk")
-                        .build();
-                try {
-                    pluginExecutor.send(Constants.CODE_START_PLUGIN, data);
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-            }
-
-            @Override
-            public void onEngineDisconnected() {
-
-            }
-        });
+        PluginEngineUtil.startTalk();
     }
 
     @Override

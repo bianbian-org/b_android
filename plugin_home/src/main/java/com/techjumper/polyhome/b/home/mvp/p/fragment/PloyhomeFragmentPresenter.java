@@ -3,6 +3,7 @@ package com.techjumper.polyhome.b.home.mvp.p.fragment;
 import android.content.Intent;
 import android.os.Bundle;
 
+import com.techjumper.commonres.util.PluginEngineUtil;
 import com.techjumper.plugincommunicateengine.Constants;
 import com.techjumper.plugincommunicateengine.HostDataBuilder;
 import com.techjumper.plugincommunicateengine.PluginEngine;
@@ -21,48 +22,12 @@ public class PloyhomeFragmentPresenter extends AppBaseFragmentPresenter<Ployhome
 
     @OnClick(R.id.property)
     void property() {
-        PluginEngine.getInstance().start(new PluginEngine.IPluginConnection() {
-            @Override
-            public void onEngineConnected(PluginEngine.PluginExecutor pluginExecutor) {
-                String data
-                        = HostDataBuilder.startPluginBuilder()
-                        .packageName("com.techjumper.polyhome.b.property")
-                        .build();
-                try {
-                    pluginExecutor.send(Constants.CODE_START_PLUGIN, data);
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-            }
-
-            @Override
-            public void onEngineDisconnected() {
-
-            }
-        });
+        PluginEngineUtil.startProperty();
     }
 
     @OnClick(R.id.notice_layout)
     void noticeLayout() {
-        PluginEngine.getInstance().start(new PluginEngine.IPluginConnection() {
-            @Override
-            public void onEngineConnected(PluginEngine.PluginExecutor pluginExecutor) {
-                String data
-                        = HostDataBuilder.startPluginBuilder()
-                        .packageName("com.techjumper.polyhome.b.info")
-                        .build();
-                try {
-                    pluginExecutor.send(Constants.CODE_START_PLUGIN, data);
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-            }
-
-            @Override
-            public void onEngineDisconnected() {
-
-            }
-        });
+        PluginEngineUtil.startInfo();
     }
 
     @OnClick(R.id.ad)
@@ -85,25 +50,7 @@ public class PloyhomeFragmentPresenter extends AppBaseFragmentPresenter<Ployhome
 
     @OnClick(R.id.smarthome)
     void smartHome() {
-        PluginEngine.getInstance().start(new PluginEngine.IPluginConnection() {
-            @Override
-            public void onEngineConnected(PluginEngine.PluginExecutor pluginExecutor) {
-                String data
-                        = HostDataBuilder.startPluginBuilder()
-                        .packageName("com.polyhome.sceneanddevice")
-                        .build();
-                try {
-                    pluginExecutor.send(Constants.CODE_START_PLUGIN, data);
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-            }
-
-            @Override
-            public void onEngineDisconnected() {
-
-            }
-        });
+        PluginEngineUtil.startSmartHome();
     }
 
     @Override
