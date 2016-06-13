@@ -38,24 +38,26 @@ public class SettingActivity extends AppBaseActivity<SettingActivityPresenter> {
 
         date.setText(CommonDateUtil.getTitleDate());
 
-        addSubscription(RxBus.INSTANCE.asObservable()
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(o -> {
-                    if (o instanceof LoginEvent) {
-                        LoginEvent loginEvent = (LoginEvent) o;
-                        if (loginEvent.isLogin()) {
-                            switchToSetting();
-                        } else {
-                            switchToLogin();
-                        }
-                    }
-                }));
+//        addSubscription(RxBus.INSTANCE.asObservable()
+//                .observeOn(AndroidSchedulers.mainThread())
+//                .subscribe(o -> {
+//                    if (o instanceof LoginEvent) {
+//                        LoginEvent loginEvent = (LoginEvent) o;
+//                        if (loginEvent.isLogin()) {
+//                            switchToSetting();
+//                        } else {
+//                            switchToLogin();
+//                        }
+//                    }
+//                }));
+//
+//        if (!UserManager.INSTANCE.isLogin()) {
+//            UserManager.INSTANCE.notifyLoginOrLogoutEvent(false);
+//        } else {
+//            UserManager.INSTANCE.notifyLoginOrLogoutEvent(true);
+//        }
 
-        if (!UserManager.INSTANCE.isLogin()) {
-            UserManager.INSTANCE.notifyLoginOrLogoutEvent(false);
-        } else {
-            UserManager.INSTANCE.notifyLoginOrLogoutEvent(true);
-        }
+        switchToSetting();
     }
 
     private void switchToSetting() {

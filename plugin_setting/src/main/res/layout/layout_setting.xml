@@ -22,6 +22,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:checked="true"
+                android:visibility="gone"
                 android:text="@string/setting_user" />
 
             <RadioButton
@@ -30,6 +31,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="@dimen/dp_30"
+                android:checked="true"
                 android:text="@string/setting_project" />
 
         </RadioGroup>
@@ -42,6 +44,7 @@
             android:drawablePadding="@dimen/dp_5"
             android:gravity="center_vertical"
             android:text="@string/setting_logout"
+            android:visibility="gone"
             android:textColor="@color/color_ffffff"
             android:textSize="@dimen/sp_16" />
     </LinearLayout>
