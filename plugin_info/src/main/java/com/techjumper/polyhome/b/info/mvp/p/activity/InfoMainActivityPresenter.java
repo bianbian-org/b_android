@@ -72,6 +72,9 @@ public class InfoMainActivityPresenter extends AppBaseActivityPresenter<InfoMain
 
             @Override
             public void onNext(InfoEntity infoEntity) {
+                if (!processNetworkResult(infoEntity, false))
+                    return;
+
                 if (infoEntity != null &&
                         infoEntity.getData() != null &&
                         infoEntity.getData().getMessages() != null &&

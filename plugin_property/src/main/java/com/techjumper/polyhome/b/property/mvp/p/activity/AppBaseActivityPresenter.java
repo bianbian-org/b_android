@@ -47,11 +47,14 @@ public abstract class AppBaseActivityPresenter<T extends AppBaseActivity> extend
         if (NetHelper.isSuccess(entity))
             return true;
         if (entity != null) {
-            if (isShowMessage) {
+            if (entity.getError_code() == NetHelper.CODE_NOT_LOGIN) {
                 getView().showHint(entity.getError_code() + ":" + entity.getError_msg());
-            }
-            if (entity.getError_code() == NetHelper.CODE_NO_DATA) {
-                getView().showHintShort(getView().getString(R.string.error_no_data));
+            } else if (entity.getError_code() == NetHelper.CODE_NO_DATA) {
+                if (isShowMessage) {
+                    getView().showHintShort(getView().getString(R.string.error_no_data));
+                } else {
+                    getView().showHint(entity.getError_code() + ":" + entity.getError_msg());
+                }
             }
         } else
             getView().showError(null);

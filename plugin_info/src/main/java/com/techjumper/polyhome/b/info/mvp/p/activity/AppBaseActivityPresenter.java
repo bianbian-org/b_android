@@ -1,8 +1,12 @@
 package com.techjumper.polyhome.b.info.mvp.p.activity;
 
+import android.net.Network;
+import android.os.UserManager;
+
 import com.techjumper.commonres.entity.BaseEntity;
 import com.techjumper.corelib.mvp.presenter.BaseActivityPresenterImp;
 import com.techjumper.corelib.rx.tools.RxUtils;
+import com.techjumper.corelib.utils.common.AcHelper;
 import com.techjumper.polyhome.b.info.R;
 import com.techjumper.polyhome.b.info.mvp.v.activity.AppBaseActivity;
 import com.techjumper.polyhome.b.info.net.NetHelper;
@@ -47,11 +51,14 @@ public abstract class AppBaseActivityPresenter<T extends AppBaseActivity> extend
         if (NetHelper.isSuccess(entity))
             return true;
         if (entity != null) {
-            if (isShowMessage) {
+            if (entity.getError_code() == NetHelper.CODE_NOT_LOGIN) {
                 getView().showHint(entity.getError_code() + ":" + entity.getError_msg());
-            }
-            if (entity.getError_code() == NetHelper.CODE_NO_DATA) {
-                getView().showHintShort(getView().getString(R.string.error_no_data));
+            } else if (entity.getError_code() == NetHelper.CODE_NO_DATA) {
+                if (isShowMessage) {
+                    getView().showHintShort(getView().getString(R.string.error_no_data));
+                } else {
+                    getView().showHint(entity.getError_code() + ":" + entity.getError_msg());
+                }
             }
         } else
             getView().showError(null);

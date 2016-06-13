@@ -144,6 +144,9 @@ public class ListFragmentPresenter extends AppBaseFragmentPresenter<ListFragment
 
                     @Override
                     public void onNext(ComplaintEntity complaintEntity) {
+                        if (!processNetworkResult(complaintEntity, false))
+                            return;
+
                         if (complaintEntity == null ||
                                 complaintEntity.getData() == null ||
                                 complaintEntity.getData().getSuggestions() == null)
@@ -169,6 +172,9 @@ public class ListFragmentPresenter extends AppBaseFragmentPresenter<ListFragment
 
                     @Override
                     public void onNext(RepairEntity repairEntity) {
+                        if (!processNetworkResult(repairEntity, false))
+                            return;
+
                         if (repairEntity == null ||
                                 repairEntity.getData() == null ||
                                 repairEntity.getData().getRepairs() == null)
@@ -195,6 +201,9 @@ public class ListFragmentPresenter extends AppBaseFragmentPresenter<ListFragment
 
                         @Override
                         public void onNext(ComplaintDetailEntity complaintDetailEntity) {
+                            if (!processNetworkResult(complaintDetailEntity, false))
+                                return;
+
                             if (complaintDetailEntity == null ||
                                     complaintDetailEntity.getData() == null)
                                 return;
@@ -219,6 +228,9 @@ public class ListFragmentPresenter extends AppBaseFragmentPresenter<ListFragment
 
                         @Override
                         public void onNext(RepairDetailEntity repairDetailEntity) {
+                            if (!processNetworkResult(repairDetailEntity, false))
+                                return;
+
                             if (repairDetailEntity == null ||
                                     repairDetailEntity.getData() == null)
                                 return;
@@ -246,6 +258,9 @@ public class ListFragmentPresenter extends AppBaseFragmentPresenter<ListFragment
 
                     @Override
                     public void onNext(TrueEntity trueEntity) {
+                        if (!processNetworkResult(trueEntity, false))
+                            return;
+
                         if (trueEntity == null ||
                                 trueEntity.getData() == null ||
                                 TextUtils.isEmpty(trueEntity.getData().getResult()))

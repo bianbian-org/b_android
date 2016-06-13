@@ -46,11 +46,14 @@ public abstract class AppBaseFragmentPresenter<T extends AppBaseFragment> extend
         if (NetHelper.isSuccess(entity))
             return true;
         if (entity != null) {
-            if (entity.getError_code() == NetHelper.CODE_NO_DATA) {
-                if (notifyNoData)
-                    getView().showHintShort(getView().getString(R.string.error_no_data));
-            } else {
+            if (entity.getError_code() == NetHelper.CODE_NOT_LOGIN) {
                 getView().showHint(entity.getError_code() + ":" + entity.getError_msg());
+            } else if (entity.getError_code() == NetHelper.CODE_NO_DATA) {
+                if (notifyNoData) {
+                    getView().showHintShort(getView().getString(R.string.error_no_data));
+                } else {
+                    getView().showHint(entity.getError_code() + ":" + entity.getError_msg());
+                }
             }
         } else
             getView().showError(null);

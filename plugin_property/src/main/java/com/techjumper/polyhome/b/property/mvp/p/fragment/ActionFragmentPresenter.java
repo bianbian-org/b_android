@@ -65,6 +65,9 @@ public class ActionFragmentPresenter extends AppBaseFragmentPresenter<ActionFrag
 
                     @Override
                     public void onNext(TrueEntity trueEntity) {
+                        if (!processNetworkResult(trueEntity, false))
+                            return;
+
                         if (trueEntity == null ||
                                 trueEntity.getData() == null)
                             return;
@@ -94,6 +97,9 @@ public class ActionFragmentPresenter extends AppBaseFragmentPresenter<ActionFrag
 
                     @Override
                     public void onNext(TrueEntity trueEntity) {
+                        if (!processNetworkResult(trueEntity, false))
+                            return;
+
                         if (trueEntity == null ||
                                 trueEntity.getData() == null)
                             return;
