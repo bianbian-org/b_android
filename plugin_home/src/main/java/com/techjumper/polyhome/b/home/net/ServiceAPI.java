@@ -1,6 +1,7 @@
 package com.techjumper.polyhome.b.home.net;
 
 import com.techjumper.commonres.entity.CalendarEntity;
+import com.techjumper.commonres.entity.InfoEntity;
 import com.techjumper.commonres.entity.WeatherEntity;
 
 import java.util.Map;
@@ -22,5 +23,8 @@ public interface ServiceAPI {
 
     @GET("get_calendar")
     Observable<CalendarEntity> getCalendarInfo(@QueryMap Map<String, String> map);
+
+    @GET("messages")
+    Observable<InfoEntity> getInfo(@QueryMap Map<String, String> map);
 
 }
