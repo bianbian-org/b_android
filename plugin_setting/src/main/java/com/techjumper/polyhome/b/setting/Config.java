@@ -19,6 +19,6 @@ public class Config {
 
     public static String sBaseBUrl = "http://poly.techjumper.com/api/v1b/";
 
-    public static String defaultPassword = "12345678";
+    public static String defaultPassword = "123456";
 
 }

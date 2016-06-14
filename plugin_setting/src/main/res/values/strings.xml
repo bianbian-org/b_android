@@ -36,6 +36,7 @@
     <string name="setting_project_network">网络设置</string>
     <string name="setting_project_password">工程密码</string>
 
+    <string name="setting_project_roomnum_community">小区编号</string>
     <string name="setting_project_roomnum_house">楼栋号</string>
     <string name="setting_project_roomnum_unit">单元号</string>
     <string name="setting_project_roomnum_floor">楼层号</string>

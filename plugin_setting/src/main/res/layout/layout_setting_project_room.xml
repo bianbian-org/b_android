@@ -20,6 +20,36 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:text="@string/setting_project_roomnum_community"
+                android:textColor="@color/color_B3ffffff"
+                android:textSize="@dimen/sp_16" />
+
+            <EditText
+                android:id="@+id/spr_community_input"
+                android:layout_width="@dimen/dp_260"
+                android:layout_height="@dimen/dp_40"
+                android:layout_centerHorizontal="true"
+                android:layout_marginLeft="@dimen/dp_20"
+                android:background="@color/color_99020405"
+                android:paddingLeft="@dimen/dp_16"
+                android:paddingRight="@dimen/dp_16"
+                android:singleLine="true"
+                android:textColor="@color/color_ffffff"
+                android:textCursorDrawable="@null"
+                android:textSize="@dimen/sp_16" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/dp_30"
+            android:layout_gravity="right"
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 android:text="@string/setting_project_roomnum_house"
                 android:textColor="@color/color_B3ffffff"
                 android:textSize="@dimen/sp_16" />
@@ -44,6 +74,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/dp_30"
             android:gravity="center_vertical"
+            android:layout_gravity="right"
             android:orientation="horizontal">
 
             <TextView
@@ -73,6 +104,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/dp_30"
             android:gravity="center_vertical"
+            android:layout_gravity="right"
             android:orientation="horizontal">
 
             <TextView
@@ -102,6 +134,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/dp_30"
             android:gravity="center_vertical"
+            android:layout_gravity="right"
             android:orientation="horizontal">
 
             <TextView

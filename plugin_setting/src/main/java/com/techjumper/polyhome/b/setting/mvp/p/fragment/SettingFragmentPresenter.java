@@ -49,11 +49,6 @@ public class SettingFragmentPresenter extends AppBaseFragmentPresenter<SettingFr
     @Override
     public void onViewInited(Bundle savedInstanceState) {
 
-        setOnTextChangeListener(getView().getSplPassword()
-                , StringUtils.PATTERN_PASSWORD
-                , 20
-                , getView().getString(R.string.error_wrong_password));
-
         setOnTextChangeListener(getView().getSupOldpasswordInput()
                 , StringUtils.PATTERN_PASSWORD
                 , 20
@@ -142,17 +137,15 @@ public class SettingFragmentPresenter extends AppBaseFragmentPresenter<SettingFr
             return;
         }
 
-        if (password.length() < 8 || password.length() > 20)
-            return;
+//        if (password.length() < 6 || password.length() > 20)
+//            return;
 
         if (SettingManager.INSTANCE.isPassword(password)) {
             getView().showSettingMain(true);
+            getView().getSplPassword().setText("");
         } else {
             ToastUtils.show(getView().getString(R.string.setting_password_error));
         }
-
-        getView().getSplPassword().setText("");
-
     }
 
     @OnClick(R.id.spp_save)
