@@ -15,9 +15,10 @@
 
     <ImageView
         android:id="@+id/lw_img"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:src="@mipmap/icon_cloud"
+        android:layout_width="@dimen/dp_32"
+        android:layout_height="@dimen/dp_20"
+        android:scaleType="centerCrop"
+        android:background="@mipmap/icon_cloud"
         android:layout_marginTop="@dimen/dp_13"/>
 
 

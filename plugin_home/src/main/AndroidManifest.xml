@@ -23,7 +23,8 @@
         tools:replace="android:allowBackup">
         <activity
             android:name=".mvp.v.activity.MainActivity"
-            android:theme="@style/AppTheme">
+            android:theme="@style/AppTheme"
+            android:launchMode="singleTask">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

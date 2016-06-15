@@ -10,7 +10,8 @@
         android:layout_height="@dimen/dp_61"
         android:layout_marginLeft="@dimen/dp_30"
         android:layout_marginTop="@dimen/dp_31"
-        android:src="@mipmap/bg_weather_default" />
+        android:scaleType="centerCrop"
+        android:background="@mipmap/bg_weather_default" />
 
     <LinearLayout
         android:layout_width="wrap_content"

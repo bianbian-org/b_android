@@ -8,9 +8,6 @@ package com.techjumper.plugincommunicateengine.entity.core;
  **/
 public class StartPluginActivityEntity extends BaseMessageEntity<StartPluginActivityEntity.DataEntity> {
 
-    /**
-     * 无实际用处, 只是为了规范
-     */
     public static final String ACTIVITY_LAUNCHER = "launcher";
 
     public static class DataEntity {

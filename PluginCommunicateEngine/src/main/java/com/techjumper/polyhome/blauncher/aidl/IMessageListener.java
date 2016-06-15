@@ -3,8 +3,6 @@
  * Original file: /Users/zhaoyiding/Documents/workspace/_work/polyhome_b_host/polyhome_b_host_android/BLauncher/src/main/aidl/com/techjumper/polyhome/blauncher/aidl/IMessageListener.aidl
  */
 package com.techjumper.polyhome.blauncher.aidl;
-// Declare any non-default types here with import statements
-
 public interface IMessageListener extends android.os.IInterface
 {
 /** Local-side IPC implementation stub class. */
@@ -51,7 +49,14 @@ int _arg0;
 _arg0 = data.readInt();
 String _arg1;
 _arg1 = data.readString();
-this.onNewMessageFromPluginEngine(_arg0, _arg1);
+android.os.Bundle _arg2;
+if ((0!=data.readInt())) {
+_arg2 = android.os.Bundle.CREATOR.createFromParcel(data);
+}
+else {
+_arg2 = null;
+}
+this.onNewMessageFromPluginEngine(_arg0, _arg1, _arg2);
 reply.writeNoException();
 return true;
 }
@@ -77,7 +82,7 @@ return DESCRIPTOR;
      * Demonstrates some basic types that you can use as parameters
      * and return values in AIDL.
      */
-@Override public void onNewMessageFromPluginEngine(int code, String message) throws android.os.RemoteException
+@Override public void onNewMessageFromPluginEngine(int code, String message, android.os.Bundle extras) throws android.os.RemoteException
 {
 android.os.Parcel _data = android.os.Parcel.obtain();
 android.os.Parcel _reply = android.os.Parcel.obtain();
@@ -85,6 +90,13 @@ try {
 _data.writeInterfaceToken(DESCRIPTOR);
 _data.writeInt(code);
 _data.writeString(message);
+if ((extras!=null)) {
+_data.writeInt(1);
+extras.writeToParcel(_data, 0);
+}
+else {
+_data.writeInt(0);
+}
 mRemote.transact(Stub.TRANSACTION_onNewMessageFromPluginEngine, _data, _reply, 0);
 _reply.readException();
 }
@@ -100,5 +112,5 @@ static final int TRANSACTION_onNewMessageFromPluginEngine = (android.os.IBinder.
      * Demonstrates some basic types that you can use as parameters
      * and return values in AIDL.
      */
-public void onNewMessageFromPluginEngine(int code, String message) throws android.os.RemoteException;
+public void onNewMessageFromPluginEngine(int code, String message, android.os.Bundle extras) throws android.os.RemoteException;
 }

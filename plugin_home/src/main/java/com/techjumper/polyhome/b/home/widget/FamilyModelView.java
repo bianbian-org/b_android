@@ -6,6 +6,7 @@ import android.animation.ObjectAnimator;
 import android.annotation.TargetApi;
 import android.content.Context;
 import android.os.Build;
+import android.os.Bundle;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
@@ -15,6 +16,11 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 
+import com.techjumper.commonres.PluginConstant;
+import com.techjumper.commonres.util.PluginEngineUtil;
+import com.techjumper.corelib.utils.file.PreferenceUtils;
+import com.techjumper.plugincommunicateengine.PluginEngine;
+import com.techjumper.polyhome.b.home.InfoManager;
 import com.techjumper.polyhome.b.home.R;
 
 import butterknife.Bind;
@@ -41,6 +47,8 @@ public class FamilyModelView extends RelativeLayout {
     float moveX;
     static final int MIN_DISTANCE = 10;
 
+    private boolean isHome = false;
+
     public FamilyModelView(Context context) {
         super(context);
         initView(context);
@@ -63,42 +71,13 @@ public class FamilyModelView extends RelativeLayout {
     }
 
     private void initView(Context context) {
+
+        isHome = InfoManager.INSTANCE.isHome();
+
+        postSmartHome();
+
         View view = LayoutInflater.from(context).inflate(R.layout.layout_family_mode, this, true);
         ButterKnife.bind(view, this);
-
-//        arrow.setOnTouchListener(new OnTouchListener() {
-//            @Override
-//            public boolean onTouch(View v, MotionEvent event) {
-//                if (!isTouch)
-//                    return false;
-//                x = event.getX();
-//                switch (event.getAction()) {
-//                    case MotionEvent.ACTION_DOWN:
-//                        x = event.getX();
-//                        v.getX();
-//                        getParent().getParent().getParent().requestDisallowInterceptTouchEvent(true);
-//                        break;
-//                    case MotionEvent.ACTION_MOVE:
-//                        event.getX();
-//                        v.getX();
-//                        break;
-//                    case MotionEvent.ACTION_UP:
-//                        moveX = event.getX();
-//                        v.getX();
-//                        if (x > moveX) {
-//                            isToLeft = true;
-//                            isToRight = false;
-//                        } else {
-//                            isToLeft = false;
-//                            isToRight = true;
-//                        }
-//                        setAnimation();
-//                        break;
-//                }
-////                x = moveX;
-//                return true;
-//            }
-//        });
     }
 
     @Override
@@ -146,6 +125,9 @@ public class FamilyModelView extends RelativeLayout {
                 @Override
                 public void onAnimationStart(Animator animation) {
                     lfmMode.setText(R.string.family_mode_home);
+                    isHome = true;
+                    InfoManager.INSTANCE.saveIsHome(isHome);
+                    postSmartHome();
                 }
 
                 @Override
@@ -182,6 +164,9 @@ public class FamilyModelView extends RelativeLayout {
                 @Override
                 public void onAnimationStart(Animator animation) {
                     lfmMode.setText(R.string.family_mode_away);
+                    isHome = false;
+                    InfoManager.INSTANCE.saveIsHome(isHome);
+                    postSmartHome();
                 }
 
                 @Override
@@ -204,5 +189,26 @@ public class FamilyModelView extends RelativeLayout {
             set.setDuration(300);
             set.start();
         }
+    }
+
+    //对智能家居发送信息
+    private void postSmartHome() {
+        PluginEngine.getInstance().start(new PluginEngine.IPluginConnection() {
+            @Override
+            public void onEngineConnected(PluginEngine.PluginExecutor pluginExecutor) {
+                Bundle bundle = new Bundle();
+                bundle.putBoolean(PluginConstant.KEY_ISHOME, isHome);
+                try {
+                    pluginExecutor.send(PluginEngine.CODE_CUSTOM, PluginConstant.ACTION_SMARTHOME, bundle);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+
+            @Override
+            public void onEngineDisconnected() {
+
+            }
+        });
     }
 }

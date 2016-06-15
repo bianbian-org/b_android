@@ -14,6 +14,7 @@ import com.techjumper.corelib.mvp.factory.Presenter;
 import com.techjumper.polyhome.b.home.R;
 import com.techjumper.polyhome.b.home.mvp.p.fragment.InfoFragmentPresenter;
 import com.techjumper.polyhome.b.home.utils.StringUtil;
+import com.techjumper.polyhome.b.home.utils.WeatherUtil;
 import com.techjumper.polyhome.b.home.widget.AlmanacView;
 import com.techjumper.polyhome.b.home.widget.WeatherView;
 
@@ -75,8 +76,9 @@ public class InfoFragment extends AppBaseFragment<InfoFragmentPresenter> {
     }
 
     public void getWeatherInfo(WeatherEntity.WeatherDataEntity weatherDataEntity) {
-        // TODO: 16/4/28 有些数据需要微调，比如空起质量，适合跑步等 
-        liwTemperature.setText(weatherDataEntity.getTemperature());
+        // TODO: 16/4/28 有些数据需要微调，比如空起质量，适合跑步等
+        liwIcon.setBackgroundResource(WeatherUtil.getImgRes(weatherDataEntity.getImg()));
+        liwTemperature.setText(weatherDataEntity.getTemperature() + "°");
         liwInfo.setText(weatherDataEntity.getWeather_info());
         liwSubTemperature.setText(StringUtil.addSeparator(weatherDataEntity.getTemperature_low(), weatherDataEntity.getTemperature_hight()));
         liwPm.setText(weatherDataEntity.getPm25());
@@ -84,12 +86,16 @@ public class InfoFragment extends AppBaseFragment<InfoFragmentPresenter> {
 
         liwwFirst.setDate(weatherDataEntity.getDate_one());
         liwwFirst.setTemperature(weatherDataEntity.getTemperature_one());
-        liwwSecond.setDate(weatherDataEntity.getWeather_two());
+        liwwFirst.setImg(weatherDataEntity.getImg_one());
+        liwwSecond.setDate(weatherDataEntity.getDate_two());
         liwwSecond.setTemperature(weatherDataEntity.getTemperature_two());
+        liwwSecond.setImg(weatherDataEntity.getImg_two());
         liwwThird.setDate(weatherDataEntity.getDate_three());
         liwwThird.setTemperature(weatherDataEntity.getTemperature_three());
+        liwwThird.setImg(weatherDataEntity.getImg_three());
         liwwFourth.setDate(weatherDataEntity.getDate_four());
         liwwFourth.setTemperature(weatherDataEntity.getTemperature_four());
+        liwwFourth.setImg(weatherDataEntity.getImg_four());
     }
 
     public void getCalendarInfo(CalendarEntity.CalendarDataEntity calendarDataEntity) {

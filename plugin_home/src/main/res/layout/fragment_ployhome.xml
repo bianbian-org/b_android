@@ -78,6 +78,7 @@
             android:orientation="vertical">
 
             <com.techjumper.polyhome.b.home.widget.SquareView
+                android:id="@+id/fp_temperature"
                 android:layout_width="@dimen/dp_160"
                 android:layout_height="@dimen/dp_160"
                 app:bg_color="@color/color_6a889f"
@@ -87,6 +88,7 @@
                 app:title_text="pm2.0" />
 
             <com.techjumper.polyhome.b.home.widget.SquareView
+                android:id="@+id/fp_restrict"
                 android:layout_width="@dimen/dp_160"
                 android:layout_height="@dimen/dp_160"
                 android:layout_marginTop="@dimen/dp_10"

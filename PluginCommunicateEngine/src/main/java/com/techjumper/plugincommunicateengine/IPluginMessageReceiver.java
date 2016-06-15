@@ -1,5 +1,7 @@
 package com.techjumper.plugincommunicateengine;
 
+import android.os.Bundle;
+
 /**
  * * * * * * * * * * * * * * * * * * * * * * *
  * Created by zhaoyiding
@@ -7,5 +9,5 @@ package com.techjumper.plugincommunicateengine;
  * * * * * * * * * * * * * * * * * * * * * * *
  **/
 public interface IPluginMessageReceiver {
-    void onPluginMessageReceive(int code, String message);
+    void onPluginMessageReceive(int code, String message, Bundle extras);
 }

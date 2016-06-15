@@ -3,11 +3,12 @@ package com.techjumper.polyhome.b.home.mvp.p.fragment;
 import android.os.Bundle;
 
 import com.techjumper.commonres.entity.CalendarEntity;
+import com.techjumper.commonres.entity.LoginEntity;
 import com.techjumper.commonres.entity.WeatherEntity;
+import com.techjumper.commonres.entity.event.WeatherEvent;
 import com.techjumper.commonres.util.PluginEngineUtil;
-import com.techjumper.plugincommunicateengine.Constants;
-import com.techjumper.plugincommunicateengine.HostDataBuilder;
-import com.techjumper.plugincommunicateengine.PluginEngine;
+import com.techjumper.corelib.rx.tools.RxBus;
+import com.techjumper.lib2.utils.GsonUtils;
 import com.techjumper.polyhome.b.home.R;
 import com.techjumper.polyhome.b.home.mvp.m.InfoFragmentModel;
 import com.techjumper.polyhome.b.home.mvp.v.fragment.InfoFragment;
@@ -43,12 +44,12 @@ public class InfoFragmentPresenter extends AppBaseFragmentPresenter<InfoFragment
 
     @Override
     public void onViewInited(Bundle savedInstanceState) {
-        getWeatherInfo();
+        getWeatherInfo(429);
         getCalendarInfo();
     }
 
-    private void getWeatherInfo() {
-        addSubscription(infoFragmentModel.getWeatherInfo()
+    private void getWeatherInfo(long familyId) {
+        addSubscription(infoFragmentModel.getWeatherInfo(familyId)
                 .subscribe(new Subscriber<WeatherEntity>() {
                     @Override
                     public void onCompleted() {
@@ -57,13 +58,15 @@ public class InfoFragmentPresenter extends AppBaseFragmentPresenter<InfoFragment
 
                     @Override
                     public void onError(Throwable e) {
-
+                        getView().showError(e);
                     }
 
                     @Override
                     public void onNext(WeatherEntity weatherEntity) {
                         if (weatherEntity != null && weatherEntity.getData() != null)
                             getView().getWeatherInfo(weatherEntity.getData());
+                        //发送给主页获取数据
+                        RxBus.INSTANCE.send(new WeatherEvent(weatherEntity.getData()));
                     }
                 }));
     }
@@ -78,7 +81,7 @@ public class InfoFragmentPresenter extends AppBaseFragmentPresenter<InfoFragment
 
                     @Override
                     public void onError(Throwable e) {
-
+                        getView().showError(e);
                     }
 
                     @Override

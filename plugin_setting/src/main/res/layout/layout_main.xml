@@ -29,6 +29,16 @@
             android:text="3月18日  周五  22:45"
             android:textColor="@color/color_7fffffff"
             android:textSize="@dimen/sp_18" />
+
+        <TextView
+            android:id="@+id/update"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_alignParentRight="true"
+            android:gravity="bottom"
+            android:text="@string/setting_update"
+            android:textColor="@color/color_DDffffff"
+            android:textSize="@dimen/sp_20"/>
     </RelativeLayout>
 
     <FrameLayout

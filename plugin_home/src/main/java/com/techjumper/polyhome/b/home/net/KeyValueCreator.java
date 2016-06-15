@@ -34,4 +34,9 @@ public class KeyValueCreator {
                 .put("page", page)
                 .put("count", count);
     }
+
+    public static KeyValuePair getWeatherInfo(String familyId) {
+        return newPair()
+                .put("family_id", familyId);
+    }
 }

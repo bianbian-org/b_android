@@ -1,6 +1,7 @@
 package com.techjumper.commonres.util;
 
-import com.techjumper.plugincommunicateengine.Constants;
+import android.os.Bundle;
+
 import com.techjumper.plugincommunicateengine.HostDataBuilder;
 import com.techjumper.plugincommunicateengine.PluginEngine;
 
@@ -26,7 +27,7 @@ public class PluginEngineUtil {
                         .packageName(PLUGIN_PROPERTY)
                         .build();
                 try {
-                    pluginExecutor.send(Constants.CODE_START_PLUGIN, data);
+                    pluginExecutor.send(PluginEngine.CODE_START_PLUGIN, data);
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
@@ -49,7 +50,7 @@ public class PluginEngineUtil {
                         .packageName(PLUGIN_INFO)
                         .build();
                 try {
-                    pluginExecutor.send(Constants.CODE_START_PLUGIN, data);
+                    pluginExecutor.send(PluginEngine.CODE_START_PLUGIN, data);
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
@@ -72,7 +73,7 @@ public class PluginEngineUtil {
                         .packageName(PLUGIN_SMARTHOME)
                         .build();
                 try {
-                    pluginExecutor.send(Constants.CODE_START_PLUGIN, data);
+                    pluginExecutor.send(PluginEngine.CODE_START_PLUGIN, data);
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
@@ -95,7 +96,7 @@ public class PluginEngineUtil {
                         .packageName(PLUGIN_SETTING)
                         .build();
                 try {
-                    pluginExecutor.send(Constants.CODE_START_PLUGIN, data);
+                    pluginExecutor.send(PluginEngine.CODE_START_PLUGIN, data);
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
@@ -118,7 +119,7 @@ public class PluginEngineUtil {
                         .packageName(PLUGIN_MEDICAL)
                         .build();
                 try {
-                    pluginExecutor.send(Constants.CODE_START_PLUGIN, data);
+                    pluginExecutor.send(PluginEngine.CODE_START_PLUGIN, data);
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
@@ -141,7 +142,27 @@ public class PluginEngineUtil {
                         .packageName(PLUGIN_TALK)
                         .build();
                 try {
-                    pluginExecutor.send(Constants.CODE_START_PLUGIN, data);
+                    pluginExecutor.send(PluginEngine.CODE_START_PLUGIN, data);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+
+            @Override
+            public void onEngineDisconnected() {
+
+            }
+        });
+    }
+
+    //更新插件
+    public static void update() {
+        PluginEngine.getInstance().start(new PluginEngine.IPluginConnection() {
+
+            @Override
+            public void onEngineConnected(PluginEngine.PluginExecutor pluginExecutor) {
+                try {
+                    pluginExecutor.send(PluginEngine.CODE_UPDATE_PLUGIN);
                 } catch (Exception e) {
                     e.printStackTrace();
                 }

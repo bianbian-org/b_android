@@ -22,9 +22,9 @@ public class InfoFragmentModel extends BaseModel<InfoFragmentPresenter> {
         super(presenter);
     }
 
-    public Observable<WeatherEntity> getWeatherInfo() {
+    public Observable<WeatherEntity> getWeatherInfo(long familyId) {
         return RetrofitHelper.<ServiceAPI>createDefault()
-                .getWeatherInfo(NetHelper.createBaseArgumentsMap(KeyValueCreator.empty()))
+                .getWeatherInfo(NetHelper.createBaseArgumentsMap(KeyValueCreator.getWeatherInfo(String.valueOf(familyId))))
                 .compose(CommonWrap.wrap());
     }
 

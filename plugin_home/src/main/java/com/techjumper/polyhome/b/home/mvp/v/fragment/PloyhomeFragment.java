@@ -11,6 +11,7 @@ import android.widget.TextView;
 import com.techjumper.corelib.mvp.factory.Presenter;
 import com.techjumper.polyhome.b.home.R;
 import com.techjumper.polyhome.b.home.mvp.p.fragment.PloyhomeFragmentPresenter;
+import com.techjumper.polyhome.b.home.widget.SquareView;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -25,6 +26,10 @@ public class PloyhomeFragment extends AppBaseFragment<PloyhomeFragmentPresenter>
     TextView noticeTitle;
     @Bind(R.id.notice_content)
     TextView noticeContent;
+    @Bind(R.id.fp_temperature)
+    SquareView fpTemperature;
+    @Bind(R.id.fp_restrict)
+    SquareView fpRestrict;
 
     public TextView getNoticeTitle() {
         return noticeTitle;
@@ -32,6 +37,14 @@ public class PloyhomeFragment extends AppBaseFragment<PloyhomeFragmentPresenter>
 
     public TextView getNoticeContent() {
         return noticeContent;
+    }
+
+    public SquareView getFpTemperature() {
+        return fpTemperature;
+    }
+
+    public SquareView getFpRestrict() {
+        return fpRestrict;
     }
 
     public static PloyhomeFragment getInstance() {

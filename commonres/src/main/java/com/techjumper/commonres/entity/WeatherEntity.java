@@ -44,6 +44,7 @@ public class WeatherEntity extends BaseEntity<WeatherEntity.WeatherDataEntity> {
         private String temperature_four;
         private String weather_four;
         private String img_four;
+        private Restrict restrict;
 
         public String getCity_name() {
             return city_name;
@@ -261,6 +262,14 @@ public class WeatherEntity extends BaseEntity<WeatherEntity.WeatherDataEntity> {
             this.img_four = img_four;
         }
 
+        public Restrict getRestrict() {
+            return restrict;
+        }
+
+        public void setRestrict(Restrict restrict) {
+            this.restrict = restrict;
+        }
+
         @Override
         public String toString() {
             return "WeatherDataEntity{" +
@@ -294,4 +303,89 @@ public class WeatherEntity extends BaseEntity<WeatherEntity.WeatherDataEntity> {
                     '}';
         }
     }
+
+    public static class Restrict {
+        private long id;
+        private int city_id;
+        String monday;
+        String tuesday;
+        String wednesday;
+        String thursday;
+        String friday;
+        String saturday;
+        String sunday;
+
+        public long getId() {
+            return id;
+        }
+
+        public void setId(long id) {
+            this.id = id;
+        }
+
+        public int getCity_id() {
+            return city_id;
+        }
+
+        public void setCity_id(int city_id) {
+            this.city_id = city_id;
+        }
+
+        public String getMonday() {
+            return monday;
+        }
+
+        public void setMonday(String monday) {
+            this.monday = monday;
+        }
+
+        public String getTuesday() {
+            return tuesday;
+        }
+
+        public void setTuesday(String tuesday) {
+            this.tuesday = tuesday;
+        }
+
+        public String getWednesday() {
+            return wednesday;
+        }
+
+        public void setWednesday(String wednesday) {
+            this.wednesday = wednesday;
+        }
+
+        public String getThursday() {
+            return thursday;
+        }
+
+        public void setThursday(String thursday) {
+            this.thursday = thursday;
+        }
+
+        public String getFriday() {
+            return friday;
+        }
+
+        public void setFriday(String friday) {
+            this.friday = friday;
+        }
+
+        public String getSaturday() {
+            return saturday;
+        }
+
+        public void setSaturday(String saturday) {
+            this.saturday = saturday;
+        }
+
+        public String getSunday() {
+            return sunday;
+        }
+
+        public void setSunday(String sunday) {
+            this.sunday = sunday;
+        }
+    }
+
 }

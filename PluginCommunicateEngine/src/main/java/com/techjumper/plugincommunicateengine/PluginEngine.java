@@ -10,6 +10,7 @@ import android.os.IBinder;
 import android.os.Looper;
 import android.os.RemoteException;
 import android.util.Log;
+import android.widget.Toast;
 
 import com.techjumper.polyhome.blauncher.aidl.IMessageListener;
 import com.techjumper.polyhome.blauncher.aidl.IPluginCommunicate;
@@ -25,6 +26,24 @@ import java.util.List;
  * * * * * * * * * * * * * * * * * * * * * * *
  **/
 public class PluginEngine {
+
+    /**
+     * 与插件通信的code
+     */
+    public static final int CODE_CUSTOM = 999;  //自定义消息
+    public static final int CODE_START_PLUGIN = 1;  //打开指定插件
+    public static final int CODE_START_PLUGIN_ACTIVITY = 2; //打开指定插件的指定页面
+    public static final int CODE_GET_PLUGIN_INFO = 3; //获取插件信息
+    public static final int CODE_SAVE_INFO = 4; //保存信息到本地
+    public static final int CODE_GET_SAVE_INFO = 5; //获取本地信息
+    public static final int CODE_UPDATE_PLUGIN = 6; //联网更新插件
+
+
+    /**
+     * 取插件数据的key
+     */
+    public static final String KEY_MESSAGE = "key_msg";
+    public static final String KEY_EXTRA = "key_extra";
 
     private static PluginEngine INSTANCE;
 
@@ -54,21 +73,21 @@ public class PluginEngine {
 
         @Override
         public void onServiceDisconnected(ComponentName name) {
-            iPluginCommunicate = null;
-            notifyEngineDisconnected();
+            clear();
         }
     };
 
     private IMessageListener.Stub iMessageListener = new IMessageListener.Stub() {
         @Override
-        public void onNewMessageFromPluginEngine(final int code, final String message) throws RemoteException {
+        public void onNewMessageFromPluginEngine(final int code, final String message, final Bundle extras) throws RemoteException {
             mHandler.post(new Runnable() {
                 @Override
                 public void run() {
-                    notifyPluginMessageRecieve(code, message);
+                    notifyPluginMessageRecieve(code, message, extras);
                 }
             });
         }
+
     };
 
     private PluginEngine() {
@@ -179,7 +198,7 @@ public class PluginEngine {
         }
     }
 
-    private void notifyPluginMessageRecieve(int code, String message) {
+    private void notifyPluginMessageRecieve(int code, String message, Bundle extras) {
         Iterator<IPluginMessageReceiver> it = mMessageReceiveListenerList.iterator();
         while (it.hasNext()) {
             IPluginMessageReceiver next = it.next();
@@ -187,7 +206,7 @@ public class PluginEngine {
                 it.remove();
                 continue;
             }
-            next.onPluginMessageReceive(code, message);
+            next.onPluginMessageReceive(code, message, extras);
         }
     }
 
@@ -201,8 +220,13 @@ public class PluginEngine {
         void onEngineDisconnected();
     }
 
+    private void clear() {
+        iPluginCommunicate = null;
+        notifyEngineDisconnected();
+    }
 
     public class PluginExecutor {
+
         private PluginExecutor() {
         }
 
@@ -211,14 +235,77 @@ public class PluginEngine {
                 throw new Exception("未连接到核心组件");
         }
 
-        public void send(int code, String message) throws Exception {
+
+        public void send(final int code) throws Exception {
             AssertPlugin();
-            getPluginCommunicate().sendMessage(code, message);
+            try {
+                getPluginCommunicate().sendMessage(code, "");
+            } catch (Exception e) {
+                clear();
+                start(new IPluginConnection() {
+                    @Override
+                    public void onEngineConnected(PluginExecutor pluginExecutor) {
+                        try {
+                            getPluginCommunicate().sendMessage(code, "");
+                        } catch (Exception ignored) {
+                            Toast.makeText(mContext, "远程服务断开连接", Toast.LENGTH_SHORT).show();
+                        }
+                    }
+
+                    @Override
+                    public void onEngineDisconnected() {
+                        Toast.makeText(mContext, "远程服务断开连接", Toast.LENGTH_SHORT).show();
+                    }
+                });
+            }
         }
 
-        public void send(int code, String message, Bundle extras) throws Exception {
+        public void send(final int code, final String message) throws Exception {
             AssertPlugin();
-            getPluginCommunicate().sendMessageWithExtras(code, message, extras);
+            try {
+                getPluginCommunicate().sendMessage(code, message);
+            } catch (Exception e) {
+                clear();
+                start(new IPluginConnection() {
+                    @Override
+                    public void onEngineConnected(PluginExecutor pluginExecutor) {
+                        try {
+                            getPluginCommunicate().sendMessage(code, message);
+                        } catch (Exception ignored) {
+                            Toast.makeText(mContext, "远程服务断开连接", Toast.LENGTH_SHORT).show();
+                        }
+                    }
+
+                    @Override
+                    public void onEngineDisconnected() {
+                        Toast.makeText(mContext, "远程服务断开连接", Toast.LENGTH_SHORT).show();
+                    }
+                });
+            }
+        }
+
+        public void send(final int code, final String message, final Bundle extras) throws Exception {
+            AssertPlugin();
+            try {
+                getPluginCommunicate().sendMessageWithExtras(code, message, extras);
+            } catch (Exception e) {
+                clear();
+                start(new IPluginConnection() {
+                    @Override
+                    public void onEngineConnected(PluginExecutor pluginExecutor) {
+                        try {
+                            getPluginCommunicate().sendMessageWithExtras(code, message, extras);
+                        } catch (Exception ignored) {
+                            Toast.makeText(mContext, "远程服务断开连接", Toast.LENGTH_SHORT).show();
+                        }
+                    }
+
+                    @Override
+                    public void onEngineDisconnected() {
+                        Toast.makeText(mContext, "远程服务断开连接", Toast.LENGTH_SHORT).show();
+                    }
+                });
+            }
         }
 
     }

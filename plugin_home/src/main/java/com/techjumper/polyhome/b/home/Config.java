@@ -15,6 +15,6 @@ public class Config {
     /**
      * 默认接口地址
      */
-    public static String sBaseUrl = "http://poly.techjumper.com/api/v1/";
+    public static String sBaseUrl = "http://poly.techjumper.com/api/v1b/";
 
 }

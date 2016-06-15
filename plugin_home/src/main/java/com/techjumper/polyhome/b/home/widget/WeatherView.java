@@ -11,6 +11,7 @@ import android.widget.TextView;
 
 
 import com.techjumper.polyhome.b.home.R;
+import com.techjumper.polyhome.b.home.utils.WeatherUtil;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -60,7 +61,7 @@ public class WeatherView extends RelativeLayout {
         lwTemperature.setText(temperature == null ? "" : temperature);
     }
 
-    public void setImg(int imgType) {
-        // TODO: 16/4/28  天气img的type和本地图片暂时没有确定
+    public void setImg(String imgType) {
+       lwImg.setBackgroundResource(WeatherUtil.getImgRes(imgType));
     }
 }
