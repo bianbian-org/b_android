@@ -16,6 +16,7 @@ import com.techjumper.polyhome.b.home.mvp.v.activity.AdActivity;
 import com.techjumper.polyhome.b.home.mvp.v.activity.JujiaActivity;
 import com.techjumper.polyhome.b.home.mvp.v.activity.ShoppingActivity;
 import com.techjumper.polyhome.b.home.mvp.v.fragment.PloyhomeFragment;
+import com.techjumper.polyhome.b.home.utils.DateUtil;
 import com.techjumper.polyhome.b.home.widget.SquareView;
 
 import java.util.List;
@@ -91,10 +92,10 @@ public class PloyhomeFragmentPresenter extends AppBaseFragmentPresenter<Ployhome
 
                         if (TextUtils.isEmpty(restrictNo)) {
                             restrictSv.showContentText("无");
-                            restrictSv.showTitleText(getDate(date) + "不限行");
+                            restrictSv.showTitleText(DateUtil.getDate(date) + "不限行");
                         } else {
                             restrictSv.showContentText(restrictNo);
-                            restrictSv.showTitleText(getDate(date) + "限行");
+                            restrictSv.showTitleText(DateUtil.getDate(date) + "限行");
                         }
 
                     }
@@ -154,25 +155,5 @@ public class PloyhomeFragmentPresenter extends AppBaseFragmentPresenter<Ployhome
         }
 
         return restrictNo;
-    }
-
-    private String getDate(String date) {
-        if (date.equals("周一")) {
-            date = "周日";
-        } else if (date.equals("周二")) {
-            date = "周一";
-        } else if (date.equals("周三")) {
-            date = "周二";
-        } else if (date.equals("周四")) {
-            date = "周三";
-        } else if (date.equals("周五")) {
-            date = "周四";
-        } else if (date.equals("周六")) {
-            date = "周五";
-        } else if (date.equals("周日")) {
-            date = "周六";
-        }
-
-        return date;
     }
 }

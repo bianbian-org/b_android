@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -13,6 +14,7 @@ import com.techjumper.commonres.entity.WeatherEntity;
 import com.techjumper.corelib.mvp.factory.Presenter;
 import com.techjumper.polyhome.b.home.R;
 import com.techjumper.polyhome.b.home.mvp.p.fragment.InfoFragmentPresenter;
+import com.techjumper.polyhome.b.home.utils.DateUtil;
 import com.techjumper.polyhome.b.home.utils.StringUtil;
 import com.techjumper.polyhome.b.home.utils.WeatherUtil;
 import com.techjumper.polyhome.b.home.widget.AlmanacView;
@@ -21,6 +23,7 @@ import com.techjumper.polyhome.b.home.widget.WeatherView;
 import java.util.List;
 
 import butterknife.Bind;
+import butterknife.ButterKnife;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -60,6 +63,8 @@ public class InfoFragment extends AppBaseFragment<InfoFragmentPresenter> {
     AlmanacView lidAlmanacOk;
     @Bind(R.id.lid_almanac_nope)
     AlmanacView lidAlmanacNope;
+    @Bind(R.id.lid_week)
+    TextView lidWeek;
 
     public static InfoFragment getInstance() {
         return new InfoFragment();
@@ -96,12 +101,14 @@ public class InfoFragment extends AppBaseFragment<InfoFragmentPresenter> {
         liwwFourth.setDate(weatherDataEntity.getDate_four());
         liwwFourth.setTemperature(weatherDataEntity.getTemperature_four());
         liwwFourth.setImg(weatherDataEntity.getImg_four());
+
+        lidWeek.setText("星期" + DateUtil.getDate(weatherDataEntity.getDate_one()).substring(1, 2));
     }
 
     public void getCalendarInfo(CalendarEntity.CalendarDataEntity calendarDataEntity) {
         // TODO: 16/4/28 有些数据需要微调
-        lidDate.setText(calendarDataEntity.getDate());
-        lidLunar.setText(calendarDataEntity.getLunarYear() + calendarDataEntity.getLunar());
+        lidDate.setText(DateUtil.formatDate(calendarDataEntity.getDate()));
+        lidLunar.setText(calendarDataEntity.getLunarYear() + calendarDataEntity.getAnimalsYear() + "年" + calendarDataEntity.getLunar());
 
         List<String> suits = StringUtil.interceptString(calendarDataEntity.getSuit(), ".");
         List<String> avoids = StringUtil.interceptString(calendarDataEntity.getAvoid(), ".");

@@ -15,18 +15,33 @@
         app:rect_height="@dimen/dp_160"
         app:rect_width="@dimen/dp_205" />
 
-    <TextView
-        android:id="@+id/lid_date"
+    <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignLeft="@id/arc_layout"
         android:layout_alignRight="@id/arc_layout"
         android:layout_centerVertical="true"
-        android:gravity="center"
-        android:text="3月20日星期六"
-        android:textColor="@color/color_ffffff"
-        android:textSize="@dimen/sp_32" />
+        android:gravity="center">
 
+        <TextView
+            android:id="@+id/lid_date"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:text="3月20日"
+            android:textColor="@color/color_ffffff"
+            android:textSize="@dimen/sp_32" />
+
+        <TextView
+            android:id="@+id/lid_week"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:text="星期六"
+            android:layout_marginLeft="@dimen/dp_10"
+            android:textColor="@color/color_ffffff"
+            android:textSize="@dimen/sp_32" />
+    </LinearLayout>
 
     <TextView
         android:id="@+id/lid_lunar"
@@ -35,9 +50,9 @@
         android:layout_alignParentBottom="true"
         android:layout_marginBottom="@dimen/dp_13"
         android:layout_marginLeft="@dimen/dp_13"
+        android:text="丙申猴年二月初九"
         android:textColor="@color/color_ffffff"
-        android:textSize="@dimen/sp_16"
-        android:text="丙申猴年二月初九" />
+        android:textSize="@dimen/sp_16" />
 
     <com.techjumper.polyhome.b.home.widget.AlmanacView
         android:id="@+id/lid_almanac_ok"
