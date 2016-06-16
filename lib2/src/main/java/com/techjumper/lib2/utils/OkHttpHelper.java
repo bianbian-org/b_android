@@ -3,6 +3,7 @@ package com.techjumper.lib2.utils;
 import com.techjumper.corelib.utils.common.JLog;
 import com.techjumper.corelib.utils.file.FileUtils;
 import com.techjumper.corelib.utils.system.AppUtils;
+import com.techjumper.lib2.Config;
 
 import java.io.File;
 import java.util.concurrent.TimeUnit;
@@ -12,6 +13,7 @@ import okhttp3.Interceptor;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
+import okhttp3.logging.HttpLoggingInterceptor;
 
 /**
  * * * * * * * * * * * * * * * * * * * * * * *
@@ -83,11 +85,21 @@ public class OkHttpHelper {
         } else {
             cacheSize = 20 * 1024 * 1024;//20mb
         }
+
+
         OkHttpClient.Builder builder = new OkHttpClient.Builder()
                 .cache(new Cache(new File(cachePath), cacheSize))
                 .connectTimeout(10, TimeUnit.SECONDS)
                 .readTimeout(10, TimeUnit.SECONDS)
                 .writeTimeout(10, TimeUnit.SECONDS);
+
+        if (Config.sIsDebug) {
+            HttpLoggingInterceptor logging = new HttpLoggingInterceptor();
+            logging.setLevel(HttpLoggingInterceptor.Level.BODY);
+            builder.addInterceptor(logging);
+            JLog.d("开启HTTP日志");
+        }
+
         builder.networkInterceptors().add(REWRITE_CACHE_CONTROL_INTERCEPTOR);
         return builder.build();
     }

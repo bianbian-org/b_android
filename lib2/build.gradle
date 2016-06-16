@@ -28,6 +28,7 @@ dependencies {
     compile "com.squareup.retrofit2:converter-gson:$rootProject.converter_gson"
     compile "com.squareup.retrofit2:adapter-rxjava:$rootProject.adapter_rxjava"
     compile "com.squareup.okhttp3:okhttp:$rootProject.okhttp"
+    compile "com.squareup.okhttp3:logging-interceptor:$rootProject.logging_interceptor"
     compile "com.squareup.okio:okio:$rootProject.okio"
     compile "com.squareup.picasso:picasso:$rootProject.picasso"
     compile "com.jakewharton.picasso:picasso2-okhttp3-downloader:$rootProject.picasso2_okhttp3_downloader"

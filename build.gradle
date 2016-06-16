@@ -52,6 +52,7 @@ ext {
     okio = '1.6.0'
     picasso = '2.5.2'
     picasso2_okhttp3_downloader = '1.0.2'
+    logging_interceptor = '3.3.1'
 
     //commonres
     powerfulAdapter = '1.0.0'
