@@ -8,10 +8,18 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.techjumper.commonres.entity.NoticeEntity;
+import com.techjumper.commonres.entity.event.NoticeEvent;
 import com.techjumper.corelib.mvp.factory.Presenter;
+import com.techjumper.corelib.rx.tools.RxBus;
 import com.techjumper.polyhome.b.home.R;
 import com.techjumper.polyhome.b.home.mvp.p.fragment.PloyhomeFragmentPresenter;
+import com.techjumper.polyhome.b.home.utils.StringUtil;
 import com.techjumper.polyhome.b.home.widget.SquareView;
+
+import java.util.List;
+import java.util.Timer;
+import java.util.TimerTask;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -22,14 +30,19 @@ import butterknife.ButterKnife;
 @Presenter(PloyhomeFragmentPresenter.class)
 public class PloyhomeFragment extends AppBaseFragment<PloyhomeFragmentPresenter> {
 
-    @Bind(R.id.notice_title)
-    TextView noticeTitle;
-    @Bind(R.id.notice_content)
-    TextView noticeContent;
     @Bind(R.id.fp_temperature)
     SquareView fpTemperature;
     @Bind(R.id.fp_restrict)
     SquareView fpRestrict;
+    @Bind(R.id.notice_num)
+    TextView noticeNum;
+    @Bind(R.id.notice_title)
+    TextView noticeTitle;
+    @Bind(R.id.notice_content)
+    TextView noticeContent;
+
+    private Timer timer = new Timer();
+    private int position = 0;
 
     public TextView getNoticeTitle() {
         return noticeTitle;
@@ -59,5 +72,48 @@ public class PloyhomeFragment extends AppBaseFragment<PloyhomeFragmentPresenter>
     @Override
     protected void initView(Bundle savedInstanceState) {
 
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        if (timer != null) {
+            timer.cancel();
+        }
+    }
+
+    public void initNotices(NoticeEntity.NoticeDataEntity entity) {
+        if (entity == null)
+            return;
+
+        List<NoticeEntity.Unread> unreads = entity.getUnread();
+        if (unreads != null) {
+            int num = 0;
+            if (unreads.size() > 0) {
+                for (int i = 0; i < unreads.size(); i++) {
+                    num += unreads.get(i).getCount();
+                }
+            }
+            noticeNum.setText(String.valueOf(num));
+        }
+
+        List<NoticeEntity.Message> messages = entity.getMessages();
+        if (messages != null && messages.size() > 0) {
+
+            timer.schedule(new TimerTask() {
+                @Override
+                public void run() {
+                    NoticeEntity.Message message = messages.get(position);
+
+                    RxBus.INSTANCE.send(new NoticeEvent(message.getTitle(), message.getContent(), message.getTypes()));
+
+                    if (position == messages.size() - 1) {
+                        position = 0;
+                    } else {
+                        position++;
+                    }
+                }
+            }, 1000, 3000);
+        }
     }
 }
