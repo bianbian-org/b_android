@@ -4,6 +4,7 @@ import android.content.ComponentName;
 import android.content.Intent;
 import android.os.Bundle;
 
+import com.techjumper.commonres.PluginConstant;
 import com.techjumper.commonres.entity.CalendarEntity;
 import com.techjumper.commonres.entity.LoginEntity;
 import com.techjumper.commonres.entity.WeatherEntity;
@@ -11,6 +12,8 @@ import com.techjumper.commonres.entity.event.WeatherEvent;
 import com.techjumper.commonres.util.PluginEngineUtil;
 import com.techjumper.corelib.rx.tools.RxBus;
 import com.techjumper.lib2.utils.GsonUtils;
+import com.techjumper.plugincommunicateengine.IPluginMessageReceiver;
+import com.techjumper.plugincommunicateengine.PluginEngine;
 import com.techjumper.polyhome.b.home.R;
 import com.techjumper.polyhome.b.home.mvp.m.InfoFragmentModel;
 import com.techjumper.polyhome.b.home.mvp.v.fragment.InfoFragment;
@@ -52,8 +55,11 @@ public class InfoFragmentPresenter extends AppBaseFragmentPresenter<InfoFragment
     public void onViewInited(Bundle savedInstanceState) {
         getWeatherInfo(429);
         getCalendarInfo();
+
+        postMedical();
     }
 
+    //获取天气相关
     private void getWeatherInfo(long familyId) {
         addSubscription(infoFragmentModel.getWeatherInfo(familyId)
                 .subscribe(new Subscriber<WeatherEntity>() {
@@ -77,6 +83,7 @@ public class InfoFragmentPresenter extends AppBaseFragmentPresenter<InfoFragment
                 }));
     }
 
+    //获取日历相关
     private void getCalendarInfo() {
         addSubscription(infoFragmentModel.getCalendarInfo()
                 .subscribe(new Subscriber<CalendarEntity>() {
@@ -96,5 +103,31 @@ public class InfoFragmentPresenter extends AppBaseFragmentPresenter<InfoFragment
                             getView().getCalendarInfo(calendarEntity.getData());
                     }
                 }));
+    }
+
+    //对医疗发送请求信息
+    private void postMedical() {
+        PluginEngine.getInstance().start(new PluginEngine.IPluginConnection() {
+            @Override
+            public void onEngineConnected(PluginEngine.PluginExecutor pluginExecutor) {
+                try {
+                    pluginExecutor.send(PluginEngine.CODE_CUSTOM, PluginConstant.ACTION_MEDICAL);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+
+            @Override
+            public void onEngineDisconnected() {
+
+            }
+        });
+
+        PluginEngine.getInstance().registerReceiver(new IPluginMessageReceiver() {
+            @Override
+            public void onPluginMessageReceive(int code, String message, Bundle extras) {
+                //接受医疗的消息
+            }
+        });
     }
 }

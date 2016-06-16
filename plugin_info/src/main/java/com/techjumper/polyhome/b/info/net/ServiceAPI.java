@@ -1,5 +1,6 @@
 package com.techjumper.polyhome.b.info.net;
 
+import com.techjumper.commonres.entity.AnnouncementEntity;
 import com.techjumper.commonres.entity.BaseArgumentsEntity;
 import com.techjumper.commonres.entity.InfoEntity;
 import com.techjumper.commonres.entity.TrueEntity;
@@ -22,4 +23,7 @@ public interface ServiceAPI {
 
     @POST("message_read")
     Observable<TrueEntity> readMessage(@Body BaseArgumentsEntity entity);
+
+    @GET("notices")
+    Observable<AnnouncementEntity> getAnnouncements(@QueryMap Map<String, String> map);
 }

@@ -5,6 +5,6 @@ package com.techjumper.commonres;
  */
 public class ComConstant {
 
-    public static final String defaultTicket = "5549f611db806a43a8f30c27136f1a2861b6582d";
+    public static final String defaultTicket = "7694942bc4ebeb7d53724897ae622810f6186e44";
     public static final String defaultUserId = "248";
 }

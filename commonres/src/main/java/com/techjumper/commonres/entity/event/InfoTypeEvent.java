@@ -5,6 +5,9 @@ package com.techjumper.commonres.entity.event;
  */
 public class InfoTypeEvent {
 
+    public static final int ALL = -1;
+    public static final int ANNOUNCEMENT = -2;
+
     private int type;
 
     public InfoTypeEvent(int type) {

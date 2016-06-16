@@ -17,4 +17,6 @@ public class Config {
      */
     public static String sBaseUrl = "http://poly.techjumper.com/api/v1/";
 
+    public static String sBaseBUrl = "http://poly.techjumper.com/api/v1b/";
+
 }

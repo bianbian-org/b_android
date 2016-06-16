@@ -6,8 +6,10 @@ package com.techjumper.commonres;
 public class PluginConstant {
 
     //action 相当于插件之间交互的凭证
-    public static final String ACTION_SMARTHOME = "action_smarthome";
+    public static final String ACTION_SMARTHOME = "action_smarthome"; //智能家居
+    public static final String ACTION_MEDICAL = "action_medical"; //医疗
+    public static final String ACTION_INFO = "action_info"; //信息中心
 
-    //key
+    //智能家居key
     public static final String KEY_ISHOME = "key_ishome";
 }

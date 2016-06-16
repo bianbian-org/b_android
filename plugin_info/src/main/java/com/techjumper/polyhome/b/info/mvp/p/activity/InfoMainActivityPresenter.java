@@ -1,10 +1,13 @@
 package com.techjumper.polyhome.b.info.mvp.p.activity;
 
 import android.os.Bundle;
+import android.util.Log;
 
+import com.techjumper.commonres.entity.AnnouncementEntity;
 import com.techjumper.commonres.entity.InfoEntity;
 import com.techjumper.commonres.entity.TrueEntity;
 import com.techjumper.commonres.entity.event.InfoTypeEvent;
+import com.techjumper.commonres.entity.event.PropertyNormalDetailEvent;
 import com.techjumper.commonres.entity.event.ReadMessageEvent;
 import com.techjumper.corelib.rx.tools.RxBus;
 import com.techjumper.polyhome.b.info.R;
@@ -28,7 +31,7 @@ public class InfoMainActivityPresenter extends AppBaseActivityPresenter<InfoMain
 
     @Override
     public void onViewInited(Bundle savedInstanceState) {
-        getList();
+        getAnnouncements(1);
 
         addSubscription(
                 RxBus.INSTANCE.asObservable()
@@ -38,19 +41,19 @@ public class InfoMainActivityPresenter extends AppBaseActivityPresenter<InfoMain
                                 readMessage(((ReadMessageEvent) o).getId());
                             } else if (o instanceof InfoTypeEvent) {
                                 int type = ((InfoTypeEvent) o).getType();
-                                if (type != -1) {
-                                    getList(type);
-                                } else {
+                                if (type == InfoTypeEvent.ALL) {
                                     getList();
+                                } else if (type == InfoTypeEvent.ANNOUNCEMENT) {
+                                    getAnnouncements(1);
+                                } else {
+                                    getList(type);
                                 }
+                            }else if (o instanceof PropertyNormalDetailEvent){
+                                PropertyNormalDetailEvent event = (PropertyNormalDetailEvent) o;
+                                getView().showLndLayout(event);
                             }
                         })
         );
-    }
-
-    @OnClick(R.id.bottom_back)
-    void back() {
-        getView().finish();
     }
 
     @OnClick(R.id.bottom_home)
@@ -105,6 +108,30 @@ public class InfoMainActivityPresenter extends AppBaseActivityPresenter<InfoMain
                         infoEntity.getData().getMessages().size() > 0) {
                     getView().getList(infoEntity.getData().getMessages());
                 }
+            }
+        }));
+    }
+
+    public void getAnnouncements(int page) {
+        addSubscription(infoMainActivityModel.getAnnouncements(page).subscribe(new Subscriber<AnnouncementEntity>() {
+            @Override
+            public void onCompleted() {
+
+            }
+
+            @Override
+            public void onError(Throwable e) {
+                getView().showError(e);
+            }
+
+            @Override
+            public void onNext(AnnouncementEntity announcementEntity) {
+                if (announcementEntity == null ||
+                        announcementEntity.getData() == null ||
+                        announcementEntity.getData().getNotices() == null)
+                    return;
+
+                getView().getAnnouncements(announcementEntity.getData().getNotices(), page);
             }
         }));
     }

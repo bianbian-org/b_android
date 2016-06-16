@@ -4,30 +4,39 @@ import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
+import android.webkit.WebChromeClient;
+import android.webkit.WebView;
 import android.widget.LinearLayout;
 import android.widget.RadioGroup;
 import android.widget.TextView;
 
 import com.steve.creact.library.adapter.CommonRecyclerAdapter;
 import com.steve.creact.library.display.DisplayBean;
+import com.techjumper.commonres.entity.AnnouncementEntity;
 import com.techjumper.commonres.entity.InfoEntity;
+import com.techjumper.commonres.entity.event.BackEvent;
 import com.techjumper.commonres.entity.event.InfoDetailEvent;
 import com.techjumper.commonres.entity.event.InfoTypeEvent;
+import com.techjumper.commonres.entity.event.PropertyNormalDetailEvent;
 import com.techjumper.corelib.mvp.factory.Presenter;
 import com.techjumper.corelib.rx.tools.RxBus;
 import com.techjumper.polyhome.b.info.R;
 import com.techjumper.polyhome.b.info.mvp.p.activity.InfoMainActivityPresenter;
+import com.techjumper.polyhome.b.info.viewholder.databean.InfoAnnouncementEntityBean;
 import com.techjumper.polyhome.b.info.viewholder.databean.InfoEntityBean;
+import com.techjumper.polyhome.b.info.widget.AdapterUtil;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.Bind;
+import butterknife.ButterKnife;
 import butterknife.OnClick;
 import rx.android.schedulers.AndroidSchedulers;
 
 @Presenter(InfoMainActivityPresenter.class)
 public class InfoMainActivity extends AppBaseActivity {
+    private int backType = BackEvent.FINISH;
 
     @Bind(R.id.title_date)
     TextView titleDate;
@@ -45,12 +54,24 @@ public class InfoMainActivity extends AppBaseActivity {
     TextView infoDetailContent;
     @Bind(R.id.info_detail)
     LinearLayout infoDetail;
+    @Bind(R.id.lnd_title)
+    TextView lndTitle;
+    @Bind(R.id.lnd_date)
+    TextView lndDate;
+    @Bind(R.id.lnd_content)
+    WebView lndContent;
+    @Bind(R.id.lnd_layout)
+    LinearLayout lndLayout;
 
     @OnClick(R.id.bottom_back)
     void back() {
-        if (infoDetail.getVisibility() == View.VISIBLE) {
+        if (backType == BackEvent.FINISH) {
+            finish();
+        } else if (backType == BackEvent.INFO_LIST) {
             infoDetail.setVisibility(View.GONE);
             infoList.setVisibility(View.VISIBLE);
+            lndLayout.setVisibility(View.GONE);
+            backType = BackEvent.FINISH;
         }
     }
 
@@ -69,22 +90,27 @@ public class InfoMainActivity extends AppBaseActivity {
         titleRg.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(RadioGroup group, int checkedId) {
-                int type = -1;
+                int type = InfoTypeEvent.ALL;
                 switch (checkedId) {
-                    case R.id.title_all:
+//                    case R.id.title_all:
+//                        break;
+                    case R.id.title_announcement:
+                        type = InfoTypeEvent.ANNOUNCEMENT;
+                        RxBus.INSTANCE.send(new InfoTypeEvent(type));
                         break;
                     case R.id.title_system:
                         type = InfoEntity.TYPE_SYSTEM;
+                        RxBus.INSTANCE.send(new InfoTypeEvent(type));
                         break;
                     case R.id.title_order:
                         type = InfoEntity.TYPE_ORDER;
+                        RxBus.INSTANCE.send(new InfoTypeEvent(type));
                         break;
                     case R.id.title_medical:
                         type = InfoEntity.TYPE_MEDICAL;
+                        RxBus.INSTANCE.send(new InfoTypeEvent(type));
                         break;
                 }
-
-                RxBus.INSTANCE.send(new InfoTypeEvent(type));
             }
         });
 
@@ -96,6 +122,7 @@ public class InfoMainActivity extends AppBaseActivity {
                                 InfoDetailEvent infoDetailEvent = (InfoDetailEvent) o;
                                 infoDetail.setVisibility(View.VISIBLE);
                                 infoList.setVisibility(View.GONE);
+                                lndLayout.setVisibility(View.GONE);
 
                                 infoDetailTitle.setText(infoDetailEvent.getTitle());
                                 infoDetailDate.setText(infoDetailEvent.getCreated_at());
@@ -117,7 +144,10 @@ public class InfoMainActivity extends AppBaseActivity {
                                     infoDetailType.setText(R.string.info_medical);
                                 }
 
-
+                                RxBus.INSTANCE.send(new BackEvent(BackEvent.INFO_LIST));
+                            } else if (o instanceof BackEvent) {
+                                BackEvent event = (BackEvent) o;
+                                backType = event.getType();
                             }
                         })
         );
@@ -137,13 +167,60 @@ public class InfoMainActivity extends AppBaseActivity {
         infoList.setAdapter(adapter);
 
         infoDetail.setVisibility(View.GONE);
+        lndLayout.setVisibility(View.GONE);
         infoList.setVisibility(View.VISIBLE);
+
+        RxBus.INSTANCE.send(new BackEvent(BackEvent.FINISH));
     }
 
     public void readMessage(String result) {
         if (Boolean.valueOf(result) == true) {
 
         }
+    }
+
+    public void getAnnouncements(List<AnnouncementEntity.AnnouncementDataEntity> announcementDataEntities, int page) {
+
+        infoList.setVisibility(View.VISIBLE);
+        infoDetail.setVisibility(View.GONE);
+        lndLayout.setVisibility(View.GONE);
+
+        if (announcementDataEntities.size() == 0 && page == 1) {
+            AdapterUtil.clear(adapter);
+            return;
+        }
+
+        List<DisplayBean> displayBeans = new ArrayList<>();
+
+        if (announcementDataEntities == null || announcementDataEntities.size() == 0)
+            return;
+
+        for (int i = 0; i < announcementDataEntities.size(); i++) {
+            displayBeans.add(new InfoAnnouncementEntityBean(announcementDataEntities.get(i)));
+        }
+
+        adapter.loadData(displayBeans);
+        infoList.setAdapter(adapter);
+
+        RxBus.INSTANCE.send(new BackEvent(BackEvent.FINISH));
+    }
+
+    public void showLndLayout(PropertyNormalDetailEvent event) {
+        if (event == null)
+            return;
+
+        lndLayout.setVisibility(View.VISIBLE);
+        infoDetail.setVisibility(View.GONE);
+        infoList.setVisibility(View.GONE);
+
+        lndTitle.setText(event.getTitle());
+        lndDate.setText(event.getDate());
+
+        lndContent.loadDataWithBaseURL(null, event.getContent(), "text/html", "utf-8", null);
+        lndContent.getSettings().setJavaScriptEnabled(true);
+        lndContent.setWebChromeClient(new WebChromeClient());
+
+        RxBus.INSTANCE.send(new BackEvent(BackEvent.INFO_LIST));
     }
 }
 

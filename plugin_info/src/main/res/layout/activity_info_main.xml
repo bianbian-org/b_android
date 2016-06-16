@@ -52,7 +52,16 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:checked="true"
+                android:visibility="gone"
                 android:text="@string/info_all_title" />
+
+            <RadioButton
+                android:id="@+id/title_announcement"
+                style="@style/InfoTitleStyle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:checked="true"
+                android:text="@string/info_announcement_title" />
 
             <RadioButton
                 android:id="@+id/title_system"
@@ -95,6 +104,7 @@
             android:layout_weight="1" />
 
         <include layout="@layout/layout_info_detail" />
+        <include layout="@layout/layout_normal_detail" />
     </FrameLayout>
 
     <include layout="@layout/layout_bottom" />

@@ -45,4 +45,10 @@ public class KeyValueCreator {
                 .put("ticket", ticket)
                 .put("message_id", message_id);
     }
+
+    public static KeyValuePair getAnnouncements(String page, String count) {
+        return newPair()
+                .put("page", page)
+                .put("count", count);
+    }
 }
