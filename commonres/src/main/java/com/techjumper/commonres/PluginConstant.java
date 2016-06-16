@@ -12,4 +12,7 @@ public class PluginConstant {
 
     //智能家居key
     public static final String KEY_ISHOME = "key_ishome";
+
+    //信息key
+    public static final String KEY_TYPE = "key_type";
 }

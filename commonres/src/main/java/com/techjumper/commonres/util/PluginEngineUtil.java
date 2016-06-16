@@ -2,6 +2,7 @@ package com.techjumper.commonres.util;
 
 import android.os.Bundle;
 
+import com.techjumper.commonres.PluginConstant;
 import com.techjumper.plugincommunicateengine.HostDataBuilder;
 import com.techjumper.plugincommunicateengine.PluginEngine;
 
@@ -41,16 +42,19 @@ public class PluginEngineUtil {
     }
 
     //信息
-    public static void startInfo() {
+    public static void startInfo(final int type) {
         PluginEngine.getInstance().start(new PluginEngine.IPluginConnection() {
             @Override
             public void onEngineConnected(PluginEngine.PluginExecutor pluginExecutor) {
+                Bundle bundle = new Bundle();
+                bundle.putInt(PluginConstant.KEY_TYPE, type);
+
                 String data
                         = HostDataBuilder.startPluginBuilder()
                         .packageName(PLUGIN_INFO)
                         .build();
                 try {
-                    pluginExecutor.send(PluginEngine.CODE_START_PLUGIN, data);
+                    pluginExecutor.send(PluginEngine.CODE_START_PLUGIN, data, bundle);
                 } catch (Exception e) {
                     e.printStackTrace();
                 }

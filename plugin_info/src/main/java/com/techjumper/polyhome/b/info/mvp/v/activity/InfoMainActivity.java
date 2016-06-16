@@ -7,13 +7,16 @@ import android.view.View;
 import android.webkit.WebChromeClient;
 import android.webkit.WebView;
 import android.widget.LinearLayout;
+import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.TextView;
 
 import com.steve.creact.library.adapter.CommonRecyclerAdapter;
 import com.steve.creact.library.display.DisplayBean;
+import com.techjumper.commonres.PluginConstant;
 import com.techjumper.commonres.entity.AnnouncementEntity;
 import com.techjumper.commonres.entity.InfoEntity;
+import com.techjumper.commonres.entity.NoticeEntity;
 import com.techjumper.commonres.entity.event.BackEvent;
 import com.techjumper.commonres.entity.event.InfoDetailEvent;
 import com.techjumper.commonres.entity.event.InfoTypeEvent;
@@ -36,8 +39,17 @@ import rx.android.schedulers.AndroidSchedulers;
 
 @Presenter(InfoMainActivityPresenter.class)
 public class InfoMainActivity extends AppBaseActivity {
+
     private int backType = BackEvent.FINISH;
 
+    @Bind(R.id.title_announcement)
+    RadioButton titleAnnouncement;
+    @Bind(R.id.title_system)
+    RadioButton titleSystem;
+    @Bind(R.id.title_order)
+    RadioButton titleOrder;
+    @Bind(R.id.title_medical)
+    RadioButton titleMedical;
     @Bind(R.id.title_date)
     TextView titleDate;
     @Bind(R.id.info_list)
@@ -63,6 +75,8 @@ public class InfoMainActivity extends AppBaseActivity {
     @Bind(R.id.lnd_layout)
     LinearLayout lndLayout;
 
+    private int type = -1;
+
     @OnClick(R.id.bottom_back)
     void back() {
         if (backType == BackEvent.FINISH) {
@@ -86,6 +100,19 @@ public class InfoMainActivity extends AppBaseActivity {
     protected void initView(Bundle savedInstanceState) {
         infoList.setLayoutManager(new LinearLayoutManager(this));
         adapter = new CommonRecyclerAdapter();
+
+        if (getIntent() != null) {
+            type = getIntent().getExtras().getInt(PluginConstant.KEY_TYPE);
+            if (type == NoticeEntity.PROPERTY) {
+                titleAnnouncement.setChecked(true);
+            } else if (type == NoticeEntity.SYSTEM) {
+                titleSystem.setChecked(true);
+            } else if (type == NoticeEntity.MEDICAL) {
+                titleMedical.setChecked(true);
+            } else {
+                titleOrder.setChecked(true);
+            }
+        }
 
         titleRg.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
             @Override

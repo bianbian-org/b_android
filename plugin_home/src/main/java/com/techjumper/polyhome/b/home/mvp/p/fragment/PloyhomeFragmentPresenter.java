@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
 
+import com.techjumper.commonres.PluginConstant;
 import com.techjumper.commonres.entity.InfoEntity;
 import com.techjumper.commonres.entity.NoticeEntity;
 import com.techjumper.commonres.entity.WeatherEntity;
@@ -12,6 +13,7 @@ import com.techjumper.commonres.entity.event.PropertyActionEvent;
 import com.techjumper.commonres.entity.event.WeatherEvent;
 import com.techjumper.commonres.util.PluginEngineUtil;
 import com.techjumper.corelib.rx.tools.RxBus;
+import com.techjumper.plugincommunicateengine.PluginEngine;
 import com.techjumper.polyhome.b.home.R;
 import com.techjumper.polyhome.b.home.mvp.m.PloyhomeFragmentModel;
 import com.techjumper.polyhome.b.home.mvp.v.activity.AdActivity;
@@ -34,6 +36,7 @@ import rx.android.schedulers.AndroidSchedulers;
 public class PloyhomeFragmentPresenter extends AppBaseFragmentPresenter<PloyhomeFragment> {
 
     private PloyhomeFragmentModel model = new PloyhomeFragmentModel(this);
+    private int type = -1;
 
     @OnClick(R.id.property)
     void property() {
@@ -42,7 +45,10 @@ public class PloyhomeFragmentPresenter extends AppBaseFragmentPresenter<Ployhome
 
     @OnClick(R.id.notice_layout)
     void noticeLayout() {
-        PluginEngineUtil.startInfo();
+        if (type == -1)
+            return;
+
+        PluginEngineUtil.startInfo(type);
     }
 
     @OnClick(R.id.ad)
@@ -68,6 +74,7 @@ public class PloyhomeFragmentPresenter extends AppBaseFragmentPresenter<Ployhome
         PluginEngineUtil.startSmartHome();
     }
 
+
     @Override
     public void initData(Bundle savedInstanceState) {
         RxBus.INSTANCE.asObservable()
@@ -77,6 +84,8 @@ public class PloyhomeFragmentPresenter extends AppBaseFragmentPresenter<Ployhome
                         NoticeEvent entity = (NoticeEvent) o;
                         getView().getNoticeContent().setText(StringUtil.delHTMLTag(entity.getContent()));
                         getView().getNoticeTitle().setText(entity.getTitle());
+
+                        type = entity.getType();
                     }
                 });
     }
