@@ -13,6 +13,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
+import android.webkit.WebChromeClient;
+import android.webkit.WebView;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.RadioGroup;
@@ -65,7 +67,7 @@ public class ListFragment extends AppBaseFragment<ListFragmentPresenter> {
     @Bind(R.id.lnd_date)
     TextView lndDate;
     @Bind(R.id.lnd_content)
-    TextView lndContent;
+    WebView lndContent;
     @Bind(R.id.lmd_title)
     TextView lmdTitle;
     @Bind(R.id.lmd_date)
@@ -224,7 +226,10 @@ public class ListFragment extends AppBaseFragment<ListFragmentPresenter> {
 
         lndTitle.setText(event.getTitle());
         lndDate.setText(event.getDate());
-        lndContent.setText(event.getContent());
+
+        lndContent.loadDataWithBaseURL(null, event.getContent(), "text/html", "utf-8", null);
+        lndContent.getSettings().setJavaScriptEnabled(true);
+        lndContent.setWebChromeClient(new WebChromeClient());
     }
 
     public void showComplaintDetailLmdLayout(ComplaintDetailEntity.ComplaintDetailDataEntity entity) {

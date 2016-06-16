@@ -9,6 +9,7 @@ import com.techjumper.commonres.entity.AnnouncementEntity;
 import com.techjumper.commonres.entity.event.PropertyNormalDetailEvent;
 import com.techjumper.corelib.rx.tools.RxBus;
 import com.techjumper.polyhome.b.property.R;
+import com.techjumper.polyhome.b.property.utils.StringUtil;
 
 /**
  * Created by kevin on 16/5/12.
@@ -32,7 +33,7 @@ public class AnnouncementViewHolder extends BaseRecyclerViewHolder<AnnouncementE
         String date = data.getTime();
 
         setText(R.id.info_title, title);
-        setText(R.id.info_content, content);
+        setText(R.id.info_content, StringUtil.delHTMLTag(content));
         setText(R.id.info_date, date);
 
         setOnItemClickListener(v -> {

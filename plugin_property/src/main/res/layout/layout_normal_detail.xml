@@ -37,12 +37,8 @@
         android:layout_marginTop="@dimen/dp_20"
         android:background="@color/color_1Affffff" />
 
-    <TextView
+    <WebView
         android:id="@+id/lnd_content"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/dp_16"
-        android:textColor="@color/color_99ffffff"
-        android:textSize="@dimen/sp_16"
-        tools:text="您在8:24时提交的洗衣订单申请，已经被我公司接到，我们将在最快的时间内与您联系，工作人员将赶到您的家里，您在8:24时提交的洗衣订单申请，已经被我公司接到我司的...您在8:24时提交的洗衣订单申请。" />
+        android:layout_height="match_parent" />
 </LinearLayout>
