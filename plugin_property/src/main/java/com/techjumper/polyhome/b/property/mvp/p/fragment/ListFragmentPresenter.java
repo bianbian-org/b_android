@@ -84,7 +84,7 @@ public class ListFragmentPresenter extends AppBaseFragmentPresenter<ListFragment
 
     @Override
     public void onViewInited(Bundle savedInstanceState) {
-        getAnnouncements(1);
+        getRepairs(1);
 
         RxBus.INSTANCE.send(new BackEvent(BackEvent.FINISH));
 
@@ -235,7 +235,7 @@ public class ListFragmentPresenter extends AppBaseFragmentPresenter<ListFragment
                                     repairDetailEntity.getData() == null)
                                 return;
 
-                                                                                                                                                                                                                                                                               getView().showRepairDetailLmdLayout(repairDetailEntity.getData());
+                            getView().showRepairDetailLmdLayout(repairDetailEntity.getData());                                                                                                                                                                                                                                        getView().showRepairDetailLmdLayout(repairDetailEntity.getData());
                             RxBus.INSTANCE.send(new BackEvent(BackEvent.PROPERTY_LIST));
                         }
                     }));

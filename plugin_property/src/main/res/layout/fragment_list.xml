@@ -28,6 +28,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:checked="true"
+                android:visibility="gone"
                 android:text="@string/property_announcement" />
 
             <RadioButton
@@ -35,7 +36,7 @@
                 style="@style/InfoTitleStyle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="@dimen/dp_30"
+                android:checked="true"
                 android:text="@string/property_repair" />
 
             <RadioButton
