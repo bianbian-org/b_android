@@ -1,5 +1,7 @@
 package com.techjumper.polyhome.b.home.mvp.p.fragment;
 
+import android.content.ComponentName;
+import android.content.Intent;
 import android.os.Bundle;
 
 import com.techjumper.commonres.entity.CalendarEntity;
@@ -34,7 +36,11 @@ public class InfoFragmentPresenter extends AppBaseFragmentPresenter<InfoFragment
 
     @OnClick(R.id.speak)
     void speak() {
-        PluginEngineUtil.startTalk();
+//        PluginEngineUtil.startTalk();
+        Intent it = new Intent();
+        ComponentName componentName = new ComponentName("com.dnake.talk", "com.dnake.activity.CallingActivity");
+        it.setComponent(componentName);
+        getView().startActivity(it);
     }
 
     @Override
