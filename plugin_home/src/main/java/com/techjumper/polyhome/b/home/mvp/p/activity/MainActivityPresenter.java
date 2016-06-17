@@ -53,6 +53,14 @@ public class MainActivityPresenter extends AppBaseActivityPresenter<MainActivity
         getView().startActivity(it);
     }
 
+    @OnClick(R.id.vedio)
+    void callVedio() {
+        Intent it = new Intent();
+        ComponentName componentName = new ComponentName("com.dnake.talk", "com.dnake.activity.VideoSurveillanceActivity");
+        it.setComponent(componentName);
+        getView().startActivity(it);
+    }
+
     @Override
     public void initData(Bundle savedInstanceState) {
 

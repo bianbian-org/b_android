@@ -91,6 +91,14 @@ public class InfoMainActivity extends AppBaseActivity {
 
     private CommonRecyclerAdapter adapter;
 
+    public int getType() {
+        return type;
+    }
+
+    public void setType(int type) {
+        this.type = type;
+    }
+
     @Override
     protected View inflateView(Bundle savedInstanceState) {
         return inflate(R.layout.activity_info_main);
@@ -101,7 +109,7 @@ public class InfoMainActivity extends AppBaseActivity {
         infoList.setLayoutManager(new LinearLayoutManager(this));
         adapter = new CommonRecyclerAdapter();
 
-        if (getIntent() != null) {
+        if (getIntent() != null && getIntent().getExtras() != null) {
             type = getIntent().getExtras().getInt(PluginConstant.KEY_TYPE);
             if (type == NoticeEntity.PROPERTY) {
                 titleAnnouncement.setChecked(true);
@@ -113,6 +121,8 @@ public class InfoMainActivity extends AppBaseActivity {
                 titleOrder.setChecked(true);
             }
         }
+
+        setType(type);
 
         titleRg.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
             @Override
@@ -178,6 +188,18 @@ public class InfoMainActivity extends AppBaseActivity {
                             }
                         })
         );
+
+       infoList.addOnScrollListener(new RecyclerView.OnScrollListener() {
+           @Override
+           public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
+               super.onScrollStateChanged(recyclerView, newState);
+           }
+
+           @Override
+           public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+               super.onScrolled(recyclerView, dx, dy);
+           }
+       });
     }
 
     public void getList(List<InfoEntity.InfoDataEntity.InfoItemEntity> infoEntityTemporaries) {

@@ -5,6 +5,7 @@ import android.util.Log;
 
 import com.techjumper.commonres.entity.AnnouncementEntity;
 import com.techjumper.commonres.entity.InfoEntity;
+import com.techjumper.commonres.entity.NoticeEntity;
 import com.techjumper.commonres.entity.TrueEntity;
 import com.techjumper.commonres.entity.event.InfoTypeEvent;
 import com.techjumper.commonres.entity.event.PropertyNormalDetailEvent;
@@ -31,8 +32,12 @@ public class InfoMainActivityPresenter extends AppBaseActivityPresenter<InfoMain
 
     @Override
     public void onViewInited(Bundle savedInstanceState) {
-        getAnnouncements(1);
-
+        int intentType = getView().getType();
+        if (intentType == NoticeEntity.PROPERTY || intentType == -1) {
+            getAnnouncements(1);
+        } else {
+            getList(intentType);
+        }
         addSubscription(
                 RxBus.INSTANCE.asObservable()
                         .observeOn(AndroidSchedulers.mainThread())
@@ -48,7 +53,7 @@ public class InfoMainActivityPresenter extends AppBaseActivityPresenter<InfoMain
                                 } else {
                                     getList(type);
                                 }
-                            }else if (o instanceof PropertyNormalDetailEvent){
+                            } else if (o instanceof PropertyNormalDetailEvent) {
                                 PropertyNormalDetailEvent event = (PropertyNormalDetailEvent) o;
                                 getView().showLndLayout(event);
                             }

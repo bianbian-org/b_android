@@ -10,7 +10,7 @@ android {
         minSdkVersion rootProject.minSdkVersion
         targetSdkVersion rootProject.targetSdkVersion
         versionCode 101
-        versionName "1.1"
+        versionName "0.1.1"
     }
     buildTypes {
         release {
