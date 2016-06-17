@@ -65,14 +65,6 @@ public class MainActivity extends AppBaseActivity {
         dotHome.setEnabled(true);
         dotPoint.setEnabled(false);
 
-        // TODO: 16/5/30  test
-        titleImg.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                finish();
-            }
-        });
-
         viewpager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
             public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
