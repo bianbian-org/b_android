@@ -29,7 +29,11 @@ public class InfoFragmentPresenter extends AppBaseFragmentPresenter<InfoFragment
 
     @OnClick(R.id.setting)
     void setting() {
-        PluginEngineUtil.startSetting();
+//        PluginEngineUtil.startSetting();
+        Intent it = new Intent();
+        ComponentName componentName = new ComponentName("com.dnake.talk", "com.dnake.setting.activity.SettingActivity");
+        it.setComponent(componentName);
+        getView().startActivity(it);
     }
 
     @OnClick(R.id.detect_layout)
