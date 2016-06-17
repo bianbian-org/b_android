@@ -22,6 +22,7 @@ import android.widget.TextView;
 
 import com.steve.creact.library.adapter.CommonRecyclerAdapter;
 import com.steve.creact.library.display.DisplayBean;
+import com.techjumper.commonres.ComConstant;
 import com.techjumper.commonres.entity.AnnouncementEntity;
 import com.techjumper.commonres.entity.ComplaintDetailEntity;
 import com.techjumper.commonres.entity.ComplaintEntity;
@@ -29,7 +30,10 @@ import com.techjumper.commonres.entity.RepairDetailEntity;
 import com.techjumper.commonres.entity.RepairEntity;
 import com.techjumper.commonres.entity.ReplyEntity;
 import com.techjumper.commonres.entity.event.PropertyNormalDetailEvent;
+import com.techjumper.commonres.entity.event.loadmoreevent.LoadmoreInfoEvent;
+import com.techjumper.commonres.entity.event.loadmoreevent.LoadmorePresenterEvent;
 import com.techjumper.corelib.mvp.factory.Presenter;
+import com.techjumper.corelib.rx.tools.RxBus;
 import com.techjumper.polyhome.b.property.Constant;
 import com.techjumper.polyhome.b.property.R;
 import com.techjumper.polyhome.b.property.mvp.p.fragment.ListFragmentPresenter;
@@ -87,6 +91,7 @@ public class ListFragment extends AppBaseFragment<ListFragmentPresenter> {
 
     private CommonRecyclerAdapter adapter;
     private CommonRecyclerAdapter messageAdapter;
+    private LinearLayoutManager manager = new LinearLayoutManager(getActivity());
 
     private int type;
     private long sendId;
@@ -134,11 +139,30 @@ public class ListFragment extends AppBaseFragment<ListFragmentPresenter> {
         adapter = new CommonRecyclerAdapter();
         messageAdapter = new CommonRecyclerAdapter();
 
-        flList.setLayoutManager(new LinearLayoutManager(getContext()));
+        flList.setLayoutManager(manager);
         lmdList.setLayoutManager(new LinearLayoutManager(getContext()));
 
         showListLayout();
         lmdMessageContent.setImeOptions(EditorInfo.IME_ACTION_DONE);
+
+        flList.addOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
+                if (adapter != null && String.valueOf(adapter.getItemCount()).equals(ComConstant.PAGESIZE)) {
+                    if (newState == RecyclerView.SCROLL_STATE_IDLE) {
+                        int lastVisiblePosition = manager.findLastVisibleItemPosition();
+                        if (lastVisiblePosition >= manager.getItemCount() - 1) {
+                            RxBus.INSTANCE.send(new LoadmorePresenterEvent(type));
+                        }
+                    }
+                }
+            }
+
+            @Override
+            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+                super.onScrolled(recyclerView, dx, dy);
+            }
+        });
     }
 
     public void getAnnouncements(List<AnnouncementEntity.AnnouncementDataEntity> announcementDataEntities, int page) {
@@ -187,8 +211,12 @@ public class ListFragment extends AppBaseFragment<ListFragmentPresenter> {
             displayBeans.add(new InfoComplaintEntityBean(complaintDataEntities.get(i)));
         }
 
-        adapter.loadData(displayBeans);
-        flList.setAdapter(adapter);
+        if (page == 1){
+            adapter.loadData(displayBeans);
+            flList.setAdapter(adapter);
+        }else {
+            adapter.insertData(adapter.getItemCount(), displayBeans);
+        }
     }
 
     public void getRepairs(List<RepairEntity.RepairDataEntity> repairDataEntities, int page) {
@@ -212,8 +240,12 @@ public class ListFragment extends AppBaseFragment<ListFragmentPresenter> {
             displayBeans.add(new InfoRepairEntityBean(repairDataEntities.get(i)));
         }
 
-        adapter.loadData(displayBeans);
-        flList.setAdapter(adapter);
+        if (page == 1){
+            adapter.loadData(displayBeans);
+            flList.setAdapter(adapter);
+        }else {
+            adapter.insertData(adapter.getItemCount(), displayBeans);
+        }
     }
 
     public void showLndLayout(PropertyNormalDetailEvent event) {

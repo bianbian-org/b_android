@@ -15,10 +15,12 @@ import com.techjumper.commonres.entity.event.PropertyActionEvent;
 import com.techjumper.commonres.entity.event.PropertyListEvent;
 import com.techjumper.commonres.entity.event.PropertyMessageDetailEvent;
 import com.techjumper.commonres.entity.event.PropertyNormalDetailEvent;
+import com.techjumper.commonres.entity.event.loadmoreevent.LoadmorePresenterEvent;
 import com.techjumper.corelib.rx.tools.RxBus;
 import com.techjumper.corelib.utils.window.ToastUtils;
 import com.techjumper.polyhome.b.property.R;
 import com.techjumper.polyhome.b.property.mvp.m.ListFragmentModel;
+import com.techjumper.polyhome.b.property.mvp.v.activity.MainActivity;
 import com.techjumper.polyhome.b.property.mvp.v.fragment.ListFragment;
 
 import butterknife.OnCheckedChanged;
@@ -31,25 +33,28 @@ import rx.android.schedulers.AndroidSchedulers;
  */
 public class ListFragmentPresenter extends AppBaseFragmentPresenter<ListFragment> {
     private ListFragmentModel model = new ListFragmentModel(this);
+    private int pageNo = 1;
 
     @OnCheckedChanged(R.id.fl_title_announcement)
     void checkAnnouncement(boolean check) {
         if (check) {
-            getAnnouncements(1);
+//            getAnnouncements(1);
         }
     }
 
     @OnCheckedChanged(R.id.fl_title_repair)
     void checkRepair(boolean check) {
         if (check) {
-            getRepairs(1);
+            pageNo = 1;
+            getRepairs();
         }
     }
 
     @OnCheckedChanged(R.id.fl_title_complaint)
     void checkComplaint(boolean check) {
         if (check) {
-            getComplaints(1);
+            pageNo = 1;
+            getComplaints();
         }
     }
 
@@ -84,7 +89,7 @@ public class ListFragmentPresenter extends AppBaseFragmentPresenter<ListFragment
 
     @Override
     public void onViewInited(Bundle savedInstanceState) {
-        getRepairs(1);
+        getRepairs();
 
         RxBus.INSTANCE.send(new BackEvent(BackEvent.FINISH));
 
@@ -101,36 +106,22 @@ public class ListFragmentPresenter extends AppBaseFragmentPresenter<ListFragment
                     } else if (o instanceof PropertyMessageDetailEvent) {
                         PropertyMessageDetailEvent event = (PropertyMessageDetailEvent) o;
                         getMessageDetail(event.getId(), event.getType());
+                    } else if (o instanceof LoadmorePresenterEvent) {
+                        LoadmorePresenterEvent event = (LoadmorePresenterEvent) o;
+                        int type = event.getType();
+                        pageNo++;
+
+                        if (type == MainActivity.REPAIR) {
+                            getRepairs();
+                        } else {
+                            getComplaints();
+                        }
                     }
                 }));
     }
 
-    public void getAnnouncements(int page) {
-        addSubscription(model.getAnnouncements(page).subscribe(new Subscriber<AnnouncementEntity>() {
-            @Override
-            public void onCompleted() {
-
-            }
-
-            @Override
-            public void onError(Throwable e) {
-                getView().showError(e);
-            }
-
-            @Override
-            public void onNext(AnnouncementEntity announcementEntity) {
-                if (announcementEntity == null ||
-                        announcementEntity.getData() == null ||
-                        announcementEntity.getData().getNotices() == null)
-                    return;
-
-                getView().getAnnouncements(announcementEntity.getData().getNotices(), page);
-            }
-        }));
-    }
-
-    public void getComplaints(int page) {
-        addSubscription(model.getComplaints(page)
+    public void getComplaints() {
+        addSubscription(model.getComplaints(pageNo)
                 .subscribe(new Subscriber<ComplaintEntity>() {
                     @Override
                     public void onCompleted() {
@@ -152,13 +143,13 @@ public class ListFragmentPresenter extends AppBaseFragmentPresenter<ListFragment
                                 complaintEntity.getData().getSuggestions() == null)
                             return;
 
-                        getView().getComplaints(complaintEntity.getData().getSuggestions(), page);
+                        getView().getComplaints(complaintEntity.getData().getSuggestions(), pageNo);
                     }
                 }));
     }
 
-    public void getRepairs(int page) {
-        addSubscription(model.getRepairs(page)
+    public void getRepairs() {
+        addSubscription(model.getRepairs(pageNo)
                 .subscribe(new Subscriber<RepairEntity>() {
                     @Override
                     public void onCompleted() {
@@ -180,7 +171,7 @@ public class ListFragmentPresenter extends AppBaseFragmentPresenter<ListFragment
                                 repairEntity.getData().getRepairs() == null)
                             return;
 
-                        getView().getRepairs(repairEntity.getData().getRepairs(), page);
+                        getView().getRepairs(repairEntity.getData().getRepairs(), pageNo);
                     }
                 }));
     }
@@ -235,7 +226,8 @@ public class ListFragmentPresenter extends AppBaseFragmentPresenter<ListFragment
                                     repairDetailEntity.getData() == null)
                                 return;
 
-                            getView().showRepairDetailLmdLayout(repairDetailEntity.getData());                                                                                                                                                                                                                                        getView().showRepairDetailLmdLayout(repairDetailEntity.getData());
+                            getView().showRepairDetailLmdLayout(repairDetailEntity.getData());
+                            getView().showRepairDetailLmdLayout(repairDetailEntity.getData());
                             RxBus.INSTANCE.send(new BackEvent(BackEvent.PROPERTY_LIST));
                         }
                     }));

@@ -1,6 +1,7 @@
 package com.techjumper.polyhome.b.property.mvp.v.activity;
 
 import android.os.Bundle;
+import android.provider.Settings;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
@@ -13,6 +14,7 @@ import com.techjumper.commonres.entity.event.PropertyActionEvent;
 import com.techjumper.commonres.util.CommonDateUtil;
 import com.techjumper.corelib.mvp.factory.Presenter;
 import com.techjumper.corelib.rx.tools.RxBus;
+import com.techjumper.corelib.utils.window.ToastUtils;
 import com.techjumper.polyhome.b.property.R;
 import com.techjumper.polyhome.b.property.mvp.p.activity.MainActivityPresenter;
 import com.techjumper.polyhome.b.property.mvp.v.fragment.ActionFragment;
