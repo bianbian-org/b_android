@@ -28,19 +28,19 @@ public class InfoMainActivityModel extends BaseModel<InfoMainActivityPresenter> 
 
     public Observable<AnnouncementEntity> getAnnouncements(int page) {
         return RetrofitHelper.<ServiceAPI>create(Config.sBaseBUrl, ServiceAPI.class)
-                .getAnnouncements(NetHelper.createBaseArgumentsMap(KeyValueCreator.getAnnouncements(String.valueOf(page), "10")))
+                .getAnnouncements(NetHelper.createBaseArgumentsMap(KeyValueCreator.getAnnouncements(String.valueOf(page), ComConstant.PAGESIZE)))
                 .compose(CommonWrap.wrap());
     }
 
     public Observable<InfoEntity> getInfo(int page) {
         return RetrofitHelper.<ServiceAPI>createDefault()
-                .getInfo(NetHelper.createBaseArgumentsMap(KeyValueCreator.getInfo(ComConstant.defaultUserId, ComConstant.defaultTicket, String.valueOf(page), "10")))
+                .getInfo(NetHelper.createBaseArgumentsMap(KeyValueCreator.getInfo(ComConstant.defaultUserId, ComConstant.defaultTicket, String.valueOf(page), ComConstant.PAGESIZE)))
                 .compose(CommonWrap.wrap());
     }
 
     public Observable<InfoEntity> getInfo(int type, int page) {
         return RetrofitHelper.<ServiceAPI>createDefault()
-                .getInfo(NetHelper.createBaseArgumentsMap(KeyValueCreator.getInfo(ComConstant.defaultUserId, ComConstant.defaultTicket, String.valueOf(type), String.valueOf(page), "10")))
+                .getInfo(NetHelper.createBaseArgumentsMap(KeyValueCreator.getInfo(ComConstant.defaultUserId, ComConstant.defaultTicket, String.valueOf(type), String.valueOf(page), ComConstant.PAGESIZE)))
                 .compose(CommonWrap.wrap());
     }
 

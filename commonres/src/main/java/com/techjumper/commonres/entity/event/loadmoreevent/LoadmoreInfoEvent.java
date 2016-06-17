@@ -1,13 +1,13 @@
-package com.techjumper.commonres.entity.event;
+package com.techjumper.commonres.entity.event.loadmoreevent;
 
 /**
- * Created by kevin on 16/5/9.
+ * Created by kevin on 16/6/17.
  */
-public class InfoTypeEvent {
+public class LoadmoreInfoEvent {
 
     private int type;
 
-    public InfoTypeEvent(int type) {
+    public LoadmoreInfoEvent(int type) {
         this.type = type;
     }
 

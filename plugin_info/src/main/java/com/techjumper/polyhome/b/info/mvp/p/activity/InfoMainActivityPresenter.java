@@ -10,6 +10,7 @@ import com.techjumper.commonres.entity.TrueEntity;
 import com.techjumper.commonres.entity.event.InfoTypeEvent;
 import com.techjumper.commonres.entity.event.PropertyNormalDetailEvent;
 import com.techjumper.commonres.entity.event.ReadMessageEvent;
+import com.techjumper.commonres.entity.event.loadmoreevent.LoadmoreInfoEvent;
 import com.techjumper.corelib.rx.tools.RxBus;
 import com.techjumper.polyhome.b.info.R;
 import com.techjumper.polyhome.b.info.mvp.m.InfoMainActivityModel;
@@ -23,7 +24,9 @@ import rx.android.schedulers.AndroidSchedulers;
  * Created by kevin on 16/4/29.
  */
 public class InfoMainActivityPresenter extends AppBaseActivityPresenter<InfoMainActivity> {
+
     InfoMainActivityModel infoMainActivityModel = new InfoMainActivityModel(this);
+    private int pageNo = 1;
 
     @Override
     public void initData(Bundle savedInstanceState) {
@@ -33,11 +36,12 @@ public class InfoMainActivityPresenter extends AppBaseActivityPresenter<InfoMain
     @Override
     public void onViewInited(Bundle savedInstanceState) {
         int intentType = getView().getType();
-        if (intentType == NoticeEntity.PROPERTY || intentType == -1) {
-            getAnnouncements(1);
+        if (intentType == NoticeEntity.PROPERTY) {
+            getAnnouncements();
         } else {
             getList(intentType);
         }
+
         addSubscription(
                 RxBus.INSTANCE.asObservable()
                         .observeOn(AndroidSchedulers.mainThread())
@@ -45,17 +49,26 @@ public class InfoMainActivityPresenter extends AppBaseActivityPresenter<InfoMain
                             if (o instanceof ReadMessageEvent) {
                                 readMessage(((ReadMessageEvent) o).getId());
                             } else if (o instanceof InfoTypeEvent) {
+                                pageNo = 1;
+
                                 int type = ((InfoTypeEvent) o).getType();
-                                if (type == InfoTypeEvent.ALL) {
-                                    getList();
-                                } else if (type == InfoTypeEvent.ANNOUNCEMENT) {
-                                    getAnnouncements(1);
+                                if (type == NoticeEntity.PROPERTY) {
+                                    getAnnouncements();
                                 } else {
                                     getList(type);
                                 }
                             } else if (o instanceof PropertyNormalDetailEvent) {
                                 PropertyNormalDetailEvent event = (PropertyNormalDetailEvent) o;
                                 getView().showLndLayout(event);
+                            } else if (o instanceof LoadmoreInfoEvent) {
+                                pageNo++;
+
+                                int type = ((LoadmoreInfoEvent) o).getType();
+                                if (type == NoticeEntity.PROPERTY) {
+                                    getAnnouncements();
+                                } else {
+                                    getList(type);
+                                }
                             }
                         })
         );
@@ -66,35 +79,8 @@ public class InfoMainActivityPresenter extends AppBaseActivityPresenter<InfoMain
         getView().finish();
     }
 
-    public void getList() {
-        addSubscription(infoMainActivityModel.getInfo(1).subscribe(new Subscriber<InfoEntity>() {
-            @Override
-            public void onCompleted() {
-
-            }
-
-            @Override
-            public void onError(Throwable e) {
-                getView().showError(e);
-            }
-
-            @Override
-            public void onNext(InfoEntity infoEntity) {
-                if (!processNetworkResult(infoEntity, false))
-                    return;
-
-                if (infoEntity != null &&
-                        infoEntity.getData() != null &&
-                        infoEntity.getData().getMessages() != null &&
-                        infoEntity.getData().getMessages().size() > 0) {
-                    getView().getList(infoEntity.getData().getMessages());
-                }
-            }
-        }));
-    }
-
     public void getList(int type) {
-        addSubscription(infoMainActivityModel.getInfo(type, 1).subscribe(new Subscriber<InfoEntity>() {
+        addSubscription(infoMainActivityModel.getInfo(type, pageNo).subscribe(new Subscriber<InfoEntity>() {
             @Override
             public void onCompleted() {
 
@@ -111,14 +97,14 @@ public class InfoMainActivityPresenter extends AppBaseActivityPresenter<InfoMain
                         infoEntity.getData() != null &&
                         infoEntity.getData().getMessages() != null &&
                         infoEntity.getData().getMessages().size() > 0) {
-                    getView().getList(infoEntity.getData().getMessages());
+                    getView().getList(infoEntity.getData().getMessages(), pageNo);
                 }
             }
         }));
     }
 
-    public void getAnnouncements(int page) {
-        addSubscription(infoMainActivityModel.getAnnouncements(page).subscribe(new Subscriber<AnnouncementEntity>() {
+    public void getAnnouncements() {
+        addSubscription(infoMainActivityModel.getAnnouncements(pageNo).subscribe(new Subscriber<AnnouncementEntity>() {
             @Override
             public void onCompleted() {
 
@@ -136,7 +122,7 @@ public class InfoMainActivityPresenter extends AppBaseActivityPresenter<InfoMain
                         announcementEntity.getData().getNotices() == null)
                     return;
 
-                getView().getAnnouncements(announcementEntity.getData().getNotices(), page);
+                getView().getAnnouncements(announcementEntity.getData().getNotices(), pageNo);
             }
         }));
     }

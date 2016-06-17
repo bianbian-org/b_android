@@ -13,6 +13,7 @@ import android.widget.TextView;
 
 import com.steve.creact.library.adapter.CommonRecyclerAdapter;
 import com.steve.creact.library.display.DisplayBean;
+import com.techjumper.commonres.ComConstant;
 import com.techjumper.commonres.PluginConstant;
 import com.techjumper.commonres.entity.AnnouncementEntity;
 import com.techjumper.commonres.entity.InfoEntity;
@@ -21,6 +22,7 @@ import com.techjumper.commonres.entity.event.BackEvent;
 import com.techjumper.commonres.entity.event.InfoDetailEvent;
 import com.techjumper.commonres.entity.event.InfoTypeEvent;
 import com.techjumper.commonres.entity.event.PropertyNormalDetailEvent;
+import com.techjumper.commonres.entity.event.loadmoreevent.LoadmoreInfoEvent;
 import com.techjumper.corelib.mvp.factory.Presenter;
 import com.techjumper.corelib.rx.tools.RxBus;
 import com.techjumper.polyhome.b.info.R;
@@ -75,7 +77,8 @@ public class InfoMainActivity extends AppBaseActivity {
     @Bind(R.id.lnd_layout)
     LinearLayout lndLayout;
 
-    private int type = -1;
+    private int type = NoticeEntity.PROPERTY;
+    private LinearLayoutManager manager = new LinearLayoutManager(this);
 
     @OnClick(R.id.bottom_back)
     void back() {
@@ -106,7 +109,7 @@ public class InfoMainActivity extends AppBaseActivity {
 
     @Override
     protected void initView(Bundle savedInstanceState) {
-        infoList.setLayoutManager(new LinearLayoutManager(this));
+        infoList.setLayoutManager(manager);
         adapter = new CommonRecyclerAdapter();
 
         if (getIntent() != null && getIntent().getExtras() != null) {
@@ -127,24 +130,23 @@ public class InfoMainActivity extends AppBaseActivity {
         titleRg.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(RadioGroup group, int checkedId) {
-                int type = InfoTypeEvent.ALL;
                 switch (checkedId) {
 //                    case R.id.title_all:
 //                        break;
                     case R.id.title_announcement:
-                        type = InfoTypeEvent.ANNOUNCEMENT;
+                        type =  NoticeEntity.PROPERTY;
                         RxBus.INSTANCE.send(new InfoTypeEvent(type));
                         break;
                     case R.id.title_system:
-                        type = InfoEntity.TYPE_SYSTEM;
+                        type = NoticeEntity.SYSTEM;
                         RxBus.INSTANCE.send(new InfoTypeEvent(type));
                         break;
                     case R.id.title_order:
-                        type = InfoEntity.TYPE_ORDER;
+                        type = NoticeEntity.ORDER;
                         RxBus.INSTANCE.send(new InfoTypeEvent(type));
                         break;
                     case R.id.title_medical:
-                        type = InfoEntity.TYPE_MEDICAL;
+                        type = NoticeEntity.MEDICAL;
                         RxBus.INSTANCE.send(new InfoTypeEvent(type));
                         break;
                 }
@@ -189,20 +191,28 @@ public class InfoMainActivity extends AppBaseActivity {
                         })
         );
 
-       infoList.addOnScrollListener(new RecyclerView.OnScrollListener() {
-           @Override
-           public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
-               super.onScrollStateChanged(recyclerView, newState);
-           }
+        infoList.addOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
 
-           @Override
-           public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
-               super.onScrolled(recyclerView, dx, dy);
-           }
-       });
+                if (adapter != null && String.valueOf(adapter.getItemCount()).equals(ComConstant.PAGESIZE)) {
+                    if (newState == RecyclerView.SCROLL_STATE_IDLE) {
+                        int lastVisiblePosition = manager.findLastVisibleItemPosition();
+                        if (lastVisiblePosition >= manager.getItemCount() - 1) {
+                            RxBus.INSTANCE.send(new LoadmoreInfoEvent(type));
+                        }
+                    }
+                }
+            }
+
+            @Override
+            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+                super.onScrolled(recyclerView, dx, dy);
+            }
+        });
     }
 
-    public void getList(List<InfoEntity.InfoDataEntity.InfoItemEntity> infoEntityTemporaries) {
+    public void getList(List<InfoEntity.InfoDataEntity.InfoItemEntity> infoEntityTemporaries, int page) {
         List<DisplayBean> displayBeans = new ArrayList<>();
         if (infoEntityTemporaries == null || infoEntityTemporaries.size() == 0)
             return;
@@ -212,8 +222,12 @@ public class InfoMainActivity extends AppBaseActivity {
             displayBeans.add(new InfoEntityBean(infoEntityTemporaries.get(i)));
         }
 
-        adapter.loadData(displayBeans);
-        infoList.setAdapter(adapter);
+        if (page == 1) {
+            adapter.loadData(displayBeans);
+            infoList.setAdapter(adapter);
+        }else {
+            adapter.insertData(adapter.getItemCount(), displayBeans);
+        }
 
         infoDetail.setVisibility(View.GONE);
         lndLayout.setVisibility(View.GONE);
@@ -248,8 +262,13 @@ public class InfoMainActivity extends AppBaseActivity {
             displayBeans.add(new InfoAnnouncementEntityBean(announcementDataEntities.get(i)));
         }
 
-        adapter.loadData(displayBeans);
-        infoList.setAdapter(adapter);
+        if (page == 1) {
+            adapter.loadData(displayBeans);
+            infoList.setAdapter(adapter);
+        } else {
+            adapter.insertData(adapter.getItemCount(), displayBeans);
+        }
+
 
         RxBus.INSTANCE.send(new BackEvent(BackEvent.FINISH));
     }
