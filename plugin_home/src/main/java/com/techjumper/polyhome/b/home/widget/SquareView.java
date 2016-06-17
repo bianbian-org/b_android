@@ -89,6 +89,11 @@ public class SquareView extends RelativeLayout {
         }
     }
 
+    //设置中间数据为文本大小
+    public void showContentTextSize(float textSize) {
+        contentTv.setTextSize(textSize);
+    }
+
     //设置中间数据为img
     public void showContentIcon(int resId) {
         if (resId != 0) {

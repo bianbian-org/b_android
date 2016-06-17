@@ -111,10 +111,12 @@ public class PloyhomeFragmentPresenter extends AppBaseFragmentPresenter<Ployhome
                         String restrictNo = getRestrictNo(date, entity.getRestrict());
 
                         if (TextUtils.isEmpty(restrictNo)) {
-                            restrictSv.showContentText("无");
-                            restrictSv.showTitleText(DateUtil.getDate(date) + "不限行");
+                            restrictSv.showContentText(DateUtil.getDate(date));
+                            restrictSv.showContentTextSize(40);
+                            restrictSv.showTitleText("不限行");
                         } else {
                             restrictSv.showContentText(restrictNo);
+                            restrictSv.showContentTextSize(60);
                             restrictSv.showTitleText(DateUtil.getDate(date) + "限行");
                         }
 

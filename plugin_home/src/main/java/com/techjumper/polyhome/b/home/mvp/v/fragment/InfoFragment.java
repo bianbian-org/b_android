@@ -53,8 +53,8 @@ public class InfoFragment extends AppBaseFragment<InfoFragmentPresenter> {
     TextView liwPm;
     @Bind(R.id.liw_quality_description)
     TextView liwQualityDescription;
-    @Bind(R.id.liw_quality_num)
-    TextView liwQualityNum;
+//    @Bind(R.id.liw_quality_num)
+//    TextView liwQualityNum;
     @Bind(R.id.lid_date)
     TextView lidDate;
     @Bind(R.id.lid_lunar)

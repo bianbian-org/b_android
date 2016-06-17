@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="@dimen/dp_330"
     android:layout_height="@dimen/dp_330"
     android:background="@color/color_20c3f3">
@@ -10,8 +11,8 @@
         android:layout_height="@dimen/dp_61"
         android:layout_marginLeft="@dimen/dp_30"
         android:layout_marginTop="@dimen/dp_31"
-        android:scaleType="centerCrop"
-        android:background="@mipmap/bg_weather_default" />
+        android:background="@mipmap/bg_weather_default"
+        android:scaleType="centerCrop" />
 
     <LinearLayout
         android:layout_width="wrap_content"
@@ -47,9 +48,9 @@
 
     <include
         layout="@layout/layout_info_weather_weather"
-        android:layout_marginTop="@dimen/dp_121"
+        android:layout_width="@dimen/dp_330"
         android:layout_height="wrap_content"
-        android:layout_width="@dimen/dp_330"/>
+        android:layout_marginTop="@dimen/dp_121" />
 
     <TextView
         android:id="@+id/liw_running"
@@ -61,46 +62,64 @@
         android:drawableTop="@mipmap/bg_running"
         android:text="适宜跑步"
         android:textColor="@color/color_ffffff"
-        android:textSize="@dimen/sp_16" />
+        android:textSize="@dimen/sp_16"
+        android:visibility="gone" />
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="@dimen/dp_105"
-        android:layout_marginTop="@dimen/dp_302"
-        android:text="PM2.5"
-        android:textColor="@color/color_B3ffffff"
-        android:textSize="@dimen/sp_16" />
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dp_115"
+        android:layout_alignParentBottom="true"
+        android:gravity="center_vertical"
+        android:orientation="horizontal">
 
-    <TextView
-        android:id="@+id/liw_pm"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="@dimen/dp_160"
-        android:layout_marginTop="@dimen/dp_302"
-        android:text="97"
-        android:textColor="@color/color_ffffff"
-        android:textSize="@dimen/sp_16" />
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:orientation="vertical">
 
-    <TextView
-        android:id="@+id/liw_quality_description"
-        android:layout_width="@dimen/dp_97"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="@dimen/dp_197"
-        android:layout_marginTop="@dimen/dp_302"
-        android:gravity="center"
-        android:text="空气质量良好"
-        android:textColor="@color/color_ffffff"
-        android:textSize="@dimen/sp_16" />
+            <TextView
+                android:id="@+id/liw_pm"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="97"
+                android:textColor="@color/color_ffffff"
+                android:textSize="@dimen/sp_45" />
 
-    <TextView
-        android:id="@+id/liw_quality_num"
-        android:layout_width="@dimen/dp_81"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="@dimen/dp_207"
-        android:layout_marginTop="@dimen/dp_248"
-        android:gravity="center"
-        android:text="207"
-        android:textColor="@color/color_ffffff"
-        android:textSize="@dimen/dp_45" />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="PM2.5"
+                android:textColor="@color/color_ffffff"
+                android:textSize="@dimen/sp_16" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/liw_quality_description"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:singleLine="true"
+                android:textColor="@color/color_ffffff"
+                android:textSize="@dimen/sp_40"
+                tools:text="良好" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:text="空气质量"
+                android:layout_marginTop="@dimen/dp_5"
+                android:textColor="@color/color_ffffff"
+                android:textSize="@dimen/sp_16" />
+        </LinearLayout>
+    </LinearLayout>
 </RelativeLayout>
