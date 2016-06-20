@@ -49,7 +49,7 @@ public class ShoppingActivity extends AppBaseActivity<ShoppingActivityPresenter>
             }
         });
         webView.setWebViewClient(new webViewClient());
-        webView.loadUrl("http://10.0.1.15:3000/shop/pad");
+        webView.loadUrl("http://pl.techjumper.com/shop/pad");
         webView.addJavascriptInterface(new AndroidForJs(this), "JavaScriptInterface");
     }
 

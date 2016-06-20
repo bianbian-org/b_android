@@ -85,7 +85,7 @@
                 app:content_text="18°"
                 app:quarter_img="@mipmap/bg_weather"
                 app:quarter_layout_visible="true"
-                app:title_text="pm2.0" />
+                app:title_text="pm2.5 00" />
 
             <com.techjumper.polyhome.b.home.widget.SquareView
                 android:id="@+id/fp_restrict"
