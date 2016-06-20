@@ -124,41 +124,6 @@ public class PloyhomeFragmentPresenter extends AppBaseFragmentPresenter<Ployhome
                 }));
     }
 
-    //
-//    private void getNotice() {
-//        addSubscription(model.getInfo(1)
-//                .subscribe(new Subscriber<InfoEntity>() {
-//                    @Override
-//                    public void onCompleted() {
-//
-//                    }
-//
-//                    @Override
-//                    public void onError(Throwable e) {
-//
-//                    }
-//
-//                    @Override
-//                    public void onNext(InfoEntity infoEntity) {
-//                        if (!processNetworkResult(infoEntity, false))
-//                            return;
-//
-//                        if (infoEntity == null || infoEntity.getData() == null
-//                                || infoEntity.getData().getMessages() == null)
-//                            return;
-//
-//                        List<InfoEntity.InfoDataEntity.InfoItemEntity> infoItemEntities = infoEntity.getData().getMessages();
-//                        if (infoItemEntities.size() > 0) {
-//                            InfoEntity.InfoDataEntity.InfoItemEntity entity = infoItemEntities.get(0);
-//                            getView().getNoticeTitle().setText(entity.getTitle());
-//                            getView().getNoticeContent().setText(entity.getContent());
-//                        } else {
-//                            getView().getNoticeContent().setText("没有通知");
-//                        }
-//                    }
-//                }));
-//    }
-
     private void getNotices() {
         addSubscription(model.getNotices()
                 .subscribe(new Subscriber<NoticeEntity>() {
