@@ -34,6 +34,13 @@
         <activity android:name=".mvp.v.activity.AdActivity" />
         <activity android:name=".mvp.v.activity.ShoppingActivity" />
         <activity android:name=".mvp.v.activity.JujiaActivity"></activity>
+
+        <receiver android:name=".tool.alarm.AlarmReceiver">
+            <intent-filter>
+                <action android:name="android.intent.action.ALARM_RECEIVER" />
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </receiver>
     </application>
 
 </manifest>

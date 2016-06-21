@@ -23,6 +23,7 @@ import com.techjumper.commonres.entity.event.InfoDetailEvent;
 import com.techjumper.commonres.entity.event.InfoTypeEvent;
 import com.techjumper.commonres.entity.event.PropertyNormalDetailEvent;
 import com.techjumper.commonres.entity.event.loadmoreevent.LoadmoreInfoEvent;
+import com.techjumper.commonres.tool.AlarmManagerUtil;
 import com.techjumper.corelib.mvp.factory.Presenter;
 import com.techjumper.corelib.rx.tools.RxBus;
 import com.techjumper.polyhome.b.info.R;
@@ -210,6 +211,8 @@ public class InfoMainActivity extends AppBaseActivity {
                 super.onScrolled(recyclerView, dx, dy);
             }
         });
+
+        AlarmManagerUtil.setTime(this, 0, 0);
     }
 
     public void getList(List<InfoEntity.InfoDataEntity.InfoItemEntity> infoEntityTemporaries, int page) {

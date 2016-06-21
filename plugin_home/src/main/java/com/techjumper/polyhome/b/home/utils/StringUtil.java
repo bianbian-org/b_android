@@ -38,6 +38,7 @@ public class StringUtil {
 
     /**
      * 判断长度
+     *
      * @param string
      * @param indexId
      * @param position
@@ -53,6 +54,9 @@ public class StringUtil {
     }
 
     public static String delHTMLTag(String htmlStr) {
+        if (TextUtils.isEmpty(htmlStr))
+            return "";
+
         String regEx_script = "<script[^>]*?>[\\s\\S]*?<\\/script>"; //定义script的正则表达式
         String regEx_style = "<style[^>]*?>[\\s\\S]*?<\\/style>"; //定义style的正则表达式
         String regEx_html = "<[^>]+>"; //定义HTML标签的正则表达式

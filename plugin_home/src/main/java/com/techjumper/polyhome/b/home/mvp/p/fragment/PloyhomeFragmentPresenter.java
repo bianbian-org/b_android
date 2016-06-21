@@ -83,7 +83,7 @@ public class PloyhomeFragmentPresenter extends AppBaseFragmentPresenter<Ployhome
                     if (o instanceof NoticeEvent) {
                         NoticeEvent entity = (NoticeEvent) o;
                         getView().getNoticeContent().setText(StringUtil.delHTMLTag(entity.getContent()));
-                        getView().getNoticeTitle().setText(entity.getTitle());
+                        getView().getNoticeTitle().setText(TextUtils.isEmpty(entity.getTitle()) ? "" : entity.getTitle());
 
                         type = entity.getType();
                     }
