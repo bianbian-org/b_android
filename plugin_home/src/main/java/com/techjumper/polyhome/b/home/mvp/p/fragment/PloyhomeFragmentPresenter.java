@@ -119,7 +119,6 @@ public class PloyhomeFragmentPresenter extends AppBaseFragmentPresenter<Ployhome
                             restrictSv.showContentTextSize(60);
                             restrictSv.showTitleText(DateUtil.getDate(date) + "限行");
                         }
-
                     }
                 }));
     }

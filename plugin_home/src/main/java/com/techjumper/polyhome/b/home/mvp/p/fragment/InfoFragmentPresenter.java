@@ -39,7 +39,6 @@ public class InfoFragmentPresenter extends AppBaseFragmentPresenter<InfoFragment
 
     @OnClick(R.id.setting)
     void setting() {
-//        PluginEngineUtil.startSetting();
         Intent it = new Intent();
         ComponentName componentName = new ComponentName("com.dnake.talk", "com.dnake.setting.activity.SettingActivity");
         it.setComponent(componentName);
@@ -53,7 +52,6 @@ public class InfoFragmentPresenter extends AppBaseFragmentPresenter<InfoFragment
 
     @OnClick(R.id.speak)
     void speak() {
-//        PluginEngineUtil.startTalk();
         Intent it = new Intent();
         ComponentName componentName = new ComponentName("com.dnake.talk", "com.dnake.activity.CallingActivity");
         it.setComponent(componentName);
@@ -78,6 +76,7 @@ public class InfoFragmentPresenter extends AppBaseFragmentPresenter<InfoFragment
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(o -> {
                     if (o instanceof WeatherDateEvent) {
+                        ToastUtils.show("更新天气");
                         getWeatherInfo(429);
                         getCalendarInfo();
                     }
