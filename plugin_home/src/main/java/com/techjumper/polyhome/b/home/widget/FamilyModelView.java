@@ -95,11 +95,11 @@ public class FamilyModelView extends RelativeLayout {
                 break;
             case MotionEvent.ACTION_UP:
                 moveX = event.getX();
-                if (x - moveX > MIN_DISTANCE) {
+                if (!isToLeft && (x - moveX > MIN_DISTANCE || x - moveX == 0)) {
                     isToLeft = true;
                     isToRight = false;
                     setAnimation();
-                } else if (moveX - x > MIN_DISTANCE) {
+                } else if (isToLeft && (moveX - x > MIN_DISTANCE || moveX - x == 0)) {
                     isToLeft = false;
                     isToRight = true;
                     setAnimation();

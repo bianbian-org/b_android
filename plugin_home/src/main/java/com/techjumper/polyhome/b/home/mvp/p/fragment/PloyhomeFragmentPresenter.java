@@ -104,8 +104,8 @@ public class PloyhomeFragmentPresenter extends AppBaseFragmentPresenter<Ployhome
                         SquareView restrictSv = getView().getFpRestrict();
                         SquareView temperatureSv = getView().getFpTemperature();
 
-                        temperatureSv.showContentText(entity.getTemperature() + "°");
-                        temperatureSv.showTitleText("pm2.5 " + entity.getPm25());
+                        temperatureSv.showContentText(entity.getTemperature());
+                        temperatureSv.showTitleText(entity.getPm25());
 
                         String date = entity.getDate_one();
                         String restrictNo = getRestrictNo(date, entity.getRestrict());
@@ -153,6 +153,10 @@ public class PloyhomeFragmentPresenter extends AppBaseFragmentPresenter<Ployhome
 
     private String getRestrictNo(String date, WeatherEntity.Restrict restrict) {
         String restrictNo = "";
+
+        if (TextUtils.isEmpty(date))
+            return "";
+
         if (date.equals("周一")) {
             restrictNo = restrict.getMonday();
         } else if (date.equals("周二")) {

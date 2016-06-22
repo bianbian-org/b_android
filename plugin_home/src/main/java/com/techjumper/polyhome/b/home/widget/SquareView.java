@@ -84,7 +84,7 @@ public class SquareView extends RelativeLayout {
     public void showContentText(String text) {
         if (!TextUtils.isEmpty(text)) {
             contentTv.setCompoundDrawables(null, null, null, null);
-            contentTv.setText(text);
+            contentTv.setText(text + "°");
             contentImgId = 0;
         }
     }
@@ -127,7 +127,7 @@ public class SquareView extends RelativeLayout {
 
     public void showTitleText(String text){
         if (!TextUtils.isEmpty(text)) {
-            titleTv.setText(text);
+            titleTv.setText("pm2.5 " + text);
         }
     }
 }

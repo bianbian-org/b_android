@@ -1,9 +1,12 @@
 package com.techjumper.polyhome.b.info.mvp.v.activity;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.View;
+import android.view.WindowManager;
 import android.webkit.WebChromeClient;
 import android.webkit.WebView;
 import android.widget.LinearLayout;
@@ -23,7 +26,6 @@ import com.techjumper.commonres.entity.event.InfoDetailEvent;
 import com.techjumper.commonres.entity.event.InfoTypeEvent;
 import com.techjumper.commonres.entity.event.PropertyNormalDetailEvent;
 import com.techjumper.commonres.entity.event.loadmoreevent.LoadmoreInfoEvent;
-import com.techjumper.commonres.tool.AlarmManagerUtil;
 import com.techjumper.corelib.mvp.factory.Presenter;
 import com.techjumper.corelib.rx.tools.RxBus;
 import com.techjumper.polyhome.b.info.R;
@@ -36,7 +38,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.Bind;
-import butterknife.ButterKnife;
 import butterknife.OnClick;
 import rx.android.schedulers.AndroidSchedulers;
 
@@ -135,7 +136,7 @@ public class InfoMainActivity extends AppBaseActivity {
 //                    case R.id.title_all:
 //                        break;
                     case R.id.title_announcement:
-                        type =  NoticeEntity.PROPERTY;
+                        type = NoticeEntity.PROPERTY;
                         RxBus.INSTANCE.send(new InfoTypeEvent(type));
                         break;
                     case R.id.title_system:
@@ -211,8 +212,6 @@ public class InfoMainActivity extends AppBaseActivity {
                 super.onScrolled(recyclerView, dx, dy);
             }
         });
-
-        AlarmManagerUtil.setTime(this, 0, 0);
     }
 
     public void getList(List<InfoEntity.InfoDataEntity.InfoItemEntity> infoEntityTemporaries, int page) {
@@ -228,7 +227,7 @@ public class InfoMainActivity extends AppBaseActivity {
         if (page == 1) {
             adapter.loadData(displayBeans);
             infoList.setAdapter(adapter);
-        }else {
+        } else {
             adapter.insertData(adapter.getItemCount(), displayBeans);
         }
 
