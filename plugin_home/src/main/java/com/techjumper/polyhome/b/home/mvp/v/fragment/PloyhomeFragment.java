@@ -97,8 +97,8 @@ public class PloyhomeFragment extends AppBaseFragment<PloyhomeFragmentPresenter>
         }
 
         List<NoticeEntity.Message> messages = entity.getMessages();
-        if (messages != null && messages.size() > 0) {
 
+        if (messages != null && messages.size() > 0) {
             timer.schedule(new TimerTask() {
                 @Override
                 public void run() {

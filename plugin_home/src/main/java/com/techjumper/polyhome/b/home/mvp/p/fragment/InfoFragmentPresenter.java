@@ -1,29 +1,21 @@
 package com.techjumper.polyhome.b.home.mvp.p.fragment;
 
-import android.app.AlarmManager;
 import android.content.ComponentName;
 import android.content.Intent;
 import android.os.Bundle;
-import android.text.TextUtils;
 
 import com.techjumper.commonres.PluginConstant;
 import com.techjumper.commonres.entity.CalendarEntity;
-import com.techjumper.commonres.entity.LoginEntity;
 import com.techjumper.commonres.entity.WeatherEntity;
-import com.techjumper.commonres.entity.event.NoticeEvent;
 import com.techjumper.commonres.entity.event.WeatherDateEvent;
 import com.techjumper.commonres.entity.event.WeatherEvent;
 import com.techjumper.commonres.util.PluginEngineUtil;
 import com.techjumper.corelib.rx.tools.RxBus;
-import com.techjumper.corelib.utils.window.ToastUtils;
-import com.techjumper.lib2.utils.GsonUtils;
-import com.techjumper.plugincommunicateengine.IPluginMessageReceiver;
 import com.techjumper.plugincommunicateengine.PluginEngine;
 import com.techjumper.polyhome.b.home.R;
 import com.techjumper.polyhome.b.home.mvp.m.InfoFragmentModel;
 import com.techjumper.polyhome.b.home.mvp.v.fragment.InfoFragment;
 import com.techjumper.polyhome.b.home.tool.AlarmManagerUtil;
-import com.techjumper.polyhome.b.home.utils.StringUtil;
 
 import java.util.Random;
 
@@ -76,7 +68,6 @@ public class InfoFragmentPresenter extends AppBaseFragmentPresenter<InfoFragment
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(o -> {
                     if (o instanceof WeatherDateEvent) {
-                        ToastUtils.show("更新天气");
                         getWeatherInfo(429);
                         getCalendarInfo();
                     }
@@ -147,11 +138,8 @@ public class InfoFragmentPresenter extends AppBaseFragmentPresenter<InfoFragment
             }
         });
 
-        PluginEngine.getInstance().registerReceiver(new IPluginMessageReceiver() {
-            @Override
-            public void onPluginMessageReceive(int code, String message, Bundle extras) {
-                //接受医疗的消息
-            }
+        PluginEngine.getInstance().registerReceiver((code, message, extras) -> {
+            //接受医疗的消息
         });
     }
 }

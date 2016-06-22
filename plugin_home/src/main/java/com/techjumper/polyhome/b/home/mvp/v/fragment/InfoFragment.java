@@ -81,7 +81,6 @@ public class InfoFragment extends AppBaseFragment<InfoFragmentPresenter> {
     }
 
     public void getWeatherInfo(WeatherEntity.WeatherDataEntity weatherDataEntity) {
-        // TODO: 16/4/28 有些数据需要微调，比如空起质量，适合跑步等
         liwIcon.setBackgroundResource(WeatherUtil.getImgRes(weatherDataEntity.getImg()));
         liwTemperature.setText(weatherDataEntity.getTemperature() + "°");
         liwInfo.setText(weatherDataEntity.getWeather_info());
@@ -92,12 +91,15 @@ public class InfoFragment extends AppBaseFragment<InfoFragmentPresenter> {
         liwwFirst.setDate(weatherDataEntity.getDate_one());
         liwwFirst.setTemperature(weatherDataEntity.getTemperature_one());
         liwwFirst.setImg(weatherDataEntity.getImg_one());
+
         liwwSecond.setDate(weatherDataEntity.getDate_two());
         liwwSecond.setTemperature(weatherDataEntity.getTemperature_two());
         liwwSecond.setImg(weatherDataEntity.getImg_two());
+
         liwwThird.setDate(weatherDataEntity.getDate_three());
         liwwThird.setTemperature(weatherDataEntity.getTemperature_three());
         liwwThird.setImg(weatherDataEntity.getImg_three());
+
         liwwFourth.setDate(weatherDataEntity.getDate_four());
         liwwFourth.setTemperature(weatherDataEntity.getTemperature_four());
         liwwFourth.setImg(weatherDataEntity.getImg_four());
@@ -106,7 +108,6 @@ public class InfoFragment extends AppBaseFragment<InfoFragmentPresenter> {
     }
 
     public void getCalendarInfo(CalendarEntity.CalendarDataEntity calendarDataEntity) {
-        // TODO: 16/4/28 有些数据需要微调
         lidDate.setText(DateUtil.formatDate(calendarDataEntity.getDate()));
         lidLunar.setText(calendarDataEntity.getLunarYear() + calendarDataEntity.getAnimalsYear() + "年" + calendarDataEntity.getLunar());
 

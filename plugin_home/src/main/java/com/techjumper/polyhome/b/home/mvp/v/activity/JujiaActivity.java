@@ -13,6 +13,7 @@ import com.techjumper.polyhome.b.home.mvp.p.activity.JujiaActivityPresenter;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
+
 @Presenter(JujiaActivityPresenter.class)
 public class JujiaActivity extends AppBaseActivity<JujiaActivityPresenter> {
 
@@ -54,21 +55,28 @@ public class JujiaActivity extends AppBaseActivity<JujiaActivityPresenter> {
     @Override
     public void onPause() {
         super.onPause();
-        webView.onPause();
+        if (webView != null) {
+            webView.onPause();
+        }
     }
 
     @Override
     public void onResume() {
         super.onResume();
-        webView.onResume();
+        if (webView != null) {
+            webView.onResume();
+        }
     }
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
+        if (webView != null) {
+            webView.destroy();
+        }
     }
 
-    public class webViewClient extends WebViewClient {
+    private class webViewClient extends WebViewClient {
         @Override
         public boolean shouldOverrideUrlLoading(WebView view, String url) {
             view.loadUrl(url);
