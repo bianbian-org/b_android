@@ -5,16 +5,19 @@ import android.os.Bundle;
 import android.text.TextUtils;
 
 import com.techjumper.commonres.PluginConstant;
+import com.techjumper.commonres.UserInfoEntity;
 import com.techjumper.commonres.entity.InfoEntity;
 import com.techjumper.commonres.entity.NoticeEntity;
 import com.techjumper.commonres.entity.WeatherEntity;
 import com.techjumper.commonres.entity.event.NoticeEvent;
 import com.techjumper.commonres.entity.event.PropertyActionEvent;
+import com.techjumper.commonres.entity.event.UserInfoEvent;
 import com.techjumper.commonres.entity.event.WeatherEvent;
 import com.techjumper.commonres.util.PluginEngineUtil;
 import com.techjumper.corelib.rx.tools.RxBus;
 import com.techjumper.plugincommunicateengine.PluginEngine;
 import com.techjumper.polyhome.b.home.R;
+import com.techjumper.polyhome.b.home.UserInfoManager;
 import com.techjumper.polyhome.b.home.mvp.m.PloyhomeFragmentModel;
 import com.techjumper.polyhome.b.home.mvp.v.activity.AdActivity;
 import com.techjumper.polyhome.b.home.mvp.v.activity.JujiaActivity;
@@ -37,6 +40,7 @@ public class PloyhomeFragmentPresenter extends AppBaseFragmentPresenter<Ployhome
 
     private PloyhomeFragmentModel model = new PloyhomeFragmentModel(this);
     private int type = -1;
+    private UserInfoEntity userInfoEntity;
 
     @OnClick(R.id.property)
     void property() {
@@ -74,7 +78,6 @@ public class PloyhomeFragmentPresenter extends AppBaseFragmentPresenter<Ployhome
         PluginEngineUtil.startSmartHome();
     }
 
-
     @Override
     public void initData(Bundle savedInstanceState) {
         RxBus.INSTANCE.asObservable()
@@ -86,13 +89,16 @@ public class PloyhomeFragmentPresenter extends AppBaseFragmentPresenter<Ployhome
                         getView().getNoticeTitle().setText(TextUtils.isEmpty(entity.getTitle()) ? "" : entity.getTitle());
 
                         type = entity.getType();
+                    } else if (o instanceof UserInfoEvent) {
+                        getNotices();
                     }
                 });
     }
 
     @Override
     public void onViewInited(Bundle savedInstanceState) {
-        getNotices();
+
+//        getNotices(367, "42abcd66b653086cc5805902c1a2134c746fea39");
 
         addSubscription(RxBus.INSTANCE.asObservable()
                 .observeOn(AndroidSchedulers.mainThread())

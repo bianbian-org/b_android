@@ -5,6 +5,7 @@ import com.techjumper.commonres.entity.WeatherEntity;
 import com.techjumper.corelib.mvp.model.BaseModel;
 import com.techjumper.corelib.rx.tools.CommonWrap;
 import com.techjumper.lib2.utils.RetrofitHelper;
+import com.techjumper.polyhome.b.home.UserInfoManager;
 import com.techjumper.polyhome.b.home.mvp.p.fragment.InfoFragmentPresenter;
 import com.techjumper.polyhome.b.home.net.KeyValueCreator;
 import com.techjumper.polyhome.b.home.net.NetHelper;
@@ -22,9 +23,9 @@ public class InfoFragmentModel extends BaseModel<InfoFragmentPresenter> {
         super(presenter);
     }
 
-    public Observable<WeatherEntity> getWeatherInfo(long familyId) {
+    public Observable<WeatherEntity> getWeatherInfo() {
         return RetrofitHelper.<ServiceAPI>createDefault()
-                .getWeatherInfo(NetHelper.createBaseArgumentsMap(KeyValueCreator.getWeatherInfo(String.valueOf(familyId))))
+                .getWeatherInfo(NetHelper.createBaseArgumentsMap(KeyValueCreator.getWeatherInfo(String.valueOf(UserInfoManager.getFamilyId()))))
                 .compose(CommonWrap.wrap());
     }
 

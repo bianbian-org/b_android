@@ -33,8 +33,7 @@ public class ActionFragmentPresenter extends AppBaseFragmentPresenter<ActionFrag
         int repair_type = getView().getLrType();
         int repair_device = getView().getLrDevice();
         String note = getView().getLrContent().getText().toString();
-        // TODO: 16/5/18 写死的familyId;
-        submitRepair(385, repair_type, repair_device, note);
+        submitRepair(repair_type, repair_device, note);
     }
 
     @Override
@@ -79,10 +78,10 @@ public class ActionFragmentPresenter extends AppBaseFragmentPresenter<ActionFrag
                 }));
     }
 
-    public void submitRepair(int family_id, int repair_type, int repair_device, String note) {
+    public void submitRepair(int repair_type, int repair_device, String note) {
         getView().showLoading(false);
 
-        addSubscription(model.submitRepair(family_id, repair_type, repair_device, note)
+        addSubscription(model.submitRepair(repair_type, repair_device, note)
                 .subscribe(new Subscriber<TrueEntity>() {
                     @Override
                     public void onCompleted() {
