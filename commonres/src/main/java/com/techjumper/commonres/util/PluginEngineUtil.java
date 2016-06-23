@@ -3,7 +3,9 @@ package com.techjumper.commonres.util;
 import android.os.Bundle;
 
 import com.techjumper.commonres.PluginConstant;
+import com.techjumper.commonres.UserInfoEntity;
 import com.techjumper.plugincommunicateengine.HostDataBuilder;
+import com.techjumper.plugincommunicateengine.IPluginMessageReceiver;
 import com.techjumper.plugincommunicateengine.PluginEngine;
 
 /**
@@ -17,6 +19,8 @@ public class PluginEngineUtil {
     public static final String PLUGIN_SETTING = "com.techjumper.polyhome.b.setting";
     public static final String PLUGIN_MEDICAL = "pltk.com.medical";
     public static final String PLUGIN_TALK = "com.dnake.talk";
+
+    public static final String NAME_USERINFO = "poly_b_family_register"; //获取用户登录后的信息文件名
 
     //物业
     public static void startProperty() {
@@ -167,6 +171,27 @@ public class PluginEngineUtil {
             public void onEngineConnected(PluginEngine.PluginExecutor pluginExecutor) {
                 try {
                     pluginExecutor.send(PluginEngine.CODE_UPDATE_PLUGIN);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+
+            @Override
+            public void onEngineDisconnected() {
+
+            }
+        });
+    }
+
+    public static void initUserInfo() {
+        PluginEngine.getInstance().start(new PluginEngine.IPluginConnection() {
+            @Override
+            public void onEngineConnected(PluginEngine.PluginExecutor pluginExecutor) {
+                try {
+                    String data = HostDataBuilder.saveInfoBuilder()
+                            .name(NAME_USERINFO)
+                            .build();
+                    pluginExecutor.send(PluginEngine.CODE_GET_SAVE_INFO, data);
                 } catch (Exception e) {
                     e.printStackTrace();
                 }

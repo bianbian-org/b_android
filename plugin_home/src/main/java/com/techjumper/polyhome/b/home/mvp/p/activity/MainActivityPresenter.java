@@ -5,6 +5,8 @@ import android.content.Intent;
 import android.os.Bundle;
 
 import com.techjumper.commonres.ComConstant;
+import com.techjumper.commonres.util.PluginEngineUtil;
+import com.techjumper.plugincommunicateengine.IPluginMessageReceiver;
 import com.techjumper.plugincommunicateengine.PluginEngine;
 import com.techjumper.polyhome.b.home.R;
 import com.techjumper.polyhome.b.home.mvp.v.activity.MainActivity;
@@ -68,6 +70,13 @@ public class MainActivityPresenter extends AppBaseActivityPresenter<MainActivity
 
     @Override
     public void onViewInited(Bundle savedInstanceState) {
+        PluginEngineUtil.initUserInfo();
 
+//        PluginEngine.getInstance().registerReceiver(new IPluginMessageReceiver() {
+//            @Override
+//            public void onPluginMessageReceive(int code, String message, Bundle extras) {
+//                if ()
+//            }
+//        });
     }
 }

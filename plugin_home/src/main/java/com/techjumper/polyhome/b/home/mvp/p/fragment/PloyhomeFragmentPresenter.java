@@ -104,8 +104,8 @@ public class PloyhomeFragmentPresenter extends AppBaseFragmentPresenter<Ployhome
                         SquareView restrictSv = getView().getFpRestrict();
                         SquareView temperatureSv = getView().getFpTemperature();
 
-                        temperatureSv.showContentText(entity.getTemperature());
-                        temperatureSv.showTitleText(entity.getPm25());
+                        temperatureSv.showContentText(TextUtils.isEmpty(entity.getTemperature()) ? "0" : entity.getTemperature() + "°");
+                        temperatureSv.showTitleText("pm2.5 " + (TextUtils.isEmpty(entity.getPm25()) ? "0" : entity.getPm25()));
 
                         String date = entity.getDate_one();
                         String restrictNo = getRestrictNo(date, entity.getRestrict());
