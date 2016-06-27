@@ -47,8 +47,8 @@ public class PloyhomeFragmentPresenter extends AppBaseFragmentPresenter<Ployhome
     @OnClick(R.id.property)
     void property() {
         if (UserInfoManager.isLogin()) {
-            long familyId = UserInfoManager.getFamilyId();
-            long userId = UserInfoManager.getUserId();
+            long familyId = UserInfoManager.getLongFamilyId();
+            long userId = UserInfoManager.getLongUserId();
             String ticket = UserInfoManager.getTicket();
             PluginEngineUtil.startProperty(familyId, userId, ticket);
         } else {
@@ -62,8 +62,8 @@ public class PloyhomeFragmentPresenter extends AppBaseFragmentPresenter<Ployhome
             return;
 
         if (UserInfoManager.isLogin()) {
-            long userId = UserInfoManager.getUserId();
-            long familyId = UserInfoManager.getFamilyId();
+            long userId = UserInfoManager.getLongUserId();
+            long familyId = UserInfoManager.getLongFamilyId();
             String ticket = UserInfoManager.getTicket();
             PluginEngineUtil.startInfo(userId, familyId, ticket, type);
         } else {

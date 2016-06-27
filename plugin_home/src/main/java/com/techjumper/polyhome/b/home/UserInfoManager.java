@@ -42,12 +42,31 @@ public enum UserInfoManager {
     }
 
     /**
+     * 获取家庭id(long 类型)
+     *
+     * @return
+     */
+    public static long getLongUserId() {
+        return PreferenceUtils.get(KEY_USER_ID, -1L);
+    }
+
+
+    /**
      * 获取家庭id
      *
      * @return
      */
     public static String getFamilyId() {
         return String.valueOf(PreferenceUtils.get(KEY_ID, -1L));
+    }
+
+    /**
+     * 获取家庭id(long 类型)
+     *
+     * @return
+     */
+    public static long getLongFamilyId() {
+        return PreferenceUtils.get(KEY_ID, -1L);
     }
 
     /**
@@ -61,6 +80,7 @@ public enum UserInfoManager {
 
     /**
      * 是否登录
+     *
      * @return
      */
     public static boolean isLogin() {
