@@ -14,5 +14,13 @@ public class PluginConstant {
     public static final String KEY_ISHOME = "key_ishome";
 
     //信息key
-    public static final String KEY_TYPE = "key_type";
+    public static final String KEY_INFO_TYPE = "key_info_type";
+    public static final String KEY_INFO_USER_ID = "key_info_user_id";
+    public static final String KEY_INFO_TICKET = "key_info_ticket";
+    public static final String KEY_INFO_FAMILY_ID = "key_info_family_id";
+
+    //物业key
+    public static final String KEY_PRO_FAMILY_ID = "key_pro_family_id";
+    public static final String KEY_PRO_USER_ID = "key_pro_user_id";
+    public static final String KEY_PRO_TICKET = "key_pro_ticket";
 }

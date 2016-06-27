@@ -9,6 +9,9 @@ import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.techjumper.commonres.ComConstant;
+import com.techjumper.commonres.PluginConstant;
+import com.techjumper.commonres.UserInfoEntity;
 import com.techjumper.commonres.entity.event.LoginEvent;
 import com.techjumper.commonres.entity.event.PropertyActionEvent;
 import com.techjumper.commonres.util.CommonDateUtil;
@@ -16,6 +19,7 @@ import com.techjumper.corelib.mvp.factory.Presenter;
 import com.techjumper.corelib.rx.tools.RxBus;
 import com.techjumper.corelib.utils.window.ToastUtils;
 import com.techjumper.polyhome.b.property.R;
+import com.techjumper.polyhome.b.property.UserInfoManager;
 import com.techjumper.polyhome.b.property.mvp.p.activity.MainActivityPresenter;
 import com.techjumper.polyhome.b.property.mvp.v.fragment.ActionFragment;
 import com.techjumper.polyhome.b.property.mvp.v.fragment.ListFragment;
@@ -41,6 +45,15 @@ public class MainActivity extends AppBaseActivity<MainActivityPresenter> {
     @Override
     protected void initView(Bundle savedInstanceState) {
         titleDate.setText(CommonDateUtil.getTitleDate());
+
+        if (getIntent() != null && getIntent().getExtras() != null) {
+            Bundle bundle = getIntent().getExtras();
+            UserInfoEntity userInfoEntity = new UserInfoEntity();
+            userInfoEntity.setId(bundle.getLong(PluginConstant.KEY_PRO_FAMILY_ID));
+            userInfoEntity.setUser_id(bundle.getLong(PluginConstant.KEY_PRO_USER_ID));
+            userInfoEntity.setTicket(bundle.getString(PluginConstant.KEY_PRO_TICKET));
+            UserInfoManager.saveUserInfo(userInfoEntity);
+        }
 
         switchFragment(R.id.container, ListFragment.getInstance(), false, false);
 

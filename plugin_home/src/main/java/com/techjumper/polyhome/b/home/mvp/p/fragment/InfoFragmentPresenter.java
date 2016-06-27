@@ -70,7 +70,7 @@ public class InfoFragmentPresenter extends AppBaseFragmentPresenter<InfoFragment
 
     @Override
     public void onViewInited(Bundle savedInstanceState) {
-//        getWeatherInfo(429);
+        getWeatherInfo();
         getCalendarInfo();
 
         postMedical();
@@ -103,6 +103,9 @@ public class InfoFragmentPresenter extends AppBaseFragmentPresenter<InfoFragment
 
                     @Override
                     public void onNext(WeatherEntity weatherEntity) {
+                        if (!processNetworkResult(weatherEntity, false))
+                            return;
+
                         if (weatherEntity != null && weatherEntity.getData() != null)
                             getView().getWeatherInfo(weatherEntity.getData());
                         //发送给主页获取数据
@@ -127,6 +130,9 @@ public class InfoFragmentPresenter extends AppBaseFragmentPresenter<InfoFragment
 
                     @Override
                     public void onNext(CalendarEntity calendarEntity) {
+                        if (!processNetworkResult(calendarEntity, false))
+                            return;
+
                         if (calendarEntity != null && calendarEntity.getData() != null)
                             getView().getCalendarInfo(calendarEntity.getData());
                     }

@@ -28,6 +28,6 @@ public interface ServiceAPI {
     @GET("messages")
     Observable<InfoEntity> getInfo(@QueryMap Map<String, String> map);
 
-    @GET("notices/list")
+    @GET("notices/new")
     Observable<NoticeEntity> getNotices(@QueryMap Map<String, String> map);
 }

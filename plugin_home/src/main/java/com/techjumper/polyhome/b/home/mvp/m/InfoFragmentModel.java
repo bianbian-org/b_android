@@ -25,7 +25,7 @@ public class InfoFragmentModel extends BaseModel<InfoFragmentPresenter> {
 
     public Observable<WeatherEntity> getWeatherInfo() {
         return RetrofitHelper.<ServiceAPI>createDefault()
-                .getWeatherInfo(NetHelper.createBaseArgumentsMap(KeyValueCreator.getWeatherInfo(String.valueOf(UserInfoManager.getFamilyId()))))
+                .getWeatherInfo(NetHelper.createBaseArgumentsMap(KeyValueCreator.getWeatherInfo(UserInfoManager.getFamilyId())))
                 .compose(CommonWrap.wrap());
     }
 

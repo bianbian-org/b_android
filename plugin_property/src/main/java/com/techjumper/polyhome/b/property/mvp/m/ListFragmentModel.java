@@ -12,6 +12,7 @@ import com.techjumper.corelib.mvp.model.BaseModel;
 import com.techjumper.corelib.rx.tools.CommonWrap;
 import com.techjumper.lib2.others.KeyValuePair;
 import com.techjumper.lib2.utils.RetrofitHelper;
+import com.techjumper.polyhome.b.property.UserInfoManager;
 import com.techjumper.polyhome.b.property.mvp.p.fragment.ListFragmentPresenter;
 import com.techjumper.polyhome.b.property.mvp.v.fragment.ActionFragment;
 import com.techjumper.polyhome.b.property.net.KeyValueCreator;
@@ -29,30 +30,23 @@ public class ListFragmentModel extends BaseModel<ListFragmentPresenter> {
         super(presenter);
     }
 
-    public Observable<AnnouncementEntity> getAnnouncements(int page) {
-
-        return RetrofitHelper.<ServiceAPI>createDefault()
-                .getAnnouncements(NetHelper.createBaseArgumentsMap(KeyValueCreator.getAnnouncements(String.valueOf(page), "10")))
-                .compose(CommonWrap.wrap());
-    }
-
     public Observable<ComplaintEntity> getComplaints(int page) {
 
         return RetrofitHelper.<ServiceAPI>createDefault()
-                .getComplaints(NetHelper.createBaseArgumentsMap(KeyValueCreator.getComplaints(ComConstant.defaultUserId, ComConstant.defaultTicket, String.valueOf(page), "10")))
+                .getComplaints(NetHelper.createBaseArgumentsMap(KeyValueCreator.getComplaints(UserInfoManager.getUserId(), UserInfoManager.getTicket(),  String.valueOf(page), ComConstant.PAGESIZE)))
                 .compose(CommonWrap.wrap());
     }
 
     public Observable<RepairEntity> getRepairs(int page) {
 
         return RetrofitHelper.<ServiceAPI>createDefault()
-                .getRepair(NetHelper.createBaseArgumentsMap(KeyValueCreator.getComplaints(ComConstant.defaultUserId, ComConstant.defaultTicket, String.valueOf(page), "10")))
+                .getRepair(NetHelper.createBaseArgumentsMap(KeyValueCreator.getComplaints(UserInfoManager.getUserId(), UserInfoManager.getTicket(), String.valueOf(page), ComConstant.PAGESIZE)))
                 .compose(CommonWrap.wrap());
     }
 
     public Observable<ComplaintDetailEntity> getComplaintDetail(long id) {
         return RetrofitHelper.<ServiceAPI>createDefault()
-                .getComplaintDetail(NetHelper.createBaseArgumentsMap(KeyValueCreator.getComplaintDetail(ComConstant.defaultUserId, ComConstant.defaultTicket, String.valueOf(id))))
+                .getComplaintDetail(NetHelper.createBaseArgumentsMap(KeyValueCreator.getComplaintDetail(UserInfoManager.getUserId(), UserInfoManager.getTicket(), String.valueOf(id))))
                 .compose(CommonWrap.wrap());
     }
 
@@ -61,13 +55,13 @@ public class ListFragmentModel extends BaseModel<ListFragmentPresenter> {
         Observable<TrueEntity> observable;
 
         if (type == ActionFragment.COMPLAINT) {
-            KeyValuePair complaintPair = KeyValueCreator.replyComplaint(ComConstant.defaultUserId, ComConstant.defaultTicket, content, String.valueOf(id));
+            KeyValuePair complaintPair = KeyValueCreator.replyComplaint(UserInfoManager.getUserId(), UserInfoManager.getTicket(), content, String.valueOf(id));
             BaseArgumentsEntity argument = NetHelper.createBaseArguments(complaintPair);
             observable = RetrofitHelper.<ServiceAPI>createDefault()
                     .replyComplaint(argument)
                     .compose(CommonWrap.wrap());
         } else {
-            KeyValuePair repairPair = KeyValueCreator.replyRepair(ComConstant.defaultUserId, ComConstant.defaultTicket, content, String.valueOf(id));
+            KeyValuePair repairPair = KeyValueCreator.replyRepair(UserInfoManager.getUserId(), UserInfoManager.getTicket(), content, String.valueOf(id));
             BaseArgumentsEntity argument = NetHelper.createBaseArguments(repairPair);
             observable = RetrofitHelper.<ServiceAPI>createDefault()
                     .replyRepair(argument)
@@ -79,7 +73,7 @@ public class ListFragmentModel extends BaseModel<ListFragmentPresenter> {
 
     public Observable<RepairDetailEntity> getRepairDetail(long id) {
         return RetrofitHelper.<ServiceAPI>createDefault()
-                .getRepairDetail(NetHelper.createBaseArgumentsMap(KeyValueCreator.getRepairDetail(ComConstant.defaultUserId, ComConstant.defaultTicket, String.valueOf(id))))
+                .getRepairDetail(NetHelper.createBaseArgumentsMap(KeyValueCreator.getRepairDetail(UserInfoManager.getUserId(), UserInfoManager.getTicket(), String.valueOf(id))))
                 .compose(CommonWrap.wrap());
     }
 }

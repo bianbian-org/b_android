@@ -79,49 +79,54 @@ public class InfoMainActivityPresenter extends AppBaseActivityPresenter<InfoMain
                                 } else {
                                     getList(type);
                                 }
-                            } else if (o instanceof UserInfoEvent) {
-
                             }
+//                            else if (o instanceof UserInfoEvent) {
+//                                int type = getView().getType();
+//                                if (type == NoticeEntity.PROPERTY) {
+//                                    getAnnouncements();
+//                                } else {
+//                                    getList(intentType);
+//                                }
+//                            }
                         })
         );
-
-        PluginEngineUtil.initUserInfo();
-
-        PluginEngine.getInstance().registerReceiver((code, message, extras) -> {
-            if (code == PluginEngine.CODE_GET_SAVE_INFO) {
-                SaveInfoEntity saveInfoEntity = GsonUtils.fromJson(message, SaveInfoEntity.class);
-                if (saveInfoEntity == null || saveInfoEntity.getData() == null)
-                    return;
-
-                Log.d("plugin", "name: " + saveInfoEntity.getData().getName());
-                HashMap<String, String> hashMap = saveInfoEntity.getData().getValues();
-                if (hashMap == null || hashMap.size() == 0)
-                    return;
-
-                UserInfoEntity userInfoEntity = new UserInfoEntity();
-
-                for (Map.Entry<String, String> entry : hashMap.entrySet()) {
-                    Log.d("value", entry.getValue());
-                    String key = entry.getKey();
-                    String value = entry.getValue();
-                    if (key.equals("id")) {
-                        userInfoEntity.setId(Long.parseLong(value));
-                    } else if (key.equals("family_name")) {
-                        userInfoEntity.setFamily_name(value);
-                    } else if (key.equals("user_id")) {
-                        userInfoEntity.setUser_id(Long.parseLong(value));
-                    } else if (key.equals("ticket")) {
-                        userInfoEntity.setTicket(value);
-                    } else if (key.equals("has_binding")) {
-                        userInfoEntity.setHas_binding(Integer.parseInt(value));
-                    }
-                }
-
-                UserInfoManager.saveUserInfo(userInfoEntity);
-
-                RxBus.INSTANCE.send(new UserInfoEvent(userInfoEntity));
-            }
-        });
+//        PluginEngineUtil.initUserInfo();
+//
+//        PluginEngine.getInstance().registerReceiver((code, message, extras) -> {
+//            if (code == PluginEngine.CODE_GET_SAVE_INFO) {
+//                SaveInfoEntity saveInfoEntity = GsonUtils.fromJson(message, SaveInfoEntity.class);
+//                if (saveInfoEntity == null || saveInfoEntity.getData() == null)
+//                    return;
+//
+//                Log.d("plugin", "name: " + saveInfoEntity.getData().getName());
+//                HashMap<String, String> hashMap = saveInfoEntity.getData().getValues();
+//                if (hashMap == null || hashMap.size() == 0)
+//                    return;
+//
+//                UserInfoEntity userInfoEntity = new UserInfoEntity();
+//
+//                for (Map.Entry<String, String> entry : hashMap.entrySet()) {
+//                    Log.d("value", entry.getValue());
+//                    String key = entry.getKey();
+//                    String value = entry.getValue();
+//                    if (key.equals("id")) {
+//                        userInfoEntity.setId(Long.parseLong(value));
+//                    } else if (key.equals("family_name")) {
+//                        userInfoEntity.setFamily_name(value);
+//                    } else if (key.equals("user_id")) {
+//                        userInfoEntity.setUser_id(Long.parseLong(value));
+//                    } else if (key.equals("ticket")) {
+//                        userInfoEntity.setTicket(value);
+//                    } else if (key.equals("has_binding")) {
+//                        userInfoEntity.setHas_binding(Integer.parseInt(value));
+//                    }
+//                }
+//
+//                UserInfoManager.saveUserInfo(userInfoEntity);
+//
+//                RxBus.INSTANCE.send(new UserInfoEvent(userInfoEntity));
+//            }
+//        });
     }
 
     @OnClick(R.id.bottom_home)
@@ -143,6 +148,9 @@ public class InfoMainActivityPresenter extends AppBaseActivityPresenter<InfoMain
 
             @Override
             public void onNext(InfoEntity infoEntity) {
+                if (!processNetworkResult(infoEntity, false))
+                    return;
+
                 if (infoEntity != null &&
                         infoEntity.getData() != null &&
                         infoEntity.getData().getMessages() != null &&
@@ -167,6 +175,9 @@ public class InfoMainActivityPresenter extends AppBaseActivityPresenter<InfoMain
 
             @Override
             public void onNext(AnnouncementEntity announcementEntity) {
+                if (!processNetworkResult(announcementEntity, false))
+                    return;
+
                 if (announcementEntity == null ||
                         announcementEntity.getData() == null ||
                         announcementEntity.getData().getNotices() == null)
@@ -191,6 +202,9 @@ public class InfoMainActivityPresenter extends AppBaseActivityPresenter<InfoMain
 
             @Override
             public void onNext(TrueEntity trueEntity) {
+                if (!processNetworkResult(trueEntity, false))
+                    return;
+
                 if (trueEntity != null &&
                         trueEntity.getData() != null) {
                     getView().readMessage(trueEntity.getData().getResult());

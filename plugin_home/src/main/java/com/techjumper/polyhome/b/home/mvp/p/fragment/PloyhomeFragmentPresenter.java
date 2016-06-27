@@ -13,8 +13,10 @@ import com.techjumper.commonres.entity.event.NoticeEvent;
 import com.techjumper.commonres.entity.event.PropertyActionEvent;
 import com.techjumper.commonres.entity.event.UserInfoEvent;
 import com.techjumper.commonres.entity.event.WeatherEvent;
+import com.techjumper.commonres.entity.event.pushevent.NoticePushEvent;
 import com.techjumper.commonres.util.PluginEngineUtil;
 import com.techjumper.corelib.rx.tools.RxBus;
+import com.techjumper.corelib.utils.window.ToastUtils;
 import com.techjumper.plugincommunicateengine.PluginEngine;
 import com.techjumper.polyhome.b.home.R;
 import com.techjumper.polyhome.b.home.UserInfoManager;
@@ -44,7 +46,14 @@ public class PloyhomeFragmentPresenter extends AppBaseFragmentPresenter<Ployhome
 
     @OnClick(R.id.property)
     void property() {
-        PluginEngineUtil.startProperty();
+        if (UserInfoManager.isLogin()) {
+            long familyId = UserInfoManager.getFamilyId();
+            long userId = UserInfoManager.getUserId();
+            String ticket = UserInfoManager.getTicket();
+            PluginEngineUtil.startProperty(familyId, userId, ticket);
+        } else {
+            ToastUtils.show(getView().getString(R.string.error_no_login));
+        }
     }
 
     @OnClick(R.id.notice_layout)
@@ -52,7 +61,14 @@ public class PloyhomeFragmentPresenter extends AppBaseFragmentPresenter<Ployhome
         if (type == -1)
             return;
 
-        PluginEngineUtil.startInfo(type);
+        if (UserInfoManager.isLogin()) {
+            long userId = UserInfoManager.getUserId();
+            long familyId = UserInfoManager.getFamilyId();
+            String ticket = UserInfoManager.getTicket();
+            PluginEngineUtil.startInfo(userId, familyId, ticket, type);
+        } else {
+            ToastUtils.show(getView().getString(R.string.error_no_login));
+        }
     }
 
     @OnClick(R.id.ad)
@@ -90,6 +106,8 @@ public class PloyhomeFragmentPresenter extends AppBaseFragmentPresenter<Ployhome
 
                         type = entity.getType();
                     } else if (o instanceof UserInfoEvent) {
+                        getNotices();
+                    } else if (o instanceof NoticePushEvent) {
                         getNotices();
                     }
                 });

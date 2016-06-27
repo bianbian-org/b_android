@@ -40,9 +40,10 @@ public class KeyValueCreator {
                 .put("family_id", familyId);
     }
 
-    public static KeyValuePair getNotices(String user_id, String ticket){
+    public static KeyValuePair getNotices(String user_id, String family_id, String ticket) {
         return newPair()
                 .put("user_id", user_id)
+                .put("family_id", family_id)
                 .put("ticket", ticket);
     }
 }

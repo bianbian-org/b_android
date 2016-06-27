@@ -1,5 +1,7 @@
 package com.techjumper.polyhome.b.info.mvp.m;
 
+import android.util.Log;
+
 import com.techjumper.commonres.ComConstant;
 import com.techjumper.commonres.entity.AnnouncementEntity;
 import com.techjumper.commonres.entity.BaseArgumentsEntity;
@@ -29,18 +31,18 @@ public class InfoMainActivityModel extends BaseModel<InfoMainActivityPresenter> 
 
     public Observable<AnnouncementEntity> getAnnouncements(int page) {
         return RetrofitHelper.<ServiceAPI>create(Config.sBaseBUrl, ServiceAPI.class)
-                .getAnnouncements(NetHelper.createBaseArgumentsMap(KeyValueCreator.getAnnouncements(String.valueOf(page), ComConstant.PAGESIZE)))
+                .getAnnouncements(NetHelper.createBaseArgumentsMap(KeyValueCreator.getAnnouncements(UserInfoManager.getUserId(), UserInfoManager.getFamilyId(), UserInfoManager.getTicket(), String.valueOf(page), ComConstant.PAGESIZE)))
                 .compose(CommonWrap.wrap());
     }
 
     public Observable<InfoEntity> getInfo(int type, int page) {
         return RetrofitHelper.<ServiceAPI>createDefault()
-                .getInfo(NetHelper.createBaseArgumentsMap(KeyValueCreator.getInfo(String.valueOf(UserInfoManager.getUserId()), UserInfoManager.getTicket(), String.valueOf(type), String.valueOf(page), ComConstant.PAGESIZE)))
+                .getInfo(NetHelper.createBaseArgumentsMap(KeyValueCreator.getInfo(UserInfoManager.getUserId(), UserInfoManager.getTicket(), String.valueOf(type), String.valueOf(page), ComConstant.PAGESIZE)))
                 .compose(CommonWrap.wrap());
     }
 
     public Observable<TrueEntity> readMessage(long message_id) {
-        KeyValuePair loginPair = KeyValueCreator.readMessage(String.valueOf(UserInfoManager.getUserId()), UserInfoManager.getTicket(), String.valueOf(message_id));
+        KeyValuePair loginPair = KeyValueCreator.readMessage(UserInfoManager.getUserId(), UserInfoManager.getTicket(), String.valueOf(message_id));
         BaseArgumentsEntity argument = NetHelper.createBaseArguments(loginPair);
 
         return RetrofitHelper.<ServiceAPI>createDefault()

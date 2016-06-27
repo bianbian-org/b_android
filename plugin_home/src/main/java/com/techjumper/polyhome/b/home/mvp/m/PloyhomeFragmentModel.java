@@ -25,13 +25,13 @@ public class PloyhomeFragmentModel extends BaseModel<PloyhomeFragmentPresenter> 
 
     public Observable<InfoEntity> getInfo(int page) {
         return RetrofitHelper.<ServiceAPI>createDefault()
-                .getInfo(NetHelper.createBaseArgumentsMap(KeyValueCreator.getInfo(String.valueOf(UserInfoManager.getUserId()), UserInfoManager.getTicket(), String.valueOf(page), "10")))
+                .getInfo(NetHelper.createBaseArgumentsMap(KeyValueCreator.getInfo(UserInfoManager.getUserId(), UserInfoManager.getTicket(), String.valueOf(page), "10")))
                 .compose(CommonWrap.wrap());
     }
 
     public Observable<NoticeEntity> getNotices() {
         return RetrofitHelper.<ServiceAPI>createDefault()
-                .getNotices(NetHelper.createBaseArgumentsMap(KeyValueCreator.getNotices(String.valueOf(UserInfoManager.getUserId()), UserInfoManager.getTicket())))
+                .getNotices(NetHelper.createBaseArgumentsMap(KeyValueCreator.getNotices(UserInfoManager.getUserId(), UserInfoManager.getFamilyId(), UserInfoManager.getTicket())))
                 .compose(CommonWrap.wrap());
     }
 }

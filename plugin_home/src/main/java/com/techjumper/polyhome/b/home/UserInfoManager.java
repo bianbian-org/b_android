@@ -1,5 +1,7 @@
 package com.techjumper.polyhome.b.home;
 
+import android.text.TextUtils;
+
 import com.techjumper.commonres.UserInfoEntity;
 import com.techjumper.commonres.util.PluginEngineUtil;
 import com.techjumper.corelib.utils.file.PreferenceUtils;
@@ -35,8 +37,8 @@ public enum UserInfoManager {
      *
      * @return
      */
-    public static long getUserId() {
-        return PreferenceUtils.get(KEY_USER_ID, -1L);
+    public static String getUserId() {
+        return String.valueOf(PreferenceUtils.get(KEY_USER_ID, -1L));
     }
 
     /**
@@ -44,8 +46,8 @@ public enum UserInfoManager {
      *
      * @return
      */
-    public static long getFamilyId() {
-        return PreferenceUtils.get(KEY_ID, -1L);
+    public static String getFamilyId() {
+        return String.valueOf(PreferenceUtils.get(KEY_ID, -1L));
     }
 
     /**
@@ -55,5 +57,16 @@ public enum UserInfoManager {
      */
     public static String getTicket() {
         return PreferenceUtils.get(KEY_TICKET, "");
+    }
+
+    /**
+     * 是否登录
+     * @return
+     */
+    public static boolean isLogin() {
+        if (TextUtils.isEmpty(getTicket())) {
+            return false;
+        }
+        return true;
     }
 }

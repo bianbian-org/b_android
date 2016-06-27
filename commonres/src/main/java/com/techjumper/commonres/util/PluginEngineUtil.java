@@ -23,16 +23,22 @@ public class PluginEngineUtil {
     public static final String NAME_USERINFO = "poly_b_family_register"; //获取用户登录后的信息文件名
 
     //物业
-    public static void startProperty() {
+    public static void startProperty(final long familyId, final long userId, final String ticket) {
         PluginEngine.getInstance().start(new PluginEngine.IPluginConnection() {
             @Override
             public void onEngineConnected(PluginEngine.PluginExecutor pluginExecutor) {
+
+                Bundle bundle = new Bundle();
+                bundle.putLong(PluginConstant.KEY_PRO_FAMILY_ID, familyId);
+                bundle.putLong(PluginConstant.KEY_PRO_USER_ID, userId);
+                bundle.putString(PluginConstant.KEY_PRO_TICKET, ticket);
+
                 String data
                         = HostDataBuilder.startPluginBuilder()
                         .packageName(PLUGIN_PROPERTY)
                         .build();
                 try {
-                    pluginExecutor.send(PluginEngine.CODE_START_PLUGIN, data);
+                    pluginExecutor.send(PluginEngine.CODE_START_PLUGIN, data, bundle);
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
@@ -46,12 +52,15 @@ public class PluginEngineUtil {
     }
 
     //信息
-    public static void startInfo(final int type) {
+    public static void startInfo(final long userId, final long familyId, final String ticket, final int type) {
         PluginEngine.getInstance().start(new PluginEngine.IPluginConnection() {
             @Override
             public void onEngineConnected(PluginEngine.PluginExecutor pluginExecutor) {
                 Bundle bundle = new Bundle();
-                bundle.putInt(PluginConstant.KEY_TYPE, type);
+                bundle.putLong(PluginConstant.KEY_INFO_USER_ID, userId);
+                bundle.putLong(PluginConstant.KEY_INFO_FAMILY_ID, familyId);
+                bundle.putString(PluginConstant.KEY_INFO_TICKET, ticket);
+                bundle.putInt(PluginConstant.KEY_INFO_TYPE, type);
 
                 String data
                         = HostDataBuilder.startPluginBuilder()

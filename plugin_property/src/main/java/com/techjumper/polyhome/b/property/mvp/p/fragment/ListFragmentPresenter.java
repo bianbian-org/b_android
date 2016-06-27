@@ -15,6 +15,7 @@ import com.techjumper.commonres.entity.event.PropertyActionEvent;
 import com.techjumper.commonres.entity.event.PropertyListEvent;
 import com.techjumper.commonres.entity.event.PropertyMessageDetailEvent;
 import com.techjumper.commonres.entity.event.PropertyNormalDetailEvent;
+import com.techjumper.commonres.entity.event.UserInfoEvent;
 import com.techjumper.commonres.entity.event.loadmoreevent.LoadmorePresenterEvent;
 import com.techjumper.corelib.rx.tools.RxBus;
 import com.techjumper.corelib.utils.window.ToastUtils;
@@ -34,6 +35,7 @@ import rx.android.schedulers.AndroidSchedulers;
 public class ListFragmentPresenter extends AppBaseFragmentPresenter<ListFragment> {
     private ListFragmentModel model = new ListFragmentModel(this);
     private int pageNo = 1;
+    private int listType = 0;
 
     @OnCheckedChanged(R.id.fl_title_announcement)
     void checkAnnouncement(boolean check) {
@@ -46,6 +48,7 @@ public class ListFragmentPresenter extends AppBaseFragmentPresenter<ListFragment
     void checkRepair(boolean check) {
         if (check) {
             pageNo = 1;
+            listType = 0;
             getRepairs();
         }
     }
@@ -54,6 +57,7 @@ public class ListFragmentPresenter extends AppBaseFragmentPresenter<ListFragment
     void checkComplaint(boolean check) {
         if (check) {
             pageNo = 1;
+            listType = 1;
             getComplaints();
         }
     }
@@ -117,6 +121,13 @@ public class ListFragmentPresenter extends AppBaseFragmentPresenter<ListFragment
                             getComplaints();
                         }
                     }
+//                    else if (o instanceof UserInfoEvent) {
+//                        if (listType == 0) {
+//                            getRepairs();
+//                        } else {
+//                            getComplaints();
+//                        }
+//                    }
                 }));
     }
 

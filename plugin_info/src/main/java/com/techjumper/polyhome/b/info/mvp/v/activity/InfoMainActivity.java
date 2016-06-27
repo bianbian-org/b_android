@@ -18,6 +18,7 @@ import com.steve.creact.library.adapter.CommonRecyclerAdapter;
 import com.steve.creact.library.display.DisplayBean;
 import com.techjumper.commonres.ComConstant;
 import com.techjumper.commonres.PluginConstant;
+import com.techjumper.commonres.UserInfoEntity;
 import com.techjumper.commonres.entity.AnnouncementEntity;
 import com.techjumper.commonres.entity.InfoEntity;
 import com.techjumper.commonres.entity.NoticeEntity;
@@ -29,6 +30,7 @@ import com.techjumper.commonres.entity.event.loadmoreevent.LoadmoreInfoEvent;
 import com.techjumper.corelib.mvp.factory.Presenter;
 import com.techjumper.corelib.rx.tools.RxBus;
 import com.techjumper.polyhome.b.info.R;
+import com.techjumper.polyhome.b.info.UserInfoManager;
 import com.techjumper.polyhome.b.info.mvp.p.activity.InfoMainActivityPresenter;
 import com.techjumper.polyhome.b.info.viewholder.databean.InfoAnnouncementEntityBean;
 import com.techjumper.polyhome.b.info.viewholder.databean.InfoEntityBean;
@@ -115,7 +117,8 @@ public class InfoMainActivity extends AppBaseActivity {
         adapter = new CommonRecyclerAdapter();
 
         if (getIntent() != null && getIntent().getExtras() != null) {
-            type = getIntent().getExtras().getInt(PluginConstant.KEY_TYPE);
+            Bundle bundle = getIntent().getExtras();
+            type = bundle.getInt(PluginConstant.KEY_INFO_TYPE);
             if (type == NoticeEntity.PROPERTY) {
                 titleAnnouncement.setChecked(true);
             } else if (type == NoticeEntity.SYSTEM) {
@@ -125,6 +128,15 @@ public class InfoMainActivity extends AppBaseActivity {
             } else {
                 titleOrder.setChecked(true);
             }
+
+            UserInfoEntity userInfoEntity = new UserInfoEntity();
+            userInfoEntity.setUser_id(bundle.getLong(PluginConstant.KEY_INFO_USER_ID));
+            userInfoEntity.setTicket(bundle.getString(PluginConstant.KEY_INFO_TICKET));
+            userInfoEntity.setId(bundle.getLong(PluginConstant.KEY_INFO_FAMILY_ID));
+//            userInfoEntity.setUser_id(367);
+//            userInfoEntity.setTicket("508169e8a7e186d0e3e9c9f3991ad619b630fc28");
+//            userInfoEntity.setId(438);
+            UserInfoManager.saveUserInfo(userInfoEntity);
         }
 
         setType(type);
