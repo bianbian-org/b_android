@@ -51,4 +51,18 @@ public class CommonDateUtil {
 
         return content;
     }
+
+    /**
+     * 获取09：21格式
+     *
+     * @return
+     */
+    public static String getTime() {
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTimeZone(TimeZone.getTimeZone("GMT+8:00"));
+        String hour = String.valueOf(calendar.get(Calendar.HOUR_OF_DAY));
+        String minute = String.valueOf(calendar.get(Calendar.MINUTE));
+
+        return formatHourMinute(hour) + ":" + formatHourMinute(minute);
+    }
 }

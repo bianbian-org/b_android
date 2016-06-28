@@ -3,11 +3,13 @@ package com.techjumper.polyhome.b.property.mvp.p.fragment;
 import android.os.Bundle;
 
 import com.techjumper.commonres.entity.TrueEntity;
+import com.techjumper.commonres.entity.event.PropertyActionEvent;
 import com.techjumper.commonres.entity.event.PropertyListEvent;
 import com.techjumper.corelib.rx.tools.RxBus;
 import com.techjumper.corelib.utils.window.ToastUtils;
 import com.techjumper.polyhome.b.property.R;
 import com.techjumper.polyhome.b.property.mvp.m.ActionFragmentModel;
+import com.techjumper.polyhome.b.property.mvp.v.activity.MainActivity;
 import com.techjumper.polyhome.b.property.mvp.v.fragment.ActionFragment;
 
 import butterknife.OnClick;
@@ -73,6 +75,9 @@ public class ActionFragmentPresenter extends AppBaseFragmentPresenter<ActionFrag
 
                         if (trueEntity.getData().getResult().equals("true")) {
                             ToastUtils.show(getView().getResources().getString(R.string.property_submit_success));
+                            PropertyActionEvent propertyActionEvent = new PropertyActionEvent(false);
+                            propertyActionEvent.setListType(MainActivity.COMPLAINT);
+                            RxBus.INSTANCE.send(propertyActionEvent);
                         }
                     }
                 }));
@@ -105,6 +110,9 @@ public class ActionFragmentPresenter extends AppBaseFragmentPresenter<ActionFrag
 
                         if (trueEntity.getData().getResult().equals("true")) {
                             ToastUtils.show(getView().getResources().getString(R.string.property_submit_success));
+                            PropertyActionEvent propertyActionEvent = new PropertyActionEvent(false);
+                            propertyActionEvent.setListType(MainActivity.REPAIR);
+                            RxBus.INSTANCE.send(propertyActionEvent);
                         }
                     }
                 }));

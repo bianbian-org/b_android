@@ -7,7 +7,6 @@ import android.support.v4.app.Fragment;
 import android.support.v4.widget.NestedScrollView;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,30 +16,30 @@ import android.webkit.WebChromeClient;
 import android.webkit.WebView;
 import android.widget.EditText;
 import android.widget.LinearLayout;
+import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.TextView;
 
 import com.steve.creact.library.adapter.CommonRecyclerAdapter;
 import com.steve.creact.library.display.DisplayBean;
 import com.techjumper.commonres.ComConstant;
-import com.techjumper.commonres.entity.AnnouncementEntity;
 import com.techjumper.commonres.entity.ComplaintDetailEntity;
 import com.techjumper.commonres.entity.ComplaintEntity;
 import com.techjumper.commonres.entity.RepairDetailEntity;
 import com.techjumper.commonres.entity.RepairEntity;
 import com.techjumper.commonres.entity.ReplyEntity;
 import com.techjumper.commonres.entity.event.PropertyNormalDetailEvent;
-import com.techjumper.commonres.entity.event.loadmoreevent.LoadmoreInfoEvent;
 import com.techjumper.commonres.entity.event.loadmoreevent.LoadmorePresenterEvent;
+import com.techjumper.commonres.util.CommonDateUtil;
 import com.techjumper.corelib.mvp.factory.Presenter;
 import com.techjumper.corelib.rx.tools.RxBus;
 import com.techjumper.polyhome.b.property.Constant;
 import com.techjumper.polyhome.b.property.R;
+import com.techjumper.polyhome.b.property.UserInfoManager;
 import com.techjumper.polyhome.b.property.mvp.p.fragment.ListFragmentPresenter;
 import com.techjumper.polyhome.b.property.mvp.v.activity.MainActivity;
 import com.techjumper.polyhome.b.property.utils.AdapterUtil;
 import com.techjumper.polyhome.b.property.utils.TypeUtil;
-import com.techjumper.polyhome.b.property.viewholder.databean.InfoAnnouncementEntityBean;
 import com.techjumper.polyhome.b.property.viewholder.databean.InfoComplaintEntityBean;
 import com.techjumper.polyhome.b.property.viewholder.databean.InfoRepairEntityBean;
 import com.techjumper.polyhome.b.property.viewholder.databean.InfoReplyLeftEntityBean;
@@ -57,6 +56,8 @@ import butterknife.ButterKnife;
  */
 @Presenter(ListFragmentPresenter.class)
 public class ListFragment extends AppBaseFragment<ListFragmentPresenter> {
+
+    public static final String LISTTYPE = "listtype";
 
     @Bind(R.id.fl_title_rg)
     RadioGroup flTitleRg;
@@ -88,6 +89,10 @@ public class ListFragment extends AppBaseFragment<ListFragmentPresenter> {
     EditText lmdMessageContent;
     @Bind(R.id.scrollView)
     NestedScrollView scrollView;
+    @Bind(R.id.fl_title_repair)
+    RadioButton flTitleRepair;
+    @Bind(R.id.fl_title_complaint)
+    RadioButton flTitleComplaint;
 
     private CommonRecyclerAdapter adapter;
     private CommonRecyclerAdapter messageAdapter;
@@ -96,9 +101,14 @@ public class ListFragment extends AppBaseFragment<ListFragmentPresenter> {
     private int type;
     private long sendId;
     private int actionType;
+    private int listType;
 
-    public static ListFragment getInstance() {
-        return new ListFragment();
+    public static ListFragment getInstance(int listType) {
+        ListFragment listFragment = new ListFragment();
+        Bundle bundle = new Bundle();
+        bundle.putInt(LISTTYPE, listType);
+        listFragment.setArguments(bundle);
+        return listFragment;
     }
 
     public int getType() {
@@ -129,6 +139,14 @@ public class ListFragment extends AppBaseFragment<ListFragmentPresenter> {
         return lmdMessageContent;
     }
 
+    public int getListType() {
+        return listType;
+    }
+
+    public void setListType(int listType) {
+        this.listType = listType;
+    }
+
     @Override
     protected View inflateView(LayoutInflater inflater, Bundle savedInstanceState) {
         return inflater.inflate(R.layout.fragment_list, null);
@@ -136,6 +154,20 @@ public class ListFragment extends AppBaseFragment<ListFragmentPresenter> {
 
     @Override
     protected void initView(Bundle savedInstanceState) {
+
+        if (getArguments() != null) {
+            Bundle bundle = getArguments();
+            listType = bundle.getInt(LISTTYPE, MainActivity.REPAIR);
+        }
+
+        if (listType == MainActivity.REPAIR) {
+            flTitleRepair.setChecked(true);
+        } else {
+            flTitleComplaint.setChecked(true);
+        }
+
+        setListType(listType);
+
         adapter = new CommonRecyclerAdapter();
         messageAdapter = new CommonRecyclerAdapter();
 
@@ -165,31 +197,6 @@ public class ListFragment extends AppBaseFragment<ListFragmentPresenter> {
         });
     }
 
-    public void getAnnouncements(List<AnnouncementEntity.AnnouncementDataEntity> announcementDataEntities, int page) {
-        flTitleAction.setText(R.string.property_call);
-        flTitleAction.setCompoundDrawablesWithIntrinsicBounds(R.mipmap.icon_call, 0, 0, 0);
-        flTitleAction.setCompoundDrawablePadding(getResources().getDimensionPixelSize(R.dimen.dp_5));
-        setType(MainActivity.ANNOUNCEMENT);
-        showListLayout();
-
-        if (announcementDataEntities.size() == 0 && page == 1) {
-            AdapterUtil.clear(adapter);
-            return;
-        }
-
-        List<DisplayBean> displayBeans = new ArrayList<>();
-
-        if (announcementDataEntities == null || announcementDataEntities.size() == 0)
-            return;
-
-        for (int i = 0; i < announcementDataEntities.size(); i++) {
-            displayBeans.add(new InfoAnnouncementEntityBean(announcementDataEntities.get(i)));
-        }
-
-        adapter.loadData(displayBeans);
-        flList.setAdapter(adapter);
-    }
-
     public void getComplaints(List<ComplaintEntity.ComplaintDataEntity> complaintDataEntities, int page) {
         flTitleAction.setText(R.string.property_new_complaint);
         flTitleAction.setCompoundDrawablesWithIntrinsicBounds(R.mipmap.icon_complaint, 0, 0, 0);
@@ -211,10 +218,10 @@ public class ListFragment extends AppBaseFragment<ListFragmentPresenter> {
             displayBeans.add(new InfoComplaintEntityBean(complaintDataEntities.get(i)));
         }
 
-        if (page == 1){
+        if (page == 1) {
             adapter.loadData(displayBeans);
             flList.setAdapter(adapter);
-        }else {
+        } else {
             adapter.insertData(adapter.getItemCount(), displayBeans);
         }
     }
@@ -240,10 +247,10 @@ public class ListFragment extends AppBaseFragment<ListFragmentPresenter> {
             displayBeans.add(new InfoRepairEntityBean(repairDataEntities.get(i)));
         }
 
-        if (page == 1){
+        if (page == 1) {
             adapter.loadData(displayBeans);
             flList.setAdapter(adapter);
-        }else {
+        } else {
             adapter.insertData(adapter.getItemCount(), displayBeans);
         }
     }
@@ -271,8 +278,7 @@ public class ListFragment extends AppBaseFragment<ListFragmentPresenter> {
         lmdMessageContent.setText("");
 
         long id = entity.getId();
-        //// TODO: 16/5/24 需要userId;
-        long user_id = 248;
+        long user_id = Long.valueOf(UserInfoManager.getUserId());
 
         lndLayout.setVisibility(View.GONE);
         lmdLayout.setVisibility(View.VISIBLE);
@@ -333,8 +339,7 @@ public class ListFragment extends AppBaseFragment<ListFragmentPresenter> {
         lmdMessageContent.setText("");
 
         long id = entity.getId();
-        //// TODO: 16/5/24 需要userId;
-        long user_id = 248;
+        long user_id = Long.valueOf(UserInfoManager.getUserId());
 
         lndLayout.setVisibility(View.GONE);
         lmdLayout.setVisibility(View.VISIBLE);
@@ -391,33 +396,19 @@ public class ListFragment extends AppBaseFragment<ListFragmentPresenter> {
     public void sendSuccess() {
         ReplyEntity entity = new ReplyEntity();
         entity.setContent(lmdMessageContent.getText().toString());
-        entity.setTime("10:10");
+        entity.setTime(CommonDateUtil.getTime());
         InfoReplyRightEntityBean bean = new InfoReplyRightEntityBean(entity);
 
         messageAdapter.insertData(0, bean);
 
         lmdMessageContent.setText("");
 
-        ((InputMethodManager)getActivity().getSystemService(Context.INPUT_METHOD_SERVICE)).hideSoftInputFromWindow(lmdMessageContent.getWindowToken(),0);
+        ((InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE)).hideSoftInputFromWindow(lmdMessageContent.getWindowToken(), 0);
     }
 
     public void showListLayout() {
         lndLayout.setVisibility(View.GONE);
         lmdLayout.setVisibility(View.GONE);
         flList.setVisibility(View.VISIBLE);
-    }
-
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        // TODO: inflate a fragment view
-        View rootView = super.onCreateView(inflater, container, savedInstanceState);
-        ButterKnife.bind(this, rootView);
-        return rootView;
-    }
-
-    @Override
-    public void onDestroyView() {
-        super.onDestroyView();
-        ButterKnife.unbind(this);
     }
 }

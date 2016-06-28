@@ -45,7 +45,7 @@ public class RepairViewHolder extends BaseRecyclerViewHolder<RepairEntity.Repair
             setText(R.id.info_content, content);
         }
 
-        setText(R.id.info_date, date);
+        setText(R.id.info_date, date.substring(0, 10));
 
         TextView typeTextView = getView(R.id.info_type);
         typeTextView.setVisibility(View.VISIBLE);

@@ -88,17 +88,17 @@ public class OkHttpHelper {
 
 
         OkHttpClient.Builder builder = new OkHttpClient.Builder()
-                .cache(new Cache(new File(cachePath), cacheSize))
+//                .cache(new Cache(new File(cachePath), cacheSize))
                 .connectTimeout(10, TimeUnit.SECONDS)
                 .readTimeout(10, TimeUnit.SECONDS)
                 .writeTimeout(10, TimeUnit.SECONDS);
 
-        if (Config.sIsDebug) {
-            HttpLoggingInterceptor logging = new HttpLoggingInterceptor();
-            logging.setLevel(HttpLoggingInterceptor.Level.BODY);
-            builder.addInterceptor(logging);
-            JLog.d("开启HTTP日志");
-        }
+//        if (Config.sIsDebug) {
+        HttpLoggingInterceptor logging = new HttpLoggingInterceptor();
+        logging.setLevel(HttpLoggingInterceptor.Level.BODY);
+        builder.addInterceptor(logging);
+        JLog.d("开启HTTP日志");
+//        }
 
         builder.networkInterceptors().add(REWRITE_CACHE_CONTROL_INTERCEPTOR);
         return builder.build();

@@ -55,7 +55,13 @@ public class MainActivity extends AppBaseActivity<MainActivityPresenter> {
             UserInfoManager.saveUserInfo(userInfoEntity);
         }
 
-        switchFragment(R.id.container, ListFragment.getInstance(), false, false);
+        UserInfoEntity userInfoEntity = new UserInfoEntity();
+        userInfoEntity.setId(449);
+        userInfoEntity.setUser_id(381);
+        userInfoEntity.setTicket("8f8ed3ac913d8e334a204ec0ff1cece81657c5fb");
+        UserInfoManager.saveUserInfo(userInfoEntity);
+
+        switchFragment(R.id.container, ListFragment.getInstance(MainActivity.REPAIR), false, false);
 
         addSubscription(RxBus.INSTANCE.asObservable()
                 .observeOn(AndroidSchedulers.mainThread())
@@ -63,7 +69,8 @@ public class MainActivity extends AppBaseActivity<MainActivityPresenter> {
                     if (o instanceof PropertyActionEvent) {
                         PropertyActionEvent event = (PropertyActionEvent) o;
                         if (event.isAction() == false) {
-                            switchFragment(R.id.container, ListFragment.getInstance(), false, false);
+                            int listType = event.getListType();
+                            switchFragment(R.id.container, ListFragment.getInstance(listType), false, false);
                         } else {
                             if (event.getType() == ANNOUNCEMENT) {
                                 // TODO: 16/5/13 拨打物业电话

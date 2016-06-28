@@ -1,12 +1,14 @@
 package com.techjumper.commonres.entity.event;
 
 /**
+ * 决定显示填写和
  * Created by kevin on 16/5/13.
  */
 public class PropertyActionEvent {
 
     private int type;
     private boolean isAction;
+    private int listType;
 
     public PropertyActionEvent(boolean isAction) {
         this.isAction = isAction;
@@ -26,5 +28,13 @@ public class PropertyActionEvent {
 
     public void setAction(boolean action) {
         isAction = action;
+    }
+
+    public int getListType() {
+        return listType;
+    }
+
+    public void setListType(int listType) {
+        this.listType = listType;
     }
 }

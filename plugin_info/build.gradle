@@ -10,8 +10,8 @@ android {
         applicationId "com.techjumper.polyhome.b.info"
         minSdkVersion rootProject.minSdkVersion
         targetSdkVersion rootProject.targetSdkVersion
-        versionCode 101
-        versionName "0.1.1"
+        versionCode 102
+        versionName "0.1.2"
     }
     buildTypes {
         release {

@@ -35,20 +35,11 @@ import rx.android.schedulers.AndroidSchedulers;
 public class ListFragmentPresenter extends AppBaseFragmentPresenter<ListFragment> {
     private ListFragmentModel model = new ListFragmentModel(this);
     private int pageNo = 1;
-    private int listType = 0;
-
-    @OnCheckedChanged(R.id.fl_title_announcement)
-    void checkAnnouncement(boolean check) {
-        if (check) {
-//            getAnnouncements(1);
-        }
-    }
 
     @OnCheckedChanged(R.id.fl_title_repair)
     void checkRepair(boolean check) {
         if (check) {
             pageNo = 1;
-            listType = 0;
             getRepairs();
         }
     }
@@ -57,7 +48,6 @@ public class ListFragmentPresenter extends AppBaseFragmentPresenter<ListFragment
     void checkComplaint(boolean check) {
         if (check) {
             pageNo = 1;
-            listType = 1;
             getComplaints();
         }
     }
@@ -93,7 +83,11 @@ public class ListFragmentPresenter extends AppBaseFragmentPresenter<ListFragment
 
     @Override
     public void onViewInited(Bundle savedInstanceState) {
-        getRepairs();
+        if (getView().getListType() == MainActivity.REPAIR) {
+            getRepairs();
+        } else {
+            getComplaints();
+        }
 
         RxBus.INSTANCE.send(new BackEvent(BackEvent.FINISH));
 
@@ -121,13 +115,6 @@ public class ListFragmentPresenter extends AppBaseFragmentPresenter<ListFragment
                             getComplaints();
                         }
                     }
-//                    else if (o instanceof UserInfoEvent) {
-//                        if (listType == 0) {
-//                            getRepairs();
-//                        } else {
-//                            getComplaints();
-//                        }
-//                    }
                 }));
     }
 

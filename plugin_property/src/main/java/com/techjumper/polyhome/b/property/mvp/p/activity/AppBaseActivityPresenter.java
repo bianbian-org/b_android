@@ -30,7 +30,6 @@ public abstract class AppBaseActivityPresenter<T extends AppBaseActivity> extend
         for (Subscription sub : mSubList) {
             RxUtils.unsubscribeIfNotNull(sub);
         }
-
     }
 
     @Override

@@ -63,43 +63,5 @@ public class MainActivityPresenter extends AppBaseActivityPresenter<MainActivity
                         backType = backEvent.getType();
                     }
                 }));
-
-//        PluginEngineUtil.initUserInfo();
-//
-//        PluginEngine.getInstance().registerReceiver((code, message, extras) -> {
-//            if (code == PluginEngine.CODE_GET_SAVE_INFO) {
-//                SaveInfoEntity saveInfoEntity = GsonUtils.fromJson(message, SaveInfoEntity.class);
-//                if (saveInfoEntity == null || saveInfoEntity.getData() == null)
-//                    return;
-//
-//                Log.d("plugin", "name: " + saveInfoEntity.getData().getName());
-//                HashMap<String, String> hashMap = saveInfoEntity.getData().getValues();
-//                if (hashMap == null || hashMap.size() == 0)
-//                    return;
-//
-//                UserInfoEntity userInfoEntity = new UserInfoEntity();
-//
-//                for (Map.Entry<String, String> entry : hashMap.entrySet()) {
-//                    Log.d("value", entry.getValue());
-//                    String key = entry.getKey();
-//                    String value = entry.getValue();
-//                    if (key.equals("id")) {
-//                        userInfoEntity.setId(Long.parseLong(value));
-//                    } else if (key.equals("family_name")) {
-//                        userInfoEntity.setFamily_name(value);
-//                    } else if (key.equals("user_id")) {
-//                        userInfoEntity.setUser_id(Long.parseLong(value));
-//                    } else if (key.equals("ticket")) {
-//                        userInfoEntity.setTicket(value);
-//                    } else if (key.equals("has_binding")) {
-//                        userInfoEntity.setHas_binding(Integer.parseInt(value));
-//                    }
-//                }
-//
-//                UserInfoManager.saveUserInfo(userInfoEntity);
-//
-//                RxBus.INSTANCE.send(new UserInfoEvent(userInfoEntity));
-//            }
-//        });
     }
 }
