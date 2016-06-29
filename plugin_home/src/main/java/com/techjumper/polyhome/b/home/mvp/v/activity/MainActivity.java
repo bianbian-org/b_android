@@ -1,5 +1,6 @@
 package com.techjumper.polyhome.b.home.mvp.v.activity;
 
+import android.content.IntentFilter;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
@@ -14,6 +15,7 @@ import com.techjumper.polyhome.b.home.adapter.MyViewPagerAdapter;
 import com.techjumper.polyhome.b.home.mvp.p.activity.MainActivityPresenter;
 import com.techjumper.polyhome.b.home.mvp.v.fragment.InfoFragment;
 import com.techjumper.polyhome.b.home.mvp.v.fragment.PloyhomeFragment;
+import com.techjumper.polyhome.b.home.receiver.NoticeReceiver;
 import com.techjumper.polyhome.b.home.widget.MyViewPager;
 
 import java.util.ArrayList;
@@ -40,6 +42,7 @@ public class MainActivity extends AppBaseActivity {
 
     private MyViewPagerAdapter myViewPagerAdapter;
     private List<Fragment> fragments = new ArrayList<Fragment>();
+    private NoticeReceiver receiver;
 
     @Override
     protected View inflateView(Bundle savedInstanceState) {

@@ -3,6 +3,7 @@ package com.techjumper.polyhome.b.home.mvp.p.fragment;
 import android.content.ComponentName;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 
 import com.techjumper.commonres.PluginConstant;
 import com.techjumper.commonres.UserInfoEntity;
@@ -62,6 +63,7 @@ public class InfoFragmentPresenter extends AppBaseFragmentPresenter<InfoFragment
                     if (o instanceof UserInfoEvent) {
                         UserInfoEvent event = (UserInfoEvent) o;
                         if (event != null && event.getEntity() != null) {
+                            Log.d("pluginUserInfo", "更新天气信息");
                             getWeatherInfo();
                         }
                     }

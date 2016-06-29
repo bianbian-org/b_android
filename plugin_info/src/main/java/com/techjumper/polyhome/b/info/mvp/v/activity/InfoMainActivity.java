@@ -130,14 +130,16 @@ public class InfoMainActivity extends AppBaseActivity {
             }
 
             UserInfoEntity userInfoEntity = new UserInfoEntity();
-            userInfoEntity.setUser_id(bundle.getLong(PluginConstant.KEY_INFO_USER_ID));
-            userInfoEntity.setTicket(bundle.getString(PluginConstant.KEY_INFO_TICKET));
-            userInfoEntity.setId(bundle.getLong(PluginConstant.KEY_INFO_FAMILY_ID));
-//            userInfoEntity.setUser_id(367);
-//            userInfoEntity.setTicket("508169e8a7e186d0e3e9c9f3991ad619b630fc28");
-//            userInfoEntity.setId(438);
-            UserInfoManager.saveUserInfo(userInfoEntity);
+//            userInfoEntity.setUser_id(bundle.getLong(PluginConstant.KEY_INFO_USER_ID));
+//            userInfoEntity.setTicket(bundle.getString(PluginConstant.KEY_INFO_TICKET));
+//            userInfoEntity.setId(bundle.getLong(PluginConstant.KEY_INFO_FAMILY_ID));
+
         }
+        UserInfoEntity userInfoEntity = new UserInfoEntity();
+        userInfoEntity.setUser_id(367);
+        userInfoEntity.setTicket("0f9859826eeeed6d421c0a0982ee5b08b6c41809");
+        userInfoEntity.setId(438);
+        UserInfoManager.saveUserInfo(userInfoEntity);
 
         setType(type);
 
@@ -227,10 +229,20 @@ public class InfoMainActivity extends AppBaseActivity {
     }
 
     public void getList(List<InfoEntity.InfoDataEntity.InfoItemEntity> infoEntityTemporaries, int page) {
-        List<DisplayBean> displayBeans = new ArrayList<>();
-        if (infoEntityTemporaries == null || infoEntityTemporaries.size() == 0)
+
+        infoDetail.setVisibility(View.GONE);
+        lndLayout.setVisibility(View.GONE);
+        infoList.setVisibility(View.VISIBLE);
+
+        if (infoEntityTemporaries == null)
             return;
 
+        if (infoEntityTemporaries.size() == 0 && page == 1) {
+            AdapterUtil.clear(adapter);
+            return;
+        }
+
+        List<DisplayBean> displayBeans = new ArrayList<>();
 
         for (int i = 0; i < infoEntityTemporaries.size(); i++) {
             displayBeans.add(new InfoEntityBean(infoEntityTemporaries.get(i)));
@@ -242,10 +254,6 @@ public class InfoMainActivity extends AppBaseActivity {
         } else {
             adapter.insertData(adapter.getItemCount(), displayBeans);
         }
-
-        infoDetail.setVisibility(View.GONE);
-        lndLayout.setVisibility(View.GONE);
-        infoList.setVisibility(View.VISIBLE);
 
         RxBus.INSTANCE.send(new BackEvent(BackEvent.FINISH));
     }
@@ -282,7 +290,6 @@ public class InfoMainActivity extends AppBaseActivity {
         } else {
             adapter.insertData(adapter.getItemCount(), displayBeans);
         }
-
 
         RxBus.INSTANCE.send(new BackEvent(BackEvent.FINISH));
     }

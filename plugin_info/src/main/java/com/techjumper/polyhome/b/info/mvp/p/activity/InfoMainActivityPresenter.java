@@ -1,7 +1,9 @@
 package com.techjumper.polyhome.b.info.mvp.p.activity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.widget.RadioButton;
 
 import com.techjumper.commonres.UserInfoEntity;
 import com.techjumper.commonres.entity.AnnouncementEntity;
@@ -15,6 +17,7 @@ import com.techjumper.commonres.entity.event.UserInfoEvent;
 import com.techjumper.commonres.entity.event.loadmoreevent.LoadmoreInfoEvent;
 import com.techjumper.commonres.util.PluginEngineUtil;
 import com.techjumper.corelib.rx.tools.RxBus;
+import com.techjumper.corelib.utils.window.ToastUtils;
 import com.techjumper.plugincommunicateengine.PluginEngine;
 import com.techjumper.plugincommunicateengine.entity.core.SaveInfoEntity;
 import com.techjumper.plugincommunicateengine.utils.GsonUtils;
@@ -26,6 +29,8 @@ import com.techjumper.polyhome.b.info.mvp.v.activity.InfoMainActivity;
 import java.util.HashMap;
 import java.util.Map;
 
+import butterknife.Bind;
+import butterknife.OnCheckedChanged;
 import butterknife.OnClick;
 import rx.Subscriber;
 import rx.android.schedulers.AndroidSchedulers;
@@ -34,6 +39,36 @@ import rx.android.schedulers.AndroidSchedulers;
  * Created by kevin on 16/4/29.
  */
 public class InfoMainActivityPresenter extends AppBaseActivityPresenter<InfoMainActivity> {
+
+    private int intentType;
+
+    @OnCheckedChanged(R.id.title_announcement)
+    void announcement(boolean check) {
+        if (check) {
+            getAnnouncements();
+        }
+    }
+
+    @OnCheckedChanged(R.id.title_system)
+    void titleSystem(boolean check) {
+        if (check) {
+            getList(intentType);
+        }
+    }
+
+    @OnCheckedChanged(R.id.title_order)
+    void titleOrder(boolean check) {
+        if (check) {
+            getList(intentType);
+        }
+    }
+
+    @OnCheckedChanged(R.id.title_medical)
+    void titleMedical(boolean check) {
+        if (check) {
+            getList(intentType);
+        }
+    }
 
     InfoMainActivityModel infoMainActivityModel = new InfoMainActivityModel(this);
     private int pageNo = 1;
@@ -45,7 +80,7 @@ public class InfoMainActivityPresenter extends AppBaseActivityPresenter<InfoMain
 
     @Override
     public void onViewInited(Bundle savedInstanceState) {
-        int intentType = getView().getType();
+        intentType = getView().getType();
         if (intentType == NoticeEntity.PROPERTY) {
             getAnnouncements();
         } else {
@@ -80,53 +115,8 @@ public class InfoMainActivityPresenter extends AppBaseActivityPresenter<InfoMain
                                     getList(type);
                                 }
                             }
-//                            else if (o instanceof UserInfoEvent) {
-//                                int type = getView().getType();
-//                                if (type == NoticeEntity.PROPERTY) {
-//                                    getAnnouncements();
-//                                } else {
-//                                    getList(intentType);
-//                                }
-//                            }
                         })
         );
-//        PluginEngineUtil.initUserInfo();
-//
-//        PluginEngine.getInstance().registerReceiver((code, message, extras) -> {
-//            if (code == PluginEngine.CODE_GET_SAVE_INFO) {
-//                SaveInfoEntity saveInfoEntity = GsonUtils.fromJson(message, SaveInfoEntity.class);
-//                if (saveInfoEntity == null || saveInfoEntity.getData() == null)
-//                    return;
-//
-//                Log.d("plugin", "name: " + saveInfoEntity.getData().getName());
-//                HashMap<String, String> hashMap = saveInfoEntity.getData().getValues();
-//                if (hashMap == null || hashMap.size() == 0)
-//                    return;
-//
-//                UserInfoEntity userInfoEntity = new UserInfoEntity();
-//
-//                for (Map.Entry<String, String> entry : hashMap.entrySet()) {
-//                    Log.d("value", entry.getValue());
-//                    String key = entry.getKey();
-//                    String value = entry.getValue();
-//                    if (key.equals("id")) {
-//                        userInfoEntity.setId(Long.parseLong(value));
-//                    } else if (key.equals("family_name")) {
-//                        userInfoEntity.setFamily_name(value);
-//                    } else if (key.equals("user_id")) {
-//                        userInfoEntity.setUser_id(Long.parseLong(value));
-//                    } else if (key.equals("ticket")) {
-//                        userInfoEntity.setTicket(value);
-//                    } else if (key.equals("has_binding")) {
-//                        userInfoEntity.setHas_binding(Integer.parseInt(value));
-//                    }
-//                }
-//
-//                UserInfoManager.saveUserInfo(userInfoEntity);
-//
-//                RxBus.INSTANCE.send(new UserInfoEvent(userInfoEntity));
-//            }
-//        });
     }
 
     @OnClick(R.id.bottom_home)
@@ -153,8 +143,7 @@ public class InfoMainActivityPresenter extends AppBaseActivityPresenter<InfoMain
 
                 if (infoEntity != null &&
                         infoEntity.getData() != null &&
-                        infoEntity.getData().getMessages() != null &&
-                        infoEntity.getData().getMessages().size() > 0) {
+                        infoEntity.getData().getMessages() != null) {
                     getView().getList(infoEntity.getData().getMessages(), pageNo);
                 }
             }

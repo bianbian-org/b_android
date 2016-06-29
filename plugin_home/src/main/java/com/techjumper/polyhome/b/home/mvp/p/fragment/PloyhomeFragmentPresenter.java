@@ -3,6 +3,7 @@ package com.techjumper.polyhome.b.home.mvp.p.fragment;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.util.Log;
 
 import com.techjumper.commonres.PluginConstant;
 import com.techjumper.commonres.UserInfoEntity;
@@ -79,8 +80,12 @@ public class PloyhomeFragmentPresenter extends AppBaseFragmentPresenter<Ployhome
 
     @OnClick(R.id.shopping)
     void shopping() {
-        Intent intent = new Intent(getView().getActivity(), ShoppingActivity.class);
-        getView().startActivity(intent);
+        if (TextUtils.isEmpty(UserInfoManager.getTicket()) || TextUtils.isEmpty(UserInfoManager.getUserId())) {
+            ToastUtils.show(getView().getString(R.string.error_no_login));
+        } else {
+            Intent intent = new Intent(getView().getActivity(), ShoppingActivity.class);
+            getView().startActivity(intent);
+        }
     }
 
     @OnClick(R.id.jujia)
@@ -106,6 +111,7 @@ public class PloyhomeFragmentPresenter extends AppBaseFragmentPresenter<Ployhome
 
                         type = entity.getType();
                     } else if (o instanceof UserInfoEvent) {
+                        Log.d("pluginUserInfo", "更新天气信息");
                         getNotices();
                     } else if (o instanceof NoticePushEvent) {
                         getNotices();

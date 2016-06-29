@@ -2,6 +2,7 @@ package com.techjumper.polyhome.b.home.mvp.p.activity;
 
 import android.content.ComponentName;
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 
@@ -10,10 +11,12 @@ import com.techjumper.commonres.UserInfoEntity;
 import com.techjumper.commonres.entity.event.UserInfoEvent;
 import com.techjumper.commonres.util.PluginEngineUtil;
 import com.techjumper.corelib.rx.tools.RxBus;
+import com.techjumper.corelib.utils.window.ToastUtils;
 import com.techjumper.plugincommunicateengine.IPluginMessageReceiver;
 import com.techjumper.plugincommunicateengine.PluginEngine;
 import com.techjumper.plugincommunicateengine.entity.core.SaveInfoEntity;
 import com.techjumper.plugincommunicateengine.utils.GsonUtils;
+import com.techjumper.polyhome.b.home.BuildConfig;
 import com.techjumper.polyhome.b.home.R;
 import com.techjumper.polyhome.b.home.UserInfoManager;
 import com.techjumper.polyhome.b.home.mvp.v.activity.MainActivity;
@@ -33,6 +36,10 @@ public class MainActivityPresenter extends AppBaseActivityPresenter<MainActivity
         if (ComConstant.titleFinish) {
             getView().finish();
         }
+//        Intent intent = new Intent();
+//        intent.putExtra("key_extra", "hehe");
+//        intent.setAction("action_push_receive");
+//        getView().sendBroadcast(intent);
     }
 
     @OnClick(R.id.title)
@@ -54,6 +61,11 @@ public class MainActivityPresenter extends AppBaseActivityPresenter<MainActivity
                 }
             });
         }
+    }
+
+    @OnClick(R.id.date)
+    void getVersion() {
+        ToastUtils.show("code: " + String.valueOf(BuildConfig.VERSION_CODE) + " name: " + BuildConfig.VERSION_NAME);
     }
 
     @OnClick(R.id.call_service)
@@ -84,19 +96,20 @@ public class MainActivityPresenter extends AppBaseActivityPresenter<MainActivity
 
         PluginEngine.getInstance().registerReceiver((code, message, extras) -> {
             if (code == PluginEngine.CODE_GET_SAVE_INFO) {
+                Log.d("pluginUserInfo", "开始接受数据");
                 SaveInfoEntity saveInfoEntity = GsonUtils.fromJson(message, SaveInfoEntity.class);
                 if (saveInfoEntity == null || saveInfoEntity.getData() == null)
                     return;
 
-                Log.d("plugin", "name: " + saveInfoEntity.getData().getName());
+                Log.d("pluginUserInfo", "name: " + saveInfoEntity.getData().getName());
                 HashMap<String, String> hashMap = saveInfoEntity.getData().getValues();
                 if (hashMap == null || hashMap.size() == 0)
                     return;
 
                 UserInfoEntity userInfoEntity = new UserInfoEntity();
-                
+
                 for (Map.Entry<String, String> entry : hashMap.entrySet()) {
-                    Log.d("value", entry.getValue());
+                    Log.d("pluginUserInfo", entry.getValue());
                     String key = entry.getKey();
                     String value = entry.getValue();
                     if (key.equals("id")) {
@@ -115,6 +128,7 @@ public class MainActivityPresenter extends AppBaseActivityPresenter<MainActivity
                 UserInfoManager.saveUserInfo(userInfoEntity);
 
                 RxBus.INSTANCE.send(new UserInfoEvent(userInfoEntity));
+                Log.d("pluginUserInfo", "更新用户信息");
             }
         });
     }

@@ -1,7 +1,10 @@
 package com.techjumper.polyhome.b.home.js;
 
 import android.content.Context;
+import android.text.TextUtils;
 import android.webkit.JavascriptInterface;
+
+import com.techjumper.polyhome.b.home.UserInfoManager;
 
 /**
  * Created by kevin on 16/6/7.
@@ -15,8 +18,14 @@ public class AndroidForJs {
     }
 
     @JavascriptInterface
-    public String getId() {
-        String id = "伍老师没我帅";
-        return id;
+    public String getTicket() {
+        String ticket = UserInfoManager.getTicket();
+        return TextUtils.isEmpty(ticket) ? "" : ticket;
+    }
+
+    @JavascriptInterface
+    public String getUserId() {
+        String userId = UserInfoManager.getUserId();
+        return TextUtils.isEmpty(userId) ? "" : userId;
     }
 }

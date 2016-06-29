@@ -23,8 +23,8 @@
         tools:replace="android:allowBackup">
         <activity
             android:name=".mvp.v.activity.MainActivity"
-            android:theme="@style/AppTheme"
-            android:launchMode="singleTask">
+            android:launchMode="singleTask"
+            android:theme="@style/AppTheme">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -41,8 +41,10 @@
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </receiver>
-        
-        <receiver android:name=".receiver.NoticeReceiver">
+
+        <receiver
+            android:name=".receiver.NoticeReceiver"
+            android:exported="true">
             <intent-filter>
                 <action android:name="action_push_receive" />
                 <category android:name="android.intent.category.DEFAULT" />

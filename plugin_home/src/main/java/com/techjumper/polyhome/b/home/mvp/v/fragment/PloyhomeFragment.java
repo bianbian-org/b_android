@@ -85,6 +85,11 @@ public class PloyhomeFragment extends AppBaseFragment<PloyhomeFragmentPresenter>
         if (entity == null)
             return;
 
+        if (timer != null) {
+            timer.cancel();
+            timer = new Timer();
+        }
+
         List<NoticeEntity.Unread> unreads = entity.getUnread();
         if (unreads != null) {
             int num = 0;
@@ -97,6 +102,7 @@ public class PloyhomeFragment extends AppBaseFragment<PloyhomeFragmentPresenter>
         }
 
         List<NoticeEntity.Message> messages = entity.getMessages();
+        position = 0;
 
         if (messages != null && messages.size() > 0) {
             timer.schedule(new TimerTask() {
