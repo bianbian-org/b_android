@@ -1,0 +1,62 @@
+// Top-level build file where you can add configuration options common to all sub-projects/modules.
+
+buildscript {
+    repositories {
+        jcenter()
+    }
+    dependencies {
+        classpath 'com.android.tools.build:gradle:2.1.2'
+        classpath 'me.tatarka:gradle-retrolambda:3.2.5'
+        classpath 'com.neenbedankt.gradle.plugins:android-apt:1.8'
+
+        // NOTE: Do not place your application dependencies here; they belong
+        // in the individual module build.gradle files
+    }
+}
+
+allprojects {
+    repositories {
+        jcenter()
+        maven { url "https://jitpack.io" }
+        maven { url 'https://oss.sonatype.org/content/repositories/snapshots/' }
+    }
+}
+
+task clean(type: Delete) {
+    delete rootProject.buildDir
+}
+
+ext {
+    minSdkVersion = 16
+    targetSdkVersion = 23
+    compileSdkVersion = 23
+    buildToolsVersion = '23.0.2'
+
+    //app
+    recyclerAdapter = '1.0.0'
+    anr_whatchDog = '1.2.+'
+
+    //corelib
+    supportLibraryVersion = '23.2.0'
+    rxJava = '1.1.4'
+    rxAndroid = '1.2.0'
+    rxBinding = '0.3.0'
+    rxReceivers = '0.1.0-SNAPSHOT'
+    materialDialogs = '0.8.5.6'
+    threetenabp = '1.0.3'
+    butterKnife = '7.0.1'
+    rxProguardRules = '1.1.0.0'
+    rxPermissions = "0.5.2@aar"
+
+    //lib2
+    gson = '2.6.1'
+    retrofit = '2.0.0-beta4'
+    converter_gson = '2.0.0-beta4'
+    adapter_rxjava = '2.0.0-beta4'
+    okhttp = '3.1.2'
+    logging_interceptor = '3.3.1'
+    okio = '1.6.0'
+    picasso = '2.5.2'
+    picasso2_okhttp3_downloader = '1.0.2'
+
+}

@@ -1,0 +1,35 @@
+<resources>
+    <string name="app_name">PolyhomeB</string>
+
+
+    <string name="success_send">发送成功</string>
+    <string name="success_login">登录成功</string>
+    <string name="success_register">注册成功</string>
+    <string name="success_change_password">修改密码成功</string>
+    <string name="success_change">修改成功</string>
+    <string name="success_delete">删除成功</string>
+    <string name="success_unbind">解绑成功</string>
+
+    <string name="error_to_connect_server">网络连接失败!</string>
+    <string name="error_no_connection">无网络连接!</string>
+    <string name="error_to_connect_host">主机连接失败!</string>
+    <string name="error_timeout">连接主机超时</string>
+    <string name="error_to_connect_host_try_again_later">无法连接主机，请稍后重试</string>
+    <string name="error_send">发送失败</string>
+    <string name="error_wrong_phone_number">手机号不正确</string>
+    <string name="error_wrong_verifi_code_length">请输入6位验证码</string>
+    <string name="error_wrong_password_confirm">两次密码不一致</string>
+    <string name="error_wrong_password">密码至少8位</string>
+    <string name="error_no_data">暂无任何内容</string>
+    <string name="error_load_data">数据未加载</string>
+    <string name="error_network_error">当前网络异常，下拉重新加载</string>
+    <string name="error_name_is_null">名字不能为空</string>
+    <string name="error_data">数据异常</string>
+    <string name="error_link">链接错误</string>
+    <string name="error_open_browser">无法打开外部浏览器</string>
+    <string name="error_open_camera">无法获取摄像头权限</string>
+
+    <string name="refresh">刷新</string>
+
+
+</resources>
