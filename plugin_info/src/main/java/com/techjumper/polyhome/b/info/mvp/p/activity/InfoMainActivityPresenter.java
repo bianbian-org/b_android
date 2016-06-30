@@ -42,33 +42,33 @@ public class InfoMainActivityPresenter extends AppBaseActivityPresenter<InfoMain
 
     private int intentType;
 
-    @OnCheckedChanged(R.id.title_announcement)
-    void announcement(boolean check) {
-        if (check) {
-            getAnnouncements();
-        }
-    }
-
-    @OnCheckedChanged(R.id.title_system)
-    void titleSystem(boolean check) {
-        if (check) {
-            getList(intentType);
-        }
-    }
-
-    @OnCheckedChanged(R.id.title_order)
-    void titleOrder(boolean check) {
-        if (check) {
-            getList(intentType);
-        }
-    }
-
-    @OnCheckedChanged(R.id.title_medical)
-    void titleMedical(boolean check) {
-        if (check) {
-            getList(intentType);
-        }
-    }
+//    @OnCheckedChanged(R.id.title_announcement)
+//    void announcement(boolean check) {
+//        if (check) {
+//            getAnnouncements();
+//        }
+//    }
+//
+//    @OnCheckedChanged(R.id.title_system)
+//    void titleSystem(boolean check) {
+//        if (check) {
+//            getList(intentType);
+//        }
+//    }
+//
+//    @OnCheckedChanged(R.id.title_order)
+//    void titleOrder(boolean check) {
+//        if (check) {
+//            getList(intentType);
+//        }
+//    }
+//
+//    @OnCheckedChanged(R.id.title_medical)
+//    void titleMedical(boolean check) {
+//        if (check) {
+//            getList(intentType);
+//        }
+//    }
 
     InfoMainActivityModel infoMainActivityModel = new InfoMainActivityModel(this);
     private int pageNo = 1;

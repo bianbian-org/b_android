@@ -33,8 +33,7 @@ public class InfoEntityViewHolder extends BaseRecyclerViewHolder<InfoEntity.Info
         String content = data.getContent();
         String date = data.getCreated_at();
 
-        int type = data.getTypes();
-        hasRead = data.getHas_read();
+        int type = data.getTypes();hasRead = data.getHas_read();
 
         setText(R.id.info_title, title);
         setText(R.id.info_content, content);

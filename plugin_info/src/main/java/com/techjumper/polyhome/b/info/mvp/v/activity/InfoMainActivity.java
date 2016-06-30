@@ -128,7 +128,6 @@ public class InfoMainActivity extends AppBaseActivity {
             } else {
                 titleOrder.setChecked(true);
             }
-
             UserInfoEntity userInfoEntity = new UserInfoEntity();
             userInfoEntity.setUser_id(bundle.getLong(PluginConstant.KEY_INFO_USER_ID));
             userInfoEntity.setTicket(bundle.getString(PluginConstant.KEY_INFO_TICKET));
@@ -137,7 +136,7 @@ public class InfoMainActivity extends AppBaseActivity {
         }
 //        UserInfoEntity userInfoEntity = new UserInfoEntity();
 //        userInfoEntity.setUser_id(367);
-//        userInfoEntity.setTicket("0f9859826eeeed6d421c0a0982ee5b08b6c41809");
+//        userInfoEntity.setTicket("5367bf136caac748c593dd0ba99a5a5fe4c6cf46");
 //        userInfoEntity.setId(438);
 //        UserInfoManager.saveUserInfo(userInfoEntity);
 
