@@ -4,6 +4,7 @@ import android.content.ComponentName;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.util.Log;
 
 import com.techjumper.commonres.ComConstant;
@@ -17,6 +18,7 @@ import com.techjumper.plugincommunicateengine.PluginEngine;
 import com.techjumper.plugincommunicateengine.entity.core.SaveInfoEntity;
 import com.techjumper.plugincommunicateengine.utils.GsonUtils;
 import com.techjumper.polyhome.b.home.BuildConfig;
+import com.techjumper.polyhome.b.home.InfoManager;
 import com.techjumper.polyhome.b.home.R;
 import com.techjumper.polyhome.b.home.UserInfoManager;
 import com.techjumper.polyhome.b.home.mvp.v.activity.MainActivity;
@@ -92,11 +94,21 @@ public class MainActivityPresenter extends AppBaseActivityPresenter<MainActivity
 
     @Override
     public void onViewInited(Bundle savedInstanceState) {
-        PluginEngineUtil.initUserInfo();
+//        UserInfoEntity userInfoEntity2 = new UserInfoEntity();
+//        userInfoEntity2.setId(438);
+//        userInfoEntity2.setUser_id(367);
+//        userInfoEntity2.setTicket("0f9859826eeeed6d421c0a0982ee5b08b6c41809");
+//        UserInfoManager.saveUserInfo(userInfoEntity2);
+//        RxBus.INSTANCE.send(new UserInfoEvent(userInfoEntity2));
+
+
+//        if (!TextUtils.isEmpty(InfoManager.getUserInfoFile())) {
+//            PluginEngineUtil.initUserInfo(InfoManager.getUserInfoFile());
+//        }
 
         PluginEngine.getInstance().registerReceiver((code, message, extras) -> {
             if (code == PluginEngine.CODE_GET_SAVE_INFO) {
-                Log.d("pluginUserInfo", "开始接受数据");
+                Log.d("pluginUserInfo", "开始从本地抓取用户信息数据...");
                 SaveInfoEntity saveInfoEntity = GsonUtils.fromJson(message, SaveInfoEntity.class);
                 if (saveInfoEntity == null || saveInfoEntity.getData() == null)
                     return;
@@ -128,7 +140,15 @@ public class MainActivityPresenter extends AppBaseActivityPresenter<MainActivity
                 UserInfoManager.saveUserInfo(userInfoEntity);
 
                 RxBus.INSTANCE.send(new UserInfoEvent(userInfoEntity));
-                Log.d("pluginUserInfo", "更新用户信息");
+                Log.d("pluginUserInfo", "更新完毕用户信息...");
+            } else if (code == PluginEngine.CODE_SAVE_INFO) {
+                Log.d("pluginUserInfo", "用户设置保存文件名为: " + (TextUtils.isEmpty(message) ? "没有文件" : message));
+
+                if (TextUtils.isEmpty(message))
+                    return;
+
+                InfoManager.saveUserInfoFile(message);
+                PluginEngineUtil.initUserInfo(message);
             }
         });
     }

@@ -192,13 +192,13 @@ public class PluginEngineUtil {
         });
     }
 
-    public static void initUserInfo() {
+    public static void initUserInfo(final String fileName) {
         PluginEngine.getInstance().start(new PluginEngine.IPluginConnection() {
             @Override
             public void onEngineConnected(PluginEngine.PluginExecutor pluginExecutor) {
                 try {
                     String data = HostDataBuilder.saveInfoBuilder()
-                            .name(NAME_USERINFO)
+                            .name(fileName)
                             .build();
                     pluginExecutor.send(PluginEngine.CODE_GET_SAVE_INFO, data);
                 } catch (Exception e) {

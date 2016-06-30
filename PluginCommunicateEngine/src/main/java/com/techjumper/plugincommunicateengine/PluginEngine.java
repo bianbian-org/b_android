@@ -37,6 +37,7 @@ public class PluginEngine {
     public static final int CODE_SAVE_INFO = 4; //保存信息到本地
     public static final int CODE_GET_SAVE_INFO = 5; //获取本地信息
     public static final int CODE_UPDATE_PLUGIN = 6; //联网更新插件
+    public static final int CODE_GET_PUSH_ID = 7; //获取推送的push id
 
 
     /**

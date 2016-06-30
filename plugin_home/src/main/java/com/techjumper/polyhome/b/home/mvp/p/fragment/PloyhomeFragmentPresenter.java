@@ -106,12 +106,15 @@ public class PloyhomeFragmentPresenter extends AppBaseFragmentPresenter<Ployhome
                 .subscribe(o -> {
                     if (o instanceof NoticeEvent) {
                         NoticeEvent entity = (NoticeEvent) o;
+                        if (entity == null || entity.getContent() == null || entity.getTitle() == null)
+                            return;
+
                         getView().getNoticeContent().setText(StringUtil.delHTMLTag(entity.getContent()));
                         getView().getNoticeTitle().setText(TextUtils.isEmpty(entity.getTitle()) ? "" : entity.getTitle());
 
                         type = entity.getType();
                     } else if (o instanceof UserInfoEvent) {
-                        Log.d("pluginUserInfo", "更新天气信息");
+                        Log.d("pluginUserInfo", "更新通告");
                         getNotices();
                     } else if (o instanceof NoticePushEvent) {
                         getNotices();
