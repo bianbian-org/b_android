@@ -2,7 +2,6 @@ package com.techjumper.polyhomeb.mvp.p.fragment;
 
 import com.techjumper.corelib.mvp.presenter.BaseFragmentPresenterImp;
 import com.techjumper.corelib.rx.tools.RxUtils;
-import com.techjumper.corelib.utils.common.AcHelper;
 import com.techjumper.polyhomeb.R;
 import com.techjumper.polyhomeb.entity.BaseEntity;
 import com.techjumper.polyhomeb.mvp.v.fragment.AppBaseFragment;
@@ -52,10 +51,10 @@ public abstract class AppBaseFragmentPresenter<T extends AppBaseFragment> extend
             if (entity.getError_code() == NetHelper.CODE_NOT_LOGIN) {
                 UserManager.INSTANCE.logout();
 //                boolean shouldClose = (!(getView().getActivity() instanceof TabHomeActivity));
-                new AcHelper.Builder(getView().getActivity())
+//                new AcHelper.Builder(getView().getActivity())
 //                        .target(LoginActivity.class)
 //                        .closeCurrent(shouldClose)
-                        .start();
+//                        .start();
                 getView().showHint(entity.getError_code() + ":" + entity.getError_msg());
             } else if (entity.getError_code() == NetHelper.CODE_NO_DATA) {
                 if (notifyNoData)
