@@ -316,7 +316,7 @@ public class InfoMainActivity extends AppBaseActivity {
     private void updateNotices() {
         Intent intent = new Intent();
         intent.setAction("action_push_receive");
-        intent.putExtra("key_extra", "updateNotice")
+        intent.putExtra("key_extra", "updateNotice");
         sendBroadcast(intent);
     }
 }
