@@ -1,6 +1,7 @@
 package com.techjumper.polyhome.b.info.mvp.v.activity;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -87,6 +88,7 @@ public class InfoMainActivity extends AppBaseActivity {
     @OnClick(R.id.bottom_back)
     void back() {
         if (backType == BackEvent.FINISH) {
+            updateNotices();
             finish();
         } else if (backType == BackEvent.INFO_LIST) {
             infoDetail.setVisibility(View.GONE);
@@ -309,6 +311,13 @@ public class InfoMainActivity extends AppBaseActivity {
         lndContent.setWebChromeClient(new WebChromeClient());
 
         RxBus.INSTANCE.send(new BackEvent(BackEvent.INFO_LIST));
+    }
+
+    private void updateNotices() {
+        Intent intent = new Intent();
+        intent.setAction("action_push_receive");
+        intent.putExtra("key_extra", "updateNotice")
+        sendBroadcast(intent);
     }
 }
 

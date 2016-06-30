@@ -212,11 +212,4 @@ public class PluginEngineUtil {
             }
         });
     }
-
-    /**
-     * 更新消息通知展示页
-     */
-    public static void updateInfo() {
-
-    }
 }
