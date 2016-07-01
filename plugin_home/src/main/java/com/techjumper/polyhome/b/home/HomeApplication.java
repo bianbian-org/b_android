@@ -1,5 +1,6 @@
 package com.techjumper.polyhome.b.home;
 
+import com.techjumper.corelib.utils.Utils;
 import com.techjumper.lib2.others.Lib2Application;
 import com.techjumper.plugincommunicateengine.PluginEngine;
 import com.techjumper.polyhome.b.home.net.ServiceAPI;
@@ -13,6 +14,7 @@ public class HomeApplication extends Lib2Application {
     public void onCreate() {
         super.onCreate();
         PluginEngine.getInstance().init(this);
+        Utils.appContext = this;
     }
 
     @Override

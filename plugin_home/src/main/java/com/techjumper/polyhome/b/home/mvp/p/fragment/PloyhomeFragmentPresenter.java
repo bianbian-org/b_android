@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
+import android.widget.ImageView;
 
 import com.techjumper.commonres.PluginConstant;
 import com.techjumper.commonres.UserInfoEntity;
@@ -17,7 +18,9 @@ import com.techjumper.commonres.entity.event.WeatherEvent;
 import com.techjumper.commonres.entity.event.pushevent.NoticePushEvent;
 import com.techjumper.commonres.util.PluginEngineUtil;
 import com.techjumper.corelib.rx.tools.RxBus;
+import com.techjumper.corelib.utils.common.JLog;
 import com.techjumper.corelib.utils.window.ToastUtils;
+import com.techjumper.lib2.utils.PicassoHelper;
 import com.techjumper.plugincommunicateengine.PluginEngine;
 import com.techjumper.polyhome.b.home.R;
 import com.techjumper.polyhome.b.home.UserInfoManager;
@@ -29,7 +32,10 @@ import com.techjumper.polyhome.b.home.mvp.v.fragment.PloyhomeFragment;
 import com.techjumper.polyhome.b.home.utils.DateUtil;
 import com.techjumper.polyhome.b.home.utils.StringUtil;
 import com.techjumper.polyhome.b.home.widget.SquareView;
+import com.techjumper.polyhome_b.adlib.entity.AdEntity;
+import com.techjumper.polyhome_b.adlib.manager.AdController;
 
+import java.io.File;
 import java.util.List;
 
 import butterknife.OnClick;
@@ -44,6 +50,8 @@ public class PloyhomeFragmentPresenter extends AppBaseFragmentPresenter<Ployhome
     private PloyhomeFragmentModel model = new PloyhomeFragmentModel(this);
     private int type = -1;
     private UserInfoEntity userInfoEntity;
+    private AdController adController = new AdController();
+    private AdEntity.AdsEntity mAdsEntity = new AdEntity.AdsEntity();
 
     @OnClick(R.id.property)
     void property() {
@@ -75,6 +83,7 @@ public class PloyhomeFragmentPresenter extends AppBaseFragmentPresenter<Ployhome
     @OnClick(R.id.ad)
     void ad() {
         Intent intent = new Intent(getView().getActivity(), AdActivity.class);
+        intent.putExtra(AdActivity.ADITEM, mAdsEntity);
         getView().getActivity().startActivity(intent);
     }
 
@@ -100,6 +109,14 @@ public class PloyhomeFragmentPresenter extends AppBaseFragmentPresenter<Ployhome
     }
 
     @Override
+    public void onDestroy() {
+        super.onDestroy();
+        if (adController != null) {
+            adController.cancel(AdController.TYPE_HOME);
+        }
+    }
+
+    @Override
     public void initData(Bundle savedInstanceState) {
         RxBus.INSTANCE.asObservable()
                 .observeOn(AndroidSchedulers.mainThread())
@@ -114,8 +131,10 @@ public class PloyhomeFragmentPresenter extends AppBaseFragmentPresenter<Ployhome
 
                         type = entity.getType();
                     } else if (o instanceof UserInfoEvent) {
-                        Log.d("pluginUserInfo", "更新通告");
+                        Log.d("pluginUserInfo", "更新公告");
                         getNotices();
+                        Log.d("pluginUserInfo", "更新广告");
+                        getAd();
                     } else if (o instanceof NoticePushEvent) {
                         getNotices();
                     }
@@ -124,7 +143,7 @@ public class PloyhomeFragmentPresenter extends AppBaseFragmentPresenter<Ployhome
 
     @Override
     public void onViewInited(Bundle savedInstanceState) {
-
+        getAd();
 //        getNotices(367, "42abcd66b653086cc5805902c1a2134c746fea39");
 
         addSubscription(RxBus.INSTANCE.asObservable()
@@ -206,5 +225,45 @@ public class PloyhomeFragmentPresenter extends AppBaseFragmentPresenter<Ployhome
         }
 
         return restrictNo;
+    }
+
+    private void getAd() {
+        ImageView adImageView = getView().getAd();
+        adController.executeAdRule(AdController.TYPE_HOME, "438", "367", "407c0fcb1c5c9006096033bbc35e5771f7ddb78b", new AdController.IExecuteRule() {
+            //        adController.executeAdRule(AdController.TYPE_HOME, UserInfoManager.getFamilyId(), UserInfoManager.getUserId(), UserInfoManager.getTicket(), new AdController.IExecuteRule() {
+            @Override
+            public void onAdReceive(AdEntity.AdsEntity adsEntity, File file) {
+                JLog.d("有新的广告来啦. 本地广告路径:" + file + ", 详细信息: " + adsEntity);
+                if (file.exists()) {
+                    PicassoHelper.load(file)
+                            .into(adImageView);
+                } else {
+                    PicassoHelper.load(adsEntity.getMedia_url())
+                            .into(adImageView);
+                }
+
+                mAdsEntity = adsEntity;
+            }
+
+            @Override
+            public void onAdPlayFinished() {
+                JLog.d("广告播放完成  (有可能是上一次的任务被自动中断，不影响本次广告执行)");
+            }
+
+            @Override
+            public void onAdDownloadError(AdEntity.AdsEntity adsEntity) {
+                JLog.d("某个广告下载失败: " + adsEntity);
+            }
+
+            @Override
+            public void onAdExecuteFailed(String reason) {
+                JLog.d("获取广告失败: " + reason);
+            }
+
+            @Override
+            public void onAdNoExist(String adType, String hour) {
+                JLog.d("没有广告: 广告类型=" + adType + ", 当前小时=" + hour);
+            }
+        });
     }
 }

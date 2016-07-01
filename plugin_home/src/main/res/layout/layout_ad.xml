@@ -9,8 +9,7 @@
         android:id="@+id/img"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_weight="1"
-        android:src="@mipmap/bg_ad" />
+        android:layout_weight="1" />
 
     <WebView
         android:id="@+id/webview"

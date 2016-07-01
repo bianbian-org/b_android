@@ -111,7 +111,7 @@ public class MainActivity extends AppBaseActivity {
             public void run() {
                 RxBus.INSTANCE.send(new TimeEvent());
             }
-        }, 1000, 60000);
+        }, 5000, 60000);
     }
 
     @Override

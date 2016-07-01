@@ -103,7 +103,9 @@ public class MainActivityPresenter extends AppBaseActivityPresenter<MainActivity
                 .subscribe(o -> {
                     if (o instanceof TimeEvent) {
                         Log.d("time", "更新时间");
-                        getView().getDate().setText(CommonDateUtil.getTitleDate());
+                        if (getView().getDate() != null) {
+                            getView().getDate().setText(CommonDateUtil.getTitleDate());
+                        }
                     }
                 });
 

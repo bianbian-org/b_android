@@ -6,7 +6,7 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.RelativeLayout;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.techjumper.commonres.entity.NoticeEntity;
@@ -22,6 +22,7 @@ import java.util.Timer;
 import java.util.TimerTask;
 
 import butterknife.Bind;
+import butterknife.ButterKnife;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -39,6 +40,8 @@ public class PloyhomeFragment extends AppBaseFragment<PloyhomeFragmentPresenter>
     TextView noticeTitle;
     @Bind(R.id.notice_content)
     TextView noticeContent;
+    @Bind(R.id.ad)
+    ImageView ad;
 
     private Timer timer = new Timer();
     private int position = 0;
@@ -57,6 +60,10 @@ public class PloyhomeFragment extends AppBaseFragment<PloyhomeFragmentPresenter>
 
     public SquareView getFpRestrict() {
         return fpRestrict;
+    }
+
+    public ImageView getAd() {
+        return ad;
     }
 
     public static PloyhomeFragment getInstance() {

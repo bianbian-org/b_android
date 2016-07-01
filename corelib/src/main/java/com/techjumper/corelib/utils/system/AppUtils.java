@@ -6,8 +6,6 @@ import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
-import android.net.wifi.WifiInfo;
-import android.net.wifi.WifiManager;
 import android.os.Build;
 import android.provider.Settings;
 import android.telephony.TelephonyManager;
@@ -116,16 +114,6 @@ public class AppUtils {
         ConnectivityManager connectivityManager = (ConnectivityManager) Utils.appContext.getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
         return activeNetworkInfo != null && activeNetworkInfo.isConnected();
-    }
-
-    public static NetworkInfo getActiveNetworkInfo() {
-        ConnectivityManager connectivityManager = (ConnectivityManager) Utils.appContext.getSystemService(Context.CONNECTIVITY_SERVICE);
-        return connectivityManager.getActiveNetworkInfo();
-    }
-
-    public static WifiInfo getWifiInfo() {
-        WifiManager wifiManager = (WifiManager) Utils.appContext.getSystemService(Context.WIFI_SERVICE);
-        return wifiManager.getConnectionInfo();
     }
 
     /**

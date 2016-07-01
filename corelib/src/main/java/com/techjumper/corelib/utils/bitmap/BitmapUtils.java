@@ -3,11 +3,8 @@ package com.techjumper.corelib.utils.bitmap;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.graphics.BitmapShader;
 import android.graphics.Canvas;
-import android.graphics.Color;
 import android.graphics.Matrix;
-import android.graphics.Paint;
 import android.media.ExifInterface;
 import android.util.Log;
 import android.view.ViewGroup;
@@ -192,40 +189,6 @@ public class BitmapUtils {
         }
         return inSampleSize;
         // END_INCLUDE (calculate_sample_size)
-    }
-
-    //转变为圆形图片
-    public static Bitmap toCircle(Bitmap source, float strokeWidth) {
-        int size = Math.min(source.getWidth(), source.getHeight());
-
-        int x = (source.getWidth() - size) / 2;
-        int y = (source.getHeight() - size) / 2;
-
-        Bitmap squaredBitmap = Bitmap.createBitmap(source, x, y, size, size);
-        if (squaredBitmap != source) {
-            source.recycle();
-        }
-
-        Bitmap bitmap = Bitmap.createBitmap(size, size, source.getConfig());
-
-        Canvas canvas = new Canvas(bitmap);
-
-        Paint avatarPaint = new Paint();
-        BitmapShader shader = new BitmapShader(squaredBitmap, BitmapShader.TileMode.CLAMP, BitmapShader.TileMode.CLAMP);
-        avatarPaint.setShader(shader);
-
-        Paint outlinePaint = new Paint();
-        outlinePaint.setColor(Color.WHITE);
-        outlinePaint.setStyle(Paint.Style.STROKE);
-        outlinePaint.setStrokeWidth(strokeWidth);
-        outlinePaint.setAntiAlias(true);
-
-        float r = size / 2f;
-        canvas.drawCircle(r, r, r, avatarPaint);
-        canvas.drawCircle(r, r, r - strokeWidth / 2, outlinePaint);
-
-        squaredBitmap.recycle();
-        return bitmap;
     }
 
     public static Bitmap viewToImage(WebView viewToBeConverted) {

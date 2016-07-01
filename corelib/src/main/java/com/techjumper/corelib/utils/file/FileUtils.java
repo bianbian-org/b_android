@@ -1,16 +1,12 @@
 package com.techjumper.corelib.utils.file;
 
-import java.io.BufferedInputStream;
-import java.io.BufferedOutputStream;
-import java.io.ByteArrayOutputStream;
-import java.io.Closeable;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.util.Map;
-
+import android.content.Context;
+import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager;
+import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.os.Environment;
 import android.os.StatFs;
@@ -18,6 +14,22 @@ import android.text.TextUtils;
 
 import com.techjumper.corelib.utils.Utils;
 import com.techjumper.corelib.utils.system.AppUtils;
+
+import java.io.BufferedInputStream;
+import java.io.BufferedOutputStream;
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.Closeable;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.lang.reflect.Constructor;
+import java.lang.reflect.Method;
+import java.util.Map;
 
 public class FileUtils {
 
@@ -111,92 +123,6 @@ public class FileUtils {
         return (long) (getFreeBlockSize(file) / 1024.F / 1024);
     }
 
-    // 往SD卡的公有目录下保存文件
-    public static boolean saveFileToSDCardPublicDir(byte[] data, String type,
-                                                    String fileName) {
-        BufferedOutputStream bos = null;
-        if (isSDCardMounted()) {
-            File file = Environment.getExternalStoragePublicDirectory(type);
-            try {
-                bos = new BufferedOutputStream(new FileOutputStream(new File(
-                        file, fileName)));
-                bos.write(data);
-                bos.flush();
-                return true;
-            } catch (Exception e) {
-                e.printStackTrace();
-            } finally {
-                closeStream(bos);
-            }
-        }
-        return false;
-    }
-
-    // 往SD卡的自定义目录下保存文件
-    public static boolean saveFileToSDCardCustomDir(byte[] data, String dir,
-                                                    String fileName) {
-        BufferedOutputStream bos = null;
-        if (isSDCardMounted()) {
-            File file = new File(getSDCardBaseDir() + File.separator + dir);
-            if (!file.exists()) {
-                file.mkdirs();// 递归创建自定义目录
-            }
-            try {
-                bos = new BufferedOutputStream(new FileOutputStream(new File(
-                        file, fileName)));
-                bos.write(data);
-                bos.flush();
-                return true;
-            } catch (Exception e) {
-                e.printStackTrace();
-            } finally {
-                closeStream(bos);
-            }
-        }
-        return false;
-    }
-
-    // 往SD卡的私有Files目录下保存文件
-    public static boolean saveFileToSDCardPrivateFilesDir(byte[] data,
-                                                          String type, String fileName) {
-        BufferedOutputStream bos = null;
-        if (isSDCardMounted()) {
-            File file = Utils.appContext.getExternalFilesDir(type);
-            try {
-                bos = new BufferedOutputStream(new FileOutputStream(new File(
-                        file, fileName)));
-                bos.write(data);
-                bos.flush();
-                return true;
-            } catch (Exception e) {
-                e.printStackTrace();
-            } finally {
-                closeStream(bos);
-            }
-        }
-        return false;
-    }
-
-    // 往SD卡的私有Cache目录下保存文件
-    public static boolean saveFileToSDCardPrivateCacheDir(byte[] data,
-                                                          String fileName) {
-        BufferedOutputStream bos = null;
-        if (isSDCardMounted()) {
-            File file = Utils.appContext.getExternalCacheDir();
-            try {
-                bos = new BufferedOutputStream(new FileOutputStream(new File(
-                        file, fileName)));
-                bos.write(data);
-                bos.flush();
-                return true;
-            } catch (Exception e) {
-                e.printStackTrace();
-            } finally {
-                closeStream(bos);
-            }
-        }
-        return false;
-    }
 
     // 保存bitmap图片到SDCard的私有Cache目录
     public static boolean saveBitmapToSDCardPrivateCacheDir(Bitmap bitmap,
@@ -226,6 +152,18 @@ public class FileUtils {
         } else {
             return false;
         }
+    }
+
+    public static String fetchFilePostfix(File file) {
+        String name = file.getName();
+        return fetchFilePostfix(name);
+    }
+
+    public static String fetchFilePostfix(String name) {
+        String postfix = "";
+        int dotIndex = name.lastIndexOf(".");
+        if (dotIndex == -1 || dotIndex + 1 >= name.length()) return postfix;
+        return name.substring(dotIndex + 1, name.length());
     }
 
     // 从SD卡获取文件
@@ -293,11 +231,61 @@ public class FileUtils {
 
     public static boolean isFileExist(String filePath) {
         File file = new File(filePath);
-        return file.isFile();
+        return file.exists() && file.isFile();
+    }
+
+    public static boolean saveStringToPath(String str, String sdPath, String name) {
+        if (str == null) return false;
+        ByteArrayInputStream bis = new ByteArrayInputStream(str.getBytes());
+        return saveInputstreamToPath(bis, sdPath, name);
+    }
+
+    public static boolean saveAssetsFileToPath(String assetsPath, String assetsName, String sdPath) {
+        boolean result;
+        try {
+            InputStream is = Utils.appContext.getAssets().open(assetsPath + File.separator + assetsName);
+            result = saveInputstreamToPath(is, sdPath, assetsName);
+        } catch (Exception ignored) {
+            result = false;
+        }
+        return result;
+    }
+
+    public static boolean copyFileToOtherPath(String oldPath, String name, String targetPath) throws FileNotFoundException {
+        File file = new File(oldPath + File.separator + name);
+        if (!file.exists()) return false;
+        file = new File(targetPath + File.separator + name);
+        if (file.exists()) file.delete();
+        return saveInputstreamToPath(new FileInputStream(oldPath + File.separator + name), targetPath, name);
+    }
+
+    public static boolean saveInputstreamToPath(InputStream is, String sdPath, String name) {
+        boolean result = true;
+        try {
+            BufferedInputStream bis = new BufferedInputStream(is);
+            File file = new File(sdPath);
+            if (!file.exists() && !file.mkdirs()) {
+                throw new IOException("存储路径创建失败");
+            }
+            deleteFileIfExist(sdPath, name);
+            BufferedOutputStream bos = new BufferedOutputStream(new FileOutputStream(sdPath + File.separator + name));
+
+            byte[] buffer = new byte[8000];
+            for (int count; (count = bis.read(buffer)) != -1; ) {
+                bos.write(buffer, 0, count);
+            }
+            bis.close();
+            bos.flush();
+            bos.close();
+
+        } catch (Exception ignored) {
+            result = false;
+        }
+        return result;
     }
 
     // 从sdcard中删除文件
-    public static boolean removeFileFromSDCard(String filePath) {
+    public static boolean deleteFileFromSDCard(String filePath) {
         File file = new File(filePath);
         if (file.exists()) {
             try {
@@ -349,6 +337,50 @@ public class FileUtils {
         return blockSize * blockCount;
     }
 
+    /**
+     * 得到SD卡上apk文件的图标
+     */
+    public static Drawable getApkFileIcon(String path) throws Exception {
+        Resources resources = getResources(Utils.appContext, path);
+        PackageManager pm = Utils.appContext.getPackageManager();
+        PackageInfo info = pm.getPackageArchiveInfo(path, 0);
+        Drawable icon = null;
+        try {
+            if (resources != null) {
+                icon = resources.getDrawable(info.applicationInfo.icon);
+            }
+        } catch (Exception e) {
+            icon = pm.getDefaultActivityIcon();
+        }
+        return icon;
+    }
+
+    public static Resources getResources(Context context, String apkPath) throws Exception {
+        String PATH_AssetManager = "android.content.res.AssetManager";
+        Class assetMagCls = Class.forName(PATH_AssetManager);
+        Constructor assetMagCt = assetMagCls.getConstructor((Class[]) null);
+        Object assetMag = assetMagCt.newInstance((Object[]) null);
+        Class[] typeArgs = new Class[1];
+        typeArgs[0] = String.class;
+        Method assetMag_addAssetPathMtd = assetMagCls.getDeclaredMethod("addAssetPath",
+                typeArgs);
+        Object[] valueArgs = new Object[1];
+        valueArgs[0] = apkPath;
+        assetMag_addAssetPathMtd.invoke(assetMag, valueArgs);
+        Resources res = context.getResources();
+        typeArgs = new Class[3];
+        typeArgs[0] = assetMag.getClass();
+        typeArgs[1] = res.getDisplayMetrics().getClass();
+        typeArgs[2] = res.getConfiguration().getClass();
+        Constructor resCt = Resources.class.getConstructor(typeArgs);
+        valueArgs = new Object[3];
+        valueArgs[0] = assetMag;
+        valueArgs[1] = res.getDisplayMetrics();
+        valueArgs[2] = res.getConfiguration();
+        res = (Resources) resCt.newInstance(valueArgs);
+        return res;
+    }
+
     //得到外置SD卡的路径
     public static String getPhoneOutSDPath() {
         Map<String, String> map = System.getenv();
@@ -361,5 +393,42 @@ public class FileUtils {
             return pathArray[0];
         }
         return null;
+    }
+
+    public static boolean deleteFileIfExist(String path, String name) {
+        File file = new File(path, name);
+        return file.exists() && file.delete();
+    }
+
+    public static String loadTextFile(String path, String name) {
+        String result = "";
+        File file = new File(path, name);
+        if (!file.exists() || !file.isFile())
+            return result;
+        try {
+            BufferedInputStream in = new BufferedInputStream(new FileInputStream(file));
+            ByteArrayOutputStream out = new ByteArrayOutputStream();
+            byte[] buffer = new byte[8000];
+            for (int count; (count = in.read(buffer)) != -1; ) {
+                out.write(buffer, 0, count);
+            }
+            result = new String(out.toByteArray(), "UTF-8");
+            out.close();
+            in.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        return result;
+    }
+
+    public static void saveInputToOutput(InputStream in, OutputStream out) throws IOException {
+        BufferedInputStream bin = new BufferedInputStream(in);
+        byte[] buffer = new byte[8000];
+        for (int count; (count = bin.read(buffer)) != -1; ) {
+            out.write(buffer, 0, count);
+        }
+        bin.close();
+        out.close();
     }
 }

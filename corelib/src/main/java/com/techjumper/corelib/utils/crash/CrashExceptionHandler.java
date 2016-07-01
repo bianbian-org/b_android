@@ -108,7 +108,7 @@ public class CrashExceptionHandler implements Thread.UncaughtExceptionHandler {
         BaseActivity.finishAll();
         //杀死进程，退出程序
         android.os.Process.killProcess(android.os.Process.myPid());
-        System.exit(1);
+        System.exit(0);
     }
 
     /**
@@ -233,7 +233,7 @@ public class CrashExceptionHandler implements Thread.UncaughtExceptionHandler {
         void onCrash(Throwable ex);
     }
 
-    private void printStackTrace(StringBuilder err, String indent, StackTraceElement[] parentStack, Throwable ex)
+    public static void printStackTrace(StringBuilder err, String indent, StackTraceElement[] parentStack, Throwable ex)
             throws IOException {
         err.append(ex.toString());
         err.append("\n");

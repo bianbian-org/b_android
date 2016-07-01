@@ -72,8 +72,8 @@ public class InfoFragmentPresenter extends AppBaseFragmentPresenter<InfoFragment
 
     @Override
     public void onViewInited(Bundle savedInstanceState) {
-        getWeatherInfo();
-        getCalendarInfo();
+//        getWeatherInfo();
+//        getCalendarInfo();
 
         postMedical();
 

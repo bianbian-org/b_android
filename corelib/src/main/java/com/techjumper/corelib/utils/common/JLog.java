@@ -4,6 +4,8 @@ import android.os.Environment;
 import android.text.TextUtils;
 import android.util.Log;
 
+import com.techjumper.corelib.utils.crash.CrashExceptionHandler;
+
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileOutputStream;
@@ -22,7 +24,7 @@ import java.util.Locale;
  */
 public class JLog {
 
-    public static String customTagPrefix = "HIDE";  // 自定义Tag的前缀，可以是作者名
+    public static String customTagPrefix = "HIDETAG";  // 自定义Tag的前缀，可以是作者名
     public static boolean isSaveLog = false;    // 是否把保存日志到SD卡中
     public static final String LOG_PATH = Environment.getExternalStorageDirectory().getPath(); // SD卡中的根目录
 
@@ -134,6 +136,16 @@ public class JLog {
         if (isSaveLog) {
             point(LOG_PATH, tag, content);
         }
+    }
+
+    public static void e_stack(Throwable e) {
+        StringBuilder builder = new StringBuilder();
+        try {
+            CrashExceptionHandler.printStackTrace(builder, "", null, e);
+        } catch (IOException e2) {
+            e2.printStackTrace();
+        }
+        e("出错了: " + builder.toString());
     }
 
     public static void e(Throwable e) {

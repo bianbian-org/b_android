@@ -48,8 +48,9 @@
             android:id="@+id/ad"
             android:layout_width="@dimen/dp_500"
             android:layout_height="@dimen/dp_330"
-            android:layout_marginTop="@dimen/dp_10"
-            android:background="@mipmap/bg_ad" />
+            android:scaleType="centerCrop"
+            android:src="@mipmap/bg_ad"
+            android:layout_marginTop="@dimen/dp_10" />
     </LinearLayout>
 
     <LinearLayout

@@ -81,25 +81,21 @@ public class OkHttpHelper {
         int cacheSize;
         String cachePath = FileUtils.getCacheDir();
         if (FileUtils.isSDCardMounted()) {
-            cacheSize = 500 * 1024 * 1024; //500mb
+            cacheSize = 100 * 1024 * 1024;
         } else {
-            cacheSize = 20 * 1024 * 1024;//20mb
+            cacheSize = 20 * 1024 * 1024;
         }
-
-
         OkHttpClient.Builder builder = new OkHttpClient.Builder()
 //                .cache(new Cache(new File(cachePath), cacheSize))
                 .connectTimeout(10, TimeUnit.SECONDS)
                 .readTimeout(10, TimeUnit.SECONDS)
                 .writeTimeout(10, TimeUnit.SECONDS);
-
-//        if (Config.sIsDebug) {
-        HttpLoggingInterceptor logging = new HttpLoggingInterceptor();
-        logging.setLevel(HttpLoggingInterceptor.Level.BODY);
-        builder.addInterceptor(logging);
-        JLog.d("开启HTTP日志");
-//        }
-
+        if (Config.sIsDebug) {
+            HttpLoggingInterceptor logging = new HttpLoggingInterceptor();
+            logging.setLevel(HttpLoggingInterceptor.Level.BODY);
+            builder.addInterceptor(logging);
+            JLog.d("开启HTTP日志");
+        }
         builder.networkInterceptors().add(REWRITE_CACHE_CONTROL_INTERCEPTOR);
         return builder.build();
     }
