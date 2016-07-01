@@ -9,7 +9,9 @@ import android.util.Log;
 
 import com.techjumper.commonres.ComConstant;
 import com.techjumper.commonres.UserInfoEntity;
+import com.techjumper.commonres.entity.event.TimeEvent;
 import com.techjumper.commonres.entity.event.UserInfoEvent;
+import com.techjumper.commonres.util.CommonDateUtil;
 import com.techjumper.commonres.util.PluginEngineUtil;
 import com.techjumper.corelib.rx.tools.RxBus;
 import com.techjumper.corelib.utils.window.ToastUtils;
@@ -27,6 +29,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import butterknife.OnClick;
+import rx.android.schedulers.AndroidSchedulers;
 
 /**
  * Created by kevin on 16/4/29.
@@ -94,6 +97,17 @@ public class MainActivityPresenter extends AppBaseActivityPresenter<MainActivity
 
     @Override
     public void onViewInited(Bundle savedInstanceState) {
+
+        RxBus.INSTANCE.asObservable()
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(o -> {
+                    if (o instanceof TimeEvent) {
+                        Log.d("time", "更新时间");
+                        getView().getDate().setText(CommonDateUtil.getTitleDate());
+                    }
+                });
+
+
 //        UserInfoEntity userInfoEntity2 = new UserInfoEntity();
 //        userInfoEntity2.setId(438);
 //        userInfoEntity2.setUser_id(367);

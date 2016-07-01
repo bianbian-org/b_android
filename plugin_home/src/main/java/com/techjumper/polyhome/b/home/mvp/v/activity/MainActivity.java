@@ -7,9 +7,13 @@ import android.support.v4.view.ViewPager;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.techjumper.commonres.entity.event.TimeEvent;
 import com.techjumper.commonres.util.CommonDateUtil;
 import com.techjumper.corelib.mvp.factory.Presenter;
+import com.techjumper.corelib.rx.tools.RxBus;
+import com.techjumper.corelib.utils.window.ToastUtils;
 import com.techjumper.polyhome.b.home.R;
 import com.techjumper.polyhome.b.home.adapter.MyViewPagerAdapter;
 import com.techjumper.polyhome.b.home.mvp.p.activity.MainActivityPresenter;
@@ -20,6 +24,8 @@ import com.techjumper.polyhome.b.home.widget.MyViewPager;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Timer;
+import java.util.TimerTask;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -43,10 +49,15 @@ public class MainActivity extends AppBaseActivity {
     private MyViewPagerAdapter myViewPagerAdapter;
     private List<Fragment> fragments = new ArrayList<Fragment>();
     private NoticeReceiver receiver;
+    private Timer timer = new Timer();
 
     @Override
     protected View inflateView(Bundle savedInstanceState) {
         return inflate(R.layout.activity_main);
+    }
+
+    public TextView getDate() {
+        return date;
     }
 
     @Override
@@ -94,6 +105,21 @@ public class MainActivity extends AppBaseActivity {
 
             }
         });
+
+        timer.schedule(new TimerTask() {
+            @Override
+            public void run() {
+                RxBus.INSTANCE.send(new TimeEvent());
+            }
+        }, 1000, 60000);
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        if (timer != null) {
+            timer.cancel();
+        }
     }
 }
 
