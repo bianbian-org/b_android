@@ -66,7 +66,7 @@ public class HostIpHelper {
 
 //            getPreference().edit().putString(KEY_FAMILY_PREFIX + familyId, "192.168.199.228").commit();
 
-            getPreference().edit().putString(KEY_FAMILY_PREFIX + familyId, "10.0.1.28").commit();
+//            getPreference().edit().putString(KEY_FAMILY_PREFIX + familyId, "10.0.1.28").commit();
 
         }
 

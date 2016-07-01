@@ -1,6 +1,27 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#3F51B5</color>
-    <color name="colorPrimaryDark">#303F9F</color>
-    <color name="colorAccent">#FF4081</color>
+    <!--<color name="colorPrimary">#3F51B5</color>-->
+    <!--<color name="colorPrimaryDark">#303F9F</color>-->
+    <!--<color name="colorPrimary">#141d26</color>-->
+    <!--<color name="colorPrimaryDark">#141d26</color>-->
+    <color name="colorPrimary">#37a991</color>
+    <color name="colorPrimaryDark">#37a991</color>
+    <color name="colorAccent">#37a991</color>
+    <color name="color_2036A990">#2036A990</color>
+    <color name="text_bg_home_list">#2036a990</color>
+    <color name="color_37a991">#37a991</color>
+    <color name="text_primary_checked">#6637a991</color>
+    <color name="color_95a1ad">#95a1ad</color>
+    <color name="color_d43a2d">#d43a2d</color>
+    <color name="text_group_title">#596b7d</color>
+    <color name="color_374452">#374452</color>
+    <color name="color_8ca3b9">#8ca3b9</color>
+    <color name="color_596b7d">#596b7d</color>
+    <color name="bg_primary_button">#121b1f</color>
+    <color name="bg_primary_button_pressed">#B2132026</color>
+    <color name="color_e3e3e4">#E3E3E4</color>
+    <color name="color_ededed">#ededed</color>
+    <color name="color_acacac">#acacac</color>
+    <color name="title_bg">#2E997D</color>
+    <color name="color_ffffff">#ffffff</color>
 </resources>

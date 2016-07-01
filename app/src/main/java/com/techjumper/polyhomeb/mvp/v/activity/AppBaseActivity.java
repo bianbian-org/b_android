@@ -8,10 +8,12 @@ import com.techjumper.corelib.mvp.factory.Presenter;
 import com.techjumper.corelib.rx.tools.RxUtils;
 import com.techjumper.corelib.ui.activity.BaseFragmentActivity;
 import com.techjumper.corelib.utils.Utils;
+import com.techjumper.corelib.utils.window.KeyboardUtils;
 import com.techjumper.corelib.utils.window.StatusbarHelper;
 import com.techjumper.corelib.utils.window.ToastUtils;
 import com.techjumper.polyhomeb.R;
 import com.techjumper.polyhomeb.mvp.p.activity.AppBaseActivityPresenter;
+import com.techjumper.polyhomeb.utils.TitleHelper;
 import com.techjumper.progressdialog.KProgressHUD;
 import com.umeng.analytics.MobclickAgent;
 
@@ -31,7 +33,7 @@ public abstract class AppBaseActivity<T extends AppBaseActivityPresenter> extend
 
     private List<Subscription> mSubList = new ArrayList<>();
     private KProgressHUD mProgress;
-//    private TitleHelper.Builder mTitleBuilder;
+    private TitleHelper.Builder mTitleBuilder;
 
 
     @Override
@@ -42,22 +44,22 @@ public abstract class AppBaseActivity<T extends AppBaseActivityPresenter> extend
                 .setStyle(KProgressHUD.Style.SPIN_INDETERMINATE)
                 .setOnDismissListener(dialog -> onDialogDismiss());
 
-//        mTitleBuilder = TitleHelper.create(mViewRoot)
-//                .title(getLayoutTitle())
-//                .showLeft(showTitleLeft())
-//                .showRight(showTitleRight())
-//                .leftIconClick(v -> {
-//                    if (!onTitleLeftClick()) {
-//                        onBackPressed();
-//                    }
-//                })
-//                .rightIconClick(v1 -> {
-//                    if (!onTitleRightClick()) {
-//                        KeyboardUtils.closeKeyboard(mViewRoot);
-//
-//                    }
-//                });
-//        mTitleBuilder.process();
+        mTitleBuilder = TitleHelper.create(mViewRoot)
+                .title(getLayoutTitle())
+                .showLeft(showTitleLeft())
+                .showRight(showTitleRight())
+                .leftIconClick(v -> {
+                    if (!onTitleLeftClick()) {
+                        onBackPressed();
+                    }
+                })
+                .rightIconClick(v1 -> {
+                    if (!onTitleRightClick()) {
+                        KeyboardUtils.closeKeyboard(mViewRoot);
+
+                    }
+                });
+        mTitleBuilder.process();
     }
 
     protected boolean showTitleRight() {
@@ -82,8 +84,8 @@ public abstract class AppBaseActivity<T extends AppBaseActivityPresenter> extend
 
     @Override
     protected StatusbarHelper.Builder onStatusbarTransform(StatusbarHelper.Builder builder) {
-//        View titleGroup = findViewById(R.id.title_group);
-        View titleGroup = null;
+        View titleGroup = findViewById(R.id.title_group);
+//        View titleGroup = null;
 //        builder.setLayoutRoot(null);
         return titleGroup == null ? super.onStatusbarTransform(builder) : builder.setActionbarView(titleGroup);
     }

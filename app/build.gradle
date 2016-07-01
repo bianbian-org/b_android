@@ -14,7 +14,7 @@ android {
     compileSdkVersion rootProject.compileSdkVersion
     buildToolsVersion rootProject.buildToolsVersion
     defaultConfig {
-        applicationId "com.techjumper.polyhome"
+        applicationId "com.techjumper.polyhomeb"
         minSdkVersion rootProject.minSdkVersion
         targetSdkVersion rootProject.targetSdkVersion
         versionCode 100000
@@ -85,6 +85,8 @@ dependencies {
     compile project(':corelib')
     compile project(':ptr_lib')
     compile project(':loading-more-view')
+    compile project(':slidingmenulib')
+
 
     compile 'com.umeng.analytics:analytics:latest.integration'
 

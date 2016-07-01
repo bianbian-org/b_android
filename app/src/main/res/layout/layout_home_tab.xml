@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@mipmap/icon_tab_bg"
+    android:orientation="horizontal">
+
+    <FrameLayout
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1">
+
+        <com.techjumper.polyhomeb.widget.PolyTabView
+            android:id="@+id/tab_1"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_gravity="center"
+            android:layout_marginBottom="@dimen/dp_5"
+            app:src="@mipmap/icon_home"
+            app:text="首页"
+            app:textColor="@color/color_acacac"
+            app:textSize="@dimen/sp_12" />
+
+    </FrameLayout>
+
+    <FrameLayout
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1">
+
+        <com.techjumper.polyhomeb.widget.PolyTabView
+            android:id="@+id/tab_2"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_gravity="center"
+            android:layout_marginBottom="@dimen/dp_5"
+            app:src="@mipmap/icon_friend"
+            app:text="友邻"
+            app:textColor="@color/color_acacac"
+            app:textSize="@dimen/sp_12" />
+
+    </FrameLayout>
+
+    <FrameLayout
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1">
+
+        <com.techjumper.polyhomeb.widget.PolyTabView
+            android:id="@+id/tab_3"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_gravity="center"
+            android:layout_marginBottom="@dimen/dp_5"
+            app:src="@mipmap/icon_shopping"
+            app:text="商城"
+            app:textColor="@color/color_acacac"
+            app:textSize="@dimen/sp_12" />
+
+    </FrameLayout>
+
+</LinearLayout>

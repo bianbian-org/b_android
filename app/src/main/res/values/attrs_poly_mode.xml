@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <declare-styleable name="PolyMode">
+        <attr name="src" format="reference" />
+        <attr name="topRightIcon" format="reference" />
+        <attr name="text" format="string" />
+        <attr name="textSize" format="dimension" />
+        <attr name="textColor" format="color" />
+        <attr name="iconMarginTop" format="dimension" />
+        <attr name="textMarginTop" format="dimension" />
+    </declare-styleable>
+</resources>
