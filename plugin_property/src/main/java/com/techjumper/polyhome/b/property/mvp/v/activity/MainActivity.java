@@ -74,9 +74,9 @@ public class MainActivity extends AppBaseActivity<MainActivityPresenter> {
                             if (event.getType() == ANNOUNCEMENT) {
                                 // TODO: 16/5/13 拨打物业电话
                             } else if (event.getType() == REPAIR) {
-                                replaceFragment(R.id.container, ActionFragment.getInstance(ActionFragment.REPAIR));
+                                switchFragment(R.id.container, ActionFragment.getInstance(ActionFragment.REPAIR), false, false);
                             } else {
-                                replaceFragment(R.id.container, ActionFragment.getInstance(ActionFragment.COMPLAINT));
+                                switchFragment(R.id.container, ActionFragment.getInstance(ActionFragment.COMPLAINT), false, false);
                             }
                         }
                     }
