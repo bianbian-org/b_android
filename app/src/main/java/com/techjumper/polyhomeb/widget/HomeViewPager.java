@@ -30,8 +30,24 @@ public class HomeViewPager extends ViewPager {
     @Override
     public boolean onTouchEvent(MotionEvent ev) {
         if (!isCanScroll) {
-            return true;
+            return false;
         }
         return super.onTouchEvent(ev);
     }
+
+    /**
+     * 如果不重写,那么在点击切换VP的时候,用手去触摸VP,会导致VP的切换中止,界面上会显示两个Fragment,另外在这种情况下,还能手动一点一点的滑动VP
+     * @param ev
+     * @return
+     */
+    @Override
+    public boolean onInterceptTouchEvent(MotionEvent ev) {
+        if (!isCanScroll) {
+            return false;
+        }
+        return super.onInterceptTouchEvent(ev);
+    }
+
+
+
 }

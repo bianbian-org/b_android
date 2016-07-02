@@ -8,5 +8,7 @@
         <attr name="textColor" format="color" />
         <attr name="iconMarginTop" format="dimension" />
         <attr name="textMarginTop" format="dimension" />
+        <attr name="centerIconHeight" format="integer" />
+        <attr name="centerIconWidth" format="integer" />
     </declare-styleable>
 </resources>

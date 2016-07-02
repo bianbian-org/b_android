@@ -33,5 +33,24 @@
 
     <string name="done">完成</string>
 
+    <string name="property">物业</string>
+    <string name="toady">今天</string>
+    <string name="checkout">查看</string>
+    <string name="repair">维修</string>
+    <string name="complaint">投诉</string>
+    <string name="placard">公告</string>
+    <string name="payment">缴费</string>
+    <string name="jujia">聚家</string>
+    <string name="express">快递</string>
+    <string name="laundry">洗衣</string>
+    <string name="taxi">叫车</string>
+    <string name="more">更多</string>
+    <string name="polyhome">智能家居</string>
+    <string name="polyhome_hengwen">恒温模式</string>
+    <string name="polyhome_anfang">安防模式</string>
+    <string name="signature">签到</string>
+    <string name="signature_notice">每日签到  赢取Poly币</string>
+    <string name="medical">医疗</string>
+    <string name="medical_notice">体检报告及时查看</string>
 
 </resources>

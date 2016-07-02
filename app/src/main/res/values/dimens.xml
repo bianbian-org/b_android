@@ -44,6 +44,7 @@
 
     <!-- sp -->
     <dimen name="sp_12">12sp</dimen>
+    <dimen name="sp_13">13sp</dimen>
     <dimen name="sp_14">14sp</dimen>
     <dimen name="sp_16">16sp</dimen>
     <dimen name="sp_18">18sp</dimen>
@@ -58,6 +59,10 @@
     <dimen name="sp_55">55sp</dimen>
     <dimen name="sp_60">60sp</dimen>
     <dimen name="sp_70">70sp</dimen>
+    <dimen name="dp_54">54dp</dimen>
+    <dimen name="dp_214">214dp</dimen>
+    <dimen name="sp_11">11sp</dimen>
+    <dimen name="dp_4">4dp</dimen>
 
 
 </resources>

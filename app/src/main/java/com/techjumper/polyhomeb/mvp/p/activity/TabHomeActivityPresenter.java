@@ -44,7 +44,7 @@ public class TabHomeActivityPresenter extends AppBaseActivityPresenter<TabHomeAc
     @Override
     public void onTabClick(int index) {
         if (getView().getHomeViewPager().getCurrentItem() == index) return;
-        getView().getHomeViewPager().setCurrentItem(index);
+        getView().getHomeViewPager().setCurrentItem(index, false);
     }
 
     public void onBackPressed() {
