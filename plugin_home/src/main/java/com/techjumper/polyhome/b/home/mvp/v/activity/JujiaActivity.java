@@ -49,7 +49,7 @@ public class JujiaActivity extends AppBaseActivity<JujiaActivityPresenter> {
             }
         });
         webView.setWebViewClient(new webViewClient());
-        webView.loadUrl("http://www.ourjujia.com/");
+        webView.loadUrl("http://jujia.techjumper.com");
     }
 
     @Override

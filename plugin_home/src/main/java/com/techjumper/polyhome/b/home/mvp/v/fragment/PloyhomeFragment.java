@@ -1,13 +1,15 @@
 package com.techjumper.polyhome.b.home.mvp.v.fragment;
 
 
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.MediaController;
 import android.widget.TextView;
+import android.widget.VideoView;
 
 import com.techjumper.commonres.entity.NoticeEntity;
 import com.techjumper.commonres.entity.event.NoticeEvent;
@@ -15,6 +17,7 @@ import com.techjumper.corelib.mvp.factory.Presenter;
 import com.techjumper.corelib.rx.tools.RxBus;
 import com.techjumper.polyhome.b.home.R;
 import com.techjumper.polyhome.b.home.mvp.p.fragment.PloyhomeFragmentPresenter;
+import com.techjumper.polyhome.b.home.widget.MyVideoView;
 import com.techjumper.polyhome.b.home.widget.SquareView;
 
 import java.util.List;
@@ -22,7 +25,6 @@ import java.util.Timer;
 import java.util.TimerTask;
 
 import butterknife.Bind;
-import butterknife.ButterKnife;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -40,8 +42,10 @@ public class PloyhomeFragment extends AppBaseFragment<PloyhomeFragmentPresenter>
     TextView noticeTitle;
     @Bind(R.id.notice_content)
     TextView noticeContent;
-    @Bind(R.id.ad)
+    @Bind(R.id.image_ad)
     ImageView ad;
+    @Bind(R.id.video_ad)
+    MyVideoView video;
 
     private Timer timer = new Timer();
     private int position = 0;
@@ -66,6 +70,10 @@ public class PloyhomeFragment extends AppBaseFragment<PloyhomeFragmentPresenter>
         return ad;
     }
 
+    public MyVideoView getVideo() {
+        return video;
+    }
+
     public static PloyhomeFragment getInstance() {
         return new PloyhomeFragment();
     }
@@ -77,7 +85,6 @@ public class PloyhomeFragment extends AppBaseFragment<PloyhomeFragmentPresenter>
 
     @Override
     protected void initView(Bundle savedInstanceState) {
-
     }
 
     @Override

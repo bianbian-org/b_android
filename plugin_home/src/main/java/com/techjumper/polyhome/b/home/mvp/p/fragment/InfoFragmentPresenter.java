@@ -77,7 +77,7 @@ public class InfoFragmentPresenter extends AppBaseFragmentPresenter<InfoFragment
 
         postMedical();
 
-        AlarmManagerUtil.setTime(Utils.appContext, 0, new Random().nextInt(60));
+        AlarmManagerUtil.setTime(Utils.appContext, 0, 30 + new Random().nextInt(30));
 
         RxBus.INSTANCE.asObservable()
                 .observeOn(AndroidSchedulers.mainThread())

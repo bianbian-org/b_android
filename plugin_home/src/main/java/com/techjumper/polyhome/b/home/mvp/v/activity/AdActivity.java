@@ -1,5 +1,6 @@
 package com.techjumper.polyhome.b.home.mvp.v.activity;
 
+import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
 import android.webkit.WebChromeClient;
@@ -7,11 +8,14 @@ import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.ImageView;
+import android.widget.MediaController;
 
 import com.techjumper.corelib.mvp.factory.Presenter;
 import com.techjumper.lib2.utils.PicassoHelper;
 import com.techjumper.polyhome.b.home.R;
 import com.techjumper.polyhome.b.home.mvp.p.activity.AdActivityPresenter;
+import com.techjumper.polyhome.b.home.mvp.p.fragment.PloyhomeFragmentPresenter;
+import com.techjumper.polyhome.b.home.widget.MyVideoView;
 import com.techjumper.polyhome_b.adlib.entity.AdEntity;
 
 import butterknife.Bind;
@@ -30,6 +34,10 @@ public class AdActivity extends AppBaseActivity<AdActivityPresenter> {
     ImageView img;
     @Bind(R.id.webview)
     WebView webView;
+    @Bind(R.id.video)
+    MyVideoView video;
+
+    private String adType;
 
     public WebView getWebView() {
         return webView;
@@ -43,6 +51,10 @@ public class AdActivity extends AppBaseActivity<AdActivityPresenter> {
         return adsEntity;
     }
 
+    public String getAdType() {
+        return adType;
+    }
+
     @Override
     protected View inflateView(Bundle savedInstanceState) {
         return inflate(R.layout.layout_ad);
@@ -52,32 +64,41 @@ public class AdActivity extends AppBaseActivity<AdActivityPresenter> {
     protected void initView(Bundle savedInstanceState) {
         if (getIntent() != null) {
             adsEntity = (AdEntity.AdsEntity) getIntent().getSerializableExtra(ADITEM);
+            adType = adsEntity.getMedia_type();
         }
 
-        PicassoHelper.load(adsEntity.getMedia_url()).into(img);
+        if (adType.equals(PloyhomeFragmentPresenter.IMAGE_AD_TYPE)) {
+            PicassoHelper.load(adsEntity.getMedia_url()).into(img);
 
-        WebSettings ws = webView.getSettings();
+            WebSettings ws = webView.getSettings();
 
-        ws.setJavaScriptEnabled(true);
-        ws.setLoadWithOverviewMode(true);
-        ws.setAppCacheEnabled(true);
-        ws.setLayoutAlgorithm(WebSettings.LayoutAlgorithm.NORMAL);
-        ws.setSupportZoom(true);
-        webView.setWebChromeClient(new WebChromeClient() {
-            @Override
-            public void onProgressChanged(WebView view, int newProgress) {
-                // TODO Auto-generated method stub
-                if (newProgress == 100) {
-                    // 网页加载完成
+            ws.setJavaScriptEnabled(true);
+            ws.setLoadWithOverviewMode(true);
+            ws.setAppCacheEnabled(true);
+            ws.setLayoutAlgorithm(WebSettings.LayoutAlgorithm.NORMAL);
+            ws.setSupportZoom(true);
+            webView.setWebChromeClient(new WebChromeClient() {
+                @Override
+                public void onProgressChanged(WebView view, int newProgress) {
+                    // TODO Auto-generated method stub
+                    if (newProgress == 100) {
+                        // 网页加载完成
 
-                } else {
-                    // 加载中
+                    } else {
+                        // 加载中
+
+                    }
 
                 }
-
-            }
-        });
-        webView.setWebViewClient(new webViewClient());
+            });
+            webView.setWebViewClient(new webViewClient());
+        } else if (adType.equals(PloyhomeFragmentPresenter.VIDEO_AD_TYPE)) {
+            img.setVisibility(View.GONE);
+            video.setVisibility(View.VISIBLE);
+            video.setVideoURI(Uri.parse(adsEntity.getMedia_url()));
+            video.start();
+            video.requestFocus();
+        }
     }
 
     @Override

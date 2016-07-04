@@ -1,18 +1,20 @@
 package com.techjumper.polyhome.b.home.mvp.p.fragment;
 
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
+import android.view.View;
+import android.view.Window;
+import android.view.WindowManager;
 import android.widget.ImageView;
+import android.widget.MediaController;
 
-import com.techjumper.commonres.PluginConstant;
 import com.techjumper.commonres.UserInfoEntity;
-import com.techjumper.commonres.entity.InfoEntity;
 import com.techjumper.commonres.entity.NoticeEntity;
 import com.techjumper.commonres.entity.WeatherEntity;
 import com.techjumper.commonres.entity.event.NoticeEvent;
-import com.techjumper.commonres.entity.event.PropertyActionEvent;
 import com.techjumper.commonres.entity.event.UserInfoEvent;
 import com.techjumper.commonres.entity.event.WeatherEvent;
 import com.techjumper.commonres.entity.event.pushevent.NoticePushEvent;
@@ -21,7 +23,6 @@ import com.techjumper.corelib.rx.tools.RxBus;
 import com.techjumper.corelib.utils.common.JLog;
 import com.techjumper.corelib.utils.window.ToastUtils;
 import com.techjumper.lib2.utils.PicassoHelper;
-import com.techjumper.plugincommunicateengine.PluginEngine;
 import com.techjumper.polyhome.b.home.R;
 import com.techjumper.polyhome.b.home.UserInfoManager;
 import com.techjumper.polyhome.b.home.mvp.m.PloyhomeFragmentModel;
@@ -31,12 +32,12 @@ import com.techjumper.polyhome.b.home.mvp.v.activity.ShoppingActivity;
 import com.techjumper.polyhome.b.home.mvp.v.fragment.PloyhomeFragment;
 import com.techjumper.polyhome.b.home.utils.DateUtil;
 import com.techjumper.polyhome.b.home.utils.StringUtil;
+import com.techjumper.polyhome.b.home.widget.MyVideoView;
 import com.techjumper.polyhome.b.home.widget.SquareView;
 import com.techjumper.polyhome_b.adlib.entity.AdEntity;
 import com.techjumper.polyhome_b.adlib.manager.AdController;
 
 import java.io.File;
-import java.util.List;
 
 import butterknife.OnClick;
 import rx.Subscriber;
@@ -46,12 +47,15 @@ import rx.android.schedulers.AndroidSchedulers;
  * Created by kevin on 16/4/28.
  */
 public class PloyhomeFragmentPresenter extends AppBaseFragmentPresenter<PloyhomeFragment> {
+    public static final String IMAGE_AD_TYPE = "1";
+    public static final String VIDEO_AD_TYPE = "2";
 
     private PloyhomeFragmentModel model = new PloyhomeFragmentModel(this);
     private int type = -1;
     private UserInfoEntity userInfoEntity;
     private AdController adController = new AdController();
     private AdEntity.AdsEntity mAdsEntity = new AdEntity.AdsEntity();
+    private String addType = IMAGE_AD_TYPE;
 
     @OnClick(R.id.property)
     void property() {
@@ -143,7 +147,7 @@ public class PloyhomeFragmentPresenter extends AppBaseFragmentPresenter<Ployhome
 
     @Override
     public void onViewInited(Bundle savedInstanceState) {
-//        getAd();
+        getAd();
 //        getNotices(367, "42abcd66b653086cc5805902c1a2134c746fea39");
 
         addSubscription(RxBus.INSTANCE.asObservable()
@@ -229,17 +233,37 @@ public class PloyhomeFragmentPresenter extends AppBaseFragmentPresenter<Ployhome
 
     private void getAd() {
         ImageView adImageView = getView().getAd();
-        adController.executeAdRule(AdController.TYPE_HOME, "438", "367", "407c0fcb1c5c9006096033bbc35e5771f7ddb78b", new AdController.IExecuteRule() {
+        MyVideoView video = getView().getVideo();
+
+        adController.executeAdRule(AdController.TYPE_HOME, "434", "362", "c64a22726ff4094180f302399859f708271ce078", new AdController.IExecuteRule() {
             //        adController.executeAdRule(AdController.TYPE_HOME, UserInfoManager.getFamilyId(), UserInfoManager.getUserId(), UserInfoManager.getTicket(), new AdController.IExecuteRule() {
             @Override
             public void onAdReceive(AdEntity.AdsEntity adsEntity, File file) {
                 JLog.d("有新的广告来啦. 本地广告路径:" + file + ", 详细信息: " + adsEntity);
-                if (file.exists()) {
-                    PicassoHelper.load(file)
-                            .into(adImageView);
-                } else {
-                    PicassoHelper.load(adsEntity.getMedia_url())
-                            .into(adImageView);
+                addType = adsEntity.getMedia_type();
+
+                if (addType.equals(IMAGE_AD_TYPE)) {
+                    adImageView.setVisibility(View.VISIBLE);
+                    video.setVisibility(View.INVISIBLE);
+                    if (file.exists()) {
+                        PicassoHelper.load(file)
+                                .into(adImageView);
+                    } else {
+                        PicassoHelper.load(adsEntity.getMedia_url())
+                                .into(adImageView);
+                    }
+                } else if (addType.equals(VIDEO_AD_TYPE)) {
+
+                    adImageView.setVisibility(View.INVISIBLE);
+                    video.setVisibility(View.VISIBLE);
+                    if (file.exists()) {
+                        video.setVideoPath(file.getAbsolutePath().toString());
+                    } else {
+                        video.setVideoURI(Uri.parse(adsEntity.getMedia_url()));
+                    }
+
+                    video.start();
+                    video.requestFocus();
                 }
 
                 mAdsEntity = adsEntity;

@@ -8,6 +8,7 @@ import android.widget.ImageView;
 
 import com.techjumper.lib2.utils.PicassoHelper;
 import com.techjumper.polyhome.b.home.R;
+import com.techjumper.polyhome.b.home.mvp.p.fragment.PloyhomeFragmentPresenter;
 import com.techjumper.polyhome.b.home.mvp.v.activity.AdActivity;
 import com.techjumper.polyhome_b.adlib.entity.AdEntity;
 
@@ -25,18 +26,19 @@ public class AdActivityPresenter extends AppBaseActivityPresenter<AdActivity> {
 
     @OnClick(R.id.img)
     void ad() {
+        if (getView().getAdType() == PloyhomeFragmentPresenter.IMAGE_AD_TYPE) {
+            AdEntity.AdsEntity adsEntity = getView().getAdsEntity();
+            if (adsEntity == null || TextUtils.isEmpty(adsEntity.getUrl()))
+                return;
 
-        AdEntity.AdsEntity adsEntity = getView().getAdsEntity();
-        if (adsEntity == null || TextUtils.isEmpty(adsEntity.getUrl()))
-            return;
+            ImageView imageView = getView().getImg();
+            WebView webView = getView().getWebView();
 
-        ImageView imageView = getView().getImg();
-        WebView webView = getView().getWebView();
+            imageView.setVisibility(View.GONE);
+            webView.setVisibility(View.VISIBLE);
 
-        imageView.setVisibility(View.GONE);
-        webView.setVisibility(View.VISIBLE);
-
-        webView.loadUrl(adsEntity.getUrl());
+            webView.loadUrl(adsEntity.getUrl());
+        }
     }
 
     @Override
