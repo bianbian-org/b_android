@@ -4,6 +4,7 @@ import android.view.View;
 
 import com.steve.creact.annotation.DataBean;
 import com.steve.creact.library.viewholder.BaseRecyclerViewHolder;
+import com.techjumper.corelib.utils.window.ToastUtils;
 import com.techjumper.polyhomeb.R;
 import com.techjumper.polyhomeb.adapter.recycler_Data.PropertyData;
 
@@ -27,5 +28,9 @@ public class PropertyViewHolder extends BaseRecyclerViewHolder<PropertyData> {
         if (data == null)
             return;
         setText(R.id.tv_notice, data.getNotice());
+        setOnClickListener(R.id.btn_checkout_property, v -> {
+            ToastUtils.show("点击了物业的查看");
+        });
+        setOnClickListener(R.id.repair, v -> ToastUtils.show("点击了维修"));
     }
 }

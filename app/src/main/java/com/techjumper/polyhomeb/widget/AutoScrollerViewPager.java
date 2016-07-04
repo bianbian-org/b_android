@@ -25,7 +25,7 @@ public class AutoScrollerViewPager extends ViewPager {
     /**
      * 图片自动切换时间
      */
-    private static int PHOTO_CHANGE_TIME = 2000;
+    private static int PHOTO_CHANGE_TIME = 4000;
     /**
      * 公吿的数目
      */
@@ -33,7 +33,7 @@ public class AutoScrollerViewPager extends ViewPager {
     /**
      * ViewPager的Scroller
      */
-    private MyScroller myScroller;
+    private CustomScroller myScroller;
     /**
      * 是否能滑动
      */
@@ -74,7 +74,7 @@ public class AutoScrollerViewPager extends ViewPager {
         try {
             Field field = ViewPager.class.getDeclaredField("mScroller");
             field.setAccessible(true);
-            myScroller = new MyScroller(getContext());
+            myScroller = new CustomScroller(getContext());
             myScroller.setDuration(1000);
             field.set(this, myScroller);
         } catch (NoSuchFieldException | IllegalAccessException ignored) {
@@ -145,10 +145,10 @@ public class AutoScrollerViewPager extends ViewPager {
     /**
      * 自定义Scroller,滑动切换的时间快慢可以控制
      */
-    private class MyScroller extends Scroller {
+    private class CustomScroller extends Scroller {
         private int duration;
 
-        public MyScroller(Context context) {
+        public CustomScroller(Context context) {
             super(context);
         }
 

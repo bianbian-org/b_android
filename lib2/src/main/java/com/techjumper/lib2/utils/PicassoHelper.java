@@ -39,6 +39,11 @@ public class PicassoHelper {
         return createDefault(creator);
     }
 
+    public static RequestCreator loadWithNoFade(int resId) {
+        RequestCreator creator = mPicasso.load(resId).noFade();
+        return createDefault(creator);
+    }
+
     public static RequestCreator load(Uri uri) {
         RequestCreator creator = mPicasso.load(uri);
         return createDefault(creator);

@@ -54,7 +54,7 @@
             android:textSize="@dimen/sp_16" />
 
         <Button
-            android:id="@+id/tv_checkout_property"
+            android:id="@+id/btn_checkout_property"
             android:layout_width="@dimen/dp_54"
             android:layout_height="@dimen/dp_25"
             android:layout_alignParentRight="true"

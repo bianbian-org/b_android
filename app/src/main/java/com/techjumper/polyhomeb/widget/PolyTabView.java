@@ -12,7 +12,6 @@ import android.widget.TextView;
 
 import com.techjumper.corelib.utils.common.ResourceUtils;
 import com.techjumper.corelib.utils.common.RuleUtils;
-import com.techjumper.lib2.utils.PicassoHelper;
 import com.techjumper.lightwidget.ratio.RatioFrameLayout;
 import com.techjumper.polyhomeb.R;
 
@@ -106,7 +105,8 @@ public class PolyTabView extends RatioFrameLayout {
 
     public void setIcon(int resId) {
         if (resId > 0)
-            PicassoHelper.load(resId).into(mIvIcon);
+//            PicassoHelper.loadWithNoFade(resId).into(mIvIcon);
+            mIvIcon.setImageResource(resId);
         else mIvIcon.setImageBitmap(null);
     }
 
