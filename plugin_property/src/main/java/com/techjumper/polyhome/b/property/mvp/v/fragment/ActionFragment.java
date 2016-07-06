@@ -1,17 +1,11 @@
 package com.techjumper.polyhome.b.property.mvp.v.fragment;
 
 
-import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.text.Editable;
-import android.text.TextWatcher;
-import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.inputmethod.EditorInfo;
-import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -24,6 +18,7 @@ import com.techjumper.corelib.rx.tools.RxBus;
 import com.techjumper.corelib.utils.common.RuleUtils;
 import com.techjumper.polyhome.b.property.Constant;
 import com.techjumper.polyhome.b.property.R;
+import com.techjumper.polyhome.b.property.UserInfoManager;
 import com.techjumper.polyhome.b.property.mvp.p.fragment.ActionFragmentPresenter;
 
 import java.util.Arrays;
@@ -58,6 +53,10 @@ public class ActionFragment extends AppBaseFragment<ActionFragmentPresenter> {
     EditText lcContent;
     @Bind(R.id.lr_content)
     EditText lrContent;
+    @Bind(R.id.lr_mobile)
+    EditText lrMobile;
+    @Bind(R.id.lc_mobile)
+    EditText lcMobile;
 
     private int lcType = Constant.LC_PRA;
 
@@ -94,6 +93,14 @@ public class ActionFragment extends AppBaseFragment<ActionFragmentPresenter> {
 
     public int getLcType() {
         return lcType;
+    }
+
+    public EditText getLcMobile() {
+        return lcMobile;
+    }
+
+    public EditText getLrMobile() {
+        return lrMobile;
     }
 
     public static ActionFragment getInstance(int type) {
@@ -203,8 +210,8 @@ public class ActionFragment extends AppBaseFragment<ActionFragmentPresenter> {
 
             }
         });
-
-//        ∂
+        lcMobile.setText(UserInfoManager.getMobile());
+        lrMobile.setText(UserInfoManager.getMobile());
     }
 
     private WheelCurvedPicker initWheelPicker(WheelCurvedPicker wheelCurvedPicker, List<String> names) {

@@ -394,12 +394,21 @@ public class ListFragment extends AppBaseFragment<ListFragmentPresenter> {
     }
 
     public void sendSuccess() {
+
         ReplyEntity entity = new ReplyEntity();
         entity.setContent(lmdMessageContent.getText().toString());
         entity.setTime(CommonDateUtil.getTime());
         InfoReplyRightEntityBean bean = new InfoReplyRightEntityBean(entity);
 
-        messageAdapter.insertData(0, bean);
+        List<DisplayBean> displayBeans = new ArrayList<>();
+
+        if (messageAdapter.getItemCount() == 0) {
+            displayBeans.add(bean);
+            messageAdapter.loadData(displayBeans);
+            lmdList.setAdapter(messageAdapter);
+        } else {
+            messageAdapter.insertData(0, bean);
+        }
 
         lmdMessageContent.setText("");
 

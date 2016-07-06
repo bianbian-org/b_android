@@ -25,6 +25,7 @@
 
     <string name="property_complaint_theme">主题</string>
     <string name="property_complaint_content">内容</string>
+    <string name="property_complaint_mobile">电话</string>
 
     <string name="property_repair_type">报修类型</string>
     <string name="property_repair_device">报修设备</string>

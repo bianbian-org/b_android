@@ -21,13 +21,13 @@
             android:id="@+id/lr_type_wheelpicker"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="@dimen/dp_22"/>
+            android:layout_marginLeft="@dimen/dp_22" />
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/property_repair_device"
             android:layout_marginLeft="@dimen/dp_45"
+            android:text="@string/property_repair_device"
             android:textColor="@color/color_4Dffffff"
             android:textSize="@dimen/sp_16" />
 
@@ -35,7 +35,7 @@
             android:id="@+id/lr_device_wheelpicker"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="@dimen/dp_22"/>
+            android:layout_marginLeft="@dimen/dp_22" />
     </LinearLayout>
 
     <LinearLayout
@@ -56,21 +56,51 @@
             android:layout_width="@dimen/dp_344"
             android:layout_height="@dimen/dp_121"
             android:layout_marginLeft="@dimen/dp_22"
+            android:background="@color/color_99020405"
+            android:gravity="top"
             android:paddingLeft="@dimen/dp_5"
             android:paddingRight="@dimen/dp_5"
-            android:gravity="top"
-            android:textCursorDrawable="@null"
             android:textColor="@color/color_ffffff"
-            android:background="@color/color_99020405"/>
+            android:textCursorDrawable="@null" />
+
     </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/dp_30">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:paddingTop="@dimen/dp_10"
+            android:text="@string/property_complaint_mobile"
+            android:textColor="@color/color_4Dffffff"
+            android:textSize="@dimen/sp_16" />
+
+        <EditText
+            android:id="@+id/lr_mobile"
+            android:layout_width="@dimen/dp_260"
+            android:layout_height="@dimen/dp_40"
+            android:layout_centerHorizontal="true"
+            android:layout_marginLeft="@dimen/dp_22"
+            android:background="@color/color_99020405"
+            android:inputType="number"
+            android:maxLines="1"
+            android:paddingLeft="@dimen/dp_16"
+            android:paddingRight="@dimen/dp_16"
+            android:textColor="@color/color_ffffff" />
+
+    </LinearLayout>
+
 
     <TextView
         android:id="@+id/lr_submit"
         android:layout_width="@dimen/dp_109"
         android:layout_height="@dimen/dp_40"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="@dimen/dp_30"
         android:layout_marginLeft="@dimen/dp_55"
+        android:layout_marginTop="@dimen/dp_30"
         android:background="@color/color_14ce63"
         android:gravity="center"
         android:text="@string/property_submit"

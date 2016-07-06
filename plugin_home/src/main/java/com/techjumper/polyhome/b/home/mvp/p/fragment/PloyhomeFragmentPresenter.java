@@ -76,8 +76,8 @@ public class PloyhomeFragmentPresenter extends AppBaseFragmentPresenter<Ployhome
 
     @OnClick(R.id.notice_layout)
     void noticeLayout() {
-        if (type == -1)
-            return;
+//        if (type == -1)
+//            return;
 
         // TODO: 16/7/5 临时弹出
         ToastUtils.show("信息 ticket: " + UserInfoManager.getTicket() + "  userId: " + UserInfoManager.getUserId() + "  familyId: " + UserInfoManager.getFamilyId());
@@ -269,7 +269,8 @@ public class PloyhomeFragmentPresenter extends AppBaseFragmentPresenter<Ployhome
         adController.startPolling(new AdController.IAlarm() {
             @Override
             public void onAlarmReceive() {
-//                adController.executeAdRule(AdController.TYPE_HOME, "434", "362", "71d3b656e6b0350dfa5956e963be39c04ebca87a", new AdController.IExecuteRule() {
+                JLog.d("广告进来了么" + UserInfoManager.getFamilyId() + "  " +UserInfoManager.getUserId()+ "  " + UserInfoManager.getTicket());
+//                adController.executeAdRule(AdController.TYPE_HOME, "434", "362", "25a67e729ddd76f7112035c50bf0432fb1347c1b", new AdController.IExecuteRule() {
                 adController.executeAdRule(AdController.TYPE_HOME, UserInfoManager.getFamilyId(), UserInfoManager.getUserId(), UserInfoManager.getTicket(), new AdController.IExecuteRule() {
                     @Override
                     public void onAdReceive(AdEntity.AdsEntity adsEntity, File file) {

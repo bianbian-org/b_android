@@ -15,6 +15,7 @@ public enum UserInfoManager {
     public static final String KEY_FAMILY_NAME = "key_family_name";
     public static final String KEY_TICKET = "key_ticket";
     public static final String KEY_HAS_BINDING = "key_has_binding";
+    public static final String KEY_MOBILE = "key_mobile";
 
     /**
      * 保存用户
@@ -54,5 +55,13 @@ public enum UserInfoManager {
      */
     public static String getTicket() {
         return PreferenceUtils.get(KEY_TICKET, "");
+    }
+
+    public static void saveMobile(String mobile) {
+        PreferenceUtils.save(KEY_MOBILE, mobile);
+    }
+
+    public static String getMobile() {
+        return PreferenceUtils.get(KEY_MOBILE, "");
     }
 }

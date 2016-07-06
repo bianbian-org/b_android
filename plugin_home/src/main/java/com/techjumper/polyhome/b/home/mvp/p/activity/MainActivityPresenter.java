@@ -128,32 +128,35 @@ public class MainActivityPresenter extends AppBaseActivityPresenter<MainActivity
                     return;
 
                 Log.d("pluginUserInfo", "name: " + saveInfoEntity.getData().getName());
+                Log.d("pluginUserInfo", "ComConstant: " + ComConstant.FILE_FAMILY_REGISTER);
                 HashMap<String, String> hashMap = saveInfoEntity.getData().getValues();
                 if (hashMap == null || hashMap.size() == 0)
                     return;
 
-                UserInfoEntity userInfoEntity = new UserInfoEntity();
+                if (saveInfoEntity.getData().getName().equals(ComConstant.FILE_FAMILY_REGISTER)) {
+                    UserInfoEntity userInfoEntity = new UserInfoEntity();
 
-                for (Map.Entry<String, String> entry : hashMap.entrySet()) {
-                    Log.d("pluginUserInfo", entry.getValue());
-                    String key = entry.getKey();
-                    String value = entry.getValue();
-                    if (key.equals("id")) {
-                        userInfoEntity.setId(Long.parseLong(value));
-                    } else if (key.equals("family_name")) {
-                        userInfoEntity.setFamily_name(value);
-                    } else if (key.equals("user_id")) {
-                        userInfoEntity.setUser_id(Long.parseLong(value));
-                    } else if (key.equals("ticket")) {
-                        userInfoEntity.setTicket(value);
-                    } else if (key.equals("has_binding")) {
-                        userInfoEntity.setHas_binding(Integer.parseInt(value));
+                    for (Map.Entry<String, String> entry : hashMap.entrySet()) {
+                        Log.d("pluginUserInfo", entry.getValue());
+                        String key = entry.getKey();
+                        String value = entry.getValue();
+                        if (key.equals("id")) {
+                            userInfoEntity.setId(Long.parseLong(value));
+                        } else if (key.equals("family_name")) {
+                            userInfoEntity.setFamily_name(value);
+                        } else if (key.equals("user_id")) {
+                            userInfoEntity.setUser_id(Long.parseLong(value));
+                        } else if (key.equals("ticket")) {
+                            userInfoEntity.setTicket(value);
+                        } else if (key.equals("has_binding")) {
+                            userInfoEntity.setHas_binding(Integer.parseInt(value));
+                        }
                     }
+
+                    UserInfoManager.saveUserInfo(userInfoEntity);
+
+                    RxBus.INSTANCE.send(new UserInfoEvent(userInfoEntity));
                 }
-
-                UserInfoManager.saveUserInfo(userInfoEntity);
-
-                RxBus.INSTANCE.send(new UserInfoEvent(userInfoEntity));
                 Log.d("pluginUserInfo", "更新完毕用户信息...");
             } else if (code == PluginEngine.CODE_SAVE_INFO) {
                 Log.d("pluginUserInfo", "用户设置保存文件名为: " + (TextUtils.isEmpty(message) ? "没有文件" : message));

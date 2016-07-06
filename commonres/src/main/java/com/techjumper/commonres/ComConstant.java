@@ -14,4 +14,8 @@ public class ComConstant {
 
     //每一页请求多少
     public static final String PAGESIZE = "10";
+
+
+    //保存本地数据的文件名
+    public static final String FILE_FAMILY_REGISTER = "poly_b_family_register";
 }

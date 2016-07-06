@@ -55,9 +55,9 @@ public class MainActivity extends AppBaseActivity<MainActivityPresenter> {
             UserInfoManager.saveUserInfo(userInfoEntity);
         }
 //        UserInfoEntity userInfoEntity = new UserInfoEntity();
-//        userInfoEntity.setId(449);
-//        userInfoEntity.setUser_id(381);
-//        userInfoEntity.setTicket("8f8ed3ac913d8e334a204ec0ff1cece81657c5fb");
+//        userInfoEntity.setUser_id(362);
+//        userInfoEntity.setTicket("6b835c66bd6fa1bb52158349834b6f792bf89c66");
+//        userInfoEntity.setId(434);
 //        UserInfoManager.saveUserInfo(userInfoEntity);
 
         switchFragment(R.id.container, ListFragment.getInstance(MainActivity.REPAIR), false, false);
@@ -69,14 +69,14 @@ public class MainActivity extends AppBaseActivity<MainActivityPresenter> {
                         PropertyActionEvent event = (PropertyActionEvent) o;
                         if (event.isAction() == false) {
                             int listType = event.getListType();
-                            switchFragment(R.id.container, ListFragment.getInstance(listType), false, false);
+                            replaceFragment(R.id.container, ListFragment.getInstance(listType));
                         } else {
                             if (event.getType() == ANNOUNCEMENT) {
                                 // TODO: 16/5/13 拨打物业电话
                             } else if (event.getType() == REPAIR) {
-                                switchFragment(R.id.container, ActionFragment.getInstance(ActionFragment.REPAIR), false, false);
+                                replaceFragment(R.id.container, ActionFragment.getInstance(ActionFragment.REPAIR));
                             } else {
-                                switchFragment(R.id.container, ActionFragment.getInstance(ActionFragment.COMPLAINT), false, false);
+                                replaceFragment(R.id.container, ActionFragment.getInstance(ActionFragment.COMPLAINT));
                             }
                         }
                     }

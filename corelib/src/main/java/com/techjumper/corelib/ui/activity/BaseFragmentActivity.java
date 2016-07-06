@@ -149,13 +149,13 @@ public abstract class BaseFragmentActivity<P extends IBaseActivityPresenter> ext
         ft.commitAllowingStateLoss();
     }
 
-//    protected void replaceFragment(int containerId, BaseFragment fragment) {
-//        addNewFragmentToSet(fragment);
-//        setCurrFragmentTag(containerId, fragment);
-//        mNoStackFragmentTag = getFragmentSignature(fragment);
-//        getSupportFragmentManager().beginTransaction().replace(containerId, fragment).commitAllowingStateLoss();
-//    }
-//
+    protected void replaceFragment(int containerId, BaseFragment fragment) {
+        addNewFragmentToSet(fragment);
+        setCurrFragmentTag(containerId, fragment);
+        mNoStackFragmentTag = getFragmentSignature(fragment);
+        getSupportFragmentManager().beginTransaction().replace(containerId, fragment).commitAllowingStateLoss();
+    }
+
 
     @SuppressLint("CommitTransaction")
     private void showOrAddFragmentNoCommit(FragmentManager fManager, FragmentTransaction ft
