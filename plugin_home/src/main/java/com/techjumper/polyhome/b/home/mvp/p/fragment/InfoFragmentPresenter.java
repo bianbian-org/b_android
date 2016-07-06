@@ -65,6 +65,7 @@ public class InfoFragmentPresenter extends AppBaseFragmentPresenter<InfoFragment
                         if (event != null && event.getEntity() != null) {
                             Log.d("pluginUserInfo", "更新天气信息");
                             getWeatherInfo();
+                            getCalendarInfo();
                         }
                     }
                 });

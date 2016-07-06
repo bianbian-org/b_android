@@ -56,16 +56,21 @@ public class PloyhomeFragmentPresenter extends AppBaseFragmentPresenter<Ployhome
     private AdController adController = new AdController();
     private AdEntity.AdsEntity mAdsEntity = new AdEntity.AdsEntity();
     private String addType = IMAGE_AD_TYPE;
+    private int videoPosition = 0;
+    private MyVideoView video;
 
     @OnClick(R.id.property)
     void property() {
+        // TODO: 16/7/5 临时弹出
+        ToastUtils.show("物业 ticket: " + UserInfoManager.getTicket() + "  userId: " + UserInfoManager.getUserId() + "  familyId: " + UserInfoManager.getFamilyId());
+
         if (UserInfoManager.isLogin()) {
             long familyId = UserInfoManager.getLongFamilyId();
             long userId = UserInfoManager.getLongUserId();
             String ticket = UserInfoManager.getTicket();
             PluginEngineUtil.startProperty(familyId, userId, ticket);
         } else {
-            ToastUtils.show(getView().getString(R.string.error_no_login));
+//            ToastUtils.show(getView().getString(R.string.error_no_login));
         }
     }
 
@@ -74,18 +79,24 @@ public class PloyhomeFragmentPresenter extends AppBaseFragmentPresenter<Ployhome
         if (type == -1)
             return;
 
+        // TODO: 16/7/5 临时弹出
+        ToastUtils.show("信息 ticket: " + UserInfoManager.getTicket() + "  userId: " + UserInfoManager.getUserId() + "  familyId: " + UserInfoManager.getFamilyId());
+
         if (UserInfoManager.isLogin()) {
             long userId = UserInfoManager.getLongUserId();
             long familyId = UserInfoManager.getLongFamilyId();
             String ticket = UserInfoManager.getTicket();
             PluginEngineUtil.startInfo(userId, familyId, ticket, type);
         } else {
-            ToastUtils.show(getView().getString(R.string.error_no_login));
+//            ToastUtils.show(getView().getString(R.string.error_no_login));
         }
     }
 
     @OnClick(R.id.ad)
     void ad() {
+        if (TextUtils.isEmpty(mAdsEntity.getMedia_type()))
+            return;
+
         Intent intent = new Intent(getView().getActivity(), AdActivity.class);
         intent.putExtra(AdActivity.ADITEM, mAdsEntity);
         getView().getActivity().startActivity(intent);
@@ -93,8 +104,11 @@ public class PloyhomeFragmentPresenter extends AppBaseFragmentPresenter<Ployhome
 
     @OnClick(R.id.shopping)
     void shopping() {
+        // TODO: 16/7/5 临时弹出
+        ToastUtils.show("商城  ticket: " + UserInfoManager.getTicket() + " userId: " + UserInfoManager.getUserId());
+
         if (TextUtils.isEmpty(UserInfoManager.getTicket()) || TextUtils.isEmpty(UserInfoManager.getUserId())) {
-            ToastUtils.show(getView().getString(R.string.error_no_login));
+//            ToastUtils.show(getView().getString(R.string.error_no_login));
         } else {
             Intent intent = new Intent(getView().getActivity(), ShoppingActivity.class);
             getView().startActivity(intent);
@@ -147,7 +161,7 @@ public class PloyhomeFragmentPresenter extends AppBaseFragmentPresenter<Ployhome
 
     @Override
     public void onViewInited(Bundle savedInstanceState) {
-        getAd();
+//        getAd();
 //        getNotices(367, "42abcd66b653086cc5805902c1a2134c746fea39");
 
         addSubscription(RxBus.INSTANCE.asObservable()
@@ -206,6 +220,24 @@ public class PloyhomeFragmentPresenter extends AppBaseFragmentPresenter<Ployhome
                 }));
     }
 
+    @Override
+    public void onPause() {
+        super.onPause();
+        if (video != null) {
+            video.pause();
+            videoPosition = video.getCurrentPosition();
+        }
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        if (video != null) {
+            video.seekTo(videoPosition);
+            video.start();
+        }
+    }
+
     private String getRestrictNo(String date, WeatherEntity.Restrict restrict) {
         String restrictNo = "";
 
@@ -233,60 +265,69 @@ public class PloyhomeFragmentPresenter extends AppBaseFragmentPresenter<Ployhome
 
     private void getAd() {
         ImageView adImageView = getView().getAd();
-        MyVideoView video = getView().getVideo();
-
-        adController.executeAdRule(AdController.TYPE_HOME, "434", "362", "c64a22726ff4094180f302399859f708271ce078", new AdController.IExecuteRule() {
-            //        adController.executeAdRule(AdController.TYPE_HOME, UserInfoManager.getFamilyId(), UserInfoManager.getUserId(), UserInfoManager.getTicket(), new AdController.IExecuteRule() {
+        video = getView().getVideo();
+        adController.startPolling(new AdController.IAlarm() {
             @Override
-            public void onAdReceive(AdEntity.AdsEntity adsEntity, File file) {
-                JLog.d("有新的广告来啦. 本地广告路径:" + file + ", 详细信息: " + adsEntity);
-                addType = adsEntity.getMedia_type();
+            public void onAlarmReceive() {
+//                adController.executeAdRule(AdController.TYPE_HOME, "434", "362", "71d3b656e6b0350dfa5956e963be39c04ebca87a", new AdController.IExecuteRule() {
+                adController.executeAdRule(AdController.TYPE_HOME, UserInfoManager.getFamilyId(), UserInfoManager.getUserId(), UserInfoManager.getTicket(), new AdController.IExecuteRule() {
+                    @Override
+                    public void onAdReceive(AdEntity.AdsEntity adsEntity, File file) {
+                        JLog.d("有新的广告来啦. 本地广告路径:" + file + ", 详细信息: " + adsEntity);
+                        addType = adsEntity.getMedia_type();
 
-                if (addType.equals(IMAGE_AD_TYPE)) {
-                    adImageView.setVisibility(View.VISIBLE);
-                    video.setVisibility(View.INVISIBLE);
-                    if (file.exists()) {
-                        PicassoHelper.load(file)
-                                .into(adImageView);
-                    } else {
-                        PicassoHelper.load(adsEntity.getMedia_url())
-                                .into(adImageView);
+                        if (addType.equals(IMAGE_AD_TYPE)) {
+                            adImageView.setVisibility(View.VISIBLE);
+                            video.setVisibility(View.INVISIBLE);
+
+                            if (file.exists()) {
+                                PicassoHelper.load(file)
+                                        .into(adImageView);
+                            } else {
+                                PicassoHelper.load(adsEntity.getMedia_url())
+                                        .into(adImageView);
+                            }
+
+                            adsEntity.setMedia_url(file.getAbsolutePath().toString());
+                        } else if (addType.equals(VIDEO_AD_TYPE)) {
+
+                            adImageView.setVisibility(View.INVISIBLE);
+                            video.setVisibility(View.VISIBLE);
+                            if (file.exists()) {
+                                video.setVideoPath(file.getAbsolutePath().toString());
+                            } else {
+                                video.setVideoURI(Uri.parse(adsEntity.getMedia_url()));
+                            }
+
+                            video.start();
+                            video.requestFocus();
+
+                            adsEntity.setMedia_url(file.getAbsolutePath().toString());
+                        }
+
+                        mAdsEntity = adsEntity;
                     }
-                } else if (addType.equals(VIDEO_AD_TYPE)) {
 
-                    adImageView.setVisibility(View.INVISIBLE);
-                    video.setVisibility(View.VISIBLE);
-                    if (file.exists()) {
-                        video.setVideoPath(file.getAbsolutePath().toString());
-                    } else {
-                        video.setVideoURI(Uri.parse(adsEntity.getMedia_url()));
+                    @Override
+                    public void onAdPlayFinished() {
+                        JLog.d("广告播放完成  (有可能是上一次的任务被自动中断，不影响本次广告执行)");
                     }
 
-                    video.start();
-                    video.requestFocus();
-                }
+                    @Override
+                    public void onAdDownloadError(AdEntity.AdsEntity adsEntity) {
+                        JLog.d("某个广告下载失败: " + adsEntity);
+                    }
 
-                mAdsEntity = adsEntity;
-            }
+                    @Override
+                    public void onAdExecuteFailed(String reason) {
+                        JLog.d("获取广告失败: " + reason);
+                    }
 
-            @Override
-            public void onAdPlayFinished() {
-                JLog.d("广告播放完成  (有可能是上一次的任务被自动中断，不影响本次广告执行)");
-            }
-
-            @Override
-            public void onAdDownloadError(AdEntity.AdsEntity adsEntity) {
-                JLog.d("某个广告下载失败: " + adsEntity);
-            }
-
-            @Override
-            public void onAdExecuteFailed(String reason) {
-                JLog.d("获取广告失败: " + reason);
-            }
-
-            @Override
-            public void onAdNoExist(String adType, String hour) {
-                JLog.d("没有广告: 广告类型=" + adType + ", 当前小时=" + hour);
+                    @Override
+                    public void onAdNoExist(String adType, String hour) {
+                        JLog.d("没有广告: 广告类型=" + adType + ", 当前小时=" + hour);
+                    }
+                });
             }
         });
     }

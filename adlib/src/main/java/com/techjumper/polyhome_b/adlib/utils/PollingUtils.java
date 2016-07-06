@@ -29,6 +29,11 @@ public class PollingUtils {
 
     public static void startPollingService(Context context, long triggerAtTime, long second
             , Class<?> cls, String action, int requestCode) {
+        startPollingService(context, triggerAtTime, second, cls, action, true, requestCode);
+    }
+
+    public static void startPollingService(Context context, long triggerAtTime, long second
+            , Class<?> cls, String action, boolean wakeUp, int requestCode) {
         JLog.d("启动了一个定时任务; 触发时间=" + triggerAtTime + ", 间隔:" + second + ", action=" + action);
         AlarmManager manager = (AlarmManager) context
                 .getSystemService(Context.ALARM_SERVICE);
@@ -36,7 +41,8 @@ public class PollingUtils {
         intent.setAction(action);
         PendingIntent pendingIntent = PendingIntent.getService(context, requestCode,
                 intent, PendingIntent.FLAG_UPDATE_CURRENT);
-        manager.setRepeating(AlarmManager.RTC_WAKEUP, triggerAtTime,
+        int type = wakeUp ? AlarmManager.RTC_WAKEUP : AlarmManager.RTC;
+        manager.setRepeating(type, triggerAtTime,
                 second * 1000, pendingIntent);
     }
 

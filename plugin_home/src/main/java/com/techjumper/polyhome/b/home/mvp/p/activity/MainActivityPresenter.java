@@ -109,14 +109,12 @@ public class MainActivityPresenter extends AppBaseActivityPresenter<MainActivity
                     }
                 });
 
-
 //        UserInfoEntity userInfoEntity2 = new UserInfoEntity();
 //        userInfoEntity2.setId(438);
 //        userInfoEntity2.setUser_id(367);
 //        userInfoEntity2.setTicket("0f9859826eeeed6d421c0a0982ee5b08b6c41809");
 //        UserInfoManager.saveUserInfo(userInfoEntity2);
 //        RxBus.INSTANCE.send(new UserInfoEvent(userInfoEntity2));
-
 
 //        if (!TextUtils.isEmpty(InfoManager.getUserInfoFile())) {
 //            PluginEngineUtil.initUserInfo(InfoManager.getUserInfoFile());

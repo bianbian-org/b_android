@@ -54,15 +54,15 @@
             <com.techjumper.polyhome.b.home.widget.MyVideoView
                 android:id="@+id/video_ad"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent" />
+                android:layout_height="match_parent"
+                android:visibility="invisible" />
 
             <ImageView
                 android:id="@+id/image_ad"
                 android:layout_width="@dimen/dp_500"
                 android:layout_height="@dimen/dp_330"
                 android:scaleType="centerCrop"
-                android:src="@mipmap/bg_ad"
-                android:visibility="invisible" />
+                android:src="@mipmap/bg_ad" />
         </FrameLayout>
 
 

@@ -13,6 +13,8 @@
 
         <service android:name=".services.WakeupAdService"
             />
+        <service android:name=".services.AlarmService"
+            />
 
     </application>
 

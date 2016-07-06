@@ -18,6 +18,8 @@ import com.techjumper.polyhome.b.home.mvp.p.fragment.PloyhomeFragmentPresenter;
 import com.techjumper.polyhome.b.home.widget.MyVideoView;
 import com.techjumper.polyhome_b.adlib.entity.AdEntity;
 
+import java.io.File;
+
 import butterknife.Bind;
 import butterknife.ButterKnife;
 
@@ -68,7 +70,10 @@ public class AdActivity extends AppBaseActivity<AdActivityPresenter> {
         }
 
         if (adType.equals(PloyhomeFragmentPresenter.IMAGE_AD_TYPE)) {
-            PicassoHelper.load(adsEntity.getMedia_url()).into(img);
+
+            PicassoHelper.load(new File(adsEntity.getMedia_url()))
+                    .into(img);
+//            PicassoHelper.load(adsEntity.getMedia_url()).into(img);
 
             WebSettings ws = webView.getSettings();
 

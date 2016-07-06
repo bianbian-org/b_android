@@ -21,6 +21,7 @@ import com.techjumper.polyhome_b.adlib.R;
 import com.techjumper.polyhome_b.adlib.download.AdDownloadManager;
 import com.techjumper.polyhome_b.adlib.entity.AdEntity;
 import com.techjumper.polyhome_b.adlib.net.RetrofitTemplate;
+import com.techjumper.polyhome_b.adlib.services.AlarmService;
 import com.techjumper.polyhome_b.adlib.services.WakeupAdService;
 import com.techjumper.polyhome_b.adlib.utils.PollingUtils;
 
@@ -49,6 +50,7 @@ public class AdController {
     private static AdController INSTANCE;
 
     public static final int CODE_WAKEUP_ALARM = 99; //唤醒广告服务的requestCode;
+    public static final int CODE_ALARM_SERVICE = 100;
 
     public static final String TYPE_HOME = "1001"; //'室内机 - 首页'
     public static final String TYPE_VIDEO = "1002";  //室内机 - 视频通话
@@ -65,9 +67,11 @@ public class AdController {
 
     private IWakeUp iWakeUP;
     private ScreenOffReceiver mScreenOffReceiver;
+    private Subscription mWakeUpSubs;
     private Subscription mAlarmSubs;
 
     private int mLockTime;
+    private IAlarm iAlarm;
 
     public AdController() {
         mLockTime = getScreenOffTime();
@@ -80,18 +84,17 @@ public class AdController {
     public void startWakeUpTimer(IWakeUp iWakeUp) {
         this.iWakeUP = iWakeUp;
         stopWakeUpTimer();
-        mAlarmSubs = RxBus.INSTANCE.asObservable()
+        mWakeUpSubs = RxBus.INSTANCE.asObservable()
                 .subscribe(o -> {
                     if (!(o instanceof WakeupAdService.WakeupAdEvent))
                         return;
-                    if (iWakeUP != null) {
-                        iWakeUP.onWakeUpAdExecute();
+                    if (this.iWakeUP != null) {
+                        this.iWakeUP.onWakeUpAdExecute();
                     }
-
                 });
         //            Calendar c = Calendar.getInstance();
 //            long oneHourLater = System.currentTimeMillis() + 1000L * 60 * 60;
-        long oneHourLater = System.currentTimeMillis() + 1000L * 10;
+        long oneHourLater = getInterval();
 //            c.setTimeInMillis(oneHourLater);
 //            c.setTimeZone(TimeZone.getTimeZone("GMT+8"));
 //            c.set(Calendar.MINUTE, 0);
@@ -105,9 +108,49 @@ public class AdController {
     }
 
     public void stopWakeUpTimer() {
-        RxUtils.unsubscribeIfNotNull(mAlarmSubs);
+        RxUtils.unsubscribeIfNotNull(mWakeUpSubs);
         PollingUtils.stopPollingService(Utils.appContext
                 , WakeupAdService.class, "", CODE_WAKEUP_ALARM);
+        iWakeUP = null;
+    }
+
+
+    public void startPolling(IAlarm iAlarm) {
+        this.iAlarm = iAlarm;
+        mAlarmSubs = RxBus.INSTANCE.asObservable()
+                .subscribe(o -> {
+                    if (!(o instanceof AlarmService.AlarmServiceEvent))
+                        return;
+                    if (this.iAlarm != null) {
+                        this.iAlarm.onAlarmReceive();
+                    }
+                });
+        long timeMillis = getInterval();
+
+//            PollingUtils.startPollingService(Utils.appContext
+//                    , c.getTimeInMillis(), 60 * 60L, WakeupAdService.class, "", CODE_WAKEUP_ALARM);
+        PollingUtils.startPollingService(Utils.appContext
+                , timeMillis, 30L, AlarmService.class, "", CODE_ALARM_SERVICE);
+
+    }
+
+    public void stopPolling() {
+        RxUtils.unsubscribeIfNotNull(mAlarmSubs);
+        PollingUtils.stopPollingService(Utils.appContext
+                , AlarmService.class, "", CODE_ALARM_SERVICE);
+        iAlarm = null;
+    }
+
+    private long getInterval() {
+        //            Calendar c = Calendar.getInstance();
+//            long oneHourLater = System.currentTimeMillis() + 1000L * 60 * 60;
+        long oneHourLater = System.currentTimeMillis() + 1000L * 5;
+//            c.setTimeInMillis(oneHourLater);
+//            c.setTimeZone(TimeZone.getTimeZone("GMT+8"));
+//            c.set(Calendar.MINUTE, 0);
+//            c.set(Calendar.SECOND, 0);
+//            c.set(Calendar.MILLISECOND, 0);
+        return oneHourLater;
     }
 
     public void receiveScreenOff(IScreenOff iScreenOff) {
@@ -298,6 +341,10 @@ public class AdController {
         void onWakeUpAdExecute();
     }
 
+    public interface IAlarm {
+        void onAlarmReceive();
+    }
+
     public interface IScreenOff {
         void onSleepAdExecute();
     }
@@ -427,6 +474,11 @@ public class AdController {
             }
 
             mInterrupt = false;
+
+            //因为首页需要不停的播放, 所以把时间强制设置为一小时以上,这样就可以不间断获取
+            if (TYPE_HOME.equalsIgnoreCase(mRuleType)) {
+                totalTime = 60 * 70;
+            }
 //            totalTime = 5;  //测试用
             timer(totalTime, adEntities);
 
@@ -435,7 +487,7 @@ public class AdController {
         private void timer(long totalTime, List<AdEntity.AdsEntity> adEntities) {
             if (adEntities == null || adEntities.size() == 0)
                 return;
-            int executeTime = NumberUtil.convertToint(currentTimeToRuleKey(), 0);
+//            int executeTime = NumberUtil.convertToint(currentTimeToRuleKey(), 0);
             mAlreadyExecuteTime = 0L;
 
             AdEntity.AdsEntity adsEntity = adEntities.get(getCurrentTimerIndex(adEntities));
@@ -458,20 +510,20 @@ public class AdController {
                         return;
                     }
 
-//                    if (success) {
-                    mAlreadyExecuteTime += delay;
-//                    }
+                    if (success) {
+                        mAlreadyExecuteTime += delay;
+                    }
 
                     if (mAlreadyExecuteTime >= totalTime) {
                         quit(true);
                         return;
                     }
 
-                    if (NumberUtil.convertToint(currentTimeToRuleKey(), 0) != executeTime) {
-                        quit();
-                        AdController.this.executeAdRule(mRuleType, mFamilyId, mUrserId, mTicket, iExecuteRule);
-                        return;
-                    }
+//                    if (NumberUtil.convertToint(currentTimeToRuleKey(), 0) != executeTime) {
+//                        quit();
+//                        AdController.this.executeAdRule(mRuleType, mFamilyId, mUrserId, mTicket, iExecuteRule);
+//                        return;
+//                    }
 
                     mCurrentTimerIndex++;
                     AdEntity.AdsEntity next = adEntities.get(getCurrentTimerIndex(adEntities));
