@@ -1,5 +1,8 @@
 package com.techjumper.polyhome.b.home.mvp.v.activity;
 
+import android.content.BroadcastReceiver;
+import android.content.Context;
+import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -33,6 +36,9 @@ import butterknife.ButterKnife;
 @Presenter(MainActivityPresenter.class)
 public class MainActivity extends AppBaseActivity {
 
+    public static final String ACTION_HOME_HEARTBEAT = "action_home_heartbeat";
+    public static final String ACTION_HOME_HEARTBEAT_RECEIVE = "action_home_heartbeat_receive";
+
     @Bind(R.id.viewpager)
     MyViewPager viewpager;
     @Bind(R.id.title)
@@ -50,6 +56,7 @@ public class MainActivity extends AppBaseActivity {
     private List<Fragment> fragments = new ArrayList<Fragment>();
     private NoticeReceiver receiver;
     private Timer timer = new Timer();
+    private HeartbeatReceiver mheartbeatReceiver = new HeartbeatReceiver();
 
     @Override
     protected View inflateView(Bundle savedInstanceState) {
@@ -58,6 +65,15 @@ public class MainActivity extends AppBaseActivity {
 
     public TextView getDate() {
         return date;
+    }
+
+    public static class HeartbeatReceiver extends BroadcastReceiver {
+        private Intent mIntent = new Intent(ACTION_HOME_HEARTBEAT_RECEIVE);
+
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            context.sendBroadcast(mIntent);
+        }
     }
 
     @Override
@@ -112,6 +128,9 @@ public class MainActivity extends AppBaseActivity {
                 RxBus.INSTANCE.send(new TimeEvent());
             }
         }, 5000, 60000);
+
+        IntentFilter intentFilter = new IntentFilter(ACTION_HOME_HEARTBEAT);
+        registerReceiver(mheartbeatReceiver, intentFilter);
     }
 
     @Override
@@ -119,6 +138,10 @@ public class MainActivity extends AppBaseActivity {
         super.onDestroy();
         if (timer != null) {
             timer.cancel();
+        }
+
+        if (mheartbeatReceiver != null) {
+            unregisterReceiver(mheartbeatReceiver);
         }
     }
 }

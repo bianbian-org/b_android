@@ -6,7 +6,6 @@ import android.os.Bundle;
 import android.util.Log;
 
 import com.techjumper.commonres.PluginConstant;
-import com.techjumper.commonres.UserInfoEntity;
 import com.techjumper.commonres.entity.CalendarEntity;
 import com.techjumper.commonres.entity.WeatherEntity;
 import com.techjumper.commonres.entity.event.UserInfoEvent;
@@ -57,6 +56,29 @@ public class InfoFragmentPresenter extends AppBaseFragmentPresenter<InfoFragment
 
     @Override
     public void initData(Bundle savedInstanceState) {
+
+    }
+
+    @Override
+    public void onViewInited(Bundle savedInstanceState) {
+        if (UserInfoManager.isLogin()) {
+            getWeatherInfo();
+        }
+        getCalendarInfo();
+
+        postMedical();
+
+        AlarmManagerUtil.setWeatherTime(Utils.appContext, 0, 30 + new Random().nextInt(30));
+
+        RxBus.INSTANCE.asObservable()
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(o -> {
+                    if (o instanceof WeatherDateEvent) {
+                        getWeatherInfo();
+                        getCalendarInfo();
+                    }
+                });
+
         RxBus.INSTANCE.asObservable()
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(o -> {
@@ -71,27 +93,11 @@ public class InfoFragmentPresenter extends AppBaseFragmentPresenter<InfoFragment
                 });
     }
 
-    @Override
-    public void onViewInited(Bundle savedInstanceState) {
-//        getWeatherInfo();
-//        getCalendarInfo();
-
-        postMedical();
-
-        AlarmManagerUtil.setTime(Utils.appContext, 0, 30 + new Random().nextInt(30));
-
-        RxBus.INSTANCE.asObservable()
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(o -> {
-                    if (o instanceof WeatherDateEvent) {
-                        getWeatherInfo();
-                        getCalendarInfo();
-                    }
-                });
-    }
-
     //获取天气相关
     private void getWeatherInfo() {
+        if (!UserInfoManager.isLogin())
+            return;
+
         addSubscription(infoFragmentModel.getWeatherInfo()
                 .subscribe(new Subscriber<WeatherEntity>() {
                     @Override

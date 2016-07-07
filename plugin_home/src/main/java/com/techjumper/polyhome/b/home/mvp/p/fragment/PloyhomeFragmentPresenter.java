@@ -14,12 +14,15 @@ import android.widget.MediaController;
 import com.techjumper.commonres.UserInfoEntity;
 import com.techjumper.commonres.entity.NoticeEntity;
 import com.techjumper.commonres.entity.WeatherEntity;
+import com.techjumper.commonres.entity.event.AdEvent;
 import com.techjumper.commonres.entity.event.NoticeEvent;
 import com.techjumper.commonres.entity.event.UserInfoEvent;
 import com.techjumper.commonres.entity.event.WeatherEvent;
 import com.techjumper.commonres.entity.event.pushevent.NoticePushEvent;
+import com.techjumper.commonres.util.CommonDateUtil;
 import com.techjumper.commonres.util.PluginEngineUtil;
 import com.techjumper.corelib.rx.tools.RxBus;
+import com.techjumper.corelib.utils.Utils;
 import com.techjumper.corelib.utils.common.JLog;
 import com.techjumper.corelib.utils.window.ToastUtils;
 import com.techjumper.lib2.utils.PicassoHelper;
@@ -30,6 +33,7 @@ import com.techjumper.polyhome.b.home.mvp.v.activity.AdActivity;
 import com.techjumper.polyhome.b.home.mvp.v.activity.JujiaActivity;
 import com.techjumper.polyhome.b.home.mvp.v.activity.ShoppingActivity;
 import com.techjumper.polyhome.b.home.mvp.v.fragment.PloyhomeFragment;
+import com.techjumper.polyhome.b.home.tool.AlarmManagerUtil;
 import com.techjumper.polyhome.b.home.utils.DateUtil;
 import com.techjumper.polyhome.b.home.utils.StringUtil;
 import com.techjumper.polyhome.b.home.widget.MyVideoView;
@@ -38,6 +42,7 @@ import com.techjumper.polyhome_b.adlib.entity.AdEntity;
 import com.techjumper.polyhome_b.adlib.manager.AdController;
 
 import java.io.File;
+import java.util.Random;
 
 import butterknife.OnClick;
 import rx.Subscriber;
@@ -136,6 +141,17 @@ public class PloyhomeFragmentPresenter extends AppBaseFragmentPresenter<Ployhome
 
     @Override
     public void initData(Bundle savedInstanceState) {
+
+    }
+
+    @Override
+    public void onViewInited(Bundle savedInstanceState) {
+
+        if (UserInfoManager.isLogin()) {
+            getAd();
+            getNotices();
+        }
+
         RxBus.INSTANCE.asObservable()
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(o -> {
@@ -154,15 +170,13 @@ public class PloyhomeFragmentPresenter extends AppBaseFragmentPresenter<Ployhome
                         Log.d("pluginUserInfo", "更新广告");
                         getAd();
                     } else if (o instanceof NoticePushEvent) {
+                        Log.d("pluginUserInfo", "推送更新公告");
                         getNotices();
+                    } else if (o instanceof AdEvent) {
+                        Log.d("pluginUserInfo", "推送更新广告");
+                        getAd();
                     }
                 });
-    }
-
-    @Override
-    public void onViewInited(Bundle savedInstanceState) {
-//        getAd();
-//        getNotices(367, "42abcd66b653086cc5805902c1a2134c746fea39");
 
         addSubscription(RxBus.INSTANCE.asObservable()
                 .observeOn(AndroidSchedulers.mainThread())
@@ -191,9 +205,15 @@ public class PloyhomeFragmentPresenter extends AppBaseFragmentPresenter<Ployhome
                         }
                     }
                 }));
+
+//        AlarmManagerUtil.setNoticeTime(Utils.appContext, CommonDateUtil.getHour(), new Random().nextInt(30));
+        AlarmManagerUtil.setNoticeTime(Utils.appContext, CommonDateUtil.getHour(), 50);
     }
 
     private void getNotices() {
+        if (!UserInfoManager.isLogin())
+            return;
+
         addSubscription(model.getNotices()
                 .subscribe(new Subscriber<NoticeEntity>() {
                     @Override
@@ -264,13 +284,14 @@ public class PloyhomeFragmentPresenter extends AppBaseFragmentPresenter<Ployhome
     }
 
     private void getAd() {
+        JLog.d("广告请求");
         ImageView adImageView = getView().getAd();
         video = getView().getVideo();
         adController.startPolling(new AdController.IAlarm() {
             @Override
             public void onAlarmReceive() {
-                JLog.d("广告进来了么" + UserInfoManager.getFamilyId() + "  " +UserInfoManager.getUserId()+ "  " + UserInfoManager.getTicket());
-//                adController.executeAdRule(AdController.TYPE_HOME, "434", "362", "25a67e729ddd76f7112035c50bf0432fb1347c1b", new AdController.IExecuteRule() {
+                JLog.d("广告进来了么" + UserInfoManager.getFamilyId() + "  " + UserInfoManager.getUserId() + "  " + UserInfoManager.getTicket());
+//                adController.executeAdRule(AdController.TYPE_HOME, "434", "362", "5b279ba4e46853d86e1d109914cfebe3ca224381", new AdController.IExecuteRule() {
                 adController.executeAdRule(AdController.TYPE_HOME, UserInfoManager.getFamilyId(), UserInfoManager.getUserId(), UserInfoManager.getTicket(), new AdController.IExecuteRule() {
                     @Override
                     public void onAdReceive(AdEntity.AdsEntity adsEntity, File file) {

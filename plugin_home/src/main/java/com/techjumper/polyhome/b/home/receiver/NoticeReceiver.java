@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 
+import com.techjumper.commonres.entity.event.AdEvent;
 import com.techjumper.commonres.entity.event.pushevent.NoticePushEvent;
 import com.techjumper.corelib.rx.tools.RxBus;
 import com.techjumper.corelib.utils.window.ToastUtils;
@@ -16,6 +17,8 @@ import com.techjumper.corelib.utils.window.ToastUtils;
 public class NoticeReceiver extends BroadcastReceiver {
 
     public static final String TAG = "NoticeReceiver";
+    public static final String AD = "advertisement";
+    public static final String NOTICE = "notice";
 
     @Override
     public void onReceive(Context context, Intent intent) {
@@ -23,8 +26,13 @@ public class NoticeReceiver extends BroadcastReceiver {
             return;
 
         Bundle bundle = intent.getExtras();
-        Log.d(TAG, bundle.get("key_extra").toString());
+        String type = bundle.get("key_extra").toString();
+        Log.d(TAG, type);
 
-        RxBus.INSTANCE.send(new NoticePushEvent());
+        if (type.equals(AD)){
+            RxBus.INSTANCE.send(new AdEvent());
+        }else if (type.equals(NOTICE)){
+            RxBus.INSTANCE.send(new NoticePushEvent());
+        }
     }
 }

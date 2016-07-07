@@ -65,4 +65,10 @@ public class CommonDateUtil {
 
         return formatHourMinute(hour) + ":" + formatHourMinute(minute);
     }
+
+    public static int getHour() {
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTimeZone(TimeZone.getTimeZone("GMT+8:00"));
+        return calendar.get(Calendar.HOUR_OF_DAY);
+    }
 }

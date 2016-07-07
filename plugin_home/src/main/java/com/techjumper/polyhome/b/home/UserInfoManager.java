@@ -31,10 +31,9 @@ public enum UserInfoManager {
         PreferenceUtils.save(KEY_TICKET, entity.getTicket());
         PreferenceUtils.save(KEY_HAS_BINDING, entity.getHas_binding());
     }
-
     /**
      * 获取userId
-     *
+
      * @return
      */
     public static String getUserId() {

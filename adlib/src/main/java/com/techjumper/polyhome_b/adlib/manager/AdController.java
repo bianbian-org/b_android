@@ -82,8 +82,8 @@ public class AdController {
     }
 
     public void startWakeUpTimer(IWakeUp iWakeUp) {
-        this.iWakeUP = iWakeUp;
         stopWakeUpTimer();
+        this.iWakeUP = iWakeUp;
         mWakeUpSubs = RxBus.INSTANCE.asObservable()
                 .subscribe(o -> {
                     if (!(o instanceof WakeupAdService.WakeupAdEvent))
@@ -116,6 +116,7 @@ public class AdController {
 
 
     public void startPolling(IAlarm iAlarm) {
+        stopPolling();
         this.iAlarm = iAlarm;
         mAlarmSubs = RxBus.INSTANCE.asObservable()
                 .subscribe(o -> {
