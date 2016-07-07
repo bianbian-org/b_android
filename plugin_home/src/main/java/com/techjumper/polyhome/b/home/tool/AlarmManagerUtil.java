@@ -6,6 +6,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.util.Log;
 
+import com.techjumper.commonres.util.CommonDateUtil;
 import com.techjumper.corelib.utils.Utils;
 import com.techjumper.corelib.utils.window.ToastUtils;
 import com.techjumper.polyhome.b.home.tool.alarm.AlarmReceiver;
@@ -44,13 +45,13 @@ public class AlarmManagerUtil {
         alarmManager.setRepeating(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), INTERVAL, pendingIntent);
     }
 
-    public static void setNoticeTime(Context context, int hour, int minute) {
-        //如果minute等于0，设置为1分钟
-        if (minute <= 0) {
-            minute = 1;
-        }
+    public static void setNoticeTime(Context context) {
+        int hour = CommonDateUtil.getHour();
+        int minute = CommonDateUtil.getMinute();
+        int delayTime = 45 + new Random().nextInt(30);
+        int triggerAtMillis = delayTime * 1000 * 60;
 
-        Log.d(TAG, "Notice: hour:" + hour + " minute:" + minute);
+        Log.d(TAG, "Notice: hour:" + hour + " minute:" + minute + "delayTime:" + delayTime);
 
         AlarmManager alarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
         Calendar calendar = Calendar.getInstance();
@@ -62,6 +63,6 @@ public class AlarmManagerUtil {
         intent.putExtra(AlarmReceiver.TYPE, AlarmReceiver.NOTICES);
         PendingIntent pendingIntent = PendingIntent.getBroadcast(context, AlarmReceiver.NOTICES, intent, 0);
 
-        alarmManager.setRepeating(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), INTERVAL, pendingIntent);
+        alarmManager.set(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis() + triggerAtMillis, pendingIntent);
     }
 }

@@ -66,9 +66,23 @@ public class CommonDateUtil {
         return formatHourMinute(hour) + ":" + formatHourMinute(minute);
     }
 
+    /**
+     * 获取小时
+     * @return
+     */
     public static int getHour() {
         Calendar calendar = Calendar.getInstance();
         calendar.setTimeZone(TimeZone.getTimeZone("GMT+8:00"));
         return calendar.get(Calendar.HOUR_OF_DAY);
+    }
+
+    /**
+     * 获取分钟
+     * @return
+     */
+    public static int getMinute() {
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTimeZone(TimeZone.getTimeZone("GMT+8:00"));
+        return calendar.get(Calendar.MINUTE);
     }
 }

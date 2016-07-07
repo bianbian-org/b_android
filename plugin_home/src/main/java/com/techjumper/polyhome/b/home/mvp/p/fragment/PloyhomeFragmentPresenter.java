@@ -206,8 +206,7 @@ public class PloyhomeFragmentPresenter extends AppBaseFragmentPresenter<Ployhome
                     }
                 }));
 
-//        AlarmManagerUtil.setNoticeTime(Utils.appContext, CommonDateUtil.getHour(), new Random().nextInt(30));
-        AlarmManagerUtil.setNoticeTime(Utils.appContext, CommonDateUtil.getHour(), 50);
+        AlarmManagerUtil.setNoticeTime(Utils.appContext);
     }
 
     private void getNotices() {

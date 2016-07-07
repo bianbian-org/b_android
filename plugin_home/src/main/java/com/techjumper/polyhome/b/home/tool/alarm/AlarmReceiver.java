@@ -7,7 +7,9 @@ import android.util.Log;
 
 import com.techjumper.commonres.entity.event.WeatherDateEvent;
 import com.techjumper.commonres.entity.event.pushevent.NoticePushEvent;
+import com.techjumper.commonres.util.CommonDateUtil;
 import com.techjumper.corelib.rx.tools.RxBus;
+import com.techjumper.corelib.utils.Utils;
 import com.techjumper.corelib.utils.window.ToastUtils;
 import com.techjumper.polyhome.b.home.UserInfoManager;
 import com.techjumper.polyhome.b.home.tool.AlarmManagerUtil;
@@ -32,6 +34,7 @@ public class AlarmReceiver extends BroadcastReceiver {
                 RxBus.INSTANCE.send(new WeatherDateEvent());
             }
         } else {
+            AlarmManagerUtil.setNoticeTime(Utils.appContext);
             Log.d(AlarmManagerUtil.TAG, "执行通知请求......");
             if (UserInfoManager.isLogin()) {
                 RxBus.INSTANCE.send(new NoticePushEvent());
