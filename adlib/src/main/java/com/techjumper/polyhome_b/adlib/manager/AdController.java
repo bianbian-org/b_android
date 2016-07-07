@@ -94,17 +94,20 @@ public class AdController {
                 });
         //            Calendar c = Calendar.getInstance();
 //            long oneHourLater = System.currentTimeMillis() + 1000L * 60 * 60;
-        long oneHourLater = getInterval();
+        long triggerTime = getTriggerTime();
 //            c.setTimeInMillis(oneHourLater);
 //            c.setTimeZone(TimeZone.getTimeZone("GMT+8"));
 //            c.set(Calendar.MINUTE, 0);
 //            c.set(Calendar.SECOND, 0);
 //            c.set(Calendar.MILLISECOND, 0);
 
-//            PollingUtils.startPollingService(Utils.appContext
-//                    , c.getTimeInMillis(), 60 * 60L, WakeupAdService.class, "", CODE_WAKEUP_ALARM);
         PollingUtils.startPollingService(Utils.appContext
-                , oneHourLater, 5L, WakeupAdService.class, "", CODE_WAKEUP_ALARM);
+                , triggerTime, 60 * 60L, WakeupAdService.class, "", CODE_WAKEUP_ALARM);
+        if (this.iWakeUP != null) {
+            this.iWakeUP.onWakeUpAdExecute();
+        }
+//        PollingUtils.startPollingService(Utils.appContext
+//                , oneHourLater, 5L, WakeupAdService.class, "", CODE_WAKEUP_ALARM);
     }
 
     public void stopWakeUpTimer() {
@@ -126,12 +129,15 @@ public class AdController {
                         this.iAlarm.onAlarmReceive();
                     }
                 });
-        long timeMillis = getInterval();
+        long timeMillis = getTriggerTime();
 
-//            PollingUtils.startPollingService(Utils.appContext
-//                    , c.getTimeInMillis(), 60 * 60L, WakeupAdService.class, "", CODE_WAKEUP_ALARM);
         PollingUtils.startPollingService(Utils.appContext
-                , timeMillis, 30L, AlarmService.class, "", CODE_ALARM_SERVICE);
+                , timeMillis, 60 * 60L, WakeupAdService.class, "", CODE_WAKEUP_ALARM);
+        if (this.iAlarm != null) {
+            this.iAlarm.onAlarmReceive();
+        }
+//        PollingUtils.startPollingService(Utils.appContext
+//                , timeMillis, 30L, AlarmService.class, "", CODE_ALARM_SERVICE);
 
     }
 
@@ -142,16 +148,17 @@ public class AdController {
         iAlarm = null;
     }
 
-    private long getInterval() {
-        //            Calendar c = Calendar.getInstance();
-//            long oneHourLater = System.currentTimeMillis() + 1000L * 60 * 60;
-        long oneHourLater = System.currentTimeMillis() + 1000L * 5;
-//            c.setTimeInMillis(oneHourLater);
-//            c.setTimeZone(TimeZone.getTimeZone("GMT+8"));
-//            c.set(Calendar.MINUTE, 0);
-//            c.set(Calendar.SECOND, 0);
-//            c.set(Calendar.MILLISECOND, 0);
-        return oneHourLater;
+    private long getTriggerTime() {
+        Calendar c = Calendar.getInstance();
+        long oneHourLater = System.currentTimeMillis() + 1000L * 60 * 60;
+//        long oneHourLater = System.currentTimeMillis() + 1000L * 5;
+        c.setTimeInMillis(oneHourLater);
+        c.setTimeZone(TimeZone.getTimeZone("GMT+8"));
+        c.set(Calendar.MINUTE, 0);
+        c.set(Calendar.SECOND, 0);
+        c.set(Calendar.MILLISECOND, 0);
+//        return oneHourLater;
+        return c.getTimeInMillis();
     }
 
     public void receiveScreenOff(IScreenOff iScreenOff) {

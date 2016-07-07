@@ -39,7 +39,7 @@ public class AdDownloadManager {
     private AdDownloadManager() {
         try {
             mDiskLruCache = DiskLruCache.open(getDiskCacheDir(CACHE_NAME)
-                    , 1, 1, 500 * 1024 * 1024);
+                    , 1, 1, 300 * 1024 * 1024);
         } catch (IOException e) {
             e.printStackTrace();
         }
