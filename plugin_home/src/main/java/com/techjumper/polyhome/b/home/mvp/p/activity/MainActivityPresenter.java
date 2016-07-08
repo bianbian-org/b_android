@@ -2,20 +2,19 @@ package com.techjumper.polyhome.b.home.mvp.p.activity;
 
 import android.content.ComponentName;
 import android.content.Intent;
-import android.os.Build;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
 
 import com.techjumper.commonres.ComConstant;
 import com.techjumper.commonres.UserInfoEntity;
+import com.techjumper.commonres.entity.MedicalEntity;
 import com.techjumper.commonres.entity.event.TimeEvent;
 import com.techjumper.commonres.entity.event.UserInfoEvent;
 import com.techjumper.commonres.util.CommonDateUtil;
 import com.techjumper.commonres.util.PluginEngineUtil;
 import com.techjumper.corelib.rx.tools.RxBus;
 import com.techjumper.corelib.utils.window.ToastUtils;
-import com.techjumper.plugincommunicateengine.IPluginMessageReceiver;
 import com.techjumper.plugincommunicateengine.PluginEngine;
 import com.techjumper.plugincommunicateengine.entity.core.SaveInfoEntity;
 import com.techjumper.plugincommunicateengine.utils.GsonUtils;
@@ -109,6 +108,7 @@ public class MainActivityPresenter extends AppBaseActivityPresenter<MainActivity
                     }
                 });
 
+        PluginEngineUtil.getPerson();
 //        UserInfoEntity userInfoEntity2 = new UserInfoEntity();
 //        userInfoEntity2.setId(438);
 //        userInfoEntity2.setUser_id(367);
@@ -128,12 +128,18 @@ public class MainActivityPresenter extends AppBaseActivityPresenter<MainActivity
                     return;
 
                 Log.d("pluginUserInfo", "name: " + saveInfoEntity.getData().getName());
-                Log.d("pluginUserInfo", "ComConstant: " + ComConstant.FILE_FAMILY_REGISTER);
                 HashMap<String, String> hashMap = saveInfoEntity.getData().getValues();
+                Log.d("pluginUserInfo", "hashMap: " + hashMap);
+                if (hashMap == null)
+                    return;
+
+                Log.d("pluginUserInfo", "hashMapSize: " + hashMap.size());
                 if (hashMap == null || hashMap.size() == 0)
                     return;
 
-                if (saveInfoEntity.getData().getName().equals(ComConstant.FILE_FAMILY_REGISTER)) {
+                String name = saveInfoEntity.getData().getName();
+
+                if (name.equals(ComConstant.FILE_FAMILY_REGISTER)) {
                     UserInfoEntity userInfoEntity = new UserInfoEntity();
 
                     for (Map.Entry<String, String> entry : hashMap.entrySet()) {
@@ -156,6 +162,16 @@ public class MainActivityPresenter extends AppBaseActivityPresenter<MainActivity
                     UserInfoManager.saveUserInfo(userInfoEntity);
 
                     RxBus.INSTANCE.send(new UserInfoEvent(userInfoEntity));
+                } else if (name.equals(ComConstant.FILE_MEDICAL)) {
+                    MedicalEntity medicalEntity = new MedicalEntity();
+
+                    for (Map.Entry<String, String> entry : hashMap.entrySet()) {
+                        Log.d("pluginUserInfo", entry.getValue());
+                        String key = entry.getKey();
+                        String value = entry.getValue();
+
+                        Log.d("pluginUserInfo", "key: " + key + " value: " + value);
+                    }
                 }
                 Log.d("pluginUserInfo", "更新完毕用户信息...");
             } else if (code == PluginEngine.CODE_SAVE_INFO) {
@@ -164,8 +180,20 @@ public class MainActivityPresenter extends AppBaseActivityPresenter<MainActivity
                 if (TextUtils.isEmpty(message))
                     return;
 
-                InfoManager.saveUserInfoFile(message);
+//                InfoManager.saveUserInfoFile(message);
+
                 PluginEngineUtil.initUserInfo(message);
+            } else if (code == PluginEngine.CODE_CUSTOM) {
+                if (!TextUtils.isEmpty(message)) {
+                    if (message.equals("action_medical")) {
+                        if (extras != null) {
+                            boolean isMedical = extras.getBoolean("key_ismedical");
+                            if (isMedical == true) {
+                                PluginEngineUtil.getPerson();
+                            }
+                        }
+                    }
+                }
             }
         });
     }

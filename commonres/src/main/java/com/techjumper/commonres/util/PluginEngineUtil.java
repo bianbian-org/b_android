@@ -212,4 +212,25 @@ public class PluginEngineUtil {
             }
         });
     }
+
+    public static void getPerson() {
+        PluginEngine.getInstance().start(new PluginEngine.IPluginConnection() {
+            @Override
+            public void onEngineConnected(PluginEngine.PluginExecutor pluginExecutor) {
+                try {
+                    String data = HostDataBuilder.saveInfoBuilder()
+                            .name("personInfor")
+                            .build();
+                    pluginExecutor.send(PluginEngine.CODE_GET_SAVE_INFO, data);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+
+            @Override
+            public void onEngineDisconnected() {
+
+            }
+        });
+    }
 }

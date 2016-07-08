@@ -29,9 +29,11 @@ public class NoticeReceiver extends BroadcastReceiver {
         String type = bundle.get("key_extra").toString();
         Log.d(TAG, type);
 
-        if (type.equals(AD)){
+        if (type.equals(AD)) {
+            ToastUtils.show("收到推送消息：adverstiment");
             RxBus.INSTANCE.send(new AdEvent());
-        }else if (type.equals(NOTICE)){
+        } else if (type.equals(NOTICE)) {
+            ToastUtils.show("收到推送消息：notice");
             RxBus.INSTANCE.send(new NoticePushEvent());
         }
     }

@@ -157,6 +157,9 @@ public class PloyhomeFragmentPresenter extends AppBaseFragmentPresenter<Ployhome
                 .subscribe(o -> {
                     if (o instanceof NoticeEvent) {
                         NoticeEvent entity = (NoticeEvent) o;
+                        if (getView() == null || getView().getNoticeContent() == null || getView().getNoticeTitle() == null)
+                            return;
+
                         if (entity == null || entity.getContent() == null || entity.getTitle() == null)
                             return;
 
@@ -303,9 +306,11 @@ public class PloyhomeFragmentPresenter extends AppBaseFragmentPresenter<Ployhome
 
                             if (file.exists()) {
                                 PicassoHelper.load(file)
+                                        .noFade()
                                         .into(adImageView);
                             } else {
                                 PicassoHelper.load(adsEntity.getMedia_url())
+                                        .noFade()
                                         .into(adImageView);
                             }
 
@@ -332,6 +337,9 @@ public class PloyhomeFragmentPresenter extends AppBaseFragmentPresenter<Ployhome
                     @Override
                     public void onAdPlayFinished() {
                         JLog.d("广告播放完成  (有可能是上一次的任务被自动中断，不影响本次广告执行)");
+                        adImageView.setVisibility(View.VISIBLE);
+                        video.setVisibility(View.INVISIBLE);
+                        adImageView.setBackgroundResource(R.mipmap.bg_ad);
                     }
 
                     @Override
@@ -342,11 +350,17 @@ public class PloyhomeFragmentPresenter extends AppBaseFragmentPresenter<Ployhome
                     @Override
                     public void onAdExecuteFailed(String reason) {
                         JLog.d("获取广告失败: " + reason);
+                        adImageView.setVisibility(View.VISIBLE);
+                        video.setVisibility(View.INVISIBLE);
+                        adImageView.setBackgroundResource(R.mipmap.bg_ad);
                     }
 
                     @Override
                     public void onAdNoExist(String adType, String hour) {
                         JLog.d("没有广告: 广告类型=" + adType + ", 当前小时=" + hour);
+                        adImageView.setVisibility(View.VISIBLE);
+                        video.setVisibility(View.INVISIBLE);
+                        adImageView.setBackgroundResource(R.mipmap.bg_ad);
                     }
                 });
             }

@@ -243,7 +243,10 @@ public class AdController {
                             return;
                         }
 
-                        JLog.d("<ad>获取广告信息成功: " + adEntity.toString());
+                        JLog.d("<ad> 获取广告信息成功: " + adEntity.toString());
+//                        if (BuildConfig.DEBUG) {
+                        ToastUtils.show("<ad> 获取广告信息成功");
+//                        }
                         saveJsonToLocal(GsonUtils.toJson(adEntity));
                         cacheFile(adEntity);
 

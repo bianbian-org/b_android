@@ -13,8 +13,15 @@ android {
         versionName "0.1.1"
     }
     buildTypes {
+        debug {
+            minifyEnabled false
+            debuggable true
+            shrinkResources false
+        }
         release {
             minifyEnabled false
+            debuggable false
+            shrinkResources true
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }

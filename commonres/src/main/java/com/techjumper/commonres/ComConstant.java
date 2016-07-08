@@ -18,4 +18,5 @@ public class ComConstant {
 
     //保存本地数据的文件名
     public static final String FILE_FAMILY_REGISTER = "poly_b_family_register";
+    public static final String FILE_MEDICAL = "personInfor";
 }

@@ -143,6 +143,8 @@ public class MainActivity extends AppBaseActivity {
         if (mheartbeatReceiver != null) {
             unregisterReceiver(mheartbeatReceiver);
         }
+
+        System.exit(0);
     }
 }
 
