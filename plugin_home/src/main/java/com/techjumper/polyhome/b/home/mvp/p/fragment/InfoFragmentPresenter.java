@@ -66,7 +66,7 @@ public class InfoFragmentPresenter extends AppBaseFragmentPresenter<InfoFragment
         }
         getCalendarInfo();
 
-        postMedical();
+//        postMedical();
 
         AlarmManagerUtil.setWeatherTime(Utils.appContext, 0, 30 + new Random().nextInt(30));
 

@@ -219,7 +219,7 @@ public class PluginEngineUtil {
             public void onEngineConnected(PluginEngine.PluginExecutor pluginExecutor) {
                 try {
                     String data = HostDataBuilder.saveInfoBuilder()
-                            .name("personInfor")
+                            .name("userInfor")
                             .build();
                     pluginExecutor.send(PluginEngine.CODE_GET_SAVE_INFO, data);
                 } catch (Exception e) {

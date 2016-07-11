@@ -8,7 +8,7 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/dp_20"
+        android:layout_marginTop="@dimen/dp_27"
         android:gravity="center_vertical">
 
         <ImageView
@@ -23,7 +23,7 @@
             android:layout_height="wrap_content"
             android:layout_marginLeft="@dimen/dp_10"
             android:textColor="@color/color_ffffff"
-            android:textSize="@dimen/sp_18"
+            android:textSize="@dimen/sp_20"
             tools:text="停水通知" />
 
         <TextView
@@ -32,7 +32,7 @@
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:gravity="bottom|right"
-            android:textSize="@dimen/sp_16"
+            android:textSize="@dimen/sp_20"
             android:textColor="@color/color_ffffff"
             tools:text="10月20日" />
 
@@ -43,7 +43,7 @@
             android:layout_marginLeft="@dimen/dp_10"
             android:gravity="center"
             android:text="@string/info_system"
-            android:textSize="@dimen/dp_12"
+            android:textSize="@dimen/sp_16"
             android:textColor="@color/color_20c3f3"
             android:background="@drawable/bg_shape_radius_20c3f3"/>
     </LinearLayout>

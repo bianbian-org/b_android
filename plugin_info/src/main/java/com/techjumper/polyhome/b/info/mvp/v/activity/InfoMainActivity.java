@@ -137,11 +137,10 @@ public class InfoMainActivity extends AppBaseActivity {
             UserInfoManager.saveUserInfo(userInfoEntity);
         }
 //        UserInfoEntity userInfoEntity = new UserInfoEntity();
-//        userInfoEntity.setUser_id(367);
-//        userInfoEntity.setTicket("add4938dbba41fbc899809c260c9ec94bca1f2a7");
-//        userInfoEntity.setId(438);
+//        userInfoEntity.setUser_id(362);
+//        userInfoEntity.setTicket("64008f838e4c3cfd16d2d369f8bab61261406866");
+//        userInfoEntity.setId(434);
 //        UserInfoManager.saveUserInfo(userInfoEntity);
-
         setType(type);
 
         titleRg.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {

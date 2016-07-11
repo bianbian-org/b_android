@@ -103,9 +103,9 @@ public class AdController {
 
         PollingUtils.startPollingService(Utils.appContext
                 , triggerTime, 60 * 60L, WakeupAdService.class, "", CODE_WAKEUP_ALARM);
-        if (this.iWakeUP != null) {
-            this.iWakeUP.onWakeUpAdExecute();
-        }
+//        if (this.iWakeUP != null) {
+//            this.iWakeUP.onWakeUpAdExecute();
+//        }
 //        PollingUtils.startPollingService(Utils.appContext
 //                , oneHourLater, 5L, WakeupAdService.class, "", CODE_WAKEUP_ALARM);
     }

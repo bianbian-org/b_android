@@ -8,21 +8,22 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
 import android.view.View;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.techjumper.commonres.entity.event.TimeEvent;
 import com.techjumper.commonres.util.CommonDateUtil;
 import com.techjumper.corelib.mvp.factory.Presenter;
 import com.techjumper.corelib.rx.tools.RxBus;
-import com.techjumper.corelib.utils.window.ToastUtils;
 import com.techjumper.polyhome.b.home.R;
 import com.techjumper.polyhome.b.home.adapter.MyViewPagerAdapter;
 import com.techjumper.polyhome.b.home.mvp.p.activity.MainActivityPresenter;
 import com.techjumper.polyhome.b.home.mvp.v.fragment.InfoFragment;
 import com.techjumper.polyhome.b.home.mvp.v.fragment.PloyhomeFragment;
 import com.techjumper.polyhome.b.home.receiver.NoticeReceiver;
+import com.techjumper.polyhome.b.home.widget.MyVideoView;
 import com.techjumper.polyhome.b.home.widget.MyViewPager;
 
 import java.util.ArrayList;
@@ -51,12 +52,51 @@ public class MainActivity extends AppBaseActivity {
     ImageView dotPoint;
     @Bind(R.id.date)
     TextView date;
+    @Bind(R.id.main_ad_video)
+    MyVideoView mainAdVideo;
+    @Bind(R.id.main_ad_img)
+    ImageView mainAdImg;
+    @Bind(R.id.main_ad_layout)
+    FrameLayout mainAdLayout;
+    @Bind(R.id.main_content_layout)
+    LinearLayout mainContentLayout;
 
     private MyViewPagerAdapter myViewPagerAdapter;
     private List<Fragment> fragments = new ArrayList<Fragment>();
-    private NoticeReceiver receiver;
     private Timer timer = new Timer();
     private HeartbeatReceiver mheartbeatReceiver = new HeartbeatReceiver();
+
+    public MyVideoView getMainAdVideo() {
+        return mainAdVideo;
+    }
+
+    public void setMainAdVideo(MyVideoView mainAdVideo) {
+        this.mainAdVideo = mainAdVideo;
+    }
+
+    public ImageView getMainAdImg() {
+        return mainAdImg;
+    }
+
+    public void setMainAdImg(ImageView mainAdImg) {
+        this.mainAdImg = mainAdImg;
+    }
+
+    public FrameLayout getMainAdLayout() {
+        return mainAdLayout;
+    }
+
+    public void setMainAdLayout(FrameLayout mainAdLayout) {
+        this.mainAdLayout = mainAdLayout;
+    }
+
+    public LinearLayout getMainContentLayout() {
+        return mainContentLayout;
+    }
+
+    public void setMainContentLayout(LinearLayout mainContentLayout) {
+        this.mainContentLayout = mainContentLayout;
+    }
 
     @Override
     protected View inflateView(Bundle savedInstanceState) {
@@ -78,7 +118,6 @@ public class MainActivity extends AppBaseActivity {
 
     @Override
     protected void initView(Bundle savedInstanceState) {
-
         date.setText(CommonDateUtil.getTitleDate());
 
         InfoFragment infoFragment = InfoFragment.getInstance();

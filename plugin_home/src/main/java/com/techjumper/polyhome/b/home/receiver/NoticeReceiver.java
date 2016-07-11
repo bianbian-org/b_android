@@ -19,6 +19,7 @@ public class NoticeReceiver extends BroadcastReceiver {
     public static final String TAG = "NoticeReceiver";
     public static final String AD = "advertisement";
     public static final String NOTICE = "notice";
+    public static final String UPDATENOTICE = "updateNotice";
 
     @Override
     public void onReceive(Context context, Intent intent) {
@@ -34,6 +35,9 @@ public class NoticeReceiver extends BroadcastReceiver {
             RxBus.INSTANCE.send(new AdEvent());
         } else if (type.equals(NOTICE)) {
             ToastUtils.show("收到推送消息：notice");
+            RxBus.INSTANCE.send(new NoticePushEvent());
+        } else if (type.equals(UPDATENOTICE)) {
+            ToastUtils.show("收到推送消息：updateNotice");
             RxBus.INSTANCE.send(new NoticePushEvent());
         }
     }

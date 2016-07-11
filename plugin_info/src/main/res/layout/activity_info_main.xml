@@ -5,14 +5,83 @@
     android:layout_height="match_parent"
     android:background="@mipmap/bg_main"
     android:orientation="vertical"
-    android:paddingTop="@dimen/dp_23"
     tools:context=".mvp.v.activity.InfoMainActivity">
+
+    <include layout="@layout/layout_bottom" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:layout_width="@dimen/dp_173"
+            android:layout_height="match_parent"
+            android:background="@mipmap/bg_lefttab"
+            android:orientation="vertical">
+
+            <RadioGroup
+                android:id="@+id/title_rg"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <RadioButton
+                    android:id="@+id/title_announcement"
+                    style="@style/InfoTitleStyle"
+                    android:layout_width="164.5dp"
+                    android:layout_height="62dp"
+                    android:checked="true"
+                    android:text="@string/info_announcement_title" />
+
+                <RadioButton
+                    android:id="@+id/title_system"
+                    style="@style/InfoTitleStyle"
+                    android:layout_width="164.5dp"
+                    android:layout_height="62dp"
+                    android:text="@string/info_system_title" />
+
+                <RadioButton
+                    android:id="@+id/title_order"
+                    style="@style/InfoTitleStyle"
+                    android:layout_width="164.5dp"
+                    android:layout_height="62dp"
+                    android:text="@string/info_order_title" />
+
+                <RadioButton
+                    android:id="@+id/title_medical"
+                    style="@style/InfoTitleStyle"
+                    android:layout_width="164.5dp"
+                    android:layout_height="62dp"
+                    android:text="@string/info_medical_title" />
+            </RadioGroup>
+        </LinearLayout>
+
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1">
+
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/info_list"
+                android:layout_marginLeft="@dimen/dp_20"
+                android:layout_marginRight="@dimen/dp_30"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1" />
+
+            <include layout="@layout/layout_info_detail" />
+
+            <include layout="@layout/layout_normal_detail" />
+        </FrameLayout>
+
+    </LinearLayout>
 
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="@dimen/dp_34"
         android:paddingLeft="@dimen/dp_40"
-        android:paddingRight="@dimen/dp_40">
+        android:paddingRight="@dimen/dp_40"
+        android:visibility="gone">
 
         <TextView
             android:id="@+id/title"
@@ -39,74 +108,9 @@
         android:layout_marginTop="@dimen/dp_20"
         android:orientation="horizontal"
         android:paddingLeft="@dimen/dp_40"
-        android:paddingRight="@dimen/dp_40">
+        android:paddingRight="@dimen/dp_40"
+        android:visibility="gone">
 
-        <RadioGroup
-            android:id="@+id/title_rg"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal">
-
-            <RadioButton
-                android:id="@+id/title_all"
-                style="@style/InfoTitleStyle"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:checked="true"
-                android:visibility="gone"
-                android:text="@string/info_all_title" />
-
-            <RadioButton
-                android:id="@+id/title_announcement"
-                style="@style/InfoTitleStyle"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:checked="true"
-                android:text="@string/info_announcement_title" />
-
-            <RadioButton
-                android:id="@+id/title_system"
-                style="@style/InfoTitleStyle"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="@dimen/dp_30"
-                android:text="@string/info_system_title" />
-
-            <RadioButton
-                android:id="@+id/title_order"
-                style="@style/InfoTitleStyle"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="@dimen/dp_30"
-                android:text="@string/info_order_title" />
-
-            <RadioButton
-                android:id="@+id/title_medical"
-                style="@style/InfoTitleStyle"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="@dimen/dp_30"
-                android:text="@string/info_medical_title" />
-        </RadioGroup>
     </LinearLayout>
 
-    <FrameLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_marginLeft="@dimen/dp_180"
-        android:layout_marginRight="@dimen/dp_180"
-        android:layout_weight="1">
-
-        <android.support.v7.widget.RecyclerView
-            android:id="@+id/info_list"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_marginTop="@dimen/dp_10"
-            android:layout_weight="1" />
-
-        <include layout="@layout/layout_info_detail" />
-        <include layout="@layout/layout_normal_detail" />
-    </FrameLayout>
-
-    <include layout="@layout/layout_bottom" />
 </LinearLayout>

@@ -4,13 +4,15 @@
     android:id="@+id/lnd_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:layout_marginTop="@dimen/dp_27"
+    android:layout_marginLeft="@dimen/dp_30"
+    android:layout_marginRight="@dimen/dp_30"
     android:visibility="gone"
     android:orientation="vertical">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/dp_50"
         android:gravity="center_vertical">
 
         <TextView
@@ -27,7 +29,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textColor="@color/color_7fffffff"
-            android:textSize="@dimen/sp_16"
+            android:textSize="@dimen/sp_20"
             tools:text="10月23日" />
     </LinearLayout>
 

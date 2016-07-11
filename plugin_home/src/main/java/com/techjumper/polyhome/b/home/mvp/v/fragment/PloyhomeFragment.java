@@ -101,7 +101,6 @@ public class PloyhomeFragment extends AppBaseFragment<PloyhomeFragmentPresenter>
 
         if (timer != null) {
             timer.cancel();
-            timer = new Timer();
         }
 
         List<NoticeEntity.Unread> unreads = entity.getUnread();
@@ -119,20 +118,29 @@ public class PloyhomeFragment extends AppBaseFragment<PloyhomeFragmentPresenter>
         position = 0;
 
         if (messages != null && messages.size() > 0) {
-            timer.schedule(new TimerTask() {
-                @Override
-                public void run() {
-                    NoticeEntity.Message message = messages.get(position);
+            if (messages.size() == 1) {
+                NoticeEntity.Message message = messages.get(0);
+                RxBus.INSTANCE.send(new NoticeEvent(message.getTitle(), message.getContent(), message.getTypes()));
+            } else {
+                timer = new Timer();
 
-                    RxBus.INSTANCE.send(new NoticeEvent(message.getTitle(), message.getContent(), message.getTypes()));
+                timer.schedule(new TimerTask() {
+                    @Override
+                    public void run() {
+                        NoticeEntity.Message message = messages.get(position);
 
-                    if (position == messages.size() - 1) {
-                        position = 0;
-                    } else {
-                        position++;
+                        RxBus.INSTANCE.send(new NoticeEvent(message.getTitle(), message.getContent(), message.getTypes()));
+
+                        if (position == messages.size() - 1) {
+                            position = 0;
+                        } else {
+                            position++;
+                        }
                     }
-                }
-            }, 1000, 3000);
+                }, 1000, 3000);
+            }
+        } else {
+            RxBus.INSTANCE.send(new NoticeEvent(getString(R.string.info_not_new), "", -1));
         }
     }
 }

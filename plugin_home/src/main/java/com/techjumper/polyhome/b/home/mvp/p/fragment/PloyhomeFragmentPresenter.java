@@ -14,7 +14,10 @@ import android.widget.MediaController;
 import com.techjumper.commonres.UserInfoEntity;
 import com.techjumper.commonres.entity.NoticeEntity;
 import com.techjumper.commonres.entity.WeatherEntity;
+import com.techjumper.commonres.entity.event.AdControllerEvent;
 import com.techjumper.commonres.entity.event.AdEvent;
+import com.techjumper.commonres.entity.event.AdMainEvent;
+import com.techjumper.commonres.entity.event.AdShowEvent;
 import com.techjumper.commonres.entity.event.NoticeEvent;
 import com.techjumper.commonres.entity.event.UserInfoEvent;
 import com.techjumper.commonres.entity.event.WeatherEvent;
@@ -63,6 +66,7 @@ public class PloyhomeFragmentPresenter extends AppBaseFragmentPresenter<Ployhome
     private String addType = IMAGE_AD_TYPE;
     private int videoPosition = 0;
     private MyVideoView video;
+    private ImageView adImageView;
 
     @OnClick(R.id.property)
     void property() {
@@ -135,7 +139,9 @@ public class PloyhomeFragmentPresenter extends AppBaseFragmentPresenter<Ployhome
     public void onDestroy() {
         super.onDestroy();
         if (adController != null) {
-            adController.cancel(AdController.TYPE_HOME);
+            adController.stopReceiveScreenOff();
+            adController.stopWakeUpTimer();
+            adController.cancelAll();
         }
     }
 
@@ -162,6 +168,8 @@ public class PloyhomeFragmentPresenter extends AppBaseFragmentPresenter<Ployhome
 
                         if (entity == null || entity.getContent() == null || entity.getTitle() == null)
                             return;
+
+                        Log.d("pluginUserInfo", "更新公告结果: Content: " + entity.getContent() + "Title :" + entity.getTitle());
 
                         getView().getNoticeContent().setText(StringUtil.delHTMLTag(entity.getContent()));
                         getView().getNoticeTitle().setText(TextUtils.isEmpty(entity.getTitle()) ? "" : entity.getTitle());
@@ -205,6 +213,13 @@ public class PloyhomeFragmentPresenter extends AppBaseFragmentPresenter<Ployhome
                             restrictSv.showContentText(restrictNo);
                             restrictSv.showContentTextSize(60);
                             restrictSv.showTitleText(DateUtil.getDate(date) + "限行");
+                        }
+                    } else if (o instanceof AdControllerEvent) {
+                        if (adController != null) {
+                            adController.stopReceiveScreenOff();
+                            adController.stopWakeUpTimer();
+                            adController.cancel(AdController.TYPE_WAKEUP);
+                            adController.cancel(AdController.TYPE_SLEEP);
                         }
                     }
                 }));
@@ -287,59 +302,84 @@ public class PloyhomeFragmentPresenter extends AppBaseFragmentPresenter<Ployhome
 
     private void getAd() {
         JLog.d("广告请求");
-        ImageView adImageView = getView().getAd();
+        adImageView = getView().getAd();
         video = getView().getVideo();
+
+        getNormalAd();
+        getWakeUpAd();
+        getSleepAd();
+    }
+
+    /**
+     * 初始化广告
+     */
+    private void initAd() {
+        adImageView.setVisibility(View.VISIBLE);
+        video.setVisibility(View.INVISIBLE);
+        adImageView.setBackgroundResource(R.mipmap.bg_ad);
+        adImageView.setImageBitmap(null);
+    }
+
+    /**
+     * 处理广告
+     */
+    private void HandleAd(AdEntity.AdsEntity adsEntity, File file) {
+        JLog.d("有新的广告来啦. 本地广告路径:" + file + ", 详细信息: " + adsEntity);
+        addType = adsEntity.getMedia_type();
+
+        if (addType.equals(IMAGE_AD_TYPE)) {
+            adImageView.setVisibility(View.VISIBLE);
+            video.setVisibility(View.INVISIBLE);
+
+            if (file.exists()) {
+                PicassoHelper.load(file)
+                        .noFade()
+                        .into(adImageView);
+            } else {
+                PicassoHelper.load(adsEntity.getMedia_url())
+                        .noFade()
+                        .into(adImageView);
+            }
+
+            adsEntity.setMedia_url(file.getAbsolutePath().toString());
+        } else if (addType.equals(VIDEO_AD_TYPE)) {
+
+            adImageView.setVisibility(View.INVISIBLE);
+            video.setVisibility(View.VISIBLE);
+            if (file.exists()) {
+                video.setVideoPath(file.getAbsolutePath().toString());
+            } else {
+                video.setVideoURI(Uri.parse(adsEntity.getMedia_url()));
+            }
+
+            video.start();
+            video.requestFocus();
+
+            adsEntity.setMedia_url(file.getAbsolutePath().toString());
+        }
+
+        mAdsEntity = adsEntity;
+    }
+
+    /**
+     * 获取普通广告
+     */
+    private void getNormalAd() {
         adController.startPolling(new AdController.IAlarm() {
             @Override
             public void onAlarmReceive() {
-                JLog.d("广告进来了么" + UserInfoManager.getFamilyId() + "  " + UserInfoManager.getUserId() + "  " + UserInfoManager.getTicket());
+                JLog.d("普通获取广告" + UserInfoManager.getFamilyId() + "  " + UserInfoManager.getUserId() + "  " + UserInfoManager.getTicket());
 //                adController.executeAdRule(AdController.TYPE_HOME, "434", "362", "5b279ba4e46853d86e1d109914cfebe3ca224381", new AdController.IExecuteRule() {
                 adController.executeAdRule(AdController.TYPE_HOME, UserInfoManager.getFamilyId(), UserInfoManager.getUserId(), UserInfoManager.getTicket(), new AdController.IExecuteRule() {
                     @Override
                     public void onAdReceive(AdEntity.AdsEntity adsEntity, File file) {
-                        JLog.d("有新的广告来啦. 本地广告路径:" + file + ", 详细信息: " + adsEntity);
-                        addType = adsEntity.getMedia_type();
-
-                        if (addType.equals(IMAGE_AD_TYPE)) {
-                            adImageView.setVisibility(View.VISIBLE);
-                            video.setVisibility(View.INVISIBLE);
-
-                            if (file.exists()) {
-                                PicassoHelper.load(file)
-                                        .noFade()
-                                        .into(adImageView);
-                            } else {
-                                PicassoHelper.load(adsEntity.getMedia_url())
-                                        .noFade()
-                                        .into(adImageView);
-                            }
-
-                            adsEntity.setMedia_url(file.getAbsolutePath().toString());
-                        } else if (addType.equals(VIDEO_AD_TYPE)) {
-
-                            adImageView.setVisibility(View.INVISIBLE);
-                            video.setVisibility(View.VISIBLE);
-                            if (file.exists()) {
-                                video.setVideoPath(file.getAbsolutePath().toString());
-                            } else {
-                                video.setVideoURI(Uri.parse(adsEntity.getMedia_url()));
-                            }
-
-                            video.start();
-                            video.requestFocus();
-
-                            adsEntity.setMedia_url(file.getAbsolutePath().toString());
-                        }
-
-                        mAdsEntity = adsEntity;
+                        HandleAd(adsEntity, file);
                     }
 
                     @Override
                     public void onAdPlayFinished() {
                         JLog.d("广告播放完成  (有可能是上一次的任务被自动中断，不影响本次广告执行)");
-                        adImageView.setVisibility(View.VISIBLE);
-                        video.setVisibility(View.INVISIBLE);
-                        adImageView.setBackgroundResource(R.mipmap.bg_ad);
+                        initAd();
                     }
 
                     @Override
@@ -350,17 +390,104 @@ public class PloyhomeFragmentPresenter extends AppBaseFragmentPresenter<Ployhome
                     @Override
                     public void onAdExecuteFailed(String reason) {
                         JLog.d("获取广告失败: " + reason);
-                        adImageView.setVisibility(View.VISIBLE);
-                        video.setVisibility(View.INVISIBLE);
-                        adImageView.setBackgroundResource(R.mipmap.bg_ad);
+                        initAd();
                     }
 
                     @Override
                     public void onAdNoExist(String adType, String hour) {
                         JLog.d("没有广告: 广告类型=" + adType + ", 当前小时=" + hour);
-                        adImageView.setVisibility(View.VISIBLE);
-                        video.setVisibility(View.INVISIBLE);
-                        adImageView.setBackgroundResource(R.mipmap.bg_ad);
+                        initAd();
+                    }
+                });
+            }
+        });
+    }
+
+    /**
+     * 唤醒广告
+     */
+    private void getWakeUpAd() {
+        adController.startWakeUpTimer(new AdController.IWakeUp() {
+            @Override
+            public void onWakeUpAdExecute() {
+                JLog.d("获取唤醒广告" + UserInfoManager.getFamilyId() + "  " + UserInfoManager.getUserId() + "  " + UserInfoManager.getTicket());
+//                adController.executeAdRule(AdController.TYPE_HOME, "434", "362", "5b279ba4e46853d86e1d109914cfebe3ca224381", new AdController.IExecuteRule() {
+                adController.executeAdRule(AdController.TYPE_WAKEUP, UserInfoManager.getFamilyId(), UserInfoManager.getUserId(), UserInfoManager.getTicket(), new AdController.IExecuteRule() {
+                    @Override
+                    public void onAdReceive(AdEntity.AdsEntity adsEntity, File file) {
+                        RxBus.INSTANCE.send(new AdMainEvent(adsEntity, file));
+                    }
+
+                    @Override
+                    public void onAdPlayFinished() {
+                        JLog.d("广告播放完成  (有可能是上一次的任务被自动中断，不影响本次广告执行)");
+                        RxBus.INSTANCE.send(new AdShowEvent(false));
+                    }
+
+                    @Override
+                    public void onAdDownloadError(AdEntity.AdsEntity adsEntity) {
+                        JLog.d("某个广告下载失败: " + adsEntity);
+                        RxBus.INSTANCE.send(new AdShowEvent(false));
+                    }
+
+                    @Override
+                    public void onAdExecuteFailed(String reason) {
+                        JLog.d("获取广告失败: " + reason);
+                        RxBus.INSTANCE.send(new AdShowEvent(false));
+                    }
+
+                    @Override
+                    public void onAdNoExist(String adType, String hour) {
+                        JLog.d("没有广告: 广告类型=" + adType + ", 当前小时=" + hour);
+                        RxBus.INSTANCE.send(new AdShowEvent(false));
+                    }
+                });
+            }
+        });
+    }
+
+    /**
+     * 休眠广告
+     */
+    private void getSleepAd() {
+        adController.receiveScreenOff(new AdController.IScreenOff() {
+            @Override
+            public void onSleepAdExecute() {
+                JLog.d("获取休眠广告" + UserInfoManager.getFamilyId() + "  " + UserInfoManager.getUserId() + "  " + UserInfoManager.getTicket());
+//                adController.executeAdRule(AdController.TYPE_HOME, "434", "362", "5b279ba4e46853d86e1d109914cfebe3ca224381", new AdController.IExecuteRule() {
+                adController.executeAdRule(AdController.TYPE_SLEEP, UserInfoManager.getFamilyId(), UserInfoManager.getUserId(), UserInfoManager.getTicket(), new AdController.IExecuteRule() {
+                    @Override
+                    public void onAdReceive(AdEntity.AdsEntity adsEntity, File file) {
+                        adController.wakeUpScreen();  //唤醒屏幕
+                        RxBus.INSTANCE.send(new AdMainEvent(adsEntity, file));
+                    }
+
+                    @Override
+                    public void onAdPlayFinished() {
+                        JLog.d("广告播放完成  (有可能是上一次的任务被自动中断，不影响本次广告执行)");
+                        adController.turnOffScreen(); //保持休眠
+                        RxBus.INSTANCE.send(new AdShowEvent(false));
+                    }
+
+                    @Override
+                    public void onAdDownloadError(AdEntity.AdsEntity adsEntity) {
+                        JLog.d("某个广告下载失败: " + adsEntity);
+                        adController.turnOffScreen(); //保持休眠
+                        RxBus.INSTANCE.send(new AdShowEvent(false));
+                    }
+
+                    @Override
+                    public void onAdExecuteFailed(String reason) {
+                        JLog.d("获取广告失败: " + reason);
+
+                        RxBus.INSTANCE.send(new AdShowEvent(false));
+                    }
+
+                    @Override
+                    public void onAdNoExist(String adType, String hour) {
+                        JLog.d("没有广告: 广告类型=" + adType + ", 当前小时=" + hour);
+                        adController.turnOffScreen(); //保持休眠
+                        RxBus.INSTANCE.send(new AdShowEvent(false));
                     }
                 });
             }

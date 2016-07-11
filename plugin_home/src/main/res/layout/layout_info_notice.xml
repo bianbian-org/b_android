@@ -12,7 +12,7 @@
         android:layout_marginTop="@dimen/dp_38"
         android:paddingLeft="@dimen/dp_13"
         android:paddingRight="@dimen/dp_14"
-        android:text="没有通知"
+        android:text="@string/info_not_new"
         android:textColor="@color/color_ffffff"
         android:textSize="@dimen/sp_24"
         android:textStyle="bold" />

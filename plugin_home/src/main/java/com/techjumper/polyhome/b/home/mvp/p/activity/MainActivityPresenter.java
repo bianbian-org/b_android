@@ -2,19 +2,29 @@ package com.techjumper.polyhome.b.home.mvp.p.activity;
 
 import android.content.ComponentName;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
+import android.view.View;
+import android.widget.FrameLayout;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
 
 import com.techjumper.commonres.ComConstant;
 import com.techjumper.commonres.UserInfoEntity;
 import com.techjumper.commonres.entity.MedicalEntity;
+import com.techjumper.commonres.entity.event.AdControllerEvent;
+import com.techjumper.commonres.entity.event.AdMainEvent;
+import com.techjumper.commonres.entity.event.AdShowEvent;
 import com.techjumper.commonres.entity.event.TimeEvent;
 import com.techjumper.commonres.entity.event.UserInfoEvent;
 import com.techjumper.commonres.util.CommonDateUtil;
 import com.techjumper.commonres.util.PluginEngineUtil;
 import com.techjumper.corelib.rx.tools.RxBus;
+import com.techjumper.corelib.utils.common.JLog;
 import com.techjumper.corelib.utils.window.ToastUtils;
+import com.techjumper.lib2.utils.PicassoHelper;
 import com.techjumper.plugincommunicateengine.PluginEngine;
 import com.techjumper.plugincommunicateengine.entity.core.SaveInfoEntity;
 import com.techjumper.plugincommunicateengine.utils.GsonUtils;
@@ -22,8 +32,14 @@ import com.techjumper.polyhome.b.home.BuildConfig;
 import com.techjumper.polyhome.b.home.InfoManager;
 import com.techjumper.polyhome.b.home.R;
 import com.techjumper.polyhome.b.home.UserInfoManager;
+import com.techjumper.polyhome.b.home.mvp.p.fragment.PloyhomeFragmentPresenter;
 import com.techjumper.polyhome.b.home.mvp.v.activity.MainActivity;
+import com.techjumper.polyhome.b.home.mvp.v.fragment.PloyhomeFragment;
+import com.techjumper.polyhome.b.home.widget.MyVideoView;
+import com.techjumper.polyhome_b.adlib.entity.AdEntity;
+import com.techjumper.polyhome_b.adlib.manager.AdController;
 
+import java.io.File;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -35,15 +51,16 @@ import rx.android.schedulers.AndroidSchedulers;
  */
 public class MainActivityPresenter extends AppBaseActivityPresenter<MainActivity> {
 
+    private FrameLayout mainAdLayout;
+    private LinearLayout mainContentLayout;
+    private MyVideoView mainAdVideo;
+    private ImageView mainAdImg;
+
     @OnClick(R.id.title_img)
     void titleImg() {
         if (ComConstant.titleFinish) {
             getView().finish();
         }
-//        Intent intent = new Intent();
-//        intent.putExtra("key_extra", "hehe");
-//        intent.setAction("action_push_receive");
-//        getView().sendBroadcast(intent);
     }
 
     @OnClick(R.id.title)
@@ -89,13 +106,24 @@ public class MainActivityPresenter extends AppBaseActivityPresenter<MainActivity
         getView().startActivity(it);
     }
 
+    @OnClick(R.id.main_ad_layout)
+    void finishAd() {
+        RxBus.INSTANCE.send(new AdControllerEvent());
+        isShowMainAd(false);
+    }
+
     @Override
+
     public void initData(Bundle savedInstanceState) {
 
     }
 
     @Override
     public void onViewInited(Bundle savedInstanceState) {
+        mainAdLayout = getView().getMainAdLayout();
+        mainContentLayout = getView().getMainContentLayout();
+        mainAdVideo = getView().getMainAdVideo();
+        mainAdImg = getView().getMainAdImg();
 
         RxBus.INSTANCE.asObservable()
                 .observeOn(AndroidSchedulers.mainThread())
@@ -105,6 +133,14 @@ public class MainActivityPresenter extends AppBaseActivityPresenter<MainActivity
                         if (getView().getDate() != null) {
                             getView().getDate().setText(CommonDateUtil.getTitleDate());
                         }
+                    } else if (o instanceof AdMainEvent) {
+                        AdMainEvent event = (AdMainEvent) o;
+                        if (event != null && event.getAdsEntity() != null && event.getFile() != null) {
+                            HandleMainAd(event.getAdsEntity(), event.getFile());
+                        }
+                    } else if (o instanceof AdShowEvent) {
+                        AdShowEvent event = (AdShowEvent) o;
+                        isShowMainAd(event.isShow());
                     }
                 });
 
@@ -184,6 +220,8 @@ public class MainActivityPresenter extends AppBaseActivityPresenter<MainActivity
 
                 PluginEngineUtil.initUserInfo(message);
             } else if (code == PluginEngine.CODE_CUSTOM) {
+                Log.d("pluginUserInfo", "CODE_CUSTOM...");
+                Log.d("pluginUserInfo", "message: " + (TextUtils.isEmpty(message) ? "" : message) + "  extras: " + extras == null ? "" : extras.getBoolean("key_ismedical") + "");
                 if (!TextUtils.isEmpty(message)) {
                     if (message.equals("action_medical")) {
                         if (extras != null) {
@@ -196,5 +234,48 @@ public class MainActivityPresenter extends AppBaseActivityPresenter<MainActivity
                 }
             }
         });
+    }
+
+    private void isShowMainAd(boolean isShow) {
+        if (isShow) {
+            mainAdLayout.setVisibility(View.VISIBLE);
+            mainContentLayout.setVisibility(View.INVISIBLE);
+        } else {
+            mainAdLayout.setVisibility(View.INVISIBLE);
+            mainContentLayout.setVisibility(View.VISIBLE);
+        }
+    }
+
+    private void HandleMainAd(AdEntity.AdsEntity adsEntity, File file) {
+        isShowMainAd(true);
+        JLog.d("满屏广告来啦. 本地广告路径:" + file + ", 详细信息: " + adsEntity);
+        String addType = adsEntity.getMedia_type();
+
+        if (addType.equals(PloyhomeFragmentPresenter.IMAGE_AD_TYPE)) {
+            mainAdImg.setVisibility(View.VISIBLE);
+            mainAdVideo.setVisibility(View.INVISIBLE);
+
+            if (file.exists()) {
+                PicassoHelper.load(file)
+                        .noFade()
+                        .into(mainAdImg);
+            } else {
+                PicassoHelper.load(adsEntity.getMedia_url())
+                        .noFade()
+                        .into(mainAdImg);
+            }
+        } else if (addType.equals(PloyhomeFragmentPresenter.VIDEO_AD_TYPE)) {
+
+            mainAdImg.setVisibility(View.INVISIBLE);
+            mainAdVideo.setVisibility(View.VISIBLE);
+            if (file.exists()) {
+                mainAdVideo.setVideoPath(file.getAbsolutePath().toString());
+            } else {
+                mainAdVideo.setVideoURI(Uri.parse(adsEntity.getMedia_url()));
+            }
+
+            mainAdVideo.start();
+            mainAdVideo.requestFocus();
+        }
     }
 }
