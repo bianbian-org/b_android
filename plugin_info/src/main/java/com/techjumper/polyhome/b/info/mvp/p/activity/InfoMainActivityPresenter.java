@@ -13,8 +13,10 @@ import com.techjumper.commonres.entity.TrueEntity;
 import com.techjumper.commonres.entity.event.InfoTypeEvent;
 import com.techjumper.commonres.entity.event.PropertyNormalDetailEvent;
 import com.techjumper.commonres.entity.event.ReadMessageEvent;
+import com.techjumper.commonres.entity.event.TimeEvent;
 import com.techjumper.commonres.entity.event.UserInfoEvent;
 import com.techjumper.commonres.entity.event.loadmoreevent.LoadmoreInfoEvent;
+import com.techjumper.commonres.util.CommonDateUtil;
 import com.techjumper.commonres.util.PluginEngineUtil;
 import com.techjumper.corelib.rx.tools.RxBus;
 import com.techjumper.corelib.utils.window.ToastUtils;
@@ -114,6 +116,11 @@ public class InfoMainActivityPresenter extends AppBaseActivityPresenter<InfoMain
                                 } else {
                                     getList(type);
                                 }
+                            } else if (o instanceof TimeEvent) {
+                                Log.d("time", "更新时间");
+                                if (getView().getBottomDate() != null) {
+                                    getView().getBottomDate().setText(CommonDateUtil.getTitleDate());
+                                }
                             }
                         })
         );
@@ -143,8 +150,9 @@ public class InfoMainActivityPresenter extends AppBaseActivityPresenter<InfoMain
 
                 if (infoEntity != null &&
                         infoEntity.getData() != null &&
-                        infoEntity.getData().getMessages() != null) {
-                    getView().getList(infoEntity.getData().getMessages(), pageNo);
+                        infoEntity.getData().getResult() != null &&
+                        infoEntity.getData().getResult().getMessages() != null) {
+                    getView().getList(infoEntity.getData().getResult().getMessages(), pageNo);
                 }
             }
         }));

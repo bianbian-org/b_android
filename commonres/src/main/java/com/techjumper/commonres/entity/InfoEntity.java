@@ -15,7 +15,20 @@ public class InfoEntity extends BaseEntity<InfoEntity.InfoDataEntity> {
     public static final int HASREAD_TURE = 1;
 
     public static class InfoDataEntity {
-        List<InfoItemEntity> messages;
+        private InfoResultEntity result;
+
+        public InfoResultEntity getResult() {
+            return result;
+        }
+
+        public void setResult(InfoResultEntity result) {
+            this.result = result;
+        }
+    }
+
+    public static class InfoResultEntity {
+        private List<InfoItemEntity> messages;
+        private int un_read;
 
         public List<InfoItemEntity> getMessages() {
             return messages;
@@ -23,6 +36,14 @@ public class InfoEntity extends BaseEntity<InfoEntity.InfoDataEntity> {
 
         public void setMessages(List<InfoItemEntity> messages) {
             this.messages = messages;
+        }
+
+        public int getUn_read() {
+            return un_read;
+        }
+
+        public void setUn_read(int un_read) {
+            this.un_read = un_read;
         }
 
         public static class InfoItemEntity {

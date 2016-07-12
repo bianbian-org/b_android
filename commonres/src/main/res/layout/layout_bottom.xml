@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="@dimen/dp_54"
     android:background="@color/color_000000">
@@ -8,10 +9,10 @@
         android:id="@+id/bottom_back"
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
-        android:layout_marginLeft="@dimen/dp_20"
+        android:gravity="center_vertical"
         android:paddingLeft="@dimen/dp_20"
-        android:paddingRight="@dimen/dp_20"
-        android:gravity="center_vertical">
+        android:paddingRight="@dimen/dp_20">
+
         <ImageView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -19,12 +20,40 @@
             android:src="@mipmap/icon_bottom_arrow" />
     </LinearLayout>
 
-
-    <ImageView
+    <LinearLayout
         android:id="@+id/bottom_home"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_alignParentRight="true"
+        android:gravity="center_vertical"
+        android:paddingLeft="@dimen/dp_20"
+        android:paddingRight="@dimen/dp_20">
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:src="@mipmap/icon_bottom_home" />
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/bottom_title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerInParent="true"
-        android:layout_gravity="center"
-        android:src="@mipmap/icon_bottom_home" />
+        android:textColor="@color/color_ffffff"
+        android:textSize="@dimen/sp_24"
+        tools:text="信息中心" />
+
+    <TextView
+        android:id="@+id/bottom_date"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_toRightOf="@id/bottom_title"
+        android:layout_centerVertical="true"
+        android:textColor="@color/color_ffffff"
+        android:textSize="@dimen/sp_18"
+        android:layout_marginLeft="@dimen/dp_128"
+        tools:text="3月18日  周五  22:45" />
+
 </RelativeLayout>

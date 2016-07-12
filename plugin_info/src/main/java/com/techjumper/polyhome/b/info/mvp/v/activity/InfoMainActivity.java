@@ -1,13 +1,10 @@
 package com.techjumper.polyhome.b.info.mvp.v.activity;
 
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.View;
-import android.view.WindowManager;
 import android.webkit.WebChromeClient;
 import android.webkit.WebView;
 import android.widget.LinearLayout;
@@ -27,7 +24,9 @@ import com.techjumper.commonres.entity.event.BackEvent;
 import com.techjumper.commonres.entity.event.InfoDetailEvent;
 import com.techjumper.commonres.entity.event.InfoTypeEvent;
 import com.techjumper.commonres.entity.event.PropertyNormalDetailEvent;
+import com.techjumper.commonres.entity.event.TimeEvent;
 import com.techjumper.commonres.entity.event.loadmoreevent.LoadmoreInfoEvent;
+import com.techjumper.commonres.util.CommonDateUtil;
 import com.techjumper.corelib.mvp.factory.Presenter;
 import com.techjumper.corelib.rx.tools.RxBus;
 import com.techjumper.polyhome.b.info.R;
@@ -39,8 +38,11 @@ import com.techjumper.polyhome.b.info.widget.AdapterUtil;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Timer;
+import java.util.TimerTask;
 
 import butterknife.Bind;
+import butterknife.ButterKnife;
 import butterknife.OnClick;
 import rx.android.schedulers.AndroidSchedulers;
 
@@ -81,8 +83,13 @@ public class InfoMainActivity extends AppBaseActivity {
     WebView lndContent;
     @Bind(R.id.lnd_layout)
     LinearLayout lndLayout;
+    @Bind(R.id.bottom_title)
+    TextView bottomTitle;
+    @Bind(R.id.bottom_date)
+    TextView bottomDate;
 
     private int type = NoticeEntity.PROPERTY;
+    private Timer timer = new Timer();
     private LinearLayoutManager manager = new LinearLayoutManager(this);
 
     @OnClick(R.id.bottom_back)
@@ -108,6 +115,10 @@ public class InfoMainActivity extends AppBaseActivity {
         this.type = type;
     }
 
+    public TextView getBottomDate() {
+        return bottomDate;
+    }
+
     @Override
     protected View inflateView(Bundle savedInstanceState) {
         return inflate(R.layout.activity_info_main);
@@ -115,6 +126,9 @@ public class InfoMainActivity extends AppBaseActivity {
 
     @Override
     protected void initView(Bundle savedInstanceState) {
+        bottomTitle.setText(R.string.info_title);
+        bottomDate.setText(CommonDateUtil.getTitleDate());
+
         infoList.setLayoutManager(manager);
         adapter = new CommonRecyclerAdapter();
 
@@ -123,12 +137,12 @@ public class InfoMainActivity extends AppBaseActivity {
             type = bundle.getInt(PluginConstant.KEY_INFO_TYPE);
             if (type == NoticeEntity.PROPERTY) {
                 titleAnnouncement.setChecked(true);
-            } else if (type == NoticeEntity.SYSTEM) {
-                titleSystem.setChecked(true);
+            } else if (type == NoticeEntity.ORDER) {
+                titleOrder.setChecked(true);
             } else if (type == NoticeEntity.MEDICAL) {
                 titleMedical.setChecked(true);
             } else {
-                titleOrder.setChecked(true);
+                titleSystem.setChecked(true);
             }
             UserInfoEntity userInfoEntity = new UserInfoEntity();
             userInfoEntity.setUser_id(bundle.getLong(PluginConstant.KEY_INFO_USER_ID));
@@ -138,10 +152,10 @@ public class InfoMainActivity extends AppBaseActivity {
         }
 //        UserInfoEntity userInfoEntity = new UserInfoEntity();
 //        userInfoEntity.setUser_id(362);
-//        userInfoEntity.setTicket("64008f838e4c3cfd16d2d369f8bab61261406866");
+//        userInfoEntity.setTicket("0ccb83db8bcce3136b4747ba9e995ee2eaccf731");
 //        userInfoEntity.setId(434);
 //        UserInfoManager.saveUserInfo(userInfoEntity);
-        setType(type);
+//        setType(type);
 
         titleRg.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
             @Override
@@ -226,9 +240,16 @@ public class InfoMainActivity extends AppBaseActivity {
                 super.onScrolled(recyclerView, dx, dy);
             }
         });
+
+        timer.schedule(new TimerTask() {
+            @Override
+            public void run() {
+                RxBus.INSTANCE.send(new TimeEvent());
+            }
+        }, 5000, 60000);
     }
 
-    public void getList(List<InfoEntity.InfoDataEntity.InfoItemEntity> infoEntityTemporaries, int page) {
+    public void getList(List<InfoEntity.InfoResultEntity.InfoItemEntity> infoEntityTemporaries, int page) {
 
         infoDetail.setVisibility(View.GONE);
         lndLayout.setVisibility(View.GONE);

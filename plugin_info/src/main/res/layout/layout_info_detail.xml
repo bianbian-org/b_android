@@ -42,7 +42,7 @@
             android:background="@drawable/bg_shape_radius_20c3f3"
             android:gravity="center"
             android:text="@string/info_system"
-            android:textSize="@dimen/sp_12"/>
+            android:textSize="@dimen/dp_18"/>
     </LinearLayout>
 
     <View

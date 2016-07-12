@@ -216,8 +216,7 @@ public class PloyhomeFragmentPresenter extends AppBaseFragmentPresenter<Ployhome
                         }
                     } else if (o instanceof AdControllerEvent) {
                         if (adController != null) {
-                            adController.stopReceiveScreenOff();
-                            adController.stopWakeUpTimer();
+                            adController.resetSleepTime();
                             adController.cancel(AdController.TYPE_WAKEUP);
                             adController.cancel(AdController.TYPE_SLEEP);
                         }
@@ -415,6 +414,7 @@ public class PloyhomeFragmentPresenter extends AppBaseFragmentPresenter<Ployhome
                 adController.executeAdRule(AdController.TYPE_WAKEUP, UserInfoManager.getFamilyId(), UserInfoManager.getUserId(), UserInfoManager.getTicket(), new AdController.IExecuteRule() {
                     @Override
                     public void onAdReceive(AdEntity.AdsEntity adsEntity, File file) {
+                        adController.wakeUpScreen();
                         RxBus.INSTANCE.send(new AdMainEvent(adsEntity, file));
                     }
 

@@ -347,7 +347,7 @@ public class ListFragment extends AppBaseFragment<ListFragmentPresenter> {
 
         lmdTitle.setText(TypeUtil.getRepairTitle(entity.getRepair_type(), entity.getRepair_device()));
         lmdContent.setText(entity.getNote());
-        lmdDate.setText("10月1日");
+        lmdDate.setText(entity.getRepair_date().substring(0, 10));
         setSendId(id);
         setActionType(ActionFragment.REPAIR);
 

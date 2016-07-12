@@ -14,8 +14,8 @@ import com.techjumper.polyhome.b.info.R;
 /**
  * Created by kevin on 16/5/4.
  */
-@DataBean(beanName = "InfoEntityBean", data = InfoEntity.InfoDataEntity.InfoItemEntity.class)
-public class InfoEntityViewHolder extends BaseRecyclerViewHolder<InfoEntity.InfoDataEntity.InfoItemEntity> {
+@DataBean(beanName = "InfoEntityBean", data = InfoEntity.InfoResultEntity.InfoItemEntity.class)
+public class InfoEntityViewHolder extends BaseRecyclerViewHolder<InfoEntity.InfoResultEntity.InfoItemEntity> {
     public static final int LAYOUT_ID = R.layout.item_info;
     int hasRead;
 
@@ -24,7 +24,7 @@ public class InfoEntityViewHolder extends BaseRecyclerViewHolder<InfoEntity.Info
     }
 
     @Override
-    public void setData(InfoEntity.InfoDataEntity.InfoItemEntity data) {
+    public void setData(InfoEntity.InfoResultEntity.InfoItemEntity data) {
         if (data == null)
             return;
 
@@ -33,7 +33,8 @@ public class InfoEntityViewHolder extends BaseRecyclerViewHolder<InfoEntity.Info
         String content = data.getContent();
         String date = data.getCreated_at();
 
-        int type = data.getTypes();hasRead = data.getHas_read();
+        int type = data.getTypes();
+        hasRead = data.getHas_read();
 
         setText(R.id.info_title, title);
         setText(R.id.info_content, content);
@@ -50,15 +51,12 @@ public class InfoEntityViewHolder extends BaseRecyclerViewHolder<InfoEntity.Info
         // TODO: 16/5/4 当接口来的时候再抽离出来
         if (type == InfoEntity.TYPE_SYSTEM) {
             typeTextView.setBackgroundResource(R.drawable.bg_shape_radius_20c3f3);
-            typeTextView.setTextColor(getContext().getResources().getColor(R.color.color_20C3F3));
             typeTextView.setText(R.string.info_system);
         } else if (type == InfoEntity.TYPE_ORDER) {
             typeTextView.setBackgroundResource(R.drawable.bg_shape_radius_ff9938);
-            typeTextView.setTextColor(getContext().getResources().getColor(R.color.color_FF9938));
             typeTextView.setText(R.string.info_order);
         } else if (type == InfoEntity.TYPE_MEDICAL) {
             typeTextView.setBackgroundResource(R.drawable.bg_shape_radius_4eb738);
-            typeTextView.setTextColor(getContext().getResources().getColor(R.color.color_4EB738));
             typeTextView.setText(R.string.info_medical);
         }
 

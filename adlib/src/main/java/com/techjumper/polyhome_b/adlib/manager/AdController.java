@@ -4,6 +4,8 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.os.Build;
+import android.os.PowerManager;
 import android.os.SystemClock;
 import android.provider.Settings;
 import android.text.TextUtils;
@@ -81,6 +83,21 @@ public class AdController {
         }
     }
 
+    public void wakeUpScreen() {
+        if (isScreenOn()) {
+            JLog.d("屏幕已经是亮的所以不做操作");
+            return;
+        }
+        JLog.d("唤醒屏幕");
+        PowerUtil.wakeUpScreen();
+    }
+
+    private boolean isScreenOn() {
+        PowerManager powerManager = (PowerManager) Utils.appContext.getSystemService(Context.POWER_SERVICE);
+        return Build.VERSION.SDK_INT >= 20 ? powerManager.isInteractive() : powerManager.isScreenOn();
+
+    }
+
     public void startWakeUpTimer(IWakeUp iWakeUp) {
         stopWakeUpTimer();
         this.iWakeUP = iWakeUp;
@@ -132,7 +149,7 @@ public class AdController {
         long timeMillis = getTriggerTime();
 
         PollingUtils.startPollingService(Utils.appContext
-                , timeMillis, 60 * 60L, WakeupAdService.class, "", CODE_WAKEUP_ALARM);
+                , timeMillis, 60 * 60L, AlarmService.class, "", CODE_ALARM_SERVICE);
         if (this.iAlarm != null) {
             this.iAlarm.onAlarmReceive();
         }
@@ -164,8 +181,15 @@ public class AdController {
     public void receiveScreenOff(IScreenOff iScreenOff) {
         stopReceiveScreenOff();
         mScreenOffReceiver = new ScreenOffReceiver(iScreenOff, mLockTime);
-        Utils.appContext.registerReceiver(mScreenOffReceiver, new IntentFilter(Intent.ACTION_SCREEN_OFF));
+        IntentFilter intentFilter = new IntentFilter(Intent.ACTION_SCREEN_OFF);
+        intentFilter.setPriority(IntentFilter.SYSTEM_HIGH_PRIORITY);
+        Utils.appContext.registerReceiver(mScreenOffReceiver, intentFilter);
         JLog.d("开始接收屏幕关闭的消息");
+    }
+
+    public void resetSleepTime() {
+        JLog.d("恢复休眠时间: " + mLockTime);
+        setScreenOffTime(mLockTime);
     }
 
     public void stopReceiveScreenOff() {
@@ -294,9 +318,6 @@ public class AdController {
         return mAdFile.getAbsolutePath();
     }
 
-    public void wakeUpScreen() {
-        PowerUtil.wakeUpScreen();
-    }
 
     public void turnOffScreen() {
         setScreenOffTime(0);
@@ -320,8 +341,10 @@ public class AdController {
 
     private static void setScreenOffTime(int paramInt) {
         try {
-            Settings.System.putInt(Utils.appContext.getContentResolver(), Settings.System.SCREEN_OFF_TIMEOUT,
+            boolean b = Settings.System.putInt(Utils.appContext.getContentResolver(), Settings.System.SCREEN_OFF_TIMEOUT,
                     paramInt);
+            if (!b)
+                JLog.e("设置系统休眠时间失败");
         } catch (Exception localException) {
             JLog.e("设置系统休眠时间失败");
         }
