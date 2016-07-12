@@ -169,6 +169,7 @@ public class PolyTab extends RatioFrameLayout {
         super.onRestoreInstanceState(ss.getSuperState());
         this.mCurrIndex = ss.mCurrIndex;
         post(() -> {
+            changeIcon(mCurrIndex);
             postInvalidate();
         });
 
