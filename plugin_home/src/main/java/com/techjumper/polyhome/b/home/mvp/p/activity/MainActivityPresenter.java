@@ -29,18 +29,16 @@ import com.techjumper.plugincommunicateengine.PluginEngine;
 import com.techjumper.plugincommunicateengine.entity.core.SaveInfoEntity;
 import com.techjumper.plugincommunicateengine.utils.GsonUtils;
 import com.techjumper.polyhome.b.home.BuildConfig;
-import com.techjumper.polyhome.b.home.InfoManager;
 import com.techjumper.polyhome.b.home.R;
 import com.techjumper.polyhome.b.home.UserInfoManager;
 import com.techjumper.polyhome.b.home.mvp.p.fragment.PloyhomeFragmentPresenter;
 import com.techjumper.polyhome.b.home.mvp.v.activity.MainActivity;
-import com.techjumper.polyhome.b.home.mvp.v.fragment.PloyhomeFragment;
 import com.techjumper.polyhome.b.home.widget.MyVideoView;
 import com.techjumper.polyhome_b.adlib.entity.AdEntity;
-import com.techjumper.polyhome_b.adlib.manager.AdController;
 
 import java.io.File;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import butterknife.OnClick;
@@ -144,7 +142,7 @@ public class MainActivityPresenter extends AppBaseActivityPresenter<MainActivity
                     }
                 });
 
-        PluginEngineUtil.getPerson();
+//        PluginEngineUtil.getMedical();
 //        UserInfoEntity userInfoEntity2 = new UserInfoEntity();
 //        userInfoEntity2.setId(438);
 //        userInfoEntity2.setUser_id(367);
@@ -159,6 +157,7 @@ public class MainActivityPresenter extends AppBaseActivityPresenter<MainActivity
         PluginEngine.getInstance().registerReceiver((code, message, extras) -> {
             if (code == PluginEngine.CODE_GET_SAVE_INFO) {
                 Log.d("pluginUserInfo", "开始从本地抓取用户信息数据...");
+                Log.d("pluginUserInfo", "message: " + message);
                 SaveInfoEntity saveInfoEntity = GsonUtils.fromJson(message, SaveInfoEntity.class);
                 if (saveInfoEntity == null || saveInfoEntity.getData() == null)
                     return;
@@ -199,15 +198,21 @@ public class MainActivityPresenter extends AppBaseActivityPresenter<MainActivity
 
                     RxBus.INSTANCE.send(new UserInfoEvent(userInfoEntity));
                 } else if (name.equals(ComConstant.FILE_MEDICAL)) {
-                    MedicalEntity medicalEntity = new MedicalEntity();
+                    MedicalEntity medicalEntity = GsonUtils.fromJson(message, MedicalEntity.class);
+                    Log.d("pluginUserInfo", "medicalEntity: " + (medicalEntity == null ? "" : medicalEntity));
+                    Log.d("pluginUserInfo", "medicalEntity.getData(): " + (medicalEntity.getData() == null ? "" : medicalEntity.getData()));
+                    Log.d("pluginUserInfo", "medicalEntity.getData().getValues(): " + (medicalEntity.getData().getValues() == null ? "" : medicalEntity.getData().getValues()));
+                    Log.d("pluginUserInfo", "medicalEntity.getData().getValues().getDatas(): " + (medicalEntity.getData().getValues().getDatas() == null ? "" : medicalEntity.getData().getValues().getDatas()));
 
-                    for (Map.Entry<String, String> entry : hashMap.entrySet()) {
-                        Log.d("pluginUserInfo", entry.getValue());
-                        String key = entry.getKey();
-                        String value = entry.getValue();
+                    if (medicalEntity == null
+                            || medicalEntity.getData() == null
+                            || medicalEntity.getData().getValues() == null
+                            || medicalEntity.getData().getValues().getDatas() == null)
+                        return;
 
-                        Log.d("pluginUserInfo", "key: " + key + " value: " + value);
-                    }
+                    List<MedicalEntity.MedicalItemEntity> medicalItemEntities = medicalEntity.getData().getValues().getDatas();
+
+                    Log.d("pluginUserInfo", "medicalItemEntities: " + medicalItemEntities.size());
                 }
                 Log.d("pluginUserInfo", "更新完毕用户信息...");
             } else if (code == PluginEngine.CODE_SAVE_INFO) {
@@ -227,7 +232,7 @@ public class MainActivityPresenter extends AppBaseActivityPresenter<MainActivity
                         if (extras != null) {
                             boolean isMedical = extras.getBoolean("key_ismedical");
                             if (isMedical == true) {
-                                PluginEngineUtil.getPerson();
+                                PluginEngineUtil.getMedical();
                             }
                         }
                     }

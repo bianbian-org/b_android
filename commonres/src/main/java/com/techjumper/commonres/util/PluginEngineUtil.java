@@ -8,6 +8,8 @@ import com.techjumper.plugincommunicateengine.HostDataBuilder;
 import com.techjumper.plugincommunicateengine.IPluginMessageReceiver;
 import com.techjumper.plugincommunicateengine.PluginEngine;
 
+import static com.techjumper.commonres.ComConstant.FILE_MEDICAL;
+
 /**
  * Created by kevin on 16/6/13.
  */
@@ -213,13 +215,13 @@ public class PluginEngineUtil {
         });
     }
 
-    public static void getPerson() {
+    public static void getMedical() {
         PluginEngine.getInstance().start(new PluginEngine.IPluginConnection() {
             @Override
             public void onEngineConnected(PluginEngine.PluginExecutor pluginExecutor) {
                 try {
                     String data = HostDataBuilder.saveInfoBuilder()
-                            .name("userInfor")
+                            .name(FILE_MEDICAL)
                             .build();
                     pluginExecutor.send(PluginEngine.CODE_GET_SAVE_INFO, data);
                 } catch (Exception e) {

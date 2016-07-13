@@ -32,7 +32,7 @@ public class AlarmService extends Service {
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
-
+        JLog.d("AlarmService发送RxBus");
         RxBus.INSTANCE.send(mEvent);
         return super.onStartCommand(intent, flags, startId);
     }

@@ -1,5 +1,6 @@
 package com.techjumper.polyhome_b.adlib.manager;
 
+import android.annotation.SuppressLint;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -92,6 +93,7 @@ public class AdController {
         PowerUtil.wakeUpScreen();
     }
 
+    @SuppressLint("NewApi")
     private boolean isScreenOn() {
         PowerManager powerManager = (PowerManager) Utils.appContext.getSystemService(Context.POWER_SERVICE);
         return Build.VERSION.SDK_INT >= 20 ? powerManager.isInteractive() : powerManager.isScreenOn();
@@ -105,6 +107,7 @@ public class AdController {
                 .subscribe(o -> {
                     if (!(o instanceof WakeupAdService.WakeupAdEvent))
                         return;
+                    JLog.d("收到唤醒的RxBus");
                     if (this.iWakeUP != null) {
                         this.iWakeUP.onWakeUpAdExecute();
                     }
@@ -118,8 +121,10 @@ public class AdController {
 //            c.set(Calendar.SECOND, 0);
 //            c.set(Calendar.MILLISECOND, 0);
 
-        PollingUtils.startPollingService(Utils.appContext
-                , triggerTime, 60 * 60L, WakeupAdService.class, "", CODE_WAKEUP_ALARM);
+//        PollingUtils.startPollingService(Utils.appContext
+//                , triggerTime, 60 * 60L, WakeupAdService.class, "", CODE_WAKEUP_ALARM);
+        PollingUtils.startPollingServiceBySet(Utils.appContext
+                , triggerTime, WakeupAdService.class, "", true, CODE_WAKEUP_ALARM, true);
 //        if (this.iWakeUP != null) {
 //            this.iWakeUP.onWakeUpAdExecute();
 //        }
@@ -142,6 +147,7 @@ public class AdController {
                 .subscribe(o -> {
                     if (!(o instanceof AlarmService.AlarmServiceEvent))
                         return;
+                    JLog.d("收到定时的RxBus");
                     if (this.iAlarm != null) {
                         this.iAlarm.onAlarmReceive();
                     }
@@ -169,8 +175,8 @@ public class AdController {
         Calendar c = Calendar.getInstance();
         long oneHourLater = System.currentTimeMillis() + 1000L * 60 * 60;
 //        long oneHourLater = System.currentTimeMillis() + 1000L * 5;
-        c.setTimeInMillis(oneHourLater);
         c.setTimeZone(TimeZone.getTimeZone("GMT+8"));
+        c.setTimeInMillis(oneHourLater);
         c.set(Calendar.MINUTE, 0);
         c.set(Calendar.SECOND, 0);
         c.set(Calendar.MILLISECOND, 0);
