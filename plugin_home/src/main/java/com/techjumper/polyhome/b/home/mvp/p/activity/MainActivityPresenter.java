@@ -258,10 +258,12 @@ public class MainActivityPresenter extends AppBaseActivityPresenter<MainActivity
             if (file.exists()) {
                 PicassoHelper.load(file)
                         .noFade()
+                        .noPlaceholder()
                         .into(mainAdImg);
             } else {
                 PicassoHelper.load(adsEntity.getMedia_url())
                         .noFade()
+                        .noPlaceholder()
                         .into(mainAdImg);
             }
         } else if (addType.equals(PloyhomeFragmentPresenter.VIDEO_AD_TYPE)) {

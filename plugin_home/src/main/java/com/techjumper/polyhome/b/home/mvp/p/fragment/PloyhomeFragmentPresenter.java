@@ -332,10 +332,12 @@ public class PloyhomeFragmentPresenter extends AppBaseFragmentPresenter<Ployhome
 
             if (file.exists()) {
                 PicassoHelper.load(file)
+                        .noPlaceholder()
                         .noFade()
                         .into(adImageView);
             } else {
                 PicassoHelper.load(adsEntity.getMedia_url())
+                        .noPlaceholder()
                         .noFade()
                         .into(adImageView);
             }

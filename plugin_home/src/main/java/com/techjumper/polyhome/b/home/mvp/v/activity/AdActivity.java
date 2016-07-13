@@ -72,8 +72,9 @@ public class AdActivity extends AppBaseActivity<AdActivityPresenter> {
         if (adType.equals(PloyhomeFragmentPresenter.IMAGE_AD_TYPE)) {
 
             PicassoHelper.load(new File(adsEntity.getMedia_url()))
+                    .noFade()
+                    .noPlaceholder()
                     .into(img);
-//            PicassoHelper.load(adsEntity.getMedia_url()).into(img);
 
             WebSettings ws = webView.getSettings();
 
