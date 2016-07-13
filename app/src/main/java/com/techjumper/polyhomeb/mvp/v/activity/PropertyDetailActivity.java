@@ -3,6 +3,7 @@ package com.techjumper.polyhomeb.mvp.v.activity;
 import android.os.Bundle;
 import android.support.v4.view.ViewPager;
 import android.view.View;
+import android.widget.FrameLayout;
 
 import com.techjumper.corelib.mvp.factory.Presenter;
 import com.techjumper.corelib.utils.Utils;
@@ -15,7 +16,6 @@ import com.techjumper.polyhomeb.mvp.v.fragment.AppBaseFragment;
 import com.techjumper.polyhomeb.mvp.v.fragment.ComplainFragment;
 import com.techjumper.polyhomeb.mvp.v.fragment.PlacardFragment;
 import com.techjumper.polyhomeb.mvp.v.fragment.RepairFragment;
-import com.techjumper.polyhomeb.utils.TitleHelper;
 
 import net.lucode.hackware.magicindicator.MagicIndicator;
 import net.lucode.hackware.magicindicator.buildins.commonnavigator.CommonNavigator;
@@ -38,6 +38,8 @@ public class PropertyDetailActivity extends AppBaseActivity<PropertyDetailActivi
     MagicIndicator mIndicator;
     @Bind(R.id.vp)
     ViewPager mViewPager;
+    @Bind(R.id.right_group)
+    FrameLayout mRightGroup;
 
     private int mComeFrom;
     private List<String> mIndicatorTitles = new ArrayList<>();
@@ -58,6 +60,17 @@ public class PropertyDetailActivity extends AppBaseActivity<PropertyDetailActivi
     @Override
     public String getLayoutTitle() {
         return getResources().getString(R.string.property);
+    }
+
+    @Override
+    protected boolean showTitleRight() {
+        return Constant.VALUE_REPAIR == mComeFrom;  //为了一进入界面的时候show或者hide右边icon
+    }
+
+    @Override
+    protected boolean onTitleRightClick() {
+        getPresenter().onTitleRightClick();
+        return true;
     }
 
     private void initIndicator() {
@@ -88,6 +101,11 @@ public class PropertyDetailActivity extends AppBaseActivity<PropertyDetailActivi
             @Override
             public void onPageSelected(int position) {
                 mIndicator.onPageSelected(position);
+                if (Constant.VALUE_REPAIR == position) {   //当滑动的时候show或者hide右边icon
+                    mRightGroup.setVisibility(View.VISIBLE);
+                } else {
+                    mRightGroup.setVisibility(View.GONE);
+                }
             }
 
             @Override
@@ -96,8 +114,9 @@ public class PropertyDetailActivity extends AppBaseActivity<PropertyDetailActivi
             }
         });
         mViewPager.setCurrentItem(mComeFrom);  //如此设置了之后,indicator也会跟着一起被设置
-        if (Constant.VALUE_REPAIR == mComeFrom) {  //如果是报修这个页面,标题栏就显示右边add
-            TitleHelper.setRightIconAdd(mViewRoot, R.mipmap.icon_add);
-        }
+    }
+
+    public ViewPager getViewPager() {
+        return mViewPager;
     }
 }
