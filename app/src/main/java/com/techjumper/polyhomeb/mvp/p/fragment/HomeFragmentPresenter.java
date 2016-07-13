@@ -2,8 +2,11 @@ package com.techjumper.polyhomeb.mvp.p.fragment;
 
 import android.os.Bundle;
 
+import com.steve.creact.library.display.DisplayBean;
 import com.techjumper.polyhomeb.mvp.m.HomeFragmentModel;
 import com.techjumper.polyhomeb.mvp.v.fragment.HomeFragment;
+
+import java.util.List;
 
 /**
  * * * * * * * * * * * * * * * * * * * * * * *
@@ -23,5 +26,9 @@ public class HomeFragmentPresenter extends AppBaseFragmentPresenter<HomeFragment
     @Override
     public void onViewInited(Bundle savedInstanceState) {
 
+    }
+
+    public List<DisplayBean> getData() {
+        return mModel.initPropertyData();
     }
 }

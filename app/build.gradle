@@ -86,7 +86,7 @@ dependencies {
     compile project(':ptr_lib')
     compile project(':loading-more-view')
     compile project(':slidingmenulib')
-
+    compile project(':magicindicator')
 
     compile 'com.umeng.analytics:analytics:latest.integration'
 

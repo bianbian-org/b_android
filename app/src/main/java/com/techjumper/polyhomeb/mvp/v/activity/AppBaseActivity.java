@@ -44,6 +44,8 @@ public abstract class AppBaseActivity<T extends AppBaseActivityPresenter> extend
                 .setStyle(KProgressHUD.Style.SPIN_INDETERMINATE)
                 .setOnDismissListener(dialog -> onDialogDismiss());
 
+        //右边是文字的,右边是图片的,右边是点击切换文字的,右边是点击切换图片的,要多增加这四种
+
         mTitleBuilder = TitleHelper.create(mViewRoot)
                 .title(getLayoutTitle())
                 .showLeft(showTitleLeft())
