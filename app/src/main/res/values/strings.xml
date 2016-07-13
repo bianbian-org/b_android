@@ -52,5 +52,8 @@
     <string name="signature_notice">每日签到  赢取Poly币</string>
     <string name="medical">医疗</string>
     <string name="medical_notice">体检报告及时查看</string>
+    <string name="exit_app">再按一次, 退出应用</string>
+    <string name="repair_">报修</string>
+    <string name="complaint_">投诉建议</string>
 
 </resources>

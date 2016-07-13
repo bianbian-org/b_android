@@ -9,7 +9,7 @@ package com.techjumper.polyhomeb;
 public class Constant {
 
     public static final String KEY_CURRENT_BUTTON = "complaint";
-    public static final int VALUE_COMPLAINT = 1;
-    public static final int VALUE_REPAIR = 2;
-    public static final int VALUE_PLACARD = 3;
+    public static final int VALUE_COMPLAINT = 2;
+    public static final int VALUE_REPAIR = 1;
+    public static final int VALUE_PLACARD = 0;
 }

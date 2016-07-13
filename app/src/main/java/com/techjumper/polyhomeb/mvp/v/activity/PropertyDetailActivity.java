@@ -1,29 +1,24 @@
 package com.techjumper.polyhomeb.mvp.v.activity;
 
-import android.content.Context;
-import android.graphics.Color;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.view.View;
 
 import com.techjumper.corelib.mvp.factory.Presenter;
+import com.techjumper.corelib.utils.Utils;
+import com.techjumper.polyhomeb.Constant;
 import com.techjumper.polyhomeb.R;
+import com.techjumper.polyhomeb.adapter.FragmentAdapter;
+import com.techjumper.polyhomeb.adapter.IndicatorAdapter;
 import com.techjumper.polyhomeb.mvp.p.activity.PropertyDetailActivityPresenter;
 import com.techjumper.polyhomeb.mvp.v.fragment.AppBaseFragment;
-import com.techjumper.polyhomeb.mvp.v.fragment.FriendFragment;
-import com.techjumper.polyhomeb.mvp.v.fragment.HomeFragment;
-import com.techjumper.polyhomeb.mvp.v.fragment.ShoppingFragment;
+import com.techjumper.polyhomeb.mvp.v.fragment.ComplainFragment;
+import com.techjumper.polyhomeb.mvp.v.fragment.PlacardFragment;
+import com.techjumper.polyhomeb.mvp.v.fragment.RepairFragment;
+import com.techjumper.polyhomeb.utils.TitleHelper;
 
 import net.lucode.hackware.magicindicator.MagicIndicator;
-import net.lucode.hackware.magicindicator.UIUtil;
 import net.lucode.hackware.magicindicator.buildins.commonnavigator.CommonNavigator;
-import net.lucode.hackware.magicindicator.buildins.commonnavigator.abs.CommonNavigatorAdapter;
-import net.lucode.hackware.magicindicator.buildins.commonnavigator.abs.IPagerIndicator;
-import net.lucode.hackware.magicindicator.buildins.commonnavigator.abs.IPagerTitleView;
-import net.lucode.hackware.magicindicator.buildins.commonnavigator.indicators.LinePagerIndicator;
-import net.lucode.hackware.magicindicator.buildins.commonnavigator.titles.ColorTransitionPagerTitleView;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -45,7 +40,7 @@ public class PropertyDetailActivity extends AppBaseActivity<PropertyDetailActivi
     ViewPager mViewPager;
 
     private int mComeFrom;
-    private String[] mIndicatorTitles = new String[]{"维修", "投诉", "公告"};
+    private List<String> mIndicatorTitles = new ArrayList<>();
     private List<AppBaseFragment> mFragments = new ArrayList<>();
 
     @Override
@@ -62,36 +57,27 @@ public class PropertyDetailActivity extends AppBaseActivity<PropertyDetailActivi
 
     @Override
     public String getLayoutTitle() {
-//        switch (mComeFrom) {
-//            case Constant.VALUE_REPAIR:
-//                return getResources().getString(R.string.repair);
-//            case Constant.VALUE_COMPLAINT:
-//                return getResources().getString(R.string.complaint);
-//            case Constant.VALUE_PLACARD:
-//                return getResources().getString(R.string.placard);
-//        }
-//        return "";
         return getResources().getString(R.string.property);
     }
 
     private void initIndicator() {
+        mIndicatorTitles.add(Utils.appContext.getResources().getString(R.string.placard));
+        mIndicatorTitles.add(Utils.appContext.getResources().getString(R.string.repair_));
+        mIndicatorTitles.add(Utils.appContext.getResources().getString(R.string.complaint_));
         CommonNavigator navigator = new CommonNavigator(this);
         navigator.setAdjustMode(true);
-        navigator.setAdapter(new IndicatorAdapter());
+        IndicatorAdapter indicatorAdapter = new IndicatorAdapter(mIndicatorTitles, mViewPager);
+        indicatorAdapter.setNormalColor("#acacac");
+        indicatorAdapter.setSelectedColor("#37a991");
+        navigator.setAdapter(indicatorAdapter);
         mIndicator.setNavigator(navigator);
     }
 
     private void initViewPager() {
-        HomeFragment homeFragment = new HomeFragment();
-        FriendFragment friendFragment = new FriendFragment();
-        ShoppingFragment shoppingFragment = new ShoppingFragment();
-
-        mFragments.add(homeFragment);
-        mFragments.add(friendFragment);
-        mFragments.add(shoppingFragment);
-
-        FragmentAdapter adapter = new FragmentAdapter();
-
+        mFragments.add(PlacardFragment.getInstance());
+        mFragments.add(RepairFragment.getInstance());
+        mFragments.add(ComplainFragment.getInstance());
+        FragmentAdapter adapter = new FragmentAdapter(this, mFragments);
         mViewPager.setAdapter(adapter);
         mViewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
@@ -109,51 +95,9 @@ public class PropertyDetailActivity extends AppBaseActivity<PropertyDetailActivi
                 mIndicator.onPageScrollStateChanged(state);
             }
         });
-    }
-
-    private class IndicatorAdapter extends CommonNavigatorAdapter {
-
-        @Override
-        public int getCount() {
-            return 3;
-        }
-
-        @Override
-        public IPagerTitleView getItemView(Context context, int index) {
-            ColorTransitionPagerTitleView colorTransitionPagerTitleView = new ColorTransitionPagerTitleView(context);
-            colorTransitionPagerTitleView.setText(mIndicatorTitles[index]);
-            colorTransitionPagerTitleView.setNormalColor(Color.parseColor("#acacac"));
-            colorTransitionPagerTitleView.setSelectedColor(Color.parseColor("#37A991"));
-            colorTransitionPagerTitleView.setOnClickListener(v -> mViewPager.setCurrentItem(index));
-            return colorTransitionPagerTitleView;
-        }
-
-        @Override
-        public IPagerIndicator getIndicator(Context context) {
-            LinePagerIndicator indicator = new LinePagerIndicator(context);
-            indicator.setLineHeight(UIUtil.dip2px(context, 2));
-            indicator.setRoundRadius(UIUtil.dip2px(context, 0));
-            List<String> colorList = new ArrayList<>();
-            colorList.add("#37A991");
-            indicator.setColorList(colorList);
-            return indicator;
-        }
-    }
-
-    private class FragmentAdapter extends FragmentPagerAdapter {
-
-        public FragmentAdapter() {
-            super(getSupportFragmentManager());
-        }
-
-        @Override
-        public Fragment getItem(int position) {
-            return mFragments.get(position);
-        }
-
-        @Override
-        public int getCount() {
-            return mFragments.size();
+        mViewPager.setCurrentItem(mComeFrom);  //如此设置了之后,indicator也会跟着一起被设置
+        if (Constant.VALUE_REPAIR == mComeFrom) {  //如果是报修这个页面,标题栏就显示右边add
+            TitleHelper.setRightIconAdd(mViewRoot, R.mipmap.icon_add);
         }
     }
 }

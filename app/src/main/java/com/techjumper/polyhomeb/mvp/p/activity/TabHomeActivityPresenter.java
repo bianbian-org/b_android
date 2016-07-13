@@ -55,7 +55,7 @@ public class TabHomeActivityPresenter extends AppBaseActivityPresenter<TabHomeAc
         }
 
         if (!mCanExit) {
-            ToastUtils.show("再按一次, 退出应用");
+            ToastUtils.show(getView().getString(R.string.exit_app));
             mCanExit = true;
             new Handler().postDelayed(() -> mCanExit = false, 2000);
             return;

@@ -39,7 +39,7 @@ public class HomeFragmentModel extends BaseModel<HomeFragmentPresenter> {
         list.add(R.mipmap.icon_laundry);
         list.add(R.mipmap.icon_complaint);
         list.add(R.mipmap.icon_friend);
-        list.add(R.mipmap.icon_title_menu_pressed);
+        list.add(R.mipmap.icon_title_menu);
         data.setDrawables(list);
         ViewPagerDataBean viewPagerDataBean = new ViewPagerDataBean(data);
         displayBeans.add(viewPagerDataBean);

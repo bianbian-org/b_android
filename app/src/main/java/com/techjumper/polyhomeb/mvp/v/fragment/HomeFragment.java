@@ -34,6 +34,10 @@ public class HomeFragment extends AppBaseFragment<HomeFragmentPresenter> {
 
     private HomePageAdapter mAdapter;
 
+    public static HomeFragment getInstance() {
+        return new HomeFragment();
+    }
+
     @Override
     protected View inflateView(LayoutInflater inflater, Bundle savedInstanceState) {
         return inflater.inflate(R.layout.fragment_home, null);

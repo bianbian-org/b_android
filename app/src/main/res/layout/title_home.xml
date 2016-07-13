@@ -3,21 +3,20 @@
     android:id="@+id/title_group"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="@mipmap/bg_title"
-    android:paddingBottom="@dimen/dp_5">
+    android:background="@mipmap/bg_title">
 
     <FrameLayout
         android:id="@+id/iv_left_icon"
         android:layout_width="60dp"
-        android:layout_height="48dp"
+        android:layout_height="43dp"
         android:layout_marginLeft="5dp">
 
         <ImageView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="10dp"
-            android:layout_marginTop="25dp"
-            android:src="@drawable/selector_icon_title_menu" />
+            android:layout_marginTop="15dp"
+            android:src="@mipmap/icon_title_menu" />
     </FrameLayout>
 
     <LinearLayout
@@ -28,16 +27,17 @@
         android:layout_marginTop="@dimen/dp_5"
         android:gravity="center_vertical"
         android:orientation="horizontal"
-        android:paddingBottom="10dp"
+        android:paddingBottom="12dp"
         android:paddingLeft="15dp"
         android:paddingRight="15dp"
-        android:paddingTop="10dp">
+        android:paddingTop="2dp">
 
         <TextView
             android:id="@+id/tv_title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:singleLine="true"
+            android:text="哈哈哈"
             android:textColor="@color/color_ffffff"
             android:textSize="@dimen/sp_20" />
 

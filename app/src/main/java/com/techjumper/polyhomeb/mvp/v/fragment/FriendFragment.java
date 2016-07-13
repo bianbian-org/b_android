@@ -16,6 +16,11 @@ import com.techjumper.polyhomeb.mvp.p.fragment.FriendFragmentPresenter;
  **/
 @Presenter(FriendFragmentPresenter.class)
 public class FriendFragment extends AppBaseFragment<FriendFragmentPresenter> {
+
+    public static FriendFragment getInstance() {
+        return new FriendFragment();
+    }
+
     @Override
     protected View inflateView(LayoutInflater inflater, Bundle savedInstanceState) {
         return inflater.inflate(R.layout.fragment_friend, null);

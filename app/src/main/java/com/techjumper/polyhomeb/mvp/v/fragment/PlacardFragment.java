@@ -6,24 +6,24 @@ import android.view.View;
 
 import com.techjumper.corelib.mvp.factory.Presenter;
 import com.techjumper.polyhomeb.R;
-import com.techjumper.polyhomeb.mvp.p.fragment.ShoppingFragmentPresenter;
+import com.techjumper.polyhomeb.mvp.p.fragment.PlacardFragmentPresenter;
 
 /**
  * * * * * * * * * * * * * * * * * * * * * * *
  * Created by lixin
- * Date: 16/6/30
+ * Date: 16/7/13
  * * * * * * * * * * * * * * * * * * * * * * *
  **/
-@Presenter(ShoppingFragmentPresenter.class)
-public class ShoppingFragment extends AppBaseFragment<ShoppingFragmentPresenter> {
+@Presenter(PlacardFragmentPresenter.class)
+public class PlacardFragment extends AppBaseFragment<PlacardFragmentPresenter> {
 
-    public static ShoppingFragment getInstance() {
-        return new ShoppingFragment();
+    public static PlacardFragment getInstance() {
+        return new PlacardFragment();
     }
 
     @Override
     protected View inflateView(LayoutInflater inflater, Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.fragment_shopping, null);
+        return inflater.inflate(R.layout.fragment_placard, null);
     }
 
     @Override
