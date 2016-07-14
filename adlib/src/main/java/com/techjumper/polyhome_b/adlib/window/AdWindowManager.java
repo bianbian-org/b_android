@@ -11,7 +11,6 @@ import android.widget.ImageView;
 import com.squareup.picasso.RequestCreator;
 import com.techjumper.corelib.utils.Utils;
 import com.techjumper.corelib.utils.common.JLog;
-import com.techjumper.corelib.utils.common.RuleUtils;
 import com.techjumper.lib2.utils.PicassoHelper;
 import com.techjumper.polyhome_b.adlib.entity.AdEntity;
 
@@ -29,16 +28,12 @@ public class AdWindowManager {
 
     private AdWindowManager() {
         mWindowManager = (WindowManager) Utils.appContext.getSystemService(Context.WINDOW_SERVICE);
-        int screenWidth = RuleUtils.getScreenWidth();
-        int screenHeight = RuleUtils.getScreenHeight();
-
-        JLog.d("AdWindowManager 宽高:" + screenWidth + " x " + screenHeight);
 
 
         mContainer = new FrameLayout(Utils.appContext);
         mContainer.setBackgroundColor(0xFF000000);
         mContainerParams = new WindowManager.LayoutParams();
-        mContainerParams.type = WindowManager.LayoutParams.TYPE_SYSTEM_ALERT;
+        mContainerParams.type = WindowManager.LayoutParams.TYPE_PHONE;
         mContainerParams.format = PixelFormat.RGBA_8888;
         mContainerParams.flags = WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE
                 | WindowManager.LayoutParams.FLAG_FULLSCREEN;
@@ -81,6 +76,7 @@ public class AdWindowManager {
         if (file != null && file.exists()) {
             requestCreator = PicassoHelper.load(file);
         } else {
+            JLog.d("本地图片不存在, 从网络上加载");
             requestCreator = PicassoHelper.load(adsEntity.getMedia_type());
         }
         showWindow();
