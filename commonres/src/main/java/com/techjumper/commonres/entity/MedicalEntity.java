@@ -72,13 +72,13 @@ public class MedicalEntity extends BaseMessageEntity<MedicalEntity.MedicalDataEn
     }
 
     public static class MedicalData {
-        private List<MedicalItemEntity> Datas;
+        private String Datas;
 
-        public List<MedicalItemEntity> getDatas() {
+        public String getDatas() {
             return Datas;
         }
 
-        public void setDatas(List<MedicalItemEntity> datas) {
+        public void setDatas(String datas) {
             Datas = datas;
         }
     }

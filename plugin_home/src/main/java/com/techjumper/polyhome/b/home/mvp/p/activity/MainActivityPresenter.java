@@ -209,10 +209,10 @@ public class MainActivityPresenter extends AppBaseActivityPresenter<MainActivity
                             || medicalEntity.getData().getValues() == null
                             || medicalEntity.getData().getValues().getDatas() == null)
                         return;
-
-                    List<MedicalEntity.MedicalItemEntity> medicalItemEntities = medicalEntity.getData().getValues().getDatas();
-
-                    Log.d("pluginUserInfo", "medicalItemEntities: " + medicalItemEntities.size());
+//
+//                    List<MedicalEntity.MedicalItemEntity> medicalItemEntities = GsonUtils.fromJson(medicalEntity.getData().getValues().getDatas(), List<MedicalEntity.MedicalItemEntity>.class);
+//
+//                    Log.d("pluginUserInfo", "medicalItemEntities: " + medicalItemEntities.size());
                 }
                 Log.d("pluginUserInfo", "更新完毕用户信息...");
             } else if (code == PluginEngine.CODE_SAVE_INFO) {
