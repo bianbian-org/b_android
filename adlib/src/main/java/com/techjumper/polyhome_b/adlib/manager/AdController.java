@@ -234,7 +234,7 @@ public class AdController {
         if (adType == null) return;
         AdRuleExecutor executor = mExecutorMap.get(adType);
         if (executor != null) {
-            executor.interrupt();
+            executor.quit(true);
             mExecutorMap.put(adType, null);
         }
     }
@@ -334,12 +334,12 @@ public class AdController {
     }
 
     private static int getScreenOffTime() {
-        int screenOffTime = 0;
+        int screenOffTime = -2;
         try {
             screenOffTime = Settings.System.getInt(Utils.appContext.getContentResolver(),
                     Settings.System.SCREEN_OFF_TIMEOUT);
-        } catch (Exception ignored) {
-
+        } catch (Exception e) {
+            JLog.d("获取系统时间失败: " + e);
         }
 //        JLog.d("当前系统休眠时间为: " + screenOffTime);
         return screenOffTime;
@@ -402,8 +402,8 @@ public class AdController {
         @Override
         public void onReceive(Context context, Intent intent) {
             if (getScreenOffTime() != mScreenOffTime) {
+                JLog.d("代码控制关闭屏幕, 不触发回调; getScreenOffTime()=" + getScreenOffTime() + ", mScreenOffTime=" + mScreenOffTime);
                 setScreenOffTime(mScreenOffTime);
-                JLog.d("代码控制关闭屏幕, 不触发回调");
                 return;
             }
             JLog.d("屏幕关闭了");
@@ -546,7 +546,6 @@ public class AdController {
                 public void onTimerFinished(boolean success) {
 
                     if (mInterrupt) {
-                        quit(true);
                         return;
                     }
 
@@ -582,15 +581,15 @@ public class AdController {
         }
 
 
-        public void interrupt() {
+        private void interrupt() {
             mInterrupt = true;
         }
 
-        private void quit() {
+        public void quit() {
             quit(false);
         }
 
-        private void quit(boolean shouldNotify) {
+        public void quit(boolean shouldNotify) {
             if (shouldNotify) {
                 notifyPlayFinished();
             }

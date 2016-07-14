@@ -1,5 +1,7 @@
 package com.techjumper.corelib.rx.tools;
 
+import com.techjumper.corelib.utils.common.JLog;
+
 import rx.Observable;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.subjects.PublishSubject;
@@ -50,7 +52,7 @@ public enum RxBus {
             try {
                 _bus.onNext(o);
             } catch (Exception e) {
-                e.printStackTrace();
+                JLog.e_stack(e);
             }
         }
     }
