@@ -15,6 +15,7 @@ import com.techjumper.commonres.entity.event.AdControllerEvent;
 import com.techjumper.commonres.entity.event.AdEvent;
 import com.techjumper.commonres.entity.event.AdMainEvent;
 import com.techjumper.commonres.entity.event.AdShowEvent;
+import com.techjumper.commonres.entity.event.AdTemEvent;
 import com.techjumper.commonres.entity.event.NoticeEvent;
 import com.techjumper.commonres.entity.event.UserInfoEvent;
 import com.techjumper.commonres.entity.event.WeatherEvent;
@@ -303,6 +304,9 @@ public class PloyhomeFragmentPresenter extends AppBaseFragmentPresenter<Ployhome
         getNormalAd();
         getWakeUpAd();
         getSleepAd();
+
+
+        RxBus.INSTANCE.send(new AdTemEvent());
     }
 
     /**

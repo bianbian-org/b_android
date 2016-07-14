@@ -2,25 +2,37 @@ package com.techjumper.polyhome.b.home.mvp.p.fragment;
 
 import android.content.ComponentName;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.util.Log;
+import android.view.View;
+import android.widget.ImageView;
 
 import com.techjumper.commonres.PluginConstant;
 import com.techjumper.commonres.entity.CalendarEntity;
 import com.techjumper.commonres.entity.WeatherEntity;
+import com.techjumper.commonres.entity.event.AdTemEvent;
 import com.techjumper.commonres.entity.event.UserInfoEvent;
 import com.techjumper.commonres.entity.event.WeatherDateEvent;
 import com.techjumper.commonres.entity.event.WeatherEvent;
 import com.techjumper.commonres.util.PluginEngineUtil;
 import com.techjumper.corelib.rx.tools.RxBus;
 import com.techjumper.corelib.utils.Utils;
+import com.techjumper.corelib.utils.common.JLog;
+import com.techjumper.lib2.utils.PicassoHelper;
 import com.techjumper.plugincommunicateengine.PluginEngine;
 import com.techjumper.polyhome.b.home.R;
 import com.techjumper.polyhome.b.home.UserInfoManager;
 import com.techjumper.polyhome.b.home.mvp.m.InfoFragmentModel;
+import com.techjumper.polyhome.b.home.mvp.v.activity.AdActivity;
 import com.techjumper.polyhome.b.home.mvp.v.fragment.InfoFragment;
 import com.techjumper.polyhome.b.home.tool.AlarmManagerUtil;
+import com.techjumper.polyhome.b.home.widget.MyVideoView;
+import com.techjumper.polyhome_b.adlib.entity.AdEntity;
+import com.techjumper.polyhome_b.adlib.manager.AdController;
 
+import java.io.File;
 import java.util.Random;
 
 import butterknife.OnClick;
@@ -32,6 +44,11 @@ import rx.android.schedulers.AndroidSchedulers;
  */
 public class InfoFragmentPresenter extends AppBaseFragmentPresenter<InfoFragment> {
     private InfoFragmentModel infoFragmentModel = new InfoFragmentModel(this);
+    private AdController adController = new AdController();
+    private MyVideoView video;
+    private ImageView adImageView;
+    private AdEntity.AdsEntity mAdsEntity = new AdEntity.AdsEntity();
+    private String addType = PloyhomeFragmentPresenter.IMAGE_AD_TYPE;
 
     @OnClick(R.id.setting)
     void setting() {
@@ -54,6 +71,16 @@ public class InfoFragmentPresenter extends AppBaseFragmentPresenter<InfoFragment
         getView().startActivity(it);
     }
 
+    @OnClick(R.id.ad_tem)
+    void ad_tem() {
+        if (TextUtils.isEmpty(mAdsEntity.getMedia_type()))
+            return;
+
+        Intent intent = new Intent(getView().getActivity(), AdActivity.class);
+        intent.putExtra(AdActivity.ADITEM, mAdsEntity);
+        getView().getActivity().startActivity(intent);
+    }
+
     @Override
     public void initData(Bundle savedInstanceState) {
 
@@ -61,6 +88,9 @@ public class InfoFragmentPresenter extends AppBaseFragmentPresenter<InfoFragment
 
     @Override
     public void onViewInited(Bundle savedInstanceState) {
+        adImageView = getView().getImageAdTem();
+        video = getView().getVideoAdTem();
+
         if (UserInfoManager.isLogin()) {
             getWeatherInfo();
         }
@@ -89,8 +119,11 @@ public class InfoFragmentPresenter extends AppBaseFragmentPresenter<InfoFragment
                             getWeatherInfo();
                             getCalendarInfo();
                         }
+                    } else if (o instanceof AdTemEvent) {
+                        getNormalAd();
                     }
                 });
+
     }
 
     //获取天气相关
@@ -169,5 +202,100 @@ public class InfoFragmentPresenter extends AppBaseFragmentPresenter<InfoFragment
         PluginEngine.getInstance().registerReceiver((code, message, extras) -> {
             //接受医疗的消息
         });
+    }
+
+    /**
+     * 获取普通广告
+     */
+    private void getNormalAd() {
+        adController.startPolling(new AdController.IAlarm() {
+            @Override
+            public void onAlarmReceive() {
+                JLog.d("普通获取广告" + UserInfoManager.getFamilyId() + "  " + UserInfoManager.getUserId() + "  " + UserInfoManager.getTicket());
+//                adController.executeAdRule(AdController.TYPE_HOME, "434", "362", "5b279ba4e46853d86e1d109914cfebe3ca224381", new AdController.IExecuteRule() {
+                adController.executeAdRule(AdController.TYPE_HOME, UserInfoManager.getFamilyId(), UserInfoManager.getUserId(), UserInfoManager.getTicket(), new AdController.IExecuteRule() {
+                    @Override
+                    public void onAdReceive(AdEntity.AdsEntity adsEntity, File file) {
+                        HandleAd(adsEntity, file);
+                    }
+
+                    @Override
+                    public void onAdPlayFinished() {
+                        JLog.d("广告播放完成  (有可能是上一次的任务被自动中断，不影响本次广告执行)");
+                        initAd();
+                    }
+
+                    @Override
+                    public void onAdDownloadError(AdEntity.AdsEntity adsEntity) {
+                        JLog.d("某个广告下载失败: " + adsEntity);
+                    }
+
+                    @Override
+                    public void onAdExecuteFailed(String reason) {
+                        JLog.d("获取广告失败: " + reason);
+                        initAd();
+                    }
+
+                    @Override
+                    public void onAdNoExist(String adType, String hour) {
+                        JLog.d("没有广告: 广告类型=" + adType + ", 当前小时=" + hour);
+                        initAd();
+                    }
+                });
+            }
+        });
+    }
+
+    /**
+     * 初始化广告
+     */
+    private void initAd() {
+        adImageView.setVisibility(View.VISIBLE);
+        video.setVisibility(View.INVISIBLE);
+        adImageView.setBackgroundResource(R.mipmap.bg_ad);
+        adImageView.setImageBitmap(null);
+    }
+
+    /**
+     * 处理广告
+     */
+    private void HandleAd(AdEntity.AdsEntity adsEntity, File file) {
+        JLog.d("有新的广告来啦. 本地广告路径:" + file + ", 详细信息: " + adsEntity);
+        addType = adsEntity.getMedia_type();
+
+        if (addType.equals(PloyhomeFragmentPresenter.IMAGE_AD_TYPE)) {
+            adImageView.setVisibility(View.VISIBLE);
+            video.setVisibility(View.INVISIBLE);
+
+            if (file.exists()) {
+                PicassoHelper.load(file)
+                        .noPlaceholder()
+                        .noFade()
+                        .into(adImageView);
+            } else {
+                PicassoHelper.load(adsEntity.getMedia_url())
+                        .noPlaceholder()
+                        .noFade()
+                        .into(adImageView);
+            }
+
+            adsEntity.setMedia_url(file.getAbsolutePath().toString());
+        } else if (addType.equals(PloyhomeFragmentPresenter.VIDEO_AD_TYPE)) {
+
+            adImageView.setVisibility(View.INVISIBLE);
+            video.setVisibility(View.VISIBLE);
+            if (file.exists()) {
+                video.setVideoPath(file.getAbsolutePath().toString());
+            } else {
+                video.setVideoURI(Uri.parse(adsEntity.getMedia_url()));
+            }
+
+            video.start();
+            video.requestFocus();
+
+            adsEntity.setMedia_url(file.getAbsolutePath().toString());
+        }
+
+        mAdsEntity = adsEntity;
     }
 }

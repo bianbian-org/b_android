@@ -18,7 +18,9 @@ import com.techjumper.polyhome.b.home.utils.DateUtil;
 import com.techjumper.polyhome.b.home.utils.StringUtil;
 import com.techjumper.polyhome.b.home.utils.WeatherUtil;
 import com.techjumper.polyhome.b.home.widget.AlmanacView;
+import com.techjumper.polyhome.b.home.widget.MyVideoView;
 import com.techjumper.polyhome.b.home.widget.WeatherView;
+import com.techjumper.polyhome_b.adlib.manager.AdController;
 
 import java.util.List;
 
@@ -53,7 +55,7 @@ public class InfoFragment extends AppBaseFragment<InfoFragmentPresenter> {
     TextView liwPm;
     @Bind(R.id.liw_quality_description)
     TextView liwQualityDescription;
-//    @Bind(R.id.liw_quality_num)
+    //    @Bind(R.id.liw_quality_num)
 //    TextView liwQualityNum;
     @Bind(R.id.lid_date)
     TextView lidDate;
@@ -65,6 +67,10 @@ public class InfoFragment extends AppBaseFragment<InfoFragmentPresenter> {
     AlmanacView lidAlmanacNope;
     @Bind(R.id.lid_week)
     TextView lidWeek;
+    @Bind(R.id.video_ad_tem)
+    MyVideoView videoAdTem;
+    @Bind(R.id.image_ad_tem)
+    ImageView imageAdTem;
 
     public static InfoFragment getInstance() {
         return new InfoFragment();
@@ -78,6 +84,14 @@ public class InfoFragment extends AppBaseFragment<InfoFragmentPresenter> {
     @Override
     protected void initView(Bundle savedInstanceState) {
 
+    }
+
+    public MyVideoView getVideoAdTem() {
+        return videoAdTem;
+    }
+
+    public ImageView getImageAdTem() {
+        return imageAdTem;
     }
 
     public void getWeatherInfo(WeatherEntity.WeatherDataEntity weatherDataEntity) {
@@ -115,5 +129,19 @@ public class InfoFragment extends AppBaseFragment<InfoFragmentPresenter> {
         List<String> avoids = StringUtil.interceptString(calendarDataEntity.getAvoid(), ".");
         lidAlmanacOk.setTexts(suits);
         lidAlmanacNope.setTexts(avoids);
+    }
+
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        // TODO: inflate a fragment view
+        View rootView = super.onCreateView(inflater, container, savedInstanceState);
+        ButterKnife.bind(this, rootView);
+        return rootView;
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        ButterKnife.unbind(this);
     }
 }

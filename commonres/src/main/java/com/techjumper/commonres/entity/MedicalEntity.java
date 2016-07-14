@@ -31,6 +31,18 @@ public class MedicalEntity extends BaseMessageEntity<MedicalEntity.MedicalDataEn
         }
     }
 
+    public static class MedicalDataItemEntity {
+        private List<MedicalItemEntity> person;
+
+        public List<MedicalItemEntity> getPerson() {
+            return person;
+        }
+
+        public void setPerson(List<MedicalItemEntity> person) {
+            this.person = person;
+        }
+    }
+
     public static class MedicalItemEntity {
 
         private String bgValue;
