@@ -5,7 +5,6 @@ import android.content.Intent;
 import android.os.IBinder;
 import android.support.annotation.Nullable;
 
-import com.techjumper.corelib.rx.tools.RxBus;
 import com.techjumper.corelib.utils.common.JLog;
 
 /**
@@ -16,7 +15,7 @@ import com.techjumper.corelib.utils.common.JLog;
  **/
 public class AlarmService extends Service {
 
-    private AlarmServiceEvent mEvent = new AlarmServiceEvent();
+    public static final String ACTION_ALARM_SERVICE = "action_alarm_service";
 
     @Nullable
     @Override
@@ -32,12 +31,8 @@ public class AlarmService extends Service {
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
-        JLog.d("AlarmService发送RxBus");
-        RxBus.INSTANCE.send(mEvent);
+
+        sendBroadcast(new Intent(ACTION_ALARM_SERVICE));
         return super.onStartCommand(intent, flags, startId);
-    }
-
-    public static class AlarmServiceEvent {
-
     }
 }

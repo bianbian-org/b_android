@@ -11,7 +11,6 @@ import android.os.SystemClock;
 import android.provider.Settings;
 import android.text.TextUtils;
 
-import com.techjumper.corelib.rx.tools.RxBus;
 import com.techjumper.corelib.rx.tools.RxUtils;
 import com.techjumper.corelib.utils.Utils;
 import com.techjumper.corelib.utils.basic.NumberUtil;
@@ -70,13 +69,15 @@ public class AdController {
 
     private IWakeUp iWakeUP;
     private ScreenOffReceiver mScreenOffReceiver;
-    private Subscription mWakeUpSubs;
-    private Subscription mAlarmSubs;
+    private AlarmReceiver mAlarmReceiver = new AlarmReceiver();
+    private WakeUpReceiver mWakeUpReceiver = new WakeUpReceiver();
 
     private int mLockTime;
     private IAlarm iAlarm;
+    private Context mContext;
 
-    public AdController() {
+    public AdController(Context context) {
+        mContext = context;
         mLockTime = getScreenOffTime();
         if (mLockTime == 0) {
             mLockTime = 40 * 60 * 1000;
@@ -103,15 +104,8 @@ public class AdController {
     public void startWakeUpTimer(IWakeUp iWakeUp) {
         stopWakeUpTimer();
         this.iWakeUP = iWakeUp;
-        mWakeUpSubs = RxBus.INSTANCE.asObservable()
-                .subscribe(o -> {
-                    if (!(o instanceof WakeupAdService.WakeupAdEvent))
-                        return;
-                    JLog.d("收到唤醒的RxBus");
-                    if (this.iWakeUP != null) {
-                        this.iWakeUP.onWakeUpAdExecute();
-                    }
-                });
+        IntentFilter intentFilter = new IntentFilter(WakeupAdService.ACTION_WAKE_UP);
+        mContext.registerReceiver(mWakeUpReceiver, intentFilter);
         //            Calendar c = Calendar.getInstance();
 //            long oneHourLater = System.currentTimeMillis() + 1000L * 60 * 60;
         long triggerTime = getTriggerTime();
@@ -133,7 +127,10 @@ public class AdController {
     }
 
     public void stopWakeUpTimer() {
-        RxUtils.unsubscribeIfNotNull(mWakeUpSubs);
+        try {
+            mContext.unregisterReceiver(mWakeUpReceiver);
+        } catch (Exception ignored) {
+        }
         PollingUtils.stopPollingService(Utils.appContext
                 , WakeupAdService.class, "", CODE_WAKEUP_ALARM);
         iWakeUP = null;
@@ -143,15 +140,9 @@ public class AdController {
     public void startPolling(IAlarm iAlarm) {
         stopPolling();
         this.iAlarm = iAlarm;
-        mAlarmSubs = RxBus.INSTANCE.asObservable()
-                .subscribe(o -> {
-                    if (!(o instanceof AlarmService.AlarmServiceEvent))
-                        return;
-                    JLog.d("收到定时的RxBus");
-                    if (this.iAlarm != null) {
-                        this.iAlarm.onAlarmReceive();
-                    }
-                });
+        IntentFilter filter = new IntentFilter(AlarmService.ACTION_ALARM_SERVICE);
+        mContext.registerReceiver(mAlarmReceiver, filter);
+
         long timeMillis = getTriggerTime();
 
         PollingUtils.startPollingService(Utils.appContext
@@ -165,7 +156,10 @@ public class AdController {
     }
 
     public void stopPolling() {
-        RxUtils.unsubscribeIfNotNull(mAlarmSubs);
+        try {
+            mContext.unregisterReceiver(mAlarmReceiver);
+        } catch (Exception ignored) {
+        }
         PollingUtils.stopPollingService(Utils.appContext
                 , AlarmService.class, "", CODE_ALARM_SERVICE);
         iAlarm = null;
@@ -414,6 +408,26 @@ public class AdController {
 
         public IScreenOff getScreenOffListener() {
             return iScreenOff;
+        }
+    }
+
+    public class AlarmReceiver extends BroadcastReceiver {
+
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            if (iAlarm != null) {
+                iAlarm.onAlarmReceive();
+            }
+        }
+    }
+
+    public class WakeUpReceiver extends BroadcastReceiver {
+
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            if (iWakeUP != null) {
+                iWakeUP.onWakeUpAdExecute();
+            }
         }
     }
 

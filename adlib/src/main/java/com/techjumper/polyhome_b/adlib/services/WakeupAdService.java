@@ -9,7 +9,6 @@ import android.os.IBinder;
 import android.os.PowerManager;
 import android.support.annotation.Nullable;
 
-import com.techjumper.corelib.rx.tools.RxBus;
 import com.techjumper.corelib.utils.Utils;
 import com.techjumper.corelib.utils.common.JLog;
 import com.techjumper.polyhome_b.adlib.manager.AdController;
@@ -26,7 +25,7 @@ import java.util.TimeZone;
  **/
 public class WakeupAdService extends Service {
 
-    private WakeupAdEvent mEvent = new WakeupAdEvent();
+    public static final String ACTION_WAKE_UP = "action_wake_up";
 
     @Nullable
     @Override
@@ -42,7 +41,7 @@ public class WakeupAdService extends Service {
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
-        RxBus.INSTANCE.send(mEvent);
+        sendBroadcast(new Intent(ACTION_WAKE_UP));
         PollingUtils.startPollingServiceBySet(Utils.appContext
                 , getTriggerTime(), WakeupAdService.class, "", true, AdController.CODE_WAKEUP_ALARM, true);
         return super.onStartCommand(intent, flags, startId);
@@ -68,7 +67,4 @@ public class WakeupAdService extends Service {
 
     }
 
-    public static class WakeupAdEvent {
-
-    }
 }

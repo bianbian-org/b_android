@@ -56,7 +56,7 @@ public class PloyhomeFragmentPresenter extends AppBaseFragmentPresenter<Ployhome
     private PloyhomeFragmentModel model = new PloyhomeFragmentModel(this);
     private int type = -1;
     private UserInfoEntity userInfoEntity;
-    private AdController adController = new AdController();
+    private AdController adController;
     private AdEntity.AdsEntity mAdsEntity = new AdEntity.AdsEntity();
     private String addType = IMAGE_AD_TYPE;
     private int videoPosition = 0;
@@ -143,7 +143,7 @@ public class PloyhomeFragmentPresenter extends AppBaseFragmentPresenter<Ployhome
 
     @Override
     public void initData(Bundle savedInstanceState) {
-
+        adController = new AdController(getView().getActivity());
     }
 
     @Override
@@ -419,6 +419,7 @@ public class PloyhomeFragmentPresenter extends AppBaseFragmentPresenter<Ployhome
                     @Override
                     public void onAdPlayFinished() {
                         JLog.d("广告播放完成  (有可能是上一次的任务被自动中断，不影响本次广告执行)");
+                        adController.turnOffScreen(); //保持休眠
                         RxBus.INSTANCE.send(new AdShowEvent(false));
                     }
 
