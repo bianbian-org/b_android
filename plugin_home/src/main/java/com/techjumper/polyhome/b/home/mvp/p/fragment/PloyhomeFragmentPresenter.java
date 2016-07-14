@@ -342,13 +342,13 @@ public class PloyhomeFragmentPresenter extends AppBaseFragmentPresenter<Ployhome
                         .into(adImageView);
             }
 
-            adsEntity.setMedia_url(file.getAbsolutePath().toString());
+            adsEntity.setMedia_url(file.getAbsolutePath());
         } else if (addType.equals(VIDEO_AD_TYPE)) {
 
             adImageView.setVisibility(View.INVISIBLE);
             video.setVisibility(View.VISIBLE);
             if (file.exists()) {
-                video.setVideoPath(file.getAbsolutePath().toString());
+                video.setVideoPath(file.getAbsolutePath());
             } else {
                 video.setVideoURI(Uri.parse(adsEntity.getMedia_url()));
             }
@@ -356,7 +356,7 @@ public class PloyhomeFragmentPresenter extends AppBaseFragmentPresenter<Ployhome
             video.start();
             video.requestFocus();
 
-            adsEntity.setMedia_url(file.getAbsolutePath().toString());
+            adsEntity.setMedia_url(file.getAbsolutePath());
         }
 
         mAdsEntity = adsEntity;

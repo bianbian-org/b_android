@@ -101,7 +101,7 @@ public class AdController {
 
     }
 
-    public void startWakeUpTimer(IWakeUp iWakeUp) {
+    public synchronized void startWakeUpTimer(IWakeUp iWakeUp) {
         stopWakeUpTimer();
         this.iWakeUP = iWakeUp;
         IntentFilter intentFilter = new IntentFilter(WakeupAdService.ACTION_WAKE_UP);
@@ -137,7 +137,7 @@ public class AdController {
     }
 
 
-    public void startPolling(IAlarm iAlarm) {
+    public synchronized void startPolling(IAlarm iAlarm) {
         stopPolling();
         this.iAlarm = iAlarm;
         IntentFilter filter = new IntentFilter(AlarmService.ACTION_ALARM_SERVICE);
@@ -178,7 +178,7 @@ public class AdController {
         return c.getTimeInMillis();
     }
 
-    public void receiveScreenOff(IScreenOff iScreenOff) {
+    public synchronized void receiveScreenOff(IScreenOff iScreenOff) {
         stopReceiveScreenOff();
         mScreenOffReceiver = new ScreenOffReceiver(iScreenOff, mLockTime);
         IntentFilter intentFilter = new IntentFilter(Intent.ACTION_SCREEN_OFF);
@@ -202,11 +202,14 @@ public class AdController {
 
     public void executeAdRule(String adType, String family_id, String user_id, String ticket, IExecuteRule iExecuteRule) {
         if (TextUtils.isEmpty(adType)) return;
-        cancel(adType);
-        AdRuleExecutor executor = mExecutorMap.get(adType);
-        if (executor == null) {
-            executor = new AdRuleExecutor(adType);
-            mExecutorMap.put(adType, executor);
+        AdRuleExecutor executor;
+        synchronized (this) {
+            cancel(adType);
+            executor = mExecutorMap.get(adType);
+            if (executor == null) {
+                executor = new AdRuleExecutor(adType);
+                mExecutorMap.put(adType, executor);
+            }
         }
         executor.fetchAd(family_id, user_id, ticket, iExecuteRule);
     }

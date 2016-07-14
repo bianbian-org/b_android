@@ -25,6 +25,7 @@ import com.techjumper.corelib.rx.tools.RxBus;
 import com.techjumper.corelib.utils.common.JLog;
 import com.techjumper.corelib.utils.window.ToastUtils;
 import com.techjumper.lib2.utils.PicassoHelper;
+import com.techjumper.plugincommunicateengine.IPluginMessageReceiver;
 import com.techjumper.plugincommunicateengine.PluginEngine;
 import com.techjumper.plugincommunicateengine.entity.core.SaveInfoEntity;
 import com.techjumper.plugincommunicateengine.utils.GsonUtils;
@@ -35,6 +36,7 @@ import com.techjumper.polyhome.b.home.mvp.p.fragment.PloyhomeFragmentPresenter;
 import com.techjumper.polyhome.b.home.mvp.v.activity.MainActivity;
 import com.techjumper.polyhome.b.home.widget.MyVideoView;
 import com.techjumper.polyhome_b.adlib.entity.AdEntity;
+import com.techjumper.polyhome_b.adlib.window.AdWindowManager;
 
 import java.io.File;
 import java.util.HashMap;
@@ -53,6 +55,93 @@ public class MainActivityPresenter extends AppBaseActivityPresenter<MainActivity
     private LinearLayout mainContentLayout;
     private MyVideoView mainAdVideo;
     private ImageView mainAdImg;
+
+    private IPluginMessageReceiver mIPluginMessageReceiver = (code, message, extras) -> {
+
+        if (code == PluginEngine.CODE_GET_SAVE_INFO) {
+            Log.d("pluginUserInfo", "开始从本地抓取用户信息数据...");
+            Log.d("pluginUserInfo", "message: " + message);
+            SaveInfoEntity saveInfoEntity = GsonUtils.fromJson(message, SaveInfoEntity.class);
+            if (saveInfoEntity == null || saveInfoEntity.getData() == null)
+                return;
+
+            Log.d("pluginUserInfo", "name: " + saveInfoEntity.getData().getName());
+            HashMap<String, String> hashMap = saveInfoEntity.getData().getValues();
+            Log.d("pluginUserInfo", "hashMap: " + hashMap);
+            if (hashMap == null)
+                return;
+
+            Log.d("pluginUserInfo", "hashMapSize: " + hashMap.size());
+            if (hashMap == null || hashMap.size() == 0)
+                return;
+
+            String name = saveInfoEntity.getData().getName();
+
+            if (name.equals(ComConstant.FILE_FAMILY_REGISTER)) {
+                UserInfoEntity userInfoEntity = new UserInfoEntity();
+
+                for (Map.Entry<String, String> entry : hashMap.entrySet()) {
+                    Log.d("pluginUserInfo", entry.getValue());
+                    String key = entry.getKey();
+                    String value = entry.getValue();
+                    if (key.equals("id")) {
+                        userInfoEntity.setId(Long.parseLong(value));
+                    } else if (key.equals("family_name")) {
+                        userInfoEntity.setFamily_name(value);
+                    } else if (key.equals("user_id")) {
+                        userInfoEntity.setUser_id(Long.parseLong(value));
+                    } else if (key.equals("ticket")) {
+                        userInfoEntity.setTicket(value);
+                    } else if (key.equals("has_binding")) {
+                        userInfoEntity.setHas_binding(Integer.parseInt(value));
+                    }
+                }
+
+                UserInfoManager.saveUserInfo(userInfoEntity);
+
+                RxBus.INSTANCE.send(new UserInfoEvent(userInfoEntity));
+            } else if (name.equals(ComConstant.FILE_MEDICAL)) {
+                MedicalEntity medicalEntity = GsonUtils.fromJson(message, MedicalEntity.class);
+                Log.d("pluginUserInfo", "medicalEntity: " + (medicalEntity == null ? "" : medicalEntity));
+                Log.d("pluginUserInfo", "medicalEntity.getData(): " + (medicalEntity.getData() == null ? "" : medicalEntity.getData()));
+                Log.d("pluginUserInfo", "medicalEntity.getData().getValues(): " + (medicalEntity.getData().getValues() == null ? "" : medicalEntity.getData().getValues()));
+                Log.d("pluginUserInfo", "medicalEntity.getData().getValues().getDatas(): " + (medicalEntity.getData().getValues().getDatas() == null ? "" : medicalEntity.getData().getValues().getDatas()));
+
+                if (medicalEntity == null
+                        || medicalEntity.getData() == null
+                        || medicalEntity.getData().getValues() == null
+                        || medicalEntity.getData().getValues().getDatas() == null)
+                    return;
+                MedicalEntity.MedicalDataItemEntity medicalDataItemEntity = GsonUtils.fromJson(medicalEntity.getData().getValues().getDatas(), MedicalEntity.MedicalDataItemEntity.class);
+                List<MedicalEntity.MedicalItemEntity> medicalItemEntities = medicalDataItemEntity.getPerson();
+                Log.d("pluginUserInfo", "medicalItemEntities: " + medicalItemEntities.size());
+            }
+            Log.d("pluginUserInfo", "更新完毕用户信息...");
+        } else if (code == PluginEngine.CODE_SAVE_INFO) {
+            Log.d("pluginUserInfo", "用户设置保存文件名为: " + (TextUtils.isEmpty(message) ? "没有文件" : message));
+
+            if (TextUtils.isEmpty(message))
+                return;
+
+//                InfoManager.saveUserInfoFile(message);
+
+            PluginEngineUtil.initUserInfo(message);
+        } else if (code == PluginEngine.CODE_CUSTOM) {
+            Log.d("pluginUserInfo", "CODE_CUSTOM...");
+            Log.d("pluginUserInfo", "message: " + (TextUtils.isEmpty(message) ? "" : message) + "  extras: " + extras == null ? "" : extras.getBoolean("key_ismedical") + "");
+            if (!TextUtils.isEmpty(message)) {
+                if (message.equals("action_medical")) {
+                    if (extras != null) {
+                        boolean isMedical = extras.getBoolean("key_ismedical");
+                        if (isMedical == true) {
+                            PluginEngineUtil.getMedical();
+                        }
+                    }
+                }
+            }
+        }
+
+    };
 
     @OnClick(R.id.title_img)
     void titleImg() {
@@ -110,10 +199,23 @@ public class MainActivityPresenter extends AppBaseActivityPresenter<MainActivity
         isShowMainAd(false);
     }
 
+
     @Override
-
     public void initData(Bundle savedInstanceState) {
+        AdWindowManager.getInstance().setOnAdsClickListener(new AdWindowManager.ParentClickListener() {
+            @Override
+            public void onAdsClick(AdEntity.AdsEntity adsEntity, File file) {
+                RxBus.INSTANCE.send(new AdControllerEvent());
+                RxBus.INSTANCE.send(new AdShowEvent(false));
+            }
+        });
+    }
 
+    @Override
+    public void onDestroy() {
+        PluginEngine.getInstance().quit();
+        AdWindowManager.getInstance().unregisterListener();
+        super.onDestroy();
     }
 
     @Override
@@ -133,12 +235,16 @@ public class MainActivityPresenter extends AppBaseActivityPresenter<MainActivity
                         }
                     } else if (o instanceof AdMainEvent) {
                         AdMainEvent event = (AdMainEvent) o;
-                        if (event != null && event.getAdsEntity() != null && event.getFile() != null) {
-                            HandleMainAd(event.getAdsEntity(), event.getFile());
+                        if (event.getAdsEntity() != null && event.getFile() != null) {
+//                            HandleMainAd(event.getAdsEntity(), event.getFile());
+                            AdWindowManager.getInstance().showImage(event.getAdsEntity(), event.getFile());
                         }
                     } else if (o instanceof AdShowEvent) {
                         AdShowEvent event = (AdShowEvent) o;
-                        isShowMainAd(event.isShow());
+//                        isShowMainAd(event.isShow());
+                        if (!event.isShow()) {
+                            AdWindowManager.getInstance().closeWindow();
+                        }
                     }
                 });
 
@@ -154,90 +260,7 @@ public class MainActivityPresenter extends AppBaseActivityPresenter<MainActivity
 //            PluginEngineUtil.initUserInfo(InfoManager.getUserInfoFile());
 //        }
 
-        PluginEngine.getInstance().registerReceiver((code, message, extras) -> {
-            if (code == PluginEngine.CODE_GET_SAVE_INFO) {
-                Log.d("pluginUserInfo", "开始从本地抓取用户信息数据...");
-                Log.d("pluginUserInfo", "message: " + message);
-                SaveInfoEntity saveInfoEntity = GsonUtils.fromJson(message, SaveInfoEntity.class);
-                if (saveInfoEntity == null || saveInfoEntity.getData() == null)
-                    return;
-
-                Log.d("pluginUserInfo", "name: " + saveInfoEntity.getData().getName());
-                HashMap<String, String> hashMap = saveInfoEntity.getData().getValues();
-                Log.d("pluginUserInfo", "hashMap: " + hashMap);
-                if (hashMap == null)
-                    return;
-
-                Log.d("pluginUserInfo", "hashMapSize: " + hashMap.size());
-                if (hashMap == null || hashMap.size() == 0)
-                    return;
-
-                String name = saveInfoEntity.getData().getName();
-
-                if (name.equals(ComConstant.FILE_FAMILY_REGISTER)) {
-                    UserInfoEntity userInfoEntity = new UserInfoEntity();
-
-                    for (Map.Entry<String, String> entry : hashMap.entrySet()) {
-                        Log.d("pluginUserInfo", entry.getValue());
-                        String key = entry.getKey();
-                        String value = entry.getValue();
-                        if (key.equals("id")) {
-                            userInfoEntity.setId(Long.parseLong(value));
-                        } else if (key.equals("family_name")) {
-                            userInfoEntity.setFamily_name(value);
-                        } else if (key.equals("user_id")) {
-                            userInfoEntity.setUser_id(Long.parseLong(value));
-                        } else if (key.equals("ticket")) {
-                            userInfoEntity.setTicket(value);
-                        } else if (key.equals("has_binding")) {
-                            userInfoEntity.setHas_binding(Integer.parseInt(value));
-                        }
-                    }
-
-                    UserInfoManager.saveUserInfo(userInfoEntity);
-
-                    RxBus.INSTANCE.send(new UserInfoEvent(userInfoEntity));
-                } else if (name.equals(ComConstant.FILE_MEDICAL)) {
-                    MedicalEntity medicalEntity = GsonUtils.fromJson(message, MedicalEntity.class);
-                    Log.d("pluginUserInfo", "medicalEntity: " + (medicalEntity == null ? "" : medicalEntity));
-                    Log.d("pluginUserInfo", "medicalEntity.getData(): " + (medicalEntity.getData() == null ? "" : medicalEntity.getData()));
-                    Log.d("pluginUserInfo", "medicalEntity.getData().getValues(): " + (medicalEntity.getData().getValues() == null ? "" : medicalEntity.getData().getValues()));
-                    Log.d("pluginUserInfo", "medicalEntity.getData().getValues().getDatas(): " + (medicalEntity.getData().getValues().getDatas() == null ? "" : medicalEntity.getData().getValues().getDatas()));
-
-                    if (medicalEntity == null
-                            || medicalEntity.getData() == null
-                            || medicalEntity.getData().getValues() == null
-                            || medicalEntity.getData().getValues().getDatas() == null)
-                        return;
-                    MedicalEntity.MedicalDataItemEntity medicalDataItemEntity = GsonUtils.fromJson(medicalEntity.getData().getValues().getDatas(), MedicalEntity.MedicalDataItemEntity.class);
-                    List<MedicalEntity.MedicalItemEntity> medicalItemEntities = medicalDataItemEntity.getPerson();
-                    Log.d("pluginUserInfo", "medicalItemEntities: " + medicalItemEntities.size());
-                }
-                Log.d("pluginUserInfo", "更新完毕用户信息...");
-            } else if (code == PluginEngine.CODE_SAVE_INFO) {
-                Log.d("pluginUserInfo", "用户设置保存文件名为: " + (TextUtils.isEmpty(message) ? "没有文件" : message));
-
-                if (TextUtils.isEmpty(message))
-                    return;
-
-//                InfoManager.saveUserInfoFile(message);
-
-                PluginEngineUtil.initUserInfo(message);
-            } else if (code == PluginEngine.CODE_CUSTOM) {
-                Log.d("pluginUserInfo", "CODE_CUSTOM...");
-                Log.d("pluginUserInfo", "message: " + (TextUtils.isEmpty(message) ? "" : message) + "  extras: " + extras == null ? "" : extras.getBoolean("key_ismedical") + "");
-                if (!TextUtils.isEmpty(message)) {
-                    if (message.equals("action_medical")) {
-                        if (extras != null) {
-                            boolean isMedical = extras.getBoolean("key_ismedical");
-                            if (isMedical == true) {
-                                PluginEngineUtil.getMedical();
-                            }
-                        }
-                    }
-                }
-            }
-        });
+        PluginEngine.getInstance().registerReceiver(mIPluginMessageReceiver);
     }
 
     private void isShowMainAd(boolean isShow) {

@@ -44,7 +44,7 @@ import rx.android.schedulers.AndroidSchedulers;
  */
 public class InfoFragmentPresenter extends AppBaseFragmentPresenter<InfoFragment> {
     private InfoFragmentModel infoFragmentModel = new InfoFragmentModel(this);
-    private AdController adController = new AdController();
+    private AdController adController;
     private MyVideoView video;
     private ImageView adImageView;
     private AdEntity.AdsEntity mAdsEntity = new AdEntity.AdsEntity();
@@ -83,7 +83,7 @@ public class InfoFragmentPresenter extends AppBaseFragmentPresenter<InfoFragment
 
     @Override
     public void initData(Bundle savedInstanceState) {
-
+        adController = new AdController(getView().getActivity());
     }
 
     @Override

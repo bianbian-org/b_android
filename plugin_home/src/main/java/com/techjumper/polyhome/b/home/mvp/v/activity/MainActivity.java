@@ -22,7 +22,6 @@ import com.techjumper.polyhome.b.home.adapter.MyViewPagerAdapter;
 import com.techjumper.polyhome.b.home.mvp.p.activity.MainActivityPresenter;
 import com.techjumper.polyhome.b.home.mvp.v.fragment.InfoFragment;
 import com.techjumper.polyhome.b.home.mvp.v.fragment.PloyhomeFragment;
-import com.techjumper.polyhome.b.home.receiver.NoticeReceiver;
 import com.techjumper.polyhome.b.home.widget.MyVideoView;
 import com.techjumper.polyhome.b.home.widget.MyViewPager;
 
@@ -32,7 +31,6 @@ import java.util.Timer;
 import java.util.TimerTask;
 
 import butterknife.Bind;
-import butterknife.ButterKnife;
 
 @Presenter(MainActivityPresenter.class)
 public class MainActivity extends AppBaseActivity {
@@ -170,6 +168,10 @@ public class MainActivity extends AppBaseActivity {
 
         IntentFilter intentFilter = new IntentFilter(ACTION_HOME_HEARTBEAT);
         registerReceiver(mheartbeatReceiver, intentFilter);
+    }
+
+    @Override
+    public void onBackPressed() {
     }
 
     @Override
