@@ -9,72 +9,118 @@
 
     <include layout="@layout/layout_bottom" />
 
-    <LinearLayout
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
         <LinearLayout
-            android:layout_width="@dimen/dp_173"
-            android:layout_height="match_parent"
-            android:background="@mipmap/bg_lefttab"
-            android:orientation="vertical">
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
 
-            <RadioGroup
-                android:id="@+id/title_rg"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+
+            <LinearLayout
+                android:layout_width="@dimen/dp_173"
+                android:layout_height="match_parent"
+                android:background="@mipmap/bg_lefttab"
                 android:orientation="vertical">
 
-                <RadioButton
-                    android:id="@+id/title_announcement"
-                    style="@style/InfoTitleStyle"
-                    android:layout_width="164.5dp"
-                    android:layout_height="62dp"
-                    android:checked="true"
-                    android:text="@string/info_announcement_title" />
+                <RadioGroup
+                    android:id="@+id/title_rg"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
 
-                <RadioButton
-                    android:id="@+id/title_system"
-                    style="@style/InfoTitleStyle"
-                    android:layout_width="164.5dp"
-                    android:layout_height="62dp"
-                    android:text="@string/info_system_title" />
+                    <RadioButton
+                        android:id="@+id/title_announcement"
+                        style="@style/InfoTitleStyle"
+                        android:layout_width="164.5dp"
+                        android:layout_height="62dp"
+                        android:checked="true"
+                        android:text="@string/info_announcement_title" />
 
-                <RadioButton
-                    android:id="@+id/title_order"
-                    style="@style/InfoTitleStyle"
-                    android:layout_width="164.5dp"
-                    android:layout_height="62dp"
-                    android:text="@string/info_order_title" />
+                    <RadioButton
+                        android:id="@+id/title_system"
+                        style="@style/InfoTitleStyle"
+                        android:layout_width="164.5dp"
+                        android:layout_height="62dp"
+                        android:layout_centerVertical="true"
+                        android:text="@string/info_system_title" />
 
-                <RadioButton
-                    android:id="@+id/title_medical"
-                    style="@style/InfoTitleStyle"
-                    android:layout_width="164.5dp"
-                    android:layout_height="62dp"
-                    android:text="@string/info_medical_title" />
-            </RadioGroup>
-        </LinearLayout>
+                    <RadioButton
+                        android:id="@+id/title_order"
+                        style="@style/InfoTitleStyle"
+                        android:layout_width="164.5dp"
+                        android:layout_height="62dp"
+                        android:text="@string/info_order_title" />
 
-        <FrameLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_weight="1">
+                    <RadioButton
+                        android:id="@+id/title_medical"
+                        style="@style/InfoTitleStyle"
+                        android:layout_width="164.5dp"
+                        android:layout_height="62dp"
+                        android:text="@string/info_medical_title" />
+                </RadioGroup>
+            </LinearLayout>
 
-            <android.support.v7.widget.RecyclerView
-                android:id="@+id/info_list"
-                android:layout_marginLeft="@dimen/dp_20"
-                android:layout_marginRight="@dimen/dp_30"
+            <FrameLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_weight="1" />
+                android:layout_weight="1">
 
-            <include layout="@layout/layout_info_detail" />
+                <android.support.v7.widget.RecyclerView
+                    android:id="@+id/info_list"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginLeft="@dimen/dp_20"
+                    android:layout_marginRight="@dimen/dp_30"
+                    android:layout_weight="1" />
 
-            <include layout="@layout/layout_normal_detail" />
-        </FrameLayout>
+                <include layout="@layout/layout_info_detail" />
 
-    </LinearLayout>
+                <include layout="@layout/layout_normal_detail" />
+            </FrameLayout>
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/system_unread_num"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/dp_128"
+            android:layout_marginTop="83dp"
+            android:background="@drawable/bg_circle_ff4d38"
+            android:gravity="center"
+            android:text="0"
+            android:textColor="@color/color_ffffff"
+            android:textSize="@dimen/sp_12"
+            android:visibility="gone" />
+
+        <TextView
+            android:id="@+id/order_unread_num"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/dp_128"
+            android:layout_marginTop="145dp"
+            android:background="@drawable/bg_circle_ff4d38"
+            android:gravity="center"
+            android:text="0"
+            android:textColor="@color/color_ffffff"
+            android:textSize="@dimen/sp_12"
+            android:visibility="gone" />
+
+        <TextView
+            android:id="@+id/medical_unread_num"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/dp_128"
+            android:layout_marginTop="207dp"
+            android:background="@drawable/bg_circle_ff4d38"
+            android:gravity="center"
+            android:text="0"
+            android:textColor="@color/color_ffffff"
+            android:textSize="@dimen/sp_12"
+            android:visibility="gone" />
+
+    </RelativeLayout>
 
     <RelativeLayout
         android:layout_width="match_parent"

@@ -20,6 +20,7 @@ import com.techjumper.polyhome.b.home.mvp.p.fragment.PloyhomeFragmentPresenter;
 import com.techjumper.polyhome.b.home.widget.MyVideoView;
 import com.techjumper.polyhome.b.home.widget.SquareView;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
@@ -49,6 +50,7 @@ public class PloyhomeFragment extends AppBaseFragment<PloyhomeFragmentPresenter>
 
     private Timer timer = new Timer();
     private int position = 0;
+    private List<NoticeEntity.Unread> unreads = new ArrayList<>();
 
     public TextView getNoticeTitle() {
         return noticeTitle;
@@ -78,6 +80,10 @@ public class PloyhomeFragment extends AppBaseFragment<PloyhomeFragmentPresenter>
         return new PloyhomeFragment();
     }
 
+    public List<NoticeEntity.Unread> getUnreads() {
+        return unreads;
+    }
+
     @Override
     protected View inflateView(LayoutInflater inflater, Bundle savedInstanceState) {
         return inflater.inflate(R.layout.fragment_ployhome, null);
@@ -103,7 +109,10 @@ public class PloyhomeFragment extends AppBaseFragment<PloyhomeFragmentPresenter>
             timer.cancel();
         }
 
-        List<NoticeEntity.Unread> unreads = entity.getUnread();
+        if (unreads != null && unreads.size() > 0)
+            unreads.clear();
+
+        unreads = entity.getUnread();
         if (unreads != null) {
             int num = 0;
             if (unreads.size() > 0) {

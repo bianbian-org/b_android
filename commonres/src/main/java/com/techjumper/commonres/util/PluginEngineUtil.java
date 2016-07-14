@@ -3,10 +3,12 @@ package com.techjumper.commonres.util;
 import android.os.Bundle;
 
 import com.techjumper.commonres.PluginConstant;
-import com.techjumper.commonres.UserInfoEntity;
+import com.techjumper.commonres.entity.NoticeEntity;
 import com.techjumper.plugincommunicateengine.HostDataBuilder;
-import com.techjumper.plugincommunicateengine.IPluginMessageReceiver;
 import com.techjumper.plugincommunicateengine.PluginEngine;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import static com.techjumper.commonres.ComConstant.FILE_MEDICAL;
 
@@ -54,7 +56,7 @@ public class PluginEngineUtil {
     }
 
     //信息
-    public static void startInfo(final long userId, final long familyId, final String ticket, final int type) {
+    public static void startInfo(final long userId, final long familyId, final String ticket, final int type, final String unreads) {
         PluginEngine.getInstance().start(new PluginEngine.IPluginConnection() {
             @Override
             public void onEngineConnected(PluginEngine.PluginExecutor pluginExecutor) {
@@ -63,7 +65,7 @@ public class PluginEngineUtil {
                 bundle.putLong(PluginConstant.KEY_INFO_FAMILY_ID, familyId);
                 bundle.putString(PluginConstant.KEY_INFO_TICKET, ticket);
                 bundle.putInt(PluginConstant.KEY_INFO_TYPE, type);
-
+                bundle.putString(PluginConstant.KEY_INFO_UNREAD, unreads);
                 String data
                         = HostDataBuilder.startPluginBuilder()
                         .packageName(PLUGIN_INFO)

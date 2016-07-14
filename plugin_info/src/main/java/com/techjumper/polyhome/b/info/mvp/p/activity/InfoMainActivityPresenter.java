@@ -152,7 +152,7 @@ public class InfoMainActivityPresenter extends AppBaseActivityPresenter<InfoMain
                         infoEntity.getData() != null &&
                         infoEntity.getData().getResult() != null &&
                         infoEntity.getData().getResult().getMessages() != null) {
-                    getView().getList(infoEntity.getData().getResult().getMessages(), pageNo);
+                    getView().getList(infoEntity.getData().getResult(), pageNo);
                 }
             }
         }));

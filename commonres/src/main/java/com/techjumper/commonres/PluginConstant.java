@@ -18,6 +18,7 @@ public class PluginConstant {
     public static final String KEY_INFO_USER_ID = "key_info_user_id";
     public static final String KEY_INFO_TICKET = "key_info_ticket";
     public static final String KEY_INFO_FAMILY_ID = "key_info_family_id";
+    public static final String KEY_INFO_UNREAD = "key_unread";
 
     //物业key
     public static final String KEY_PRO_FAMILY_ID = "key_pro_family_id";

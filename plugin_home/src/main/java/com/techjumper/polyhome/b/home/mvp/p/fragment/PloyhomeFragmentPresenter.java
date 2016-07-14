@@ -25,6 +25,7 @@ import com.techjumper.corelib.rx.tools.RxBus;
 import com.techjumper.corelib.utils.Utils;
 import com.techjumper.corelib.utils.common.JLog;
 import com.techjumper.corelib.utils.window.ToastUtils;
+import com.techjumper.lib2.utils.GsonUtils;
 import com.techjumper.lib2.utils.PicassoHelper;
 import com.techjumper.polyhome.b.home.R;
 import com.techjumper.polyhome.b.home.UserInfoManager;
@@ -42,6 +43,7 @@ import com.techjumper.polyhome_b.adlib.entity.AdEntity;
 import com.techjumper.polyhome_b.adlib.manager.AdController;
 
 import java.io.File;
+import java.util.List;
 
 import butterknife.OnClick;
 import rx.Subscriber;
@@ -92,8 +94,13 @@ public class PloyhomeFragmentPresenter extends AppBaseFragmentPresenter<Ployhome
             long userId = UserInfoManager.getLongUserId();
             long familyId = UserInfoManager.getLongFamilyId();
             String ticket = UserInfoManager.getTicket();
-            PluginEngineUtil.startInfo(userId, familyId, ticket, type);
-        } else {
+
+            NoticeEntity.InfoUnread infoUnread = new NoticeEntity.InfoUnread();
+            infoUnread.setUnreads(getView().getUnreads());
+            String unreadString = GsonUtils.toJson(infoUnread);
+
+            PluginEngineUtil.startInfo(userId, familyId, ticket, type, unreadString);
+
 //            ToastUtils.show(getView().getString(R.string.error_no_login));
         }
     }

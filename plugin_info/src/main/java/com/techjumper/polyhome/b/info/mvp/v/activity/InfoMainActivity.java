@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.View;
 import android.webkit.WebChromeClient;
 import android.webkit.WebView;
@@ -29,6 +30,7 @@ import com.techjumper.commonres.entity.event.loadmoreevent.LoadmoreInfoEvent;
 import com.techjumper.commonres.util.CommonDateUtil;
 import com.techjumper.corelib.mvp.factory.Presenter;
 import com.techjumper.corelib.rx.tools.RxBus;
+import com.techjumper.lib2.utils.GsonUtils;
 import com.techjumper.polyhome.b.info.R;
 import com.techjumper.polyhome.b.info.UserInfoManager;
 import com.techjumper.polyhome.b.info.mvp.p.activity.InfoMainActivityPresenter;
@@ -42,7 +44,6 @@ import java.util.Timer;
 import java.util.TimerTask;
 
 import butterknife.Bind;
-import butterknife.ButterKnife;
 import butterknife.OnClick;
 import rx.android.schedulers.AndroidSchedulers;
 
@@ -87,10 +88,17 @@ public class InfoMainActivity extends AppBaseActivity {
     TextView bottomTitle;
     @Bind(R.id.bottom_date)
     TextView bottomDate;
+    @Bind(R.id.system_unread_num)
+    TextView systemUnreadNum;
+    @Bind(R.id.order_unread_num)
+    TextView orderUnreadNum;
+    @Bind(R.id.medical_unread_num)
+    TextView medicalUnreadNum;
 
     private int type = NoticeEntity.PROPERTY;
     private Timer timer = new Timer();
     private LinearLayoutManager manager = new LinearLayoutManager(this);
+    private List<NoticeEntity.Unread> unreads = new ArrayList<>();
 
     @OnClick(R.id.bottom_back)
     void back() {
@@ -144,6 +152,33 @@ public class InfoMainActivity extends AppBaseActivity {
             } else {
                 titleSystem.setChecked(true);
             }
+
+            String unreadString = bundle.getString(PluginConstant.KEY_INFO_UNREAD);
+            NoticeEntity.InfoUnread infoUnread = GsonUtils.fromJson(unreadString, NoticeEntity.InfoUnread.class);
+
+            unreads = infoUnread.getUnreads();
+            if (unreads.size() > 0) {
+                for (int i = 0; i < unreads.size(); i++) {
+                    NoticeEntity.Unread unread = unreads.get(i);
+                    if (unread.getType() == NoticeEntity.ORDER) {
+                        if (unread.getCount() > 0) {
+                            orderUnreadNum.setText(String.valueOf(unread.getCount()));
+                            orderUnreadNum.setVisibility(View.VISIBLE);
+                        }
+                    } else if (unread.getType() == NoticeEntity.MEDICAL) {
+                        if (unread.getCount() > 0) {
+                            medicalUnreadNum.setText(String.valueOf(unread.getCount()));
+                            medicalUnreadNum.setVisibility(View.VISIBLE);
+                        }
+                    } else {
+                        if (unread.getCount() > 0) {
+                            systemUnreadNum.setText(String.valueOf(unread.getCount()));
+                            systemUnreadNum.setVisibility(View.VISIBLE);
+                        }
+                    }
+                }
+            }
+
             UserInfoEntity userInfoEntity = new UserInfoEntity();
             userInfoEntity.setUser_id(bundle.getLong(PluginConstant.KEY_INFO_USER_ID));
             userInfoEntity.setTicket(bundle.getString(PluginConstant.KEY_INFO_TICKET));
@@ -152,7 +187,7 @@ public class InfoMainActivity extends AppBaseActivity {
         }
 //        UserInfoEntity userInfoEntity = new UserInfoEntity();
 //        userInfoEntity.setUser_id(362);
-//        userInfoEntity.setTicket("0ccb83db8bcce3136b4747ba9e995ee2eaccf731");
+//        userInfoEntity.setTicket("94b3cf1108d46c148569ff17d1c14c92d8306350");
 //        userInfoEntity.setId(434);
 //        UserInfoManager.saveUserInfo(userInfoEntity);
 //        setType(type);
@@ -249,11 +284,14 @@ public class InfoMainActivity extends AppBaseActivity {
         }, 5000, 60000);
     }
 
-    public void getList(List<InfoEntity.InfoResultEntity.InfoItemEntity> infoEntityTemporaries, int page) {
+    public void getList(InfoEntity.InfoResultEntity infoResultEntity, int page) {
 
         infoDetail.setVisibility(View.GONE);
         lndLayout.setVisibility(View.GONE);
         infoList.setVisibility(View.VISIBLE);
+
+        List<InfoEntity.InfoResultEntity.InfoItemEntity> infoEntityTemporaries = infoResultEntity.getMessages();
+        int num = infoResultEntity.getUn_read();
 
         if (infoEntityTemporaries == null)
             return;
@@ -261,6 +299,30 @@ public class InfoMainActivity extends AppBaseActivity {
         if (infoEntityTemporaries.size() == 0 && page == 1) {
             AdapterUtil.clear(adapter);
             return;
+        }
+
+        if (num == 0) {
+            if (type == NoticeEntity.SYSTEM) {
+                systemUnreadNum.setText("0");
+                systemUnreadNum.setVisibility(View.GONE);
+            } else if (type == NoticeEntity.ORDER) {
+                orderUnreadNum.setText("0");
+                orderUnreadNum.setVisibility(View.GONE);
+            } else if (type == NoticeEntity.MEDICAL) {
+                medicalUnreadNum.setText("0");
+                medicalUnreadNum.setVisibility(View.GONE);
+            }
+        } else {
+            if (type == NoticeEntity.SYSTEM) {
+                systemUnreadNum.setText(String.valueOf(num));
+                systemUnreadNum.setVisibility(View.VISIBLE);
+            } else if (type == NoticeEntity.ORDER) {
+                orderUnreadNum.setText(String.valueOf(num));
+                orderUnreadNum.setVisibility(View.VISIBLE);
+            } else if (type == NoticeEntity.MEDICAL) {
+                medicalUnreadNum.setText(String.valueOf(num));
+                medicalUnreadNum.setVisibility(View.VISIBLE);
+            }
         }
 
         List<DisplayBean> displayBeans = new ArrayList<>();

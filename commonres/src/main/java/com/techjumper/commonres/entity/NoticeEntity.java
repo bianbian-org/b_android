@@ -117,4 +117,16 @@ public class NoticeEntity extends BaseEntity<NoticeEntity.NoticeDataEntity> {
                     '}';
         }
     }
+
+    public static class InfoUnread {
+        private List<Unread> unreads;
+
+        public List<Unread> getUnreads() {
+            return unreads;
+        }
+
+        public void setUnreads(List<Unread> unreads) {
+            this.unreads = unreads;
+        }
+    }
 }
