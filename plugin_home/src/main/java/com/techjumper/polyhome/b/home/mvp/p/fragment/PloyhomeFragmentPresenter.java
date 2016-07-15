@@ -329,7 +329,7 @@ public class PloyhomeFragmentPresenter extends AppBaseFragmentPresenter<Ployhome
      * 处理广告
      */
     private void HandleAd(AdEntity.AdsEntity adsEntity, File file) {
-        JLog.d("有新的广告来啦. 本地广告路径:" + file + ", 详细信息: " + adsEntity);
+        
         addType = adsEntity.getMedia_type();
 
         if (addType.equals(IMAGE_AD_TYPE)) {
@@ -385,7 +385,7 @@ public class PloyhomeFragmentPresenter extends AppBaseFragmentPresenter<Ployhome
 
                     @Override
                     public void onAdPlayFinished() {
-                        JLog.d("广告播放完成  (有可能是上一次的任务被自动中断，不影响本次广告执行)");
+                        JLog.d("广告播放完成  ");
                         initAd();
                     }
 
@@ -436,7 +436,7 @@ public class PloyhomeFragmentPresenter extends AppBaseFragmentPresenter<Ployhome
 
                     @Override
                     public void onAdPlayFinished() {
-                        JLog.d("广告播放完成  (有可能是上一次的任务被自动中断，不影响本次广告执行)");
+                        JLog.d("广告播放完成  ");
                         adController.turnOffScreen(); //保持休眠
                         mIsWakedUp = false;
                         RxBus.INSTANCE.send(new AdShowEvent(false));
@@ -482,7 +482,7 @@ public class PloyhomeFragmentPresenter extends AppBaseFragmentPresenter<Ployhome
 
                     @Override
                     public void onAdPlayFinished() {
-                        JLog.d("广告播放完成  (有可能是上一次的任务被自动中断，不影响本次广告执行)");
+                        JLog.d("广告播放完成  ");
                         if (!mShouldSleep) {
                             adController.resetSleepTime();
                             mShouldSleep = true;

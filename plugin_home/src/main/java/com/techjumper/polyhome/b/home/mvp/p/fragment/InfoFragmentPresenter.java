@@ -305,7 +305,7 @@ public class InfoFragmentPresenter extends AppBaseFragmentPresenter<InfoFragment
      * 处理广告
      */
     private void HandleAd(AdEntity.AdsEntity adsEntity, File file) {
-        JLog.d("有新的广告来啦. 本地广告路径:" + file + ", 详细信息: " + adsEntity);
+//        JLog.d("有新的广告来啦. 本地广告路径:" + file + ", 详细信息: " + adsEntity);
         addType = adsEntity.getMedia_type();
 
         if (addType.equals(PloyhomeFragmentPresenter.IMAGE_AD_TYPE)) {
@@ -324,13 +324,13 @@ public class InfoFragmentPresenter extends AppBaseFragmentPresenter<InfoFragment
                         .into(adImageView);
             }
 
-            adsEntity.setMedia_url(file.getAbsolutePath().toString());
+            adsEntity.setMedia_url(file.getAbsolutePath());
         } else if (addType.equals(PloyhomeFragmentPresenter.VIDEO_AD_TYPE)) {
 
             adImageView.setVisibility(View.INVISIBLE);
             video.setVisibility(View.VISIBLE);
             if (file.exists()) {
-                video.setVideoPath(file.getAbsolutePath().toString());
+                video.setVideoPath(file.getAbsolutePath());
             } else {
                 video.setVideoURI(Uri.parse(adsEntity.getMedia_url()));
             }
@@ -338,7 +338,7 @@ public class InfoFragmentPresenter extends AppBaseFragmentPresenter<InfoFragment
             video.start();
             video.requestFocus();
 
-            adsEntity.setMedia_url(file.getAbsolutePath().toString());
+            adsEntity.setMedia_url(file.getAbsolutePath());
         }
 
         mAdsEntity = adsEntity;

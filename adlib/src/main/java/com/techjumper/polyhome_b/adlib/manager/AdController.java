@@ -91,6 +91,7 @@ public class AdController {
             return false;
         }
         JLog.d("唤醒屏幕");
+        setScreenOffTime(mLockTime);
         PowerUtil.wakeUpScreen();
         return true;
     }
@@ -205,7 +206,7 @@ public class AdController {
         if (TextUtils.isEmpty(adType)) return;
         AdRuleExecutor executor;
         synchronized (this) {
-            cancel(adType);
+            interrupt(adType);
             executor = mExecutorMap.get(adType);
             if (executor == null) {
                 executor = new AdRuleExecutor(adType);
@@ -396,7 +397,7 @@ public class AdController {
         void onSleepAdExecute();
     }
 
-    public static class ScreenOffReceiver extends BroadcastReceiver {
+    public class ScreenOffReceiver extends BroadcastReceiver {
 
         private IScreenOff iScreenOff;
         private int mScreenOffTime;
@@ -408,6 +409,12 @@ public class AdController {
 
         @Override
         public void onReceive(Context context, Intent intent) {
+            AdRuleExecutor wakeUpExecutor = mExecutorMap.get(AdController.TYPE_WAKEUP);
+            if (wakeUpExecutor != null && !wakeUpExecutor.isInterrupt()) {
+                JLog.d("已经在执行唤醒广告, 所以不再发布休眠消息");
+                return;
+            }
+
             if (getScreenOffTime() != mScreenOffTime) {
                 JLog.d("代码控制关闭屏幕, 不触发回调; getScreenOffTime()=" + getScreenOffTime() + ", mScreenOffTime=" + mScreenOffTime);
                 setScreenOffTime(mScreenOffTime);
@@ -610,6 +617,10 @@ public class AdController {
 
         private void interrupt() {
             mInterrupt = true;
+        }
+
+        public boolean isInterrupt() {
+            return mInterrupt;
         }
 
         public void quit() {

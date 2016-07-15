@@ -100,13 +100,16 @@ public class AdWindowManager {
         showWindow();
 
         if (file != null && file.exists()) {
-            myVideoView.setVideoPath(file.getAbsolutePath().toString());
+            myVideoView.setVideoPath(file.getAbsolutePath());
         } else {
             myVideoView.setVideoURI(Uri.parse(adsEntity.getMedia_url()));
         }
 
-        myVideoView.start();
-        myVideoView.requestFocus();
+        try {
+            myVideoView.start();
+            myVideoView.requestFocus();
+        } catch (Exception ignored) {
+        }
     }
 
     private void showWindow() {
@@ -133,15 +136,18 @@ public class AdWindowManager {
     }
 
     private void show(View inView) {
-        for (int i = 0; i < mContainer.getChildCount(); i++) {
-            View childView = mContainer.getChildAt(i);
-            if (childView == inView) {
-                if (inView.getVisibility() != View.VISIBLE) {
-                    inView.setVisibility(View.VISIBLE);
+        try {
+            for (int i = 0; i < mContainer.getChildCount(); i++) {
+                View childView = mContainer.getChildAt(i);
+                if (childView == inView) {
+                    if (inView.getVisibility() != View.VISIBLE) {
+                        inView.setVisibility(View.VISIBLE);
+                    }
+                } else {
+                    childView.setVisibility(View.GONE);
                 }
-            } else {
-                childView.setVisibility(View.GONE);
             }
+        } catch (Exception ignored) {
         }
     }
 
