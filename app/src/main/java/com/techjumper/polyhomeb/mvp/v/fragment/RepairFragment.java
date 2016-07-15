@@ -40,7 +40,6 @@ public class RepairFragment extends AppBaseFragment<RepairFragmentPresenter> {
     protected void initView(Bundle savedInstanceState) {
 
         mRv.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false));
-//        mRv.addItemDecoration(new DividerItemDecoration(28));
         mAdapter = new PropertyRepairAdapter();
         mRv.setAdapter(mAdapter);
         mAdapter.loadData(getPresenter().getData());

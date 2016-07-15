@@ -39,7 +39,7 @@
             android:layout_height="@dimen/dp_25"
             android:layout_alignParentRight="true"
             android:layout_marginRight="@dimen/dp_14"
-            android:background="@drawable/bg_button_green"
+            android:background="@drawable/selector_btn_bg_color_green_gry"
             android:text="已回复"
             android:textColor="@color/color_37a991"
             android:textSize="@dimen/sp_14" />

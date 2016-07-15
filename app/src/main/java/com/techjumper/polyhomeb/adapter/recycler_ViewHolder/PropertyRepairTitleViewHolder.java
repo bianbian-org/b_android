@@ -27,7 +27,7 @@ public class PropertyRepairTitleViewHolder extends BaseRecyclerViewHolder<Proper
     public void setData(PropertyRepairTitleData data) {
         if (data == null) return;
         setText(R.id.tv_title, data.getTitle());
-        setText(R.id.tv_num, "" + 20);   //总的数据源.size();
+        setText(R.id.tv_num, data.getCount() + "");
         View view = getView(R.id.iv_triangle);
         setOnClickListener(R.id.layout_choose_type, v -> {
             //旋转动画
@@ -35,6 +35,7 @@ public class PropertyRepairTitleViewHolder extends BaseRecyclerViewHolder<Proper
             ObjectAnimator animator = ObjectAnimator.ofFloat(view, "rotation", 0f, 90f);
             animator.setDuration(300);
             animator.start();
+
         });
 
         //点击了弹出窗口之后

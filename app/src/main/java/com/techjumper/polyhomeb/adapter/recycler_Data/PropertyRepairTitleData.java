@@ -9,6 +9,15 @@ package com.techjumper.polyhomeb.adapter.recycler_Data;
 public class PropertyRepairTitleData {
 
     private String title;
+    private int count;
+
+    public int getCount() {
+        return count;
+    }
+
+    public void setCount(int count) {
+        this.count = count;
+    }
 
     public String getTitle() {
         return title;
