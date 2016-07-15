@@ -64,7 +64,7 @@ public class PropertyDetailActivity extends AppBaseActivity<PropertyDetailActivi
 
     @Override
     protected boolean showTitleRight() {
-        return Constant.VALUE_REPAIR == mComeFrom;  //为了一进入界面的时候show或者hide右边icon
+        return Constant.VALUE_PLACARD != mComeFrom;  //为了一进入界面的时候show或者hide右边icon
     }
 
     @Override
@@ -101,7 +101,7 @@ public class PropertyDetailActivity extends AppBaseActivity<PropertyDetailActivi
             @Override
             public void onPageSelected(int position) {
                 mIndicator.onPageSelected(position);
-                if (Constant.VALUE_REPAIR == position) {   //当滑动的时候show或者hide右边icon
+                if (Constant.VALUE_PLACARD != position) {   //当滑动的时候show或者hide右边icon
                     mRightGroup.setVisibility(View.VISIBLE);
                 } else {
                     mRightGroup.setVisibility(View.GONE);

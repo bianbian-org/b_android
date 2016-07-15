@@ -63,6 +63,9 @@
     <dimen name="dp_214">214dp</dimen>
     <dimen name="sp_11">11sp</dimen>
     <dimen name="dp_4">4dp</dimen>
+    <dimen name="sp_5">5sp</dimen>
+    <dimen name="sp_15">15sp</dimen>
+    <dimen name="sp_8">8sp</dimen>
 
 
 </resources>
