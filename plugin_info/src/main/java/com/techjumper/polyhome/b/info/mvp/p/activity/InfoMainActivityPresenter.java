@@ -94,7 +94,7 @@ public class InfoMainActivityPresenter extends AppBaseActivityPresenter<InfoMain
                         .observeOn(AndroidSchedulers.mainThread())
                         .subscribe(o -> {
                             if (o instanceof ReadMessageEvent) {
-                                readMessage(((ReadMessageEvent) o).getId());
+                                readMessage(((ReadMessageEvent) o).getId(), ((ReadMessageEvent) o).getType());
                             } else if (o instanceof InfoTypeEvent) {
                                 pageNo = 1;
 
@@ -185,7 +185,7 @@ public class InfoMainActivityPresenter extends AppBaseActivityPresenter<InfoMain
         }));
     }
 
-    public void readMessage(long message_id) {
+    public void readMessage(long message_id, int type) {
         addSubscription(infoMainActivityModel.readMessage(message_id).subscribe(new Subscriber<TrueEntity>() {
             @Override
             public void onCompleted() {
@@ -204,7 +204,7 @@ public class InfoMainActivityPresenter extends AppBaseActivityPresenter<InfoMain
 
                 if (trueEntity != null &&
                         trueEntity.getData() != null) {
-                    getView().readMessage(trueEntity.getData().getResult());
+                    getView().readMessage(trueEntity.getData().getResult(), type);
                 }
             }
         }));

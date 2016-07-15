@@ -6,9 +6,11 @@ package com.techjumper.commonres.entity.event;
 public class ReadMessageEvent {
 
     private long id;
+    private int type;
 
-    public ReadMessageEvent(long id) {
+    public ReadMessageEvent(long id, int type) {
         this.id = id;
+        this.type = type;
     }
 
     public long getId() {
@@ -17,5 +19,13 @@ public class ReadMessageEvent {
 
     public void setId(long id) {
         this.id = id;
+    }
+
+    public int getType() {
+        return type;
+    }
+
+    public void setType(int type) {
+        this.type = type;
     }
 }

@@ -99,6 +99,7 @@ public class InfoMainActivity extends AppBaseActivity {
     private Timer timer = new Timer();
     private LinearLayoutManager manager = new LinearLayoutManager(this);
     private List<NoticeEntity.Unread> unreads = new ArrayList<>();
+    private int systemNum = 0;
 
     @OnClick(R.id.bottom_back)
     void back() {
@@ -116,11 +117,12 @@ public class InfoMainActivity extends AppBaseActivity {
     private CommonRecyclerAdapter adapter;
 
     public int getType() {
+        if (type != NoticeEntity.PROPERTY
+                && type != NoticeEntity.ORDER
+                && type != NoticeEntity.MEDICAL) {
+            type = NoticeEntity.SYSTEM;
+        }
         return type;
-    }
-
-    public void setType(int type) {
-        this.type = type;
     }
 
     public TextView getBottomDate() {
@@ -160,6 +162,10 @@ public class InfoMainActivity extends AppBaseActivity {
             if (unreads.size() > 0) {
                 for (int i = 0; i < unreads.size(); i++) {
                     NoticeEntity.Unread unread = unreads.get(i);
+                    if (unread.getType() != NoticeEntity.ORDER && unread.getType() != NoticeEntity.MEDICAL) {
+                        unread.setType(NoticeEntity.SYSTEM);
+                    }
+
                     if (unread.getType() == NoticeEntity.ORDER) {
                         if (unread.getCount() > 0) {
                             orderUnreadNum.setText(String.valueOf(unread.getCount()));
@@ -170,12 +176,14 @@ public class InfoMainActivity extends AppBaseActivity {
                             medicalUnreadNum.setText(String.valueOf(unread.getCount()));
                             medicalUnreadNum.setVisibility(View.VISIBLE);
                         }
-                    } else {
-                        if (unread.getCount() > 0) {
-                            systemUnreadNum.setText(String.valueOf(unread.getCount()));
-                            systemUnreadNum.setVisibility(View.VISIBLE);
-                        }
+                    } else if (unread.getType() == NoticeEntity.SYSTEM) {
+                        systemNum = unread.getCount();
                     }
+                }
+
+                if (systemNum > 0) {
+                    systemUnreadNum.setText(String.valueOf(systemNum));
+                    systemUnreadNum.setVisibility(View.VISIBLE);
                 }
             }
 
@@ -187,7 +195,7 @@ public class InfoMainActivity extends AppBaseActivity {
         }
 //        UserInfoEntity userInfoEntity = new UserInfoEntity();
 //        userInfoEntity.setUser_id(362);
-//        userInfoEntity.setTicket("94b3cf1108d46c148569ff17d1c14c92d8306350");
+//        userInfoEntity.setTicket("2fec2214bc39c832b721ba46c69be2130a12e0a0");
 //        userInfoEntity.setId(434);
 //        UserInfoManager.saveUserInfo(userInfoEntity);
 //        setType(type);
@@ -341,9 +349,39 @@ public class InfoMainActivity extends AppBaseActivity {
         RxBus.INSTANCE.send(new BackEvent(BackEvent.FINISH));
     }
 
-    public void readMessage(String result) {
+    public void readMessage(String result, int type) {
         if (Boolean.valueOf(result) == true) {
-
+            if (type == NoticeEntity.MEDICAL) {
+                int medicalNum = Integer.valueOf(medicalUnreadNum.getText().toString());
+                if (medicalNum == 1) {
+                    medicalUnreadNum.setText("0");
+                    medicalUnreadNum.setVisibility(View.GONE);
+                } else {
+                    medicalNum--;
+                    medicalUnreadNum.setText(String.valueOf(medicalNum));
+                    medicalUnreadNum.setVisibility(View.VISIBLE);
+                }
+            } else if (type == NoticeEntity.ORDER) {
+                int num = Integer.valueOf(orderUnreadNum.getText().toString());
+                if (num == 1) {
+                    orderUnreadNum.setText("0");
+                    orderUnreadNum.setVisibility(View.GONE);
+                } else {
+                    num--;
+                    orderUnreadNum.setText(String.valueOf(num));
+                    orderUnreadNum.setVisibility(View.VISIBLE);
+                }
+            } else {
+                int num = Integer.valueOf(systemUnreadNum.getText().toString());
+                if (num == 1) {
+                    systemUnreadNum.setText("0");
+                    systemUnreadNum.setVisibility(View.GONE);
+                } else {
+                    num--;
+                    systemUnreadNum.setText(String.valueOf(num));
+                    systemUnreadNum.setVisibility(View.VISIBLE);
+                }
+            }
         }
     }
 
