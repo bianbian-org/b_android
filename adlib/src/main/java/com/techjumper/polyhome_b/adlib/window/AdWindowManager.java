@@ -89,6 +89,17 @@ public class AdWindowManager {
                 .into(mImageView);
     }
 
+    public void showVideo(AdEntity.AdsEntity adsEntity, File file) {
+        //TODO 把这里的注释去掉,括号里面填你的视频控件
+        //show(xxxx);
+        if (mParentClickListener != null) {
+            mParentClickListener.update(adsEntity, file);
+        }
+        showWindow();
+
+        //TODO 在这里写显示视频的逻辑
+    }
+
     private void showWindow() {
         if (mIsAttach) return;
         try {
