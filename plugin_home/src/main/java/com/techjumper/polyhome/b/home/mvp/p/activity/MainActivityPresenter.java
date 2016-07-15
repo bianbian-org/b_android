@@ -240,8 +240,12 @@ public class MainActivityPresenter extends AppBaseActivityPresenter<MainActivity
                     } else if (o instanceof AdMainEvent) {
                         AdMainEvent event = (AdMainEvent) o;
                         if (event.getAdsEntity() != null && event.getFile() != null) {
-//                            HandleMainAd(event.getAdsEntity(), event.getFile());
-                            AdWindowManager.getInstance().showImage(event.getAdsEntity(), event.getFile());
+                            String addType = event.getAdsEntity().getMedia_type();
+                            if (addType.equals(PloyhomeFragmentPresenter.IMAGE_AD_TYPE)) {
+                                AdWindowManager.getInstance().showImage(event.getAdsEntity(), event.getFile());
+                            } else {
+                                AdWindowManager.getInstance().showVideo(event.getAdsEntity(), event.getFile());
+                            }
                         }
                     } else if (o instanceof AdShowEvent) {
                         AdShowEvent event = (AdShowEvent) o;

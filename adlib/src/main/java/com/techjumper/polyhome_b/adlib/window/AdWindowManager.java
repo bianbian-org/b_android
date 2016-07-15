@@ -3,6 +3,7 @@ package com.techjumper.polyhome_b.adlib.window;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.PixelFormat;
+import android.net.Uri;
 import android.view.Gravity;
 import android.view.View;
 import android.view.WindowManager;
@@ -14,6 +15,7 @@ import com.techjumper.corelib.utils.Utils;
 import com.techjumper.corelib.utils.common.JLog;
 import com.techjumper.lib2.utils.PicassoHelper;
 import com.techjumper.polyhome_b.adlib.entity.AdEntity;
+import com.techjumper.polyhome_b.adlib.widget.MyVideoView;
 
 import java.io.File;
 
@@ -23,6 +25,7 @@ public class AdWindowManager {
     private FrameLayout mContainer;
     private WindowManager.LayoutParams mContainerParams;
     private ImageView mImageView;
+    private MyVideoView myVideoView;
     private boolean mIsAttach;
 
     private ParentClickListener mParentClickListener;
@@ -52,9 +55,10 @@ public class AdWindowManager {
         mContainer.addView(mImageView, imageLayoutParams);
 
         //添加VideoView
-        //TODO 在这里补充代码
-
-
+        myVideoView = new MyVideoView(Utils.appContext);
+        FrameLayout.LayoutParams videoLayoutParams = new FrameLayout.LayoutParams(FrameLayout.LayoutParams.MATCH_PARENT
+                , FrameLayout.LayoutParams.MATCH_PARENT);
+        mContainer.addView(myVideoView, videoLayoutParams);
     }
 
     public void setOnAdsClickListener(ParentClickListener listener) {
@@ -73,7 +77,6 @@ public class AdWindowManager {
             mParentClickListener.update(adsEntity, file);
         }
 
-
         showWindow();
         RequestCreator requestCreator;
         if (file != null && file.exists()) {
@@ -90,14 +93,20 @@ public class AdWindowManager {
     }
 
     public void showVideo(AdEntity.AdsEntity adsEntity, File file) {
-        //TODO 把这里的注释去掉,括号里面填你的视频控件
-        //show(xxxx);
+        show(myVideoView);
         if (mParentClickListener != null) {
             mParentClickListener.update(adsEntity, file);
         }
         showWindow();
 
-        //TODO 在这里写显示视频的逻辑
+        if (file != null && file.exists()) {
+            myVideoView.setVideoPath(file.getAbsolutePath().toString());
+        } else {
+            myVideoView.setVideoURI(Uri.parse(adsEntity.getMedia_url()));
+        }
+
+        myVideoView.start();
+        myVideoView.requestFocus();
     }
 
     private void showWindow() {
@@ -112,6 +121,11 @@ public class AdWindowManager {
     public void closeWindow() {
         try {
             mImageView.setImageBitmap(null);
+            if (myVideoView != null) {
+                myVideoView.pause();
+                myVideoView.setVideoPath("");
+                myVideoView.setVideoURI(null);
+            }
             mWindowManager.removeView(mContainer);
             mIsAttach = false;
         } catch (Exception ignored) {
