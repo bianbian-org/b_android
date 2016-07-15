@@ -110,8 +110,10 @@ public class AdWindowManager {
     private void show(View inView) {
         for (int i = 0; i < mContainer.getChildCount(); i++) {
             View childView = mContainer.getChildAt(i);
-            if (childView == inView && inView.getVisibility() != View.VISIBLE) {
-                inView.setVisibility(View.VISIBLE);
+            if (childView == inView) {
+                if (inView.getVisibility() != View.VISIBLE) {
+                    inView.setVisibility(View.VISIBLE);
+                }
             } else {
                 childView.setVisibility(View.GONE);
             }

@@ -85,13 +85,14 @@ public class AdController {
         }
     }
 
-    public void wakeUpScreen() {
+    public boolean wakeUpScreen() {
         if (isScreenOn()) {
             JLog.d("屏幕已经是亮的所以不做操作");
-            return;
+            return false;
         }
         JLog.d("唤醒屏幕");
         PowerUtil.wakeUpScreen();
+        return true;
     }
 
     @SuppressLint("NewApi")
@@ -232,6 +233,15 @@ public class AdController {
         AdRuleExecutor executor = mExecutorMap.get(adType);
         if (executor != null) {
             executor.quit(true);
+            mExecutorMap.put(adType, null);
+        }
+    }
+
+    public void interrupt(String adType) {
+        if (adType == null) return;
+        AdRuleExecutor executor = mExecutorMap.get(adType);
+        if (executor != null) {
+            executor.quit(false);
             mExecutorMap.put(adType, null);
         }
     }

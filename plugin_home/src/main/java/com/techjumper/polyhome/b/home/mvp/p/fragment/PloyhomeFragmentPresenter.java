@@ -43,7 +43,6 @@ import com.techjumper.polyhome_b.adlib.entity.AdEntity;
 import com.techjumper.polyhome_b.adlib.manager.AdController;
 
 import java.io.File;
-import java.util.List;
 
 import butterknife.OnClick;
 import rx.Subscriber;
@@ -416,14 +415,22 @@ public class PloyhomeFragmentPresenter extends AppBaseFragmentPresenter<Ployhome
      */
     private void getWakeUpAd() {
         adController.startWakeUpTimer(new AdController.IWakeUp() {
+
+
             @Override
             public void onWakeUpAdExecute() {
                 JLog.d("获取唤醒广告" + UserInfoManager.getFamilyId() + "  " + UserInfoManager.getUserId() + "  " + UserInfoManager.getTicket());
 //                adController.executeAdRule(AdController.TYPE_HOME, "434", "362", "5b279ba4e46853d86e1d109914cfebe3ca224381", new AdController.IExecuteRule() {
                 adController.executeAdRule(AdController.TYPE_WAKEUP, UserInfoManager.getFamilyId(), UserInfoManager.getUserId(), UserInfoManager.getTicket(), new AdController.IExecuteRule() {
+                    boolean mIsWakedUp; //是否被唤醒了
                     @Override
                     public void onAdReceive(AdEntity.AdsEntity adsEntity, File file) {
-                        adController.wakeUpScreen();
+                        boolean wakedUp = adController.wakeUpScreen();
+                        if (!mIsWakedUp && !wakedUp) {
+                            adController.interrupt(AdController.TYPE_WAKEUP);
+                            return;
+                        }
+                        mIsWakedUp = true;
                         RxBus.INSTANCE.send(new AdMainEvent(adsEntity, file));
                     }
 
@@ -431,6 +438,7 @@ public class PloyhomeFragmentPresenter extends AppBaseFragmentPresenter<Ployhome
                     public void onAdPlayFinished() {
                         JLog.d("广告播放完成  (有可能是上一次的任务被自动中断，不影响本次广告执行)");
                         adController.turnOffScreen(); //保持休眠
+                        mIsWakedUp = false;
                         RxBus.INSTANCE.send(new AdShowEvent(false));
                     }
 
