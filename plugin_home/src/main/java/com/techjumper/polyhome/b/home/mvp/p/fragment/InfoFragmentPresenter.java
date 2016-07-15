@@ -11,8 +11,10 @@ import android.widget.ImageView;
 
 import com.techjumper.commonres.PluginConstant;
 import com.techjumper.commonres.entity.CalendarEntity;
+import com.techjumper.commonres.entity.MedicalEntity;
 import com.techjumper.commonres.entity.WeatherEntity;
 import com.techjumper.commonres.entity.event.AdTemEvent;
+import com.techjumper.commonres.entity.event.MedicalEvent;
 import com.techjumper.commonres.entity.event.UserInfoEvent;
 import com.techjumper.commonres.entity.event.WeatherDateEvent;
 import com.techjumper.commonres.entity.event.WeatherEvent;
@@ -28,11 +30,14 @@ import com.techjumper.polyhome.b.home.mvp.m.InfoFragmentModel;
 import com.techjumper.polyhome.b.home.mvp.v.activity.AdActivity;
 import com.techjumper.polyhome.b.home.mvp.v.fragment.InfoFragment;
 import com.techjumper.polyhome.b.home.tool.AlarmManagerUtil;
+import com.techjumper.polyhome.b.home.widget.ArcDataView;
 import com.techjumper.polyhome.b.home.widget.MyVideoView;
 import com.techjumper.polyhome_b.adlib.entity.AdEntity;
 import com.techjumper.polyhome_b.adlib.manager.AdController;
 
 import java.io.File;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
 
 import butterknife.OnClick;
@@ -49,6 +54,13 @@ public class InfoFragmentPresenter extends AppBaseFragmentPresenter<InfoFragment
     private ImageView adImageView;
     private AdEntity.AdsEntity mAdsEntity = new AdEntity.AdsEntity();
     private String addType = PloyhomeFragmentPresenter.IMAGE_AD_TYPE;
+    private List<MedicalEntity.MedicalItemEntity> entities = new ArrayList<>();
+    private ArcDataView advHeartrate;
+    private ArcDataView advBloodsugar;
+    private ArcDataView advBloodpressure;
+    private ArcDataView advDetect;
+
+    private int medicalPosition = 0;
 
     @OnClick(R.id.setting)
     void setting() {
@@ -61,6 +73,23 @@ public class InfoFragmentPresenter extends AppBaseFragmentPresenter<InfoFragment
     @OnClick(R.id.detect_layout)
     void detect() {
         PluginEngineUtil.startMedical();
+    }
+
+    @OnClick(R.id.info_arrow_layout)
+    void changeMedicalInfo() {
+        if (entities != null && entities.size() > 1) {
+            if (medicalPosition == entities.size() - 1) {
+                medicalPosition = 0;
+            } else {
+                medicalPosition++;
+            }
+            MedicalEntity.MedicalItemEntity itemEntity = entities.get(medicalPosition);
+
+            advHeartrate.setContentText(itemEntity.getHeartRate());
+            advBloodsugar.setContentText(itemEntity.getBgValue());
+            advBloodpressure.setContentText(itemEntity.getBpValue());
+            advDetect.setContentText(itemEntity.getName());
+        }
     }
 
     @OnClick(R.id.speak)
@@ -84,6 +113,11 @@ public class InfoFragmentPresenter extends AppBaseFragmentPresenter<InfoFragment
     @Override
     public void initData(Bundle savedInstanceState) {
         adController = new AdController(getView().getActivity());
+
+        advHeartrate = getView().getAdvHeartrate();
+        advBloodsugar = getView().getAdvBloodsugar();
+        advBloodpressure = getView().getAdvBloodpressure();
+        advDetect = getView().getAdvDetect();
     }
 
     @Override
@@ -121,6 +155,17 @@ public class InfoFragmentPresenter extends AppBaseFragmentPresenter<InfoFragment
                         }
                     } else if (o instanceof AdTemEvent) {
                         getNormalAd();
+                    } else if (o instanceof MedicalEvent) {
+                        MedicalEvent event = (MedicalEvent) o;
+                        entities = event.getEntities();
+                        if (entities != null && entities.size() > 0) {
+                            MedicalEntity.MedicalItemEntity itemEntity = entities.get(medicalPosition);
+
+                            advHeartrate.setContentText(itemEntity.getHeartRate());
+                            advBloodsugar.setContentText(itemEntity.getBgValue());
+                            advBloodpressure.setContentText(itemEntity.getBpValue());
+                            advDetect.setContentText(itemEntity.getName());
+                        }
                     }
                 });
 

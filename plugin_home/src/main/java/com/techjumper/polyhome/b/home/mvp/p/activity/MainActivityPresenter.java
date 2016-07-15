@@ -17,6 +17,7 @@ import com.techjumper.commonres.entity.MedicalEntity;
 import com.techjumper.commonres.entity.event.AdControllerEvent;
 import com.techjumper.commonres.entity.event.AdMainEvent;
 import com.techjumper.commonres.entity.event.AdShowEvent;
+import com.techjumper.commonres.entity.event.MedicalEvent;
 import com.techjumper.commonres.entity.event.TimeEvent;
 import com.techjumper.commonres.entity.event.UserInfoEvent;
 import com.techjumper.commonres.util.CommonDateUtil;
@@ -116,6 +117,7 @@ public class MainActivityPresenter extends AppBaseActivityPresenter<MainActivity
                 if (medicalDataItemEntity != null) {
                     List<MedicalEntity.MedicalItemEntity> medicalItemEntities = medicalDataItemEntity.getPerson();
                     Log.d("pluginUserInfo", "medicalItemEntities: " + medicalItemEntities.size());
+                    RxBus.INSTANCE.send(new MedicalEvent(medicalItemEntities));
                 }
             }
             Log.d("pluginUserInfo", "更新完毕用户信息...");

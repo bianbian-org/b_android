@@ -18,9 +18,9 @@ import com.techjumper.polyhome.b.home.utils.DateUtil;
 import com.techjumper.polyhome.b.home.utils.StringUtil;
 import com.techjumper.polyhome.b.home.utils.WeatherUtil;
 import com.techjumper.polyhome.b.home.widget.AlmanacView;
+import com.techjumper.polyhome.b.home.widget.ArcDataView;
 import com.techjumper.polyhome.b.home.widget.MyVideoView;
 import com.techjumper.polyhome.b.home.widget.WeatherView;
-import com.techjumper.polyhome_b.adlib.manager.AdController;
 
 import java.util.List;
 
@@ -71,6 +71,14 @@ public class InfoFragment extends AppBaseFragment<InfoFragmentPresenter> {
     MyVideoView videoAdTem;
     @Bind(R.id.image_ad_tem)
     ImageView imageAdTem;
+    @Bind(R.id.adv_heartrate)
+    ArcDataView advHeartrate;
+    @Bind(R.id.adv_bloodsugar)
+    ArcDataView advBloodsugar;
+    @Bind(R.id.adv_bloodpressure)
+    ArcDataView advBloodpressure;
+    @Bind(R.id.adv_detect)
+    ArcDataView advDetect;
 
     public static InfoFragment getInstance() {
         return new InfoFragment();
@@ -92,6 +100,22 @@ public class InfoFragment extends AppBaseFragment<InfoFragmentPresenter> {
 
     public ImageView getImageAdTem() {
         return imageAdTem;
+    }
+
+    public ArcDataView getAdvDetect() {
+        return advDetect;
+    }
+
+    public ArcDataView getAdvHeartrate() {
+        return advHeartrate;
+    }
+
+    public ArcDataView getAdvBloodsugar() {
+        return advBloodsugar;
+    }
+
+    public ArcDataView getAdvBloodpressure() {
+        return advBloodpressure;
     }
 
     public void getWeatherInfo(WeatherEntity.WeatherDataEntity weatherDataEntity) {
@@ -129,19 +153,5 @@ public class InfoFragment extends AppBaseFragment<InfoFragmentPresenter> {
         List<String> avoids = StringUtil.interceptString(calendarDataEntity.getAvoid(), ".");
         lidAlmanacOk.setTexts(suits);
         lidAlmanacNope.setTexts(avoids);
-    }
-
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        // TODO: inflate a fragment view
-        View rootView = super.onCreateView(inflater, container, savedInstanceState);
-        ButterKnife.bind(this, rootView);
-        return rootView;
-    }
-
-    @Override
-    public void onDestroyView() {
-        super.onDestroyView();
-        ButterKnife.unbind(this);
     }
 }
