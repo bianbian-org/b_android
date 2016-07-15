@@ -11,9 +11,11 @@ import com.techjumper.corelib.utils.Utils;
  * * * * * * * * * * * * * * * * * * * * * * *
  **/
 public class AdLibApplication extends Application {
+
     @Override
     public void onCreate() {
         super.onCreate();
         Utils.appContext = this;
     }
+
 }

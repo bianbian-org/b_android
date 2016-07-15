@@ -5,10 +5,8 @@ import com.techjumper.corelib.utils.file.FileUtils;
 import com.techjumper.corelib.utils.system.AppUtils;
 import com.techjumper.lib2.Config;
 
-import java.io.File;
 import java.util.concurrent.TimeUnit;
 
-import okhttp3.Cache;
 import okhttp3.Interceptor;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;

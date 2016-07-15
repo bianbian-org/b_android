@@ -1,6 +1,7 @@
 package com.techjumper.polyhome_b.adlib.window;
 
 import android.content.Context;
+import android.graphics.Bitmap;
 import android.graphics.PixelFormat;
 import android.view.Gravity;
 import android.view.View;
@@ -72,15 +73,17 @@ public class AdWindowManager {
             mParentClickListener.update(adsEntity, file);
         }
 
+
+        showWindow();
         RequestCreator requestCreator;
         if (file != null && file.exists()) {
             requestCreator = PicassoHelper.load(file);
         } else {
-            JLog.d("本地图片不存在, 从网络上加载");
-            requestCreator = PicassoHelper.load(adsEntity.getMedia_type());
+            JLog.d("本地图片不存在, 从网络上加载: " + adsEntity.getMedia_url());
+            requestCreator = PicassoHelper.load(adsEntity.getMedia_url());
         }
-        showWindow();
         requestCreator
+                .config(Bitmap.Config.RGB_565)
                 .noPlaceholder()
                 .noFade()
                 .into(mImageView);
