@@ -6,6 +6,7 @@ import android.widget.TextView;
 import com.steve.creact.annotation.DataBean;
 import com.steve.creact.library.viewholder.BaseRecyclerViewHolder;
 import com.techjumper.corelib.utils.common.ResourceUtils;
+import com.techjumper.corelib.utils.window.ToastUtils;
 import com.techjumper.lightwidget.textview.MarqueeTextView;
 import com.techjumper.polyhomeb.R;
 import com.techjumper.polyhomeb.adapter.recycler_Data.PropertyRepairContentData;
@@ -41,6 +42,8 @@ public class PropertyRepairContentViewHolder extends BaseRecyclerViewHolder<Prop
             getView(R.id.btn).setEnabled(true);
             ((TextView) getView(R.id.btn)).setTextColor(ResourceUtils.getColorResource(R.color.color_37a991));
         }
+
+        setOnClickListener(R.id.layout_content, v -> ToastUtils.show(",."));
 
     }
 }

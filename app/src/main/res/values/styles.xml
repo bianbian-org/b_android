@@ -7,6 +7,11 @@
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
         <!--<item name="android:textColorPrimaryInverse">@color/color_37a991</item>-->
+        <item name="android:windowBackground">@color/color_ededed</item>
+    </style>
+
+    <style name="popup_anim">
+        <item name="android:windowExitAnimation">@anim/anim_popup_window</item>
     </style>
 
 </resources>

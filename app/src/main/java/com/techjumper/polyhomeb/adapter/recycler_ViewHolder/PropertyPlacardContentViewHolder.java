@@ -32,6 +32,9 @@ public class PropertyPlacardContentViewHolder extends BaseRecyclerViewHolder<Pro
         ((Button) getView(R.id.btn)).setText(data.getBtnName());
         setText(R.id.tv_content, data.getContent());
         setText(R.id.tv_time, data.getTime());
+        setOnClickListener(R.id.layout_content, v -> {
+
+        });
 
     }
 }
