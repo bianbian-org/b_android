@@ -1,13 +1,16 @@
 package com.techjumper.polyhomeb.adapter.recycler_ViewHolder;
 
+import android.app.Activity;
 import android.view.View;
 import android.widget.Button;
 
 import com.steve.creact.annotation.DataBean;
 import com.steve.creact.library.viewholder.BaseRecyclerViewHolder;
+import com.techjumper.corelib.utils.common.AcHelper;
 import com.techjumper.lightwidget.textview.MarqueeTextView;
 import com.techjumper.polyhomeb.R;
 import com.techjumper.polyhomeb.adapter.recycler_Data.PropertyPlacardContentData;
+import com.techjumper.polyhomeb.mvp.v.activity.PlacardDetailActivity;
 
 /**
  * * * * * * * * * * * * * * * * * * * * * * *
@@ -33,7 +36,7 @@ public class PropertyPlacardContentViewHolder extends BaseRecyclerViewHolder<Pro
         setText(R.id.tv_content, data.getContent());
         setText(R.id.tv_time, data.getTime());
         setOnClickListener(R.id.layout_content, v -> {
-
+            new AcHelper.Builder((Activity) getContext()).target(PlacardDetailActivity.class).start();
         });
 
     }

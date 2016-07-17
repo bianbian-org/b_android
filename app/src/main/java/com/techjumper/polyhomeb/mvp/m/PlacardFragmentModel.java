@@ -31,7 +31,7 @@ public class PlacardFragmentModel extends BaseModel<PlacardFragmentPresenter> {
         List<PropertyPlacardEntity.DataBean.ListBean.DatasBean.SencesBean> sencesBeanList = new ArrayList<>();
         for (int i = 0; i < 3; i++) {
             PropertyPlacardEntity.DataBean.ListBean.DatasBean.SencesBean sencesBean = new PropertyPlacardEntity.DataBean.ListBean.DatasBean.SencesBean();
-            sencesBean.setBtn_name("查看" + i);
+            sencesBean.setBtn_name(i == 2 ? "公告" : "资讯");
             sencesBean.setContent("这些是内容" + i + "为丰富和企鹅和放弃而话费卡多出去额空间发过去诶哦而且就放弃而返回去金额防火墙而房价和企鹅哦");
             sencesBean.setTime("12月" + i + "日");
             sencesBean.setTitle("这是标题" + i + "而非和勤奋和气");

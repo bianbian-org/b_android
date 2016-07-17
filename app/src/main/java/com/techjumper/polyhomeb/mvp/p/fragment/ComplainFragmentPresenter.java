@@ -2,7 +2,11 @@ package com.techjumper.polyhomeb.mvp.p.fragment;
 
 import android.os.Bundle;
 
+import com.steve.creact.library.display.DisplayBean;
+import com.techjumper.polyhomeb.mvp.m.ComplainFragmentModel;
 import com.techjumper.polyhomeb.mvp.v.fragment.ComplainFragment;
+
+import java.util.List;
 
 /**
  * * * * * * * * * * * * * * * * * * * * * * *
@@ -11,6 +15,9 @@ import com.techjumper.polyhomeb.mvp.v.fragment.ComplainFragment;
  * * * * * * * * * * * * * * * * * * * * * * *
  **/
 public class ComplainFragmentPresenter extends AppBaseFragmentPresenter<ComplainFragment> {
+
+    private ComplainFragmentModel mModel = new ComplainFragmentModel(this);
+
     @Override
     public void initData(Bundle savedInstanceState) {
 
@@ -20,4 +27,9 @@ public class ComplainFragmentPresenter extends AppBaseFragmentPresenter<Complain
     public void onViewInited(Bundle savedInstanceState) {
 
     }
+
+    public List<DisplayBean> getData() {
+        return mModel.initPlacardData();
+    }
+
 }

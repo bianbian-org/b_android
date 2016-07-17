@@ -55,5 +55,6 @@
     <string name="exit_app">再按一次, 退出应用</string>
     <string name="repair_">报修</string>
     <string name="complaint_">投诉建议</string>
+    <string name="placard_detail">公告详情</string>
 
 </resources>
