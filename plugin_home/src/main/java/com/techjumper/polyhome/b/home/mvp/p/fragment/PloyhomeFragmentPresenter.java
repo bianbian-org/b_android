@@ -380,6 +380,9 @@ public class PloyhomeFragmentPresenter extends AppBaseFragmentPresenter<Ployhome
                 adController.executeAdRule(AdController.TYPE_HOME, UserInfoManager.getFamilyId(), UserInfoManager.getUserId(), UserInfoManager.getTicket(), new AdController.IExecuteRule() {
                     @Override
                     public void onAdReceive(AdEntity.AdsEntity adsEntity, File file) {
+                        Log.d("adsEntity", "adsEntity: " + adsEntity);
+                        Log.d("adsEntity", "file: " + file);
+                        Log.d("adsEntity", "file.getAbsolutePath(): " + file.getAbsolutePath());
                         HandleAd(adsEntity, file);
                     }
 
@@ -423,6 +426,7 @@ public class PloyhomeFragmentPresenter extends AppBaseFragmentPresenter<Ployhome
 //                adController.executeAdRule(AdController.TYPE_HOME, "434", "362", "5b279ba4e46853d86e1d109914cfebe3ca224381", new AdController.IExecuteRule() {
                 adController.executeAdRule(AdController.TYPE_WAKEUP, UserInfoManager.getFamilyId(), UserInfoManager.getUserId(), UserInfoManager.getTicket(), new AdController.IExecuteRule() {
                     boolean mIsWakedUp; //是否被唤醒了
+
                     @Override
                     public void onAdReceive(AdEntity.AdsEntity adsEntity, File file) {
                         boolean wakedUp = adController.wakeUpScreen();
