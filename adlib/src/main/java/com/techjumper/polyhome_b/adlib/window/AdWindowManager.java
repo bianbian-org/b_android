@@ -126,6 +126,7 @@ public class AdWindowManager {
             mImageView.setImageBitmap(null);
             if (myVideoView != null) {
                 myVideoView.pause();
+                myVideoView.stopPlayback();
                 myVideoView.setVideoPath("");
                 myVideoView.setVideoURI(null);
             }

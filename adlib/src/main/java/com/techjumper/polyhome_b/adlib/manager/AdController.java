@@ -79,7 +79,7 @@ public class AdController {
     public AdController(Context context) {
         mContext = context;
         mLockTime = getScreenOffTime();
-        if (mLockTime == 0) {
+        if (mLockTime <= 0) {
             mLockTime = 40 * 60 * 1000;
             setScreenOffTime(mLockTime);
         }
@@ -207,11 +207,8 @@ public class AdController {
         AdRuleExecutor executor;
         synchronized (this) {
             interrupt(adType);
-            executor = mExecutorMap.get(adType);
-            if (executor == null) {
-                executor = new AdRuleExecutor(adType);
-                mExecutorMap.put(adType, executor);
-            }
+            executor = new AdRuleExecutor(adType);
+            mExecutorMap.put(adType, executor);
         }
         executor.fetchAd(family_id, user_id, ticket, iExecuteRule);
     }
@@ -223,7 +220,7 @@ public class AdController {
             if (next == null) continue;
             AdRuleExecutor executor = next.getValue();
             if (executor != null) {
-                executor.interrupt();
+                executor.quit(true);
             }
             it.remove();
         }
@@ -547,11 +544,9 @@ public class AdController {
                 return;
             }
 
-            mInterrupt = false;
-
             //因为首页需要不停的播放, 所以把时间强制设置为一小时以上,这样就可以不间断获取
             if (TYPE_HOME.equalsIgnoreCase(mRuleType)) {
-                totalTime = 60 * 70;
+                totalTime = 60 * 70L;
             }
 //            totalTime = 5;  //测试用
             timer(totalTime, adEntities);
@@ -616,6 +611,7 @@ public class AdController {
 
 
         private void interrupt() {
+            iExecuteRule = null;
             mInterrupt = true;
         }
 
