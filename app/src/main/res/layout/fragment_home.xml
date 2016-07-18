@@ -13,8 +13,8 @@
         app:ptr_duration_to_close="200"
         app:ptr_duration_to_close_header="1000"
         app:ptr_keep_header_when_refresh="true"
-        app:ptr_pull_to_fresh="true"
-        app:ptr_ratio_of_header_height_to_refresh="0.7"
+        app:ptr_pull_to_fresh="false"
+        app:ptr_ratio_of_header_height_to_refresh="1.0"
         app:ptr_resistance="3.0">
 
         <cn.finalteam.loadingviewfinal.RecyclerViewFinal

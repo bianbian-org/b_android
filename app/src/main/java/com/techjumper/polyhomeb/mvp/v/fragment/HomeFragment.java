@@ -3,6 +3,7 @@ package com.techjumper.polyhomeb.mvp.v.fragment;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v7.widget.LinearLayoutManager;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 
@@ -55,7 +56,7 @@ public class HomeFragment extends AppBaseFragment<HomeFragmentPresenter> {
         mPtr.setPtrHandler(new PtrDefaultHandler() {
             @Override
             public void onRefreshBegin(PtrFrameLayout frame) {
-                new Handler().postDelayed(() -> mPtr.refreshComplete(), 5000);
+                new Handler().postDelayed(() -> stopRefresh(""), 3000);
             }
 
             @Override
@@ -63,8 +64,14 @@ public class HomeFragment extends AppBaseFragment<HomeFragmentPresenter> {
                 return PtrDefaultHandler.checkContentCanBePulledDown(frame, content, header);
             }
         });
+    }
 
-
+    public void stopRefresh(String msg) {
+        if (mPtr != null && mPtr.isRefreshing()) {
+            if (!TextUtils.isEmpty(msg))
+                showHint(msg);
+            mPtr.refreshComplete();
+        }
     }
 
 
