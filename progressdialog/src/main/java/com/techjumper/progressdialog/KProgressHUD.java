@@ -301,7 +301,7 @@ public class KProgressHUD {
             window.addFlags(WindowManager.LayoutParams.FLAG_DIM_BEHIND);
             window.addFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
             WindowManager.LayoutParams layoutParams = window.getAttributes();
-            layoutParams.dimAmount = mDimAmount;
+//            layoutParams.dimAmount = mDimAmount;
             layoutParams.gravity = Gravity.CENTER;
             layoutParams.systemUiVisibility = View.SYSTEM_UI_FLAG_HIDE_NAVIGATION;
             window.setAttributes(layoutParams);
