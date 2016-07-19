@@ -49,13 +49,13 @@
             android:layout_width="@dimen/dp_500"
             android:layout_height="@dimen/dp_330"
             android:layout_marginTop="@dimen/dp_10"
-            android:background="@mipmap/bg_ad">
+            android:background="@color/color_4Dffffff">
 
             <com.techjumper.polyhome.b.home.widget.MyVideoView
                 android:id="@+id/video_ad"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:visibility="invisible" />
+                android:visibility="visible" />
 
             <ImageView
                 android:id="@+id/image_ad"

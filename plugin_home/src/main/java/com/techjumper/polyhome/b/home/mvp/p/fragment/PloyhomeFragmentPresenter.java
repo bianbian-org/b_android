@@ -66,14 +66,11 @@ public class PloyhomeFragmentPresenter extends AppBaseFragmentPresenter<Ployhome
     private ImageView adImageView;
     private boolean mShouldSleep = true;
     private boolean mIsVisibleToUser;
+    private boolean mIsGetAd;
 
     @OnClick(R.id.property)
     void property() {
         if (UserInfoManager.isLogin()) {
-            if (video != null) {
-
-            }
-
             long familyId = UserInfoManager.getLongFamilyId();
             long userId = UserInfoManager.getLongUserId();
             String ticket = UserInfoManager.getTicket();
@@ -85,7 +82,6 @@ public class PloyhomeFragmentPresenter extends AppBaseFragmentPresenter<Ployhome
 
     @OnClick(R.id.notice_layout)
     void noticeLayout() {
-
         if (UserInfoManager.isLogin()) {
             long userId = UserInfoManager.getLongUserId();
             long familyId = UserInfoManager.getLongFamilyId();
@@ -262,6 +258,7 @@ public class PloyhomeFragmentPresenter extends AppBaseFragmentPresenter<Ployhome
                 adController.cancel(AdController.TYPE_HOME);
             }
             initAd();
+            mIsGetAd = false;
         }
     }
 
@@ -270,6 +267,7 @@ public class PloyhomeFragmentPresenter extends AppBaseFragmentPresenter<Ployhome
         super.onResume();
         if (mIsVisibleToUser) {
             getNormalAd();
+            mIsGetAd = true;
         }
     }
 
@@ -280,12 +278,14 @@ public class PloyhomeFragmentPresenter extends AppBaseFragmentPresenter<Ployhome
         if (isVisibleToUser) {
             Log.d("hehe", "Ployhome显示");
             getNormalAd();
+            mIsGetAd = true;
         } else {
             Log.d("hehe", "Ployhome消失");
             if (adController != null) {
                 adController.cancel(AdController.TYPE_HOME);
             }
             initAd();
+            mIsGetAd = false;
         }
     }
 
@@ -336,6 +336,7 @@ public class PloyhomeFragmentPresenter extends AppBaseFragmentPresenter<Ployhome
         if (adImageView == null || video == null)
             return;
 
+        video.pause();
         adImageView.setVisibility(View.VISIBLE);
         video.setVisibility(View.INVISIBLE);
         adImageView.setBackgroundResource(R.mipmap.bg_ad);
@@ -347,12 +348,13 @@ public class PloyhomeFragmentPresenter extends AppBaseFragmentPresenter<Ployhome
      * 处理广告
      */
     private void HandleAd(AdEntity.AdsEntity adsEntity, File file) {
-
+        JLog.d("有新的广告来啦. 本地广告路径:" + file + ", 详细信息: " + adsEntity);
         addType = adsEntity.getMedia_type();
 
         if (addType.equals(IMAGE_AD_TYPE)) {
             adImageView.setVisibility(View.VISIBLE);
             video.setVisibility(View.INVISIBLE);
+//            video.setZOrderOnTop(true);
 
             if (file.exists()) {
                 PicassoHelper.load(file)
@@ -371,12 +373,14 @@ public class PloyhomeFragmentPresenter extends AppBaseFragmentPresenter<Ployhome
 
             adImageView.setVisibility(View.INVISIBLE);
             video.setVisibility(View.VISIBLE);
+//            video.setZOrderOnTop(true);
             if (file.exists()) {
                 video.setVideoURI(Uri.parse(file.getAbsolutePath()));
             } else {
                 video.setVideoURI(Uri.parse(adsEntity.getMedia_url()));
             }
 
+            video.setZOrderOnTop(true);
             video.start();
             video.requestFocus();
 

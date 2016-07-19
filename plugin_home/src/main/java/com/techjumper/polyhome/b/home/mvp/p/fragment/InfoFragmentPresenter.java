@@ -60,6 +60,7 @@ public class InfoFragmentPresenter extends AppBaseFragmentPresenter<InfoFragment
     private int videoPosition = 0;
     private int medicalPosition = 0;
     private boolean mIsVisibleToUser;
+    private boolean mIsGetAd;
 
     @OnClick(R.id.setting)
     void setting() {
@@ -103,7 +104,7 @@ public class InfoFragmentPresenter extends AppBaseFragmentPresenter<InfoFragment
 
     @OnClick(R.id.ad_tem)
     void ad_tem() {
-        if (TextUtils.isEmpty(mAdsEntity.getMedia_type()))
+        if (TextUtils.isEmpty(mAdsEntity.getMedia_type()) || mAdsEntity == null)
             return;
 
         Intent intent = new Intent(getView().getActivity(), AdActivity.class);
@@ -194,6 +195,7 @@ public class InfoFragmentPresenter extends AppBaseFragmentPresenter<InfoFragment
                 adController.cancel(AdController.TYPE_HOME);
             }
             initAd();
+            mIsGetAd = false;
         }
     }
 
@@ -205,12 +207,14 @@ public class InfoFragmentPresenter extends AppBaseFragmentPresenter<InfoFragment
         if (isVisibleToUser) {
             Log.d("hehe", "info显示");
             getNormalAd();
+            mIsGetAd = true;
         } else {
             Log.d("hehe", "info消失");
             if (adController != null) {
                 adController.cancel(AdController.TYPE_HOME);
             }
             initAd();
+            mIsGetAd = false;
         }
     }
 
@@ -219,6 +223,7 @@ public class InfoFragmentPresenter extends AppBaseFragmentPresenter<InfoFragment
         super.onResume();
         if (mIsVisibleToUser) {
             getNormalAd();
+            mIsGetAd = true;
         }
     }
 
@@ -326,17 +331,19 @@ public class InfoFragmentPresenter extends AppBaseFragmentPresenter<InfoFragment
         if (adImageView == null || video == null)
             return;
 
+        video.pause();
         adImageView.setVisibility(View.VISIBLE);
         video.setVisibility(View.INVISIBLE);
         adImageView.setBackgroundResource(R.mipmap.bg_ad);
         adImageView.setImageBitmap(null);
+        mAdsEntity = null;
     }
 
     /**
      * 处理广告
      */
     private void HandleAd(AdEntity.AdsEntity adsEntity, File file) {
-//        JLog.d("有新的广告来啦. 本地广告路径:" + file + ", 详细信息: " + adsEntity);
+        JLog.d("有新的广告来啦. 本地广告路径:" + file + ", 详细信息: " + adsEntity);
         addType = adsEntity.getMedia_type();
 
         if (addType.equals(PloyhomeFragmentPresenter.IMAGE_AD_TYPE)) {
