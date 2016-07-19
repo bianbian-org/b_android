@@ -3,6 +3,7 @@ package com.techjumper.polyhome.b.home.mvp.v.fragment;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -55,8 +56,6 @@ public class InfoFragment extends AppBaseFragment<InfoFragmentPresenter> {
     TextView liwPm;
     @Bind(R.id.liw_quality_description)
     TextView liwQualityDescription;
-    //    @Bind(R.id.liw_quality_num)
-//    TextView liwQualityNum;
     @Bind(R.id.lid_date)
     TextView lidDate;
     @Bind(R.id.lid_lunar)

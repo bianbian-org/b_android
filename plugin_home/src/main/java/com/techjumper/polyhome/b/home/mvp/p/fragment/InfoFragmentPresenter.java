@@ -59,8 +59,9 @@ public class InfoFragmentPresenter extends AppBaseFragmentPresenter<InfoFragment
     private ArcDataView advBloodsugar;
     private ArcDataView advBloodpressure;
     private ArcDataView advDetect;
-
+    private int videoPosition = 0;
     private int medicalPosition = 0;
+    private boolean mIsVisibleToUser;
 
     @OnClick(R.id.setting)
     void setting() {
@@ -77,6 +78,8 @@ public class InfoFragmentPresenter extends AppBaseFragmentPresenter<InfoFragment
 
     @OnClick(R.id.info_arrow_layout)
     void changeMedicalInfo() {
+        Log.d("medical: ", "entities.size()" + entities.size());
+
         if (entities != null && entities.size() > 1) {
             if (medicalPosition == entities.size() - 1) {
                 medicalPosition = 0;
@@ -84,7 +87,7 @@ public class InfoFragmentPresenter extends AppBaseFragmentPresenter<InfoFragment
                 medicalPosition++;
             }
             MedicalEntity.MedicalItemEntity itemEntity = entities.get(medicalPosition);
-
+            Log.d("medical", "itemEntity: " + itemEntity);
             advHeartrate.setContentText(itemEntity.getHeartRate());
             advBloodsugar.setContentText(itemEntity.getBgValue());
             advBloodpressure.setContentText(itemEntity.getBpValue());
@@ -125,12 +128,8 @@ public class InfoFragmentPresenter extends AppBaseFragmentPresenter<InfoFragment
         adImageView = getView().getImageAdTem();
         video = getView().getVideoAdTem();
 
-        if (UserInfoManager.isLogin()) {
-            getWeatherInfo();
-        }
+        getWeatherInfo();
         getCalendarInfo();
-
-//        postMedical();
 
         AlarmManagerUtil.setWeatherTime(Utils.appContext, 0, 30 + new Random().nextInt(30));
 
@@ -154,10 +153,20 @@ public class InfoFragmentPresenter extends AppBaseFragmentPresenter<InfoFragment
                             getCalendarInfo();
                         }
                     } else if (o instanceof AdTemEvent) {
-                        getNormalAd();
+                        if (mIsVisibleToUser) {
+                            getNormalAd();
+                        }
                     } else if (o instanceof MedicalEvent) {
                         MedicalEvent event = (MedicalEvent) o;
+
+                        if (entities == null) {
+                            entities = new ArrayList<MedicalEntity.MedicalItemEntity>();
+                        } else if (entities.size() > 0) {
+                            entities.clear();
+                        }
+
                         entities = event.getEntities();
+
                         if (entities != null && entities.size() > 0) {
                             MedicalEntity.MedicalItemEntity itemEntity = entities.get(medicalPosition);
 
@@ -165,10 +174,54 @@ public class InfoFragmentPresenter extends AppBaseFragmentPresenter<InfoFragment
                             advBloodsugar.setContentText(itemEntity.getBgValue());
                             advBloodpressure.setContentText(itemEntity.getBpValue());
                             advDetect.setContentText(itemEntity.getName());
+                        } else {
+                            if (entities != null) {
+                                entities.clear();
+                            }
+                            advHeartrate.setContentText(getView().getString(R.string.info_medical_default));
+                            advBloodsugar.setContentText(getView().getString(R.string.info_medical_default));
+                            advBloodpressure.setContentText(getView().getString(R.string.info_medical_default));
+                            advDetect.setContentText(getView().getString(R.string.info_medical_no_login));
                         }
                     }
                 });
 
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        if (mIsVisibleToUser) {
+            if (adController != null) {
+                adController.cancel(AdController.TYPE_HOME);
+            }
+            initAd();
+        }
+    }
+
+
+    @Override
+    public void setUserVisibleHint(boolean isVisibleToUser) {
+        super.setUserVisibleHint(isVisibleToUser);
+        mIsVisibleToUser = isVisibleToUser;
+        if (isVisibleToUser) {
+            Log.d("hehe", "info显示");
+            getNormalAd();
+        } else {
+            Log.d("hehe", "info消失");
+            if (adController != null) {
+                adController.cancel(AdController.TYPE_HOME);
+            }
+            initAd();
+        }
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        if (mIsVisibleToUser) {
+            getNormalAd();
+        }
     }
 
     //获取天气相关
@@ -226,33 +279,13 @@ public class InfoFragmentPresenter extends AppBaseFragmentPresenter<InfoFragment
                 }));
     }
 
-    //对医疗发送请求信息
-    private void postMedical() {
-        PluginEngine.getInstance().start(new PluginEngine.IPluginConnection() {
-            @Override
-            public void onEngineConnected(PluginEngine.PluginExecutor pluginExecutor) {
-                try {
-                    pluginExecutor.send(PluginEngine.CODE_CUSTOM, PluginConstant.ACTION_MEDICAL);
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-            }
-
-            @Override
-            public void onEngineDisconnected() {
-
-            }
-        });
-
-        PluginEngine.getInstance().registerReceiver((code, message, extras) -> {
-            //接受医疗的消息
-        });
-    }
-
     /**
      * 获取普通广告
      */
     private void getNormalAd() {
+        if (!UserInfoManager.isLogin() || adController == null)
+            return;
+
         adController.startPolling(new AdController.IAlarm() {
             @Override
             public void onAlarmReceive() {
@@ -295,6 +328,9 @@ public class InfoFragmentPresenter extends AppBaseFragmentPresenter<InfoFragment
      * 初始化广告
      */
     private void initAd() {
+        if (adImageView == null || video == null)
+            return;
+
         adImageView.setVisibility(View.VISIBLE);
         video.setVisibility(View.INVISIBLE);
         adImageView.setBackgroundResource(R.mipmap.bg_ad);

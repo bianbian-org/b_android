@@ -20,6 +20,8 @@
     <string name="info_mmol">mmol</string>
     <string name="info_bpm">bpm</string>
     <string name="info_not_new">没有新的消息</string>
+    <string name="info_medical_no_login">未登录</string>
+    <string name="info_medical_default">—/—</string>
 
     <string name="almanac_ok">宜</string>
     <string name="almanac_nope">忌</string>

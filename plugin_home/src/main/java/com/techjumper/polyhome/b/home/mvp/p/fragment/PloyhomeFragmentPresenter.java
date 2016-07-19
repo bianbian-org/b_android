@@ -65,29 +65,26 @@ public class PloyhomeFragmentPresenter extends AppBaseFragmentPresenter<Ployhome
     private MyVideoView video;
     private ImageView adImageView;
     private boolean mShouldSleep = true;
+    private boolean mIsVisibleToUser;
 
     @OnClick(R.id.property)
     void property() {
-        // TODO: 16/7/5 临时弹出
-        ToastUtils.show("物业 ticket: " + UserInfoManager.getTicket() + "  userId: " + UserInfoManager.getUserId() + "  familyId: " + UserInfoManager.getFamilyId());
-
         if (UserInfoManager.isLogin()) {
+            if (video != null) {
+
+            }
+
             long familyId = UserInfoManager.getLongFamilyId();
             long userId = UserInfoManager.getLongUserId();
             String ticket = UserInfoManager.getTicket();
             PluginEngineUtil.startProperty(familyId, userId, ticket);
         } else {
-//            ToastUtils.show(getView().getString(R.string.error_no_login));
+            ToastUtils.show(getView().getString(R.string.error_no_login));
         }
     }
 
     @OnClick(R.id.notice_layout)
     void noticeLayout() {
-//        if (type == -1)
-//            return;
-
-        // TODO: 16/7/5 临时弹出
-        ToastUtils.show("信息 ticket: " + UserInfoManager.getTicket() + "  userId: " + UserInfoManager.getUserId() + "  familyId: " + UserInfoManager.getFamilyId());
 
         if (UserInfoManager.isLogin()) {
             long userId = UserInfoManager.getLongUserId();
@@ -99,14 +96,14 @@ public class PloyhomeFragmentPresenter extends AppBaseFragmentPresenter<Ployhome
             String unreadString = GsonUtils.toJson(infoUnread);
 
             PluginEngineUtil.startInfo(userId, familyId, ticket, type, unreadString);
-
-//            ToastUtils.show(getView().getString(R.string.error_no_login));
+        } else {
+            ToastUtils.show(getView().getString(R.string.error_no_login));
         }
     }
 
     @OnClick(R.id.ad)
     void ad() {
-        if (TextUtils.isEmpty(mAdsEntity.getMedia_type()))
+        if (mAdsEntity == null || TextUtils.isEmpty(mAdsEntity.getMedia_type()))
             return;
 
         Intent intent = new Intent(getView().getActivity(), AdActivity.class);
@@ -116,11 +113,8 @@ public class PloyhomeFragmentPresenter extends AppBaseFragmentPresenter<Ployhome
 
     @OnClick(R.id.shopping)
     void shopping() {
-        // TODO: 16/7/5 临时弹出
-        ToastUtils.show("商城  ticket: " + UserInfoManager.getTicket() + " userId: " + UserInfoManager.getUserId());
-
         if (TextUtils.isEmpty(UserInfoManager.getTicket()) || TextUtils.isEmpty(UserInfoManager.getUserId())) {
-//            ToastUtils.show(getView().getString(R.string.error_no_login));
+            ToastUtils.show(getView().getString(R.string.error_no_login));
         } else {
             Intent intent = new Intent(getView().getActivity(), ShoppingActivity.class);
             getView().startActivity(intent);
@@ -155,11 +149,11 @@ public class PloyhomeFragmentPresenter extends AppBaseFragmentPresenter<Ployhome
 
     @Override
     public void onViewInited(Bundle savedInstanceState) {
+        adImageView = getView().getAd();
+        video = getView().getVideo();
 
-        if (UserInfoManager.isLogin()) {
-            getAd();
-            getNotices();
-        }
+        getAd();
+        getNotices();
 
         RxBus.INSTANCE.asObservable()
                 .observeOn(AndroidSchedulers.mainThread())
@@ -262,18 +256,35 @@ public class PloyhomeFragmentPresenter extends AppBaseFragmentPresenter<Ployhome
     @Override
     public void onPause() {
         super.onPause();
-        if (video != null) {
-            video.pause();
-            videoPosition = video.getCurrentPosition();
+        if (mIsVisibleToUser) {
+            if (adController != null) {
+                adController.cancel(AdController.TYPE_HOME);
+            }
+            initAd();
         }
     }
 
     @Override
     public void onResume() {
         super.onResume();
-        if (video != null) {
-            video.seekTo(videoPosition);
-            video.start();
+        if (mIsVisibleToUser) {
+            getNormalAd();
+        }
+    }
+
+    @Override
+    public void setUserVisibleHint(boolean isVisibleToUser) {
+        super.setUserVisibleHint(isVisibleToUser);
+        mIsVisibleToUser = isVisibleToUser;
+        if (isVisibleToUser) {
+            Log.d("hehe", "Ployhome显示");
+            getNormalAd();
+        } else {
+            Log.d("hehe", "Ployhome消失");
+            if (adController != null) {
+                adController.cancel(AdController.TYPE_HOME);
+            }
+            initAd();
         }
     }
 
@@ -303,14 +314,16 @@ public class PloyhomeFragmentPresenter extends AppBaseFragmentPresenter<Ployhome
     }
 
     private void getAd() {
-        JLog.d("广告请求");
-        adImageView = getView().getAd();
-        video = getView().getVideo();
+        if (!UserInfoManager.isLogin())
+            return;
 
-        getNormalAd();
+        JLog.d("广告请求");
+
+        if (mIsVisibleToUser) {
+            getNormalAd();
+        }
         getWakeUpAd();
         getSleepAd();
-
 
         RxBus.INSTANCE.send(new AdTemEvent());
     }
@@ -319,17 +332,21 @@ public class PloyhomeFragmentPresenter extends AppBaseFragmentPresenter<Ployhome
      * 初始化广告
      */
     private void initAd() {
+        if (adImageView == null || video == null)
+            return;
+
         adImageView.setVisibility(View.VISIBLE);
         video.setVisibility(View.INVISIBLE);
         adImageView.setBackgroundResource(R.mipmap.bg_ad);
         adImageView.setImageBitmap(null);
+        mAdsEntity = null;
     }
 
     /**
      * 处理广告
      */
     private void HandleAd(AdEntity.AdsEntity adsEntity, File file) {
-        
+
         addType = adsEntity.getMedia_type();
 
         if (addType.equals(IMAGE_AD_TYPE)) {
@@ -354,7 +371,7 @@ public class PloyhomeFragmentPresenter extends AppBaseFragmentPresenter<Ployhome
             adImageView.setVisibility(View.INVISIBLE);
             video.setVisibility(View.VISIBLE);
             if (file.exists()) {
-                video.setVideoPath(file.getAbsolutePath());
+                video.setVideoURI(Uri.parse(file.getAbsolutePath()));
             } else {
                 video.setVideoURI(Uri.parse(adsEntity.getMedia_url()));
             }
@@ -372,6 +389,9 @@ public class PloyhomeFragmentPresenter extends AppBaseFragmentPresenter<Ployhome
      * 获取普通广告
      */
     private void getNormalAd() {
+        if (!UserInfoManager.isLogin() || adController == null)
+            return;
+
         adController.startPolling(new AdController.IAlarm() {
             @Override
             public void onAlarmReceive() {
@@ -417,6 +437,9 @@ public class PloyhomeFragmentPresenter extends AppBaseFragmentPresenter<Ployhome
      * 唤醒广告
      */
     private void getWakeUpAd() {
+        if (!UserInfoManager.isLogin() || adController == null)
+            return;
+
         adController.startWakeUpTimer(new AdController.IWakeUp() {
 
 
@@ -472,6 +495,9 @@ public class PloyhomeFragmentPresenter extends AppBaseFragmentPresenter<Ployhome
      * 休眠广告
      */
     private void getSleepAd() {
+        if (!UserInfoManager.isLogin() || adController == null)
+            return;
+
         adController.receiveScreenOff(new AdController.IScreenOff() {
             @Override
             public void onSleepAdExecute() {
