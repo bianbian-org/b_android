@@ -202,7 +202,7 @@ public class AdController {
         }
         PollingUtils.stopPollingService(Utils.appContext
                 , AlarmService.class, "", CODE_ALARM_SERVICE);
-        iAlarmListeners.clear();
+        clearAlarmListener();
     }
 
     public void stopPolling(IAlarm alarm) {
