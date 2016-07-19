@@ -11,6 +11,8 @@ import com.techjumper.polyhomeb.mvp.v.fragment.ShoppingFragment;
  * * * * * * * * * * * * * * * * * * * * * * *
  **/
 public class ShoppingFragmentPresenter extends AppBaseFragmentPresenter<ShoppingFragment> {
+    private boolean mIsFirst = true;
+
     @Override
     public void initData(Bundle savedInstanceState) {
 
@@ -19,5 +21,14 @@ public class ShoppingFragmentPresenter extends AppBaseFragmentPresenter<Shopping
     @Override
     public void onViewInited(Bundle savedInstanceState) {
 
+    }
+
+    @Override
+    public void setUserVisibleHint(boolean isVisibleToUser) {
+        //        if (mIsFirst && isVisibleToUser) {
+//            mIsFirst = false;
+//            List<DisplayBean> datas = mModel.initPropertyData();
+//            getView().show(datas);
+//        }
     }
 }

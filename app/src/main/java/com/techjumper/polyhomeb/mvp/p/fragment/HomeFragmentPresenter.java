@@ -17,6 +17,7 @@ import java.util.List;
 public class HomeFragmentPresenter extends AppBaseFragmentPresenter<HomeFragment> {
 
     private HomeFragmentModel mModel = new HomeFragmentModel(this);
+    private boolean mIsFirst = true;
 
     @Override
     public void initData(Bundle savedInstanceState) {
@@ -28,7 +29,12 @@ public class HomeFragmentPresenter extends AppBaseFragmentPresenter<HomeFragment
 
     }
 
-    public List<DisplayBean> getData() {
-        return mModel.initPropertyData();
+    @Override
+    public void setUserVisibleHint(boolean isVisibleToUser) {
+        if (mIsFirst && isVisibleToUser) {
+            mIsFirst = false;
+            List<DisplayBean> mDatas = mModel.initPropertyData();
+            getView().show(mDatas);
+        }
     }
 }

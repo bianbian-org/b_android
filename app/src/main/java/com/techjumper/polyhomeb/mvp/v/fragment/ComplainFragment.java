@@ -5,10 +5,13 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.view.LayoutInflater;
 import android.view.View;
 
+import com.steve.creact.library.display.DisplayBean;
 import com.techjumper.corelib.mvp.factory.Presenter;
 import com.techjumper.polyhomeb.R;
 import com.techjumper.polyhomeb.adapter.PropertyComplainAdapter;
 import com.techjumper.polyhomeb.mvp.p.fragment.ComplainFragmentPresenter;
+
+import java.util.List;
 
 import butterknife.Bind;
 import cn.finalteam.loadingviewfinal.RecyclerViewFinal;
@@ -39,9 +42,13 @@ public class ComplainFragment extends AppBaseFragment<ComplainFragmentPresenter>
 
     @Override
     protected void initView(Bundle savedInstanceState) {
+
+    }
+
+    public void show(List<DisplayBean> datas) {
         mRv.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false));
         mAdapter = new PropertyComplainAdapter();
         mRv.setAdapter(mAdapter);
-        mAdapter.loadData(getPresenter().getData());
+        mAdapter.loadData(datas);
     }
 }

@@ -17,6 +17,7 @@ import java.util.List;
 public class ComplainFragmentPresenter extends AppBaseFragmentPresenter<ComplainFragment> {
 
     private ComplainFragmentModel mModel = new ComplainFragmentModel(this);
+    private boolean mIsFirst = true;
 
     @Override
     public void initData(Bundle savedInstanceState) {
@@ -28,8 +29,13 @@ public class ComplainFragmentPresenter extends AppBaseFragmentPresenter<Complain
 
     }
 
-    public List<DisplayBean> getData() {
-        return mModel.initPlacardData();
+    @Override
+    public void setUserVisibleHint(boolean isVisibleToUser) {
+        if (mIsFirst && isVisibleToUser) {
+            mIsFirst = false;
+            List<DisplayBean> mDatas = mModel.initPlacardData();
+            getView().show(mDatas);
+        }
     }
 
 }

@@ -17,6 +17,7 @@ import java.util.List;
 public class PlacardFragmentPresenter extends AppBaseFragmentPresenter<PlacardFragment> {
 
     private PlacardFragmentModel mModel = new PlacardFragmentModel(this);
+    private boolean mIsFirst = true;
 
     @Override
     public void initData(Bundle savedInstanceState) {
@@ -28,7 +29,13 @@ public class PlacardFragmentPresenter extends AppBaseFragmentPresenter<PlacardFr
 
     }
 
-    public List<DisplayBean> getData() {
-        return mModel.initPlacardData();
+    @Override
+    public void setUserVisibleHint(boolean isVisibleToUser) {
+        if (mIsFirst && isVisibleToUser) {
+            mIsFirst = false;
+            List<DisplayBean> mDatas = mModel.initPlacardData();
+            getView().show(mDatas);
+        }
     }
+
 }
