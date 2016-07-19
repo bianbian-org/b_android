@@ -39,7 +39,7 @@ public abstract class AppBaseActivity<T extends AppBaseActivityPresenter> extend
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         mProgress = KProgressHUD.create(this)
-                .setDimAmount(0.3F)
+                .setDimAmount(0.F)
                 .setStyle(KProgressHUD.Style.SPIN_INDETERMINATE)
                 .setOnDismissListener(dialog -> onDialogDismiss());
 
