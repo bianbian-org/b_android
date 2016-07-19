@@ -27,6 +27,7 @@ public class AdWindowManager {
     private ImageView mImageView;
     private MyVideoView myVideoView;
     private boolean mIsAttach;
+    private IAdWindow iAdWindow;
 
     private ParentClickListener mParentClickListener;
 
@@ -66,9 +67,17 @@ public class AdWindowManager {
         mContainer.setOnClickListener(mParentClickListener);
     }
 
-    public void unregisterListener() {
+    public void unregisterClickListener() {
         mContainer.setOnClickListener(null);
         mParentClickListener = null;
+    }
+
+    public void setOnWindowShowListener(IAdWindow iAdWindow) {
+        this.iAdWindow = iAdWindow;
+    }
+
+    public void unregisterWindowShowListener() {
+        iAdWindow = null;
     }
 
     public void showImage(AdEntity.AdsEntity adsEntity, File file) {
@@ -117,6 +126,9 @@ public class AdWindowManager {
         try {
             mWindowManager.addView(mContainer, mContainerParams);
             mIsAttach = true;
+            if (iAdWindow != null) {
+                iAdWindow.onAdWindowShow();
+            }
         } catch (Exception ignored) {
         }
     }
@@ -132,6 +144,9 @@ public class AdWindowManager {
             }
             mWindowManager.removeView(mContainer);
             mIsAttach = false;
+            if (iAdWindow != null) {
+                iAdWindow.onAdWindowClose();
+            }
         } catch (Exception ignored) {
         }
     }
@@ -177,6 +192,12 @@ public class AdWindowManager {
         }
 
         public abstract void onAdsClick(AdEntity.AdsEntity adsEntity, File file);
+    }
+
+    public interface IAdWindow {
+        void onAdWindowShow();
+
+        void onAdWindowClose();
     }
 
 }

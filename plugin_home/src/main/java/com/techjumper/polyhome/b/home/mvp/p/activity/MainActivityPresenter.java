@@ -37,6 +37,7 @@ import com.techjumper.polyhome.b.home.mvp.p.fragment.PloyhomeFragmentPresenter;
 import com.techjumper.polyhome.b.home.mvp.v.activity.MainActivity;
 import com.techjumper.polyhome.b.home.widget.MyVideoView;
 import com.techjumper.polyhome_b.adlib.entity.AdEntity;
+import com.techjumper.polyhome_b.adlib.manager.AdController;
 import com.techjumper.polyhome_b.adlib.window.AdWindowManager;
 
 import java.io.File;
@@ -213,12 +214,25 @@ public class MainActivityPresenter extends AppBaseActivityPresenter<MainActivity
                 RxBus.INSTANCE.send(new AdShowEvent(false));
             }
         });
+        AdWindowManager.getInstance().setOnWindowShowListener(new AdWindowManager.IAdWindow() {
+            @Override
+            public void onAdWindowShow() {
+                //取消接收首页广告
+                AdController.getInstance().cancel(AdController.TYPE_HOME);
+            }
+
+            @Override
+            public void onAdWindowClose() {
+                // TODO: 16/7/19  在这里判断是否显示首页广告
+            }
+        });
     }
 
     @Override
     public void onDestroy() {
         PluginEngine.getInstance().quit();
-        AdWindowManager.getInstance().unregisterListener();
+        AdWindowManager.getInstance().unregisterClickListener();
+        AdWindowManager.getInstance().unregisterWindowShowListener();
         super.onDestroy();
     }
 

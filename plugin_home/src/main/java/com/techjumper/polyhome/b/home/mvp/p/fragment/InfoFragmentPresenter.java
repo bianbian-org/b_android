@@ -9,7 +9,6 @@ import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 
-import com.techjumper.commonres.PluginConstant;
 import com.techjumper.commonres.entity.CalendarEntity;
 import com.techjumper.commonres.entity.MedicalEntity;
 import com.techjumper.commonres.entity.WeatherEntity;
@@ -23,7 +22,6 @@ import com.techjumper.corelib.rx.tools.RxBus;
 import com.techjumper.corelib.utils.Utils;
 import com.techjumper.corelib.utils.common.JLog;
 import com.techjumper.lib2.utils.PicassoHelper;
-import com.techjumper.plugincommunicateengine.PluginEngine;
 import com.techjumper.polyhome.b.home.R;
 import com.techjumper.polyhome.b.home.UserInfoManager;
 import com.techjumper.polyhome.b.home.mvp.m.InfoFragmentModel;
@@ -115,7 +113,7 @@ public class InfoFragmentPresenter extends AppBaseFragmentPresenter<InfoFragment
 
     @Override
     public void initData(Bundle savedInstanceState) {
-        adController = new AdController(getView().getActivity());
+        adController = AdController.getInstance();
 
         advHeartrate = getView().getAdvHeartrate();
         advBloodsugar = getView().getAdvBloodsugar();
@@ -286,41 +284,38 @@ public class InfoFragmentPresenter extends AppBaseFragmentPresenter<InfoFragment
         if (!UserInfoManager.isLogin() || adController == null)
             return;
 
-        adController.startPolling(new AdController.IAlarm() {
-            @Override
-            public void onAlarmReceive() {
-                JLog.d("普通获取广告" + UserInfoManager.getFamilyId() + "  " + UserInfoManager.getUserId() + "  " + UserInfoManager.getTicket());
+        adController.startPolling(() -> {
+            JLog.d("普通获取广告" + UserInfoManager.getFamilyId() + "  " + UserInfoManager.getUserId() + "  " + UserInfoManager.getTicket());
 //                adController.executeAdRule(AdController.TYPE_HOME, "434", "362", "5b279ba4e46853d86e1d109914cfebe3ca224381", new AdController.IExecuteRule() {
-                adController.executeAdRule(AdController.TYPE_HOME, UserInfoManager.getFamilyId(), UserInfoManager.getUserId(), UserInfoManager.getTicket(), new AdController.IExecuteRule() {
-                    @Override
-                    public void onAdReceive(AdEntity.AdsEntity adsEntity, File file) {
-                        HandleAd(adsEntity, file);
-                    }
+            adController.executeAdRule(AdController.TYPE_HOME, UserInfoManager.getFamilyId(), UserInfoManager.getUserId(), UserInfoManager.getTicket(), new AdController.IExecuteRule() {
+                @Override
+                public void onAdReceive(AdEntity.AdsEntity adsEntity, File file) {
+                    HandleAd(adsEntity, file);
+                }
 
-                    @Override
-                    public void onAdPlayFinished() {
-                        JLog.d("广告播放完成  (有可能是上一次的任务被自动中断，不影响本次广告执行)");
-                        initAd();
-                    }
+                @Override
+                public void onAdPlayFinished() {
+                    JLog.d("广告播放完成  (有可能是上一次的任务被自动中断，不影响本次广告执行)");
+                    initAd();
+                }
 
-                    @Override
-                    public void onAdDownloadError(AdEntity.AdsEntity adsEntity) {
-                        JLog.d("某个广告下载失败: " + adsEntity);
-                    }
+                @Override
+                public void onAdDownloadError(AdEntity.AdsEntity adsEntity) {
+                    JLog.d("某个广告下载失败: " + adsEntity);
+                }
 
-                    @Override
-                    public void onAdExecuteFailed(String reason) {
-                        JLog.d("获取广告失败: " + reason);
-                        initAd();
-                    }
+                @Override
+                public void onAdExecuteFailed(String reason) {
+                    JLog.d("获取广告失败: " + reason);
+                    initAd();
+                }
 
-                    @Override
-                    public void onAdNoExist(String adType, String hour) {
-                        JLog.d("没有广告: 广告类型=" + adType + ", 当前小时=" + hour);
-                        initAd();
-                    }
-                });
-            }
+                @Override
+                public void onAdNoExist(String adType, String hour) {
+                    JLog.d("没有广告: 广告类型=" + adType + ", 当前小时=" + hour);
+                    initAd();
+                }
+            });
         });
     }
 

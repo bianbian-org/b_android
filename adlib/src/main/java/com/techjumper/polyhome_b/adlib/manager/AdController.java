@@ -28,6 +28,7 @@ import com.techjumper.polyhome_b.adlib.services.WakeupAdService;
 import com.techjumper.polyhome_b.adlib.utils.PollingUtils;
 
 import java.io.File;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -49,7 +50,7 @@ import rx.android.schedulers.AndroidSchedulers;
  **/
 public class AdController {
 
-    private static AdController INSTANCE;
+    private volatile static AdController INSTANCE;
 
     public static final int CODE_WAKEUP_ALARM = 99; //唤醒广告服务的requestCode;
     public static final int CODE_ALARM_SERVICE = 100;
@@ -73,16 +74,25 @@ public class AdController {
     private WakeUpReceiver mWakeUpReceiver = new WakeUpReceiver();
 
     private int mLockTime;
-    private IAlarm iAlarm;
-    private Context mContext;
+    private ArrayList<IAlarm> iAlarmListeners = new ArrayList<>();
 
-    public AdController(Context context) {
-        mContext = context;
+    private AdController() {
         mLockTime = getScreenOffTime();
         if (mLockTime <= 0) {
             mLockTime = 40 * 60 * 1000;
             setScreenOffTime(mLockTime);
         }
+    }
+
+    public static AdController getInstance() {
+        if (INSTANCE == null) {
+            synchronized (AdController.class) {
+                if (INSTANCE == null) {
+                    INSTANCE = new AdController();
+                }
+            }
+        }
+        return INSTANCE;
     }
 
     public boolean wakeUpScreen() {
@@ -107,7 +117,7 @@ public class AdController {
         stopWakeUpTimer();
         this.iWakeUP = iWakeUp;
         IntentFilter intentFilter = new IntentFilter(WakeupAdService.ACTION_WAKE_UP);
-        mContext.registerReceiver(mWakeUpReceiver, intentFilter);
+        Utils.appContext.registerReceiver(mWakeUpReceiver, intentFilter);
         //            Calendar c = Calendar.getInstance();
 //            long oneHourLater = System.currentTimeMillis() + 1000L * 60 * 60;
         long triggerTime = getTriggerTime();
@@ -130,7 +140,7 @@ public class AdController {
 
     public void stopWakeUpTimer() {
         try {
-            mContext.unregisterReceiver(mWakeUpReceiver);
+            Utils.appContext.unregisterReceiver(mWakeUpReceiver);
         } catch (Exception ignored) {
         }
         PollingUtils.stopPollingService(Utils.appContext
@@ -140,31 +150,63 @@ public class AdController {
 
 
     public synchronized void startPolling(IAlarm iAlarm) {
-        stopPolling();
-        this.iAlarm = iAlarm;
+        stopPolling(iAlarm);
+        addAlarmListener(iAlarm);
         IntentFilter filter = new IntentFilter(AlarmService.ACTION_ALARM_SERVICE);
-        mContext.registerReceiver(mAlarmReceiver, filter);
+        Utils.appContext.registerReceiver(mAlarmReceiver, filter);
 
         long timeMillis = getTriggerTime();
 
         PollingUtils.startPollingService(Utils.appContext
                 , timeMillis, 60 * 60L, AlarmService.class, "", CODE_ALARM_SERVICE);
-        if (this.iAlarm != null) {
-            this.iAlarm.onAlarmReceive();
-        }
+        notifyAlarmListener();
 //        PollingUtils.startPollingService(Utils.appContext
 //                , timeMillis, 30L, AlarmService.class, "", CODE_ALARM_SERVICE);
 
     }
 
-    public void stopPolling() {
+    private void addAlarmListener(IAlarm iAlarm) {
+        for (IAlarm alarm : iAlarmListeners) {
+            if (alarm == iAlarm) return;
+        }
+        iAlarmListeners.add(iAlarm);
+    }
+
+    private void removeAlarmListener(IAlarm iAlarm) {
+        Iterator<IAlarm> it = iAlarmListeners.iterator();
+        while (it.hasNext()) {
+            IAlarm next = it.next();
+            if (next == iAlarm) {
+                it.remove();
+                return;
+            }
+        }
+    }
+
+    private void clearAlarmListener() {
+        iAlarmListeners.clear();
+    }
+
+    private void notifyAlarmListener() {
+        for (IAlarm listener : iAlarmListeners) {
+            if (listener != null) {
+                listener.onAlarmReceive();
+            }
+        }
+    }
+
+    public void clearPolling() {
         try {
-            mContext.unregisterReceiver(mAlarmReceiver);
+            Utils.appContext.unregisterReceiver(mAlarmReceiver);
         } catch (Exception ignored) {
         }
         PollingUtils.stopPollingService(Utils.appContext
                 , AlarmService.class, "", CODE_ALARM_SERVICE);
-        iAlarm = null;
+        iAlarmListeners.clear();
+    }
+
+    public void stopPolling(IAlarm alarm) {
+        removeAlarmListener(alarm);
     }
 
     private long getTriggerTime() {
@@ -206,7 +248,7 @@ public class AdController {
         if (TextUtils.isEmpty(adType)) return;
         AdRuleExecutor executor;
         synchronized (this) {
-            interrupt(adType);
+            cancelAll();
             executor = new AdRuleExecutor(adType);
             mExecutorMap.put(adType, executor);
         }
@@ -406,6 +448,10 @@ public class AdController {
 
         @Override
         public void onReceive(Context context, Intent intent) {
+            //只要是休眠就停到首页广告
+            cancel(TYPE_HOME);
+            cancel(TYPE_VIDEO);
+
             AdRuleExecutor wakeUpExecutor = mExecutorMap.get(AdController.TYPE_WAKEUP);
             if (wakeUpExecutor != null && !wakeUpExecutor.isInterrupt()) {
                 JLog.d("已经在执行唤醒广告, 所以不再发布休眠消息");
@@ -432,9 +478,7 @@ public class AdController {
 
         @Override
         public void onReceive(Context context, Intent intent) {
-            if (iAlarm != null) {
-                iAlarm.onAlarmReceive();
-            }
+            notifyAlarmListener();
         }
     }
 
