@@ -59,7 +59,7 @@
                     android:id="@+id/title_img"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:src="@mipmap/bg_title" />
+                    android:src="@mipmap/bg_title_new" />
             </FrameLayout>
 
             <TextView
@@ -67,8 +67,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
-                android:gravity="bottom"
-                android:paddingLeft="@dimen/dp_192"
+                android:gravity="bottom|right"
+                android:paddingRight="@dimen/dp_141"
                 android:text="3月19日    周六   21:30"
                 android:textColor="@color/color_ffffff"
                 android:textSize="@dimen/sp_18" />

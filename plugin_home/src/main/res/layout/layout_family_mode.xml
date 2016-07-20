@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="@dimen/dp_330"
     android:layout_height="@dimen/dp_160"
-    android:background="@color/color_ff9938">
+    android:background="@color/color_EA8422">
 
     <com.techjumper.polyhome.b.home.widget.ArcView
         android:id="@+id/right_arc"
@@ -12,7 +12,7 @@
         app:alpha="0"
         app:arc_radius="@dimen/dp_144"
         android:layout_marginLeft="-46dp"
-        app:av_bg_color="@color/color_f48924"
+        app:av_bg_color="@color/color_E27812"
         app:rect_height="@dimen/dp_160"
         app:rect_width="@dimen/dp_167" />
 
@@ -23,7 +23,7 @@
         android:layout_centerVertical="true"
         android:layout_marginLeft="@dimen/dp_14"
         android:drawablePadding="@dimen/dp_15"
-        android:drawableTop="@mipmap/bg_family"
+        android:drawableTop="@mipmap/bg_family_new"
         android:text="@string/family_mode_away"
         android:textColor="@color/color_ffffff"
         android:textSize="@dimen/sp_18" />
@@ -36,7 +36,7 @@
         android:rotation="180"
         android:layout_marginRight="-46dp"
         app:arc_radius="@dimen/dp_144"
-        app:av_bg_color="@color/color_ffad5f"
+        app:av_bg_color="@color/color_FFAB5B"
         app:rect_height="@dimen/dp_160"
         app:rect_width="@dimen/dp_167" />
 

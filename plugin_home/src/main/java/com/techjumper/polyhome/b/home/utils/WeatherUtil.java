@@ -11,27 +11,27 @@ public class WeatherUtil {
         int imgNo = Integer.valueOf(imgType);
         int resId = 0;
         if (imgNo == 0) {
-            resId = R.mipmap.icon_qing;
+            resId = R.mipmap.icon_qing_new;
         } else if (imgNo == 1) {
-            resId = R.mipmap.icon_duoyun;
+            resId = R.mipmap.icon_duoyun_new;
         } else if (imgNo == 2) {
-            resId = R.mipmap.icon_yin;
+            resId = R.mipmap.icon_yin_new;
         } else if (imgNo == 4) {
-            resId = R.mipmap.icon_leizhengyu;
+            resId = R.mipmap.icon_leizhengyu_new;
         } else if (imgNo == 5) {
-            resId = R.mipmap.icon_leizhenyubingbao;
+            resId = R.mipmap.icon_leizhenyubingbao_new;
         } else if (imgNo == 6) {
-            resId = R.mipmap.icon_yuxue;
+            resId = R.mipmap.icon_yuxue_new;
         } else if (imgNo == 18) {
-            resId = R.mipmap.icon_wuqi;
+            resId = R.mipmap.icon_wuqi_new;
         } else if (imgNo == 53) {
-            resId = R.mipmap.icon_wumai;
+            resId = R.mipmap.icon_wumai_new;
         } else if ((imgNo >= 29 && imgNo <= 31) || imgNo == 20) {
-            resId = R.mipmap.icon_shachenbao;
+            resId = R.mipmap.icon_shachenbao_new;
         } else if ((imgNo >= 13 && imgNo <= 17) || (imgNo >= 26 && imgNo <= 28)) {
-            resId = R.mipmap.icon_xue;
+            resId = R.mipmap.icon_xue_new;
         } else {
-            resId = R.mipmap.icon_yu;
+            resId = R.mipmap.icon_yu_new;
         }
         return resId;
     }

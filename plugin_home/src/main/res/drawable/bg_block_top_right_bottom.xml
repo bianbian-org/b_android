@@ -3,7 +3,7 @@
 
     <item android:drawable="@color/color_33ffffff" />
     <item
-        android:drawable="@color/color_20c3f3"
+        android:drawable="@color/color_0CA9E4"
         android:bottom="@dimen/dp_1"
         android:top="@dimen/dp_1"
         android:right="@dimen/dp_1"/>
