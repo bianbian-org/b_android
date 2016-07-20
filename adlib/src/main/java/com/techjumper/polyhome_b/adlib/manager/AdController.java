@@ -256,16 +256,14 @@ public class AdController {
     }
 
     public void cancelAll() {
-        Iterator<Map.Entry<String, AdRuleExecutor>> it = mExecutorMap.entrySet().iterator();
-        while (it.hasNext()) {
-            Map.Entry<String, AdRuleExecutor> next = it.next();
+        for (Map.Entry<String, AdRuleExecutor> next : mExecutorMap.entrySet()) {
             if (next == null) continue;
             AdRuleExecutor executor = next.getValue();
             if (executor != null) {
                 executor.quit(true);
             }
-            it.remove();
         }
+        mExecutorMap.clear();
     }
 
     public void cancel(String adType) {
@@ -287,6 +285,7 @@ public class AdController {
     }
 
     private void fetchAd(String family_id, String user_id, String ticket, IFetchAd iFetchAd) {
+        RxUtils.unsubscribeIfNotNull(mPadAdSubs);
         mPadAdSubs = RetrofitTemplate.getInstance().padAd(family_id, user_id, ticket)
                 .subscribe(new Subscriber<AdEntity>() {
                     @Override
@@ -327,8 +326,11 @@ public class AdController {
                         saveJsonToLocal(GsonUtils.toJson(adEntity));
                         cacheFile(adEntity);
 
+
                         if (iFetchAd != null) {
                             iFetchAd.onAdInfoReceive(adEntity);
+                        } else {
+                            JLog.d("iFetchAd 为空, 无法回调");
                         }
                     }
                 });
