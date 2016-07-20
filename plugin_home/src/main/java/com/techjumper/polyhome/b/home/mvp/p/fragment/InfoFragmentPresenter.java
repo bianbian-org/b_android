@@ -14,6 +14,7 @@ import com.techjumper.commonres.entity.MedicalEntity;
 import com.techjumper.commonres.entity.WeatherEntity;
 import com.techjumper.commonres.entity.event.AdTemEvent;
 import com.techjumper.commonres.entity.event.MedicalEvent;
+import com.techjumper.commonres.entity.event.ShowMainAdEvent;
 import com.techjumper.commonres.entity.event.UserInfoEvent;
 import com.techjumper.commonres.entity.event.WeatherDateEvent;
 import com.techjumper.commonres.entity.event.WeatherEvent;
@@ -181,6 +182,10 @@ public class InfoFragmentPresenter extends AppBaseFragmentPresenter<InfoFragment
                             advBloodsugar.setContentText(getView().getString(R.string.info_medical_default));
                             advBloodpressure.setContentText(getView().getString(R.string.info_medical_default));
                             advDetect.setContentText(getView().getString(R.string.info_medical_no_login));
+                        }
+                    } else if (o instanceof ShowMainAdEvent) {
+                        if (mIsGetAd) {
+                            getNormalAd();
                         }
                     }
                 });

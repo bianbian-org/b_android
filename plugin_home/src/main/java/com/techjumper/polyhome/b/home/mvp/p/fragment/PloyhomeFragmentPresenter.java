@@ -17,6 +17,7 @@ import com.techjumper.commonres.entity.event.AdMainEvent;
 import com.techjumper.commonres.entity.event.AdShowEvent;
 import com.techjumper.commonres.entity.event.AdTemEvent;
 import com.techjumper.commonres.entity.event.NoticeEvent;
+import com.techjumper.commonres.entity.event.ShowMainAdEvent;
 import com.techjumper.commonres.entity.event.UserInfoEvent;
 import com.techjumper.commonres.entity.event.WeatherEvent;
 import com.techjumper.commonres.entity.event.pushevent.NoticePushEvent;
@@ -214,6 +215,10 @@ public class PloyhomeFragmentPresenter extends AppBaseFragmentPresenter<Ployhome
                             adController.cancel(AdController.TYPE_WAKEUP);
                             adController.cancel(AdController.TYPE_SLEEP);
                         }
+                    } else if (o instanceof ShowMainAdEvent) {
+                        if (mIsGetAd) {
+                            getNormalAd();
+                        }
                     }
                 }));
 
@@ -380,7 +385,6 @@ public class PloyhomeFragmentPresenter extends AppBaseFragmentPresenter<Ployhome
                 video.setVideoURI(Uri.parse(adsEntity.getMedia_url()));
             }
 
-            video.setZOrderOnTop(true);
             video.start();
             video.requestFocus();
 
