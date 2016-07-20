@@ -18,6 +18,7 @@ import com.techjumper.commonres.entity.event.AdControllerEvent;
 import com.techjumper.commonres.entity.event.AdMainEvent;
 import com.techjumper.commonres.entity.event.AdShowEvent;
 import com.techjumper.commonres.entity.event.MedicalEvent;
+import com.techjumper.commonres.entity.event.ShowMainAdEvent;
 import com.techjumper.commonres.entity.event.TimeEvent;
 import com.techjumper.commonres.entity.event.UserInfoEvent;
 import com.techjumper.commonres.util.CommonDateUtil;
@@ -225,6 +226,7 @@ public class MainActivityPresenter extends AppBaseActivityPresenter<MainActivity
             @Override
             public void onAdWindowClose() {
                 // TODO: 16/7/19  在这里判断是否显示首页广告
+                RxBus.INSTANCE.send(new ShowMainAdEvent());
             }
         });
     }

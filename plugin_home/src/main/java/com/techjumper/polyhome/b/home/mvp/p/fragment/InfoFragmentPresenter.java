@@ -14,6 +14,7 @@ import com.techjumper.commonres.entity.MedicalEntity;
 import com.techjumper.commonres.entity.WeatherEntity;
 import com.techjumper.commonres.entity.event.AdTemEvent;
 import com.techjumper.commonres.entity.event.MedicalEvent;
+import com.techjumper.commonres.entity.event.ShowMainAdEvent;
 import com.techjumper.commonres.entity.event.UserInfoEvent;
 import com.techjumper.commonres.entity.event.WeatherDateEvent;
 import com.techjumper.commonres.entity.event.WeatherEvent;
@@ -104,7 +105,7 @@ public class InfoFragmentPresenter extends AppBaseFragmentPresenter<InfoFragment
 
     @OnClick(R.id.ad_tem)
     void ad_tem() {
-        if (TextUtils.isEmpty(mAdsEntity.getMedia_type()) || mAdsEntity == null)
+        if (mAdsEntity == null || TextUtils.isEmpty(mAdsEntity.getMedia_type()))
             return;
 
         Intent intent = new Intent(getView().getActivity(), AdActivity.class);
@@ -181,6 +182,10 @@ public class InfoFragmentPresenter extends AppBaseFragmentPresenter<InfoFragment
                             advBloodsugar.setContentText(getView().getString(R.string.info_medical_default));
                             advBloodpressure.setContentText(getView().getString(R.string.info_medical_default));
                             advDetect.setContentText(getView().getString(R.string.info_medical_no_login));
+                        }
+                    } else if (o instanceof ShowMainAdEvent) {
+                        if (mIsGetAd) {
+                            getNormalAd();
                         }
                     }
                 });
