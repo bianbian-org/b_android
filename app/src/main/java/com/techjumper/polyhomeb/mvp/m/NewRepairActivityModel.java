@@ -95,7 +95,6 @@ public class NewRepairActivityModel extends BaseModel<NewRepairActivityPresenter
                     }
                 }
             }).start();
-
         }
         return displayBeen;
     }

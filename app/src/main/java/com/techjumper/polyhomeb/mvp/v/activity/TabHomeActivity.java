@@ -1,5 +1,6 @@
 package com.techjumper.polyhomeb.mvp.v.activity;
 
+import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.view.View;
 
@@ -47,6 +48,7 @@ public class TabHomeActivity extends AppBaseActivity<TabHomeActivityPresenter> {
     protected void initView(Bundle savedInstanceState) {
         initSlidingMenu();
         initFragmentsAndPager();
+
     }
 
     @Override
