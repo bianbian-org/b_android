@@ -57,6 +57,7 @@ public class MainActivityPresenter extends AppBaseActivityPresenter<MainActivity
     private LinearLayout mainContentLayout;
     private MyVideoView mainAdVideo;
     private ImageView mainAdImg;
+    public static final String ACTION_START_HOST_DAEMON = "action_start_host_daemon";
 
     private IPluginMessageReceiver mIPluginMessageReceiver = (code, message, extras) -> {
 
@@ -238,6 +239,8 @@ public class MainActivityPresenter extends AppBaseActivityPresenter<MainActivity
 
     @Override
     public void onViewInited(Bundle savedInstanceState) {
+        getView().sendBroadcast(new Intent(ACTION_START_HOST_DAEMON));
+        JLog.d("通知bhost启动守护进程");
         mainAdLayout = getView().getMainAdLayout();
         mainContentLayout = getView().getMainContentLayout();
         mainAdVideo = getView().getMainAdVideo();
