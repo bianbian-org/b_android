@@ -105,7 +105,7 @@ public class InfoFragmentPresenter extends AppBaseFragmentPresenter<InfoFragment
 
     @OnClick(R.id.ad_tem)
     void ad_tem() {
-        if (TextUtils.isEmpty(mAdsEntity.getMedia_type()) || mAdsEntity == null)
+        if (mAdsEntity == null || TextUtils.isEmpty(mAdsEntity.getMedia_type()))
             return;
 
         Intent intent = new Intent(getView().getActivity(), AdActivity.class);
