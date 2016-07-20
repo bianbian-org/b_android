@@ -29,13 +29,17 @@ public class PlacardFragmentPresenter extends AppBaseFragmentPresenter<PlacardFr
 
     }
 
-    @Override
-    public void setUserVisibleHint(boolean isVisibleToUser) {
-        if (mIsFirst && isVisibleToUser) {
-            mIsFirst = false;
-            List<DisplayBean> mDatas = mModel.initPlacardData();
-            getView().show(mDatas);
-        }
+//    @Override
+//    public void setUserVisibleHint(boolean isVisibleToUser) {
+//        if (mIsFirst && isVisibleToUser) {
+//            mIsFirst = false;
+//            List<DisplayBean> mDatas = mModel.initPlacardData();
+//            getView().show(mDatas);
+//        }
+//    }
+
+    public List<DisplayBean> getDatas() {
+        return mModel.initPlacardData();
     }
 
 }

@@ -42,7 +42,7 @@ public class ComplainFragment extends AppBaseFragment<ComplainFragmentPresenter>
 
     @Override
     protected void initView(Bundle savedInstanceState) {
-
+        show(getPresenter().getDatas());
     }
 
     public void show(List<DisplayBean> datas) {

@@ -10,7 +10,7 @@
         android:layout_height="wrap_content"
         android:layout_centerVertical="true"
         android:layout_marginLeft="@dimen/dp_14"
-        android:text="报修记录"
+        android:text="@string/repair_record"
         android:textColor="@color/color_727272"
         android:textSize="@dimen/sp_16" />
 
@@ -44,7 +44,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:gravity="center"
-                android:text="全部"
+                android:text="@string/repair_all"
                 android:textColor="@color/color_37a991"
                 android:textSize="@dimen/sp_16" />
 

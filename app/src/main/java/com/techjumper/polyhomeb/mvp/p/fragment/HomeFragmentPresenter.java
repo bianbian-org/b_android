@@ -18,6 +18,7 @@ public class HomeFragmentPresenter extends AppBaseFragmentPresenter<HomeFragment
 
     private HomeFragmentModel mModel = new HomeFragmentModel(this);
     private boolean mIsFirst = true;
+    private List<DisplayBean> mDatas;
 
     @Override
     public void initData(Bundle savedInstanceState) {
@@ -29,12 +30,15 @@ public class HomeFragmentPresenter extends AppBaseFragmentPresenter<HomeFragment
 
     }
 
-    @Override
-    public void setUserVisibleHint(boolean isVisibleToUser) {
-        if (mIsFirst && isVisibleToUser) {
-            mIsFirst = false;
-            List<DisplayBean> mDatas = mModel.initPropertyData();
-            getView().show(mDatas);
-        }
+//    @Override
+//    public void setUserVisibleHint(boolean isVisibleToUser) {
+//        if (mIsFirst && isVisibleToUser) {
+//            mIsFirst = false;
+//            mDatas = mModel.initPropertyData();
+//        }
+//    }
+
+    public List<DisplayBean> getDatas() {
+        return mModel.initPropertyData();
     }
 }

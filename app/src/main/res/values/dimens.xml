@@ -66,6 +66,7 @@
     <dimen name="sp_5">5sp</dimen>
     <dimen name="sp_15">15sp</dimen>
     <dimen name="sp_8">8sp</dimen>
+    <dimen name="dp_240">240dp</dimen>
 
 
 </resources>

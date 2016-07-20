@@ -49,10 +49,25 @@ public class HomeFragment extends AppBaseFragment<HomeFragmentPresenter> {
 
     @Override
     protected void initView(Bundle savedInstanceState) {
-        
+        mRv.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false));
+        mAdapter = new HomePageAdapter();
+        mRv.addItemDecoration(new DividerItemDecoration(28));
+        mRv.setAdapter(mAdapter);
+        mAdapter.loadData(getPresenter().getDatas());
+        mPtr.setPtrHandler(new PtrDefaultHandler() {
+            @Override
+            public void onRefreshBegin(PtrFrameLayout frame) {
+                new Handler().postDelayed(() -> stopRefresh(""), 3000);
+            }
+
+            @Override
+            public boolean checkCanDoRefresh(PtrFrameLayout frame, View content, View header) {
+                return PtrDefaultHandler.checkContentCanBePulledDown(frame, content, header);
+            }
+        });
     }
 
-    public void stopRefresh(String msg) {
+    private void stopRefresh(String msg) {
         if (mPtr != null && mPtr.isRefreshing()) {
             if (!TextUtils.isEmpty(msg))
                 showHint(msg);

@@ -41,7 +41,7 @@ public class PlacardFragment extends AppBaseFragment<PlacardFragmentPresenter> {
 
     @Override
     protected void initView(Bundle savedInstanceState) {
-
+        show(getPresenter().getDatas());
     }
 
     public void show(List<DisplayBean> datas) {

@@ -2,8 +2,10 @@ package com.techjumper.polyhomeb.mvp.p.activity;
 
 import android.os.Bundle;
 
-import com.techjumper.corelib.utils.window.ToastUtils;
+import com.techjumper.corelib.utils.common.AcHelper;
 import com.techjumper.polyhomeb.mvp.m.PropertyDetailActivityModel;
+import com.techjumper.polyhomeb.mvp.v.activity.NewComplainActivity;
+import com.techjumper.polyhomeb.mvp.v.activity.NewRepairActivity;
 import com.techjumper.polyhomeb.mvp.v.activity.PropertyDetailActivity;
 
 /**
@@ -31,6 +33,14 @@ public class PropertyDetailActivityPresenter extends AppBaseActivityPresenter<Pr
     }
 
     public void onTitleRightClick() {
-        ToastUtils.show("在第" + getView().getViewPager().getCurrentItem() + "页点击了＋号");
+
+        switch (getView().getViewPager().getCurrentItem()) {
+            case 1:
+                new AcHelper.Builder(getView()).target(NewRepairActivity.class).start();
+                break;
+            case 2:
+                new AcHelper.Builder(getView()).target(NewComplainActivity.class).start();
+                break;
+        }
     }
 }

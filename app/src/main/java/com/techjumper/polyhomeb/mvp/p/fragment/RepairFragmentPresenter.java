@@ -18,6 +18,7 @@ public class RepairFragmentPresenter extends AppBaseFragmentPresenter<RepairFrag
 
     private RepairFragmentModel mModel = new RepairFragmentModel(this);
     private boolean mIsFirst = true;
+    private List<DisplayBean> mDatas;
 
     @Override
     public void initData(Bundle savedInstanceState) {
@@ -29,12 +30,16 @@ public class RepairFragmentPresenter extends AppBaseFragmentPresenter<RepairFrag
 
     }
 
-    @Override
-    public void setUserVisibleHint(boolean isVisibleToUser) {
-        if (mIsFirst && isVisibleToUser) {
-            mIsFirst = false;
-            List<DisplayBean> mDatas = mModel.initPlacardData();
-            getView().show(mDatas);
-        }
+//    @Override
+//    public void setUserVisibleHint(boolean isVisibleToUser) {
+//        if (mIsFirst && isVisibleToUser) {
+//            mIsFirst = false;
+//            mDatas = mModel.initPlacardData();
+//            getView().show(mDatas);
+//        }
+//    }
+
+    public List<DisplayBean> getDatas() {
+        return mModel.initPlacardData();
     }
 }

@@ -41,7 +41,7 @@ public class RepairFragment extends AppBaseFragment<RepairFragmentPresenter> {
 
     @Override
     protected void initView(Bundle savedInstanceState) {
-
+        show(getPresenter().getDatas());
     }
 
     public void show(List<DisplayBean> datas) {
@@ -50,4 +50,5 @@ public class RepairFragment extends AppBaseFragment<RepairFragmentPresenter> {
         mRv.setAdapter(mAdapter);
         mAdapter.loadData(datas);
     }
+
 }

@@ -56,5 +56,17 @@
     <string name="repair_">报修</string>
     <string name="complaint_">投诉建议</string>
     <string name="placard_detail">公告详情</string>
+    <string name="new_repair">新建报修</string>
+    <string name="repair_device">报修设备</string>
+    <string name="repair_all">全部</string>
+    <string name="repair_windows">门窗类</string>
+    <string name="repair_walls">墙类</string>
+    <string name="repair_elevators">电梯类</string>
+    <string name="repair_water_elec">水电类</string>
+    <string name="repair_locks">锁类</string>
+    <string name="repair_type">报修类型</string>
+    <string name="repair_unchecked">未选择</string>
+    <string name="repair_record">报修记录</string>
+    <string name="repiar_text_hint">输入你的报修内容...</string>
 
 </resources>
