@@ -20,7 +20,7 @@
                 android:id="@+id/jujia"
                 android:layout_width="@dimen/dp_160"
                 android:layout_height="@dimen/dp_160"
-                app:bg_color="@color/color_20c3f3"
+                app:bg_color="@color/color_0ca9e4"
                 app:content_img="@mipmap/bg_jujia"
                 app:title_text="@string/title_jujia" />
 
@@ -29,8 +29,8 @@
                 android:layout_width="@dimen/dp_160"
                 android:layout_height="@dimen/dp_160"
                 android:layout_marginLeft="@dimen/dp_10"
-                app:bg_color="@color/color_20c3f3"
-                app:content_img="@mipmap/bg_smarthome"
+                app:bg_color="@color/color_0ca9e4"
+                app:content_img="@mipmap/bg_smarthome_new"
                 app:title_text="@string/title_smarthome" />
 
             <com.techjumper.polyhome.b.home.widget.SquareView
@@ -38,7 +38,7 @@
                 android:layout_width="@dimen/dp_160"
                 android:layout_height="@dimen/dp_160"
                 android:layout_marginLeft="@dimen/dp_10"
-                app:bg_color="@color/color_20c3f3"
+                app:bg_color="@color/color_0ca9e4"
                 app:content_img="@mipmap/bg_property"
                 app:title_text="@string/title_property" />
 
@@ -97,7 +97,7 @@
                 android:id="@+id/fp_temperature"
                 android:layout_width="@dimen/dp_160"
                 android:layout_height="@dimen/dp_160"
-                app:bg_color="@color/color_6a889f"
+                app:bg_color="@color/color_466780"
                 app:content_text="18°"
                 app:quarter_img="@mipmap/bg_weather"
                 app:quarter_layout_visible="true"
@@ -108,7 +108,7 @@
                 android:layout_width="@dimen/dp_160"
                 android:layout_height="@dimen/dp_160"
                 android:layout_marginTop="@dimen/dp_10"
-                app:bg_color="@color/color_20c3f3"
+                app:bg_color="@color/color_0ca9e4"
                 app:content_text="09"
                 app:title_text="周五限行" />
 
@@ -117,8 +117,8 @@
                 android:layout_width="@dimen/dp_160"
                 android:layout_height="@dimen/dp_160"
                 android:layout_marginTop="@dimen/dp_10"
-                app:bg_color="@color/color_20c3f3"
-                app:content_img="@mipmap/bg_shopping"
+                app:bg_color="@color/color_0ca9e4"
+                app:content_img="@mipmap/bg_shopping_new"
                 app:title_text="@string/title_shopping" />
         </LinearLayout>
     </LinearLayout>

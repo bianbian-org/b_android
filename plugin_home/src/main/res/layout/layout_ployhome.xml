@@ -30,7 +30,7 @@
                 android:layout_height="@dimen/dp_150"
                 android:layout_marginLeft="@dimen/dp_10"
                 app:bg_color="@color/color_20c3f3"
-                app:content_img="@mipmap/bg_smarthome"
+                app:content_img="@mipmap/bg_smarthome_new"
                 app:title_text="@string/title_smarthome" />
 
             <com.techjumper.polyhome.b.home.widget.SquareView
@@ -99,7 +99,7 @@
                 android:layout_height="@dimen/dp_150"
                 android:layout_marginTop="@dimen/dp_10"
                 app:bg_color="@color/color_20c3f3"
-                app:content_img="@mipmap/bg_shopping"
+                app:content_img="@mipmap/bg_shopping_new"
                 app:title_text="@string/title_shopping" />
         </LinearLayout>
     </LinearLayout>

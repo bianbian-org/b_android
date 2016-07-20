@@ -18,7 +18,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textColor="@color/color_ffffff"
-            android:textSize="@dimen/sp_60"
+            android:textSize="@dimen/sp_65"
             android:textStyle="bold"
             tools:drawableLeft="@mipmap/bg_jujia"
             tools:text="18°" />
@@ -28,7 +28,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textColor="@color/color_ffffff"
-            android:textSize="@dimen/sp_18"
+            android:textSize="@dimen/sp_20"
             tools:text="智能家居" />
     </LinearLayout>
 
@@ -37,7 +37,7 @@
         android:layout_width="@dimen/dp_40"
         android:layout_height="@dimen/dp_40"
         android:layout_alignParentRight="true"
-        android:background="@mipmap/bg_quarter">
+        android:background="@mipmap/bg_quarter_new">
 
         <TextView
             android:id="@+id/quarter_text"

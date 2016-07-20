@@ -52,7 +52,7 @@ import rx.android.schedulers.AndroidSchedulers;
 /**
  * Created by kevin on 16/4/28.
  */
-public class PloyhomeFragmentPresenter extends AppBaseFragmentPresenter<PloyhomeFragment> {
+public class PloyhomeFragmentPresenter extends AppBaseFragmentPresenter<PloyhomeFragment> implements AdController.IAlarm{
     public static final String IMAGE_AD_TYPE = "1";
     public static final String VIDEO_AD_TYPE = "2";
 
@@ -401,42 +401,8 @@ public class PloyhomeFragmentPresenter extends AppBaseFragmentPresenter<Ployhome
         if (!UserInfoManager.isLogin() || adController == null)
             return;
 
-        adController.startPolling(() -> {
-            JLog.d("普通获取广告" + UserInfoManager.getFamilyId() + "  " + UserInfoManager.getUserId() + "  " + UserInfoManager.getTicket());
-//                adController.executeAdRule(AdController.TYPE_HOME, "434", "362", "5b279ba4e46853d86e1d109914cfebe3ca224381", new AdController.IExecuteRule() {
-            adController.executeAdRule(AdController.TYPE_HOME, UserInfoManager.getFamilyId(), UserInfoManager.getUserId(), UserInfoManager.getTicket(), new AdController.IExecuteRule() {
-                @Override
-                public void onAdReceive(AdEntity.AdsEntity adsEntity, File file) {
-                    Log.d("adsEntity", "adsEntity: " + adsEntity);
-                    Log.d("adsEntity", "file: " + file);
-                    Log.d("adsEntity", "file.getAbsolutePath(): " + file.getAbsolutePath());
-                    HandleAd(adsEntity, file);
-                }
-
-                @Override
-                public void onAdPlayFinished() {
-                    JLog.d("广告播放完成  ");
-                    initAd();
-                }
-
-                @Override
-                public void onAdDownloadError(AdEntity.AdsEntity adsEntity) {
-                    JLog.d("某个广告下载失败: " + adsEntity);
-                }
-
-                @Override
-                public void onAdExecuteFailed(String reason) {
-                    JLog.d("获取广告失败: " + reason);
-                    initAd();
-                }
-
-                @Override
-                public void onAdNoExist(String adType, String hour) {
-                    JLog.d("没有广告: 广告类型=" + adType + ", 当前小时=" + hour);
-                    initAd();
-                }
-            });
-        });
+        Log.d("hehe", "ployhome普通获取广告");
+        adController.startPolling(this);
     }
 
     /**
@@ -542,6 +508,44 @@ public class PloyhomeFragmentPresenter extends AppBaseFragmentPresenter<Ployhome
                     RxBus.INSTANCE.send(new AdShowEvent(false));
                 }
             });
+        });
+    }
+
+    @Override
+    public void onAlarmReceive() {
+        JLog.d("普通获取广告" + UserInfoManager.getFamilyId() + "  " + UserInfoManager.getUserId() + "  " + UserInfoManager.getTicket());
+//                adController.executeAdRule(AdController.TYPE_HOME, "434", "362", "5b279ba4e46853d86e1d109914cfebe3ca224381", new AdController.IExecuteRule() {
+        adController.executeAdRule(AdController.TYPE_HOME, UserInfoManager.getFamilyId(), UserInfoManager.getUserId(), UserInfoManager.getTicket(), new AdController.IExecuteRule() {
+            @Override
+            public void onAdReceive(AdEntity.AdsEntity adsEntity, File file) {
+                Log.d("adsEntity", "adsEntity: " + adsEntity);
+                Log.d("adsEntity", "file: " + file);
+                Log.d("adsEntity", "file.getAbsolutePath(): " + file.getAbsolutePath());
+                HandleAd(adsEntity, file);
+            }
+
+            @Override
+            public void onAdPlayFinished() {
+                JLog.d("广告播放完成  ");
+                initAd();
+            }
+
+            @Override
+            public void onAdDownloadError(AdEntity.AdsEntity adsEntity) {
+                JLog.d("某个广告下载失败: " + adsEntity);
+            }
+
+            @Override
+            public void onAdExecuteFailed(String reason) {
+                JLog.d("获取广告失败: " + reason);
+                initAd();
+            }
+
+            @Override
+            public void onAdNoExist(String adType, String hour) {
+                JLog.d("没有广告: 广告类型=" + adType + ", 当前小时=" + hour);
+                initAd();
+            }
         });
     }
 }

@@ -64,12 +64,13 @@
 
             <TextView
                 android:id="@+id/date"
-                android:layout_width="match_parent"
+                android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
-                android:gravity="bottom|right"
+                android:gravity="bottom"
+                android:paddingLeft="@dimen/dp_192"
                 android:text="3月19日    周六   21:30"
-                android:textColor="@color/color_7fffffff"
+                android:textColor="@color/color_ffffff"
                 android:textSize="@dimen/sp_18" />
 
             <TextView
@@ -77,7 +78,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:layout_marginLeft="@dimen/dp_40"
-                android:drawableLeft="@mipmap/bg_alarm"
+                android:drawableLeft="@mipmap/bg_alarm_new"
                 android:drawablePadding="@dimen/dp_5"
                 android:gravity="center_vertical"
                 android:text="@string/title_alarm"
@@ -88,12 +89,13 @@
             <TextView
                 android:id="@+id/call_service"
                 android:layout_width="wrap_content"
-                android:layout_height="match_parent"
+                android:layout_height="wrap_content"
                 android:layout_marginLeft="@dimen/dp_20"
-                android:drawableLeft="@mipmap/bg_alarm"
+                android:drawableLeft="@mipmap/bg_alarm_new"
                 android:drawablePadding="@dimen/dp_5"
                 android:gravity="center_vertical"
                 android:text="@string/title_call_service"
+                android:textStyle="bold"
                 android:textColor="@color/color_37a991"
                 android:textSize="@dimen/sp_18" />
 
@@ -102,10 +104,11 @@
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:layout_marginLeft="@dimen/dp_20"
-                android:drawableLeft="@mipmap/bg_alarm"
+                android:drawableLeft="@mipmap/bg_video"
                 android:drawablePadding="@dimen/dp_5"
                 android:gravity="center_vertical"
                 android:text="@string/title_vedio"
+                android:textStyle="bold"
                 android:textColor="@color/color_37a991"
                 android:textSize="@dimen/sp_18" />
         </LinearLayout>

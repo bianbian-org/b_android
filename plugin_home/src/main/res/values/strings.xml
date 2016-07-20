@@ -1,7 +1,7 @@
 <resources>
     <string name="app_name">博力恒昌B端</string>
     <string name="title_alarm">报警</string>
-    <string name="title_call_service">呼叫管理中心</string>
+    <string name="title_call_service">服务中心</string>
     <string name="title_vedio">视频监控</string>
     <string name="title_info">信息</string>
 
