@@ -3,6 +3,7 @@ package com.techjumper.polyhome_b.adlib.window;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.PixelFormat;
+import android.graphics.SurfaceTexture;
 import android.net.Uri;
 import android.view.Gravity;
 import android.view.View;
@@ -113,12 +114,6 @@ public class AdWindowManager {
             myVideoView.play(file.getAbsolutePath());
         } else {
             myVideoView.play(adsEntity.getMedia_url());
-        }
-
-        try {
-            myVideoView.start();
-            myVideoView.requestFocus();
-        } catch (Exception ignored) {
         }
     }
 

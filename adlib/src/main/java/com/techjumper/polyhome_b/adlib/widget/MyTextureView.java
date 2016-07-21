@@ -3,8 +3,6 @@ package com.techjumper.polyhome_b.adlib.widget;
 import android.content.Context;
 import android.graphics.SurfaceTexture;
 import android.media.MediaPlayer;
-import android.media.MediaPlayer.OnBufferingUpdateListener;
-import android.media.MediaPlayer.OnInfoListener;
 import android.util.AttributeSet;
 import android.view.Surface;
 import android.view.TextureView;
@@ -22,12 +20,24 @@ public class MyTextureView extends TextureView implements TextureView.SurfaceTex
         return mediaPlayer;
     }
 
+    public MyTextureView(Context context) {
+        this(context, null);
+    }
+
+    public MyTextureView(Context context, AttributeSet attrs) {
+        super(context, attrs);
+        this.context = context;
+        init();
+    }
+
     public interface OnStateChangeListener {
         public void onSurfaceTextureDestroyed(SurfaceTexture surface);
 
         public void onBuffering();
 
         public void onPlaying();
+
+        public void onStart();
 
         public void onSeek(int max, int progress);
 
@@ -41,7 +51,7 @@ public class MyTextureView extends TextureView implements TextureView.SurfaceTex
     }
 
     //监听视频的缓冲状态
-    private OnInfoListener onInfoListener = new OnInfoListener() {
+    private MediaPlayer.OnInfoListener onInfoListener = new MediaPlayer.OnInfoListener() {
         @Override
         public boolean onInfo(MediaPlayer mp, int what, int extra) {
             if (onStateChangeListener != null) {
@@ -57,7 +67,7 @@ public class MyTextureView extends TextureView implements TextureView.SurfaceTex
     };
 
     //视频缓冲进度更新
-    private OnBufferingUpdateListener bufferingUpdateListener = new OnBufferingUpdateListener() {
+    private MediaPlayer.OnBufferingUpdateListener bufferingUpdateListener = new MediaPlayer.OnBufferingUpdateListener() {
         @Override
         public void onBufferingUpdate(MediaPlayer mp, int percent) {
             if (onStateChangeListener != null) {
@@ -67,18 +77,6 @@ public class MyTextureView extends TextureView implements TextureView.SurfaceTex
             }
         }
     };
-
-    public MyTextureView(Context context) {
-        this(context, null);
-    }
-
-    public MyTextureView(Context context, AttributeSet attrs) {
-        super(context, attrs);
-        this.context = context;
-        init();
-    }
-
-
 
     public void init() {
         setSurfaceTextureListener(this);
@@ -104,6 +102,10 @@ public class MyTextureView extends TextureView implements TextureView.SurfaceTex
         }
         mediaPlayer.setSurface(surface);
         mediaState = MediaState.INIT;
+
+        if (onStateChangeListener != null) {
+            onStateChangeListener.onStart();
+        }
     }
 
     //停止播放
@@ -118,14 +120,12 @@ public class MyTextureView extends TextureView implements TextureView.SurfaceTex
                     if (mediaState == MediaState.PREPARING) {
                         mediaPlayer.reset();
                         mediaState = MediaState.INIT;
-                        System.out.println("prepare->reset");
                         return;
                     }
                     if (mediaState == MediaState.PAUSE) {
                         mediaPlayer.stop();
                         mediaPlayer.reset();
                         mediaState = MediaState.INIT;
-                        System.out.println("pause->init");
                         return;
                     }
                     if (mediaState == MediaState.PLAYING) {
@@ -133,7 +133,6 @@ public class MyTextureView extends TextureView implements TextureView.SurfaceTex
                         mediaPlayer.stop();
                         mediaPlayer.reset();
                         mediaState = MediaState.INIT;
-                        System.out.println("playing->init");
                         return;
                     }
                 } catch (Exception e) {
@@ -171,14 +170,16 @@ public class MyTextureView extends TextureView implements TextureView.SurfaceTex
             stop();
             return;
         }
-        mediaPlayer.reset();
-        mediaPlayer.setLooping(true);
-        try {
-            mediaPlayer.setDataSource(videoUrl);
-        } catch (Exception e) {
-            e.printStackTrace();
+        if (mediaPlayer != null) {
+            mediaPlayer.reset();
+            mediaPlayer.setLooping(true);
+            try {
+                mediaPlayer.setDataSource(videoUrl);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            mediaPlayer.prepareAsync();
         }
-        mediaPlayer.prepareAsync();
         mediaState = MediaState.PREPARING;
     }
 

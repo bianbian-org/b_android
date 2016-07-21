@@ -1,5 +1,6 @@
 package com.techjumper.polyhome.b.home.mvp.p.activity;
 
+import android.graphics.SurfaceTexture;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.TextureView;
@@ -58,8 +59,40 @@ public class AdActivityPresenter extends AppBaseActivityPresenter<AdActivity> {
         if (getView().getAdType().equals(PloyhomeFragmentPresenter.VIDEO_AD_TYPE)) {
             ImageView imageView = getView().getImg();
             MyTextureView textureView = getView().getTextureView();
-            imageView.setVisibility(View.INVISIBLE);
-            textureView.play(adsEntity.getMedia_url());
+
+            textureView.setOnStateChangeListener(new MyTextureView.OnStateChangeListener() {
+                @Override
+                public void onSurfaceTextureDestroyed(SurfaceTexture surface) {
+
+                }
+
+                @Override
+                public void onBuffering() {
+
+                }
+
+                @Override
+                public void onPlaying() {
+
+                }
+
+                @Override
+                public void onStart() {
+                    imageView.setVisibility(View.INVISIBLE);
+                    textureView.play(adsEntity.getMedia_url());
+                }
+
+                @Override
+                public void onSeek(int max, int progress) {
+
+                }
+
+                @Override
+                public void onStop() {
+
+                }
+            });
+
         }
     }
 }
