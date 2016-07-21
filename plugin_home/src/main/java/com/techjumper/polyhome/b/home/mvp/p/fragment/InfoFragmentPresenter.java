@@ -153,7 +153,7 @@ public class InfoFragmentPresenter extends AppBaseFragmentPresenter<InfoFragment
                             getCalendarInfo();
                         }
                     } else if (o instanceof AdTemEvent) {
-                        if (mIsVisibleToUser) {
+                        if (mIsGetAd) {
                             getNormalAd();
                         }
                     } else if (o instanceof MedicalEvent) {

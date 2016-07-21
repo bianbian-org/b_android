@@ -325,7 +325,7 @@ public class PloyhomeFragmentPresenter extends AppBaseFragmentPresenter<Ployhome
 
         JLog.d("广告请求");
 
-        if (mIsVisibleToUser) {
+        if (mIsGetAd) {
             getNormalAd();
         }
         getWakeUpAd();
