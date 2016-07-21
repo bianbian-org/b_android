@@ -3,7 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="@dimen/dp_330"
     android:layout_height="@dimen/dp_330"
-    android:background="@color/color_20c3f3">
+    android:background="@color/color_0CA9E4">
 
     <ImageView
         android:id="@+id/liw_icon"

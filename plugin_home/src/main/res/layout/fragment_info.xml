@@ -39,7 +39,7 @@
                 android:id="@+id/speak"
                 android:layout_width="@dimen/dp_160"
                 android:layout_height="@dimen/dp_160"
-                app:bg_color="@color/color_6a889f"
+                app:bg_color="@color/color_466780"
                 app:content_img="@mipmap/bg_speak"
                 app:quarter_layout_visible="true"
                 app:quarter_text="20"
@@ -52,7 +52,7 @@
                 android:layout_height="@dimen/dp_160"
                 android:layout_below="@id/speak"
                 android:layout_marginTop="@dimen/dp_10"
-                app:bg_color="@color/color_6a889f"
+                app:bg_color="@color/color_466780"
                 app:content_img="@mipmap/bg_setting"
                 app:title_text="@string/title_setting" />
 
