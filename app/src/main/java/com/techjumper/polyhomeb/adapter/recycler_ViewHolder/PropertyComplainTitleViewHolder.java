@@ -48,7 +48,7 @@ public class PropertyComplainTitleViewHolder extends BaseRecyclerViewHolder<Prop
             if (mPop.isShowing()) {
                 mPop.dismiss();
             }
-            mPop.show(PolyPopupWindow.AnimStyle.RIGHTANIM);
+            mPop.show(PolyPopupWindow.AnimStyle.ALPHA);
         });
     }
 
@@ -58,10 +58,10 @@ public class PropertyComplainTitleViewHolder extends BaseRecyclerViewHolder<Prop
         mPop.setMarginRight(12);
         mPop.setMarginTop(55);
         List<String> datas = new ArrayList<>();
-        datas.add("全部");
-        datas.add("已提交");
-        datas.add("已回复");
-        datas.add("已完成");
+        datas.add(getContext().getResources().getString(R.string.repair_all));
+        datas.add(getContext().getResources().getString(R.string.pop_commited));
+        datas.add(getContext().getResources().getString(R.string.pop_reply));
+        datas.add(getContext().getResources().getString(R.string.pop_done));
         mPop.initData(datas);
     }
 
@@ -70,25 +70,25 @@ public class PropertyComplainTitleViewHolder extends BaseRecyclerViewHolder<Prop
         // TODO: 16/7/17  点击了对应的item之后,应该按照那个item的协议来对数据进行过滤
 
         @Override
-        public void callBack(int position) {
+        public void callBack(int position,String s) {
             switch (position) {
                 case 0:
-                    mPop.thisDismiss(PolyPopupWindow.AnimStyle.RIGHTANIM);
+                    mPop.thisDismiss(PolyPopupWindow.AnimStyle.ALPHA);
                     ToastUtils.show("点击了全部");
                     setText(R.id.tv_type, "全部");
                     break;
                 case 1:
-                    mPop.thisDismiss(PolyPopupWindow.AnimStyle.RIGHTANIM);
+                    mPop.thisDismiss(PolyPopupWindow.AnimStyle.ALPHA);
                     ToastUtils.show("点击了已提交");
                     setText(R.id.tv_type, "已提交");
                     break;
                 case 2:
-                    mPop.thisDismiss(PolyPopupWindow.AnimStyle.RIGHTANIM);
+                    mPop.thisDismiss(PolyPopupWindow.AnimStyle.ALPHA);
                     ToastUtils.show("点击了已回复");
                     setText(R.id.tv_type, "已回复");
                     break;
                 case 3:
-                    mPop.thisDismiss(PolyPopupWindow.AnimStyle.RIGHTANIM);
+                    mPop.thisDismiss(PolyPopupWindow.AnimStyle.ALPHA);
                     ToastUtils.show("点击了已完成");
                     setText(R.id.tv_type, "已完成");
                     break;

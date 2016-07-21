@@ -68,5 +68,11 @@
     <string name="repair_unchecked">未选择</string>
     <string name="repair_record">报修记录</string>
     <string name="repiar_text_hint">输入你的报修内容...</string>
+    <string name="repair_none">未选择</string>
+    <string name="repair_personal">个人</string>
+    <string name="repair_common">公共</string>
+    <string name="pop_commited">已提交</string>
+    <string name="pop_reply">已回复</string>
+    <string name="pop_done">已完成</string>
 
 </resources>

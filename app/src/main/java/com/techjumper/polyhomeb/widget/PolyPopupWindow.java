@@ -9,6 +9,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
+import android.view.animation.AlphaAnimation;
 import android.view.animation.Animation;
 import android.view.animation.ScaleAnimation;
 import android.widget.BaseAdapter;
@@ -38,10 +39,11 @@ public class PolyPopupWindow extends PopupWindow implements PopupWindow.OnDismis
     private float mMarginRight, mMarginTop = 0F;
 
     public enum AnimStyle {
-        LEFTANIM, RIGHTANIM
+        LEFTANIM, RIGHTANIM, ALPHA
     }
 
     private ScaleAnimation leftShowAnim, rightShowAnim, leftExitAnim, rightExitAnim;
+    private AlphaAnimation alphaShowAnim, alphaExitAnim;
     private ItemClickCallBack mCallBack;
     private int animStyle;
 
@@ -66,8 +68,8 @@ public class PolyPopupWindow extends PopupWindow implements PopupWindow.OnDismis
         setAnimationStyle(animStyle);
         setOutsideTouchable(true);
         mListView.setOnItemClickListener((parent, view, position, id) -> {
-            if (mCallBack != null) {
-                mCallBack.callBack(position);
+            if (mCallBack != null && mAdapter != null) {
+                mCallBack.callBack(position, mAdapter.getItem(position));
             }
         });
     }
@@ -124,6 +126,14 @@ public class PolyPopupWindow extends PopupWindow implements PopupWindow.OnDismis
                 }
                 rootView.startAnimation(rightShowAnim);
                 break;
+            case ALPHA:
+                if (alphaShowAnim == null) {
+                    alphaShowAnim = new AlphaAnimation(0, 1);
+                    alphaShowAnim.setDuration(300);
+                    alphaShowAnim.setFillAfter(true);
+                }
+                rootView.startAnimation(alphaShowAnim);
+                break;
         }
     }
 
@@ -154,6 +164,15 @@ public class PolyPopupWindow extends PopupWindow implements PopupWindow.OnDismis
                     rightExitAnim.setAnimationListener(this);
                 }
                 rootView.startAnimation(rightExitAnim);
+                break;
+            case ALPHA:
+                if (alphaExitAnim == null) {
+                    alphaExitAnim = new AlphaAnimation(1, 0);
+                    alphaExitAnim.setDuration(300);
+                    alphaExitAnim.setFillAfter(true);
+                }
+                rootView.startAnimation(alphaExitAnim);
+//                dismiss();
                 break;
         }
     }
@@ -239,7 +258,7 @@ public class PolyPopupWindow extends PopupWindow implements PopupWindow.OnDismis
     }
 
     public interface ItemClickCallBack {
-        void callBack(int position);
+        void callBack(int position, String s);
     }
 
     @Override

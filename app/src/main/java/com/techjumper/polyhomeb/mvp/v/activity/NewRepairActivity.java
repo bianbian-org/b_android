@@ -2,9 +2,12 @@ package com.techjumper.polyhomeb.mvp.v.activity;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v7.widget.OrientationHelper;
-import android.support.v7.widget.StaggeredGridLayoutManager;
+import android.support.v7.widget.GridLayoutManager;
 import android.view.View;
+import android.widget.EditText;
+import android.widget.FrameLayout;
+import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.techjumper.corelib.mvp.factory.Presenter;
 import com.techjumper.polyhomeb.R;
@@ -31,6 +34,22 @@ public class NewRepairActivity extends AppBaseActivity<NewRepairActivityPresente
     @Bind(R.id.rv)
     RecyclerViewFinal mRv;
 
+    @Bind(R.id.iv_triangle_first)
+    ImageView mIvTriangleDevice;
+    @Bind(R.id.iv_triangle_second)
+    ImageView mIvTriangleType;
+
+    @Bind(R.id.tv_type_first)
+    TextView mTvDevice;
+    @Bind(R.id.tv_type_second)
+    TextView mTvType;
+
+    @Bind(R.id.et_content)
+    EditText mEtContent;
+
+    @Bind(R.id.right_group)
+    FrameLayout mRightGroup;
+
     private NewRepairActivityPhotoAdapter mAdapter;
     private ArrayList<String> mChoosedPhoto = new ArrayList<>();
 
@@ -41,7 +60,7 @@ public class NewRepairActivity extends AppBaseActivity<NewRepairActivityPresente
 
     @Override
     protected void initView(Bundle savedInstanceState) {
-        mRv.setLayoutManager(new StaggeredGridLayoutManager(3, OrientationHelper.VERTICAL));
+        mRv.setLayoutManager(new GridLayoutManager(this, 3));
         mAdapter = new NewRepairActivityPhotoAdapter();
         mRv.setAdapter(mAdapter);
         mAdapter.loadData(getPresenter().getDatas());
@@ -76,6 +95,7 @@ public class NewRepairActivity extends AppBaseActivity<NewRepairActivityPresente
             if (photos != null) {
                 mChoosedPhoto.addAll(photos);
             }
+
             mAdapter.loadData(getPresenter().getDatas());
             mAdapter.notifyDataSetChanged();
         }
@@ -83,6 +103,34 @@ public class NewRepairActivity extends AppBaseActivity<NewRepairActivityPresente
 
     public ArrayList<String> getPhotos() {
         return mChoosedPhoto;
+    }
+
+    public NewRepairActivityPhotoAdapter getAdapter() {
+        return mAdapter;
+    }
+
+    public ImageView getIvTriangleDevice() {
+        return mIvTriangleDevice;
+    }
+
+    public ImageView getIvTriangleType() {
+        return mIvTriangleType;
+    }
+
+    public TextView getTvDevice() {
+        return mTvDevice;
+    }
+
+    public TextView getTvType() {
+        return mTvType;
+    }
+
+    public EditText getEtContent() {
+        return mEtContent;
+    }
+
+    public FrameLayout getRightGroup() {
+        return mRightGroup;
     }
 
 }

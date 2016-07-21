@@ -48,22 +48,20 @@ public class PropertyRepairTitleViewHolder extends BaseRecyclerViewHolder<Proper
             if (mPop.isShowing()) {
                 mPop.dismiss();
             }
-            mPop.show(PolyPopupWindow.AnimStyle.RIGHTANIM);
+            mPop.show(PolyPopupWindow.AnimStyle.ALPHA);
         });
     }
 
     private void initPopup() {
 
         mPop = new PolyPopupWindow((Activity) getContext(), R.style.popup_anim, new PopListItemClick(), mRootView, new PopDismiss());
-        mPop.setMarginRight(12);
-        mPop.setMarginTop(8);
+        mPop.setMarginRight(8);
+        mPop.setMarginTop(55);
         List<String> datas = new ArrayList<>();
-        datas.add(getContext().getString(R.string.repair_all));
-        datas.add(getContext().getString(R.string.repair_windows));
-        datas.add(getContext().getString(R.string.repair_walls));
-        datas.add(getContext().getString(R.string.repair_elevators));
-        datas.add(getContext().getString(R.string.repair_water_elec));
-        datas.add(getContext().getString(R.string.repair_locks));
+        datas.add(getContext().getResources().getString(R.string.repair_all));
+        datas.add(getContext().getResources().getString(R.string.pop_commited));
+        datas.add(getContext().getResources().getString(R.string.pop_reply));
+        datas.add(getContext().getResources().getString(R.string.pop_done));
         mPop.initData(datas);
     }
 
@@ -71,38 +69,27 @@ public class PropertyRepairTitleViewHolder extends BaseRecyclerViewHolder<Proper
 
         // TODO: 16/7/17  点击了对应的item之后,应该按照那个item的协议来对数据进行过滤
 
-        @Override
-        public void callBack(int position) {
+        public void callBack(int position, String s) {
             switch (position) {
                 case 0:
-                    mPop.thisDismiss(PolyPopupWindow.AnimStyle.RIGHTANIM);
+                    mPop.thisDismiss(PolyPopupWindow.AnimStyle.ALPHA);
                     ToastUtils.show("点击了全部");
                     setText(R.id.tv_type, "全部");
                     break;
                 case 1:
-                    mPop.thisDismiss(PolyPopupWindow.AnimStyle.RIGHTANIM);
-                    ToastUtils.show("点击了门窗类");
-                    setText(R.id.tv_type, "门窗类");
+                    mPop.thisDismiss(PolyPopupWindow.AnimStyle.ALPHA);
+                    ToastUtils.show("点击了已提交");
+                    setText(R.id.tv_type, "已提交");
                     break;
                 case 2:
-                    mPop.thisDismiss(PolyPopupWindow.AnimStyle.RIGHTANIM);
-                    ToastUtils.show("点击了墙类");
-                    setText(R.id.tv_type, "墙类");
+                    mPop.thisDismiss(PolyPopupWindow.AnimStyle.ALPHA);
+                    ToastUtils.show("点击了已回复");
+                    setText(R.id.tv_type, "已回复");
                     break;
                 case 3:
-                    mPop.thisDismiss(PolyPopupWindow.AnimStyle.RIGHTANIM);
-                    ToastUtils.show("点击了电梯类");
-                    setText(R.id.tv_type, "电梯类");
-                    break;
-                case 4:
-                    mPop.thisDismiss(PolyPopupWindow.AnimStyle.RIGHTANIM);
-                    ToastUtils.show("点击了水电类");
-                    setText(R.id.tv_type, "水电类");
-                    break;
-                case 5:
-                    mPop.thisDismiss(PolyPopupWindow.AnimStyle.RIGHTANIM);
-                    ToastUtils.show("点击了锁类");
-                    setText(R.id.tv_type, "锁类");
+                    mPop.thisDismiss(PolyPopupWindow.AnimStyle.ALPHA);
+                    ToastUtils.show("点击了已完成");
+                    setText(R.id.tv_type, "已完成");
                     break;
             }
         }

@@ -1,7 +1,5 @@
 package com.techjumper.polyhomeb.adapter.recycler_Data;
 
-import android.graphics.Bitmap;
-
 /**
  * * * * * * * * * * * * * * * * * * * * * * *
  * Created by lixin
@@ -10,13 +8,13 @@ import android.graphics.Bitmap;
  **/
 public class NewRepairPhotoViewChoosedData {
 
-    private Bitmap choosed;
+    private String mapPath;
 
-    public Bitmap getChoosed() {
-        return choosed;
+    public String getMapPath() {
+        return mapPath;
     }
 
-    public void setChoosed(Bitmap choosed) {
-        this.choosed = choosed;
+    public void setMapPath(String mapPath) {
+        this.mapPath = mapPath;
     }
 }

@@ -87,6 +87,7 @@ dependencies {
     compile project(':loading-more-view')
     compile project(':slidingmenulib')
     compile project(':magicindicator')
+    compile project(':PhotoPicker')
 
     compile 'com.umeng.analytics:analytics:latest.integration'
 
@@ -96,10 +97,4 @@ dependencies {
 
     compile "com.github.anrwatchdog:anrwatchdog:$rootProject.anr_whatchDog"
 
-    compile 'me.iwf.photopicker:PhotoPicker:0.8.5@aar'
-    compile 'com.android.support:appcompat-v7:23.4.0'
-    compile 'com.android.support:recyclerview-v7:23.4.0'
-    compile 'com.android.support:design:23.4.0'
-    compile 'com.nineoldandroids:library:2.4.0'
-    compile 'com.github.bumptech.glide:glide:3.7.0'
 }
