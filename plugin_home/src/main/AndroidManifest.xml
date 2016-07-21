@@ -61,6 +61,7 @@
             </intent-filter>
         </receiver>
 
+
         <!--<receiver-->
         <!--android:name=".receiver.SettingReceiver"-->
         <!--android:exported="true">-->

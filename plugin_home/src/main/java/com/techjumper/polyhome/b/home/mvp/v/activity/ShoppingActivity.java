@@ -79,7 +79,7 @@ public class ShoppingActivity extends AppBaseActivity<ShoppingActivityPresenter>
     private class webViewClient extends WebViewClient {
         @Override
         public boolean shouldOverrideUrlLoading(WebView view, String url) {
-            showLoading();
+//            showLoading();
             view.loadUrl(url);
             return false;
         }
@@ -87,7 +87,7 @@ public class ShoppingActivity extends AppBaseActivity<ShoppingActivityPresenter>
         @Override
         public void onPageFinished(WebView view, String url) {
             super.onPageFinished(view, url);
-            dismissLoading();
+//            dismissLoading();
         }
     }
 }

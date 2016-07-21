@@ -50,7 +50,8 @@ public class PollingUtils {
         intent.setAction(action);
         PendingIntent pendingIntent = PendingIntent.getService(context, requestCode,
                 intent, PendingIntent.FLAG_UPDATE_CURRENT);
-        int type = wakeUp ? AlarmManager.RTC_WAKEUP : AlarmManager.RTC;
+//        int type = wakeUp ? AlarmManager.RTC_WAKEUP : AlarmManager.RTC;
+        int type = wakeUp ? AlarmManager.RTC : AlarmManager.RTC;
         manager.cancel(pendingIntent);
         manager.setRepeating(type, triggerAtTime,
                 second * 1000, pendingIntent);

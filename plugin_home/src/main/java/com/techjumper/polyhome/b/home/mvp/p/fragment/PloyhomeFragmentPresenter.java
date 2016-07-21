@@ -212,8 +212,8 @@ public class PloyhomeFragmentPresenter extends AppBaseFragmentPresenter<Ployhome
                     } else if (o instanceof AdControllerEvent) {
                         if (adController != null) {
                             mShouldSleep = false;
-                            adController.cancel(AdController.TYPE_WAKEUP);
-                            adController.cancel(AdController.TYPE_SLEEP);
+                            adController.interrupt(AdController.TYPE_WAKEUP);
+                            adController.interrupt(AdController.TYPE_SLEEP);
                         }
                     } else if (o instanceof ShowMainAdEvent) {
                         if (mIsGetAd) {

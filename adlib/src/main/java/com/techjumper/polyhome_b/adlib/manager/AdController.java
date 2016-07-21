@@ -77,11 +77,8 @@ public class AdController {
     private ArrayList<IAlarm> iAlarmListeners = new ArrayList<>();
 
     private AdController() {
-        mLockTime = getScreenOffTime();
-        if (mLockTime <= 0) {
-            mLockTime = 40 * 60 * 1000;
-            setScreenOffTime(mLockTime);
-        }
+        mLockTime = 20 * 60 * 1000;
+        setScreenOffTime(mLockTime);
     }
 
     public static AdController getInstance() {
@@ -150,7 +147,8 @@ public class AdController {
 
 
     public synchronized void startPolling(IAlarm iAlarm) {
-        stopPolling(iAlarm);
+//        stopPolling(iAlarm);
+        clearPolling();
         addAlarmListener(iAlarm);
         IntentFilter filter = new IntentFilter(AlarmService.ACTION_ALARM_SERVICE);
         Utils.appContext.registerReceiver(mAlarmReceiver, filter);
@@ -248,7 +246,9 @@ public class AdController {
         if (TextUtils.isEmpty(adType)) return;
         AdRuleExecutor executor;
         synchronized (this) {
-            cancelAll();
+            cancel(adType);
+            cancel(TYPE_HOME);
+            cancel(TYPE_VIDEO);
             executor = new AdRuleExecutor(adType);
             mExecutorMap.put(adType, executor);
         }
@@ -375,7 +375,12 @@ public class AdController {
 
 
     public void turnOffScreen() {
-        setScreenOffTime(0);
+        int debounce = 4 * 60 * 1000;
+        if (debounce == mLockTime) {
+            debounce -= 60 * 1000;
+        }
+        setScreenOffTime(debounce); //里面的数字是随便写的,只要不跟初始化的值一样就行了
+        Utils.appContext.sendBroadcast(new Intent("action_bhost_lock_screen"));
 //        if (mScreenOffReceiver == null) {
 //            throw new NullPointerException("please call receiveScreenOff() first");
 //        }
@@ -450,7 +455,7 @@ public class AdController {
 
         @Override
         public void onReceive(Context context, Intent intent) {
-            //只要是休眠就停到首页广告
+            //只要是休眠就停首页广告
             cancel(TYPE_HOME);
             cancel(TYPE_VIDEO);
 
@@ -616,6 +621,7 @@ public class AdController {
                 return;
             }
             long delay = NumberUtil.convertTolong(adsEntity.getRunning_time(), 0);
+            final int executeTime = NumberUtil.convertToint(currentTimeToRuleKey(), 0);
             oneTimer(delay, adsEntity, new ITimer() {
                 @Override
                 public void onTimerFinished(boolean success) {
@@ -623,9 +629,12 @@ public class AdController {
                     if (mInterrupt) {
                         return;
                     }
-
                     if (success) {
                         mAlreadyExecuteTime += delay;
+                    }
+
+                    if (TYPE_SLEEP.equalsIgnoreCase(mRuleType)) {
+                        JLog.d("休眠广告: totalTime=" + totalTime + ", alreadyExecuteTime=" + mAlreadyExecuteTime);
                     }
 
                     if (mAlreadyExecuteTime >= totalTime) {
@@ -633,11 +642,10 @@ public class AdController {
                         return;
                     }
 
-//                    if (NumberUtil.convertToint(currentTimeToRuleKey(), 0) != executeTime) {
-//                        quit();
-//                        AdController.this.executeAdRule(mRuleType, mFamilyId, mUrserId, mTicket, iExecuteRule);
-//                        return;
-//                    }
+                    if (NumberUtil.convertToint(currentTimeToRuleKey(), 0) != executeTime) {
+                        AdController.this.executeAdRule(mRuleType, mFamilyId, mUrserId, mTicket, iExecuteRule);
+                        return;
+                    }
 
                     mCurrentTimerIndex++;
                     AdEntity.AdsEntity next = adEntities.get(getCurrentTimerIndex(adEntities));

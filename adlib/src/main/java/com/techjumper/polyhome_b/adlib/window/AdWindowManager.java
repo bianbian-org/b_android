@@ -133,7 +133,7 @@ public class AdWindowManager {
         }
     }
 
-    public void closeWindow() {
+    public void closeWindow(boolean byUser) {
         try {
             mImageView.setImageBitmap(null);
             if (myVideoView != null) {
@@ -145,7 +145,7 @@ public class AdWindowManager {
             mWindowManager.removeView(mContainer);
             mIsAttach = false;
             if (iAdWindow != null) {
-                iAdWindow.onAdWindowClose();
+                iAdWindow.onAdWindowClose(byUser);
             }
         } catch (Exception ignored) {
         }
@@ -197,7 +197,7 @@ public class AdWindowManager {
     public interface IAdWindow {
         void onAdWindowShow();
 
-        void onAdWindowClose();
+        void onAdWindowClose(boolean byUser);
     }
 
 }

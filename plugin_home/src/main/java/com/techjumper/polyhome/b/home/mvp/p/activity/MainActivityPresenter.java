@@ -213,7 +213,7 @@ public class MainActivityPresenter extends AppBaseActivityPresenter<MainActivity
             @Override
             public void onAdsClick(AdEntity.AdsEntity adsEntity, File file) {
                 RxBus.INSTANCE.send(new AdControllerEvent());
-                RxBus.INSTANCE.send(new AdShowEvent(false));
+                AdWindowManager.getInstance().closeWindow(true);
             }
         });
         AdWindowManager.getInstance().setOnWindowShowListener(new AdWindowManager.IAdWindow() {
@@ -224,9 +224,12 @@ public class MainActivityPresenter extends AppBaseActivityPresenter<MainActivity
             }
 
             @Override
-            public void onAdWindowClose() {
-                // TODO: 16/7/19  在这里判断是否显示首页广告
-                RxBus.INSTANCE.send(new ShowMainAdEvent());
+            public void onAdWindowClose(boolean byUser) {
+                if (byUser) {
+                    RxBus.INSTANCE.send(new ShowMainAdEvent());
+                } else {
+                    AdController.getInstance().turnOffScreen();
+                }
             }
         });
     }
@@ -270,7 +273,7 @@ public class MainActivityPresenter extends AppBaseActivityPresenter<MainActivity
                         AdShowEvent event = (AdShowEvent) o;
 //                        isShowMainAd(event.isShow());
                         if (!event.isShow()) {
-                            AdWindowManager.getInstance().closeWindow();
+                            AdWindowManager.getInstance().closeWindow(false);
                         }
                     }
                 });
