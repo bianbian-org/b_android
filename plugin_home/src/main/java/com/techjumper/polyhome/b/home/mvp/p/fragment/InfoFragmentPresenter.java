@@ -30,6 +30,7 @@ import com.techjumper.polyhome.b.home.mvp.v.activity.AdActivity;
 import com.techjumper.polyhome.b.home.mvp.v.fragment.InfoFragment;
 import com.techjumper.polyhome.b.home.tool.AlarmManagerUtil;
 import com.techjumper.polyhome.b.home.widget.ArcDataView;
+import com.techjumper.polyhome.b.home.widget.MyTextureView;
 import com.techjumper.polyhome.b.home.widget.MyVideoView;
 import com.techjumper.polyhome_b.adlib.entity.AdEntity;
 import com.techjumper.polyhome_b.adlib.manager.AdController;
@@ -46,10 +47,10 @@ import rx.android.schedulers.AndroidSchedulers;
 /**
  * Created by kevin on 16/4/27.
  */
-public class InfoFragmentPresenter extends AppBaseFragmentPresenter<InfoFragment> implements AdController.IAlarm{
+public class InfoFragmentPresenter extends AppBaseFragmentPresenter<InfoFragment> implements AdController.IAlarm {
     private InfoFragmentModel infoFragmentModel = new InfoFragmentModel(this);
     private AdController adController;
-    private MyVideoView video;
+    private MyTextureView textureView;
     private ImageView adImageView;
     private AdEntity.AdsEntity mAdsEntity = new AdEntity.AdsEntity();
     private String addType = PloyhomeFragmentPresenter.IMAGE_AD_TYPE;
@@ -126,7 +127,7 @@ public class InfoFragmentPresenter extends AppBaseFragmentPresenter<InfoFragment
     @Override
     public void onViewInited(Bundle savedInstanceState) {
         adImageView = getView().getImageAdTem();
-        video = getView().getVideoAdTem();
+        textureView = getView().getTextureViewTem();
 
         getWeatherInfo();
         getCalendarInfo();
@@ -302,12 +303,12 @@ public class InfoFragmentPresenter extends AppBaseFragmentPresenter<InfoFragment
      * 初始化广告
      */
     private void initAd() {
-        if (adImageView == null || video == null)
+        if (adImageView == null || textureView == null)
             return;
 
-        video.pause();
+        textureView.stop();
         adImageView.setVisibility(View.VISIBLE);
-        video.setVisibility(View.INVISIBLE);
+        textureView.setVisibility(View.INVISIBLE);
         adImageView.setBackgroundResource(R.mipmap.bg_ad);
         adImageView.setImageBitmap(null);
         mAdsEntity = null;
@@ -322,7 +323,7 @@ public class InfoFragmentPresenter extends AppBaseFragmentPresenter<InfoFragment
 
         if (addType.equals(PloyhomeFragmentPresenter.IMAGE_AD_TYPE)) {
             adImageView.setVisibility(View.VISIBLE);
-            video.setVisibility(View.INVISIBLE);
+            textureView.setVisibility(View.INVISIBLE);
 
             if (file.exists()) {
                 PicassoHelper.load(file)
@@ -340,15 +341,12 @@ public class InfoFragmentPresenter extends AppBaseFragmentPresenter<InfoFragment
         } else if (addType.equals(PloyhomeFragmentPresenter.VIDEO_AD_TYPE)) {
 
             adImageView.setVisibility(View.INVISIBLE);
-            video.setVisibility(View.VISIBLE);
+            textureView.setVisibility(View.VISIBLE);
             if (file.exists()) {
-                video.setVideoPath(file.getAbsolutePath());
+                textureView.play(file.getAbsolutePath());
             } else {
-                video.setVideoURI(Uri.parse(adsEntity.getMedia_url()));
+                textureView.play(adsEntity.getMedia_url());
             }
-
-            video.start();
-            video.requestFocus();
 
             adsEntity.setMedia_url(file.getAbsolutePath());
         }

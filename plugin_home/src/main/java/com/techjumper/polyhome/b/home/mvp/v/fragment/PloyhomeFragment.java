@@ -4,13 +4,11 @@ package com.techjumper.polyhome.b.home.mvp.v.fragment;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.ImageView;
-import android.widget.MediaController;
 import android.widget.TextView;
-import android.widget.VideoView;
 
 import com.techjumper.commonres.entity.NoticeEntity;
 import com.techjumper.commonres.entity.event.NoticeEvent;
@@ -18,6 +16,7 @@ import com.techjumper.corelib.mvp.factory.Presenter;
 import com.techjumper.corelib.rx.tools.RxBus;
 import com.techjumper.polyhome.b.home.R;
 import com.techjumper.polyhome.b.home.mvp.p.fragment.PloyhomeFragmentPresenter;
+import com.techjumper.polyhome.b.home.widget.MyTextureView;
 import com.techjumper.polyhome.b.home.widget.MyVideoView;
 import com.techjumper.polyhome.b.home.widget.SquareView;
 
@@ -27,6 +26,7 @@ import java.util.Timer;
 import java.util.TimerTask;
 
 import butterknife.Bind;
+import butterknife.ButterKnife;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -47,7 +47,7 @@ public class PloyhomeFragment extends AppBaseFragment<PloyhomeFragmentPresenter>
     @Bind(R.id.image_ad)
     ImageView ad;
     @Bind(R.id.video_ad)
-    MyVideoView video;
+    MyTextureView textureView;
 
     private Timer timer = new Timer();
     private int position = 0;
@@ -73,8 +73,8 @@ public class PloyhomeFragment extends AppBaseFragment<PloyhomeFragmentPresenter>
         return ad;
     }
 
-    public MyVideoView getVideo() {
-        return video;
+    public MyTextureView getTextureView() {
+        return textureView;
     }
 
     public static PloyhomeFragment getInstance() {
@@ -92,6 +92,10 @@ public class PloyhomeFragment extends AppBaseFragment<PloyhomeFragmentPresenter>
 
     @Override
     protected void initView(Bundle savedInstanceState) {
+//        textureView.setSource(Uri.parse("/mnt/sdcard/polyhome_b_host/h_retrofit_cache/e5ab50cf4959e449d698d1a6c5742863.0"));
+//        video.setVideoPath("/mnt/sdcard/polyhome_b_host/h_retrofit_cache/e5ab50cf4959e449d698d1a6c5742863.0");
+//        video.start();
+//        video.requestFocus();
     }
 
     @Override

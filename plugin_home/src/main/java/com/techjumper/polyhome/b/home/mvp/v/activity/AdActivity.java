@@ -11,10 +11,12 @@ import android.widget.ImageView;
 import android.widget.MediaController;
 
 import com.techjumper.corelib.mvp.factory.Presenter;
+import com.techjumper.corelib.rx.tools.RxBus;
 import com.techjumper.lib2.utils.PicassoHelper;
 import com.techjumper.polyhome.b.home.R;
 import com.techjumper.polyhome.b.home.mvp.p.activity.AdActivityPresenter;
 import com.techjumper.polyhome.b.home.mvp.p.fragment.PloyhomeFragmentPresenter;
+import com.techjumper.polyhome.b.home.widget.MyTextureView;
 import com.techjumper.polyhome.b.home.widget.MyVideoView;
 import com.techjumper.polyhome_b.adlib.entity.AdEntity;
 
@@ -36,8 +38,8 @@ public class AdActivity extends AppBaseActivity<AdActivityPresenter> {
     ImageView img;
     @Bind(R.id.webview)
     WebView webView;
-    @Bind(R.id.video)
-    MyVideoView video;
+    @Bind(R.id.texture)
+    MyTextureView textureView;
 
     private String adType;
 
@@ -55,6 +57,10 @@ public class AdActivity extends AppBaseActivity<AdActivityPresenter> {
 
     public String getAdType() {
         return adType;
+    }
+
+    public MyTextureView getTextureView() {
+        return textureView;
     }
 
     @Override
@@ -99,11 +105,7 @@ public class AdActivity extends AppBaseActivity<AdActivityPresenter> {
             });
             webView.setWebViewClient(new webViewClient());
         } else if (adType.equals(PloyhomeFragmentPresenter.VIDEO_AD_TYPE)) {
-            img.setVisibility(View.GONE);
-            video.setVisibility(View.VISIBLE);
-            video.setVideoURI(Uri.parse(adsEntity.getMedia_url()));
-            video.start();
-            video.requestFocus();
+
         }
     }
 

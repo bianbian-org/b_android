@@ -64,11 +64,11 @@
                 android:layout_toRightOf="@id/speak"
                 android:background="@mipmap/bg_ad">
 
-                <com.techjumper.polyhome.b.home.widget.MyVideoView
+                <com.techjumper.polyhome.b.home.widget.MyTextureView
                     android:id="@+id/video_ad_tem"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:visibility="invisible" />
+                    android:visibility="visible" />
 
                 <ImageView
                     android:id="@+id/image_ad_tem"

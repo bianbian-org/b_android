@@ -51,11 +51,10 @@
             android:layout_marginTop="@dimen/dp_10"
             android:background="@color/color_4Dffffff">
 
-            <com.techjumper.polyhome.b.home.widget.MyVideoView
+            <com.techjumper.polyhome.b.home.widget.MyTextureView
                 android:id="@+id/video_ad"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:visibility="visible" />
+                android:layout_height="match_parent" />
 
             <ImageView
                 android:id="@+id/image_ad"
@@ -64,8 +63,6 @@
                 android:scaleType="centerCrop"
                 android:src="@mipmap/bg_ad" />
         </FrameLayout>
-
-
     </LinearLayout>
 
     <LinearLayout

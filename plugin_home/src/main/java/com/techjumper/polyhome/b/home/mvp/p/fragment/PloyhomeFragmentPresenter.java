@@ -38,6 +38,7 @@ import com.techjumper.polyhome.b.home.mvp.v.fragment.PloyhomeFragment;
 import com.techjumper.polyhome.b.home.tool.AlarmManagerUtil;
 import com.techjumper.polyhome.b.home.utils.DateUtil;
 import com.techjumper.polyhome.b.home.utils.StringUtil;
+import com.techjumper.polyhome.b.home.widget.MyTextureView;
 import com.techjumper.polyhome.b.home.widget.MyVideoView;
 import com.techjumper.polyhome.b.home.widget.SquareView;
 import com.techjumper.polyhome_b.adlib.entity.AdEntity;
@@ -52,7 +53,7 @@ import rx.android.schedulers.AndroidSchedulers;
 /**
  * Created by kevin on 16/4/28.
  */
-public class PloyhomeFragmentPresenter extends AppBaseFragmentPresenter<PloyhomeFragment> implements AdController.IAlarm{
+public class PloyhomeFragmentPresenter extends AppBaseFragmentPresenter<PloyhomeFragment> implements AdController.IAlarm {
     public static final String IMAGE_AD_TYPE = "1";
     public static final String VIDEO_AD_TYPE = "2";
 
@@ -63,8 +64,8 @@ public class PloyhomeFragmentPresenter extends AppBaseFragmentPresenter<Ployhome
     private AdEntity.AdsEntity mAdsEntity = new AdEntity.AdsEntity();
     private String addType = IMAGE_AD_TYPE;
     private int videoPosition = 0;
-    private MyVideoView video;
     private ImageView adImageView;
+    private MyTextureView textureView;
     private boolean mShouldSleep = true;
     private boolean mIsVisibleToUser;
     private boolean mIsGetAd;
@@ -100,6 +101,9 @@ public class PloyhomeFragmentPresenter extends AppBaseFragmentPresenter<Ployhome
 
     @OnClick(R.id.ad)
     void ad() {
+//        mAdsEntity = new AdEntity.AdsEntity();
+//        mAdsEntity.setMedia_type(VIDEO_AD_TYPE);
+
         if (mAdsEntity == null || TextUtils.isEmpty(mAdsEntity.getMedia_type()))
             return;
 
@@ -148,7 +152,7 @@ public class PloyhomeFragmentPresenter extends AppBaseFragmentPresenter<Ployhome
     @Override
     public void onViewInited(Bundle savedInstanceState) {
         adImageView = getView().getAd();
-        video = getView().getVideo();
+        textureView = getView().getTextureView();
 
         getAd();
         getNotices();
@@ -338,12 +342,12 @@ public class PloyhomeFragmentPresenter extends AppBaseFragmentPresenter<Ployhome
      * 初始化广告
      */
     private void initAd() {
-        if (adImageView == null || video == null)
+        if (adImageView == null || textureView == null)
             return;
 
-        video.pause();
+        textureView.stop();
         adImageView.setVisibility(View.VISIBLE);
-        video.setVisibility(View.INVISIBLE);
+        textureView.setVisibility(View.INVISIBLE);
         adImageView.setBackgroundResource(R.mipmap.bg_ad);
         adImageView.setImageBitmap(null);
         mAdsEntity = null;
@@ -358,8 +362,7 @@ public class PloyhomeFragmentPresenter extends AppBaseFragmentPresenter<Ployhome
 
         if (addType.equals(IMAGE_AD_TYPE)) {
             adImageView.setVisibility(View.VISIBLE);
-            video.setVisibility(View.INVISIBLE);
-//            video.setZOrderOnTop(true);
+            textureView.setVisibility(View.INVISIBLE);
 
             if (file.exists()) {
                 PicassoHelper.load(file)
@@ -375,19 +378,13 @@ public class PloyhomeFragmentPresenter extends AppBaseFragmentPresenter<Ployhome
 
             adsEntity.setMedia_url(file.getAbsolutePath());
         } else if (addType.equals(VIDEO_AD_TYPE)) {
-
             adImageView.setVisibility(View.INVISIBLE);
-            video.setVisibility(View.VISIBLE);
-//            video.setZOrderOnTop(true);
+            textureView.setVisibility(View.VISIBLE);
             if (file.exists()) {
-                video.setVideoURI(Uri.parse(file.getAbsolutePath()));
+                textureView.play(file.getAbsolutePath());
             } else {
-                video.setVideoURI(Uri.parse(adsEntity.getMedia_url()));
+                textureView.play(adsEntity.getMedia_url());
             }
-
-            video.start();
-            video.requestFocus();
-
             adsEntity.setMedia_url(file.getAbsolutePath());
         }
 

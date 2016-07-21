@@ -15,6 +15,7 @@ import com.techjumper.corelib.utils.Utils;
 import com.techjumper.corelib.utils.common.JLog;
 import com.techjumper.lib2.utils.PicassoHelper;
 import com.techjumper.polyhome_b.adlib.entity.AdEntity;
+import com.techjumper.polyhome_b.adlib.widget.MyTextureView;
 import com.techjumper.polyhome_b.adlib.widget.MyVideoView;
 
 import java.io.File;
@@ -25,7 +26,7 @@ public class AdWindowManager {
     private FrameLayout mContainer;
     private WindowManager.LayoutParams mContainerParams;
     private ImageView mImageView;
-    private MyVideoView myVideoView;
+    private MyTextureView myVideoView;
     private boolean mIsAttach;
     private IAdWindow iAdWindow;
 
@@ -56,7 +57,7 @@ public class AdWindowManager {
         mContainer.addView(mImageView, imageLayoutParams);
 
         //添加VideoView
-        myVideoView = new MyVideoView(Utils.appContext);
+        myVideoView = new MyTextureView(Utils.appContext);
         FrameLayout.LayoutParams videoLayoutParams = new FrameLayout.LayoutParams(FrameLayout.LayoutParams.MATCH_PARENT
                 , FrameLayout.LayoutParams.MATCH_PARENT);
         mContainer.addView(myVideoView, videoLayoutParams);
@@ -109,9 +110,9 @@ public class AdWindowManager {
         showWindow();
 
         if (file != null && file.exists()) {
-            myVideoView.setVideoPath(file.getAbsolutePath());
+            myVideoView.play(file.getAbsolutePath());
         } else {
-            myVideoView.setVideoURI(Uri.parse(adsEntity.getMedia_url()));
+            myVideoView.play(adsEntity.getMedia_url());
         }
 
         try {
@@ -137,10 +138,7 @@ public class AdWindowManager {
         try {
             mImageView.setImageBitmap(null);
             if (myVideoView != null) {
-                myVideoView.pause();
-                myVideoView.stopPlayback();
-                myVideoView.setVideoPath("");
-                myVideoView.setVideoURI(null);
+                myVideoView.stop();
             }
             mWindowManager.removeView(mContainer);
             mIsAttach = false;

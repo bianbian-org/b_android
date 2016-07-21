@@ -2,6 +2,7 @@ package com.techjumper.polyhome.b.home.mvp.p.activity;
 
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.view.TextureView;
 import android.view.View;
 import android.webkit.WebView;
 import android.widget.ImageView;
@@ -10,6 +11,7 @@ import com.techjumper.lib2.utils.PicassoHelper;
 import com.techjumper.polyhome.b.home.R;
 import com.techjumper.polyhome.b.home.mvp.p.fragment.PloyhomeFragmentPresenter;
 import com.techjumper.polyhome.b.home.mvp.v.activity.AdActivity;
+import com.techjumper.polyhome.b.home.widget.MyTextureView;
 import com.techjumper.polyhome_b.adlib.entity.AdEntity;
 
 import butterknife.OnClick;
@@ -39,6 +41,7 @@ public class AdActivityPresenter extends AppBaseActivityPresenter<AdActivity> {
 
             webView.loadUrl(adsEntity.getUrl());
         }
+
     }
 
     @Override
@@ -48,6 +51,15 @@ public class AdActivityPresenter extends AppBaseActivityPresenter<AdActivity> {
 
     @Override
     public void onViewInited(Bundle savedInstanceState) {
+        AdEntity.AdsEntity adsEntity = getView().getAdsEntity();
+//        if (adsEntity == null || TextUtils.isEmpty(adsEntity.getUrl()))
+//            return;
 
+        if (getView().getAdType().equals(PloyhomeFragmentPresenter.VIDEO_AD_TYPE)) {
+            ImageView imageView = getView().getImg();
+            MyTextureView textureView = getView().getTextureView();
+            imageView.setVisibility(View.INVISIBLE);
+            textureView.play(adsEntity.getMedia_url());
+        }
     }
 }

@@ -20,6 +20,7 @@ import com.techjumper.polyhome.b.home.utils.StringUtil;
 import com.techjumper.polyhome.b.home.utils.WeatherUtil;
 import com.techjumper.polyhome.b.home.widget.AlmanacView;
 import com.techjumper.polyhome.b.home.widget.ArcDataView;
+import com.techjumper.polyhome.b.home.widget.MyTextureView;
 import com.techjumper.polyhome.b.home.widget.MyVideoView;
 import com.techjumper.polyhome.b.home.widget.WeatherView;
 
@@ -67,7 +68,7 @@ public class InfoFragment extends AppBaseFragment<InfoFragmentPresenter> {
     @Bind(R.id.lid_week)
     TextView lidWeek;
     @Bind(R.id.video_ad_tem)
-    MyVideoView videoAdTem;
+    MyTextureView textureViewTem;
     @Bind(R.id.image_ad_tem)
     ImageView imageAdTem;
     @Bind(R.id.adv_heartrate)
@@ -93,8 +94,8 @@ public class InfoFragment extends AppBaseFragment<InfoFragmentPresenter> {
 
     }
 
-    public MyVideoView getVideoAdTem() {
-        return videoAdTem;
+    public MyTextureView getTextureViewTem() {
+        return textureViewTem;
     }
 
     public ImageView getImageAdTem() {
