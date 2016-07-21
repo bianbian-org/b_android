@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/color_ffffff"
+    android:orientation="vertical">
+
+    <include layout="@layout/title_back_right_text" />
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dp_50">
+
+        <TextView
+            android:id="@+id/tv_title_first"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="@dimen/dp_14"
+            android:text="@string/complain_theme"
+            android:textColor="@color/color_727272"
+            android:textSize="@dimen/sp_16" />
+
+        <FrameLayout
+            android:id="@+id/layout_choose_type_first"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_alignParentRight="true">
+
+            <LinearLayout
+                android:id="@+id/layout_device"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/tv_type_first"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:gravity="center"
+                    android:text="@string/repair_none"
+                    android:textColor="@color/color_37a991"
+                    android:textSize="@dimen/sp_16" />
+
+                <ImageView
+                    android:id="@+id/iv_triangle_first"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginLeft="2.8dp"
+                    android:layout_marginRight="@dimen/dp_14"
+                    android:src="@mipmap/icon_triangle_green" />
+            </LinearLayout>
+        </FrameLayout>
+    </RelativeLayout>
+
+    <include layout="@layout/item_property_repair_divider_long" />
+
+    <EditText
+        android:id="@+id/et_content"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dp_240"
+        android:background="@null"
+        android:gravity="top"
+        android:hint="@string/complain_text_hint"
+        android:maxLines="8"
+        android:padding="@dimen/dp_7"
+        android:textColor="@color/color_727272"
+        android:textColorHint="@color/color_acacac"
+        android:textSize="@dimen/sp_16" />
+
+    <cn.finalteam.loadingviewfinal.RecyclerViewFinal
+        android:overScrollMode="never"
+        android:id="@+id/rv"
+        android:layout_width="wrap_content"
+        android:layout_height="70dp"
+        android:layout_marginRight="@dimen/dp_7"
+        android:layout_marginBottom="@dimen/dp_7"
+        android:layout_marginLeft="@dimen/dp_7"
+        android:layout_marginTop="@dimen/dp_7" />
+
+    <include layout="@layout/item_property_repair_divider_long" />
+
+</LinearLayout>

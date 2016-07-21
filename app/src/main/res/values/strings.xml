@@ -56,7 +56,7 @@
     <string name="repair_">报修</string>
     <string name="complaint_">投诉建议</string>
     <string name="placard_detail">公告详情</string>
-    <string name="new_repair">新建报修</string>
+    <string name="new_repair">新增报修</string>
     <string name="repair_device">报修设备</string>
     <string name="repair_all">全部</string>
     <string name="repair_windows">门窗类</string>
@@ -74,5 +74,10 @@
     <string name="pop_commited">已提交</string>
     <string name="pop_reply">已回复</string>
     <string name="pop_done">已完成</string>
+    <string name="complain_theme">主题</string>
+    <string name="complain_text_hint">输入你的投诉内容</string>
+    <string name="advice">建议</string>
+    <string name="celebrete">表扬</string>
+    <string name="new_complain">新增投诉</string>
 
 </resources>

@@ -1,5 +1,6 @@
 package com.techjumper.polyhomeb.adapter.recycler_ViewHolder;
 
+import android.app.Activity;
 import android.view.View;
 import android.widget.ImageView;
 
@@ -7,7 +8,6 @@ import com.steve.creact.annotation.DataBean;
 import com.steve.creact.library.viewholder.BaseRecyclerViewHolder;
 import com.techjumper.polyhomeb.R;
 import com.techjumper.polyhomeb.adapter.recycler_Data.NewRepairPhotoViewDefaultPlusData;
-import com.techjumper.polyhomeb.mvp.v.activity.NewRepairActivity;
 
 import me.iwf.photopicker.PhotoPicker;
 
@@ -38,7 +38,7 @@ public class NewRepairPhotoViewDefaultAddViewHolder extends BaseRecyclerViewHold
                     .setShowGif(false)
                     .setSelected(data.getSelectPhotoes())
                     .setPreviewEnabled(false)
-                    .start((NewRepairActivity) getContext(), PhotoPicker.REQUEST_CODE);
+                    .start((Activity) getContext(), PhotoPicker.REQUEST_CODE);
         });
     }
 }
