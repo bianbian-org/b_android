@@ -110,11 +110,41 @@ public class AdWindowManager {
         }
         showWindow();
 
-        if (file != null && file.exists()) {
-            myVideoView.play(file.getAbsolutePath());
-        } else {
-            myVideoView.play(adsEntity.getMedia_url());
-        }
+        myVideoView.setOnStateChangeListener(new MyTextureView.OnStateChangeListener() {
+            @Override
+            public void onSurfaceTextureDestroyed(SurfaceTexture surface) {
+
+            }
+
+            @Override
+            public void onBuffering() {
+
+            }
+
+            @Override
+            public void onPlaying() {
+
+            }
+
+            @Override
+            public void onStart() {
+                if (file != null && file.exists()) {
+                    myVideoView.play(file.getAbsolutePath());
+                } else {
+                    myVideoView.play(adsEntity.getMedia_url());
+                }
+            }
+
+            @Override
+            public void onSeek(int max, int progress) {
+
+            }
+
+            @Override
+            public void onStop() {
+
+            }
+        });
     }
 
     private void showWindow() {
