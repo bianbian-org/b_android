@@ -18,8 +18,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="@dimen/dp_5"
-            android:textColor="@color/color_007c36"
-            android:textSize="@dimen/sp_16"
+            android:textColor="@color/color_072500"
+            android:textSize="@dimen/sp_18"
             tools:text="@string/property" />
 
         <TextView
@@ -29,7 +29,7 @@
             android:layout_marginLeft="@dimen/dp_10"
             android:layout_marginRight="@dimen/dp_5"
             android:textColor="@color/color_ffffff"
-            android:textSize="@dimen/sp_16"
+            android:textSize="@dimen/sp_18"
             android:maxWidth="540dp"
             tools:text="已派人前往处理，请耐心等待已派人前往处理，请耐心等待已派人前往处理，请耐心等待" />
     </LinearLayout>
@@ -39,7 +39,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginLeft="@dimen/dp_10"
-        android:textColor="@color/color_4Dffffff"
+        android:textColor="@color/color_ffffff"
         android:textSize="@dimen/sp_14"
         tools:text="19:55" />
 </LinearLayout>

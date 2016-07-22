@@ -3,14 +3,17 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-
     android:orientation="vertical"
     tools:context=".mvp.v.activity.MainActivity">
 
     <include layout="@layout/layout_bottom" />
 
-
-
+    <FrameLayout
+        android:id="@+id/container"
+        android:layout_weight="1"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:visibility="visible"/>
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -36,11 +39,4 @@
             android:textSize="@dimen/sp_18"
             tools:text="3月18日  周五  22:45" />
     </RelativeLayout>
-
-    <FrameLayout
-        android:id="@+id/container"
-        android:layout_weight="1"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:visibility="gone"/>
 </LinearLayout>

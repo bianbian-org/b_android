@@ -11,7 +11,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginRight="@dimen/dp_10"
-        android:textColor="@color/color_4Dffffff"
+        android:textColor="@color/color_ffffff"
         android:textSize="@dimen/sp_14"
         tools:text="19:55" />
 
@@ -29,7 +29,7 @@
             android:layout_marginLeft="@dimen/dp_5"
             android:layout_marginRight="@dimen/dp_10"
             android:textColor="@color/color_ffffff"
-            android:textSize="@dimen/sp_16"
+            android:textSize="@dimen/sp_20"
             android:maxWidth="540dp"
             tools:text="请你们尽快，我在两点50的时候，家里没惹" />
 
@@ -38,8 +38,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginRight="@dimen/dp_5"
-            android:textColor="@color/color_007c36"
-            android:textSize="@dimen/sp_16"
+            android:textColor="@color/color_072500"
+            android:textSize="@dimen/sp_18"
             tools:text="@string/property_me" />
     </LinearLayout>
 

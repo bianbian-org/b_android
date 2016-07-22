@@ -93,6 +93,8 @@ public class ListFragment extends AppBaseFragment<ListFragmentPresenter> {
     RadioButton flTitleRepair;
     @Bind(R.id.fl_title_complaint)
     RadioButton flTitleComplaint;
+    @Bind(R.id.fl_title_announcement)
+    RadioButton flTitleAnnouncement;
 
     private CommonRecyclerAdapter adapter;
     private CommonRecyclerAdapter messageAdapter;
@@ -160,7 +162,9 @@ public class ListFragment extends AppBaseFragment<ListFragmentPresenter> {
             listType = bundle.getInt(LISTTYPE, MainActivity.REPAIR);
         }
 
-        if (listType == MainActivity.REPAIR) {
+        if (listType == MainActivity.ANNOUNCEMENT) {
+            flTitleAnnouncement.setChecked(true);
+        } else if (listType == MainActivity.REPAIR) {
             flTitleRepair.setChecked(true);
         } else {
             flTitleComplaint.setChecked(true);
@@ -242,7 +246,6 @@ public class ListFragment extends AppBaseFragment<ListFragmentPresenter> {
         if (repairDataEntities == null || repairDataEntities.size() == 0)
             return;
 
-
         for (int i = 0; i < repairDataEntities.size(); i++) {
             displayBeans.add(new InfoRepairEntityBean(repairDataEntities.get(i)));
         }
@@ -294,19 +297,15 @@ public class ListFragment extends AppBaseFragment<ListFragmentPresenter> {
 
         if (status == Constant.STATUS_RESPONSE) {
             lmdType.setBackgroundResource(R.drawable.bg_shape_radius_20c3f3);
-            lmdType.setTextColor(getContext().getResources().getColor(R.color.color_20C3F3));
             lmdType.setText(R.string.property_type_response);
         } else if (status == Constant.STATUS_SUBMIT) {
             lmdType.setBackgroundResource(R.drawable.bg_shape_radius_ff9938);
-            lmdType.setTextColor(getContext().getResources().getColor(R.color.color_FF9938));
             lmdType.setText(R.string.property_type_submit);
         } else if (status == Constant.STATUS_FINISH) {
             lmdType.setBackgroundResource(R.drawable.bg_shape_radius_4eb738);
-            lmdType.setTextColor(getContext().getResources().getColor(R.color.color_4EB738));
             lmdType.setText(R.string.property_type_finish);
         } else {
             lmdType.setBackgroundResource(R.drawable.bg_shape_radius_4eb738);
-            lmdType.setTextColor(getContext().getResources().getColor(R.color.color_4EB738));
             lmdType.setText(R.string.property_type_close);
         }
 
@@ -355,19 +354,15 @@ public class ListFragment extends AppBaseFragment<ListFragmentPresenter> {
 
         if (status == Constant.STATUS_RESPONSE) {
             lmdType.setBackgroundResource(R.drawable.bg_shape_radius_20c3f3);
-            lmdType.setTextColor(getContext().getResources().getColor(R.color.color_20C3F3));
             lmdType.setText(R.string.property_type_response);
         } else if (status == Constant.STATUS_SUBMIT) {
             lmdType.setBackgroundResource(R.drawable.bg_shape_radius_ff9938);
-            lmdType.setTextColor(getContext().getResources().getColor(R.color.color_FF9938));
             lmdType.setText(R.string.property_type_submit);
         } else if (status == Constant.STATUS_FINISH) {
             lmdType.setBackgroundResource(R.drawable.bg_shape_radius_4eb738);
-            lmdType.setTextColor(getContext().getResources().getColor(R.color.color_4EB738));
             lmdType.setText(R.string.property_type_finish);
         } else {
             lmdType.setBackgroundResource(R.drawable.bg_shape_radius_4eb738);
-            lmdType.setTextColor(getContext().getResources().getColor(R.color.color_4EB738));
             lmdType.setText(R.string.property_type_close);
         }
 

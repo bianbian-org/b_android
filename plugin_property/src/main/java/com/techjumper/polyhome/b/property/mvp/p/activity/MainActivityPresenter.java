@@ -7,7 +7,9 @@ import com.techjumper.commonres.UserInfoEntity;
 import com.techjumper.commonres.entity.event.BackEvent;
 import com.techjumper.commonres.entity.event.PropertyActionEvent;
 import com.techjumper.commonres.entity.event.PropertyListEvent;
+import com.techjumper.commonres.entity.event.TimeEvent;
 import com.techjumper.commonres.entity.event.UserInfoEvent;
+import com.techjumper.commonres.util.CommonDateUtil;
 import com.techjumper.commonres.util.PluginEngineUtil;
 import com.techjumper.corelib.rx.tools.RxBus;
 import com.techjumper.corelib.rx.tools.SchedulersCompat;
@@ -61,6 +63,11 @@ public class MainActivityPresenter extends AppBaseActivityPresenter<MainActivity
                     if (o instanceof BackEvent) {
                         BackEvent backEvent = (BackEvent) o;
                         backType = backEvent.getType();
+                    } else if (o instanceof TimeEvent) {
+                        Log.d("time", "更新时间");
+                        if (getView().getBottomDate() != null) {
+                            getView().getBottomDate().setText(CommonDateUtil.getTitleDate());
+                        }
                     }
                 }));
     }

@@ -14,6 +14,7 @@ import com.techjumper.commonres.PluginConstant;
 import com.techjumper.commonres.UserInfoEntity;
 import com.techjumper.commonres.entity.event.LoginEvent;
 import com.techjumper.commonres.entity.event.PropertyActionEvent;
+import com.techjumper.commonres.entity.event.TimeEvent;
 import com.techjumper.commonres.util.CommonDateUtil;
 import com.techjumper.corelib.mvp.factory.Presenter;
 import com.techjumper.corelib.rx.tools.RxBus;
@@ -23,6 +24,9 @@ import com.techjumper.polyhome.b.property.UserInfoManager;
 import com.techjumper.polyhome.b.property.mvp.p.activity.MainActivityPresenter;
 import com.techjumper.polyhome.b.property.mvp.v.fragment.ActionFragment;
 import com.techjumper.polyhome.b.property.mvp.v.fragment.ListFragment;
+
+import java.util.Timer;
+import java.util.TimerTask;
 
 import butterknife.Bind;
 import rx.android.schedulers.AndroidSchedulers;
@@ -34,8 +38,18 @@ public class MainActivity extends AppBaseActivity<MainActivityPresenter> {
     public static final int REPAIR = 1;
     public static final int COMPLAINT = 2;
 
+    @Bind(R.id.bottom_title)
+    TextView bottomTitle;
+    @Bind(R.id.bottom_date)
+    TextView bottomDate;
     @Bind(R.id.title_date)
     TextView titleDate;
+
+    private Timer timer = new Timer();
+
+    public TextView getBottomDate() {
+        return bottomDate;
+    }
 
     @Override
     protected View inflateView(Bundle savedInstanceState) {
@@ -44,7 +58,8 @@ public class MainActivity extends AppBaseActivity<MainActivityPresenter> {
 
     @Override
     protected void initView(Bundle savedInstanceState) {
-        titleDate.setText(CommonDateUtil.getTitleDate());
+        bottomTitle.setText(R.string.property);
+        bottomDate.setText(CommonDateUtil.getTitleDate());
 
         if (getIntent() != null && getIntent().getExtras() != null) {
             Bundle bundle = getIntent().getExtras();
@@ -54,13 +69,21 @@ public class MainActivity extends AppBaseActivity<MainActivityPresenter> {
             userInfoEntity.setTicket(bundle.getString(PluginConstant.KEY_PRO_TICKET));
             UserInfoManager.saveUserInfo(userInfoEntity);
         }
-//        UserInfoEntity userInfoEntity = new UserInfoEntity();
-//        userInfoEntity.setUser_id(362);
-//        userInfoEntity.setTicket("6b835c66bd6fa1bb52158349834b6f792bf89c66");
-//        userInfoEntity.setId(434);
-//        UserInfoManager.saveUserInfo(userInfoEntity);
+
+        UserInfoEntity userInfoEntity = new UserInfoEntity();
+        userInfoEntity.setUser_id(362);
+        userInfoEntity.setTicket("b87ec030678160e236c5af6dd1c3cee7f11fded3");
+        userInfoEntity.setId(434);
+        UserInfoManager.saveUserInfo(userInfoEntity);
 
         switchFragment(R.id.container, ListFragment.getInstance(MainActivity.REPAIR), false, false);
+
+        timer.schedule(new TimerTask() {
+            @Override
+            public void run() {
+                RxBus.INSTANCE.send(new TimeEvent());
+            }
+        }, 5000, 60000);
 
         addSubscription(RxBus.INSTANCE.asObservable()
                 .observeOn(AndroidSchedulers.mainThread())

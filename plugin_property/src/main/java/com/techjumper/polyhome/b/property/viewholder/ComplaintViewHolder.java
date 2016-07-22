@@ -51,19 +51,15 @@ public class ComplaintViewHolder extends BaseRecyclerViewHolder<ComplaintEntity.
 
         if (status == Constant.STATUS_RESPONSE) {
             typeTextView.setBackgroundResource(R.drawable.bg_shape_radius_20c3f3);
-            typeTextView.setTextColor(getContext().getResources().getColor(R.color.color_20C3F3));
             typeTextView.setText(R.string.property_type_response);
         } else if (status == Constant.STATUS_SUBMIT) {
             typeTextView.setBackgroundResource(R.drawable.bg_shape_radius_ff9938);
-            typeTextView.setTextColor(getContext().getResources().getColor(R.color.color_FF9938));
             typeTextView.setText(R.string.property_type_submit);
         } else if (status == Constant.STATUS_FINISH) {
             typeTextView.setBackgroundResource(R.drawable.bg_shape_radius_4eb738);
-            typeTextView.setTextColor(getContext().getResources().getColor(R.color.color_4EB738));
             typeTextView.setText(R.string.property_type_finish);
         } else {
             typeTextView.setBackgroundResource(R.drawable.bg_shape_radius_4eb738);
-            typeTextView.setTextColor(getContext().getResources().getColor(R.color.color_4EB738));
             typeTextView.setText(R.string.property_type_close);
         }
 
