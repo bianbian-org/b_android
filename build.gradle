@@ -5,9 +5,10 @@ buildscript {
         jcenter()
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:2.1.0'
+        classpath 'com.android.tools.build:gradle:2.1.2'
         classpath 'me.tatarka:gradle-retrolambda:3.2.5'
         classpath 'com.neenbedankt.gradle.plugins:android-apt:1.8'
+        classpath 'com.squareup.sqldelight:gradle-plugin:0.4.4'
         // NOTE: Do not place your application dependencies here; they belong
         // in the individual module build.gradle files
     }
@@ -53,6 +54,9 @@ ext {
     picasso = '2.5.2'
     picasso2_okhttp3_downloader = '1.0.2'
     logging_interceptor = '3.3.1'
+    sqlbrite = '0.7.0'
+    auto_value = '1.2'
+    jake_auto_value = '1.2-update1'
 
     //commonres
     powerfulAdapter = '1.0.0'
