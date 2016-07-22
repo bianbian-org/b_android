@@ -633,9 +633,9 @@ public class AdController {
                         mAlreadyExecuteTime += delay;
                     }
 
-                    if (TYPE_SLEEP.equalsIgnoreCase(mRuleType)) {
-                        JLog.d("休眠广告: totalTime=" + totalTime + ", alreadyExecuteTime=" + mAlreadyExecuteTime);
-                    }
+//                    if (TYPE_SLEEP.equalsIgnoreCase(mRuleType)) {
+//                        JLog.d("休眠广告: totalTime=" + totalTime + ", alreadyExecuteTime=" + mAlreadyExecuteTime);
+//                    }
 
                     if (mAlreadyExecuteTime >= totalTime) {
                         quit(true);
