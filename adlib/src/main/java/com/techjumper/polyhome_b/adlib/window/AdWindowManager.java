@@ -4,7 +4,6 @@ import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.PixelFormat;
 import android.graphics.SurfaceTexture;
-import android.net.Uri;
 import android.view.Gravity;
 import android.view.View;
 import android.view.WindowManager;
@@ -17,7 +16,6 @@ import com.techjumper.corelib.utils.common.JLog;
 import com.techjumper.lib2.utils.PicassoHelper;
 import com.techjumper.polyhome_b.adlib.entity.AdEntity;
 import com.techjumper.polyhome_b.adlib.widget.MyTextureView;
-import com.techjumper.polyhome_b.adlib.widget.MyVideoView;
 
 import java.io.File;
 
@@ -145,6 +143,10 @@ public class AdWindowManager {
 
             }
         });
+    }
+
+    public boolean isShow() {
+        return mIsAttach;
     }
 
     private void showWindow() {
