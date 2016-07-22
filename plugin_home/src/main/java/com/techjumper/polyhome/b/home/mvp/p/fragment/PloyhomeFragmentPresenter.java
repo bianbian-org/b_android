@@ -43,6 +43,7 @@ import com.techjumper.polyhome.b.home.widget.MyVideoView;
 import com.techjumper.polyhome.b.home.widget.SquareView;
 import com.techjumper.polyhome_b.adlib.entity.AdEntity;
 import com.techjumper.polyhome_b.adlib.manager.AdController;
+import com.techjumper.polyhome_b.adlib.window.AdWindowManager;
 
 import java.io.File;
 
@@ -395,6 +396,10 @@ public class PloyhomeFragmentPresenter extends AppBaseFragmentPresenter<Ployhome
      * 获取普通广告
      */
     private void getNormalAd() {
+        Log.d("isShow", AdWindowManager.getInstance().isShow() + "");
+        if (AdWindowManager.getInstance().isShow())
+            return;
+
         if (!UserInfoManager.isLogin() || adController == null)
             return;
 

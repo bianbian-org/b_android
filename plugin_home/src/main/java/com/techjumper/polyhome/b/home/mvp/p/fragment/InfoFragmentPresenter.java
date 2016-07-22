@@ -34,6 +34,7 @@ import com.techjumper.polyhome.b.home.widget.MyTextureView;
 import com.techjumper.polyhome.b.home.widget.MyVideoView;
 import com.techjumper.polyhome_b.adlib.entity.AdEntity;
 import com.techjumper.polyhome_b.adlib.manager.AdController;
+import com.techjumper.polyhome_b.adlib.window.AdWindowManager;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -292,6 +293,11 @@ public class InfoFragmentPresenter extends AppBaseFragmentPresenter<InfoFragment
      * 获取普通广告
      */
     private void getNormalAd() {
+        Log.d("isShow", AdWindowManager.getInstance().isShow() + "");
+
+        if (AdWindowManager.getInstance().isShow())
+            return;
+
         if (!UserInfoManager.isLogin() || adController == null)
             return;
 
