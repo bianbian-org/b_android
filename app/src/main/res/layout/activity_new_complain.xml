@@ -57,28 +57,33 @@
 
     <include layout="@layout/item_property_repair_divider_long" />
 
-    <EditText
-        android:id="@+id/et_content"
+    <FrameLayout
+        android:id="@+id/layout_et"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/dp_240"
-        android:background="@null"
-        android:gravity="top"
-        android:hint="@string/complain_text_hint"
-        android:maxLines="8"
-        android:padding="@dimen/dp_7"
-        android:textColor="@color/color_727272"
-        android:textColorHint="@color/color_acacac"
-        android:textSize="@dimen/sp_16" />
+        android:layout_height="@dimen/dp_200">
+
+        <EditText
+            android:id="@+id/et_content"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@null"
+            android:gravity="top"
+            android:hint="@string/complain_text_hint"
+            android:padding="@dimen/dp_7"
+            android:textColor="@color/color_727272"
+            android:textColorHint="@color/color_acacac"
+            android:textSize="@dimen/sp_16" />
+    </FrameLayout>
 
     <cn.finalteam.loadingviewfinal.RecyclerViewFinal
-        android:overScrollMode="never"
         android:id="@+id/rv"
         android:layout_width="wrap_content"
         android:layout_height="70dp"
-        android:layout_marginRight="@dimen/dp_7"
         android:layout_marginBottom="@dimen/dp_7"
         android:layout_marginLeft="@dimen/dp_7"
-        android:layout_marginTop="@dimen/dp_7" />
+        android:layout_marginRight="@dimen/dp_7"
+        android:layout_marginTop="@dimen/dp_7"
+        android:overScrollMode="never" />
 
     <include layout="@layout/item_property_repair_divider_long" />
 

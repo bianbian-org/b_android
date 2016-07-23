@@ -55,7 +55,7 @@ public class PropertyComplainTitleViewHolder extends BaseRecyclerViewHolder<Prop
     private void initPopup() {
 
         mPop = new PolyPopupWindow((Activity) getContext(), R.style.popup_anim, new PopListItemClick(), mRootView, new PopDismiss());
-        mPop.setMarginRight(12);
+        mPop.setMarginRight(8);
         mPop.setMarginTop(55);
         List<String> datas = new ArrayList<>();
         datas.add(getContext().getResources().getString(R.string.repair_all));

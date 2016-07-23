@@ -99,9 +99,8 @@ public class NewRepairActivityPresenter extends AppBaseActivityPresenter<NewRepa
 
         mPopDevice = new PolyPopupWindow(getView(), R.style.popup_anim, new DevicePopListItemClick(), getView().getRightGroup(), new DevicePopDismiss());
         mPopDevice.setMarginRight(8);
-        mPopDevice.setMarginTop(70);
+        mPopDevice.setMarginTop(93);
         List<String> datas = new ArrayList<>();
-        datas.add(getView().getString(R.string.repair_all));
         datas.add(getView().getString(R.string.repair_windows));
         datas.add(getView().getString(R.string.repair_walls));
         datas.add(getView().getString(R.string.repair_elevators));
@@ -110,10 +109,9 @@ public class NewRepairActivityPresenter extends AppBaseActivityPresenter<NewRepa
         mPopDevice.initData(datas);
 
         mPopType = new PolyPopupWindow(getView(), R.style.popup_anim, new TypePopListItemClick(), getView().getRightGroup(), new TypePopDismiss());
-        mPopType.setMarginRight(12);
-        mPopType.setMarginTop(90);
+        mPopType.setMarginRight(8);
+        mPopType.setMarginTop(110);
         List<String> datas1 = new ArrayList<>();
-        datas1.add(getView().getString(R.string.repair_none));
         datas1.add(getView().getString(R.string.repair_personal));
         datas1.add(getView().getString(R.string.repair_common));
         mPopType.initData(datas1);

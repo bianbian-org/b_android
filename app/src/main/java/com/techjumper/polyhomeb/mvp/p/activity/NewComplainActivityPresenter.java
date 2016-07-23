@@ -88,9 +88,8 @@ public class NewComplainActivityPresenter extends AppBaseActivityPresenter<NewCo
 
         mPop = new PolyPopupWindow(getView(), R.style.popup_anim, new DevicePopListItemClick(), getView().getRightGroup(), new DevicePopDismiss());
         mPop.setMarginRight(8);
-        mPop.setMarginTop(118);
+        mPop.setMarginTop(138);
         List<String> datas = new ArrayList<>();
-        datas.add(getView().getString(R.string.repair_none));
         datas.add(getView().getString(R.string.complaint));
         datas.add(getView().getString(R.string.advice));
         datas.add(getView().getString(R.string.celebrete));

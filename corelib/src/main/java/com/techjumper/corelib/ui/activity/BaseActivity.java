@@ -37,6 +37,12 @@ public abstract class BaseActivity extends AppCompatActivity {
         mUi = UI.create(this);
 
         initData(savedInstanceState);
+//        View contentRoot = findViewById(android.R.id.content);
+//        //适配虚拟按键
+//        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT && !AppUtils.isMeizu()) {
+//            contentRoot.setPadding(contentRoot.getLeft(), contentRoot.getPaddingTop(), contentRoot.getRight()
+//                    , contentRoot.getBottom() + StatusbarHelper.getNavigationBarHeight(this));
+//        }
         mViewRoot = inflateView(savedInstanceState);
         if (mViewRoot == null) {
             mViewRoot = new View(this);

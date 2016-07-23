@@ -67,7 +67,7 @@
     <string name="repair_type">报修类型</string>
     <string name="repair_unchecked">未选择</string>
     <string name="repair_record">报修记录</string>
-    <string name="repiar_text_hint">输入你的报修内容...</string>
+    <string name="repair_text_hint">输入你的报修内容...</string>
     <string name="repair_none">未选择</string>
     <string name="repair_personal">个人</string>
     <string name="repair_common">公共</string>
@@ -75,7 +75,7 @@
     <string name="pop_reply">已回复</string>
     <string name="pop_done">已完成</string>
     <string name="complain_theme">主题</string>
-    <string name="complain_text_hint">输入你的投诉内容</string>
+    <string name="complain_text_hint">输入你的投诉内容...</string>
     <string name="advice">建议</string>
     <string name="celebrete">表扬</string>
     <string name="new_complain">新增投诉</string>

@@ -1,11 +1,13 @@
 package com.techjumper.polyhomeb.mvp.v.activity;
 
-import android.content.pm.PackageManager;
+import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
 
 import com.techjumper.corelib.mvp.factory.Presenter;
 import com.techjumper.corelib.utils.common.RuleUtils;
+import com.techjumper.corelib.utils.system.AppUtils;
+import com.techjumper.corelib.utils.window.StatusbarHelper;
 import com.techjumper.polyhomeb.R;
 import com.techjumper.polyhomeb.adapter.FragmentAdapter;
 import com.techjumper.polyhomeb.mvp.p.activity.TabHomeActivityPresenter;
@@ -41,6 +43,12 @@ public class TabHomeActivity extends AppBaseActivity<TabHomeActivityPresenter> {
 
     @Override
     protected View inflateView(Bundle savedInstanceState) {
+        View contentRoot = findViewById(android.R.id.content);
+        //适配虚拟按键
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT && !AppUtils.isMeizu()) {
+            contentRoot.setPadding(contentRoot.getLeft(), contentRoot.getPaddingTop(), contentRoot.getRight()
+                    , contentRoot.getBottom() + StatusbarHelper.getNavigationBarHeight(this));
+        }
         return inflate(R.layout.activity_tab_home);
     }
 
