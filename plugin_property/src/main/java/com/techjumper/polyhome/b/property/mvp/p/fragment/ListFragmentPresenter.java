@@ -1,8 +1,11 @@
 package com.techjumper.polyhome.b.property.mvp.p.fragment;
 
 import android.os.Bundle;
+import android.support.v7.widget.LinearLayoutManager;
 import android.text.TextUtils;
 import android.util.Log;
+import android.view.View;
+import android.widget.LinearLayout;
 
 import com.techjumper.commonres.entity.AnnouncementEntity;
 import com.techjumper.commonres.entity.ComplaintDetailEntity;
@@ -19,11 +22,14 @@ import com.techjumper.commonres.entity.event.UserInfoEvent;
 import com.techjumper.commonres.entity.event.loadmoreevent.LoadmorePresenterEvent;
 import com.techjumper.corelib.rx.tools.RxBus;
 import com.techjumper.corelib.utils.window.ToastUtils;
+import com.techjumper.polyhome.b.property.Constant;
 import com.techjumper.polyhome.b.property.R;
+import com.techjumper.polyhome.b.property.UserInfoManager;
 import com.techjumper.polyhome.b.property.mvp.m.ListFragmentModel;
 import com.techjumper.polyhome.b.property.mvp.v.activity.MainActivity;
 import com.techjumper.polyhome.b.property.mvp.v.fragment.ListFragment;
 
+import butterknife.Bind;
 import butterknife.OnCheckedChanged;
 import butterknife.OnClick;
 import rx.Subscriber;
@@ -35,6 +41,13 @@ import rx.android.schedulers.AndroidSchedulers;
 public class ListFragmentPresenter extends AppBaseFragmentPresenter<ListFragment> {
     private ListFragmentModel model = new ListFragmentModel(this);
     private int pageNo = 1;
+
+    private LinearLayout lacLayout;
+    private LinearLayout larLayout;
+
+    private int lcType = Constant.LC_COM;
+    private int lrType = Constant.LR_TYPE_COM;
+    private int lrDevice = Constant.LR_DEVICE_DOOR;
 
     @OnCheckedChanged(R.id.fl_title_announcement)
     void checkAnnouncement(boolean check) {
@@ -60,12 +73,86 @@ public class ListFragmentPresenter extends AppBaseFragmentPresenter<ListFragment
         }
     }
 
+    @OnCheckedChanged(R.id.lar_checkbox_repair_windows)
+    void checkReWindows(boolean check) {
+        if (check) {
+            lrDevice = Constant.LR_DEVICE_DOOR;
+        }
+    }
+
+    @OnCheckedChanged(R.id.lar_checkbox_repair_wall)
+    void checkReWall(boolean check) {
+        if (check) {
+            lrDevice = Constant.LR_DEVICE_WALL;
+        }
+    }
+
+    @OnCheckedChanged(R.id.lar_checkbox_repair_lift)
+    void checkReLift(boolean check) {
+        if (check) {
+            lrDevice = Constant.LR_DEVICE_LIFT;
+        }
+    }
+
+    @OnCheckedChanged(R.id.lar_checkbox_repair_water)
+    void checkReWater(boolean check) {
+        if (check) {
+            lrDevice = Constant.LR_DEVICE_WATER;
+        }
+    }
+
+    @OnCheckedChanged(R.id.lar_checkbox_repair_lock)
+    void checkReLock(boolean check) {
+        if (check) {
+            lrDevice = Constant.LR_DEVICE_LOCK;
+        }
+    }
+
+    @OnCheckedChanged(R.id.lar_checkbox_repair_common)
+    void checkReCommon(boolean check) {
+        if (check) {
+            lrType = Constant.LR_TYPE_COM;
+        }
+    }
+
+    @OnCheckedChanged(R.id.lar_checkbox_repair_personal)
+    void checkRePersonal(boolean check) {
+        if (check) {
+            lrType = Constant.LR_TYPE_PER;
+        }
+    }
+
+    @OnCheckedChanged(R.id.lac_checkbox_complaint_complaints)
+    void checkComComplaint(boolean check) {
+        if (check) {
+            lcType = Constant.LC_COM;
+        }
+    }
+
+    @OnCheckedChanged(R.id.lac_checkbox_complaint_suggest)
+    void checkComSuggest(boolean check) {
+        if (check) {
+            lcType = Constant.LC_SUG;
+        }
+    }
+
+    @OnCheckedChanged(R.id.lac_property_complaint_praise)
+    void checkComPraise(boolean check) {
+        if (check) {
+            lcType = Constant.LC_PRA;
+        }
+    }
+
     @OnClick(R.id.fl_title_action)
     void action_title() {
         int type = getView().getType();
-        PropertyActionEvent propertyActionEvent = new PropertyActionEvent(true);
-        propertyActionEvent.setType(type);
-        RxBus.INSTANCE.send(propertyActionEvent);
+        if (type == MainActivity.REPAIR) {
+            getView().showActionRepair();
+        } else {
+            getView().showActionComplaint();
+        }
+
+        RxBus.INSTANCE.send(new BackEvent(BackEvent.PROPERTY_ACTION));
     }
 
     @OnClick(R.id.lmd_message_send)
@@ -84,6 +171,30 @@ public class ListFragmentPresenter extends AppBaseFragmentPresenter<ListFragment
 
     }
 
+    @OnClick(R.id.lac_submit)
+    void lacSumbit() {
+        String content = getView().getLacContent().getText().toString();
+        String mobile = getView().getLacMobile().getText().toString();
+
+        if (!TextUtils.isEmpty(mobile)) {
+            UserInfoManager.saveMobile(mobile);
+        }
+
+        submitComplaint(lcType, content, mobile);
+    }
+
+    @OnClick(R.id.lar_submit)
+    void larSumbit() {
+        String content = getView().getLarContent().getText().toString();
+        String mobile = getView().getLarMobile().getText().toString();
+
+        if (!TextUtils.isEmpty(mobile)) {
+            UserInfoManager.saveMobile(mobile);
+        }
+
+        submitRepair(lrType, lrDevice, content, mobile);
+    }
+
     @Override
     public void initData(Bundle savedInstanceState) {
 
@@ -91,6 +202,10 @@ public class ListFragmentPresenter extends AppBaseFragmentPresenter<ListFragment
 
     @Override
     public void onViewInited(Bundle savedInstanceState) {
+
+        lacLayout = getView().getLacLayout();
+        larLayout = getView().getLarLayout();
+
         if (getView().getListType() == MainActivity.ANNOUNCEMENT) {
             getAnnouncements();
         } else if (getView().getListType() == MainActivity.REPAIR) {
@@ -295,6 +410,78 @@ public class ListFragmentPresenter extends AppBaseFragmentPresenter<ListFragment
                         if (trueEntity.getData().getResult().equals("true")) {
                             ToastUtils.show(getView().getContext().getString(R.string.property_send_success));
                             getView().sendSuccess();
+                        }
+                    }
+                }));
+    }
+
+    public void submitComplaint(int type, String content, String mobile) {
+        getView().showLoading(false);
+
+        addSubscription(model.submitComplaint(type, content, mobile)
+                .subscribe(new Subscriber<TrueEntity>() {
+                    @Override
+                    public void onCompleted() {
+                        getView().dismissLoading();
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        getView().showError(e);
+                        getView().dismissLoading();
+                    }
+
+                    @Override
+                    public void onNext(TrueEntity trueEntity) {
+                        if (!processNetworkResult(trueEntity, false))
+                            return;
+
+                        if (trueEntity == null ||
+                                trueEntity.getData() == null)
+                            return;
+
+                        getView().dismissLoading();
+                        if (trueEntity.getData().getResult().equals("true")) {
+                            ToastUtils.show(getView().getResources().getString(R.string.property_submit_success));
+                            PropertyActionEvent propertyActionEvent = new PropertyActionEvent(false);
+                            propertyActionEvent.setListType(MainActivity.COMPLAINT);
+                            RxBus.INSTANCE.send(propertyActionEvent);
+                        }
+                    }
+                }));
+    }
+
+    public void submitRepair(int repair_type, int repair_device, String note, String mobile) {
+        getView().showLoading(false);
+
+        addSubscription(model.submitRepair(repair_type, repair_device, note, mobile)
+                .subscribe(new Subscriber<TrueEntity>() {
+                    @Override
+                    public void onCompleted() {
+                        getView().dismissLoading();
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        getView().showError(e);
+                        getView().dismissLoading();
+                    }
+
+                    @Override
+                    public void onNext(TrueEntity trueEntity) {
+                        if (!processNetworkResult(trueEntity, false))
+                            return;
+
+                        if (trueEntity == null ||
+                                trueEntity.getData() == null)
+                            return;
+
+                        getView().dismissLoading();
+                        if (trueEntity.getData().getResult().equals("true")) {
+                            ToastUtils.show(getView().getResources().getString(R.string.property_submit_success));
+                            PropertyActionEvent propertyActionEvent = new PropertyActionEvent(false);
+                            propertyActionEvent.setListType(MainActivity.REPAIR);
+                            RxBus.INSTANCE.send(propertyActionEvent);
                         }
                     }
                 }));

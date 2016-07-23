@@ -93,14 +93,6 @@ public class MainActivity extends AppBaseActivity<MainActivityPresenter> {
                         if (event.isAction() == false) {
                             int listType = event.getListType();
                             replaceFragment(R.id.container, ListFragment.getInstance(listType));
-                        } else {
-                            if (event.getType() == ANNOUNCEMENT) {
-                                // TODO: 16/5/13 拨打物业电话
-                            } else if (event.getType() == REPAIR) {
-                                replaceFragment(R.id.container, ActionFragment.getInstance(ActionFragment.REPAIR));
-                            } else {
-                                replaceFragment(R.id.container, ActionFragment.getInstance(ActionFragment.COMPLAINT));
-                            }
                         }
                     }
                 }));

@@ -15,7 +15,7 @@
     <string name="property_repair">报修</string>
     <string name="property_complaint">投诉建议</string>
     <string name="property_call">呼叫物业中心</string>
-    <string name="property_new_repair">新建报修单</string>
+    <string name="property_new_repair">新建报修</string>
     <string name="property_new_complaint">发起投诉</string>
 
     <string name="property_type_submit">已提交</string>
@@ -27,7 +27,21 @@
     <string name="property_complaint_content">内容</string>
     <string name="property_complaint_mobile">电话</string>
 
+    <string name="property_complaint_theme_praise">表扬</string>
+    <string name="property_complaint_theme_complaints">投诉</string>
+    <string name="property_complaint_theme_suggest">建议</string>
+
     <string name="property_repair_type">报修类型</string>
     <string name="property_repair_device">报修设备</string>
     <string name="property_repair_remark">备注</string>
+
+    <string name="property_repair_device_lock">锁类</string>
+    <string name="property_repair_device_water">水电类</string>
+    <string name="property_repair_device_windows">门窗类</string>
+    <string name="property_repair_device_wall">墙类</string>
+    <string name="property_repair_device_lift">电梯类</string>
+
+    <string name="property_repair_device_common">公共报修</string>
+    <string name="property_repair_device_personal">个人报修</string>
+
 </resources>
