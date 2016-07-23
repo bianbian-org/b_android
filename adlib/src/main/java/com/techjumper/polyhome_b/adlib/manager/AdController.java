@@ -16,13 +16,16 @@ import com.techjumper.corelib.utils.Utils;
 import com.techjumper.corelib.utils.basic.NumberUtil;
 import com.techjumper.corelib.utils.common.JLog;
 import com.techjumper.corelib.utils.file.FileUtils;
+import com.techjumper.corelib.utils.file.PreferenceUtils;
 import com.techjumper.corelib.utils.system.PowerUtil;
 import com.techjumper.corelib.utils.window.ToastUtils;
 import com.techjumper.lib2.utils.GsonUtils;
 import com.techjumper.polyhome_b.adlib.R;
+import com.techjumper.polyhome_b.adlib.db.utils.AdStatDbExecutor;
 import com.techjumper.polyhome_b.adlib.download.AdDownloadManager;
 import com.techjumper.polyhome_b.adlib.entity.AdEntity;
 import com.techjumper.polyhome_b.adlib.net.RetrofitTemplate;
+import com.techjumper.polyhome_b.adlib.services.AdStatService;
 import com.techjumper.polyhome_b.adlib.services.AlarmService;
 import com.techjumper.polyhome_b.adlib.services.WakeupAdService;
 import com.techjumper.polyhome_b.adlib.utils.PollingUtils;
@@ -54,6 +57,9 @@ public class AdController {
 
     public static final int CODE_WAKEUP_ALARM = 99; //唤醒广告服务的requestCode;
     public static final int CODE_ALARM_SERVICE = 100;
+    public static final int CODE_AD_STAT = 101; //广告统计;
+
+    public static final long AD_STAT_INTERVAL = 2 * 60 * 1000L; //广告统计间隔时间(毫秒);
 
     public static final String TYPE_HOME = "1001"; //'室内机 - 首页'
     public static final String TYPE_VIDEO = "1002";  //室内机 - 视频通话
@@ -83,6 +89,12 @@ public class AdController {
         mLockTime = 20 * 60 * 1000;
         setScreenOffTime(mLockTime);
 
+        //开启广告定时统计
+        PollingUtils.stopPollingService(Utils.appContext
+                , AdStatService.class, "", CODE_AD_STAT);
+        PollingUtils.startPollingServiceBySet(Utils.appContext
+                , System.currentTimeMillis() + AdController.AD_STAT_INTERVAL
+                , AdStatService.class, "", true, AdController.CODE_AD_STAT, true);
 //        JLog.d("开始数据库测试");
 //        AdStatDbUtil.BriteDatabaseHelper adStatDbUtil = AdStatDbUtil.build();
 //        JLog.d("拿到数据库对象");
@@ -382,7 +394,7 @@ public class AdController {
                     continue;
                 for (AdEntity.AdsEntity adsEntity : value) {
                     String media_url = adsEntity.getMedia_url();
-                    SystemClock.sleep(20);
+                    SystemClock.sleep(3);
                     AdDownloadManager.getInstance().download(adsEntity.getMd5(), media_url, null);
                 }
 
@@ -551,12 +563,15 @@ public class AdController {
         private long mAlreadyExecuteTime;
         private boolean mInterrupt;
 
-
         public AdRuleExecutor(String ruleType) {
             mRuleType = ruleType;
             if (mRuleType == null) {
                 mRuleType = "";
             }
+        }
+
+        private AdStatDbExecutor.BriteDatabaseHelper getDbHelper() {
+            return AdStatDbExecutor.getHelper();
         }
 
         public void fetchAd(String family_id, String user_id, String ticket, IExecuteRule iExecuteRule) {
@@ -570,6 +585,9 @@ public class AdController {
                 notifyFailed(ERROR_AD_TYPE_IS_NULL);
                 return;
             }
+            //保存familyId到sp,用于广告统计
+            PreferenceUtils.getPreference(AdStatService.SP_NAME).edit().putString(AdStatService.KEY_FAMILY_ID, family_id).apply();
+
             AdController.this.fetchAd(family_id, user_id, ticket, adData -> {
                 if (adData == null) {
                     notifyFailed(ERROR_CONNECT_SERVER);
@@ -630,6 +648,9 @@ public class AdController {
                 return;
             }
 
+            //将播放的广告统计到数据库
+            saveAdStatToDb(rule.getId());
+
             //因为首页需要不停的播放, 所以把时间强制设置为一小时以上,这样就可以不间断获取
             if (TYPE_HOME.equalsIgnoreCase(mRuleType)) {
                 totalTime = 60 * 70L;
@@ -637,6 +658,20 @@ public class AdController {
 //            totalTime = 5;  //测试用
             timer(totalTime, adEntities);
 
+        }
+
+        private void saveAdStatToDb(String id) {
+            AdStatDbExecutor.BriteDatabaseHelper dbHelper = getDbHelper();
+            dbHelper.increase(id)
+                    .flatMap(aLong -> dbHelper.query(id))
+                    .subscribe(adStat -> {
+                        if (adStat == null) {
+                            JLog.d("<ad> 查找ID为" + id + "的广告失败");
+                            return;
+                        }
+
+                        JLog.d("<ad> 统计广告次数, id=" + id + ", count=" + adStat.count());
+                    });
         }
 
         private void timer(long totalTime, List<AdEntity.AdsEntity> adEntities) {

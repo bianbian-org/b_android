@@ -4,7 +4,7 @@
     <uses-permission android:name="android.permission.WAKE_LOCK"/>
     <uses-permission android:name="android.permission.DISABLE_KEYGUARD"/>
     <uses-permission android:name="android.permission.WRITE_SETTINGS"/>
-    <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" />
+    <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW"/>
 
     <application
         android:allowBackup="false"
@@ -16,7 +16,14 @@
             />
         <service android:name=".services.AlarmService"
             />
+        <service android:name=".services.AdStatService"
+            />
 
+        <receiver android:name=".receiver.CommonReceiver">
+            <intent-filter>
+                <action android:name="action_close_ad_window"/>
+            </intent-filter>
+        </receiver>
     </application>
 
 </manifest>

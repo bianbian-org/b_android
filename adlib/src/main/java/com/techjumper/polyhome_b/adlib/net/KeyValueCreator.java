@@ -22,5 +22,11 @@ public class KeyValueCreator {
                 .put("ticket", ticket);
     }
 
+    public static KeyValuePair adStat(String family_id, String json) {
+        return newPair()
+                .put("family_id", family_id)
+                .put("json", json);
+    }
+
 
 }

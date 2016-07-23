@@ -15,16 +15,26 @@ import java.util.List;
 import rx.Observable;
 import rx.schedulers.Schedulers;
 
-public class AdStatDbUtil {
+public class AdStatDbExecutor {
 
-    private AdStatDbUtil() {
+    private volatile static BriteDatabaseHelper mDbHelper;
+
+    private AdStatDbExecutor() {
     }
 
-    public static BriteDatabaseHelper build() {
-        SqlBrite sqlBrite = SqlBrite.create();
-        BriteDatabase briteDatabase = sqlBrite.wrapDatabaseHelper(AdStatDbHelper.create(Utils.appContext)
-                , Schedulers.io());
-        return new BriteDatabaseHelper(briteDatabase);
+    public static BriteDatabaseHelper getHelper() {
+
+        if (mDbHelper == null || mDbHelper.isClosed()) {
+            synchronized (AdStatDbExecutor.class) {
+                if (mDbHelper == null || mDbHelper.isClosed()) {
+                    SqlBrite sqlBrite = SqlBrite.create();
+                    BriteDatabase briteDatabase = sqlBrite.wrapDatabaseHelper(AdStatDbHelper.create(Utils.appContext)
+                            , Schedulers.io());
+                    mDbHelper = new BriteDatabaseHelper(briteDatabase);
+                }
+            }
+        }
+        return mDbHelper;
     }
 
     public static class BriteDatabaseHelper {
@@ -97,11 +107,20 @@ public class AdStatDbUtil {
             return mDb.delete(AdStat.TABLE_NAME, AdStat._ID + "=?", adId);
         }
 
-        public void close() {
+        public boolean deleteAll() {
+            return mDb.delete(AdStat.TABLE_NAME, null) == 1;
+        }
+
+        public synchronized void close() {
             try {
                 mDb.close();
+                mDb = null;
             } catch (Exception ignored) {
             }
+        }
+
+        public boolean isClosed() {
+            return mDb == null;
         }
 
         private long insert(String adId, int count) {

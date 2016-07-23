@@ -1,11 +1,15 @@
 package com.techjumper.polyhome_b.adlib.net;
 
 import com.techjumper.polyhome_b.adlib.entity.AdEntity;
+import com.techjumper.polyhome_b.adlib.entity.BaseArgumentsEntity;
+import com.techjumper.polyhome_b.adlib.entity.BaseEntity;
 
 import java.util.Map;
 
 import okhttp3.ResponseBody;
+import retrofit2.http.Body;
 import retrofit2.http.GET;
+import retrofit2.http.POST;
 import retrofit2.http.QueryMap;
 import retrofit2.http.Streaming;
 import retrofit2.http.Url;
@@ -60,4 +64,23 @@ public interface ServiceAPI {
     @Streaming
     @GET
     Observable<ResponseBody> downloadFile(@Url String fileUrl);
+
+    /**
+     * 广告统计播放量
+     * <p>
+     * parms:
+     * family_id: 442,
+     * json:'{"ads":[{"ad_id":"10","count":"12"},{"ad_id":"11","count":"34"}]}'
+     * return:
+     * {
+     * "error_code": 0,
+     * "error_msg": null,
+     * "data": {
+     * "result": "true"
+     * }
+     * }
+     */
+    @POST("ad/count")
+    Observable<BaseEntity> adStat(@Body BaseArgumentsEntity entity);
+
 }

@@ -4,6 +4,7 @@ import com.techjumper.corelib.rx.tools.CommonWrap;
 import com.techjumper.corelib.rx.tools.SchedulersCompat;
 import com.techjumper.lib2.utils.RetrofitHelper;
 import com.techjumper.polyhome_b.adlib.entity.AdEntity;
+import com.techjumper.polyhome_b.adlib.entity.BaseEntity;
 
 import okhttp3.ResponseBody;
 import rx.Observable;
@@ -50,6 +51,12 @@ public class RetrofitTemplate {
                 .compose(CommonWrap.wrap());
     }
 
+    public Observable<BaseEntity> adStat(String family_id, String json) {
+        return getDefault()
+                .adStat(NetHelper.createBaseArguments(
+                        KeyValueCreator.adStat(family_id, json)))
+                .compose(SchedulersCompat.applyExecutorSchedulers());
+    }
 
     public ServiceAPI getDefault() {
         return RetrofitHelper.create(com.techjumper.polyhome_b.adlib.Config.sBaseUrl

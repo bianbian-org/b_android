@@ -5,6 +5,7 @@ import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
+import android.os.Bundle;
 import android.os.SystemClock;
 
 import com.techjumper.corelib.utils.common.JLog;
@@ -58,8 +59,13 @@ public class PollingUtils {
     }
 
     public static void startPollingServiceBySet(Context context, long triggerAtTime
-            , Class<?> cls, String action, boolean wakeUp, int requestCode, boolean isFirst) {
-        if (isFirst) {
+            , Class<?> cls, String action, boolean wakeUp, int requestCode, boolean log) {
+        startPollingServiceBySet(context, triggerAtTime, cls, action, null, wakeUp, requestCode, log);
+    }
+
+    public static void startPollingServiceBySet(Context context, long triggerAtTime
+            , Class<?> cls, String action, Bundle extra, boolean wakeUp, int requestCode, boolean log) {
+        if (log) {
             Calendar c = Calendar.getInstance();
             c.setTimeZone(TimeZone.getTimeZone("GMT+8"));
             c.setTimeInMillis(triggerAtTime);
@@ -71,6 +77,9 @@ public class PollingUtils {
                 .getSystemService(Context.ALARM_SERVICE);
         Intent intent = new Intent(context, cls);
         intent.setAction(action);
+        if (extra != null) {
+            intent.putExtras(extra);
+        }
         PendingIntent pendingIntent = PendingIntent.getService(context, requestCode,
                 intent, PendingIntent.FLAG_UPDATE_CURRENT);
         int type = wakeUp ? AlarmManager.RTC_WAKEUP : AlarmManager.RTC;
