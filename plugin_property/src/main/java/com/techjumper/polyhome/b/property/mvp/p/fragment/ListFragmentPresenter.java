@@ -36,6 +36,14 @@ public class ListFragmentPresenter extends AppBaseFragmentPresenter<ListFragment
     private ListFragmentModel model = new ListFragmentModel(this);
     private int pageNo = 1;
 
+    @OnCheckedChanged(R.id.fl_title_announcement)
+    void checkAnnouncement(boolean check) {
+        if (check) {
+            pageNo = 1;
+            getAnnouncements();
+        }
+    }
+
     @OnCheckedChanged(R.id.fl_title_repair)
     void checkRepair(boolean check) {
         if (check) {
@@ -83,7 +91,9 @@ public class ListFragmentPresenter extends AppBaseFragmentPresenter<ListFragment
 
     @Override
     public void onViewInited(Bundle savedInstanceState) {
-        if (getView().getListType() == MainActivity.REPAIR) {
+        if (getView().getListType() == MainActivity.ANNOUNCEMENT) {
+            getAnnouncements();
+        } else if (getView().getListType() == MainActivity.REPAIR) {
             getRepairs();
         } else {
             getComplaints();
@@ -109,13 +119,39 @@ public class ListFragmentPresenter extends AppBaseFragmentPresenter<ListFragment
                         int type = event.getType();
                         pageNo++;
 
-                        if (type == MainActivity.REPAIR) {
+                        if (type == MainActivity.ANNOUNCEMENT) {
+                            getAnnouncements();
+                        } else if (type == MainActivity.REPAIR) {
                             getRepairs();
                         } else {
                             getComplaints();
                         }
                     }
                 }));
+    }
+
+    public void getAnnouncements() {
+        addSubscription(model.getAnnouncements(pageNo).subscribe(new Subscriber<AnnouncementEntity>() {
+            @Override
+            public void onCompleted() {
+
+            }
+
+            @Override
+            public void onError(Throwable e) {
+                getView().showError(e);
+            }
+
+            @Override
+            public void onNext(AnnouncementEntity announcementEntity) {
+                if (announcementEntity == null ||
+                        announcementEntity.getData() == null ||
+                        announcementEntity.getData().getNotices() == null)
+                    return;
+
+                getView().getAnnouncements(announcementEntity.getData().getNotices(), pageNo);
+            }
+        }));
     }
 
     public void getComplaints() {

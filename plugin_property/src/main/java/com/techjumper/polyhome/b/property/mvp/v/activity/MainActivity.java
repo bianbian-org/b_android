@@ -76,7 +76,7 @@ public class MainActivity extends AppBaseActivity<MainActivityPresenter> {
         userInfoEntity.setId(434);
         UserInfoManager.saveUserInfo(userInfoEntity);
 
-        switchFragment(R.id.container, ListFragment.getInstance(MainActivity.REPAIR), false, false);
+        switchFragment(R.id.container, ListFragment.getInstance(MainActivity.ANNOUNCEMENT), false, false);
 
         timer.schedule(new TimerTask() {
             @Override

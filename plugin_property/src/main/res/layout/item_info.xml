@@ -47,7 +47,7 @@
             android:paddingRight="@dimen/dp_12"
             android:paddingTop="@dimen/dp_5"
             android:paddingBottom="@dimen/dp_5"
-            android:visibility="visible"
+            android:visibility="gone"
             android:textSize="@dimen/sp_18"
             android:textColor="@color/color_ffffff"
             android:background="@drawable/bg_shape_radius_20c3f3"/>

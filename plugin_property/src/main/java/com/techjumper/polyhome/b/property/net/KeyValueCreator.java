@@ -27,8 +27,11 @@ public class KeyValueCreator {
         return newPair();
     }
 
-    public static KeyValuePair getAnnouncements(String page, String count) {
+    public static KeyValuePair getAnnouncements(String user_id, String family_id, String ticket, String page, String count) {
         return newPair()
+                .put("user_id", user_id)
+                .put("family_id", family_id)
+                .put("ticket", ticket)
                 .put("page", page)
                 .put("count", count);
     }

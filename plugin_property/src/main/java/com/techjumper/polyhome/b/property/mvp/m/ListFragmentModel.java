@@ -33,7 +33,7 @@ public class ListFragmentModel extends BaseModel<ListFragmentPresenter> {
     public Observable<AnnouncementEntity> getAnnouncements(int page) {
 
         return RetrofitHelper.<ServiceAPI>createDefault()
-                .getAnnouncements(NetHelper.createBaseArgumentsMap(KeyValueCreator.getAnnouncements(String.valueOf(page), "10")))
+                .getAnnouncements(NetHelper.createBaseArgumentsMap(KeyValueCreator.getAnnouncements(UserInfoManager.getUserId(), UserInfoManager.getFamilyId(), UserInfoManager.getTicket(), String.valueOf(page), ComConstant.PAGESIZE)))
                 .compose(CommonWrap.wrap());
     }
 

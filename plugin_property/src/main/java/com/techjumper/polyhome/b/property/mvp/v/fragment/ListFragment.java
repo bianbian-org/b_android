@@ -23,6 +23,7 @@ import android.widget.TextView;
 import com.steve.creact.library.adapter.CommonRecyclerAdapter;
 import com.steve.creact.library.display.DisplayBean;
 import com.techjumper.commonres.ComConstant;
+import com.techjumper.commonres.entity.AnnouncementEntity;
 import com.techjumper.commonres.entity.ComplaintDetailEntity;
 import com.techjumper.commonres.entity.ComplaintEntity;
 import com.techjumper.commonres.entity.RepairDetailEntity;
@@ -40,6 +41,7 @@ import com.techjumper.polyhome.b.property.mvp.p.fragment.ListFragmentPresenter;
 import com.techjumper.polyhome.b.property.mvp.v.activity.MainActivity;
 import com.techjumper.polyhome.b.property.utils.AdapterUtil;
 import com.techjumper.polyhome.b.property.utils.TypeUtil;
+import com.techjumper.polyhome.b.property.viewholder.databean.InfoAnnouncementEntityBean;
 import com.techjumper.polyhome.b.property.viewholder.databean.InfoComplaintEntityBean;
 import com.techjumper.polyhome.b.property.viewholder.databean.InfoRepairEntityBean;
 import com.techjumper.polyhome.b.property.viewholder.databean.InfoReplyLeftEntityBean;
@@ -199,6 +201,35 @@ public class ListFragment extends AppBaseFragment<ListFragmentPresenter> {
                 super.onScrolled(recyclerView, dx, dy);
             }
         });
+    }
+
+    public void getAnnouncements(List<AnnouncementEntity.AnnouncementDataEntity> announcementDataEntities, int page) {
+        flTitleAction.setText(R.string.property_call);
+        flTitleAction.setCompoundDrawablesWithIntrinsicBounds(R.mipmap.icon_call, 0, 0, 0);
+        flTitleAction.setCompoundDrawablePadding(getResources().getDimensionPixelSize(R.dimen.dp_5));
+        setType(MainActivity.ANNOUNCEMENT);
+        showListLayout();
+
+        if (announcementDataEntities.size() == 0 && page == 1) {
+            AdapterUtil.clear(adapter);
+            return;
+        }
+
+        List<DisplayBean> displayBeans = new ArrayList<>();
+
+        if (announcementDataEntities == null || announcementDataEntities.size() == 0)
+            return;
+
+        for (int i = 0; i < announcementDataEntities.size(); i++) {
+            displayBeans.add(new InfoAnnouncementEntityBean(announcementDataEntities.get(i)));
+        }
+
+        if (page == 1) {
+            adapter.loadData(displayBeans);
+            flList.setAdapter(adapter);
+        } else {
+            adapter.insertData(adapter.getItemCount(), displayBeans);
+        }
     }
 
     public void getComplaints(List<ComplaintEntity.ComplaintDataEntity> complaintDataEntities, int page) {
