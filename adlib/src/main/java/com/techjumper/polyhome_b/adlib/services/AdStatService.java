@@ -99,11 +99,7 @@ public class AdStatService extends Service {
                                 })
                                 .subscribeOn(Schedulers.io())
                                 .subscribe(result -> {
-                                    if (result) {
-                                        JLog.d("<ad> 上报成功, 并清除本地数据库");
-                                    } else {
-                                        JLog.d("<ad> 上报成功, 但是清理本地数据库失败");
-                                    }
+                                    JLog.d("<ad> 上报成功");
                                 });
                     }
                 });

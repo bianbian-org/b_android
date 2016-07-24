@@ -59,7 +59,7 @@ public class AdController {
     public static final int CODE_ALARM_SERVICE = 100;
     public static final int CODE_AD_STAT = 101; //广告统计;
 
-    public static final long AD_STAT_INTERVAL = 2 * 60 * 1000L; //广告统计间隔时间(毫秒);
+    public static final long AD_STAT_INTERVAL = 10 * 60 * 1000L; //广告统计间隔时间(毫秒);
 
     public static final String TYPE_HOME = "1001"; //'室内机 - 首页'
     public static final String TYPE_VIDEO = "1002";  //室内机 - 视频通话

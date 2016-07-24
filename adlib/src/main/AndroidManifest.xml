@@ -19,7 +19,9 @@
         <service android:name=".services.AdStatService"
             />
 
-        <receiver android:name=".receiver.CommonReceiver">
+        <receiver
+            android:name=".receiver.CommonReceiver"
+            android:exported="true">
             <intent-filter>
                 <action android:name="action_close_ad_window"/>
             </intent-filter>

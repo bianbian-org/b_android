@@ -1,7 +1,6 @@
 package com.techjumper.polyhome.b.home.mvp.p.fragment;
 
 import android.content.Intent;
-import android.net.Uri;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
@@ -39,7 +38,6 @@ import com.techjumper.polyhome.b.home.tool.AlarmManagerUtil;
 import com.techjumper.polyhome.b.home.utils.DateUtil;
 import com.techjumper.polyhome.b.home.utils.StringUtil;
 import com.techjumper.polyhome.b.home.widget.MyTextureView;
-import com.techjumper.polyhome.b.home.widget.MyVideoView;
 import com.techjumper.polyhome.b.home.widget.SquareView;
 import com.techjumper.polyhome_b.adlib.entity.AdEntity;
 import com.techjumper.polyhome_b.adlib.manager.AdController;
