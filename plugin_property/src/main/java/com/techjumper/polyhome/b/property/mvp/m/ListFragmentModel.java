@@ -40,7 +40,7 @@ public class ListFragmentModel extends BaseModel<ListFragmentPresenter> {
     public Observable<ComplaintEntity> getComplaints(int page) {
 
         return RetrofitHelper.<ServiceAPI>createDefault()
-                .getComplaints(NetHelper.createBaseArgumentsMap(KeyValueCreator.getComplaints(UserInfoManager.getUserId(), UserInfoManager.getTicket(),  String.valueOf(page), ComConstant.PAGESIZE)))
+                .getComplaints(NetHelper.createBaseArgumentsMap(KeyValueCreator.getComplaints(UserInfoManager.getUserId(), UserInfoManager.getTicket(), String.valueOf(page), ComConstant.PAGESIZE)))
                 .compose(CommonWrap.wrap());
     }
 
@@ -81,6 +81,24 @@ public class ListFragmentModel extends BaseModel<ListFragmentPresenter> {
     public Observable<RepairDetailEntity> getRepairDetail(long id) {
         return RetrofitHelper.<ServiceAPI>createDefault()
                 .getRepairDetail(NetHelper.createBaseArgumentsMap(KeyValueCreator.getRepairDetail(UserInfoManager.getUserId(), UserInfoManager.getTicket(), String.valueOf(id))))
+                .compose(CommonWrap.wrap());
+    }
+
+    public Observable<TrueEntity> submitComplaint(int type, String content, String mobile) {
+        KeyValuePair complaintPair = KeyValueCreator.submitComplaint(UserInfoManager.getUserId(), UserInfoManager.getTicket(), String.valueOf(type), content, mobile);
+        BaseArgumentsEntity argument = NetHelper.createBaseArguments(complaintPair);
+
+        return RetrofitHelper.<ServiceAPI>createDefault()
+                .submitComplaint(argument)
+                .compose(CommonWrap.wrap());
+    }
+
+    public Observable<TrueEntity> submitRepair(int repair_type, int repair_device, String note, String mobile) {
+        KeyValuePair complaintPair = KeyValueCreator.submitRepair(UserInfoManager.getUserId(), UserInfoManager.getTicket(), UserInfoManager.getFamilyId(), String.valueOf(repair_type), String.valueOf(repair_device), note, mobile);
+        BaseArgumentsEntity argument = NetHelper.createBaseArguments(complaintPair);
+
+        return RetrofitHelper.<ServiceAPI>createDefault()
+                .submitRepair(argument)
                 .compose(CommonWrap.wrap());
     }
 }

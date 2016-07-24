@@ -97,6 +97,20 @@ public class ListFragment extends AppBaseFragment<ListFragmentPresenter> {
     RadioButton flTitleComplaint;
     @Bind(R.id.fl_title_announcement)
     RadioButton flTitleAnnouncement;
+    @Bind(R.id.lac_layout)
+    LinearLayout lacLayout;
+    @Bind(R.id.lar_layout)
+    LinearLayout larLayout;
+    @Bind(R.id.list_layout)
+    LinearLayout listLayout;
+    @Bind(R.id.lac_mobile)
+    EditText lacMobile;
+    @Bind(R.id.lac_content)
+    EditText lacContent;
+    @Bind(R.id.lar_mobile)
+    EditText larMobile;
+    @Bind(R.id.lar_content)
+    EditText larContent;
 
     private CommonRecyclerAdapter adapter;
     private CommonRecyclerAdapter messageAdapter;
@@ -151,6 +165,30 @@ public class ListFragment extends AppBaseFragment<ListFragmentPresenter> {
         this.listType = listType;
     }
 
+    public LinearLayout getLacLayout() {
+        return lacLayout;
+    }
+
+    public LinearLayout getLarLayout() {
+        return larLayout;
+    }
+
+    public EditText getLarContent() {
+        return larContent;
+    }
+
+    public EditText getLarMobile() {
+        return larMobile;
+    }
+
+    public EditText getLacContent() {
+        return lacContent;
+    }
+
+    public EditText getLacMobile() {
+        return lacMobile;
+    }
+
     @Override
     protected View inflateView(LayoutInflater inflater, Bundle savedInstanceState) {
         return inflater.inflate(R.layout.fragment_list, null);
@@ -201,12 +239,13 @@ public class ListFragment extends AppBaseFragment<ListFragmentPresenter> {
                 super.onScrolled(recyclerView, dx, dy);
             }
         });
+
+        lacMobile.setText(UserInfoManager.getMobile());
+        larMobile.setText(UserInfoManager.getMobile());
     }
 
     public void getAnnouncements(List<AnnouncementEntity.AnnouncementDataEntity> announcementDataEntities, int page) {
-        flTitleAction.setText(R.string.property_call);
-        flTitleAction.setCompoundDrawablesWithIntrinsicBounds(R.mipmap.icon_call, 0, 0, 0);
-        flTitleAction.setCompoundDrawablePadding(getResources().getDimensionPixelSize(R.dimen.dp_5));
+        flTitleAction.setVisibility(View.GONE);
         setType(MainActivity.ANNOUNCEMENT);
         showListLayout();
 
@@ -234,8 +273,7 @@ public class ListFragment extends AppBaseFragment<ListFragmentPresenter> {
 
     public void getComplaints(List<ComplaintEntity.ComplaintDataEntity> complaintDataEntities, int page) {
         flTitleAction.setText(R.string.property_new_complaint);
-        flTitleAction.setCompoundDrawablesWithIntrinsicBounds(R.mipmap.icon_complaint, 0, 0, 0);
-        flTitleAction.setCompoundDrawablePadding(getResources().getDimensionPixelSize(R.dimen.dp_5));
+        flTitleAction.setVisibility(View.VISIBLE);
         setType(MainActivity.COMPLAINT);
         showListLayout();
 
@@ -263,8 +301,7 @@ public class ListFragment extends AppBaseFragment<ListFragmentPresenter> {
 
     public void getRepairs(List<RepairEntity.RepairDataEntity> repairDataEntities, int page) {
         flTitleAction.setText(R.string.property_new_repair);
-        flTitleAction.setCompoundDrawablesWithIntrinsicBounds(R.mipmap.icon_repair, 0, 0, 0);
-        flTitleAction.setCompoundDrawablePadding(getResources().getDimensionPixelSize(R.dimen.dp_5));
+        flTitleAction.setVisibility(View.VISIBLE);
         setType(MainActivity.REPAIR);
         showListLayout();
 
@@ -293,9 +330,7 @@ public class ListFragment extends AppBaseFragment<ListFragmentPresenter> {
         if (event == null)
             return;
 
-        lndLayout.setVisibility(View.VISIBLE);
-        lmdLayout.setVisibility(View.GONE);
-        flList.setVisibility(View.GONE);
+        showWebview();
 
         lndTitle.setText(event.getTitle());
         lndDate.setText(event.getDate());
@@ -314,9 +349,7 @@ public class ListFragment extends AppBaseFragment<ListFragmentPresenter> {
         long id = entity.getId();
         long user_id = Long.valueOf(UserInfoManager.getUserId());
 
-        lndLayout.setVisibility(View.GONE);
-        lmdLayout.setVisibility(View.VISIBLE);
-        flList.setVisibility(View.GONE);
+        showDetail();
 
         lmdTitle.setText(TypeUtil.getComplanitTypeString(entity.getTypes()));
         lmdContent.setText(entity.getContent());
@@ -371,9 +404,7 @@ public class ListFragment extends AppBaseFragment<ListFragmentPresenter> {
         long id = entity.getId();
         long user_id = Long.valueOf(UserInfoManager.getUserId());
 
-        lndLayout.setVisibility(View.GONE);
-        lmdLayout.setVisibility(View.VISIBLE);
-        flList.setVisibility(View.GONE);
+        showDetail();
 
         lmdTitle.setText(TypeUtil.getRepairTitle(entity.getRepair_type(), entity.getRepair_device()));
         lmdContent.setText(entity.getNote());
@@ -442,8 +473,56 @@ public class ListFragment extends AppBaseFragment<ListFragmentPresenter> {
     }
 
     public void showListLayout() {
+        lacLayout.setVisibility(View.GONE);
+        larLayout.setVisibility(View.GONE);
         lndLayout.setVisibility(View.GONE);
         lmdLayout.setVisibility(View.GONE);
-        flList.setVisibility(View.VISIBLE);
+        listLayout.setVisibility(View.VISIBLE);
+    }
+
+    public void showActionComplaint() {
+        lacLayout.setVisibility(View.VISIBLE);
+        larLayout.setVisibility(View.GONE);
+        lndLayout.setVisibility(View.GONE);
+        lmdLayout.setVisibility(View.GONE);
+        listLayout.setVisibility(View.GONE);
+    }
+
+    public void showActionRepair() {
+        lacLayout.setVisibility(View.GONE);
+        larLayout.setVisibility(View.VISIBLE);
+        lndLayout.setVisibility(View.GONE);
+        lmdLayout.setVisibility(View.GONE);
+        listLayout.setVisibility(View.GONE);
+    }
+
+    public void showDetail() {
+        lacLayout.setVisibility(View.GONE);
+        larLayout.setVisibility(View.GONE);
+        lndLayout.setVisibility(View.GONE);
+        lmdLayout.setVisibility(View.VISIBLE);
+        listLayout.setVisibility(View.GONE);
+    }
+
+    public void showWebview() {
+        lacLayout.setVisibility(View.GONE);
+        larLayout.setVisibility(View.GONE);
+        lndLayout.setVisibility(View.VISIBLE);
+        lmdLayout.setVisibility(View.GONE);
+        listLayout.setVisibility(View.GONE);
+    }
+
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        // TODO: inflate a fragment view
+        View rootView = super.onCreateView(inflater, container, savedInstanceState);
+        ButterKnife.bind(this, rootView);
+        return rootView;
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        ButterKnife.unbind(this);
     }
 }

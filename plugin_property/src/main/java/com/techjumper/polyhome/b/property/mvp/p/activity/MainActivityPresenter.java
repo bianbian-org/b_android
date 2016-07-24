@@ -37,7 +37,7 @@ public class MainActivityPresenter extends AppBaseActivityPresenter<MainActivity
     @OnClick(R.id.bottom_back)
     void back() {
         if (backType == BackEvent.PROPERTY_ACTION) {
-            RxBus.INSTANCE.send(new PropertyActionEvent(false));
+            RxBus.INSTANCE.send(new PropertyListEvent());
         } else if (backType == BackEvent.PROPERTY_LIST) {
             RxBus.INSTANCE.send(new PropertyListEvent());
         } else {

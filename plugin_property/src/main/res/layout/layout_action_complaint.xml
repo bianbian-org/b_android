@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/lac_layout"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:visibility="gone">
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="@dimen/dp_34"
+        android:layout_marginTop="@dimen/dp_70"
+        android:gravity="center_vertical">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/property_complaint_theme"
+            android:textColor="@color/color_DDffffff"
+            android:textSize="@dimen/sp_20" />
+
+        <RadioGroup
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/dp_20"
+            android:orientation="horizontal">
+
+            <RadioButton
+                android:id="@+id/lac_checkbox_complaint_complaints"
+                style="@style/checkStyle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingLeft="@dimen/dp_10"
+                android:checked="true"
+                android:text="@string/property_complaint_theme_complaints" />
+
+            <RadioButton
+                android:id="@+id/lac_checkbox_complaint_suggest"
+                style="@style/checkStyle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/dp_29"
+                android:paddingLeft="@dimen/dp_10"
+                android:text="@string/property_complaint_theme_suggest" />
+
+            <RadioButton
+                android:id="@+id/lac_property_complaint_praise"
+                style="@style/checkStyle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/dp_29"
+                android:paddingLeft="@dimen/dp_10"
+                android:text="@string/property_complaint_theme_praise" />
+        </RadioGroup>
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/dp_40"
+        android:gravity="center_vertical">
+
+        <TextView
+            android:id="@+id/textView2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/property_complaint_mobile"
+            android:textColor="@color/color_DDffffff"
+            android:textSize="@dimen/sp_20" />
+
+        <EditText
+            android:id="@+id/lac_mobile"
+            android:layout_width="@dimen/dp_600"
+            android:layout_height="@dimen/dp_40"
+            android:layout_centerHorizontal="true"
+            android:layout_marginLeft="@dimen/dp_20"
+            android:background="@color/color_99020405"
+            android:inputType="number"
+            android:maxLines="1"
+            android:paddingLeft="@dimen/dp_16"
+            android:paddingRight="@dimen/dp_16"
+            android:textColor="@color/color_ffffff" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/dp_20">
+
+        <TextView
+            android:id="@+id/textView3"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:text="@string/property_complaint_content"
+            android:textColor="@color/color_DDffffff"
+            android:textSize="@dimen/sp_20" />
+
+        <EditText
+            android:id="@+id/lac_content"
+            android:layout_width="@dimen/dp_600"
+            android:layout_height="@dimen/dp_197"
+            android:layout_marginLeft="@dimen/dp_20"
+            android:background="@color/color_99020405"
+            android:gravity="top"
+            android:paddingLeft="@dimen/dp_5"
+            android:paddingRight="@dimen/dp_5"
+            android:textColor="@color/color_ffffff"
+            android:textCursorDrawable="@null" />
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/lac_submit"
+        android:layout_width="@dimen/dp_109"
+        android:layout_height="@dimen/dp_40"
+        android:layout_centerHorizontal="true"
+        android:layout_marginLeft="@dimen/dp_60"
+        android:layout_marginTop="@dimen/dp_20"
+        android:background="@color/color_14ce63"
+        android:gravity="center"
+        android:text="@string/property_submit"
+        android:textColor="@color/color_ffffff"
+        android:textSize="@dimen/sp_16" />
+
+</LinearLayout>
+

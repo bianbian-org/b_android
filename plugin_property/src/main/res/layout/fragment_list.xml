@@ -52,11 +52,32 @@
         android:layout_marginRight="@dimen/dp_30"
         android:layout_weight="1">
 
-        <android.support.v7.widget.RecyclerView
-            android:id="@+id/fl_list"
+        <LinearLayout
+            android:id="@+id/list_layout"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_marginTop="@dimen/dp_10" />
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/fl_title_action"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="right"
+                android:layout_marginTop="@dimen/dp_20"
+                android:background="@drawable/bg_shape_radius_26967e"
+                android:paddingBottom="@dimen/dp_10"
+                android:paddingLeft="@dimen/dp_20"
+                android:paddingRight="@dimen/dp_20"
+                android:paddingTop="@dimen/dp_10"
+                android:text="@string/property_new_repair"
+                android:textColor="@color/color_ffffff"
+                android:textSize="@dimen/sp_18" />
+
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/fl_list"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" />
+        </LinearLayout>
 
         <include
             layout="@layout/layout_normal_detail"
@@ -67,29 +88,15 @@
             layout="@layout/layout_message_detail"
             android:layout_width="match_parent"
             android:layout_height="match_parent" />
+
+        <include
+            layout="@layout/layout_action_complaint"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+
+        <include
+            layout="@layout/layout_action_repair"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
     </FrameLayout>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/dp_20"
-        android:gravity="center_vertical"
-        android:orientation="horizontal"
-        android:paddingLeft="@dimen/dp_40"
-        android:paddingRight="@dimen/dp_40"
-        android:visibility="gone">
-
-        <TextView
-            android:id="@+id/fl_title_action"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:drawableLeft="@mipmap/icon_call"
-            android:drawablePadding="@dimen/dp_5"
-            android:gravity="center"
-            android:text="@string/property_call"
-            android:textColor="@color/color_B366dcff"
-            android:textSize="@dimen/sp_16"
-            android:visibility="gone" />
-    </LinearLayout>
-
 </LinearLayout>

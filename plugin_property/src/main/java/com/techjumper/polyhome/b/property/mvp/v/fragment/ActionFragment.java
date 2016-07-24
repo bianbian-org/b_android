@@ -59,7 +59,6 @@ public class ActionFragment extends AppBaseFragment<ActionFragmentPresenter> {
     EditText lcMobile;
 
     private int lcType = Constant.LC_PRA;
-
     private int lrType = Constant.LR_TYPE_COM;
     private int lrDevice = Constant.LR_DEVICE_LOCK;
 
