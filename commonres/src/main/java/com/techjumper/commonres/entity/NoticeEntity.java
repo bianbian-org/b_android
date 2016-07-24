@@ -10,6 +10,8 @@ public class NoticeEntity extends BaseEntity<NoticeEntity.NoticeDataEntity> {
     public static final int SYSTEM = 1; //系统信息
     public static final int ORDER = 2; //订单信息
     public static final int MEDICAL = 3; //医疗信息
+    public static final int REPAIR = 4; //报修信息
+    public static final int SUGGEST = 5; //建议信息
 
     public static class NoticeDataEntity {
         List<Message> messages;

@@ -4,7 +4,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.View;
 import android.webkit.WebChromeClient;
 import android.webkit.WebView;
@@ -44,14 +43,22 @@ import java.util.Timer;
 import java.util.TimerTask;
 
 import butterknife.Bind;
+import butterknife.ButterKnife;
 import butterknife.OnClick;
 import rx.android.schedulers.AndroidSchedulers;
 
 @Presenter(InfoMainActivityPresenter.class)
 public class InfoMainActivity extends AppBaseActivity {
-
     private int backType = BackEvent.FINISH;
 
+    @Bind(R.id.title_repair)
+    RadioButton titleRepair;
+    @Bind(R.id.title_suggest)
+    RadioButton titleSuggest;
+    @Bind(R.id.repair_unread_num)
+    TextView repairUnreadNum;
+    @Bind(R.id.suggest_unread_num)
+    TextView suggestUnreadNum;
     @Bind(R.id.title_announcement)
     RadioButton titleAnnouncement;
     @Bind(R.id.title_system)
@@ -151,8 +158,12 @@ public class InfoMainActivity extends AppBaseActivity {
                 titleOrder.setChecked(true);
             } else if (type == NoticeEntity.MEDICAL) {
                 titleMedical.setChecked(true);
-            } else {
+            } else if (type == NoticeEntity.SYSTEM) {
                 titleSystem.setChecked(true);
+            } else if (type == NoticeEntity.REPAIR) {
+                titleRepair.setChecked(true);
+            } else {
+                titleSuggest.setChecked(true);
             }
 
             String unreadString = bundle.getString(PluginConstant.KEY_INFO_UNREAD);
@@ -177,14 +188,24 @@ public class InfoMainActivity extends AppBaseActivity {
                             medicalUnreadNum.setVisibility(View.VISIBLE);
                         }
                     } else if (unread.getType() == NoticeEntity.SYSTEM) {
-                        systemNum = unread.getCount();
+                        if (unread.getCount() > 0) {
+                            systemUnreadNum.setText(String.valueOf(unread.getCount()));
+                            systemUnreadNum.setVisibility(View.VISIBLE);
+                        }
+                    } else if (unread.getType() == NoticeEntity.REPAIR) {
+                        if (unread.getCount() > 0) {
+                            repairUnreadNum.setText(String.valueOf(unread.getCount()));
+                            repairUnreadNum.setVisibility(View.VISIBLE);
+                        }
+                    } else {
+                        if (unread.getCount() > 0) {
+                            suggestUnreadNum.setText(String.valueOf(unread.getCount()));
+                            suggestUnreadNum.setVisibility(View.VISIBLE);
+                        }
                     }
                 }
 
-                if (systemNum > 0) {
-                    systemUnreadNum.setText(String.valueOf(systemNum));
-                    systemUnreadNum.setVisibility(View.VISIBLE);
-                }
+
             }
 
             UserInfoEntity userInfoEntity = new UserInfoEntity();
@@ -193,11 +214,11 @@ public class InfoMainActivity extends AppBaseActivity {
             userInfoEntity.setId(bundle.getLong(PluginConstant.KEY_INFO_FAMILY_ID));
             UserInfoManager.saveUserInfo(userInfoEntity);
         }
-//        UserInfoEntity userInfoEntity = new UserInfoEntity();
-//        userInfoEntity.setUser_id(362);
-//        userInfoEntity.setTicket("2fec2214bc39c832b721ba46c69be2130a12e0a0");
-//        userInfoEntity.setId(434);
-//        UserInfoManager.saveUserInfo(userInfoEntity);
+        UserInfoEntity userInfoEntity = new UserInfoEntity();
+        userInfoEntity.setUser_id(362);
+        userInfoEntity.setTicket("b87ec030678160e236c5af6dd1c3cee7f11fded3");
+        userInfoEntity.setId(434);
+        UserInfoManager.saveUserInfo(userInfoEntity);
 //        setType(type);
 
         titleRg.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
@@ -220,6 +241,14 @@ public class InfoMainActivity extends AppBaseActivity {
                         break;
                     case R.id.title_medical:
                         type = NoticeEntity.MEDICAL;
+                        RxBus.INSTANCE.send(new InfoTypeEvent(type));
+                        break;
+                    case R.id.title_repair:
+                        type = NoticeEntity.REPAIR;
+                        RxBus.INSTANCE.send(new InfoTypeEvent(type));
+                        break;
+                    case R.id.title_suggest:
+                        type = NoticeEntity.SUGGEST;
                         RxBus.INSTANCE.send(new InfoTypeEvent(type));
                         break;
                 }
@@ -319,6 +348,12 @@ public class InfoMainActivity extends AppBaseActivity {
             } else if (type == NoticeEntity.MEDICAL) {
                 medicalUnreadNum.setText("0");
                 medicalUnreadNum.setVisibility(View.GONE);
+            } else if (type == NoticeEntity.REPAIR) {
+                repairUnreadNum.setText("0");
+                repairUnreadNum.setVisibility(View.GONE);
+            } else if (type == NoticeEntity.SUGGEST) {
+                suggestUnreadNum.setText("0");
+                suggestUnreadNum.setVisibility(View.GONE);
             }
         } else {
             if (type == NoticeEntity.SYSTEM) {
@@ -330,6 +365,12 @@ public class InfoMainActivity extends AppBaseActivity {
             } else if (type == NoticeEntity.MEDICAL) {
                 medicalUnreadNum.setText(String.valueOf(num));
                 medicalUnreadNum.setVisibility(View.VISIBLE);
+            } else if (type == NoticeEntity.REPAIR) {
+                repairUnreadNum.setText(String.valueOf(num));
+                repairUnreadNum.setVisibility(View.VISIBLE);
+            } else if (type == NoticeEntity.SUGGEST) {
+                suggestUnreadNum.setText(String.valueOf(num));
+                suggestUnreadNum.setVisibility(View.VISIBLE);
             }
         }
 
@@ -371,7 +412,7 @@ public class InfoMainActivity extends AppBaseActivity {
                     orderUnreadNum.setText(String.valueOf(num));
                     orderUnreadNum.setVisibility(View.VISIBLE);
                 }
-            } else {
+            } else if (type == NoticeEntity.SYSTEM) {
                 int num = Integer.valueOf(systemUnreadNum.getText().toString());
                 if (num == 1) {
                     systemUnreadNum.setText("0");
@@ -380,6 +421,26 @@ public class InfoMainActivity extends AppBaseActivity {
                     num--;
                     systemUnreadNum.setText(String.valueOf(num));
                     systemUnreadNum.setVisibility(View.VISIBLE);
+                }
+            } else if (type == NoticeEntity.REPAIR) {
+                int num = Integer.valueOf(repairUnreadNum.getText().toString());
+                if (num == 1) {
+                    repairUnreadNum.setText("0");
+                    repairUnreadNum.setVisibility(View.GONE);
+                } else {
+                    num--;
+                    repairUnreadNum.setText(String.valueOf(num));
+                    repairUnreadNum.setVisibility(View.VISIBLE);
+                }
+            } else if (type == NoticeEntity.SUGGEST) {
+                int num = Integer.valueOf(suggestUnreadNum.getText().toString());
+                if (num == 1) {
+                    suggestUnreadNum.setText("0");
+                    suggestUnreadNum.setVisibility(View.GONE);
+                } else {
+                    num--;
+                    suggestUnreadNum.setText(String.valueOf(num));
+                    suggestUnreadNum.setVisibility(View.VISIBLE);
                 }
             }
         }

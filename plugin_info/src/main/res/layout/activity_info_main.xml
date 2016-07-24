@@ -39,6 +39,21 @@
                         android:text="@string/info_announcement_title" />
 
                     <RadioButton
+                        android:id="@+id/title_repair"
+                        style="@style/InfoTitleStyle"
+                        android:layout_width="164.5dp"
+                        android:layout_height="62dp"
+                        android:layout_centerVertical="true"
+                        android:text="@string/info_repair_title" />
+
+                    <RadioButton
+                        android:id="@+id/title_suggest"
+                        style="@style/InfoTitleStyle"
+                        android:layout_width="164.5dp"
+                        android:layout_height="62dp"
+                        android:text="@string/info_suggest_title" />
+
+                    <RadioButton
                         android:id="@+id/title_system"
                         style="@style/InfoTitleStyle"
                         android:layout_width="164.5dp"
@@ -82,7 +97,7 @@
         </LinearLayout>
 
         <TextView
-            android:id="@+id/system_unread_num"
+            android:id="@+id/repair_unread_num"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="@dimen/dp_128"
@@ -95,7 +110,7 @@
             android:visibility="gone" />
 
         <TextView
-            android:id="@+id/order_unread_num"
+            android:id="@+id/suggest_unread_num"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="@dimen/dp_128"
@@ -108,11 +123,37 @@
             android:visibility="gone" />
 
         <TextView
-            android:id="@+id/medical_unread_num"
+            android:id="@+id/system_unread_num"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="@dimen/dp_128"
             android:layout_marginTop="207dp"
+            android:background="@drawable/bg_circle_ff4d38"
+            android:gravity="center"
+            android:text="0"
+            android:textColor="@color/color_ffffff"
+            android:textSize="@dimen/sp_12"
+            android:visibility="gone" />
+
+        <TextView
+            android:id="@+id/order_unread_num"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/dp_128"
+            android:layout_marginTop="269dp"
+            android:background="@drawable/bg_circle_ff4d38"
+            android:gravity="center"
+            android:text="0"
+            android:textColor="@color/color_ffffff"
+            android:textSize="@dimen/sp_12"
+            android:visibility="gone" />
+
+        <TextView
+            android:id="@+id/medical_unread_num"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/dp_128"
+            android:layout_marginTop="331dp"
             android:background="@drawable/bg_circle_ff4d38"
             android:gravity="center"
             android:text="0"
