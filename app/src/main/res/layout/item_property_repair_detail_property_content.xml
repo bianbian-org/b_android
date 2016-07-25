@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginTop="@dimen/dp_15">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <ImageView
+            android:id="@+id/iv_avatar"
+            android:layout_width="wrap_content"
+            android:layout_alignBottom="@+id/tv_property_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/dp_14"
+            android:background="@mipmap/ic_launcher" />
+
+        <TextView
+            android:id="@+id/tv_property_content"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/dp_10"
+            android:layout_marginRight="@dimen/dp_30"
+            android:layout_toRightOf="@+id/iv_avatar"
+            android:background="@drawable/bg_im_property"
+            android:text="业主就是上业主就是上帝业主就是上帝业主就是上帝业主就是上帝业主就是上帝业主就是上帝业主就是上帝业主就是上帝业主就是上帝帝"
+            android:textColor="@color/color_313f48"
+            android:textSize="@dimen/sp_16" />
+
+    </RelativeLayout>
+
+
+</RelativeLayout>

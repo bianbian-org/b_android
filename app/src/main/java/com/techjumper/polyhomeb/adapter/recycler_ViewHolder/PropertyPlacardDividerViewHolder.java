@@ -16,7 +16,7 @@ import com.techjumper.polyhomeb.adapter.recycler_Data.PropertyPlacardDividerData
 @DataBean(beanName = "PropertyPlacardDividerBean", data = PropertyPlacardDividerData.class)
 public class PropertyPlacardDividerViewHolder extends BaseRecyclerViewHolder<PropertyPlacardDividerData> {
 
-    public static final int LAYOUT_ID = R.layout.item_property_placard_devider;
+    public static final int LAYOUT_ID = R.layout.item_property_placard_divider;
 
     public PropertyPlacardDividerViewHolder(View itemView) {
         super(itemView);

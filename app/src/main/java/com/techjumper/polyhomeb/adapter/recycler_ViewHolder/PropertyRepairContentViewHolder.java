@@ -1,15 +1,17 @@
 package com.techjumper.polyhomeb.adapter.recycler_ViewHolder;
 
+import android.app.Activity;
 import android.view.View;
 import android.widget.TextView;
 
 import com.steve.creact.annotation.DataBean;
 import com.steve.creact.library.viewholder.BaseRecyclerViewHolder;
+import com.techjumper.corelib.utils.common.AcHelper;
 import com.techjumper.corelib.utils.common.ResourceUtils;
-import com.techjumper.corelib.utils.window.ToastUtils;
 import com.techjumper.lightwidget.textview.MarqueeTextView;
 import com.techjumper.polyhomeb.R;
 import com.techjumper.polyhomeb.adapter.recycler_Data.PropertyRepairContentData;
+import com.techjumper.polyhomeb.mvp.v.activity.RepairDetailActivity;
 
 /**
  * * * * * * * * * * * * * * * * * * * * * * *
@@ -43,7 +45,9 @@ public class PropertyRepairContentViewHolder extends BaseRecyclerViewHolder<Prop
             ((TextView) getView(R.id.btn)).setTextColor(ResourceUtils.getColorResource(R.color.color_37a991));
         }
 
-        setOnClickListener(R.id.layout_content, v -> ToastUtils.show(",."));
+        setOnClickListener(R.id.layout_content, v -> {
+            new AcHelper.Builder((Activity) getContext()).target(RepairDetailActivity.class).start();
+        });
 
     }
 }

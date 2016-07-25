@@ -54,14 +54,16 @@ public abstract class BaseActivity extends AppCompatActivity {
 
         initView(savedInstanceState);
 
-        StatusbarHelper.Builder statusbarBuidler = StatusbarHelper.from(this)
-                .noActionBar(true)
-                .setLightStatusBar(true)
-                .setTransparentStatusbar(true)
+        if (useStatusBarTransform()) {
+            StatusbarHelper.Builder statusbarBuidler = StatusbarHelper.from(this)
+                    .noActionBar(true)
+                    .setLightStatusBar(true)
+                    .setTransparentStatusbar(true)
 //                .setLayoutRoot(findViewById(android.R.id.content))
-                ;
+                    ;
 
-        onStatusbarTransform(statusbarBuidler).process();
+            onStatusbarTransform(statusbarBuidler).process();
+        }
         find(android.R.id.content).post(() -> onViewInited(savedInstanceState));
 
     }
@@ -123,6 +125,10 @@ public abstract class BaseActivity extends AppCompatActivity {
      * 界面初始化完毕,此时控件已获得宽高,可以弹对话框等等
      */
     protected abstract void onViewInited(Bundle savedInstanceState);
+
+    protected boolean useStatusBarTransform() {
+        return true;
+    }
 
 
 }

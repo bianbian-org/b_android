@@ -80,6 +80,10 @@ public abstract class AppBaseActivity<T extends AppBaseActivityPresenter> extend
         return false;
     }
 
+    protected boolean useStatusBarTransform_() {
+        return true;
+    }
+
     public String getLayoutTitle() {
         return "";
     }
@@ -89,7 +93,8 @@ public abstract class AppBaseActivity<T extends AppBaseActivityPresenter> extend
         View titleGroup = findViewById(R.id.title_group);
 //        View titleGroup = null;
 //        builder.setLayoutRoot(null);
-        return titleGroup == null ? super.onStatusbarTransform(builder) : builder.setActionbarView(titleGroup);
+        return titleGroup == null ? super.onStatusbarTransform(builder) :
+                (useStatusBarTransform_() ? builder.setActionbarView(titleGroup) : super.onStatusbarTransform(builder));
     }
 
     public void onResume() {
@@ -147,5 +152,10 @@ public abstract class AppBaseActivity<T extends AppBaseActivityPresenter> extend
 
     public void dismissLoading() {
         mProgress.dismiss();
+    }
+
+    @Override
+    protected boolean useStatusBarTransform() {
+        return useStatusBarTransform_();
     }
 }

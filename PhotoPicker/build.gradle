@@ -1,13 +1,13 @@
 apply plugin: 'com.android.library'
 
 android {
-  compileSdkVersion 23
-  buildToolsVersion "23.0.3"
+  compileSdkVersion rootProject.compileSdkVersion
+  buildToolsVersion rootProject.buildToolsVersion
   resourcePrefix "__picker_"
 
   defaultConfig {
-    minSdkVersion 10
-    targetSdkVersion 23
+    minSdkVersion rootProject.minSdkVersion
+    targetSdkVersion rootProject.targetSdkVersion
     versionCode 1
     versionName "0.8.5"
   }
