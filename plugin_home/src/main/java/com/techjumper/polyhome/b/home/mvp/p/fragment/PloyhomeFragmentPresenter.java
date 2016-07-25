@@ -357,9 +357,13 @@ public class PloyhomeFragmentPresenter extends AppBaseFragmentPresenter<Ployhome
      */
     private void HandleAd(AdEntity.AdsEntity adsEntity, File file) {
         JLog.d("有新的广告来啦. 本地广告路径:" + file + ", 详细信息: " + adsEntity);
+        if (file == null)
+            return;
         addType = adsEntity.getMedia_type();
 
-        if (addType.equals(IMAGE_AD_TYPE)) {
+        if (adImageView == null || textureView == null)
+            return;
+        if (IMAGE_AD_TYPE.equals(addType)) {
             adImageView.setVisibility(View.VISIBLE);
             textureView.setVisibility(View.INVISIBLE);
 
@@ -376,7 +380,7 @@ public class PloyhomeFragmentPresenter extends AppBaseFragmentPresenter<Ployhome
             }
 
             adsEntity.setMedia_url(file.getAbsolutePath());
-        } else if (addType.equals(VIDEO_AD_TYPE)) {
+        } else if (VIDEO_AD_TYPE.equals(addType)) {
             adImageView.setVisibility(View.INVISIBLE);
             textureView.setVisibility(View.VISIBLE);
             if (file.exists()) {

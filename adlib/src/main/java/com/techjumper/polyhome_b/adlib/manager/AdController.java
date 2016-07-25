@@ -86,45 +86,6 @@ public class AdController {
     private int count;
 
     private AdController() {
-        mLockTime = 20 * 60 * 1000;
-        setScreenOffTime(mLockTime);
-
-        //开启广告定时统计
-        PollingUtils.stopPollingService(Utils.appContext
-                , AdStatService.class, "", CODE_AD_STAT);
-        PollingUtils.startPollingServiceBySet(Utils.appContext
-                , System.currentTimeMillis() + AdController.AD_STAT_INTERVAL
-                , AdStatService.class, "", true, AdController.CODE_AD_STAT, true);
-//        JLog.d("开始数据库测试");
-//        AdStatDbUtil.BriteDatabaseHelper adStatDbUtil = AdStatDbUtil.build();
-//        JLog.d("拿到数据库对象");
-//        subscribe = adStatDbUtil.insertOrUpdate("123", 2019)
-//                .flatMap(aLong -> adStatDbUtil.insertOrUpdate("457", 10000))
-//                .flatMap(aLong2 -> adStatDbUtil.queryAll()
-//                        .map(adStats -> {
-//                            for (AdStat adStat : adStats) {
-//                                JLog.d("查询结果: id=" + adStat._id() + ", count=" + adStat.count());
-//                            }
-//                            return adStats;
-//                        }))
-//                .flatMap(aLong1 -> adStatDbUtil.increase("123"))
-//                .flatMap(aLong3 -> adStatDbUtil.queryAll().flatMap(Observable::from))
-//                .subscribe(adStatEntityList -> {
-////                    for (AdStat adStat : adStatEntityList) {
-//                        JLog.d("操作后查询结果: id=" + adStatEntityList._id() + ", count=" + adStatEntityList.count() + ", 线程=" + Thread.currentThread().getId());
-////                    }
-//                    Utils.mainHandler.postDelayed(() -> {
-//                        if (subscribe == null) {
-//                            JLog.d("subscribe = null");
-//                        } else if (subscribe.isUnsubscribed()) {
-//                            JLog.d("subscribe is unsubscribed");
-//                        } else {
-//                            subscribe.unsubscribe();
-//                            JLog.d("subscribe unsubscribed");
-//                        }
-//                    }, 2000);
-//
-//                });
 
     }
 
@@ -133,10 +94,22 @@ public class AdController {
             synchronized (AdController.class) {
                 if (INSTANCE == null) {
                     INSTANCE = new AdController();
+                    INSTANCE.init();
                 }
             }
         }
         return INSTANCE;
+    }
+
+    private void init() {
+        mLockTime = 20 * 60 * 1000;
+        setScreenOffTime(mLockTime);
+        //开启广告定时统计
+        PollingUtils.stopPollingService(Utils.appContext
+                , AdStatService.class, "", CODE_AD_STAT);
+        PollingUtils.startPollingServiceBySet(Utils.appContext
+                , System.currentTimeMillis() + AdController.AD_STAT_INTERVAL
+                , AdStatService.class, "", true, AdController.CODE_AD_STAT, true);
     }
 
     public boolean wakeUpScreen() {
@@ -148,6 +121,14 @@ public class AdController {
         setScreenOffTime(mLockTime);
         PowerUtil.wakeUpScreen();
         return true;
+    }
+
+    /**
+     * 取消带窗口的广告
+     */
+    public void cancelWindowAd() {
+        cancel(TYPE_SLEEP);
+        cancel(TYPE_WAKEUP);
     }
 
     @SuppressLint("NewApi")
