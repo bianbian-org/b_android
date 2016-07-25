@@ -21,7 +21,7 @@ public class CommonReceiver extends BroadcastReceiver {
     public void onReceive(Context context, Intent intent) {
         switch (intent.getAction()) {
             case ACTION_CLOSE_AD_WINDOW:
-                AdController.getInstance().cancelWindowAd();
+                AdController.getInstance().interruptWindowAd();
                 AdWindowManager.getInstance().closeWindow(true);
                 break;
             default:

@@ -126,9 +126,9 @@ public class AdController {
     /**
      * 取消带窗口的广告
      */
-    public void cancelWindowAd() {
-        cancel(TYPE_SLEEP);
-        cancel(TYPE_WAKEUP);
+    public void interruptWindowAd() {
+        interrupt(TYPE_SLEEP);
+        interrupt(TYPE_WAKEUP);
     }
 
     @SuppressLint("NewApi")

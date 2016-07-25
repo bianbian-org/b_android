@@ -6,12 +6,10 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.techjumper.corelib.reflections.Reflect;
 import com.techjumper.corelib.utils.UI;
 import com.techjumper.corelib.utils.common.AcHelper;
 import com.techjumper.corelib.utils.window.StatusbarHelper;
 
-import java.lang.reflect.Field;
 import java.util.LinkedList;
 
 import butterknife.ButterKnife;
