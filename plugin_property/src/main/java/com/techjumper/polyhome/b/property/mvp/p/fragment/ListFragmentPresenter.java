@@ -214,15 +214,15 @@ public class ListFragmentPresenter extends AppBaseFragmentPresenter<ListFragment
 
         Log.d("wowo", "presenter获取showType :" + showType + "presenter获取infoId :" + infoId);
 
-        if (getView().getListType() == MainActivity.ANNOUNCEMENT) {
-            getAnnouncements();
-        } else if (getView().getListType() == MainActivity.REPAIR) {
-            getRepairs();
+        if (showType == -1) {
+            if (getView().getListType() == MainActivity.ANNOUNCEMENT) {
+                getAnnouncements();
+            } else if (getView().getListType() == MainActivity.REPAIR) {
+                getRepairs();
+            } else {
+                getComplaints();
+            }
         } else {
-            getComplaints();
-        }
-
-        if (showType != -1) {
             Log.d("wowo", "请求详情");
             getMessageDetail(infoId, showType);
         }
@@ -237,7 +237,17 @@ public class ListFragmentPresenter extends AppBaseFragmentPresenter<ListFragment
                         getView().showLndLayout(event);
                         RxBus.INSTANCE.send(new BackEvent(BackEvent.PROPERTY_LIST));
                     } else if (o instanceof PropertyListEvent) {
-                        getView().showListLayout();
+                        if (showType != -1) {
+                            if (getView().getListType() == MainActivity.ANNOUNCEMENT) {
+                                getAnnouncements();
+                            } else if (getView().getListType() == MainActivity.REPAIR) {
+                                getRepairs();
+                            } else {
+                                getComplaints();
+                            }
+                        } else {
+                            getView().showListLayout();
+                        }
                         RxBus.INSTANCE.send(new BackEvent(BackEvent.FINISH));
                     } else if (o instanceof PropertyMessageDetailEvent) {
                         PropertyMessageDetailEvent event = (PropertyMessageDetailEvent) o;
@@ -262,7 +272,8 @@ public class ListFragmentPresenter extends AppBaseFragmentPresenter<ListFragment
         addSubscription(model.getAnnouncements(pageNo).subscribe(new Subscriber<AnnouncementEntity>() {
             @Override
             public void onCompleted() {
-
+                showType = -1;
+                getView().setType(showType);
             }
 
             @Override
@@ -287,7 +298,8 @@ public class ListFragmentPresenter extends AppBaseFragmentPresenter<ListFragment
                 .subscribe(new Subscriber<ComplaintEntity>() {
                     @Override
                     public void onCompleted() {
-
+                        showType = -1;
+                        getView().setType(showType);
                     }
 
                     @Override
@@ -315,7 +327,8 @@ public class ListFragmentPresenter extends AppBaseFragmentPresenter<ListFragment
                 .subscribe(new Subscriber<RepairEntity>() {
                     @Override
                     public void onCompleted() {
-
+                        showType = -1;
+                        getView().setType(showType);
                     }
 
                     @Override
@@ -344,7 +357,6 @@ public class ListFragmentPresenter extends AppBaseFragmentPresenter<ListFragment
                     .subscribe(new Subscriber<ComplaintDetailEntity>() {
                         @Override
                         public void onCompleted() {
-
                         }
 
                         @Override

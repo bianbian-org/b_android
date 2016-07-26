@@ -68,12 +68,18 @@ public class InfoEntityViewHolder extends BaseRecyclerViewHolder<InfoEntity.Info
 
         setOnItemClickListener(v -> {
             if (type == NoticeEntity.REPAIR) {
-                RxBus.INSTANCE.send(new ReadMessageEvent(id, type));
+                if (hasRead == InfoEntity.HASREAD_FALSE) {
+                    setVisibility(R.id.info_isread, View.INVISIBLE);
+                    hasRead = InfoEntity.HASREAD_TURE;
+                    RxBus.INSTANCE.send(new ReadMessageEvent(id, type));
+                }
                 PluginEngineUtil.startPropertyDetail(UserInfoManager.getFamilyId(), UserInfoManager.getUserId(), UserInfoManager.getTicket(), PropertyMessageDetailEvent.REPAIR, object_id);
-                Log.d("wowo", "点击id :" + object_id);
             } else if (type == NoticeEntity.SUGGEST) {
-                RxBus.INSTANCE.send(new ReadMessageEvent(id, type));
-                Log.d("wowo", "点击id :" + object_id);
+                if (hasRead == InfoEntity.HASREAD_FALSE) {
+                    setVisibility(R.id.info_isread, View.INVISIBLE);
+                    hasRead = InfoEntity.HASREAD_TURE;
+                    RxBus.INSTANCE.send(new ReadMessageEvent(id, type));
+                }
                 PluginEngineUtil.startPropertyDetail(UserInfoManager.getFamilyId(), UserInfoManager.getUserId(), UserInfoManager.getTicket(), PropertyMessageDetailEvent.COMPLAINT, object_id);
             } else {
                 RxBus.INSTANCE.send(new InfoDetailEvent(title, content, type, date));

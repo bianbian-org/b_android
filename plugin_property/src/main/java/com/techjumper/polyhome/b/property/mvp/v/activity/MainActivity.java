@@ -87,7 +87,15 @@ public class MainActivity extends AppBaseActivity<MainActivityPresenter> {
 //        userInfoEntity.setId(434);
 //        UserInfoManager.saveUserInfo(userInfoEntity);
 
-        switchFragment(R.id.container, ListFragment.getInstance(MainActivity.ANNOUNCEMENT, showType, infoId), false, false);
+        if (showType != -1) {
+            if (showType == PropertyMessageDetailEvent.COMPLAINT) {
+                switchFragment(R.id.container, ListFragment.getInstance(MainActivity.COMPLAINT, showType, infoId), false, false);
+            } else {
+                switchFragment(R.id.container, ListFragment.getInstance(MainActivity.REPAIR, showType, infoId), false, false);
+            }
+        } else {
+            switchFragment(R.id.container, ListFragment.getInstance(MainActivity.ANNOUNCEMENT, showType, infoId), false, false);
+        }
 
         timer.schedule(new TimerTask() {
             @Override

@@ -165,6 +165,10 @@ public class ListFragment extends AppBaseFragment<ListFragmentPresenter> {
         return showType;
     }
 
+    public void setShowType(int showType) {
+        this.showType = showType;
+    }
+
     public void setActionType(int actionType) {
         this.actionType = actionType;
     }
