@@ -149,9 +149,11 @@ public class ListFragmentPresenter extends AppBaseFragmentPresenter<ListFragment
     @OnClick(R.id.fl_title_action)
     void action_title() {
         int type = getView().getType();
+
+        Log.d("hehe", "type是 :" + type);
         if (type == MainActivity.REPAIR) {
             getView().showActionRepair();
-        } else {
+        } else if (type == MainActivity.COMPLAINT){
             getView().showActionComplaint();
         }
 
@@ -273,7 +275,7 @@ public class ListFragmentPresenter extends AppBaseFragmentPresenter<ListFragment
             @Override
             public void onCompleted() {
                 showType = -1;
-                getView().setType(showType);
+                getView().setShowType(showType);
             }
 
             @Override
@@ -299,7 +301,7 @@ public class ListFragmentPresenter extends AppBaseFragmentPresenter<ListFragment
                     @Override
                     public void onCompleted() {
                         showType = -1;
-                        getView().setType(showType);
+                        getView().setShowType(showType);
                     }
 
                     @Override
@@ -328,7 +330,7 @@ public class ListFragmentPresenter extends AppBaseFragmentPresenter<ListFragment
                     @Override
                     public void onCompleted() {
                         showType = -1;
-                        getView().setType(showType);
+                        getView().setShowType(showType);
                     }
 
                     @Override
