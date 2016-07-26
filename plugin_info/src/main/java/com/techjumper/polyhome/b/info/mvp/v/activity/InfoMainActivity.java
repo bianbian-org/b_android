@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.View;
 import android.webkit.WebChromeClient;
 import android.webkit.WebView;
@@ -124,11 +125,6 @@ public class InfoMainActivity extends AppBaseActivity {
     private CommonRecyclerAdapter adapter;
 
     public int getType() {
-        if (type != NoticeEntity.PROPERTY
-                && type != NoticeEntity.ORDER
-                && type != NoticeEntity.MEDICAL) {
-            type = NoticeEntity.SYSTEM;
-        }
         return type;
     }
 
@@ -151,6 +147,7 @@ public class InfoMainActivity extends AppBaseActivity {
 
         if (getIntent() != null && getIntent().getExtras() != null) {
             Bundle bundle = getIntent().getExtras();
+            Log.d("info", bundle.toString());
             type = bundle.getInt(PluginConstant.KEY_INFO_TYPE);
             if (type == NoticeEntity.PROPERTY) {
                 titleAnnouncement.setChecked(true);
@@ -173,10 +170,6 @@ public class InfoMainActivity extends AppBaseActivity {
             if (unreads.size() > 0) {
                 for (int i = 0; i < unreads.size(); i++) {
                     NoticeEntity.Unread unread = unreads.get(i);
-                    if (unread.getType() != NoticeEntity.ORDER && unread.getType() != NoticeEntity.MEDICAL) {
-                        unread.setType(NoticeEntity.SYSTEM);
-                    }
-
                     if (unread.getType() == NoticeEntity.ORDER) {
                         if (unread.getCount() > 0) {
                             orderUnreadNum.setText(String.valueOf(unread.getCount()));
@@ -204,8 +197,6 @@ public class InfoMainActivity extends AppBaseActivity {
                         }
                     }
                 }
-
-
             }
 
             UserInfoEntity userInfoEntity = new UserInfoEntity();
@@ -214,12 +205,11 @@ public class InfoMainActivity extends AppBaseActivity {
             userInfoEntity.setId(bundle.getLong(PluginConstant.KEY_INFO_FAMILY_ID));
             UserInfoManager.saveUserInfo(userInfoEntity);
         }
-        UserInfoEntity userInfoEntity = new UserInfoEntity();
-        userInfoEntity.setUser_id(362);
-        userInfoEntity.setTicket("b87ec030678160e236c5af6dd1c3cee7f11fded3");
-        userInfoEntity.setId(434);
-        UserInfoManager.saveUserInfo(userInfoEntity);
-//        setType(type);
+//        UserInfoEntity userInfoEntity = new UserInfoEntity();
+//        userInfoEntity.setUser_id(362);
+//        userInfoEntity.setTicket("dd308c13b0da7c565fbea024a53068bea92af170");
+//        userInfoEntity.setId(434);
+//        UserInfoManager.saveUserInfo(userInfoEntity);
 
         titleRg.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
             @Override
@@ -273,15 +263,12 @@ public class InfoMainActivity extends AppBaseActivity {
 
                                 if (type == InfoEntity.TYPE_SYSTEM) {
                                     infoDetailType.setBackgroundResource(R.drawable.bg_shape_radius_20c3f3);
-                                    infoDetailType.setTextColor(getResources().getColor(R.color.color_20C3F3));
                                     infoDetailType.setText(R.string.info_system);
                                 } else if (type == InfoEntity.TYPE_ORDER) {
                                     infoDetailType.setBackgroundResource(R.drawable.bg_shape_radius_ff9938);
-                                    infoDetailType.setTextColor(getResources().getColor(R.color.color_FF9938));
                                     infoDetailType.setText(R.string.info_order);
                                 } else if (type == InfoEntity.TYPE_MEDICAL) {
                                     infoDetailType.setBackgroundResource(R.drawable.bg_shape_radius_4eb738);
-                                    infoDetailType.setTextColor(getResources().getColor(R.color.color_4EB738));
                                     infoDetailType.setText(R.string.info_medical);
                                 }
 

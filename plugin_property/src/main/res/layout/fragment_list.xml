@@ -71,7 +71,8 @@
                 android:paddingTop="@dimen/dp_10"
                 android:text="@string/property_new_repair"
                 android:textColor="@color/color_ffffff"
-                android:textSize="@dimen/sp_18" />
+                android:textSize="@dimen/sp_18"
+                android:visibility="gone" />
 
             <android.support.v7.widget.RecyclerView
                 android:id="@+id/fl_list"

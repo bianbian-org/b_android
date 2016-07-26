@@ -7,6 +7,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.widget.NestedScrollView;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -60,6 +61,8 @@ import butterknife.ButterKnife;
 public class ListFragment extends AppBaseFragment<ListFragmentPresenter> {
 
     public static final String LISTTYPE = "listtype";
+    public static final String SHOWTYPE = "showtype";
+    public static final String INFOID = "infoid";
 
     @Bind(R.id.fl_title_rg)
     RadioGroup flTitleRg;
@@ -121,10 +124,15 @@ public class ListFragment extends AppBaseFragment<ListFragmentPresenter> {
     private int actionType;
     private int listType;
 
-    public static ListFragment getInstance(int listType) {
+    private long infoId;
+    private int showType;
+
+    public static ListFragment getInstance(int listType, int showType, long infoId) {
         ListFragment listFragment = new ListFragment();
         Bundle bundle = new Bundle();
         bundle.putInt(LISTTYPE, listType);
+        bundle.putInt(SHOWTYPE, showType);
+        bundle.putLong(INFOID, infoId);
         listFragment.setArguments(bundle);
         return listFragment;
     }
@@ -147,6 +155,14 @@ public class ListFragment extends AppBaseFragment<ListFragmentPresenter> {
 
     public int getActionType() {
         return actionType;
+    }
+
+    public long getInfoId() {
+        return infoId;
+    }
+
+    public int getShowType() {
+        return showType;
     }
 
     public void setActionType(int actionType) {
@@ -200,7 +216,11 @@ public class ListFragment extends AppBaseFragment<ListFragmentPresenter> {
         if (getArguments() != null) {
             Bundle bundle = getArguments();
             listType = bundle.getInt(LISTTYPE, MainActivity.REPAIR);
+            showType = bundle.getInt(SHOWTYPE);
+            infoId = bundle.getLong(INFOID);
         }
+
+        Log.d("wowo", "list获取showType :" + showType + "list获取infoId :" + infoId);
 
         if (listType == MainActivity.ANNOUNCEMENT) {
             flTitleAnnouncement.setChecked(true);
@@ -218,7 +238,6 @@ public class ListFragment extends AppBaseFragment<ListFragmentPresenter> {
         flList.setLayoutManager(manager);
         lmdList.setLayoutManager(new LinearLayoutManager(getContext()));
 
-        showListLayout();
         lmdMessageContent.setImeOptions(EditorInfo.IME_ACTION_DONE);
 
         flList.addOnScrollListener(new RecyclerView.OnScrollListener() {
@@ -242,6 +261,10 @@ public class ListFragment extends AppBaseFragment<ListFragmentPresenter> {
 
         lacMobile.setText(UserInfoManager.getMobile());
         larMobile.setText(UserInfoManager.getMobile());
+
+        if (showType == -1) {
+            showListLayout();
+        }
     }
 
     public void getAnnouncements(List<AnnouncementEntity.AnnouncementDataEntity> announcementDataEntities, int page) {

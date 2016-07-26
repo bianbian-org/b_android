@@ -2,6 +2,7 @@ package com.techjumper.polyhome.b.property.mvp.v.activity;
 
 import android.os.Bundle;
 import android.provider.Settings;
+import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
@@ -14,6 +15,7 @@ import com.techjumper.commonres.PluginConstant;
 import com.techjumper.commonres.UserInfoEntity;
 import com.techjumper.commonres.entity.event.LoginEvent;
 import com.techjumper.commonres.entity.event.PropertyActionEvent;
+import com.techjumper.commonres.entity.event.PropertyMessageDetailEvent;
 import com.techjumper.commonres.entity.event.TimeEvent;
 import com.techjumper.commonres.util.CommonDateUtil;
 import com.techjumper.corelib.mvp.factory.Presenter;
@@ -46,6 +48,8 @@ public class MainActivity extends AppBaseActivity<MainActivityPresenter> {
     TextView titleDate;
 
     private Timer timer = new Timer();
+    private int showType = -1;
+    private long infoId;
 
     public TextView getBottomDate() {
         return bottomDate;
@@ -68,15 +72,22 @@ public class MainActivity extends AppBaseActivity<MainActivityPresenter> {
             userInfoEntity.setUser_id(bundle.getLong(PluginConstant.KEY_PRO_USER_ID));
             userInfoEntity.setTicket(bundle.getString(PluginConstant.KEY_PRO_TICKET));
             UserInfoManager.saveUserInfo(userInfoEntity);
+
+            if (bundle.getInt(PluginConstant.KEY_PRO_TYPE) != -1) {
+                showType = bundle.getInt(PluginConstant.KEY_PRO_TYPE);
+                infoId = bundle.getLong(PluginConstant.KEY_PRO_ID);
+
+                Log.d("wowo", "获取showType :" + showType + "获取infoId :" + infoId);
+            }
         }
 
-        UserInfoEntity userInfoEntity = new UserInfoEntity();
-        userInfoEntity.setUser_id(362);
-        userInfoEntity.setTicket("b87ec030678160e236c5af6dd1c3cee7f11fded3");
-        userInfoEntity.setId(434);
-        UserInfoManager.saveUserInfo(userInfoEntity);
+//        UserInfoEntity userInfoEntity = new UserInfoEntity();
+//        userInfoEntity.setUser_id(362);
+//        userInfoEntity.setTicket("b87ec030678160e236c5af6dd1c3cee7f11fded3");
+//        userInfoEntity.setId(434);
+//        UserInfoManager.saveUserInfo(userInfoEntity);
 
-        switchFragment(R.id.container, ListFragment.getInstance(MainActivity.ANNOUNCEMENT), false, false);
+        switchFragment(R.id.container, ListFragment.getInstance(MainActivity.ANNOUNCEMENT, showType, infoId), false, false);
 
         timer.schedule(new TimerTask() {
             @Override
@@ -92,7 +103,7 @@ public class MainActivity extends AppBaseActivity<MainActivityPresenter> {
                         PropertyActionEvent event = (PropertyActionEvent) o;
                         if (event.isAction() == false) {
                             int listType = event.getListType();
-                            replaceFragment(R.id.container, ListFragment.getInstance(listType));
+                            replaceFragment(R.id.container, ListFragment.getInstance(listType, -1, -1L));
                         }
                     }
                 }));

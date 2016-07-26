@@ -6,28 +6,48 @@ import android.webkit.WebChromeClient;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
+import android.widget.TextView;
 
+import com.techjumper.commonres.entity.event.TimeEvent;
+import com.techjumper.commonres.util.CommonDateUtil;
 import com.techjumper.corelib.mvp.factory.Presenter;
+import com.techjumper.corelib.rx.tools.RxBus;
 import com.techjumper.polyhome.b.home.R;
 import com.techjumper.polyhome.b.home.js.AndroidForJs;
 import com.techjumper.polyhome.b.home.mvp.p.activity.ShoppingActivityPresenter;
+
+import java.util.Timer;
+import java.util.TimerTask;
 
 import butterknife.Bind;
 
 @Presenter(ShoppingActivityPresenter.class)
 public class ShoppingActivity extends AppBaseActivity<ShoppingActivityPresenter> {
+
     @Bind(R.id.webview)
     WebView webView;
+
+    @Bind(R.id.bottom_title)
+    TextView bottomTitle;
+    @Bind(R.id.bottom_date)
+    TextView bottomDate;
+    private Timer timer = new Timer();
 
     @Override
     protected View inflateView(Bundle savedInstanceState) {
         return inflate(R.layout.activity_shopping);
     }
 
+    public TextView getBottomDate() {
+        return bottomDate;
+    }
+
     @Override
     protected void initView(Bundle savedInstanceState) {
-        WebSettings ws = webView.getSettings();
+        bottomTitle.setText(R.string.title_shopping);
+        bottomDate.setText(CommonDateUtil.getTitleDate());
 
+        WebSettings ws = webView.getSettings();
         ws.setJavaScriptEnabled(true);
         ws.setLoadWithOverviewMode(true);
         ws.setAppCacheEnabled(true);
@@ -50,6 +70,13 @@ public class ShoppingActivity extends AppBaseActivity<ShoppingActivityPresenter>
         webView.setWebViewClient(new webViewClient());
         webView.loadUrl("http://pl.techjumper.com/shop/pad/login");
         webView.addJavascriptInterface(new AndroidForJs(this), "JavaScriptInterface");
+
+        timer.schedule(new TimerTask() {
+            @Override
+            public void run() {
+                RxBus.INSTANCE.send(new TimeEvent());
+            }
+        }, 5000, 60000);
     }
 
     @Override

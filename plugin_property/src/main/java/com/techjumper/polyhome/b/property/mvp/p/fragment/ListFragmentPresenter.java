@@ -49,6 +49,9 @@ public class ListFragmentPresenter extends AppBaseFragmentPresenter<ListFragment
     private int lrType = Constant.LR_TYPE_COM;
     private int lrDevice = Constant.LR_DEVICE_DOOR;
 
+    private long infoId;
+    private int showType;
+
     @OnCheckedChanged(R.id.fl_title_announcement)
     void checkAnnouncement(boolean check) {
         if (check) {
@@ -206,12 +209,22 @@ public class ListFragmentPresenter extends AppBaseFragmentPresenter<ListFragment
         lacLayout = getView().getLacLayout();
         larLayout = getView().getLarLayout();
 
+        infoId = getView().getInfoId();
+        showType = getView().getShowType();
+
+        Log.d("wowo", "presenter获取showType :" + showType + "presenter获取infoId :" + infoId);
+
         if (getView().getListType() == MainActivity.ANNOUNCEMENT) {
             getAnnouncements();
         } else if (getView().getListType() == MainActivity.REPAIR) {
             getRepairs();
         } else {
             getComplaints();
+        }
+
+        if (showType != -1) {
+            Log.d("wowo", "请求详情");
+            getMessageDetail(infoId, showType);
         }
 
         RxBus.INSTANCE.send(new BackEvent(BackEvent.FINISH));

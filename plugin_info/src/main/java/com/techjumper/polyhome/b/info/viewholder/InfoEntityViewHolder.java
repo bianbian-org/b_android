@@ -1,15 +1,20 @@
 package com.techjumper.polyhome.b.info.viewholder;
 
+import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
 
 import com.steve.creact.annotation.DataBean;
 import com.steve.creact.library.viewholder.BaseRecyclerViewHolder;
 import com.techjumper.commonres.entity.InfoEntity;
+import com.techjumper.commonres.entity.NoticeEntity;
 import com.techjumper.commonres.entity.event.InfoDetailEvent;
+import com.techjumper.commonres.entity.event.PropertyMessageDetailEvent;
 import com.techjumper.commonres.entity.event.ReadMessageEvent;
+import com.techjumper.commonres.util.PluginEngineUtil;
 import com.techjumper.corelib.rx.tools.RxBus;
 import com.techjumper.polyhome.b.info.R;
+import com.techjumper.polyhome.b.info.UserInfoManager;
 
 /**
  * Created by kevin on 16/5/4.
@@ -29,6 +34,7 @@ public class InfoEntityViewHolder extends BaseRecyclerViewHolder<InfoEntity.Info
             return;
 
         long id = data.getId();
+        long object_id = data.getObj_id();
         String title = data.getTitle();
         String content = data.getContent();
         String date = data.getCreated_at();
@@ -49,23 +55,33 @@ public class InfoEntityViewHolder extends BaseRecyclerViewHolder<InfoEntity.Info
 
         TextView typeTextView = getView(R.id.info_type);
         // TODO: 16/5/4 当接口来的时候再抽离出来
-        if (type == InfoEntity.TYPE_SYSTEM) {
+        if (type == NoticeEntity.SYSTEM) {
             typeTextView.setBackgroundResource(R.drawable.bg_shape_radius_20c3f3);
             typeTextView.setText(R.string.info_system);
-        } else if (type == InfoEntity.TYPE_ORDER) {
+        } else if (type == NoticeEntity.ORDER) {
             typeTextView.setBackgroundResource(R.drawable.bg_shape_radius_ff9938);
             typeTextView.setText(R.string.info_order);
-        } else if (type == InfoEntity.TYPE_MEDICAL) {
+        } else if (type == NoticeEntity.MEDICAL) {
             typeTextView.setBackgroundResource(R.drawable.bg_shape_radius_4eb738);
             typeTextView.setText(R.string.info_medical);
         }
 
         setOnItemClickListener(v -> {
-            RxBus.INSTANCE.send(new InfoDetailEvent(title, content, type, date));
-            if (hasRead == InfoEntity.HASREAD_FALSE) {
-                setVisibility(R.id.info_isread, View.INVISIBLE);
-                hasRead = InfoEntity.HASREAD_TURE;
+            if (type == NoticeEntity.REPAIR) {
                 RxBus.INSTANCE.send(new ReadMessageEvent(id, type));
+                PluginEngineUtil.startPropertyDetail(UserInfoManager.getFamilyId(), UserInfoManager.getUserId(), UserInfoManager.getTicket(), PropertyMessageDetailEvent.REPAIR, object_id);
+                Log.d("wowo", "点击id :" + object_id);
+            } else if (type == NoticeEntity.SUGGEST) {
+                RxBus.INSTANCE.send(new ReadMessageEvent(id, type));
+                Log.d("wowo", "点击id :" + object_id);
+                PluginEngineUtil.startPropertyDetail(UserInfoManager.getFamilyId(), UserInfoManager.getUserId(), UserInfoManager.getTicket(), PropertyMessageDetailEvent.COMPLAINT, object_id);
+            } else {
+                RxBus.INSTANCE.send(new InfoDetailEvent(title, content, type, date));
+                if (hasRead == InfoEntity.HASREAD_FALSE) {
+                    setVisibility(R.id.info_isread, View.INVISIBLE);
+                    hasRead = InfoEntity.HASREAD_TURE;
+                    RxBus.INSTANCE.send(new ReadMessageEvent(id, type));
+                }
             }
         });
     }

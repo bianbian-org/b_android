@@ -24,4 +24,6 @@ public class PluginConstant {
     public static final String KEY_PRO_FAMILY_ID = "key_pro_family_id";
     public static final String KEY_PRO_USER_ID = "key_pro_user_id";
     public static final String KEY_PRO_TICKET = "key_pro_ticket";
+    public static final String KEY_PRO_TYPE = "key_pro_type";
+    public static final String KEY_PRO_ID = "key_pro_id";
 }

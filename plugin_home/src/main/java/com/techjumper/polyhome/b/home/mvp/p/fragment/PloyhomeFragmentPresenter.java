@@ -304,19 +304,19 @@ public class PloyhomeFragmentPresenter extends AppBaseFragmentPresenter<Ployhome
             return "";
 
         if (date.equals("周一")) {
-            restrictNo = restrict.getMonday();
-        } else if (date.equals("周二")) {
-            restrictNo = restrict.getTuesday();
-        } else if (date.equals("周三")) {
-            restrictNo = restrict.getWednesday();
-        } else if (date.equals("周四")) {
-            restrictNo = restrict.getThursday();
-        } else if (date.equals("周五")) {
-            restrictNo = restrict.getFriday();
-        } else if (date.equals("周六")) {
-            restrictNo = restrict.getSaturday();
-        } else if (date.equals("周日")) {
             restrictNo = restrict.getSunday();
+        } else if (date.equals("周二")) {
+            restrictNo = restrict.getMonday();
+        } else if (date.equals("周三")) {
+            restrictNo = restrict.getTuesday();
+        } else if (date.equals("周四")) {
+            restrictNo = restrict.getWednesday();
+        } else if (date.equals("周五")) {
+            restrictNo = restrict.getThursday();
+        } else if (date.equals("周六")) {
+            restrictNo = restrict.getFriday();
+        } else if (date.equals("周日")) {
+            restrictNo = restrict.getSaturday();
         }
 
         return restrictNo;

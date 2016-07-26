@@ -36,6 +36,38 @@ public class PluginEngineUtil {
                 bundle.putLong(PluginConstant.KEY_PRO_FAMILY_ID, familyId);
                 bundle.putLong(PluginConstant.KEY_PRO_USER_ID, userId);
                 bundle.putString(PluginConstant.KEY_PRO_TICKET, ticket);
+                bundle.putInt(PluginConstant.KEY_PRO_TYPE, -1);
+
+                String data
+                        = HostDataBuilder.startPluginBuilder()
+                        .packageName(PLUGIN_PROPERTY)
+                        .build();
+                try {
+                    pluginExecutor.send(PluginEngine.CODE_START_PLUGIN, data, bundle);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+
+            @Override
+            public void onEngineDisconnected() {
+
+            }
+        });
+    }
+
+    //物业
+    public static void startPropertyDetail(final long familyId, final long userId, final String ticket, final int type, final long infoId) {
+        PluginEngine.getInstance().start(new PluginEngine.IPluginConnection() {
+            @Override
+            public void onEngineConnected(PluginEngine.PluginExecutor pluginExecutor) {
+
+                Bundle bundle = new Bundle();
+                bundle.putLong(PluginConstant.KEY_PRO_FAMILY_ID, familyId);
+                bundle.putLong(PluginConstant.KEY_PRO_USER_ID, userId);
+                bundle.putString(PluginConstant.KEY_PRO_TICKET, ticket);
+                bundle.putInt(PluginConstant.KEY_PRO_TYPE, type);
+                bundle.putLong(PluginConstant.KEY_PRO_ID, infoId);
 
                 String data
                         = HostDataBuilder.startPluginBuilder()
@@ -217,6 +249,9 @@ public class PluginEngineUtil {
         });
     }
 
+    /**
+     * 获取本地的医疗信息
+     */
     public static void getMedical() {
         PluginEngine.getInstance().start(new PluginEngine.IPluginConnection() {
             @Override

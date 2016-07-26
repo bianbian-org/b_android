@@ -6,10 +6,17 @@ import android.webkit.WebChromeClient;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
+import android.widget.TextView;
 
+import com.techjumper.commonres.entity.event.TimeEvent;
+import com.techjumper.commonres.util.CommonDateUtil;
 import com.techjumper.corelib.mvp.factory.Presenter;
+import com.techjumper.corelib.rx.tools.RxBus;
 import com.techjumper.polyhome.b.home.R;
 import com.techjumper.polyhome.b.home.mvp.p.activity.JujiaActivityPresenter;
+
+import java.util.Timer;
+import java.util.TimerTask;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -19,6 +26,15 @@ public class JujiaActivity extends AppBaseActivity<JujiaActivityPresenter> {
 
     @Bind(R.id.webview)
     WebView webView;
+    @Bind(R.id.bottom_title)
+    TextView bottomTitle;
+    @Bind(R.id.bottom_date)
+    TextView bottomDate;
+    private Timer timer = new Timer();
+
+    public TextView getBottomDate() {
+        return bottomDate;
+    }
 
     @Override
     protected View inflateView(Bundle savedInstanceState) {
@@ -27,6 +43,9 @@ public class JujiaActivity extends AppBaseActivity<JujiaActivityPresenter> {
 
     @Override
     protected void initView(Bundle savedInstanceState) {
+        bottomTitle.setText(R.string.title_jujia);
+        bottomDate.setText(CommonDateUtil.getTitleDate());
+
         WebSettings ws = webView.getSettings();
 
         ws.setJavaScriptEnabled(true);
@@ -50,6 +69,13 @@ public class JujiaActivity extends AppBaseActivity<JujiaActivityPresenter> {
         });
         webView.setWebViewClient(new webViewClient());
         webView.loadUrl("http://jujia.techjumper.com");
+
+        timer.schedule(new TimerTask() {
+            @Override
+            public void run() {
+                RxBus.INSTANCE.send(new TimeEvent());
+            }
+        }, 5000, 60000);
     }
 
     @Override

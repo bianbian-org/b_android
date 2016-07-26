@@ -34,7 +34,16 @@ public enum UserInfoManager {
      *
      * @return
      */
-    public static String getUserId() {
+    public static long getUserId() {
+        return PreferenceUtils.get(KEY_USER_ID, -1L);
+    }
+
+    /**
+     * 获取userId
+     *
+     * @return
+     */
+    public static String getUserIdString() {
         return String.valueOf(PreferenceUtils.get(KEY_USER_ID, -1L));
     }
 
@@ -43,7 +52,16 @@ public enum UserInfoManager {
      *
      * @return
      */
-    public static String getFamilyId() {
+    public static long getFamilyId() {
+        return PreferenceUtils.get(KEY_ID, -1L);
+    }
+
+    /**
+     * 获取家庭id
+     *
+     * @return
+     */
+    public static String getFamilyIdString() {
         return String.valueOf(PreferenceUtils.get(KEY_ID, -1L));
     }
 
