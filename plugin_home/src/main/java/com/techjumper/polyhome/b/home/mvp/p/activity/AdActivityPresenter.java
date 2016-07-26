@@ -27,6 +27,9 @@ public class AdActivityPresenter extends AppBaseActivityPresenter<AdActivity> {
         getView().finish();
     }
 
+    private ImageView imageView;
+    private MyTextureView textureView;
+
     @OnClick(R.id.img)
     void ad() {
         if (getView().getAdType() == PloyhomeFragmentPresenter.IMAGE_AD_TYPE) {
@@ -51,14 +54,30 @@ public class AdActivityPresenter extends AppBaseActivityPresenter<AdActivity> {
     }
 
     @Override
+    public void onResume() {
+        super.onResume();
+        if (textureView != null){
+            textureView.start();
+        }
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        if (textureView != null){
+            textureView.pause();
+        }
+    }
+
+    @Override
     public void onViewInited(Bundle savedInstanceState) {
         AdEntity.AdsEntity adsEntity = getView().getAdsEntity();
 //        if (adsEntity == null || TextUtils.isEmpty(adsEntity.getUrl()))
 //            return;
 
         if (getView().getAdType().equals(PloyhomeFragmentPresenter.VIDEO_AD_TYPE)) {
-            ImageView imageView = getView().getImg();
-            MyTextureView textureView = getView().getTextureView();
+            imageView = getView().getImg();
+            textureView = getView().getTextureView();
 
             textureView.setOnStateChangeListener(new MyTextureView.OnStateChangeListener() {
                 @Override

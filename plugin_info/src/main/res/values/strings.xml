@@ -3,6 +3,7 @@
 
     <string name="error_to_connect_server">网络连接失败!</string>
     <string name="error_no_data">暂无任何内容</string>
+    <string name="title_shopping">周边商店</string>
 
     <string name="info_title">信息中心</string>
     <string name="info_all_title">所有信息</string>

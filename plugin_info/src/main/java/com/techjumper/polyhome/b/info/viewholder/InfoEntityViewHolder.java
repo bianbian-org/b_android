@@ -1,5 +1,6 @@
 package com.techjumper.polyhome.b.info.viewholder;
 
+import android.content.Intent;
 import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
@@ -15,6 +16,7 @@ import com.techjumper.commonres.util.PluginEngineUtil;
 import com.techjumper.corelib.rx.tools.RxBus;
 import com.techjumper.polyhome.b.info.R;
 import com.techjumper.polyhome.b.info.UserInfoManager;
+import com.techjumper.polyhome.b.info.mvp.v.activity.ShoppingActivity;
 
 /**
  * Created by kevin on 16/5/4.
@@ -81,6 +83,15 @@ public class InfoEntityViewHolder extends BaseRecyclerViewHolder<InfoEntity.Info
                     RxBus.INSTANCE.send(new ReadMessageEvent(id, type));
                 }
                 PluginEngineUtil.startPropertyDetail(UserInfoManager.getFamilyId(), UserInfoManager.getUserId(), UserInfoManager.getTicket(), PropertyMessageDetailEvent.COMPLAINT, object_id);
+            } else if (type == NoticeEntity.ORDER) {
+                if (hasRead == InfoEntity.HASREAD_FALSE) {
+                    setVisibility(R.id.info_isread, View.INVISIBLE);
+                    hasRead = InfoEntity.HASREAD_TURE;
+                    RxBus.INSTANCE.send(new ReadMessageEvent(id, type));
+                }
+                Intent intent = new Intent(getContext(), ShoppingActivity.class);
+                intent.putExtra(ShoppingActivity.ID, object_id);
+                getContext().startActivity(intent);
             } else {
                 RxBus.INSTANCE.send(new InfoDetailEvent(title, content, type, date));
                 if (hasRead == InfoEntity.HASREAD_FALSE) {
