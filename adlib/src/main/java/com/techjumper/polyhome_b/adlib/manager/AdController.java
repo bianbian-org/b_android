@@ -53,6 +53,7 @@ import rx.android.schedulers.AndroidSchedulers;
  **/
 public class AdController {
 
+    private static int mLockTime;
     private volatile static AdController INSTANCE;
 
     public static final int CODE_WAKEUP_ALARM = 99; //唤醒广告服务的requestCode;
@@ -79,7 +80,6 @@ public class AdController {
     private AlarmReceiver mAlarmReceiver = new AlarmReceiver();
     private WakeUpReceiver mWakeUpReceiver = new WakeUpReceiver();
 
-    private int mLockTime;
     private ArrayList<IAlarm> iAlarmListeners = new ArrayList<>();
 
     Subscription subscribe = null;
@@ -93,15 +93,15 @@ public class AdController {
         if (INSTANCE == null) {
             synchronized (AdController.class) {
                 if (INSTANCE == null) {
+                    init();
                     INSTANCE = new AdController();
-                    INSTANCE.init();
                 }
             }
         }
         return INSTANCE;
     }
 
-    private void init() {
+    public static void init() {
         mLockTime = 20 * 60 * 1000;
         setScreenOffTime(mLockTime);
         //开启广告定时统计
