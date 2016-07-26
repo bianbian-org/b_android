@@ -6,7 +6,6 @@ import android.text.TextUtils;
 import com.techjumper.corelib.utils.Utils;
 import com.techjumper.corelib.utils.common.JLog;
 import com.techjumper.corelib.utils.file.FileUtils;
-import com.techjumper.corelib.utils.window.ToastUtils;
 import com.techjumper.polyhome_b.adlib.net.RetrofitTemplate;
 import com.techjumper.polyhome_b.adlib.utils.DiskLruCache;
 
@@ -171,7 +170,6 @@ public class AdDownloadManager {
                         public void onError(Throwable e) {
                             JLog.e("<Lru> 下载失败: " + e);
 //                            if (BuildConfig.DEBUG) {
-                            ToastUtils.show("<ad> 下载失败: " + e);
 //                            }
                             notifyDownloadFinish(iRetrofitDownload, null);
                         }
@@ -180,7 +178,6 @@ public class AdDownloadManager {
                         public void onNext(File file) {
                             JLog.d("<Lru> 从网络下载到本地: " + file + " 成功");
 //                            if (BuildConfig.DEBUG) {
-                            ToastUtils.show("<ad> " + file.getName() + " 下载完成");
 //                            }
                             notifyDownloadFinish(iRetrofitDownload, file);
                         }
