@@ -88,6 +88,7 @@
     <string name="cancel">取消</string>
     <string name="im_send">发送</string>
     <string name="input_limit">当前字数: %1$s /1000</string>
+    <string name="no_camera_permission">无法获取摄像头权限</string>
 
 
 </resources>

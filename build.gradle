@@ -46,7 +46,7 @@ ext {
     threetenabp = '1.0.3'
     butterKnife = '7.0.1'
     rxProguardRules = '1.1.0.0'
-    rxPermissions = "0.5.2@aar"
+    rxPermissions = "0.7.0@aar"
 
     //lib2
     gson = '2.6.1'

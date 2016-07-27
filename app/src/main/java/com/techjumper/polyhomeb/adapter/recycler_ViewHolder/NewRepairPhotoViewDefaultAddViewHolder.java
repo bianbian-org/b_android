@@ -1,16 +1,19 @@
 package com.techjumper.polyhomeb.adapter.recycler_ViewHolder;
 
+import android.Manifest;
 import android.app.Activity;
 import android.view.View;
 import android.widget.ImageView;
 
+import com.jakewharton.rxbinding.view.RxView;
 import com.steve.creact.annotation.DataBean;
 import com.steve.creact.library.viewholder.BaseRecyclerViewHolder;
+import com.tbruyelle.rxpermissions.RxPermissions;
+import com.techjumper.corelib.utils.window.ToastUtils;
 import com.techjumper.polyhomeb.R;
 import com.techjumper.polyhomeb.adapter.recycler_Data.NewRepairPhotoViewDefaultPlusData;
 
 import me.iwf.photopicker.PhotoPicker;
-
 
 /**
  * * * * * * * * * * * * * * * * * * * * * * *
@@ -31,14 +34,25 @@ public class NewRepairPhotoViewDefaultAddViewHolder extends BaseRecyclerViewHold
     public void setData(NewRepairPhotoViewDefaultPlusData data) {
         if (data == null) return;
         ((ImageView) getView(R.id.iv)).setImageResource(data.getImageResource());
-        setOnClickListener(R.id.iv, v -> {
-            PhotoPicker.builder()
-                    .setPhotoCount(3)
-                    .setShowCamera(true)
-                    .setShowGif(false)
-                    .setSelected(data.getSelectPhotoes())
-                    .setPreviewEnabled(false)
-                    .start((Activity) getContext(), PhotoPicker.REQUEST_CODE);
-        });
+
+        RxView.clicks(getView(R.id.iv))
+                .compose(RxPermissions.getInstance(getContext()).ensure(Manifest.permission.CAMERA))
+                .subscribe(granted -> {
+                    if (granted) {
+                        jumpToPhotoPickerActivity(data);
+                    } else {
+                        ToastUtils.show(getContext().getString(R.string.no_camera_permission));
+                    }
+                });
+    }
+
+    private void jumpToPhotoPickerActivity(NewRepairPhotoViewDefaultPlusData data) {
+        PhotoPicker.builder()
+                .setPhotoCount(3)
+                .setShowCamera(true)
+                .setShowGif(false)
+                .setSelected(data.getSelectPhotoes())
+                .setPreviewEnabled(false)
+                .start((Activity) getContext(), PhotoPicker.REQUEST_CODE);
     }
 }
