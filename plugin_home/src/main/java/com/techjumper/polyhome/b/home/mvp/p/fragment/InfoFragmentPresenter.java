@@ -15,6 +15,7 @@ import com.techjumper.commonres.entity.MedicalEntity;
 import com.techjumper.commonres.entity.WeatherEntity;
 import com.techjumper.commonres.entity.event.AdTemEvent;
 import com.techjumper.commonres.entity.event.MedicalEvent;
+import com.techjumper.commonres.entity.event.MissReadEvent;
 import com.techjumper.commonres.entity.event.ShowMainAdEvent;
 import com.techjumper.commonres.entity.event.UserInfoEvent;
 import com.techjumper.commonres.entity.event.WeatherDateEvent;
@@ -199,6 +200,9 @@ public class InfoFragmentPresenter extends AppBaseFragmentPresenter<InfoFragment
                         if (mIsGetAd) {
                             getNormalAd();
                         }
+                    } else if (o instanceof MissReadEvent) {
+                        int num = ((MissReadEvent) o).getNum();
+                        getView().getSpeak().showQuarterText(String.valueOf(num));
                     }
                 });
 

@@ -42,7 +42,7 @@
                 app:bg_color="@color/color_466780"
                 app:content_img="@mipmap/bg_speak"
                 app:quarter_layout_visible="true"
-                app:quarter_text="20"
+                app:quarter_text="0"
                 app:title_text="@string/title_speak" />
 
 
