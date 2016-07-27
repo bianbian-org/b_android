@@ -2,6 +2,7 @@ package com.techjumper.polyhomeb.mvp.p.activity;
 
 import android.animation.ObjectAnimator;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.view.View;
 
 import com.steve.creact.library.display.DisplayBean;
@@ -32,6 +33,7 @@ public class NewComplainActivityPresenter extends AppBaseActivityPresenter<NewCo
     private NewComplainActivityModel mModel = new NewComplainActivityModel(this);
     private Subscription mSubs1;
     private PolyPopupWindow mPop;
+    private int mComplainChoose = -1;
 
     @Override
     public void initData(Bundle savedInstanceState) {
@@ -54,9 +56,16 @@ public class NewComplainActivityPresenter extends AppBaseActivityPresenter<NewCo
     }
 
     public void onTitleRightClick() {
+        if (mComplainChoose == -1) {
+            ToastUtils.show("请选择主题");
+            return;
+        }
+        if (TextUtils.isEmpty(getView().getEtContent().getEditableText().toString().trim())) {
+            ToastUtils.show("请输入你的内容");
+            return;
+        }
 
         ToastUtils.show("提交");
-
 
     }
 
@@ -92,7 +101,7 @@ public class NewComplainActivityPresenter extends AppBaseActivityPresenter<NewCo
         List<String> datas = new ArrayList<>();
         datas.add(getView().getString(R.string.complaint));
         datas.add(getView().getString(R.string.advice));
-        datas.add(getView().getString(R.string.celebrete));
+        datas.add(getView().getString(R.string.celebrate));
         mPop.initData(datas);
 
     }
@@ -103,6 +112,21 @@ public class NewComplainActivityPresenter extends AppBaseActivityPresenter<NewCo
         public void callBack(int position, String s) {
             getView().getTv().setText(s);
             mPop.thisDismiss(PolyPopupWindow.AnimStyle.ALPHA);
+//            ObjectAnimator animator = ObjectAnimator.ofFloat(getView().getIvTriangle(), "rotation", 90f, 0f);
+//            animator.setDuration(300);
+//            animator.start();
+            mComplainChoose = position;
+            switch (position) {
+                case 0:
+                    getView().getEtContent().setHint(getView().getResources().getString(R.string.complain_text_hint_complaint));
+                    break;
+                case 1:
+                    getView().getEtContent().setHint(getView().getResources().getString(R.string.complain_text_hint_advice));
+                    break;
+                case 2:
+                    getView().getEtContent().setHint(getView().getResources().getString(R.string.complain_text_hint_celebrate));
+                    break;
+            }
         }
     }
 

@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/layout_root"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/color_ffffff"
@@ -7,134 +8,164 @@
 
     <include layout="@layout/title_back_right_text" />
 
-    <RelativeLayout
+    <LinearLayout
+        android:id="@+id/layout_static_head"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/dp_50">
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
 
-        <TextView
-            android:id="@+id/tv_title_first"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerVertical="true"
-            android:layout_marginLeft="@dimen/dp_14"
-            android:text="@string/repair_device"
-            android:textColor="@color/color_727272"
-            android:textSize="@dimen/sp_16" />
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/dp_50">
 
-        <FrameLayout
-            android:id="@+id/layout_choose_type_first"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:layout_alignParentRight="true">
+            <TextView
+                android:id="@+id/tv_title_first"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="@dimen/dp_14"
+                android:text="@string/repair_device"
+                android:textColor="@color/color_727272"
+                android:textSize="@dimen/sp_16" />
 
-            <LinearLayout
-                android:id="@+id/layout_device"
+            <FrameLayout
+                android:id="@+id/layout_choose_type_first"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
-                android:orientation="horizontal">
+                android:layout_alignParentRight="true">
 
-                <TextView
-                    android:id="@+id/tv_type_first"
+                <LinearLayout
+                    android:id="@+id/layout_device"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:gravity="center"
-                    android:text="@string/repair_all"
-                    android:textColor="@color/color_37a991"
-                    android:textSize="@dimen/sp_16" />
+                    android:layout_height="match_parent"
+                    android:orientation="horizontal">
 
-                <ImageView
-                    android:id="@+id/iv_triangle_first"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:layout_marginLeft="2.8dp"
-                    android:layout_marginRight="@dimen/dp_14"
-                    android:src="@mipmap/icon_triangle_green" />
-            </LinearLayout>
-        </FrameLayout>
-    </RelativeLayout>
+                    <TextView
+                        android:id="@+id/tv_type_first"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:gravity="center"
+                        android:text="@string/repair_all"
+                        android:textColor="@color/color_37a991"
+                        android:textSize="@dimen/sp_16" />
 
-    <include layout="@layout/item_property_repair_divider_long" />
+                    <ImageView
+                        android:id="@+id/iv_triangle_first"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:layout_marginLeft="2.8dp"
+                        android:layout_marginRight="@dimen/dp_14"
+                        android:src="@mipmap/icon_triangle_green" />
+                </LinearLayout>
+            </FrameLayout>
+        </RelativeLayout>
 
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/dp_50">
+        <include layout="@layout/item_property_repair_divider_long" />
 
-        <TextView
-            android:id="@+id/tv_title_second"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerVertical="true"
-            android:layout_marginLeft="@dimen/dp_14"
-            android:text="@string/repair_type"
-            android:textColor="@color/color_727272"
-            android:textSize="@dimen/sp_16" />
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/dp_50">
 
-        <FrameLayout
-            android:id="@+id/layout_choose_type_second"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:layout_alignParentRight="true">
+            <TextView
+                android:id="@+id/tv_title_second"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="@dimen/dp_14"
+                android:text="@string/repair_type"
+                android:textColor="@color/color_727272"
+                android:textSize="@dimen/sp_16" />
 
-            <LinearLayout
-                android:id="@+id/layout_type"
+            <FrameLayout
+                android:id="@+id/layout_choose_type_second"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
-                android:orientation="horizontal">
+                android:layout_alignParentRight="true">
 
-                <TextView
-                    android:id="@+id/tv_type_second"
+                <LinearLayout
+                    android:id="@+id/layout_type"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:gravity="center"
-                    android:text="@string/repair_unchecked"
-                    android:textColor="@color/color_37a991"
-                    android:textSize="@dimen/sp_16" />
+                    android:layout_height="match_parent"
+                    android:orientation="horizontal">
 
-                <ImageView
-                    android:id="@+id/iv_triangle_second"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:layout_marginLeft="2.8dp"
-                    android:layout_marginRight="@dimen/dp_14"
-                    android:src="@mipmap/icon_triangle_green" />
-            </LinearLayout>
-        </FrameLayout>
-    </RelativeLayout>
+                    <TextView
+                        android:id="@+id/tv_type_second"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:gravity="center"
+                        android:text="@string/repair_unchecked"
+                        android:textColor="@color/color_37a991"
+                        android:textSize="@dimen/sp_16" />
 
-    <include layout="@layout/item_property_repair_divider_long" />
+                    <ImageView
+                        android:id="@+id/iv_triangle_second"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:layout_marginLeft="2.8dp"
+                        android:layout_marginRight="@dimen/dp_14"
+                        android:src="@mipmap/icon_triangle_green" />
+                </LinearLayout>
+            </FrameLayout>
+        </RelativeLayout>
 
-    <FrameLayout
-        android:id="@+id/layout_et"
+        <include layout="@layout/item_property_repair_divider_long" />
+    </LinearLayout>
+
+    <ScrollView
+        android:id="@+id/layout"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/dp_200">
+        android:layout_height="wrap_content"
+        android:fillViewport="true">
 
-        <EditText
-            android:id="@+id/et_content"
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@null"
-            android:gravity="top"
-            android:hint="@string/repair_text_hint"
-            android:padding="@dimen/dp_7"
-            android:textColor="@color/color_727272"
-            android:textColorHint="@color/color_acacac"
-            android:textSize="@dimen/sp_16" />
-    </FrameLayout>
+            android:orientation="vertical">
 
-    <cn.finalteam.loadingviewfinal.RecyclerViewFinal
-        android:id="@+id/rv"
-        android:layout_width="wrap_content"
-        android:layout_height="70dp"
-        android:layout_marginBottom="@dimen/dp_7"
-        android:layout_marginLeft="@dimen/dp_7"
-        android:layout_marginRight="@dimen/dp_7"
-        android:layout_marginTop="@dimen/dp_7"
-        android:overScrollMode="never" />
+            <EditText
+                android:id="@+id/et_content"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/dp_200"
+                android:background="@null"
+                android:gravity="top"
+                android:hint="@string/repair_text_hint"
+                android:maxLength="1000"
+                android:overScrollMode="always"
+                android:padding="@dimen/dp_7"
+                android:scrollbars="vertical"
+                android:textColor="@color/color_727272"
+                android:textColorHint="@color/color_acacac"
+                android:textSize="@dimen/sp_16" />
 
-    <include layout="@layout/item_property_repair_divider_long" />
+            <cn.finalteam.loadingviewfinal.RecyclerViewFinal
+                android:id="@+id/rv"
+                android:layout_width="wrap_content"
+                android:layout_height="70dp"
+                android:layout_marginBottom="@dimen/dp_7"
+                android:layout_marginLeft="@dimen/dp_7"
+                android:layout_marginRight="@dimen/dp_7"
+                android:layout_marginTop="@dimen/dp_7"
+                android:overScrollMode="never" />
+
+            <include layout="@layout/item_property_repair_divider_long" />
+
+            <TextView
+                android:id="@+id/tv_input_number"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="right"
+                android:layout_marginLeft="@dimen/dp_3"
+                android:layout_marginRight="@dimen/dp_6"
+                android:text="还可输入"
+                android:textColor="@color/color_d43a2d"
+                android:textSize="@dimen/dp_14"
+                android:visibility="invisible" />
+
+        </LinearLayout>
+    </ScrollView>
 
 </LinearLayout>

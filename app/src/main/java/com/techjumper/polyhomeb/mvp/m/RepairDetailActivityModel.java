@@ -2,15 +2,11 @@ package com.techjumper.polyhomeb.mvp.m;
 
 import com.steve.creact.library.display.DisplayBean;
 import com.techjumper.polyhomeb.R;
-import com.techjumper.polyhomeb.adapter.recycler_Data.PropertyRepairBigDividerData;
 import com.techjumper.polyhomeb.adapter.recycler_Data.PropertyRepairDetailPropertyContentData;
 import com.techjumper.polyhomeb.adapter.recycler_Data.PropertyRepairDetailProprietorContentData;
-import com.techjumper.polyhomeb.adapter.recycler_Data.PropertyRepairDetailStaticData;
 import com.techjumper.polyhomeb.adapter.recycler_Data.RepairDetailTimeData;
-import com.techjumper.polyhomeb.adapter.recycler_ViewHolder.databean.PropertyRepairBigDividerBean;
 import com.techjumper.polyhomeb.adapter.recycler_ViewHolder.databean.PropertyRepairDetailPropertyBean;
 import com.techjumper.polyhomeb.adapter.recycler_ViewHolder.databean.PropertyRepairDetailProprietorContentBean;
-import com.techjumper.polyhomeb.adapter.recycler_ViewHolder.databean.PropertyRepairDetailStaticBean;
 import com.techjumper.polyhomeb.adapter.recycler_ViewHolder.databean.RepairDetailTimeBean;
 import com.techjumper.polyhomeb.mvp.p.activity.RepairDetailActivityPresenter;
 
@@ -32,17 +28,6 @@ public class RepairDetailActivityModel extends BaseModel<RepairDetailActivityPre
     public List<DisplayBean> getDatas() {
 
         List<DisplayBean> displayBeen = new ArrayList<>();
-
-        PropertyRepairDetailStaticData propertyRepairDetailStaticData = new PropertyRepairDetailStaticData();
-        propertyRepairDetailStaticData.setTime("12月22日");
-        propertyRepairDetailStaticData.setTitle("个人报修-门窗");
-        propertyRepairDetailStaticData.setContent("让我返回为归结为efefefefefeefefefefefefefefefefefefefefefefefefef攻击我配个为非法违法而非任务范围分为访问服务范围而外围绯闻绯闻绯闻金额为快乐女接wefefwejfjwefwefewfewfwefwefewfwefwekwejf而分为of问佛我威锋网付金额为 去看附件二起来可访问附件为浪费金额为浪费金额为放假前为了减肥我放进去了二级网 吻挎包vwekgwekbgwelkbgweklnvwkefhqpofhwev   而无法为库房内为开发快忘了发");
-        PropertyRepairDetailStaticBean propertyRepairDetailStaticBean = new PropertyRepairDetailStaticBean(propertyRepairDetailStaticData);
-        displayBeen.add(propertyRepairDetailStaticBean);
-
-        PropertyRepairBigDividerData propertyRepairBigDividerData = new PropertyRepairBigDividerData();
-        PropertyRepairBigDividerBean propertyRepairBigDividerBean = new PropertyRepairBigDividerBean(propertyRepairBigDividerData);
-        displayBeen.add(propertyRepairBigDividerBean);
 
         //时间
         RepairDetailTimeData repairDetailTimeData = new RepairDetailTimeData();

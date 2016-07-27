@@ -70,6 +70,7 @@ public class PolyPopupWindow extends PopupWindow implements PopupWindow.OnDismis
         mListView.setOnItemClickListener((parent, view, position, id) -> {
             if (mCallBack != null && mAdapter != null) {
                 mCallBack.callBack(position, mAdapter.getItem(position));
+                this.dismiss();
             }
         });
     }
@@ -183,14 +184,14 @@ public class PolyPopupWindow extends PopupWindow implements PopupWindow.OnDismis
     }
 
     private void popupShowAlpha() {
-        Window window = ((Activity) mActivity).getWindow();
+        Window window = mActivity.getWindow();
         WindowManager.LayoutParams params = window.getAttributes();
         params.alpha = 0.6f;
         window.setAttributes(params);
     }
 
     private void popupExitAlpha() {
-        Window window = ((Activity) mActivity).getWindow();
+        Window window = mActivity.getWindow();
         WindowManager.LayoutParams params = window.getAttributes();
         params.alpha = 1.0f;
         window.setAttributes(params);

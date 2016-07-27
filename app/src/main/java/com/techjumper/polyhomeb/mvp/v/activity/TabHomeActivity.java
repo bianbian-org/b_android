@@ -56,7 +56,6 @@ public class TabHomeActivity extends AppBaseActivity<TabHomeActivityPresenter> {
     protected void initView(Bundle savedInstanceState) {
         initSlidingMenu();
         initFragmentsAndPager();
-
     }
 
     @Override

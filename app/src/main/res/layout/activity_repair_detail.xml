@@ -8,17 +8,108 @@
 
     <include layout="@layout/title_back" />
 
-    <cn.finalteam.loadingviewfinal.RecyclerViewFinal
-        android:id="@+id/rv"
+    <LinearLayout
+        android:id="@+id/layout_static_head"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/color_ffffff"
+        android:orientation="vertical">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/dp_50">
+
+            <TextView
+                android:id="@+id/tv_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="@dimen/dp_14"
+                android:text="个人报修-门窗"
+                android:textColor="@color/color_727272"
+                android:textSize="@dimen/sp_16" />
+
+            <Button
+                android:id="@+id/btn"
+                android:layout_width="@dimen/dp_54"
+                android:layout_height="@dimen/dp_25"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:layout_marginRight="@dimen/dp_14"
+                android:background="@drawable/selector_btn_bg_color_green_gry"
+                android:text="已回复"
+                android:textColor="@color/color_37a991"
+                android:textSize="@dimen/sp_14" />
+
+        </RelativeLayout>
+
+        <include layout="@layout/item_property_repair_divider_long" />
+
+        <LinearLayout
+            android:id="@+id/layout_notice"
+            android:layout_width="match_parent"
+            android:layout_height="200dp"
+            android:orientation="vertical">
+
+            <ScrollView
+                android:layout_width="match_parent"
+                android:layout_height="150dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:id="@+id/tv_content"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:paddingLeft="@dimen/dp_14"
+                        android:paddingRight="@dimen/dp_14"
+                        android:paddingTop="@dimen/dp_14"
+                        android:text="让我返回为归结为efefefefefeefefefefefefefefefefefefefefefefefefef攻击我配个为非法违法而非任务范围分为访问服务范围而外围绯闻绯闻绯闻金额为快乐女接wefefwejfjwefwefewfewfwefwefewfwefwekwejf而分为of问佛我威锋网付金额为 去看附件二起来可访问附件为浪费金额为浪费金额为放假前为了减肥我放进去了二级网 吻挎包vwekgwekbgwelkbgweklnvwkefhqpofhwev   而无法为库房内为开发快忘了发"
+                        android:textColor="@color/color_3e3e3e"
+                        android:textSize="@dimen/sp_16" />
+
+                </LinearLayout>
+            </ScrollView>
+
+            <TextView
+                android:id="@+id/tv_time"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/dp_14"
+                android:layout_marginLeft="@dimen/dp_14"
+                android:layout_marginTop="@dimen/dp_14"
+                android:background="@drawable/shape_textview_bg_gray"
+                android:gravity="center"
+                android:padding="@dimen/dp_3"
+                android:text="12月25日"
+                android:textSize="@dimen/sp_12" />
+
+        </LinearLayout>
+
+        <include layout="@layout/item_property_repair_big_divider" />
+
+    </LinearLayout>
+
+    <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="1" />
+        android:layout_weight="1">
+
+        <cn.finalteam.loadingviewfinal.RecyclerViewFinal
+            android:id="@+id/rv"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:paddingBottom="@dimen/dp_5" />
+
+    </FrameLayout>
 
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="@dimen/dp_5"
-        android:layout_marginTop="@dimen/dp_5">
+        android:layout_marginBottom="@dimen/dp_5">
 
         <EditText
             android:id="@+id/et_content"
@@ -28,7 +119,11 @@
             android:layout_marginLeft="@dimen/dp_14"
             android:layout_marginRight="@dimen/dp_13"
             android:layout_toLeftOf="@+id/tv_send"
-            android:background="@mipmap/bg_edittext_green" />
+            android:background="@drawable/bg_edit_text_green"
+            android:maxLines="4"
+            android:padding="@dimen/dp_8"
+            android:textColor="@color/color_000000"
+            android:textSize="@dimen/sp_16" />
 
         <TextView
             android:id="@+id/tv_send"
@@ -37,9 +132,10 @@
             android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
             android:layout_marginRight="@dimen/dp_14"
-            android:text="发送"
+            android:text="@string/im_send"
             android:textColor="@color/color_24c88a"
             android:textSize="@dimen/sp_18" />
 
     </RelativeLayout>
+
 </LinearLayout>

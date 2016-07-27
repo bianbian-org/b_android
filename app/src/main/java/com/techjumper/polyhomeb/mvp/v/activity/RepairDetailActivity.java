@@ -4,7 +4,10 @@ import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.RelativeLayout;
+import android.widget.TextView;
 
+import com.jakewharton.rxbinding.widget.RxTextView;
 import com.techjumper.corelib.mvp.factory.Presenter;
 import com.techjumper.polyhomeb.R;
 import com.techjumper.polyhomeb.RepairDetailAdapter;
@@ -28,6 +31,10 @@ public class RepairDetailActivity extends AppBaseActivity<RepairDetailActivityPr
     EditText mEtContent;
     @Bind(R.id.layout_root)
     View mRootView;
+    @Bind(R.id.layout_static_head)
+    View mStaticHead;
+    @Bind(R.id.tv_send)
+    TextView mTvSend;
 
     //屏幕高度
     private int mScreenHeight = 0;
@@ -49,6 +56,7 @@ public class RepairDetailActivity extends AppBaseActivity<RepairDetailActivityPr
         mAdapter.loadData(getPresenter().getDatas());
 
         processScreenHeightAndIME();
+        processEditTextLines();
 
     }
 
@@ -67,9 +75,12 @@ public class RepairDetailActivity extends AppBaseActivity<RepairDetailActivityPr
         //old是改变前的左上右下坐标点值，没有old的是改变后的左上右下坐标点值
         //现在认为只要控件将Activity向上推的高度超过了1/3屏幕高，就认为软键盘弹起
         if (oldBottom != 0 && bottom != 0 && (oldBottom - bottom > mKeyHeight)) {
+            mStaticHead.setVisibility(View.GONE);
+            mAdapter.notifyDataSetChanged();
             mRv.smoothScrollToPosition(mAdapter.getItemCount() + 1);  //mRv跳至最后一个item
         } else if (oldBottom != 0 && bottom != 0 && (bottom - oldBottom > mKeyHeight)) {
-
+            mStaticHead.setVisibility(View.VISIBLE);
+            mAdapter.notifyDataSetChanged();
         }
     }
 
@@ -81,6 +92,22 @@ public class RepairDetailActivity extends AppBaseActivity<RepairDetailActivityPr
         mRootView.addOnLayoutChangeListener(this);
     }
 
+    private void processEditTextLines() {
+        RxTextView.afterTextChangeEvents(mEtContent).subscribe(textViewAfterTextChangeEvent -> {
+            //文字行数改变的时候需要让rv跳转到最后一个item
+            if (mEtContent.getLineCount() > 1) {
+                mRv.smoothScrollToPosition(mAdapter.getItemCount() + 1);
+                RelativeLayout.LayoutParams layoutParams = (RelativeLayout.LayoutParams) mTvSend.getLayoutParams();
+                layoutParams.addRule(RelativeLayout.ALIGN_BASELINE, R.id.et_content);
+                mTvSend.setLayoutParams(layoutParams);
+            } else {
+                RelativeLayout.LayoutParams layoutParams = (RelativeLayout.LayoutParams) mTvSend.getLayoutParams();
+                layoutParams.addRule(RelativeLayout.CENTER_VERTICAL);
+                mTvSend.setLayoutParams(layoutParams);
+            }
+        });
+    }
+
     public RecyclerViewFinal getRv() {
         return mRv;
     }
@@ -88,4 +115,5 @@ public class RepairDetailActivity extends AppBaseActivity<RepairDetailActivityPr
     public RepairDetailAdapter getAdapter() {
         return mAdapter;
     }
+
 }

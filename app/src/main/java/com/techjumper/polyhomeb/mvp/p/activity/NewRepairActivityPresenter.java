@@ -2,6 +2,7 @@ package com.techjumper.polyhomeb.mvp.p.activity;
 
 import android.animation.ObjectAnimator;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.view.View;
 
 import com.steve.creact.library.display.DisplayBean;
@@ -32,6 +33,7 @@ public class NewRepairActivityPresenter extends AppBaseActivityPresenter<NewRepa
     private NewRepairActivityModel mModel = new NewRepairActivityModel(this);
     private Subscription mSubs1;
     private PolyPopupWindow mPopDevice, mPopType;
+    private int mDeviceChoose, mTypeChoose = -1;
 
     @Override
     public void initData(Bundle savedInstanceState) {
@@ -54,10 +56,19 @@ public class NewRepairActivityPresenter extends AppBaseActivityPresenter<NewRepa
     }
 
     public void onTitleRightClick() {
-
+        if (mDeviceChoose == -1) {
+            ToastUtils.show("请选择报修设备");
+            return;
+        }
+        if (mTypeChoose == -1) {
+            ToastUtils.show("请选择报修类型");
+            return;
+        }
+        if (TextUtils.isEmpty(getView().getEtContent().getEditableText().toString().trim())) {
+            ToastUtils.show("请输入报修内容");
+            return;
+        }
         ToastUtils.show("提交");
-
-
     }
 
     public List<DisplayBean> getDatas() {
@@ -91,7 +102,6 @@ public class NewRepairActivityPresenter extends AppBaseActivityPresenter<NewRepa
                 mPopType.show(PolyPopupWindow.AnimStyle.ALPHA);
                 KeyboardUtils.closeKeyboard(getView().getEtContent());
                 break;
-
         }
     }
 
@@ -121,40 +131,12 @@ public class NewRepairActivityPresenter extends AppBaseActivityPresenter<NewRepa
 
         @Override
         public void callBack(int position, String s) {
-//            switch (position) {
-//                case 0:
-//                    mPopDevice.thisDismiss(PolyPopupWindow.AnimStyle.ALPHA);
-//                    ToastUtils.show("点击了全部");
-//                    setText(R.id.tv_type, "全部");
-//                    break;
-//                case 1:
-//                    mPopDevice.thisDismiss(PolyPopupWindow.AnimStyle.ALPHA);
-//                    ToastUtils.show("点击了门窗类");
-//                    setText(R.id.tv_type, "门窗类");
-//                    break;
-//                case 2:
-//                    mPopDevice.thisDismiss(PolyPopupWindow.AnimStyle.ALPHA);
-//                    ToastUtils.show("点击了墙类");
-//                    setText(R.id.tv_type, "墙类");
-//                    break;
-//                case 3:
-//                    mPopDevice.thisDismiss(PolyPopupWindow.AnimStyle.ALPHA);
-//                    ToastUtils.show("点击了电梯类");
-//                    setText(R.id.tv_type, "电梯类");
-//                    break;
-//                case 4:
-//                    mPopDevice.thisDismiss(PolyPopupWindow.AnimStyle.ALPHA);
-//                    ToastUtils.show("点击了水电类");
-//                    setText(R.id.tv_type, "水电类");
-//                    break;
-//                case 5:
-//                    mPopDevice.thisDismiss(PolyPopupWindow.AnimStyle.ALPHA);
-//                    ToastUtils.show("点击了锁类");
-//                    setText(R.id.tv_type, "锁类");
-//                    break;
-//            }
             getView().getTvDevice().setText(s);
             mPopDevice.thisDismiss(PolyPopupWindow.AnimStyle.ALPHA);
+//            ObjectAnimator animator = ObjectAnimator.ofFloat(getView().getIvTriangleDevice(), "rotation", 90f, 0f);
+//            animator.setDuration(300);
+//            animator.start();
+            mDeviceChoose = position;
         }
     }
 
@@ -164,33 +146,10 @@ public class NewRepairActivityPresenter extends AppBaseActivityPresenter<NewRepa
         public void callBack(int position, String s) {
             getView().getTvType().setText(s);
             mPopType.thisDismiss(PolyPopupWindow.AnimStyle.ALPHA);
-//            switch (position) {
-//                case 0:
-//                    mPopDevice.thisDismiss(PolyPopupWindow.AnimStyle.ALPHA);
-//                    setText(R.id.tv_type, "全部");
-//
-//                    break;
-//                case 1:
-//                    mPopDevice.thisDismiss(PolyPopupWindow.AnimStyle.ALPHA);
-//                    setText(R.id.tv_type, "门窗类");
-//                    break;
-//                case 2:
-//                    mPopDevice.thisDismiss(PolyPopupWindow.AnimStyle.ALPHA);
-//                    setText(R.id.tv_type, "墙类");
-//                    break;
-//                case 3:
-//                    mPopDevice.thisDismiss(PolyPopupWindow.AnimStyle.ALPHA);
-//                    setText(R.id.tv_type, "电梯类");
-//                    break;
-//                case 4:
-//                    mPopDevice.thisDismiss(PolyPopupWindow.AnimStyle.ALPHA);
-//                    setText(R.id.tv_type, "水电类");
-//                    break;
-//                case 5:
-//                    mPopDevice.thisDismiss(PolyPopupWindow.AnimStyle.ALPHA);
-//                    setText(R.id.tv_type, "锁类");
-//                    break;
-//            }
+            ObjectAnimator animator = ObjectAnimator.ofFloat(getView().getIvTriangleType(), "rotation", 90f, 0f);
+            animator.setDuration(300);
+            animator.start();
+            mTypeChoose = position;
         }
     }
 

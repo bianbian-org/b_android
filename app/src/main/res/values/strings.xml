@@ -75,13 +75,19 @@
     <string name="pop_reply">已回复</string>
     <string name="pop_done">已完成</string>
     <string name="complain_theme">主题</string>
-    <string name="complain_text_hint">输入你的投诉内容...</string>
+    <string name="complain_text_hint">请输入你的内容...</string>
+    <string name="complain_text_hint_complaint">输入你的投诉内容...</string>
+    <string name="complain_text_hint_advice">输入你的建议内容...</string>
+    <string name="complain_text_hint_celebrate">输入你的表扬内容...</string>
     <string name="advice">建议</string>
-    <string name="celebrete">表扬</string>
+    <string name="celebrate">表扬</string>
     <string name="new_complain">新增投诉</string>
     <string name="repair_detail">报修详情</string>
     <string name="confirm_resend">重新发送?</string>
     <string name="ok">确定</string>
     <string name="cancel">取消</string>
+    <string name="im_send">发送</string>
+    <string name="input_limit">当前字数: %1$s /1000</string>
+
 
 </resources>
