@@ -16,8 +16,8 @@ import com.techjumper.polyhome.blauncher.aidl.IMessageListener;
 import com.techjumper.polyhome.blauncher.aidl.IPluginCommunicate;
 
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 /**
  * * * * * * * * * * * * * * * * * * * * * * *
@@ -49,8 +49,8 @@ public class PluginEngine {
     private static PluginEngine INSTANCE;
 
     private Context mContext;
-    private List<IPluginConnection> mListenerList = new ArrayList<>();
-    private List<IPluginMessageReceiver> mMessageReceiveListenerList = new ArrayList<>();
+    private List<IPluginConnection> mListenerList = new CopyOnWriteArrayList<>();
+    private List<IPluginMessageReceiver> mMessageReceiveListenerList = new CopyOnWriteArrayList<>();
     private Handler mHandler = new Handler(Looper.getMainLooper());
     private IPluginCommunicate iPluginCommunicate;
     private PluginExecutor mPluginExecutor = new PluginExecutor();
@@ -140,14 +140,7 @@ public class PluginEngine {
     }
 
     private void unregisterListener(IPluginConnection iPluginConnection) {
-        Iterator<IPluginConnection> it = mListenerList.iterator();
-        while (it.hasNext()) {
-            IPluginConnection next = it.next();
-            if (next == null || next != iPluginConnection)
-                continue;
-            it.remove();
-            return;
-        }
+        mListenerList.clear();
     }
 
 
@@ -155,16 +148,15 @@ public class PluginEngine {
         mHandler.post(new Runnable() {
             @Override
             public void run() {
-                Iterator<IPluginConnection> it = mListenerList.iterator();
-                while (it.hasNext()) {
-                    IPluginConnection next = it.next();
+                ArrayList<IPluginConnection> tmpList = new ArrayList<>();
+                for (IPluginConnection next : mListenerList) {
                     if (next == null) {
-                        it.remove();
-                        return;
+                        continue;
                     }
+                    tmpList.add(next);
                     next.onEngineConnected(mPluginExecutor);
-                    it.remove();
                 }
+                mListenerList.removeAll(tmpList);
             }
         });
     }
@@ -190,21 +182,21 @@ public class PluginEngine {
     }
 
     public void unregisterReceiver(IPluginMessageReceiver iPluginMessageReceiver) {
+        int index = -1;
         for (int i = 0; i < mMessageReceiveListenerList.size(); i++) {
             IPluginMessageReceiver receiver = mMessageReceiveListenerList.get(i);
             if (receiver == iPluginMessageReceiver) {
-                mMessageReceiveListenerList.remove(i);
-                return;
+                index = i;
+                break;
             }
         }
+        if (index != -1)
+            mMessageReceiveListenerList.remove(index);
     }
 
     private void notifyPluginMessageRecieve(int code, String message, Bundle extras) {
-        Iterator<IPluginMessageReceiver> it = mMessageReceiveListenerList.iterator();
-        while (it.hasNext()) {
-            IPluginMessageReceiver next = it.next();
+        for (IPluginMessageReceiver next : mMessageReceiveListenerList) {
             if (next == null) {
-                it.remove();
                 continue;
             }
             next.onPluginMessageReceive(code, message, extras);

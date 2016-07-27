@@ -1,13 +1,12 @@
 package com.techjumper.polyhome.b.home.mvp.v.fragment;
 
 
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.techjumper.commonres.entity.NoticeEntity;
@@ -17,7 +16,6 @@ import com.techjumper.corelib.rx.tools.RxBus;
 import com.techjumper.polyhome.b.home.R;
 import com.techjumper.polyhome.b.home.mvp.p.fragment.PloyhomeFragmentPresenter;
 import com.techjumper.polyhome.b.home.widget.MyTextureView;
-import com.techjumper.polyhome.b.home.widget.MyVideoView;
 import com.techjumper.polyhome.b.home.widget.SquareView;
 
 import java.util.ArrayList;
@@ -26,7 +24,6 @@ import java.util.Timer;
 import java.util.TimerTask;
 
 import butterknife.Bind;
-import butterknife.ButterKnife;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -48,6 +45,16 @@ public class PloyhomeFragment extends AppBaseFragment<PloyhomeFragmentPresenter>
     ImageView ad;
     @Bind(R.id.video_ad)
     MyTextureView textureView;
+    @Bind(R.id.jujia)
+    SquareView jujia;
+    @Bind(R.id.smarthome)
+    SquareView smarthome;
+    @Bind(R.id.property)
+    SquareView property;
+    @Bind(R.id.notice_layout)
+    RelativeLayout noticeLayout;
+    @Bind(R.id.shopping)
+    SquareView shopping;
 
     private Timer timer = new Timer();
     private int position = 0;
@@ -85,6 +92,26 @@ public class PloyhomeFragment extends AppBaseFragment<PloyhomeFragmentPresenter>
         return unreads;
     }
 
+    public SquareView getProperty() {
+        return property;
+    }
+
+    public SquareView getShopping() {
+        return shopping;
+    }
+
+    public RelativeLayout getNoticeLayout() {
+        return noticeLayout;
+    }
+
+    public SquareView getSmarthome() {
+        return smarthome;
+    }
+
+    public SquareView getJujia() {
+        return jujia;
+    }
+
     @Override
     protected View inflateView(LayoutInflater inflater, Bundle savedInstanceState) {
         return inflater.inflate(R.layout.fragment_ployhome, null);
@@ -92,10 +119,6 @@ public class PloyhomeFragment extends AppBaseFragment<PloyhomeFragmentPresenter>
 
     @Override
     protected void initView(Bundle savedInstanceState) {
-//        textureView.setSource(Uri.parse("/mnt/sdcard/polyhome_b_host/h_retrofit_cache/e5ab50cf4959e449d698d1a6c5742863.0"));
-//        video.setVideoPath("/mnt/sdcard/polyhome_b_host/h_retrofit_cache/e5ab50cf4959e449d698d1a6c5742863.0");
-//        video.start();
-//        video.requestFocus();
     }
 
     @Override

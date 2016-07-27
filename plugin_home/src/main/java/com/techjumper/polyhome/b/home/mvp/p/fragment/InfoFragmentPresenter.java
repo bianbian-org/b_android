@@ -9,6 +9,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 
+import com.jakewharton.rxbinding.view.RxView;
 import com.techjumper.commonres.entity.CalendarEntity;
 import com.techjumper.commonres.entity.MedicalEntity;
 import com.techjumper.commonres.entity.WeatherEntity;
@@ -19,6 +20,7 @@ import com.techjumper.commonres.entity.event.UserInfoEvent;
 import com.techjumper.commonres.entity.event.WeatherDateEvent;
 import com.techjumper.commonres.entity.event.WeatherEvent;
 import com.techjumper.commonres.util.PluginEngineUtil;
+import com.techjumper.commonres.util.RxUtil;
 import com.techjumper.corelib.rx.tools.RxBus;
 import com.techjumper.corelib.utils.Utils;
 import com.techjumper.corelib.utils.common.JLog;
@@ -65,19 +67,6 @@ public class InfoFragmentPresenter extends AppBaseFragmentPresenter<InfoFragment
     private boolean mIsVisibleToUser;
     private boolean mIsGetAd;
 
-    @OnClick(R.id.setting)
-    void setting() {
-        Intent it = new Intent();
-        ComponentName componentName = new ComponentName("com.dnake.talk", "com.dnake.setting.activity.SettingActivity");
-        it.setComponent(componentName);
-        getView().startActivity(it);
-    }
-
-    @OnClick(R.id.detect_layout)
-    void detect() {
-        PluginEngineUtil.startMedical();
-    }
-
     @OnClick(R.id.info_arrow_layout)
     void changeMedicalInfo() {
         Log.d("medical: ", "entities.size()" + entities.size());
@@ -95,24 +84,6 @@ public class InfoFragmentPresenter extends AppBaseFragmentPresenter<InfoFragment
             advBloodpressure.setContentText(itemEntity.getBpValue());
             advDetect.setContentText(itemEntity.getName());
         }
-    }
-
-    @OnClick(R.id.speak)
-    void speak() {
-        Intent it = new Intent();
-        ComponentName componentName = new ComponentName("com.dnake.talk", "com.dnake.activity.CallingActivity");
-        it.setComponent(componentName);
-        getView().startActivity(it);
-    }
-
-    @OnClick(R.id.ad_tem)
-    void ad_tem() {
-        if (mAdsEntity == null || TextUtils.isEmpty(mAdsEntity.getMedia_type()))
-            return;
-
-        Intent intent = new Intent(getView().getActivity(), AdActivity.class);
-        intent.putExtra(AdActivity.ADITEM, mAdsEntity);
-        getView().getActivity().startActivity(intent);
     }
 
     @Override
@@ -134,6 +105,45 @@ public class InfoFragmentPresenter extends AppBaseFragmentPresenter<InfoFragment
         getCalendarInfo();
 
         AlarmManagerUtil.setWeatherTime(Utils.appContext, 0, 30 + new Random().nextInt(30));
+
+        RxView.clicks(getView().getSetting())
+                .compose(RxUtil.applySchedulers())
+                .subscribe(aVoid -> {
+                    Intent it = new Intent();
+                    ComponentName componentName = new ComponentName("com.dnake.talk", "com.dnake.setting.activity.SettingActivity");
+                    it.setComponent(componentName);
+                    getView().startActivity(it);
+                });
+
+        RxView.clicks(getView().getDetectLayout())
+                .compose(RxUtil.applySchedulers())
+                .subscribe(aVoid -> {
+                    PluginEngineUtil.startMedical();
+                });
+
+        RxView.clicks(getView().getSpeak())
+                .compose(RxUtil.applySchedulers())
+                .subscribe(aVoid -> {
+                    Intent it = new Intent();
+                    ComponentName componentName = new ComponentName("com.dnake.talk", "com.dnake.activity.CallingActivity");
+                    it.setComponent(componentName);
+                    getView().startActivity(it);
+                });
+
+        RxView.clicks(getView().getAdTem())
+                .filter(aVoid -> {
+                    if (mAdsEntity != null && !TextUtils.isEmpty(mAdsEntity.getMedia_type()))
+                        return true;
+
+                    return false;
+                })
+                .compose(RxUtil.applySchedulers())
+                .subscribe(aVoid -> {
+                    Intent it = new Intent();
+                    ComponentName componentName = new ComponentName("com.dnake.talk", "com.dnake.activity.CallingActivity");
+                    it.setComponent(componentName);
+                    getView().startActivity(it);
+                });
 
         RxBus.INSTANCE.asObservable()
                 .observeOn(AndroidSchedulers.mainThread())

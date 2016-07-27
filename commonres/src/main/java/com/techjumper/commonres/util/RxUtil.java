@@ -1,9 +1,5 @@
 package com.techjumper.commonres.util;
 
-import android.view.View;
-
-import com.jakewharton.rxbinding.view.RxView;
-
 import java.util.concurrent.TimeUnit;
 
 import rx.Observable;
@@ -14,12 +10,15 @@ import rx.android.schedulers.AndroidSchedulers;
  */
 
 public class RxUtil {
-    public static final int Time = 1500;
 
-    public static Observable click(View view) {
-        return RxView.clicks(view)
-                .throttleFirst(Time, TimeUnit.MILLISECONDS)
+    public static final int Time = 5000;
+
+    public static <T> Observable.Transformer<T, T> applySchedulers() {
+        return observable -> observable.throttleFirst(Time, TimeUnit.MILLISECONDS)
                 .subscribeOn(AndroidSchedulers.mainThread())
                 .observeOn(AndroidSchedulers.mainThread());
     }
+
+
+
 }

@@ -7,6 +7,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 
+import com.jakewharton.rxbinding.view.RxView;
 import com.techjumper.commonres.UserInfoEntity;
 import com.techjumper.commonres.entity.NoticeEntity;
 import com.techjumper.commonres.entity.WeatherEntity;
@@ -21,6 +22,7 @@ import com.techjumper.commonres.entity.event.UserInfoEvent;
 import com.techjumper.commonres.entity.event.WeatherEvent;
 import com.techjumper.commonres.entity.event.pushevent.NoticePushEvent;
 import com.techjumper.commonres.util.PluginEngineUtil;
+import com.techjumper.commonres.util.RxUtil;
 import com.techjumper.corelib.rx.tools.RxBus;
 import com.techjumper.corelib.utils.Utils;
 import com.techjumper.corelib.utils.common.JLog;
@@ -69,69 +71,6 @@ public class PloyhomeFragmentPresenter extends AppBaseFragmentPresenter<Ployhome
     private boolean mIsVisibleToUser;
     private boolean mIsGetAd;
 
-    @OnClick(R.id.property)
-    void property() {
-        if (UserInfoManager.isLogin()) {
-            long familyId = UserInfoManager.getLongFamilyId();
-            long userId = UserInfoManager.getLongUserId();
-            String ticket = UserInfoManager.getTicket();
-            PluginEngineUtil.startProperty(familyId, userId, ticket);
-        } else {
-            ToastUtils.show(getView().getString(R.string.error_no_login));
-        }
-    }
-
-    @OnClick(R.id.notice_layout)
-    void noticeLayout() {
-        if (UserInfoManager.isLogin()) {
-            long userId = UserInfoManager.getLongUserId();
-            long familyId = UserInfoManager.getLongFamilyId();
-            String ticket = UserInfoManager.getTicket();
-
-            NoticeEntity.InfoUnread infoUnread = new NoticeEntity.InfoUnread();
-            infoUnread.setUnreads(getView().getUnreads());
-            String unreadString = GsonUtils.toJson(infoUnread);
-
-            PluginEngineUtil.startInfo(userId, familyId, ticket, type, unreadString);
-        } else {
-            ToastUtils.show(getView().getString(R.string.error_no_login));
-        }
-    }
-
-    @OnClick(R.id.ad)
-    void ad() {
-//        mAdsEntity = new AdEntity.AdsEntity();
-//        mAdsEntity.setMedia_type(VIDEO_AD_TYPE);
-
-        if (mAdsEntity == null || TextUtils.isEmpty(mAdsEntity.getMedia_type()))
-            return;
-
-        Intent intent = new Intent(getView().getActivity(), AdActivity.class);
-        intent.putExtra(AdActivity.ADITEM, mAdsEntity);
-        getView().getActivity().startActivity(intent);
-    }
-
-    @OnClick(R.id.shopping)
-    void shopping() {
-        if (TextUtils.isEmpty(UserInfoManager.getTicket()) || TextUtils.isEmpty(UserInfoManager.getUserId())) {
-            ToastUtils.show(getView().getString(R.string.error_no_login));
-        } else {
-            Intent intent = new Intent(getView().getActivity(), ShoppingActivity.class);
-            getView().startActivity(intent);
-        }
-    }
-
-    @OnClick(R.id.jujia)
-    void jujia() {
-        Intent intent = new Intent(getView().getActivity(), JujiaActivity.class);
-        getView().startActivity(intent);
-    }
-
-    @OnClick(R.id.smarthome)
-    void smartHome() {
-        PluginEngineUtil.startSmartHome();
-    }
-
     @Override
     public void onDestroy() {
         if (adController != null) {
@@ -155,6 +94,86 @@ public class PloyhomeFragmentPresenter extends AppBaseFragmentPresenter<Ployhome
 
         getAd();
         getNotices();
+
+        RxView.clicks(getView().getProperty())
+                .filter(aVoid -> {
+                    if (UserInfoManager.isLogin())
+                        return true;
+
+                    ToastUtils.show(getView().getString(R.string.error_no_login));
+                    return false;
+                })
+                .compose(RxUtil.applySchedulers())
+                .subscribe(aVoid -> {
+                    long familyId = UserInfoManager.getLongFamilyId();
+                    long userId = UserInfoManager.getLongUserId();
+                    String ticket = UserInfoManager.getTicket();
+                    PluginEngineUtil.startProperty(familyId, userId, ticket);
+                });
+
+        RxView.clicks(getView().getNoticeLayout())
+                .filter(aVoid -> {
+                    if (UserInfoManager.isLogin())
+                        return true;
+
+                    ToastUtils.show(getView().getString(R.string.error_no_login));
+                    return false;
+                })
+                .compose(RxUtil.applySchedulers())
+                .subscribe(aVoid -> {
+                    long userId = UserInfoManager.getLongUserId();
+                    long familyId = UserInfoManager.getLongFamilyId();
+                    String ticket = UserInfoManager.getTicket();
+
+                    NoticeEntity.InfoUnread infoUnread = new NoticeEntity.InfoUnread();
+                    infoUnread.setUnreads(getView().getUnreads());
+                    String unreadString = GsonUtils.toJson(infoUnread);
+
+                    PluginEngineUtil.startInfo(userId, familyId, ticket, type, unreadString);
+                });
+
+        RxView.clicks(getView().getAd())
+                .filter(aVoid -> {
+                    if (mAdsEntity != null && !TextUtils.isEmpty(mAdsEntity.getMedia_type()))
+                        return true;
+
+                    return false;
+                })
+                .compose(RxUtil.applySchedulers())
+                .subscribe(aVoid -> {
+
+                    Intent intent = new Intent(getView().getActivity(), AdActivity.class);
+                    intent.putExtra(AdActivity.ADITEM, mAdsEntity);
+                    getView().getActivity().startActivity(intent);
+                });
+
+        RxView.clicks(getView().getShopping())
+                .filter(aVoid -> {
+                    if (UserInfoManager.isLogin())
+                        return true;
+
+                    ToastUtils.show(getView().getString(R.string.error_no_login));
+                    return false;
+                })
+                .compose(RxUtil.applySchedulers())
+                .subscribe(aVoid -> {
+                    Intent intent = new Intent(getView().getActivity(), ShoppingActivity.class);
+                    getView().startActivity(intent);
+                });
+
+        RxView.clicks(getView().getJujia())
+                .compose(RxUtil.applySchedulers())
+                .subscribe(aVoid -> {
+                    Intent intent = new Intent(getView().getActivity(), JujiaActivity.class);
+                    getView().startActivity(intent);
+                });
+
+        RxView.clicks(getView().getSmarthome())
+                .compose(RxUtil.applySchedulers())
+                .subscribe(aVoid -> {
+                    PluginEngineUtil.startSmartHome();
+                });
+
 
         RxBus.INSTANCE.asObservable()
                 .observeOn(AndroidSchedulers.mainThread())
@@ -302,7 +321,6 @@ public class PloyhomeFragmentPresenter extends AppBaseFragmentPresenter<Ployhome
 
         if (TextUtils.isEmpty(date))
             return "";
-
         if (date.equals("周一")) {
             restrictNo = restrict.getSunday();
         } else if (date.equals("周二")) {

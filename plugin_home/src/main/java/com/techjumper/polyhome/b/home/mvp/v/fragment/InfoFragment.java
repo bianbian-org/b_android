@@ -3,11 +3,12 @@ package com.techjumper.polyhome.b.home.mvp.v.fragment;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.techjumper.commonres.entity.CalendarEntity;
@@ -21,7 +22,7 @@ import com.techjumper.polyhome.b.home.utils.WeatherUtil;
 import com.techjumper.polyhome.b.home.widget.AlmanacView;
 import com.techjumper.polyhome.b.home.widget.ArcDataView;
 import com.techjumper.polyhome.b.home.widget.MyTextureView;
-import com.techjumper.polyhome.b.home.widget.MyVideoView;
+import com.techjumper.polyhome.b.home.widget.SquareView;
 import com.techjumper.polyhome.b.home.widget.WeatherView;
 
 import java.util.List;
@@ -79,6 +80,16 @@ public class InfoFragment extends AppBaseFragment<InfoFragmentPresenter> {
     ArcDataView advBloodpressure;
     @Bind(R.id.adv_detect)
     ArcDataView advDetect;
+    @Bind(R.id.detect_layout)
+    RelativeLayout detectLayout;
+    @Bind(R.id.speak)
+    SquareView speak;
+    @Bind(R.id.setting)
+    SquareView setting;
+    @Bind(R.id.info_arrow_layout)
+    FrameLayout infoArrowLayout;
+    @Bind(R.id.ad_tem)
+    FrameLayout adTem;
 
     public static InfoFragment getInstance() {
         return new InfoFragment();
@@ -116,6 +127,22 @@ public class InfoFragment extends AppBaseFragment<InfoFragmentPresenter> {
 
     public ArcDataView getAdvBloodpressure() {
         return advBloodpressure;
+    }
+
+    public FrameLayout getAdTem() {
+        return adTem;
+    }
+
+    public SquareView getSetting() {
+        return setting;
+    }
+
+    public RelativeLayout getDetectLayout() {
+        return detectLayout;
+    }
+
+    public SquareView getSpeak() {
+        return speak;
     }
 
     public void getWeatherInfo(WeatherEntity.WeatherDataEntity weatherDataEntity) {
