@@ -27,6 +27,7 @@
         <activity
             android:name=".mvp.v.activity.MainActivity"
             android:launchMode="singleTask"
+            android:hardwareAccelerated="true"
             android:theme="@style/AppTheme">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

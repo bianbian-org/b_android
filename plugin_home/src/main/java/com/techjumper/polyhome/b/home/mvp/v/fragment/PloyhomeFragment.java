@@ -5,6 +5,8 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -24,6 +26,7 @@ import java.util.Timer;
 import java.util.TimerTask;
 
 import butterknife.Bind;
+import butterknife.ButterKnife;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -55,6 +58,8 @@ public class PloyhomeFragment extends AppBaseFragment<PloyhomeFragmentPresenter>
     RelativeLayout noticeLayout;
     @Bind(R.id.shopping)
     SquareView shopping;
+    @Bind(R.id.ad)
+    FrameLayout ad_layout;
 
     private Timer timer = new Timer();
     private int position = 0;
@@ -110,6 +115,10 @@ public class PloyhomeFragment extends AppBaseFragment<PloyhomeFragmentPresenter>
 
     public SquareView getJujia() {
         return jujia;
+    }
+
+    public FrameLayout getAd_layout() {
+        return ad_layout;
     }
 
     @Override
@@ -179,5 +188,19 @@ public class PloyhomeFragment extends AppBaseFragment<PloyhomeFragmentPresenter>
         } else {
             RxBus.INSTANCE.send(new NoticeEvent(getString(R.string.info_not_new), "", -1));
         }
+    }
+
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        // TODO: inflate a fragment view
+        View rootView = super.onCreateView(inflater, container, savedInstanceState);
+        ButterKnife.bind(this, rootView);
+        return rootView;
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        ButterKnife.unbind(this);
     }
 }

@@ -140,10 +140,9 @@ public class InfoFragmentPresenter extends AppBaseFragmentPresenter<InfoFragment
                 })
                 .compose(RxUtil.applySchedulers())
                 .subscribe(aVoid -> {
-                    Intent it = new Intent();
-                    ComponentName componentName = new ComponentName("com.dnake.talk", "com.dnake.activity.CallingActivity");
-                    it.setComponent(componentName);
-                    getView().startActivity(it);
+                    Intent intent = new Intent(getView().getActivity(), AdActivity.class);
+                    intent.putExtra(AdActivity.ADITEM, mAdsEntity);
+                    getView().getActivity().startActivity(intent);
                 });
 
         RxBus.INSTANCE.asObservable()

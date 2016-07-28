@@ -2,6 +2,7 @@ package com.techjumper.polyhome.b.home.widget;
 
 import android.content.Context;
 import android.graphics.SurfaceTexture;
+import android.media.AudioManager;
 import android.media.MediaPlayer;
 import android.media.MediaPlayer.OnBufferingUpdateListener;
 import android.media.MediaPlayer.OnInfoListener;

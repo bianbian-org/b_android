@@ -132,7 +132,7 @@ public class PloyhomeFragmentPresenter extends AppBaseFragmentPresenter<Ployhome
                     PluginEngineUtil.startInfo(userId, familyId, ticket, type, unreadString);
                 });
 
-        RxView.clicks(getView().getAd())
+        RxView.clicks(getView().getAd_layout())
                 .filter(aVoid -> {
                     if (mAdsEntity != null && !TextUtils.isEmpty(mAdsEntity.getMedia_type()))
                         return true;
