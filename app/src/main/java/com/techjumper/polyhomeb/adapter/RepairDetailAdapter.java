@@ -1,8 +1,7 @@
-package com.techjumper.polyhomeb;
+package com.techjumper.polyhomeb.adapter;
 
 import com.steve.creact.library.display.DisplayBean;
 import com.steve.creact.library.viewholder.BaseRecyclerViewHolder;
-import com.techjumper.polyhomeb.adapter.BaseRecyclerPowerfulAdapter;
 
 /**
  * * * * * * * * * * * * * * * * * * * * * * *

@@ -2,8 +2,8 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:polymodeview="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:background="@color/color_ffffff"
     android:layout_height="wrap_content"
+    android:background="@color/color_ffffff"
     android:orientation="vertical">
 
     <TextView
@@ -39,30 +39,40 @@
             android:layout_toRightOf="@+id/tv_today"
             android:src="@mipmap/icon_shu_line" />
 
-        <com.techjumper.lightwidget.textview.MarqueeTextView
-            android:layout_width="@dimen/dp_214"
-            android:id="@+id/tv_notice"
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
-            android:layout_marginLeft="@dimen/dp_8"
-            android:layout_toRightOf="@id/iv_shu_xian"
-            android:ellipsize="marquee"
-            android:maxLines="1"
-            android:singleLine="true"
-            android:text="您有一个订单正在派送"
-            android:textColor="@color/color_727272"
-            android:textSize="@dimen/sp_16" />
+            android:layout_toRightOf="@+id/iv_shu_xian"
+            android:orientation="horizontal">
 
-        <Button
-            android:id="@+id/tv_checkout_jujia"
-            android:layout_width="@dimen/dp_54"
-            android:layout_height="@dimen/dp_25"
-            android:layout_alignParentRight="true"
-            android:layout_marginRight="@dimen/dp_14"
-            android:background="@drawable/bg_button_green"
-            android:text="@string/checkout"
-            android:textColor="@color/color_37a991"
-            android:textSize="@dimen/sp_14" />
+            <com.techjumper.lightwidget.textview.MarqueeTextView
+                android:id="@+id/tv_notice"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_marginLeft="@dimen/dp_8"
+                android:layout_marginRight="@dimen/dp_16"
+                android:layout_weight="1"
+                android:ellipsize="marquee"
+                android:maxLines="1"
+                android:singleLine="true"
+                android:text="您有一个订单正在派送"
+                android:textColor="@color/color_727272"
+                android:textSize="@dimen/sp_16" />
+
+            <Button
+                android:id="@+id/tv_checkout_jujia"
+                android:layout_width="@dimen/dp_54"
+                android:layout_height="@dimen/dp_25"
+                android:layout_gravity="center_vertical"
+                android:layout_marginRight="@dimen/dp_14"
+                android:background="@drawable/bg_button_green"
+                android:text="@string/checkout"
+                android:textColor="@color/color_37a991"
+                android:textSize="@dimen/sp_14" />
+
+        </LinearLayout>
 
     </RelativeLayout>
 

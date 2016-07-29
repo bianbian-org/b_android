@@ -48,7 +48,7 @@
         <LinearLayout
             android:id="@+id/layout_notice"
             android:layout_width="match_parent"
-            android:layout_height="200dp"
+            android:layout_height="284dp"
             android:orientation="vertical">
 
             <ScrollView
@@ -73,6 +73,16 @@
 
                 </LinearLayout>
             </ScrollView>
+
+            <cn.finalteam.loadingviewfinal.RecyclerViewFinal
+                android:id="@+id/rv_received_pic"
+                android:layout_width="wrap_content"
+                android:layout_height="70dp"
+                android:visibility="visible"
+                android:layout_marginLeft="@dimen/dp_14"
+                android:layout_marginRight="@dimen/dp_7"
+                android:layout_marginTop="@dimen/dp_7"
+                android:overScrollMode="never" />
 
             <TextView
                 android:id="@+id/tv_time"

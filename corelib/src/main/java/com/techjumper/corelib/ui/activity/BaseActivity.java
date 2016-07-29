@@ -57,7 +57,7 @@ public abstract class BaseActivity extends AppCompatActivity {
         if (useStatusBarTransform()) {
             StatusbarHelper.Builder statusbarBuidler = StatusbarHelper.from(this)
                     .noActionBar(true)
-                    .setLightStatusBar(true)
+                    .setLightStatusBar(false) // 改变状态栏颜色true的话,状态栏字体颜色是黑色,false的话颜色是白色
                     .setTransparentStatusbar(true)
 //                .setLayoutRoot(findViewById(android.R.id.content))
                     ;
