@@ -37,4 +37,7 @@ public interface ServiceAPI {
 
     @POST("family/online")
     Observable<TrueEntity> submitOnline(@Body BaseArgumentsEntity entity);
+
+    @POST("ad/click")
+    Observable<TrueEntity> submitClicks(@Body BaseArgumentsEntity entity);
 }
