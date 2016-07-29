@@ -140,7 +140,6 @@ public class PloyhomeFragmentPresenter extends AppBaseFragmentPresenter<Ployhome
                 })
                 .compose(RxUtil.applySchedulers())
                 .subscribe(aVoid -> {
-
                     Intent intent = new Intent(getView().getActivity(), AdActivity.class);
                     intent.putExtra(AdActivity.ADITEM, mAdsEntity);
                     getView().getActivity().startActivity(intent);

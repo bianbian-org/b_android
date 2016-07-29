@@ -14,11 +14,13 @@ import android.widget.LinearLayout;
 import com.techjumper.commonres.ComConstant;
 import com.techjumper.commonres.UserInfoEntity;
 import com.techjumper.commonres.entity.MedicalEntity;
+import com.techjumper.commonres.entity.TrueEntity;
 import com.techjumper.commonres.entity.event.AdControllerEvent;
 import com.techjumper.commonres.entity.event.AdMainEvent;
 import com.techjumper.commonres.entity.event.AdShowEvent;
 import com.techjumper.commonres.entity.event.MedicalEvent;
 import com.techjumper.commonres.entity.event.ShowMainAdEvent;
+import com.techjumper.commonres.entity.event.SubmitOnlineEvent;
 import com.techjumper.commonres.entity.event.TimeEvent;
 import com.techjumper.commonres.entity.event.UserInfoEvent;
 import com.techjumper.commonres.util.CommonDateUtil;
@@ -34,6 +36,7 @@ import com.techjumper.plugincommunicateengine.utils.GsonUtils;
 import com.techjumper.polyhome.b.home.BuildConfig;
 import com.techjumper.polyhome.b.home.R;
 import com.techjumper.polyhome.b.home.UserInfoManager;
+import com.techjumper.polyhome.b.home.mvp.m.MainActivityModel;
 import com.techjumper.polyhome.b.home.mvp.p.fragment.PloyhomeFragmentPresenter;
 import com.techjumper.polyhome.b.home.mvp.v.activity.MainActivity;
 import com.techjumper.polyhome.b.home.widget.MyVideoView;
@@ -42,11 +45,14 @@ import com.techjumper.polyhome_b.adlib.manager.AdController;
 import com.techjumper.polyhome_b.adlib.window.AdWindowManager;
 
 import java.io.File;
+import java.io.PipedReader;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.TimeUnit;
 
 import butterknife.OnClick;
+import rx.Subscriber;
 import rx.android.schedulers.AndroidSchedulers;
 
 /**
@@ -54,6 +60,7 @@ import rx.android.schedulers.AndroidSchedulers;
  */
 public class MainActivityPresenter extends AppBaseActivityPresenter<MainActivity> {
 
+    private MainActivityModel mainActivityModel = new MainActivityModel(this);
     private FrameLayout mainAdLayout;
     private LinearLayout mainContentLayout;
     private MyVideoView mainAdVideo;
@@ -102,7 +109,7 @@ public class MainActivityPresenter extends AppBaseActivityPresenter<MainActivity
                 }
 
                 UserInfoManager.saveUserInfo(userInfoEntity);
-
+                submitOnline();
                 RxBus.INSTANCE.send(new UserInfoEvent(userInfoEntity));
             } else if (name.equals(ComConstant.FILE_MEDICAL)) {
                 MedicalEntity medicalEntity = GsonUtils.fromJson(message, MedicalEntity.class);
@@ -245,6 +252,7 @@ public class MainActivityPresenter extends AppBaseActivityPresenter<MainActivity
 
     @Override
     public void onViewInited(Bundle savedInstanceState) {
+        submitOnline();
         getView().sendBroadcast(new Intent(ACTION_START_HOST_DAEMON));
         JLog.d("通知bhost启动守护进程");
         mainAdLayout = getView().getMainAdLayout();
@@ -337,5 +345,38 @@ public class MainActivityPresenter extends AppBaseActivityPresenter<MainActivity
             mainAdVideo.start();
             mainAdVideo.requestFocus();
         }
+    }
+
+    //心跳包
+    public void submitOnline() {
+        if (!UserInfoManager.isLogin())
+            return;
+
+        Log.d("submitOnline", "心跳开始");
+        addSubscription(mainActivityModel.submitOnline()
+                .repeatWhen(observable -> {
+                    return observable.delay(2000, TimeUnit.MILLISECONDS);
+                })
+                .subscribe(new Subscriber<TrueEntity>() {
+                    @Override
+                    public void onCompleted() {
+                        Log.d("submitOnline", "心跳一次完毕");
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        getView().showError(e);
+                    }
+
+                    @Override
+                    public void onNext(TrueEntity trueEntity) {
+                        if (!processNetworkResult(trueEntity, false))
+                            return;
+
+                        if (trueEntity != null && trueEntity.getData() != null) {
+                            Log.d("submitOnline", "心跳成功");
+                        }
+                    }
+                }));
     }
 }

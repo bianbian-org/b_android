@@ -1,41 +1,34 @@
 package com.techjumper.polyhome.b.home.widget;
 
 import android.content.Context;
-import android.graphics.SurfaceTexture;
 import android.media.AudioManager;
 import android.media.MediaPlayer;
-import android.media.MediaPlayer.OnBufferingUpdateListener;
-import android.media.MediaPlayer.OnInfoListener;
 import android.util.AttributeSet;
-import android.util.Log;
-import android.view.Surface;
-import android.view.TextureView;
+import android.view.SurfaceHolder;
+import android.view.SurfaceView;
+
 
 /**
- * Created by kevin on 16/7/21.
+ * Created by kevin on 16/7/28.
  */
 
-public class MyTextureView extends TextureView implements TextureView.SurfaceTextureListener {
-    private MediaPlayer mediaPlayer;
+public class MySurfaceView extends SurfaceView implements SurfaceHolder.Callback {
     private Context context;
-    MediaState mediaState;
+    private MediaPlayer mediaPlayer;
+    private MediaState mediaState;
 
-    public MediaPlayer getMediaPlayer() {
-        return mediaPlayer;
-    }
-
-    public MyTextureView(Context context) {
+    public MySurfaceView(Context context) {
         this(context, null);
     }
 
-    public MyTextureView(Context context, AttributeSet attrs) {
+    public MySurfaceView(Context context, AttributeSet attrs) {
         super(context, attrs);
         this.context = context;
         init();
     }
 
     public interface OnStateChangeListener {
-        public void onSurfaceTextureDestroyed(SurfaceTexture surface);
+        public void onSurfaceTextureDestroyed(SurfaceHolder holder);
 
         public void onBuffering();
 
@@ -55,7 +48,7 @@ public class MyTextureView extends TextureView implements TextureView.SurfaceTex
     }
 
     //监听视频的缓冲状态
-    private OnInfoListener onInfoListener = new OnInfoListener() {
+    private MediaPlayer.OnInfoListener onInfoListener = new MediaPlayer.OnInfoListener() {
         @Override
         public boolean onInfo(MediaPlayer mp, int what, int extra) {
             if (onStateChangeListener != null) {
@@ -71,7 +64,7 @@ public class MyTextureView extends TextureView implements TextureView.SurfaceTex
     };
 
     //视频缓冲进度更新
-    private OnBufferingUpdateListener bufferingUpdateListener = new OnBufferingUpdateListener() {
+    private MediaPlayer.OnBufferingUpdateListener bufferingUpdateListener = new MediaPlayer.OnBufferingUpdateListener() {
         @Override
         public void onBufferingUpdate(MediaPlayer mp, int percent) {
             if (onStateChangeListener != null) {
@@ -83,24 +76,18 @@ public class MyTextureView extends TextureView implements TextureView.SurfaceTex
     };
 
     public void init() {
-        Log.d("ergou", "init");
-        setSurfaceTextureListener(this);
+        getHolder().addCallback(this);
     }
 
+
     @Override
-    public void onSurfaceTextureAvailable(SurfaceTexture surfaceTexture, int width,
-                                          int height) {
-        Log.d("ergou", "onSurfaceTextureAvailable");
-        Surface surface = new Surface(surfaceTexture);
+    public void surfaceCreated(SurfaceHolder holder) {
         if (mediaPlayer == null) {
-            Log.d("ergou", "null");
-            if (mediaPlayer == null) {
-                mediaPlayer = new MediaPlayer();
-            }
+            mediaPlayer = new MediaPlayer();
+
             mediaPlayer.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
                 @Override
                 public void onPrepared(MediaPlayer mediaPlayer) {
-                    Log.d("ergou", "start");
                     mediaPlayer.start();
                     mediaState = MediaState.PLAYING;
                 }
@@ -108,11 +95,24 @@ public class MyTextureView extends TextureView implements TextureView.SurfaceTex
             mediaPlayer.setOnInfoListener(onInfoListener);
             mediaPlayer.setOnBufferingUpdateListener(bufferingUpdateListener);
         }
-        mediaPlayer.setSurface(surface);
+
+        mediaPlayer.setDisplay(holder);
         mediaState = MediaState.INIT;
 
         if (onStateChangeListener != null) {
             onStateChangeListener.onStart();
+        }
+    }
+
+    @Override
+    public void surfaceChanged(SurfaceHolder holder, int format, int width, int height) {
+
+    }
+
+    @Override
+    public void surfaceDestroyed(SurfaceHolder holder) {
+        if (onStateChangeListener != null) {
+            onStateChangeListener.onSurfaceTextureDestroyed(holder);
         }
     }
 
@@ -141,7 +141,6 @@ public class MyTextureView extends TextureView implements TextureView.SurfaceTex
                         mediaPlayer.stop();
                         mediaPlayer.reset();
                         mediaState = MediaState.INIT;
-                        Log.d("ergou", "stop");
                         return;
                     }
                 } catch (Exception e) {
@@ -156,33 +155,6 @@ public class MyTextureView extends TextureView implements TextureView.SurfaceTex
         }).start();
     }
 
-    @Override
-    public boolean onSurfaceTextureDestroyed(SurfaceTexture surface) {
-        Log.d("ergou", "onSurfaceTextureDestroyed");
-        if (onStateChangeListener != null) {
-            onStateChangeListener.onSurfaceTextureDestroyed(surface);
-        }
-
-        if (surface != null) {
-            surface = null;
-        }
-        if (mediaPlayer != null) {
-            mediaPlayer.release();
-            mediaPlayer = null;
-        }
-        return true;
-    }
-
-    @Override
-    public void onSurfaceTextureSizeChanged(SurfaceTexture surface, int width,
-                                            int height) {
-    }
-
-    @Override
-    public void onSurfaceTextureUpdated(SurfaceTexture surface) {
-    }
-
-    //开始播放视频
     public void play(String videoUrl) {
         if (mediaState == MediaState.PREPARING) {
             stop();
@@ -192,7 +164,9 @@ public class MyTextureView extends TextureView implements TextureView.SurfaceTex
             mediaPlayer.reset();
             mediaPlayer.setLooping(true);
             try {
+                mediaPlayer.setAudioStreamType(AudioManager.STREAM_MUSIC);
                 mediaPlayer.setDataSource(videoUrl);
+                mediaPlayer.setDisplay(getHolder());
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -203,13 +177,13 @@ public class MyTextureView extends TextureView implements TextureView.SurfaceTex
 
     //暂停播放
     public void pause() {
-        Log.d("ergou", "pause");
         mediaPlayer.pause();
         mediaState = MediaState.PAUSE;
     }
 
     //播放视频
     public void start() {
+        mediaPlayer.setDisplay(getHolder());
         mediaPlayer.start();
         mediaState = MediaState.PLAYING;
     }

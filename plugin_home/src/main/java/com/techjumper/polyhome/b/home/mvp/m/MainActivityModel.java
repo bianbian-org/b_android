@@ -1,0 +1,38 @@
+package com.techjumper.polyhome.b.home.mvp.m;
+
+import android.util.Log;
+
+import com.techjumper.commonres.entity.BaseArgumentsEntity;
+import com.techjumper.commonres.entity.TrueEntity;
+import com.techjumper.corelib.mvp.model.BaseModel;
+import com.techjumper.corelib.rx.tools.CommonWrap;
+import com.techjumper.lib2.others.KeyValuePair;
+import com.techjumper.lib2.utils.RetrofitHelper;
+import com.techjumper.polyhome.b.home.UserInfoManager;
+import com.techjumper.polyhome.b.home.mvp.p.activity.MainActivityPresenter;
+import com.techjumper.polyhome.b.home.net.KeyValueCreator;
+import com.techjumper.polyhome.b.home.net.NetHelper;
+import com.techjumper.polyhome.b.home.net.ServiceAPI;
+import com.techjumper.polyhome.b.home.utils.StringUtil;
+
+import rx.Observable;
+
+/**
+ * Created by kevin on 16/7/29.
+ */
+
+public class MainActivityModel extends BaseModel<MainActivityPresenter> {
+
+    public MainActivityModel(MainActivityPresenter presenter) {
+        super(presenter);
+    }
+
+    public Observable<TrueEntity> submitOnline() {
+        KeyValuePair keyValuePair = KeyValueCreator.submitOnline(UserInfoManager.getFamilyId(), StringUtil.getMacAddress());
+        BaseArgumentsEntity argument = NetHelper.createBaseArguments(keyValuePair);
+        Log.d("submitOnline", "familyId: " + UserInfoManager.getFamilyId() + "  deviceId: " + StringUtil.getMacAddress());
+        return RetrofitHelper.<ServiceAPI>createDefault()
+                .submitOnline(argument)
+                .compose(CommonWrap.wrap());
+    }
+}
