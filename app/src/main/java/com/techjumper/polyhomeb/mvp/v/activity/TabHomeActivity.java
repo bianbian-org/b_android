@@ -59,11 +59,6 @@ public class TabHomeActivity extends AppBaseActivity<TabHomeActivityPresenter> {
     }
 
     @Override
-    public String getLayoutTitle() {
-        return "逸成东苑";
-    }
-
-    @Override
     public void onBackPressed() {
         getPresenter().onBackPressed();
     }
@@ -99,6 +94,10 @@ public class TabHomeActivity extends AppBaseActivity<TabHomeActivityPresenter> {
 
     public void toggleMenu() {
         mSlidingMenu.toggle();
+    }
+
+    public SlidingMenu getSlidingMenu() {
+        return mSlidingMenu;
     }
 
     public HomeViewPager getHomeViewPager() {

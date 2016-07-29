@@ -4,15 +4,17 @@ import android.Manifest;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
-import android.view.View;
 
 import com.tbruyelle.rxpermissions.RxPermissions;
+import com.techjumper.corelib.rx.tools.RxBus;
+import com.techjumper.corelib.rx.tools.RxUtils;
 import com.techjumper.corelib.utils.window.ToastUtils;
 import com.techjumper.polyhomeb.R;
+import com.techjumper.polyhomeb.entity.event.ToggleMenuClickEvent;
 import com.techjumper.polyhomeb.mvp.v.activity.TabHomeActivity;
 import com.techjumper.polyhomeb.widget.PolyTab;
 
-import butterknife.OnClick;
+import rx.Subscription;
 
 /**
  * * * * * * * * * * * * * * * * * * * * * * *
@@ -24,6 +26,7 @@ public class TabHomeActivityPresenter extends AppBaseActivityPresenter<TabHomeAc
         implements PolyTab.ITabClick {
 
     private boolean mCanExit;
+    private Subscription mSubs1;
 
     @Override
     public void initData(Bundle savedInstanceState) {
@@ -33,15 +36,19 @@ public class TabHomeActivityPresenter extends AppBaseActivityPresenter<TabHomeAc
     @Override
     public void onViewInited(Bundle savedInstanceState) {
         requestPermission();
+        onToggleMenuClick();
     }
 
-    @OnClick({R.id.iv_left_icon})
-    public void onClick(View view) {
-        switch (view.getId()) {
-            case R.id.iv_left_icon:
-                getView().toggleMenu();
-                break;
-        }
+    private void onToggleMenuClick() {
+        RxUtils.unsubscribeIfNotNull(mSubs1);
+        addSubscription(
+                mSubs1 = RxBus.INSTANCE.asObservable().subscribe(o -> {
+                    if (o instanceof ToggleMenuClickEvent) {
+                        if (getView().getSlidingMenu() != null) {
+                            getView().toggleMenu();
+                        }
+                    }
+                }));
     }
 
     @Override

@@ -5,7 +5,7 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
-    <include layout="@layout/title_home" />
+    <!--<include layout="@layout/title_home" />-->
 
     <com.techjumper.polyhomeb.widget.HomeViewPager
         android:id="@+id/vp"

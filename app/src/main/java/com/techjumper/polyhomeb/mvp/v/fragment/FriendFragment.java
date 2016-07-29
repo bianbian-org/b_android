@@ -30,4 +30,9 @@ public class FriendFragment extends AppBaseFragment<FriendFragmentPresenter> {
     protected void initView(Bundle savedInstanceState) {
 
     }
+
+    @Override
+    public String getTitle() {
+        return "友邻";
+    }
 }

@@ -49,6 +49,7 @@ public class HomeFragment extends AppBaseFragment<HomeFragmentPresenter> {
 
     @Override
     protected void initView(Bundle savedInstanceState) {
+
         mRv.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false));
         mAdapter = new HomePageAdapter();
         mRv.addItemDecoration(new DividerItemDecoration(28));
@@ -65,6 +66,11 @@ public class HomeFragment extends AppBaseFragment<HomeFragmentPresenter> {
                 return PtrDefaultHandler.checkContentCanBePulledDown(frame, content, header);
             }
         });
+    }
+
+    @Override
+    public String getTitle() {
+        return "优客逸家";
     }
 
     private void stopRefresh(String msg) {
@@ -93,6 +99,4 @@ public class HomeFragment extends AppBaseFragment<HomeFragmentPresenter> {
             }
         });
     }
-
-
 }

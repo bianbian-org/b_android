@@ -30,4 +30,9 @@ public class ShoppingFragment extends AppBaseFragment<ShoppingFragmentPresenter>
     protected void initView(Bundle savedInstanceState) {
 
     }
+
+    @Override
+    public String getTitle() {
+        return "商城";
+    }
 }

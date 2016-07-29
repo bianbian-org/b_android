@@ -10,10 +10,13 @@ import android.view.ViewGroup;
 import com.techjumper.corelib.mvp.factory.Presenter;
 import com.techjumper.corelib.ui.fragment.BaseViewFragment;
 import com.techjumper.corelib.utils.Utils;
+import com.techjumper.corelib.utils.common.AcHelper;
+import com.techjumper.corelib.utils.window.KeyboardUtils;
 import com.techjumper.corelib.utils.window.StatusbarHelper;
 import com.techjumper.corelib.utils.window.ToastUtils;
 import com.techjumper.polyhomeb.R;
 import com.techjumper.polyhomeb.mvp.p.fragment.AppBaseFragmentPresenter;
+import com.techjumper.polyhomeb.utils.TitleHelper;
 import com.techjumper.progressdialog.KProgressHUD;
 import com.umeng.analytics.MobclickAgent;
 
@@ -26,7 +29,7 @@ import com.umeng.analytics.MobclickAgent;
 @Presenter(AppBaseFragmentPresenter.class)
 public abstract class AppBaseFragment<T extends AppBaseFragmentPresenter> extends BaseViewFragment<T> {
 
-//    private TitleHelper.Builder mTitleBuilder;
+    private TitleHelper.Builder mTitleBuilder;
     private KProgressHUD mProgress;
 
     @Override
@@ -45,28 +48,28 @@ public abstract class AppBaseFragment<T extends AppBaseFragmentPresenter> extend
 
         View offsetView = getStatusbarOffsetView(view);
         if (offsetView == null && view != null) {
-//            offsetView = view.findViewById(R.id.title_group);
+            offsetView = view.findViewById(R.id.title_group);
         }
 
         if (offsetView != null)
             StatusbarHelper.setStatusBarOffset(offsetView);
 
-//        mTitleBuilder = TitleHelper.create(mViewRoot)
-//                .title(getTitle())
-//                .showLeft(showTitleLeft())
-//                .showRight(showTitleRight())
-//                .leftIconClick(v -> {
-//                    if (!onTitleLeftClick()) {
-//                        AcHelper.finish(getActivity());
-//                    }
-//                })
-//                .rightIconClick(v1 -> {
-//                    if (!onTitleRightClick()) {
-//                        KeyboardUtils.closeKeyboard(mViewRoot);
-//
-//                    }
-//                });
-//        mTitleBuilder.process();
+        mTitleBuilder = TitleHelper.create(mViewRoot)
+                .title(getTitle())
+                .showLeft(showTitleLeft())
+                .showRight(showTitleRight())
+                .leftIconClick(v -> {
+                    if (!onTitleLeftClick()) {
+                        AcHelper.finish(getActivity());
+                    }
+                })
+                .rightIconClick(v1 -> {
+                    if (!onTitleRightClick()) {
+                        KeyboardUtils.closeKeyboard(mViewRoot);
+
+                    }
+                });
+        mTitleBuilder.process();
         return view;
     }
 
@@ -86,9 +89,9 @@ public abstract class AppBaseFragment<T extends AppBaseFragmentPresenter> extend
         return false;
     }
 
-//    public TitleHelper.Builder getTitleBuilder() {
-//        return mTitleBuilder;
-//    }
+    public TitleHelper.Builder getTitleBuilder() {
+        return mTitleBuilder;
+    }
 
     public String getTitle() {
         return "";
