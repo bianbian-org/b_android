@@ -5,7 +5,10 @@ import android.util.Log;
 
 import com.techjumper.corelib.utils.window.ToastUtils;
 
+import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileReader;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Matcher;
@@ -15,6 +18,8 @@ import java.util.regex.Pattern;
  * Created by kevin on 16/4/28.
  */
 public class StringUtil {
+
+    public static final String MAC_FILE_ADDRESS = "/sys/class/net/eth0/address";
 
     // 拼接两个字符串，并在中间加入反斜杠 类似"23/15"格式
     public static String addSeparator(String firstString, String secondString) {
@@ -77,5 +82,31 @@ public class StringUtil {
         htmlStr = m_html.replaceAll(""); //过滤html标签
 
         return htmlStr.trim(); //返回文本字符串
+    }
+
+    /*
+     * Get the STB MacAddress
+	 */
+    public static String getMacAddress() {
+        try {
+            return loadFileAsString(MAC_FILE_ADDRESS)
+                    .toUpperCase().substring(0, 17);
+        } catch (IOException e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+    public static String loadFileAsString(String filePath) throws java.io.IOException {
+        StringBuffer fileData = new StringBuffer(1000);
+        BufferedReader reader = new BufferedReader(new FileReader(filePath));
+        char[] buf = new char[1024];
+        int numRead = 0;
+        while ((numRead = reader.read(buf)) != -1) {
+            String readData = String.valueOf(buf, 0, numRead);
+            fileData.append(readData);
+        }
+        reader.close();
+        return fileData.toString();
     }
 }
