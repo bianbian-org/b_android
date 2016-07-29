@@ -10,6 +10,7 @@ import android.view.ViewGroup;
 import com.techjumper.corelib.mvp.factory.Presenter;
 import com.techjumper.corelib.ui.fragment.BaseViewFragment;
 import com.techjumper.corelib.utils.Utils;
+import com.techjumper.corelib.utils.common.JLog;
 import com.techjumper.corelib.utils.window.ToastUtils;
 import com.techjumper.polyhome.b.home.R;
 import com.techjumper.polyhome.b.home.mvp.p.fragment.AppBaseFragmentPresenter;
@@ -64,6 +65,7 @@ public abstract class AppBaseFragment<T extends AppBaseFragmentPresenter> extend
     }
 
     public void showError(Throwable e) {
+        JLog.d(e);
         ToastUtils.showLong(Utils.appContext.getString(R.string.error_to_connect_server));
     }
 

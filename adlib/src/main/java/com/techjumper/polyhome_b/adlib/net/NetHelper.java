@@ -2,6 +2,7 @@ package com.techjumper.polyhome_b.adlib.net;
 
 import com.techjumper.corelib.utils.Utils;
 import com.techjumper.corelib.utils.basic.StringUtils;
+import com.techjumper.corelib.utils.common.JLog;
 import com.techjumper.corelib.utils.window.ToastUtils;
 import com.techjumper.lib2.others.KeyValuePair;
 import com.techjumper.lib2.utils.GsonUtils;
@@ -69,8 +70,10 @@ public class NetHelper {
             } else {
                 ToastUtils.show(entity.getError_code() + ":" + entity.getError_msg());
             }
-        } else
+        } else {
+            JLog.d("连接服务器失败");
             ToastUtils.show(Utils.appContext.getString(R.string.error_to_connect_server));
+        }
         return false;
     }
 }

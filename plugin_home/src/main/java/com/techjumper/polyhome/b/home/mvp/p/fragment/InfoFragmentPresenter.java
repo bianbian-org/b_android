@@ -2,7 +2,6 @@ package com.techjumper.polyhome.b.home.mvp.p.fragment;
 
 import android.content.ComponentName;
 import android.content.Intent;
-import android.net.Uri;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
@@ -34,7 +33,6 @@ import com.techjumper.polyhome.b.home.mvp.v.fragment.InfoFragment;
 import com.techjumper.polyhome.b.home.tool.AlarmManagerUtil;
 import com.techjumper.polyhome.b.home.widget.ArcDataView;
 import com.techjumper.polyhome.b.home.widget.MyTextureView;
-import com.techjumper.polyhome.b.home.widget.MyVideoView;
 import com.techjumper.polyhome_b.adlib.entity.AdEntity;
 import com.techjumper.polyhome_b.adlib.manager.AdController;
 import com.techjumper.polyhome_b.adlib.window.AdWindowManager;
@@ -166,7 +164,7 @@ public class InfoFragmentPresenter extends AppBaseFragmentPresenter<InfoFragment
                         }
                     } else if (o instanceof AdTemEvent) {
                         if (mIsGetAd) {
-                            getNormalAd();
+                            getNormalAd(true);
                         }
                     } else if (o instanceof MedicalEvent) {
                         MedicalEvent event = (MedicalEvent) o;
@@ -197,7 +195,7 @@ public class InfoFragmentPresenter extends AppBaseFragmentPresenter<InfoFragment
                         }
                     } else if (o instanceof ShowMainAdEvent) {
                         if (mIsGetAd) {
-                            getNormalAd();
+                            getNormalAd(true);
                         }
                     } else if (o instanceof MissReadEvent) {
                         int num = ((MissReadEvent) o).getNum();
@@ -226,7 +224,7 @@ public class InfoFragmentPresenter extends AppBaseFragmentPresenter<InfoFragment
         mIsVisibleToUser = isVisibleToUser;
         if (isVisibleToUser) {
             Log.d("hehe", "info显示");
-            getNormalAd();
+            getNormalAd(true);
             mIsGetAd = true;
         } else {
             Log.d("hehe", "info消失");
@@ -242,7 +240,7 @@ public class InfoFragmentPresenter extends AppBaseFragmentPresenter<InfoFragment
     public void onResume() {
         super.onResume();
         if (mIsVisibleToUser) {
-            getNormalAd();
+            getNormalAd(true);
             mIsGetAd = true;
         }
     }
@@ -305,7 +303,7 @@ public class InfoFragmentPresenter extends AppBaseFragmentPresenter<InfoFragment
     /**
      * 获取普通广告
      */
-    private void getNormalAd() {
+    private void getNormalAd(boolean fromCahce) {
         Log.d("isShow", AdWindowManager.getInstance().isShow() + "");
 
         if (AdWindowManager.getInstance().isShow())
@@ -315,7 +313,7 @@ public class InfoFragmentPresenter extends AppBaseFragmentPresenter<InfoFragment
             return;
 
         Log.d("hehe", "info普通获取广告");
-        adController.startPolling(this);
+        adController.startPolling(this, fromCahce);
     }
 
     /**
@@ -374,37 +372,41 @@ public class InfoFragmentPresenter extends AppBaseFragmentPresenter<InfoFragment
     }
 
     @Override
-    public void onAlarmReceive() {
-        JLog.d("普通获取广告" + UserInfoManager.getFamilyId() + "  " + UserInfoManager.getUserId() + "  " + UserInfoManager.getTicket());
+    public void onAlarmReceive(boolean fromCache) {
+        JLog.d("普通获取广告" + UserInfoManager.getFamilyId() + "  "
+                + UserInfoManager.getUserId() + "  " + UserInfoManager.getTicket() + " fromCache=" + fromCache);
 //                adController.executeAdRule(AdController.TYPE_HOME, "434", "362", "5b279ba4e46853d86e1d109914cfebe3ca224381", new AdController.IExecuteRule() {
-        adController.executeAdRule(AdController.TYPE_HOME, UserInfoManager.getFamilyId(), UserInfoManager.getUserId(), UserInfoManager.getTicket(), new AdController.IExecuteRule() {
-            @Override
-            public void onAdReceive(AdEntity.AdsEntity adsEntity, File file) {
-                HandleAd(adsEntity, file);
-            }
+        adController.executeAdRule(AdController.TYPE_HOME, UserInfoManager.getFamilyId()
+                , UserInfoManager.getUserId(), UserInfoManager.getTicket()
+                , fromCache
+                , new AdController.IExecuteRule() {
+                    @Override
+                    public void onAdReceive(AdEntity.AdsEntity adsEntity, File file) {
+                        HandleAd(adsEntity, file);
+                    }
 
-            @Override
-            public void onAdPlayFinished() {
-                JLog.d("广告播放完成  (有可能是上一次的任务被自动中断，不影响本次广告执行)");
-                initAd();
-            }
+                    @Override
+                    public void onAdPlayFinished() {
+                        JLog.d("广告播放完成  (有可能是上一次的任务被自动中断，不影响本次广告执行)");
+                        initAd();
+                    }
 
-            @Override
-            public void onAdDownloadError(AdEntity.AdsEntity adsEntity) {
-                JLog.d("某个广告下载失败: " + adsEntity);
-            }
+                    @Override
+                    public void onAdDownloadError(AdEntity.AdsEntity adsEntity) {
+                        JLog.d("某个广告下载失败: " + adsEntity);
+                    }
 
-            @Override
-            public void onAdExecuteFailed(String reason) {
-                JLog.d("获取广告失败: " + reason);
-                initAd();
-            }
+                    @Override
+                    public void onAdExecuteFailed(String reason) {
+                        JLog.d("获取广告失败: " + reason);
+                        initAd();
+                    }
 
-            @Override
-            public void onAdNoExist(String adType, String hour) {
-                JLog.d("没有广告: 广告类型=" + adType + ", 当前小时=" + hour);
-                initAd();
-            }
-        });
+                    @Override
+                    public void onAdNoExist(String adType, String hour) {
+                        JLog.d("没有广告: 广告类型=" + adType + ", 当前小时=" + hour);
+                        initAd();
+                    }
+                });
     }
 }

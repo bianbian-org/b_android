@@ -12,6 +12,7 @@ import com.techjumper.corelib.mvp.factory.Presenter;
 import com.techjumper.corelib.rx.tools.RxUtils;
 import com.techjumper.corelib.ui.activity.BaseFragmentActivity;
 import com.techjumper.corelib.utils.Utils;
+import com.techjumper.corelib.utils.common.JLog;
 import com.techjumper.corelib.utils.window.ToastUtils;
 import com.techjumper.polyhome.b.home.R;
 import com.techjumper.polyhome.b.home.mvp.p.activity.AppBaseActivityPresenter;
@@ -99,6 +100,7 @@ public abstract class AppBaseActivity<T extends AppBaseActivityPresenter> extend
     }
 
     public void showError(Throwable e) {
+        JLog.d(e);
         ToastUtils.show(Utils.appContext.getString(R.string.error_to_connect_server));
     }
 

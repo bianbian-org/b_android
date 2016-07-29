@@ -90,8 +90,10 @@ public class AdDownloadManager {
     }
 
     private void download(IRetrofitDownload iRetrofitDownload) {
+
         if (mIsDownloading)
             return;
+
         while (!mQueue.isEmpty()) {
             mIsDownloading = true;
             DownloadFileEntity entity = null;
@@ -110,30 +112,34 @@ public class AdDownloadManager {
                 continue;
             }
 
+
             //检查本地是否存在
             DiskLruCache.Snapshot local = null;
             try {
                 local = mDiskLruCache.get(entity.key);
             } catch (Exception ignored) {
             }
+
             if (local != null) {
 //                JLog.d("<Lru> 本地已经存在,不再重复下载: " + local.getFile(0));
                 notifyDownloadFinish(iRetrofitDownload, local.getFile(0));
                 continue;
             }
 
-
             final DownloadFileEntity finalEntity = entity;
+
             RetrofitTemplate.getInstance().donwloadFile(entity.url)
                     .observeOn(Schedulers.io())
                     .map(responseBody -> {
 //                        FileUtils.saveInputstreamToPath(responseBody.byteStream(), finalEntity.path, finalEntity.name);
                         DiskLruCache.Editor edit = null;
+
                         try {
                             edit = mDiskLruCache.edit(finalEntity.key);
                             OutputStream out = edit.newOutputStream(0);
                             FileUtils.saveInputToOutput(responseBody.byteStream(), out);
                             edit.commit();
+
                         } catch (Exception e) {
                             e.printStackTrace();
                             if (edit != null) {
@@ -147,6 +153,7 @@ public class AdDownloadManager {
                         return finalEntity;
                     })
                     .map(downloadFileEntity -> {
+
                         DiskLruCache.Snapshot snapshot = null;
                         try {
                             snapshot = mDiskLruCache.get(downloadFileEntity.key);
@@ -182,7 +189,9 @@ public class AdDownloadManager {
                             notifyDownloadFinish(iRetrofitDownload, file);
                         }
                     });
+
         }
+
         mIsDownloading = false;
     }
 

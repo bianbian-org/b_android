@@ -7,7 +7,6 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Build;
 import android.os.PowerManager;
-import android.os.SystemClock;
 import android.provider.Settings;
 import android.text.TextUtils;
 
@@ -15,16 +14,13 @@ import com.techjumper.corelib.rx.tools.RxUtils;
 import com.techjumper.corelib.utils.Utils;
 import com.techjumper.corelib.utils.basic.NumberUtil;
 import com.techjumper.corelib.utils.common.JLog;
-import com.techjumper.corelib.utils.file.FileUtils;
 import com.techjumper.corelib.utils.file.PreferenceUtils;
 import com.techjumper.corelib.utils.system.PowerUtil;
 import com.techjumper.corelib.utils.window.ToastUtils;
-import com.techjumper.lib2.utils.GsonUtils;
 import com.techjumper.polyhome_b.adlib.R;
 import com.techjumper.polyhome_b.adlib.db.utils.AdStatDbExecutor;
 import com.techjumper.polyhome_b.adlib.download.AdDownloadManager;
 import com.techjumper.polyhome_b.adlib.entity.AdEntity;
-import com.techjumper.polyhome_b.adlib.net.RetrofitTemplate;
 import com.techjumper.polyhome_b.adlib.services.AdStatService;
 import com.techjumper.polyhome_b.adlib.services.AlarmService;
 import com.techjumper.polyhome_b.adlib.services.WakeupAdService;
@@ -67,11 +63,7 @@ public class AdController {
     public static final String TYPE_SLEEP = "1003"; //室内机 - 休眠
     public static final String TYPE_WAKEUP = "1004"; //室内机 - 唤醒
 
-    public static final String AD_DATA_DIR = "ad";
-    public static final String AD_DATA_name = "addata";
-    public static final String DOWNLOAD_SUB_PATH = "mediacache";
-    private static File mAdFile = new File(Utils.appContext.getCacheDir().getAbsolutePath() + File.separator + AD_DATA_DIR);
-
+    //    public static final String DOWNLOAD_SUB_PATH = "mediacache";
     private Subscription mPadAdSubs;
     private HashMap<String, AdRuleExecutor> mExecutorMap = new HashMap<>();
 
@@ -174,7 +166,7 @@ public class AdController {
     }
 
 
-    public synchronized void startPolling(IAlarm iAlarm) {
+    public synchronized void startPolling(IAlarm iAlarm, boolean fromCache) {
 //        stopPolling(iAlarm);
         clearPolling();
         addAlarmListener(iAlarm);
@@ -185,7 +177,7 @@ public class AdController {
 
         PollingUtils.startPollingService(Utils.appContext
                 , timeMillis, 60 * 60L, AlarmService.class, "", CODE_ALARM_SERVICE);
-        notifyAlarmListener();
+        notifyAlarmListener(fromCache);
 //        PollingUtils.startPollingService(Utils.appContext
 //                , timeMillis, 30L, AlarmService.class, "", CODE_ALARM_SERVICE);
 
@@ -213,10 +205,10 @@ public class AdController {
         iAlarmListeners.clear();
     }
 
-    private void notifyAlarmListener() {
+    private void notifyAlarmListener(boolean fromCache) {
         for (IAlarm listener : iAlarmListeners) {
             if (listener != null) {
-                listener.onAlarmReceive();
+                listener.onAlarmReceive(fromCache);
             }
         }
     }
@@ -270,7 +262,8 @@ public class AdController {
         JLog.d("停止接收屏幕关闭的消息");
     }
 
-    public void executeAdRule(String adType, String family_id, String user_id, String ticket, IExecuteRule iExecuteRule) {
+
+    public void executeAdRule(String adType, String family_id, String user_id, String ticket, boolean fromCache, IExecuteRule iExecuteRule) {
         if (TextUtils.isEmpty(adType)) return;
         AdRuleExecutor executor;
         synchronized (this) {
@@ -280,7 +273,7 @@ public class AdController {
             executor = new AdRuleExecutor(adType);
             mExecutorMap.put(adType, executor);
         }
-        executor.fetchAd(family_id, user_id, ticket, iExecuteRule);
+        executor.fetchAd(family_id, user_id, ticket, fromCache, iExecuteRule);
     }
 
     public void cancelAll() {
@@ -312,9 +305,10 @@ public class AdController {
         }
     }
 
-    private void fetchAd(String family_id, String user_id, String ticket, IFetchAd iFetchAd) {
+
+    private void fetchAd(String family_id, String user_id, String ticket, boolean fromCache, IFetchAd iFetchAd) {
         RxUtils.unsubscribeIfNotNull(mPadAdSubs);
-        mPadAdSubs = RetrofitTemplate.getInstance().padAd(family_id, user_id, ticket)
+        mPadAdSubs = AdListManager.getInstance().fetchAdList(family_id, user_id, ticket, fromCache)
                 .subscribe(new Subscriber<AdEntity>() {
                     @Override
                     public void onCompleted() {
@@ -323,81 +317,32 @@ public class AdController {
 
                     @Override
                     public void onError(Throwable e) {
-                        String data = getJsonFromLocal();
-                        if (iFetchAd != null && TextUtils.isEmpty(data)) {
-                            JLog.d("<ad> 获取广告信息失败: " + e);
-                            iFetchAd.onAdInfoReceive(null);
-                            return;
-                        }
-                        AdEntity adEntity = GsonUtils.fromJson(data, AdEntity.class);
-                        if (iFetchAd != null) {
-                            iFetchAd.onAdInfoReceive(adEntity);
-                            if (adEntity != null) {
-                                JLog.d("<ad> 本地获取广告信息成功: " + adEntity.toString());
-                            } else {
-                                JLog.d("<ad> 获取广告信息失败: " + e);
-                            }
-                        }
+                        JLog.d(e);
+                        ToastUtils.show(Utils.appContext.getString(R.string.error_to_connect_server));
                     }
 
                     @Override
                     public void onNext(AdEntity adEntity) {
                         if (adEntity == null) {
+                            JLog.d("adEntity is null");
                             ToastUtils.show(Utils.appContext.getString(R.string.error_to_connect_server));
                             return;
                         }
 
                         JLog.d("<ad> 获取广告信息成功: " + adEntity.toString());
-//                        if (BuildConfig.DEBUG) {
-//                        }
-                        saveJsonToLocal(GsonUtils.toJson(adEntity));
-                        cacheFile(adEntity);
-
 
                         if (iFetchAd != null) {
                             iFetchAd.onAdInfoReceive(adEntity);
                         } else {
-                            JLog.d("iFetchAd 为空, 无法回调");
+                            JLog.d("<ad> iFetchAd 为空, 无法回调");
                         }
                     }
                 });
     }
 
 
-    private void cacheFile(AdEntity adEntity) {
-        List<HashMap<String, List<AdEntity.AdsEntity>>> ads = adEntity.getAds();
-        if (ads == null) return;
-        for (HashMap<String, List<AdEntity.AdsEntity>> nextMap : ads) {
-            for (Map.Entry<String, List<AdEntity.AdsEntity>> next : nextMap.entrySet()) {
-                List<AdEntity.AdsEntity> value = next.getValue();
-                if (value == null)
-                    continue;
-                for (AdEntity.AdsEntity adsEntity : value) {
-                    String media_url = adsEntity.getMedia_url();
-                    SystemClock.sleep(3);
-                    AdDownloadManager.getInstance().download(adsEntity.getMd5(), media_url, null);
-                }
-
-            }
-        }
-    }
-
-
     public void cancelFetchAdFromServer() {
         RxUtils.unsubscribeIfNotNull(mPadAdSubs);
-    }
-
-    private String getJsonFromLocal() {
-        return FileUtils.loadTextFile(getAdDataPath(), AD_DATA_name);
-
-    }
-
-    private boolean saveJsonToLocal(String json) {
-        return FileUtils.saveStringToPath(json, getAdDataPath(), AD_DATA_name);
-    }
-
-    private String getAdDataPath() {
-        return mAdFile.getAbsolutePath();
     }
 
 
@@ -463,7 +408,7 @@ public class AdController {
     }
 
     public interface IAlarm {
-        void onAlarmReceive();
+        void onAlarmReceive(boolean fromCache);
     }
 
     public interface IScreenOff {
@@ -512,7 +457,7 @@ public class AdController {
 
         @Override
         public void onReceive(Context context, Intent intent) {
-            notifyAlarmListener();
+            notifyAlarmListener(true);
         }
     }
 
@@ -554,8 +499,7 @@ public class AdController {
             return AdStatDbExecutor.getHelper();
         }
 
-        public void fetchAd(String family_id, String user_id, String ticket, IExecuteRule iExecuteRule) {
-
+        public void fetchAd(String family_id, String user_id, String ticket, boolean fromCache, IExecuteRule iExecuteRule) {
             this.mFamilyId = family_id;
             this.mUrserId = user_id;
             this.mTicket = ticket;
@@ -568,7 +512,7 @@ public class AdController {
             //保存familyId到sp,用于广告统计
             PreferenceUtils.getPreference(AdStatService.SP_NAME).edit().putString(AdStatService.KEY_FAMILY_ID, family_id).apply();
 
-            AdController.this.fetchAd(family_id, user_id, ticket, adData -> {
+            AdController.this.fetchAd(family_id, user_id, ticket, fromCache, adData -> {
                 if (adData == null) {
                     notifyFailed(ERROR_CONNECT_SERVER);
                     return;
@@ -596,6 +540,7 @@ public class AdController {
                 execute(adData.getAds(), currentRule);
 
             });
+
         }
 
         private void execute(List<HashMap<String, List<AdEntity.AdsEntity>>> ads, AdEntity.RulesEntity rule) {
@@ -608,6 +553,7 @@ public class AdController {
                 notifyFailed(ERROR_NO_TIME_LENGTH);
                 return;
             }
+
             long totalTime = NumberUtil.convertTolong(rule.getTime_length(), -1L);
             if (totalTime == -1L) {
                 notifyFailed(ERROR_NO_TIME_LENGTH);
@@ -693,7 +639,7 @@ public class AdController {
                     }
 
                     if (NumberUtil.convertToint(currentTimeToRuleKey(), 0) != executeTime) {
-                        AdController.this.executeAdRule(mRuleType, mFamilyId, mUrserId, mTicket, iExecuteRule);
+                        AdController.this.executeAdRule(mRuleType, mFamilyId, mUrserId, mTicket, true, iExecuteRule);
                         return;
                     }
 
@@ -738,7 +684,6 @@ public class AdController {
 
 
         private void oneTimer(long delay, AdEntity.AdsEntity adsEntity, ITimer iTimer) {
-
             AdDownloadManager.getInstance().download(adsEntity.getMd5(), adsEntity.getMedia_url(), file -> {
                 if (file == null) {
                     notifyAdDownloadError(adsEntity);
@@ -750,6 +695,7 @@ public class AdController {
                             });
                     return;
                 }
+
                 notifyAdReceive(adsEntity, file);
                 Observable.timer(delay, TimeUnit.SECONDS)
                         .observeOn(AndroidSchedulers.mainThread())
@@ -757,6 +703,7 @@ public class AdController {
                             if (iTimer != null)
                                 iTimer.onTimerFinished(true);
                         });
+
             });
 
         }

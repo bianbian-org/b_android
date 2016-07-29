@@ -47,7 +47,6 @@ import com.techjumper.polyhome_b.adlib.window.AdWindowManager;
 
 import java.io.File;
 
-import butterknife.OnClick;
 import rx.Subscriber;
 import rx.android.schedulers.AndroidSchedulers;
 
@@ -202,7 +201,7 @@ public class PloyhomeFragmentPresenter extends AppBaseFragmentPresenter<Ployhome
                         getNotices();
                     } else if (o instanceof AdEvent) {
                         Log.d("pluginUserInfo", "推送更新广告");
-                        getAd();
+                        getAd(false);
                     }
                 });
 
@@ -239,7 +238,7 @@ public class PloyhomeFragmentPresenter extends AppBaseFragmentPresenter<Ployhome
                         }
                     } else if (o instanceof ShowMainAdEvent) {
                         if (mIsGetAd) {
-                            getNormalAd();
+                            getNormalAd(true);
                         }
                     }
                 }));
@@ -293,7 +292,7 @@ public class PloyhomeFragmentPresenter extends AppBaseFragmentPresenter<Ployhome
     public void onResume() {
         super.onResume();
         if (mIsVisibleToUser) {
-            getNormalAd();
+            getNormalAd(true);
             mIsGetAd = true;
         }
     }
@@ -304,7 +303,7 @@ public class PloyhomeFragmentPresenter extends AppBaseFragmentPresenter<Ployhome
         mIsVisibleToUser = isVisibleToUser;
         if (isVisibleToUser) {
             Log.d("hehe", "Ployhome显示");
-            getNormalAd();
+            getNormalAd(true);
             mIsGetAd = true;
         } else {
             Log.d("hehe", "Ployhome消失");
@@ -341,16 +340,20 @@ public class PloyhomeFragmentPresenter extends AppBaseFragmentPresenter<Ployhome
     }
 
     private void getAd() {
+        getAd(true);
+    }
+
+    private void getAd(boolean fromCahce) {
         if (!UserInfoManager.isLogin())
             return;
 
         JLog.d("广告请求");
 
         if (mIsGetAd) {
-            getNormalAd();
+            getNormalAd(fromCahce);
         }
-        getWakeUpAd();
-        getSleepAd();
+        getWakeUpAd(fromCahce);
+        getSleepAd(fromCahce);
 
         RxBus.INSTANCE.send(new AdTemEvent());
     }
@@ -414,8 +417,10 @@ public class PloyhomeFragmentPresenter extends AppBaseFragmentPresenter<Ployhome
 
     /**
      * 获取普通广告
+     *
+     * @param fromCahce
      */
-    private void getNormalAd() {
+    private void getNormalAd(boolean fromCahce) {
         Log.d("isShow", AdWindowManager.getInstance().isShow() + "");
         if (AdWindowManager.getInstance().isShow())
             return;
@@ -424,150 +429,163 @@ public class PloyhomeFragmentPresenter extends AppBaseFragmentPresenter<Ployhome
             return;
 
         Log.d("hehe", "ployhome普通获取广告");
-        adController.startPolling(this);
+        adController.startPolling(this, fromCahce);
     }
 
     /**
      * 唤醒广告
+     *
+     * @param fromCahce
      */
-    private void getWakeUpAd() {
+    private void getWakeUpAd(boolean fromCahce) {
         if (!UserInfoManager.isLogin() || adController == null)
             return;
 
         adController.startWakeUpTimer(() -> {
             JLog.d("获取唤醒广告" + UserInfoManager.getFamilyId() + "  " + UserInfoManager.getUserId() + "  " + UserInfoManager.getTicket());
 //                adController.executeAdRule(AdController.TYPE_HOME, "434", "362", "5b279ba4e46853d86e1d109914cfebe3ca224381", new AdController.IExecuteRule() {
-            adController.executeAdRule(AdController.TYPE_WAKEUP, UserInfoManager.getFamilyId(), UserInfoManager.getUserId(), UserInfoManager.getTicket(), new AdController.IExecuteRule() {
-                boolean mIsWakedUp; //是否被唤醒了
+            adController.executeAdRule(AdController.TYPE_WAKEUP, UserInfoManager.getFamilyId()
+                    , UserInfoManager.getUserId(), UserInfoManager.getTicket()
+                    , fromCahce
+                    , new AdController.IExecuteRule() {
+                        boolean mIsWakedUp; //是否被唤醒了
 
-                @Override
-                public void onAdReceive(AdEntity.AdsEntity adsEntity, File file) {
-                    boolean wakedUp = adController.wakeUpScreen();
-                    if (!mIsWakedUp && !wakedUp) {
-                        adController.interrupt(AdController.TYPE_WAKEUP);
-                        return;
-                    }
-                    mIsWakedUp = true;
-                    RxBus.INSTANCE.send(new AdMainEvent(adsEntity, file));
-                }
+                        @Override
+                        public void onAdReceive(AdEntity.AdsEntity adsEntity, File file) {
+                            boolean wakedUp = adController.wakeUpScreen();
+                            if (!mIsWakedUp && !wakedUp) {
+                                adController.interrupt(AdController.TYPE_WAKEUP);
+                                return;
+                            }
+                            mIsWakedUp = true;
+                            RxBus.INSTANCE.send(new AdMainEvent(adsEntity, file));
+                        }
 
-                @Override
-                public void onAdPlayFinished() {
-                    JLog.d("广告播放完成  ");
-                    adController.turnOffScreen(); //保持休眠
-                    mIsWakedUp = false;
-                    RxBus.INSTANCE.send(new AdShowEvent(false));
-                }
+                        @Override
+                        public void onAdPlayFinished() {
+                            JLog.d("广告播放完成  ");
+                            adController.turnOffScreen(); //保持休眠
+                            mIsWakedUp = false;
+                            RxBus.INSTANCE.send(new AdShowEvent(false));
+                        }
 
-                @Override
-                public void onAdDownloadError(AdEntity.AdsEntity adsEntity) {
-                    JLog.d("某个广告下载失败: " + adsEntity);
-                    RxBus.INSTANCE.send(new AdShowEvent(false));
-                }
+                        @Override
+                        public void onAdDownloadError(AdEntity.AdsEntity adsEntity) {
+                            JLog.d("某个广告下载失败: " + adsEntity);
+                            RxBus.INSTANCE.send(new AdShowEvent(false));
+                        }
 
-                @Override
-                public void onAdExecuteFailed(String reason) {
-                    JLog.d("获取广告失败: " + reason);
-                    RxBus.INSTANCE.send(new AdShowEvent(false));
-                }
+                        @Override
+                        public void onAdExecuteFailed(String reason) {
+                            JLog.d("获取广告失败: " + reason);
+                            RxBus.INSTANCE.send(new AdShowEvent(false));
+                        }
 
-                @Override
-                public void onAdNoExist(String adType, String hour) {
-                    JLog.d("没有广告: 广告类型=" + adType + ", 当前小时=" + hour);
-                    RxBus.INSTANCE.send(new AdShowEvent(false));
-                }
-            });
+                        @Override
+                        public void onAdNoExist(String adType, String hour) {
+                            JLog.d("没有广告: 广告类型=" + adType + ", 当前小时=" + hour);
+                            RxBus.INSTANCE.send(new AdShowEvent(false));
+                        }
+                    });
         });
     }
 
     /**
      * 休眠广告
+     *
+     * @param fromCahce
      */
-    private void getSleepAd() {
+    private void getSleepAd(boolean fromCahce) {
         if (!UserInfoManager.isLogin() || adController == null)
             return;
 
         adController.receiveScreenOff(() -> {
             JLog.d("获取休眠广告" + UserInfoManager.getFamilyId() + "  " + UserInfoManager.getUserId() + "  " + UserInfoManager.getTicket());
 //                adController.executeAdRule(AdController.TYPE_HOME, "434", "362", "5b279ba4e46853d86e1d109914cfebe3ca224381", new AdController.IExecuteRule() {
-            adController.executeAdRule(AdController.TYPE_SLEEP, UserInfoManager.getFamilyId(), UserInfoManager.getUserId(), UserInfoManager.getTicket(), new AdController.IExecuteRule() {
-                @Override
-                public void onAdReceive(AdEntity.AdsEntity adsEntity, File file) {
-                    adController.wakeUpScreen();  //唤醒屏幕
-                    RxBus.INSTANCE.send(new AdMainEvent(adsEntity, file));
-                }
+            adController.executeAdRule(AdController.TYPE_SLEEP, UserInfoManager.getFamilyId()
+                    , UserInfoManager.getUserId(), UserInfoManager.getTicket()
+                    , fromCahce
+                    , new AdController.IExecuteRule() {
+                        @Override
+                        public void onAdReceive(AdEntity.AdsEntity adsEntity, File file) {
+                            adController.wakeUpScreen();  //唤醒屏幕
+                            RxBus.INSTANCE.send(new AdMainEvent(adsEntity, file));
+                        }
 
-                @Override
-                public void onAdPlayFinished() {
-                    JLog.d("广告播放完成  ");
-                    if (!mShouldSleep) {
-                        adController.resetSleepTime();
-                        mShouldSleep = true;
-                    } else {
-                        adController.turnOffScreen(); //保持休眠
-                    }
-                    RxBus.INSTANCE.send(new AdShowEvent(false));
-                }
+                        @Override
+                        public void onAdPlayFinished() {
+                            JLog.d("广告播放完成  ");
+                            if (!mShouldSleep) {
+                                adController.resetSleepTime();
+                                mShouldSleep = true;
+                            } else {
+                                adController.turnOffScreen(); //保持休眠
+                            }
+                            RxBus.INSTANCE.send(new AdShowEvent(false));
+                        }
 
-                @Override
-                public void onAdDownloadError(AdEntity.AdsEntity adsEntity) {
-                    JLog.d("某个广告下载失败: " + adsEntity);
-                    adController.turnOffScreen(); //保持休眠
-                    RxBus.INSTANCE.send(new AdShowEvent(false));
-                }
+                        @Override
+                        public void onAdDownloadError(AdEntity.AdsEntity adsEntity) {
+                            JLog.d("某个广告下载失败: " + adsEntity);
+                            adController.turnOffScreen(); //保持休眠
+                            RxBus.INSTANCE.send(new AdShowEvent(false));
+                        }
 
-                @Override
-                public void onAdExecuteFailed(String reason) {
-                    JLog.d("获取广告失败: " + reason);
+                        @Override
+                        public void onAdExecuteFailed(String reason) {
+                            JLog.d("获取广告失败: " + reason);
 
-                    RxBus.INSTANCE.send(new AdShowEvent(false));
-                }
+                            RxBus.INSTANCE.send(new AdShowEvent(false));
+                        }
 
-                @Override
-                public void onAdNoExist(String adType, String hour) {
-                    JLog.d("没有广告: 广告类型=" + adType + ", 当前小时=" + hour);
-                    adController.turnOffScreen(); //保持休眠
-                    RxBus.INSTANCE.send(new AdShowEvent(false));
-                }
-            });
+                        @Override
+                        public void onAdNoExist(String adType, String hour) {
+                            JLog.d("没有广告: 广告类型=" + adType + ", 当前小时=" + hour);
+                            adController.turnOffScreen(); //保持休眠
+                            RxBus.INSTANCE.send(new AdShowEvent(false));
+                        }
+                    });
         });
     }
 
     @Override
-    public void onAlarmReceive() {
+    public void onAlarmReceive(boolean fromCache) {
         JLog.d("普通获取广告" + UserInfoManager.getFamilyId() + "  " + UserInfoManager.getUserId() + "  " + UserInfoManager.getTicket());
 //                adController.executeAdRule(AdController.TYPE_HOME, "434", "362", "5b279ba4e46853d86e1d109914cfebe3ca224381", new AdController.IExecuteRule() {
-        adController.executeAdRule(AdController.TYPE_HOME, UserInfoManager.getFamilyId(), UserInfoManager.getUserId(), UserInfoManager.getTicket(), new AdController.IExecuteRule() {
-            @Override
-            public void onAdReceive(AdEntity.AdsEntity adsEntity, File file) {
-                Log.d("adsEntity", "adsEntity: " + adsEntity);
-                Log.d("adsEntity", "file: " + file);
-                Log.d("adsEntity", "file.getAbsolutePath(): " + file.getAbsolutePath());
-                HandleAd(adsEntity, file);
-            }
+        adController.executeAdRule(AdController.TYPE_HOME, UserInfoManager.getFamilyId()
+                , UserInfoManager.getUserId(), UserInfoManager.getTicket()
+                , fromCache
+                , new AdController.IExecuteRule() {
+                    @Override
+                    public void onAdReceive(AdEntity.AdsEntity adsEntity, File file) {
+                        Log.d("adsEntity", "adsEntity: " + adsEntity);
+                        Log.d("adsEntity", "file: " + file);
+                        Log.d("adsEntity", "file.getAbsolutePath(): " + file.getAbsolutePath());
+                        HandleAd(adsEntity, file);
+                    }
 
-            @Override
-            public void onAdPlayFinished() {
-                JLog.d("广告播放完成  ");
-                initAd();
-            }
+                    @Override
+                    public void onAdPlayFinished() {
+                        JLog.d("广告播放完成  ");
+                        initAd();
+                    }
 
-            @Override
-            public void onAdDownloadError(AdEntity.AdsEntity adsEntity) {
-                JLog.d("某个广告下载失败: " + adsEntity);
-            }
+                    @Override
+                    public void onAdDownloadError(AdEntity.AdsEntity adsEntity) {
+                        JLog.d("某个广告下载失败: " + adsEntity);
+                    }
 
-            @Override
-            public void onAdExecuteFailed(String reason) {
-                JLog.d("获取广告失败: " + reason);
-                initAd();
-            }
+                    @Override
+                    public void onAdExecuteFailed(String reason) {
+                        JLog.d("获取广告失败: " + reason);
+                        initAd();
+                    }
 
-            @Override
-            public void onAdNoExist(String adType, String hour) {
-                JLog.d("没有广告: 广告类型=" + adType + ", 当前小时=" + hour);
-                initAd();
-            }
-        });
+                    @Override
+                    public void onAdNoExist(String adType, String hour) {
+                        JLog.d("没有广告: 广告类型=" + adType + ", 当前小时=" + hour);
+                        initAd();
+                    }
+                });
     }
 }

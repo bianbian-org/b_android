@@ -1,5 +1,6 @@
 package com.techjumper.polyhome_b.adlib.net;
 
+import com.techjumper.corelib.rx.ExecutorManager;
 import com.techjumper.corelib.rx.tools.CommonWrap;
 import com.techjumper.corelib.rx.tools.SchedulersCompat;
 import com.techjumper.lib2.utils.RetrofitHelper;
@@ -8,6 +9,7 @@ import com.techjumper.polyhome_b.adlib.entity.BaseEntity;
 
 import okhttp3.ResponseBody;
 import rx.Observable;
+import rx.schedulers.Schedulers;
 
 /**
  * * * * * * * * * * * * * * * * * * * * * * *
@@ -40,9 +42,8 @@ public class RetrofitTemplate {
 
     public Observable<AdEntity> padAd(String family_id, String user_id, String ticket) {
         return getDefault()
-                .padAd(NetHelper.createBaseArgumentsMap(
-                        KeyValueCreator.padAd(family_id, user_id, ticket)))
-                .compose(SchedulersCompat.applyExecutorSchedulers());
+                .padAd(NetHelper.createBaseArgumentsMap(KeyValueCreator.padAd(family_id, user_id, ticket)))
+                .subscribeOn(Schedulers.from(ExecutorManager.eventExecutor));
     }
 
     public Observable<ResponseBody> donwloadFile(String url) {
