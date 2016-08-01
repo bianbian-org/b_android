@@ -71,6 +71,6 @@
         app:data_content_text="@string/info_medical_no_login"
         app:data_rect_height="@dimen/dp_160"
         app:data_rect_width="@dimen/dp_160"
-        app:data_subtitle_text="@string/info_mmhg"
+        app:data_subtitle_text=""
         app:data_title_text="@string/info_detect" />
 </RelativeLayout>

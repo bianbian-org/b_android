@@ -15,7 +15,7 @@
     <string name="info_heartrate">心率</string>
     <string name="info_bloodpressure">血压</string>
     <string name="info_bloodsugar">血糖</string>
-    <string name="info_detect">检测</string>
+    <string name="info_detect">成员</string>
     <string name="info_mmhg">mmhg</string>
     <string name="info_mmol">mmol</string>
     <string name="info_bpm">bpm</string>
