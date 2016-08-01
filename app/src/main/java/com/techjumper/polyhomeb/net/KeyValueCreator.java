@@ -32,4 +32,11 @@ public class KeyValueCreator {
                 .put("mobile", mobile)
                 .put("password", password);
     }
+
+    public static KeyValuePair findPassword(String mobile, String sms_captcha, String password) {
+        return newPair()
+                .put("mobile", mobile)
+                .put("sms_captcha", sms_captcha)
+                .put("new_password", password);
+    }
 }

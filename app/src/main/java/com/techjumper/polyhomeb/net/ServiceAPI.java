@@ -75,4 +75,22 @@ public interface ServiceAPI {
     @POST("login")
     Observable<LoginEntity> login(@Body BaseArgumentsEntity entity);
 
+    /**
+     * 找回密码
+     * post '/password/reset'
+     * params:
+     * mobile # 手机号码
+     * sms_captcha # 验证码
+     * new_password # 新密码
+     * return:
+     * result: true
+     * # ERROR CODE
+     * error_code: 101,	error_msg: '手机号码不正确！'
+     * error_code: 103,	error_msg: '该手机号码没有注册'
+     * error_code: 106,	error_msg: '密码不能少于8位！'
+     * error_code: 107,	error_msg: '验证码错误！'
+     */
+    @POST("password/reset")
+    Observable<TrueEntity> findPassword(@Body BaseArgumentsEntity entity);
+
 }

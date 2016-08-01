@@ -6,6 +6,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import com.techjumper.corelib.mvp.factory.Presenter;
 import com.techjumper.corelib.utils.common.RuleUtils;
@@ -32,6 +33,8 @@ public class HomeMenuFragment extends AppBaseFragment<HomeMenuFragmentPresenter>
     ImageView mIvAvatar;
     @Bind(R.id.rv)
     RecyclerViewFinal mRv;
+    @Bind(R.id.tv_user_name)
+    TextView mTvUserName;
 
     private HomeMenuAdapter mAdapter;
 
@@ -64,6 +67,14 @@ public class HomeMenuFragment extends AppBaseFragment<HomeMenuFragmentPresenter>
         mRv.setAdapter(mAdapter);
         mAdapter.loadData(getPresenter().getDatas());
 
+    }
+
+    public TextView getTvUserName() {
+        return mTvUserName;
+    }
+
+    public ImageView getIvAvatar() {
+        return mIvAvatar;
     }
 
 }

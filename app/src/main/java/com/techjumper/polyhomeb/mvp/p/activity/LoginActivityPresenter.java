@@ -10,6 +10,7 @@ import com.techjumper.corelib.utils.common.AcHelper;
 import com.techjumper.polyhomeb.R;
 import com.techjumper.polyhomeb.entity.LoginEntity;
 import com.techjumper.polyhomeb.mvp.m.LoginActivityModel;
+import com.techjumper.polyhomeb.mvp.v.activity.FindPasswordActivity;
 import com.techjumper.polyhomeb.mvp.v.activity.LoginActivity;
 import com.techjumper.polyhomeb.mvp.v.activity.RegistActivity;
 import com.techjumper.polyhomeb.user.UserManager;
@@ -62,6 +63,7 @@ public class LoginActivityPresenter extends AppBaseActivityPresenter<LoginActivi
                 checkingInputAndLogin();
                 break;
             case R.id.tv_forget_psw:
+                new AcHelper.Builder(getView()).extra(bundle).target(FindPasswordActivity.class).start();
                 break;
             case R.id.tv_regist:
                 new AcHelper.Builder(getView()).extra(bundle).target(RegistActivity.class).start();
@@ -119,6 +121,8 @@ public class LoginActivityPresenter extends AppBaseActivityPresenter<LoginActivi
                                     return;
                                 }
                                 UserManager.INSTANCE.saveUserInfo(entity);
+                                getView().showHint(getView().getString(R.string.success_login));
+                                UserManager.INSTANCE.notifyLoginOrLogoutEvent(true);
                             }
                         })
         );

@@ -83,9 +83,8 @@ public enum UserManager {
      * 是否已经登录
      */
     public boolean isLogin() {
-//        String ticket = getUserInfo(KEY_TICKET);
-//        return !TextUtils.isEmpty(ticket);
-        return true;
+        String ticket = getUserInfo(KEY_TICKET);
+        return !TextUtils.isEmpty(ticket);
     }
 
     /**
