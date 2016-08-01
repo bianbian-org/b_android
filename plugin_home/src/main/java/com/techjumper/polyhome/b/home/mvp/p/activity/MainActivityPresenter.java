@@ -26,6 +26,7 @@ import com.techjumper.commonres.entity.event.UserInfoEvent;
 import com.techjumper.commonres.util.CommonDateUtil;
 import com.techjumper.commonres.util.PluginEngineUtil;
 import com.techjumper.corelib.rx.tools.RxBus;
+import com.techjumper.corelib.rx.tools.RxUtils;
 import com.techjumper.corelib.utils.common.JLog;
 import com.techjumper.corelib.utils.window.ToastUtils;
 import com.techjumper.lib2.utils.PicassoHelper;
@@ -53,6 +54,7 @@ import java.util.concurrent.TimeUnit;
 
 import butterknife.OnClick;
 import rx.Subscriber;
+import rx.Subscription;
 import rx.android.schedulers.AndroidSchedulers;
 
 /**
@@ -65,6 +67,7 @@ public class MainActivityPresenter extends AppBaseActivityPresenter<MainActivity
     private LinearLayout mainContentLayout;
     private MyVideoView mainAdVideo;
     private ImageView mainAdImg;
+    private Subscription submitOnlineSubscription;
     public static final String ACTION_START_HOST_DAEMON = "action_start_host_daemon";
 
     private IPluginMessageReceiver mIPluginMessageReceiver = (code, message, extras) -> {
@@ -353,7 +356,10 @@ public class MainActivityPresenter extends AppBaseActivityPresenter<MainActivity
             return;
 
         Log.d("submitOnline", "心跳开始");
-        addSubscription(mainActivityModel.submitOnline()
+
+        RxUtils.unsubscribeIfNotNull(submitOnlineSubscription);
+
+        submitOnlineSubscription = mainActivityModel.submitOnline()
                 .repeatWhen(observable -> {
                     return observable.delay(2000, TimeUnit.MILLISECONDS);
                 })
@@ -377,6 +383,8 @@ public class MainActivityPresenter extends AppBaseActivityPresenter<MainActivity
                             Log.d("submitOnline", "心跳成功");
                         }
                     }
-                }));
+                });
+
+        addSubscription(submitOnlineSubscription);
     }
 }
