@@ -9,6 +9,7 @@ import android.support.annotation.Nullable;
 import com.techjumper.corelib.rx.tools.RxBus;
 import com.techjumper.corelib.rx.tools.RxCountdown;
 import com.techjumper.corelib.rx.tools.RxUtils;
+import com.techjumper.polyhomeb.entity.event.CountdownEvent;
 
 import rx.Subscriber;
 import rx.Subscription;
@@ -84,24 +85,5 @@ public class CountdownService extends Service {
 
     public static int getCurrCount() {
         return mEvent.getCount();
-    }
-
-    public static class CountdownEvent {
-        private int count;
-
-        public CountdownEvent() {
-        }
-
-        public CountdownEvent(int count) {
-            this.count = count;
-        }
-
-        public int getCount() {
-            return count;
-        }
-
-        public void setCount(int count) {
-            this.count = count;
-        }
     }
 }

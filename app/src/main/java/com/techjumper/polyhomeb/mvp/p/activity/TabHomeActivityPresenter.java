@@ -8,13 +8,18 @@ import android.os.Handler;
 import com.tbruyelle.rxpermissions.RxPermissions;
 import com.techjumper.corelib.rx.tools.RxBus;
 import com.techjumper.corelib.rx.tools.RxUtils;
+import com.techjumper.corelib.utils.common.JLog;
 import com.techjumper.corelib.utils.window.ToastUtils;
 import com.techjumper.polyhomeb.R;
 import com.techjumper.polyhomeb.entity.event.ToggleMenuClickEvent;
 import com.techjumper.polyhomeb.mvp.v.activity.TabHomeActivity;
+import com.techjumper.polyhomeb.user.event.LoginEvent;
+import com.techjumper.polyhomeb.utils.LoginHelper;
 import com.techjumper.polyhomeb.widget.PolyTab;
 
+import rx.Subscriber;
 import rx.Subscription;
+import rx.android.schedulers.AndroidSchedulers;
 
 /**
  * * * * * * * * * * * * * * * * * * * * * * *
@@ -26,7 +31,7 @@ public class TabHomeActivityPresenter extends AppBaseActivityPresenter<TabHomeAc
         implements PolyTab.ITabClick {
 
     private boolean mCanExit;
-    private Subscription mSubs1;
+    private Subscription mSubs1, mLoginSubscription, mLoginEventSubs;
 
     @Override
     public void initData(Bundle savedInstanceState) {
@@ -54,7 +59,74 @@ public class TabHomeActivityPresenter extends AppBaseActivityPresenter<TabHomeAc
     @Override
     public void onTabClick(int index) {
         if (getView().getHomeViewPager().getCurrentItem() == index) return;
+        if (index != 2) {
+            processLogin(index);
+            return;
+        }
         getView().getHomeViewPager().setCurrentItem(index, false);
+    }
+
+    public void processLogin(int index) {
+        RxUtils.unsubscribeIfNotNull(mLoginSubscription);
+        registerLogEvent(false);
+        mLoginSubscription = LoginHelper.processLogin(getView())
+                .subscribe(new Subscriber<Object>() {
+                    @Override
+                    public void onCompleted() {
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        JLog.d(e);
+                    }
+
+                    @Override
+                    public void onNext(Object o) {
+                        if (!(o instanceof LoginEvent)) return;
+
+                        LoginEvent event = (LoginEvent) o;
+                        if (event.isLogin()) {
+                            getView().onTabChange(index);
+                        } else {
+                            getView().onTabChange(2);
+                        }
+                        RxUtils.unsubscribeIfNotNull(mLoginSubscription);
+                        registerLogEvent(true);
+                    }
+                });
+    }
+
+    private void registerLogEvent(boolean register) {
+        RxUtils.unsubscribeIfNotNull(mLoginEventSubs);
+        if (!register) return;
+        addSubscription(
+                mLoginEventSubs = RxBus.INSTANCE.asObservable()
+                        .observeOn(AndroidSchedulers.mainThread())
+                        .subscribe(new Subscriber<Object>() {
+                            @Override
+                            public void onCompleted() {
+
+                            }
+
+                            @Override
+                            public void onError(Throwable e) {
+
+                            }
+
+                            @Override
+                            public void onNext(Object o) {
+                                if (!(o instanceof LoginEvent)) return;
+
+                                LoginEvent event = (LoginEvent) o;
+                                if (event.isLogin()) {
+                                    getView().onTabChange(0);
+                                } else {
+                                    getView().onLogout();
+                                    getView().onTabChange(2);
+                                }
+                            }
+                        })
+        );
     }
 
     public void onBackPressed() {
@@ -90,11 +162,6 @@ public class TabHomeActivityPresenter extends AppBaseActivityPresenter<TabHomeAc
                             .subscribe()
             );
         }
-//        addSubscription(
-//                RxPermissions.getInstance(getView())
-//                        .request(Manifest.permission.VIBRATE)
-//                        .subscribe()
-//        );
     }
 
 }

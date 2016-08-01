@@ -7,4 +7,5 @@ package com.techjumper.polyhomeb.adapter.recycler_Data;
  * * * * * * * * * * * * * * * * * * * * * * *
  **/
 public class PropertyPlacardDividerLongData {
+
 }

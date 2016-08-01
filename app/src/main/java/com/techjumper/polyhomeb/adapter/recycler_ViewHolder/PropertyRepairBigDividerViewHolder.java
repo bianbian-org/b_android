@@ -25,5 +25,7 @@ public class PropertyRepairBigDividerViewHolder extends BaseRecyclerViewHolder<P
     @Override
     public void setData(PropertyRepairBigDividerData data) {
         if (data == null) return;
+        if (data.getColor() == 0) return;
+        getView(R.id.layout).setBackgroundResource(data.getColor());
     }
 }

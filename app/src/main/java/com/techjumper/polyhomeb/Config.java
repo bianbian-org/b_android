@@ -14,16 +14,16 @@ public class Config {
      */
     public static final boolean DEBUG = false;
 
-    public static String sHost;
+    public static String sHost = "http://poly.techjumper.com";
 
-    static {
-        sHost = DEBUG ? "http://poly.techjumper.com" : "http://api.ourjujia.com";
-    }
+//    static {
+//        sHost = DEBUG ? "http://poly.techjumper.com" : "http://api.ourjujia.com";
+//    }
 
-    /**
+    /**"http://poly.techjumper.com"
      * 默认接口地址
      */
-    public static String sBaseUrl = sHost + "/api/v1/";
+    public static String sBaseUrl = sHost + "/api/v1bm/";
 
     /**
      * 默认数据库的版本

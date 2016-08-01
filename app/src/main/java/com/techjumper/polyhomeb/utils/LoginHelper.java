@@ -4,6 +4,7 @@ import android.app.Activity;
 
 import com.techjumper.corelib.rx.tools.RxBus;
 import com.techjumper.corelib.utils.common.AcHelper;
+import com.techjumper.polyhomeb.mvp.v.activity.LoginActivity;
 import com.techjumper.polyhomeb.user.UserManager;
 import com.techjumper.polyhomeb.user.event.LoginEvent;
 
@@ -41,7 +42,7 @@ public class LoginHelper {
 
     public static void startLoginActivity(Activity activity) {
         new AcHelper.Builder(activity)
-//                .target(LoginActivity.class)
+                .target(LoginActivity.class)
                 .start();
     }
 

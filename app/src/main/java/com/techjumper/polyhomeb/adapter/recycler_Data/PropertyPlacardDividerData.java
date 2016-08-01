@@ -8,4 +8,13 @@ package com.techjumper.polyhomeb.adapter.recycler_Data;
  **/
 public class PropertyPlacardDividerData {
 
+    private int marginLeft;
+
+    public int getMarginLeft() {
+        return marginLeft;
+    }
+
+    public void setMarginLeft(int marginLeft) {
+        this.marginLeft = marginLeft;
+    }
 }

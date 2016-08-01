@@ -3,8 +3,8 @@ package com.techjumper.polyhomeb.user;
 import android.text.TextUtils;
 
 import com.techjumper.corelib.rx.tools.RxBus;
-import com.techjumper.corelib.utils.basic.NumberUtil;
 import com.techjumper.corelib.utils.file.PreferenceUtils;
+import com.techjumper.polyhomeb.entity.LoginEntity;
 import com.techjumper.polyhomeb.user.event.LoginEvent;
 import com.techjumper.polyhomeb.utils.HostIpHelper;
 
@@ -26,18 +26,36 @@ public enum UserManager {
     public static final String KEY_PHONE_NUMBER = "key_phone_number";
     public static final String KEY_TICKET = "key_ticket";
     public static final String KEY_CURRENT_FAMILY_ID = "key_current_family_id";
-    public static final String KEY_CURRENT_FAMILY_MANAGER_ID = "key_current_family_manager_id";
-    public static final String KEY_CURRENT_FAMILY_NAME = "key_current_family_name";
     public static final String KEY_DEVICE_ID = "key_device_id";
     public static final String KEY_HAS_BINDING = "key_has_binding";
     public static final String KEY_USER_NAME = "key_user_name";
     public static final String KEY_AVATAR = "key_avatar";
+    public static final String KEY_SEX = "key_sex";
+    public static final String KEY_EMAIL = "key_email";
+    public static final String KEY_BIRTHDAY = "key_birthday";
 
-    public static final String KEY_LAST_FAMILY_PREFIX = "key_last_family_";
-    public static final String TYPE_LAST_FAMILY_FAMILY_ID = "last_family_type_family_id";
-    public static final String TYPE_LAST_FAMILY_FAMILY_NAME = "last_family_type_family_name";
-    public static final String TYPE_LAST_FAMILY_FAMILY_MANAGER_ID = "last_family_type_family_manager_id";
-
+    /**
+     * 通过LoginEntity将用户信息同步到本地
+     */
+    public void saveUserInfo(LoginEntity entity) {
+        LoginEntity.LoginDataEntity dataEntity = entity.getData();
+        if (!TextUtils.isEmpty(dataEntity.getMobile())) {  //登录接口没有返回mobile,注册接口才有
+            PreferenceUtils.save(KEY_PHONE_NUMBER, dataEntity.getMobile());
+        }
+        if (!TextUtils.isEmpty(dataEntity.getMobile())) {  //登录接口多出来的
+            PreferenceUtils.save(KEY_SEX, dataEntity.getSex());
+        }
+        if (!TextUtils.isEmpty(dataEntity.getMobile())) {  //登录接口多出来的
+            PreferenceUtils.save(KEY_EMAIL, dataEntity.getEmail());
+        }
+        if (!TextUtils.isEmpty(dataEntity.getMobile())) {  //登录接口多出来的
+            PreferenceUtils.save(KEY_BIRTHDAY, dataEntity.getBirthday());
+        }
+        PreferenceUtils.save(KEY_ID, dataEntity.getId());
+        updateTicket(dataEntity.getTicket());
+        PreferenceUtils.save(KEY_USER_NAME, dataEntity.getUsername());
+        PreferenceUtils.save(KEY_AVATAR, dataEntity.getCover());
+    }
 
 
     public String getUserNickName() {
@@ -65,8 +83,9 @@ public enum UserManager {
      * 是否已经登录
      */
     public boolean isLogin() {
-        String ticket = getUserInfo(KEY_TICKET);
-        return !TextUtils.isEmpty(ticket);
+//        String ticket = getUserInfo(KEY_TICKET);
+//        return !TextUtils.isEmpty(ticket);
+        return true;
     }
 
     /**
@@ -84,11 +103,7 @@ public enum UserManager {
         PreferenceUtils.save(KEY_HAS_BINDING, "");
         PreferenceUtils.save(KEY_AVATAR, "");
         PreferenceUtils.save(KEY_USER_NAME, "");
-        setCurrentFamilyInfo("", "", "");
         HostIpHelper.getInstance().clear();
-//        DeviceDataManager.getInstance().clearDevice();
-//        TcpClientExecutor.INSTANCE.quit();
-//        RoomDataManager.getInstance().clear();
         if (notify)
             notifyLoginOrLogoutEvent(false);
     }
@@ -130,53 +145,4 @@ public enum UserManager {
         return getUserInfo(key);
     }
 
-    /**
-     * 存储用户当前家庭的ID和name
-     */
-    public void setCurrentFamilyInfo(String family_id, String family_name, String managerId) {
-        PreferenceUtils.save(KEY_CURRENT_FAMILY_ID, family_id);
-        PreferenceUtils.save(KEY_CURRENT_FAMILY_NAME, family_name);
-        PreferenceUtils.save(KEY_CURRENT_FAMILY_MANAGER_ID, managerId);
-    }
-
-    /**
-     * 是否绑定主机
-     */
-    public boolean hasBinding() {
-        return !(NumberUtil.convertToint(getUserInfo(UserManager.KEY_HAS_BINDING), 0) == 0);
-    }
-
-    /**
-     * 是否是家庭的管理员
-     */
-    public boolean isAdmin() {
-        if (!isLogin()) return false;
-        String userId = UserManager.INSTANCE.getUserInfo(UserManager.KEY_ID);
-        return !TextUtils.isEmpty(userId)
-                &&
-                userId.equals(UserManager.INSTANCE
-                        .getCurrentFamilyInfo(UserManager.KEY_CURRENT_FAMILY_MANAGER_ID));
-    }
-
-    public void saveLastFamilyForUser(String familyId, String familyName, String managerId) {
-        PreferenceUtils.save(getLastFamilyKey(getUserInfo(KEY_ID), TYPE_LAST_FAMILY_FAMILY_ID), familyId);
-        PreferenceUtils.save(getLastFamilyKey(getUserInfo(KEY_ID), TYPE_LAST_FAMILY_FAMILY_NAME), familyName);
-        PreferenceUtils.save(getLastFamilyKey(getUserInfo(KEY_ID), TYPE_LAST_FAMILY_FAMILY_MANAGER_ID), managerId);
-    }
-
-    public String getLastFamilyIdByCurrentUser() {
-        return PreferenceUtils.get(getLastFamilyKey(getUserInfo(KEY_ID), TYPE_LAST_FAMILY_FAMILY_ID), "");
-    }
-
-    public String getLastFamilyNameByCurrentUser() {
-        return PreferenceUtils.get(getLastFamilyKey(getUserInfo(KEY_ID), TYPE_LAST_FAMILY_FAMILY_NAME), "");
-    }
-
-    public String getLastFamilyManagerIdByCurrentUser() {
-        return PreferenceUtils.get(getLastFamilyKey(getUserInfo(KEY_ID), TYPE_LAST_FAMILY_FAMILY_MANAGER_ID), "");
-    }
-
-    private String getLastFamilyKey(String userId, String type) {
-        return KEY_LAST_FAMILY_PREFIX + userId + "_" + type;
-    }
 }

@@ -90,6 +90,26 @@
     <string name="input_limit">当前字数: %1$s /1000</string>
     <string name="no_camera_permission">无法获取摄像头权限</string>
     <string name="show_big_pic">查看大图</string>
+    <string name="click_to_login_in">点击登录</string>
+    <string name="my_village">我的小区</string>
+    <string name="polyhome_setting">智能家居设置</string>
+    <string name="message_center">消息中心</string>
+    <string name="my_orders">我的订单</string>
+    <string name="my_postcard">我的帖子</string>
+    <string name="my_reply">我的回复</string>
+    <string name="poly_coin">Poly币</string>
+    <string name="login_account">账号</string>
+    <string name="login_password">密码</string>
+    <string name="login_account_psw_wrong">账号或密码有误</string>
+    <string name="login_login">登录</string>
+    <string name="login_regist">注册</string>
+    <string name="login_forget_psw">忘记密码?</string>
+    <string name="regist_phone">手机号</string>
+    <string name="regist_regist">注册</string>
+    <string name="regist_verification_code">验证码</string>
+    <string name="regist_password">密码 %1$s</string>
+    <string name="regist_get_verification_code">获取验证码</string>
+    <string name="regist_get_verification_later">s后重新获取</string>
 
 
 </resources>

@@ -1,6 +1,7 @@
 package com.techjumper.polyhomeb.adapter.recycler_ViewHolder;
 
 import android.view.View;
+import android.widget.LinearLayout;
 
 import com.steve.creact.annotation.DataBean;
 import com.steve.creact.library.viewholder.BaseRecyclerViewHolder;
@@ -25,5 +26,11 @@ public class PropertyPlacardDividerViewHolder extends BaseRecyclerViewHolder<Pro
     @Override
     public void setData(PropertyPlacardDividerData data) {
         if (data == null) return;
+        if (data.getMarginLeft() != 0) {
+            View view = getView(R.id.view);
+            LinearLayout.LayoutParams layoutParams = (LinearLayout.LayoutParams) view.getLayoutParams();
+            layoutParams.leftMargin = data.getMarginLeft();
+            view.setLayoutParams(layoutParams);
+        }
     }
 }

@@ -6,14 +6,17 @@
     android:background="@mipmap/icon_tab_bg"
     android:orientation="horizontal">
 
-    <FrameLayout
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_weight="1">
+    <!--如果不想让这三个tab各占三分之一的话,就把下面的帧布局注释去掉,然后给每个tab设置paddingRight和left,大小5到10dp,看情况-->
+
+    <!--<FrameLayout-->
+        <!--android:layout_width="0dp"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:layout_weight="1">-->
 
         <com.techjumper.polyhomeb.widget.PolyTabView
             android:id="@+id/tab_1"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
+            android:layout_weight="1"
             android:layout_height="match_parent"
             android:layout_gravity="center"
             android:layout_marginBottom="@dimen/dp_5"
@@ -22,16 +25,17 @@
             app:textColor="@color/color_acacac"
             app:textSize="@dimen/sp_12" />
 
-    </FrameLayout>
+    <!--</FrameLayout>-->
 
-    <FrameLayout
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_weight="1">
+    <!--<FrameLayout-->
+        <!--android:layout_width="0dp"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:layout_weight="1">-->
 
         <com.techjumper.polyhomeb.widget.PolyTabView
             android:id="@+id/tab_2"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
+            android:layout_weight="1"
             android:layout_height="match_parent"
             android:layout_gravity="center"
             android:layout_marginBottom="@dimen/dp_5"
@@ -40,16 +44,17 @@
             app:textColor="@color/color_acacac"
             app:textSize="@dimen/sp_12" />
 
-    </FrameLayout>
+    <!--</FrameLayout>-->
 
-    <FrameLayout
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_weight="1">
+    <!--<FrameLayout-->
+        <!--android:layout_width="0dp"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:layout_weight="1">-->
 
         <com.techjumper.polyhomeb.widget.PolyTabView
             android:id="@+id/tab_3"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
+            android:layout_weight="1"
             android:layout_height="match_parent"
             android:layout_gravity="center"
             android:layout_marginBottom="@dimen/dp_5"
@@ -58,6 +63,6 @@
             app:textColor="@color/color_acacac"
             app:textSize="@dimen/sp_12" />
 
-    </FrameLayout>
+    <!--</FrameLayout>-->
 
 </LinearLayout>

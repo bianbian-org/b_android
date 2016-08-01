@@ -14,7 +14,9 @@ import com.techjumper.polyhomeb.mvp.p.activity.TabHomeActivityPresenter;
 import com.techjumper.polyhomeb.mvp.v.fragment.AppBaseFragment;
 import com.techjumper.polyhomeb.mvp.v.fragment.FriendFragment;
 import com.techjumper.polyhomeb.mvp.v.fragment.HomeFragment;
+import com.techjumper.polyhomeb.mvp.v.fragment.HomeMenuFragment;
 import com.techjumper.polyhomeb.mvp.v.fragment.ShoppingFragment;
+import com.techjumper.polyhomeb.user.UserManager;
 import com.techjumper.polyhomeb.widget.HomeViewPager;
 import com.techjumper.polyhomeb.widget.PolyTab;
 import com.techjumper.slidingmenulib.SlidingMenu;
@@ -56,6 +58,15 @@ public class TabHomeActivity extends AppBaseActivity<TabHomeActivityPresenter> {
     protected void initView(Bundle savedInstanceState) {
         initSlidingMenu();
         initFragmentsAndPager();
+        if (savedInstanceState == null)
+            if (UserManager.INSTANCE.isLogin()) {
+                mVp.setCurrentItem(0);
+                mTab.check(0);
+            } else {
+                mVp.setCurrentItem(2);
+                mTab.check(2);
+            }
+        switchFragment(R.id.menu_container, HomeMenuFragment.getInstance(), false, false);
     }
 
     @Override
@@ -64,7 +75,7 @@ public class TabHomeActivity extends AppBaseActivity<TabHomeActivityPresenter> {
     }
 
     private void initSlidingMenu() {
-        int offset = (int) (RuleUtils.getScreenWidth() * 0.374F);
+        int offset = (int) (RuleUtils.getScreenWidth() * 0.202F);
         mSlidingMenu = new SlidingMenu(this);
         mSlidingMenu.setMode(SlidingMenu.LEFT);
         mSlidingMenu.setTouchModeAbove(SlidingMenu.TOUCHMODE_MARGIN);
@@ -87,9 +98,8 @@ public class TabHomeActivity extends AppBaseActivity<TabHomeActivityPresenter> {
         FragmentAdapter adapter = new FragmentAdapter(this, mFragments);
         mVp.setAdapter(adapter);
         mVp.setScanScroll(false);
+        mVp.setOffscreenPageLimit(3);
 
-        mVp.setCurrentItem(0);
-        mTab.check(0);
     }
 
     public void toggleMenu() {
@@ -103,5 +113,15 @@ public class TabHomeActivity extends AppBaseActivity<TabHomeActivityPresenter> {
     public HomeViewPager getHomeViewPager() {
         return mVp;
     }
+
+    public void onTabChange(int index) {
+        mTab.check(index);
+        mVp.setCurrentItem(index, false);
+    }
+
+    public void onLogout() {
+        // TODO: 16/8/1
+    }
+
 
 }
