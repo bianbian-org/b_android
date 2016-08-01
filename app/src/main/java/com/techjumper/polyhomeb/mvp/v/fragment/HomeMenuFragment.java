@@ -14,6 +14,7 @@ import com.techjumper.corelib.utils.window.StatusbarHelper;
 import com.techjumper.polyhomeb.R;
 import com.techjumper.polyhomeb.adapter.HomeMenuAdapter;
 import com.techjumper.polyhomeb.mvp.p.fragment.HomeMenuFragmentPresenter;
+import com.techjumper.polyhomeb.user.UserManager;
 
 import butterknife.Bind;
 import cn.finalteam.loadingviewfinal.RecyclerViewFinal;
@@ -66,6 +67,8 @@ public class HomeMenuFragment extends AppBaseFragment<HomeMenuFragmentPresenter>
         mAdapter = new HomeMenuAdapter();
         mRv.setAdapter(mAdapter);
         mAdapter.loadData(getPresenter().getDatas());
+
+        getPresenter().setAvatarAndName(UserManager.INSTANCE.isLogin());
 
     }
 

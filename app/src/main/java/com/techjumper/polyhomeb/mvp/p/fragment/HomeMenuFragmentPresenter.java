@@ -65,7 +65,7 @@ public class HomeMenuFragmentPresenter extends AppBaseFragmentPresenter<HomeMenu
         return mModel.getDatas();
     }
 
-    private void setAvatarAndName(boolean isLogin) {
+    public void setAvatarAndName(boolean isLogin) {
         getView().getTvUserName().setText(isLogin ? (UserManager.INSTANCE.getUserNickName()) : getView().getActivity().getString(R.string.click_to_login_in));
 //        try {
 //            getView().getIvAvatar().setImageBitmap(isLogin ? (PicassoHelper.load(UserManager.INSTANCE.getUserInfo(UserManager.KEY_AVATAR)).get()) : (PicassoHelper.load(R.mipmap.ic_launcher).get()));
