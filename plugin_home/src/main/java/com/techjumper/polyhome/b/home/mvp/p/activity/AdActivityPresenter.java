@@ -56,7 +56,8 @@ public class AdActivityPresenter extends AppBaseActivityPresenter<AdActivity> {
     @Override
     public void onResume() {
         super.onResume();
-        if (textureView != null){
+        if (textureView != null) {
+            textureView.initMediaPlayer();
             textureView.start();
         }
     }
@@ -64,7 +65,7 @@ public class AdActivityPresenter extends AppBaseActivityPresenter<AdActivity> {
     @Override
     public void onPause() {
         super.onPause();
-        if (textureView != null){
+        if (textureView != null) {
             textureView.pause();
         }
     }

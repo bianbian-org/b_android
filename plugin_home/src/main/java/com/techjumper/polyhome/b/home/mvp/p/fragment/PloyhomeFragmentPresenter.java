@@ -16,6 +16,7 @@ import com.techjumper.commonres.entity.event.AdEvent;
 import com.techjumper.commonres.entity.event.AdMainEvent;
 import com.techjumper.commonres.entity.event.AdShowEvent;
 import com.techjumper.commonres.entity.event.AdTemEvent;
+import com.techjumper.commonres.entity.event.InfoMediaPlayerEvent;
 import com.techjumper.commonres.entity.event.NoticeEvent;
 import com.techjumper.commonres.entity.event.ShowMainAdEvent;
 import com.techjumper.commonres.entity.event.UserInfoEvent;
@@ -115,7 +116,8 @@ public class PloyhomeFragmentPresenter extends AppBaseFragmentPresenter<Ployhome
                     if (UserInfoManager.isLogin())
                         return true;
 
-                    ToastUtils.show(getView().getString(R.string.error_no_login));
+                    ToastUtils.show(
+                            getView().getString(R.string.error_no_login));
                     return false;
                 })
                 .compose(RxUtil.applySchedulers())
@@ -239,6 +241,14 @@ public class PloyhomeFragmentPresenter extends AppBaseFragmentPresenter<Ployhome
                         if (mIsGetAd) {
                             getNormalAd(true);
                         }
+                    } else if (o instanceof InfoMediaPlayerEvent) {
+                        InfoMediaPlayerEvent event = (InfoMediaPlayerEvent) o;
+                        if (event.getType() == InfoMediaPlayerEvent.PLOY) {
+                            if (textureView != null) {
+                                Log.d("ergou", "initMediaPlayer");
+                                textureView.initMediaPlayer();
+                            }
+                        }
                     }
                 }));
 
@@ -290,7 +300,13 @@ public class PloyhomeFragmentPresenter extends AppBaseFragmentPresenter<Ployhome
     @Override
     public void onResume() {
         super.onResume();
+        Log.d("ergou", "onResume");
         if (mIsVisibleToUser) {
+            if (textureView != null) {
+                Log.d("ergou", "initMediaPlayer");
+                textureView.initMediaPlayer();
+            }
+            RxBus.INSTANCE.send(new InfoMediaPlayerEvent(InfoMediaPlayerEvent.INFO));
             getNormalAd(true);
             mIsGetAd = true;
         }
@@ -401,8 +417,10 @@ public class PloyhomeFragmentPresenter extends AppBaseFragmentPresenter<Ployhome
 
             adsEntity.setMedia_url(file.getAbsolutePath());
         } else if (VIDEO_AD_TYPE.equals(addType)) {
+            Log.d("ergou", "equals");
             adImageView.setVisibility(View.INVISIBLE);
             textureView.setVisibility(View.VISIBLE);
+            Log.d("ergou", "play");
             if (file.exists()) {
                 textureView.play(file.getAbsolutePath());
             } else {

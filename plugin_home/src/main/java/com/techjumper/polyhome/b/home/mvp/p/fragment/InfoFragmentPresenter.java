@@ -13,6 +13,7 @@ import com.techjumper.commonres.entity.CalendarEntity;
 import com.techjumper.commonres.entity.MedicalEntity;
 import com.techjumper.commonres.entity.WeatherEntity;
 import com.techjumper.commonres.entity.event.AdTemEvent;
+import com.techjumper.commonres.entity.event.InfoMediaPlayerEvent;
 import com.techjumper.commonres.entity.event.MedicalEvent;
 import com.techjumper.commonres.entity.event.MissReadEvent;
 import com.techjumper.commonres.entity.event.ShowMainAdEvent;
@@ -200,6 +201,14 @@ public class InfoFragmentPresenter extends AppBaseFragmentPresenter<InfoFragment
                     } else if (o instanceof MissReadEvent) {
                         int num = ((MissReadEvent) o).getNum();
                         getView().getSpeak().showQuarterText(String.valueOf(num));
+                    } else if (o instanceof InfoMediaPlayerEvent) {
+                        InfoMediaPlayerEvent event = (InfoMediaPlayerEvent) o;
+                        if (event.getType() == InfoMediaPlayerEvent.INFO) {
+                            if (textureView != null) {
+                                Log.d("ergou", "initMediaPlayer");
+                                textureView.initMediaPlayer();
+                            }
+                        }
                     }
                 });
 
@@ -240,6 +249,11 @@ public class InfoFragmentPresenter extends AppBaseFragmentPresenter<InfoFragment
     public void onResume() {
         super.onResume();
         if (mIsVisibleToUser) {
+            if (textureView != null) {
+                Log.d("ergou", "initMediaPlayer");
+                textureView.initMediaPlayer();
+            }
+            RxBus.INSTANCE.send(new InfoMediaPlayerEvent(InfoMediaPlayerEvent.PLOY));
             getNormalAd(true);
             mIsGetAd = true;
         }
@@ -356,9 +370,10 @@ public class InfoFragmentPresenter extends AppBaseFragmentPresenter<InfoFragment
 
             adsEntity.setMedia_url(file.getAbsolutePath());
         } else if (addType.equals(PloyhomeFragmentPresenter.VIDEO_AD_TYPE)) {
-
+            Log.d("ergou", "equals");
             adImageView.setVisibility(View.INVISIBLE);
             textureView.setVisibility(View.VISIBLE);
+            Log.d("ergou", "play");
             if (file.exists()) {
                 textureView.play(file.getAbsolutePath());
             } else {

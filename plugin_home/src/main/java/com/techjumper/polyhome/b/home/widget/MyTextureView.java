@@ -87,11 +87,7 @@ public class MyTextureView extends TextureView implements TextureView.SurfaceTex
         setSurfaceTextureListener(this);
     }
 
-    @Override
-    public void onSurfaceTextureAvailable(SurfaceTexture surfaceTexture, int width,
-                                          int height) {
-        Log.d("ergou", "onSurfaceTextureAvailable");
-        Surface surface = new Surface(surfaceTexture);
+    public void initMediaPlayer() {
         if (mediaPlayer == null) {
             Log.d("ergou", "null");
             if (mediaPlayer == null) {
@@ -108,6 +104,16 @@ public class MyTextureView extends TextureView implements TextureView.SurfaceTex
             mediaPlayer.setOnInfoListener(onInfoListener);
             mediaPlayer.setOnBufferingUpdateListener(bufferingUpdateListener);
         }
+    }
+
+    @Override
+    public void onSurfaceTextureAvailable(SurfaceTexture surfaceTexture, int width,
+                                          int height) {
+        Log.d("ergou", "onSurfaceTextureAvailable");
+        Surface surface = new Surface(surfaceTexture);
+
+        initMediaPlayer();
+
         mediaPlayer.setSurface(surface);
         mediaState = MediaState.INIT;
 
@@ -165,14 +171,29 @@ public class MyTextureView extends TextureView implements TextureView.SurfaceTex
             onStateChangeListener.onSurfaceTextureDestroyed(surface);
         }
 
-        if (surface != null) {
-            surface = null;
+        if (mediaState == MediaState.PLAYING) {
+            stop();
         }
+
         if (mediaPlayer != null) {
+            mediaPlayer.reset();
             mediaPlayer.release();
             mediaPlayer = null;
         }
-        return true;
+
+        return false;
+    }
+
+    @Override
+    protected void onAttachedToWindow() {
+        super.onAttachedToWindow();
+        Log.d("ergou", "onDetachedFromWindow");
+    }
+
+    @Override
+    protected void onDetachedFromWindow() {
+        super.onDetachedFromWindow();
+        Log.d("ergou", "onDetachedFromWindow");
     }
 
     @Override
