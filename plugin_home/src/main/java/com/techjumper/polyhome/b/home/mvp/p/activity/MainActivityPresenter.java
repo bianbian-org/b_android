@@ -160,12 +160,12 @@ public class MainActivityPresenter extends AppBaseActivityPresenter<MainActivity
 
     };
 
-    @OnClick(R.id.title_img)
-    void titleImg() {
-        if (ComConstant.titleFinish) {
-            getView().finish();
-        }
-    }
+//    @OnClick(R.id.title_img)
+//    void titleImg() {
+//        if (ComConstant.titleFinish) {
+//            getView().finish();
+//        }
+//    }
 
     @OnClick(R.id.title)
     void title() {
