@@ -361,7 +361,7 @@ public class MainActivityPresenter extends AppBaseActivityPresenter<MainActivity
 
         submitOnlineSubscription = mainActivityModel.submitOnline()
                 .repeatWhen(observable -> {
-                    return observable.delay(2000, TimeUnit.MILLISECONDS);
+                    return observable.delay(120000, TimeUnit.MILLISECONDS);
                 })
                 .subscribe(new Subscriber<TrueEntity>() {
                     @Override
