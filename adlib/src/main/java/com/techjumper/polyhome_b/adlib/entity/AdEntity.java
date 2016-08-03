@@ -74,6 +74,15 @@ public class AdEntity {
         private String md5;
         private String url;
         private String media_url;
+        private String adId;
+
+        public String getAdId() {
+            return adId;
+        }
+
+        public void setAdId(String adId) {
+            this.adId = adId;
+        }
 
         public String getMedia_type() {
             return media_type;

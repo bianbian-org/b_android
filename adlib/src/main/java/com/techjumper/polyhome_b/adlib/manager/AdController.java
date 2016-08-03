@@ -575,14 +575,15 @@ public class AdController {
             }
 
             //将播放的广告统计到数据库
-            saveAdStatToDb(rule.getId());
+            String adId = rule.getId();
+            saveAdStatToDb(adId);
 
             //因为首页需要不停的播放, 所以把时间强制设置为一小时以上,这样就可以不间断获取
             if (TYPE_HOME.equalsIgnoreCase(mRuleType)) {
                 totalTime = 60 * 70L;
             }
 //            totalTime = 5;  //测试用
-            timer(totalTime, adEntities);
+            timer(totalTime, adEntities, adId);
 
         }
 
@@ -600,7 +601,7 @@ public class AdController {
                     });
         }
 
-        private void timer(long totalTime, List<AdEntity.AdsEntity> adEntities) {
+        private void timer(long totalTime, List<AdEntity.AdsEntity> adEntities, String adId) {
             if (adEntities == null || adEntities.size() == 0)
                 return;
 //            int executeTime = NumberUtil.convertToint(currentTimeToRuleKey(), 0);
@@ -613,9 +614,10 @@ public class AdController {
                 if (mCurrentTimerIndex == adEntities.size()) {
                     return;
                 }
-                timer(totalTime, adEntities);
+                timer(totalTime, adEntities, adId);
                 return;
             }
+            adsEntity.setAdId(adId);
             long delay = NumberUtil.convertTolong(adsEntity.getRunning_time(), 0);
             final int executeTime = NumberUtil.convertToint(currentTimeToRuleKey(), 0);
             oneTimer(delay, adsEntity, new ITimer() {
@@ -647,7 +649,7 @@ public class AdController {
                     AdEntity.AdsEntity next = adEntities.get(getCurrentTimerIndex(adEntities));
                     if (next == null) {
                         mCurrentTimerIndex++;
-                        timer(totalTime, adEntities);
+                        timer(totalTime, adEntities, adId);
                         return;
                     }
                     long nextDelay = NumberUtil.convertTolong(next.getRunning_time(), 0);
