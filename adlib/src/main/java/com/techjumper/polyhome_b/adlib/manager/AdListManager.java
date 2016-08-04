@@ -32,16 +32,15 @@ public class AdListManager {
     private static File mAdFile = new File(Utils.appContext.getCacheDir().getAbsolutePath() + File.separator + AD_DATA_DIR);
 
 
-    /**
-     * 过期时间
-     * 天  时   分   秒    毫秒
-     * 2 * 24 * 60 * 60 * 1000L
-     */
-    private long sCacheInterval;
+//    /**
+//     * 过期时间
+//     * 天  时   分   秒    毫秒
+//     * 2 * 24 * 60 * 60 * 1000L
+//     */
+//    private long sCacheInterval;
 
 
     private AdListManager() {
-        sCacheInterval = (45 + getRandomNum(0, 30)) * 60 * 1000L;
     }
 
     private static int getRandomNum(int min, int max) {
@@ -116,7 +115,11 @@ public class AdListManager {
 
     private boolean isExpired() {
         long lastTime = PreferenceUtils.getPreference(SP_NAME).getLong(KEY_LAST_TIME, 0L);
-        return System.currentTimeMillis() - lastTime - sCacheInterval >= 0L;
+        return System.currentTimeMillis() - lastTime - getExpiredTime() >= 0L;
+    }
+
+    private long getExpiredTime() {
+        return (45 + getRandomNum(0, 30)) * 60 * 1000L;
     }
 
     private String getJsonFromLocal() {
