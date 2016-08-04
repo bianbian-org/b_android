@@ -307,7 +307,7 @@ public class AdController {
 
 
     private void fetchAd(String family_id, String user_id, String ticket, boolean fromCache, IFetchAd iFetchAd) {
-        RxUtils.unsubscribeIfNotNull(mPadAdSubs);
+//        RxUtils.unsubscribeIfNotNull(mPadAdSubs);
         mPadAdSubs = AdListManager.getInstance().fetchAdList(family_id, user_id, ticket, fromCache)
                 .subscribe(new Subscriber<AdEntity>() {
                     @Override
