@@ -35,4 +35,12 @@ public class MainActivityModel extends BaseModel<MainActivityPresenter> {
                 .submitOnline(argument)
                 .compose(CommonWrap.wrap());
     }
+
+    public Observable<TrueEntity> submitClicks(String clicks) {
+        KeyValuePair keyValuePair = KeyValueCreator.submitClicks(clicks);
+        BaseArgumentsEntity argument = NetHelper.createBaseArguments(keyValuePair);
+        return RetrofitHelper.<ServiceAPI>createDefault()
+                .submitClicks(argument)
+                .compose(CommonWrap.wrap());
+    }
 }

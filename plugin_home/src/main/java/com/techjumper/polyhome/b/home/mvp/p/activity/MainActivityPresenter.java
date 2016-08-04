@@ -15,6 +15,7 @@ import com.techjumper.commonres.ComConstant;
 import com.techjumper.commonres.UserInfoEntity;
 import com.techjumper.commonres.entity.MedicalEntity;
 import com.techjumper.commonres.entity.TrueEntity;
+import com.techjumper.commonres.entity.event.AdClickEvent;
 import com.techjumper.commonres.entity.event.AdControllerEvent;
 import com.techjumper.commonres.entity.event.AdMainEvent;
 import com.techjumper.commonres.entity.event.AdShowEvent;
@@ -27,6 +28,7 @@ import com.techjumper.commonres.util.CommonDateUtil;
 import com.techjumper.commonres.util.PluginEngineUtil;
 import com.techjumper.corelib.rx.tools.RxBus;
 import com.techjumper.corelib.rx.tools.RxUtils;
+import com.techjumper.corelib.utils.Utils;
 import com.techjumper.corelib.utils.common.JLog;
 import com.techjumper.corelib.utils.window.ToastUtils;
 import com.techjumper.lib2.utils.PicassoHelper;
@@ -37,9 +39,11 @@ import com.techjumper.plugincommunicateengine.utils.GsonUtils;
 import com.techjumper.polyhome.b.home.BuildConfig;
 import com.techjumper.polyhome.b.home.R;
 import com.techjumper.polyhome.b.home.UserInfoManager;
+import com.techjumper.polyhome.b.home.db.util.AdClickDbUtil;
 import com.techjumper.polyhome.b.home.mvp.m.MainActivityModel;
 import com.techjumper.polyhome.b.home.mvp.p.fragment.PloyhomeFragmentPresenter;
 import com.techjumper.polyhome.b.home.mvp.v.activity.MainActivity;
+import com.techjumper.polyhome.b.home.tool.AlarmManagerUtil;
 import com.techjumper.polyhome.b.home.widget.MyVideoView;
 import com.techjumper.polyhome_b.adlib.entity.AdEntity;
 import com.techjumper.polyhome_b.adlib.manager.AdController;
@@ -157,7 +161,7 @@ public class MainActivityPresenter extends AppBaseActivityPresenter<MainActivity
                 }
             }
         }
-
+        AlarmManagerUtil.setNoticeTime(Utils.appContext);
     };
 
 //    @OnClick(R.id.title_img)
@@ -287,6 +291,8 @@ public class MainActivityPresenter extends AppBaseActivityPresenter<MainActivity
                         if (!event.isShow()) {
                             AdWindowManager.getInstance().closeWindow(false);
                         }
+                    } else if (o instanceof AdClickEvent) {
+                        submitClicks();
                     }
                 });
 
@@ -303,6 +309,7 @@ public class MainActivityPresenter extends AppBaseActivityPresenter<MainActivity
 //        }
 
         PluginEngine.getInstance().registerReceiver(mIPluginMessageReceiver);
+        AlarmManagerUtil.setAdClick(Utils.appContext);
     }
 
     private void isShowMainAd(boolean isShow) {
@@ -386,5 +393,38 @@ public class MainActivityPresenter extends AppBaseActivityPresenter<MainActivity
                 });
 
         addSubscription(submitOnlineSubscription);
+    }
+
+    private void submitClicks() {
+        AdClickDbUtil.queryAll()
+                .flatMap(adClicks -> {
+                    String json = AdClickDbUtil.createParamJson(adClicks);
+                    Log.d("adclick", "json" + json);
+                    return mainActivityModel.submitClicks(json);
+                })
+                .subscribe(new Subscriber<TrueEntity>() {
+                    @Override
+                    public void onCompleted() {
+
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        getView().showError(e);
+                    }
+
+                    @Override
+                    public void onNext(TrueEntity trueEntity) {
+                        if (!processNetworkResult(trueEntity, false))
+                            return;
+
+                        if (trueEntity == null ||
+                                trueEntity.getData() == null)
+                            return;
+
+                        Log.d("adclick", "上传成功了");
+                        AdClickDbUtil.clear();
+                    }
+                });
     }
 }

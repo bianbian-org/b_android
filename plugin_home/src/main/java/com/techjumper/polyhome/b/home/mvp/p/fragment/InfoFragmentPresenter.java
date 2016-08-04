@@ -28,6 +28,7 @@ import com.techjumper.corelib.utils.common.JLog;
 import com.techjumper.lib2.utils.PicassoHelper;
 import com.techjumper.polyhome.b.home.R;
 import com.techjumper.polyhome.b.home.UserInfoManager;
+import com.techjumper.polyhome.b.home.db.util.AdClickDbUtil;
 import com.techjumper.polyhome.b.home.mvp.m.InfoFragmentModel;
 import com.techjumper.polyhome.b.home.mvp.v.activity.AdActivity;
 import com.techjumper.polyhome.b.home.mvp.v.fragment.InfoFragment;
@@ -66,6 +67,7 @@ public class InfoFragmentPresenter extends AppBaseFragmentPresenter<InfoFragment
     private int medicalPosition = 0;
     private boolean mIsVisibleToUser;
     private boolean mIsGetAd;
+    private boolean mIsGetNewAd;
 
     @OnClick(R.id.info_arrow_layout)
     void changeMedicalInfo() {
@@ -139,6 +141,7 @@ public class InfoFragmentPresenter extends AppBaseFragmentPresenter<InfoFragment
                 })
                 .compose(RxUtil.applySchedulers())
                 .subscribe(aVoid -> {
+                    AdClickDbUtil.insert(Long.valueOf(mAdsEntity.getAdId()));
                     Intent intent = new Intent(getView().getActivity(), AdActivity.class);
                     intent.putExtra(AdActivity.ADITEM, mAdsEntity);
                     getView().getActivity().startActivity(intent);
@@ -164,8 +167,11 @@ public class InfoFragmentPresenter extends AppBaseFragmentPresenter<InfoFragment
                             getCalendarInfo();
                         }
                     } else if (o instanceof AdTemEvent) {
+                        AdTemEvent event = (AdTemEvent) o;
+                        mIsGetNewAd = event.isFromCahce();
+                        Log.d("mIsGetNewAd", "AdTemEvent mIsGetNewAd " + mIsGetNewAd + "");
                         if (mIsGetAd) {
-                            getNormalAd(true);
+                            getNormalAd(mIsGetNewAd);
                         }
                     } else if (o instanceof MedicalEvent) {
                         MedicalEvent event = (MedicalEvent) o;
@@ -233,7 +239,8 @@ public class InfoFragmentPresenter extends AppBaseFragmentPresenter<InfoFragment
         mIsVisibleToUser = isVisibleToUser;
         if (isVisibleToUser) {
             Log.d("hehe", "info显示");
-            getNormalAd(true);
+            Log.d("mIsGetNewAd", mIsGetNewAd + "");
+            getNormalAd(mIsGetNewAd);
             mIsGetAd = true;
         } else {
             Log.d("hehe", "info消失");
@@ -254,7 +261,8 @@ public class InfoFragmentPresenter extends AppBaseFragmentPresenter<InfoFragment
                 textureView.initMediaPlayer();
             }
             RxBus.INSTANCE.send(new InfoMediaPlayerEvent(InfoMediaPlayerEvent.PLOY));
-            getNormalAd(true);
+            Log.d("mIsGetNewAd", mIsGetNewAd + "");
+            getNormalAd(mIsGetNewAd);
             mIsGetAd = true;
         }
     }
@@ -382,7 +390,7 @@ public class InfoFragmentPresenter extends AppBaseFragmentPresenter<InfoFragment
 
             adsEntity.setMedia_url(file.getAbsolutePath());
         }
-
+        mIsGetNewAd = true;
         mAdsEntity = adsEntity;
     }
 

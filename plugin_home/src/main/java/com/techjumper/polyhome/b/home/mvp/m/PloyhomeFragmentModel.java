@@ -1,10 +1,13 @@
 package com.techjumper.polyhome.b.home.mvp.m;
 
 import com.techjumper.commonres.ComConstant;
+import com.techjumper.commonres.entity.BaseArgumentsEntity;
 import com.techjumper.commonres.entity.InfoEntity;
 import com.techjumper.commonres.entity.NoticeEntity;
+import com.techjumper.commonres.entity.TrueEntity;
 import com.techjumper.corelib.mvp.model.BaseModel;
 import com.techjumper.corelib.rx.tools.CommonWrap;
+import com.techjumper.lib2.others.KeyValuePair;
 import com.techjumper.lib2.utils.RetrofitHelper;
 import com.techjumper.polyhome.b.home.UserInfoManager;
 import com.techjumper.polyhome.b.home.mvp.p.fragment.PloyhomeFragmentPresenter;

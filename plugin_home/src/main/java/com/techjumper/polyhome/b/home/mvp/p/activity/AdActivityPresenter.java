@@ -45,7 +45,6 @@ public class AdActivityPresenter extends AppBaseActivityPresenter<AdActivity> {
 
             webView.loadUrl(adsEntity.getUrl());
         }
-
     }
 
     @Override

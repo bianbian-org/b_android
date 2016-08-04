@@ -10,6 +10,7 @@ import android.widget.ImageView;
 import com.jakewharton.rxbinding.view.RxView;
 import com.techjumper.commonres.UserInfoEntity;
 import com.techjumper.commonres.entity.NoticeEntity;
+import com.techjumper.commonres.entity.TrueEntity;
 import com.techjumper.commonres.entity.WeatherEntity;
 import com.techjumper.commonres.entity.event.AdControllerEvent;
 import com.techjumper.commonres.entity.event.AdEvent;
@@ -22,6 +23,7 @@ import com.techjumper.commonres.entity.event.ShowMainAdEvent;
 import com.techjumper.commonres.entity.event.UserInfoEvent;
 import com.techjumper.commonres.entity.event.WeatherEvent;
 import com.techjumper.commonres.entity.event.pushevent.NoticePushEvent;
+import com.techjumper.commonres.util.CommonDateUtil;
 import com.techjumper.commonres.util.PluginEngineUtil;
 import com.techjumper.commonres.util.RxUtil;
 import com.techjumper.corelib.rx.tools.RxBus;
@@ -32,6 +34,7 @@ import com.techjumper.lib2.utils.GsonUtils;
 import com.techjumper.lib2.utils.PicassoHelper;
 import com.techjumper.polyhome.b.home.R;
 import com.techjumper.polyhome.b.home.UserInfoManager;
+import com.techjumper.polyhome.b.home.db.util.AdClickDbUtil;
 import com.techjumper.polyhome.b.home.mvp.m.PloyhomeFragmentModel;
 import com.techjumper.polyhome.b.home.mvp.v.activity.AdActivity;
 import com.techjumper.polyhome.b.home.mvp.v.activity.JujiaActivity;
@@ -70,6 +73,7 @@ public class PloyhomeFragmentPresenter extends AppBaseFragmentPresenter<Ployhome
     private boolean mShouldSleep = true;
     private boolean mIsVisibleToUser;
     private boolean mIsGetAd;
+    private boolean mIsGetNewAd;
 
     @Override
     public void onDestroy() {
@@ -92,7 +96,7 @@ public class PloyhomeFragmentPresenter extends AppBaseFragmentPresenter<Ployhome
         adImageView = getView().getAd();
         textureView = getView().getTextureView();
 
-        getAd();
+        getAd(true);
         getNotices();
 
         RxView.clicks(getView().getProperty())
@@ -142,6 +146,7 @@ public class PloyhomeFragmentPresenter extends AppBaseFragmentPresenter<Ployhome
                 })
                 .compose(RxUtil.applySchedulers())
                 .subscribe(aVoid -> {
+                    AdClickDbUtil.insert(Long.valueOf(mAdsEntity.getAdId()));
                     Intent intent = new Intent(getView().getActivity(), AdActivity.class);
                     intent.putExtra(AdActivity.ADITEM, mAdsEntity);
                     getView().getActivity().startActivity(intent);
@@ -196,13 +201,14 @@ public class PloyhomeFragmentPresenter extends AppBaseFragmentPresenter<Ployhome
                         Log.d("pluginUserInfo", "更新公告");
                         getNotices();
                         Log.d("pluginUserInfo", "更新广告");
-                        getAd();
+                        getAd(false);
+                        mIsGetNewAd = false;
                     } else if (o instanceof NoticePushEvent) {
                         Log.d("pluginUserInfo", "推送更新公告");
                         getNotices();
                     } else if (o instanceof AdEvent) {
                         Log.d("pluginUserInfo", "推送更新广告");
-                        getAd(false);
+                        getAd(true);
                     }
                 });
 
@@ -285,6 +291,8 @@ public class PloyhomeFragmentPresenter extends AppBaseFragmentPresenter<Ployhome
                 }));
     }
 
+
+
     @Override
     public void onPause() {
         super.onPause();
@@ -307,7 +315,7 @@ public class PloyhomeFragmentPresenter extends AppBaseFragmentPresenter<Ployhome
                 textureView.initMediaPlayer();
             }
             RxBus.INSTANCE.send(new InfoMediaPlayerEvent(InfoMediaPlayerEvent.INFO));
-            getNormalAd(true);
+            getNormalAd(mIsGetNewAd);
             mIsGetAd = true;
         }
     }
@@ -318,7 +326,7 @@ public class PloyhomeFragmentPresenter extends AppBaseFragmentPresenter<Ployhome
         mIsVisibleToUser = isVisibleToUser;
         if (isVisibleToUser) {
             Log.d("hehe", "Ployhome显示");
-            getNormalAd(true);
+            getNormalAd(mIsGetNewAd);
             mIsGetAd = true;
         } else {
             Log.d("hehe", "Ployhome消失");
@@ -354,10 +362,6 @@ public class PloyhomeFragmentPresenter extends AppBaseFragmentPresenter<Ployhome
         return restrictNo;
     }
 
-    private void getAd() {
-        getAd(true);
-    }
-
     private void getAd(boolean fromCahce) {
         if (!UserInfoManager.isLogin())
             return;
@@ -367,10 +371,12 @@ public class PloyhomeFragmentPresenter extends AppBaseFragmentPresenter<Ployhome
         if (mIsGetAd) {
             getNormalAd(fromCahce);
         }
+
+        Log.d("mIsGetNewAd", "fromCahce " + fromCahce + "");
         getWakeUpAd(fromCahce);
         getSleepAd(fromCahce);
 
-        RxBus.INSTANCE.send(new AdTemEvent());
+        RxBus.INSTANCE.send(new AdTemEvent(fromCahce));
     }
 
     /**
@@ -428,7 +434,7 @@ public class PloyhomeFragmentPresenter extends AppBaseFragmentPresenter<Ployhome
             }
             adsEntity.setMedia_url(file.getAbsolutePath());
         }
-
+        mIsGetNewAd = true;
         mAdsEntity = adsEntity;
     }
 

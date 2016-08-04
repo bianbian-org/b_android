@@ -52,4 +52,9 @@ public class KeyValueCreator {
                 .put("family_id", family_id)
                 .put("device_id", device_id);
     }
+
+    public static KeyValuePair submitClicks(String clicks) {
+        return newPair()
+                .put("json", clicks);
+    }
 }

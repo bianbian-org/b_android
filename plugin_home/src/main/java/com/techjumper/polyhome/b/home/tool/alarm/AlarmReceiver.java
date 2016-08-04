@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.util.Log;
 
+import com.techjumper.commonres.entity.event.AdClickEvent;
 import com.techjumper.commonres.entity.event.WeatherDateEvent;
 import com.techjumper.commonres.entity.event.pushevent.NoticePushEvent;
 import com.techjumper.commonres.util.CommonDateUtil;
@@ -21,6 +22,7 @@ public class AlarmReceiver extends BroadcastReceiver {
 
     public static final int WEATHER = 0;
     public static final int NOTICES = 1;
+    public static final int ADCLICK = 2;
 
     public static final String TYPE = "type";
 
@@ -33,12 +35,16 @@ public class AlarmReceiver extends BroadcastReceiver {
             if (UserInfoManager.isLogin()) {
                 RxBus.INSTANCE.send(new WeatherDateEvent());
             }
-        } else {
+        } else if (intent.getIntExtra(TYPE, WEATHER) == NOTICES) {
             AlarmManagerUtil.setNoticeTime(Utils.appContext);
             Log.d(AlarmManagerUtil.TAG, "执行通知请求......");
             if (UserInfoManager.isLogin()) {
                 RxBus.INSTANCE.send(new NoticePushEvent());
             }
+        } else {
+            Log.d(AlarmManagerUtil.TAG, "执行上传点击广告请求......");
+            AlarmManagerUtil.setAdClick(Utils.appContext);
+            RxBus.INSTANCE.send(new AdClickEvent());
         }
     }
 }

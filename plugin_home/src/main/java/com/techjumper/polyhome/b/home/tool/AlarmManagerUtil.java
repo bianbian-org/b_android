@@ -65,4 +65,24 @@ public class AlarmManagerUtil {
 
         alarmManager.set(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis() + triggerAtMillis, pendingIntent);
     }
+
+    public static void setAdClick(Context context) {
+        int hour = CommonDateUtil.getHour();
+        int minute = CommonDateUtil.getMinute();
+        int triggerAtMillis = 1000 * 60 * 60;
+
+        Log.d(TAG, "Notice: hour:" + hour + " minute:" + minute + "triggerAtMillis:" + triggerAtMillis);
+
+        AlarmManager alarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
+        Calendar calendar = Calendar.getInstance();
+        calendar.set(Calendar.HOUR_OF_DAY, hour);
+        calendar.set(Calendar.MINUTE, minute);
+        calendar.set(Calendar.SECOND, 0);
+
+        Intent intent = new Intent("android.intent.action.ALARM_RECEIVER");
+        intent.putExtra(AlarmReceiver.TYPE, AlarmReceiver.ADCLICK);
+        PendingIntent pendingIntent = PendingIntent.getBroadcast(context, AlarmReceiver.ADCLICK, intent, 0);
+
+        alarmManager.set(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis() + triggerAtMillis, pendingIntent);
+    }
 }
