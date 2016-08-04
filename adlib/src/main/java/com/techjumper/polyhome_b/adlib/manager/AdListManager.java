@@ -16,6 +16,7 @@ import java.io.File;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Random;
 
 import rx.Observable;
 import rx.Subscriber;
@@ -34,11 +35,17 @@ public class AdListManager {
     /**
      * 过期时间
      * 天  时   分   秒    毫秒
+     * 2 * 24 * 60 * 60 * 1000L
      */
-    private static long sCacheInterval = 2 * 24 * 60 * 60 * 1000L;
+    private long sCacheInterval;
 
 
     private AdListManager() {
+        sCacheInterval = (45 + getRandomNum(0, 30)) * 60 * 1000L;
+    }
+
+    private static int getRandomNum(int min, int max) {
+        return new Random().nextInt(max) % (max - min + 1) + min;
     }
 
     private static class SingletonInstance {
@@ -99,8 +106,8 @@ public class AdListManager {
     }
 
     private AdEntity getLocalAdEntity() {
-        JLog.d("<ad> 从本地获取广告列表");
         String data = getJsonFromLocal();
+        JLog.d("<ad> 从本地获取广告列表 : " + data);
         if (TextUtils.isEmpty(data)) {
             return null;
         }

@@ -26,6 +26,17 @@ public class RetrofitHelper {
         return retrofit.create(cls);
     }
 
+    public static <T> T createWithNew(String api, Class<T> cls) {
+        return new Retrofit.Builder()
+                .addConverterFactory(GsonConverterFactory.create())
+                .addCallAdapterFactory(RxJavaCallAdapterFactory.create())
+                .client(OkHttpHelper.create())
+                .baseUrl(api)
+                .build()
+                .create(cls);
+    }
+
+
     @SuppressWarnings("unchecked")
     public static <T> T createDefault() {
         Retrofit retrofit = mRetrofit.baseUrl(Config.sDefaultBaseUrl).build();

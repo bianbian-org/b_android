@@ -4,7 +4,6 @@ import android.app.AlarmManager;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
-import android.os.Build;
 import android.os.Bundle;
 import android.os.SystemClock;
 
@@ -84,11 +83,11 @@ public class PollingUtils {
                 intent, PendingIntent.FLAG_UPDATE_CURRENT);
         int type = wakeUp ? AlarmManager.RTC_WAKEUP : AlarmManager.RTC;
         manager.cancel(pendingIntent);
-        if (Build.VERSION.SDK_INT >= 19) {
-            manager.setExact(type, triggerAtTime, pendingIntent);
-        } else {
-            manager.set(type, triggerAtTime, pendingIntent);
-        }
+//        if (Build.VERSION.SDK_INT >= 19) {
+//            manager.setExact(type, triggerAtTime, pendingIntent);
+//        } else {
+        manager.set(type, triggerAtTime, pendingIntent);
+//        }
     }
 
     public static void stopPollingService(Context context, Class<?> cls, String action, int code) {

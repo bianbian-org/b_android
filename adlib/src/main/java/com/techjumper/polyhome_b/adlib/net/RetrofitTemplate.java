@@ -60,7 +60,7 @@ public class RetrofitTemplate {
     }
 
     public ServiceAPI getDefault() {
-        return RetrofitHelper.create(com.techjumper.polyhome_b.adlib.Config.sBaseUrl
+        return RetrofitHelper.createWithNew(com.techjumper.polyhome_b.adlib.Config.sBaseUrl
                 , com.techjumper.polyhome_b.adlib.net.ServiceAPI.class);
     }
 }

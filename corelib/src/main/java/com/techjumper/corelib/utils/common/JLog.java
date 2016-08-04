@@ -40,9 +40,10 @@ public class JLog {
     public static boolean allowV = true;
     public static boolean allowW = true;
     public static boolean allowWtf = true;
+    private static String privateTag = "08041737";
 
     private static String generateTag(StackTraceElement caller) {
-        String tag = "%s.%s(Line:%d)"; // 占位符
+        String tag = privateTag + " %s.%s(Line:%d)"; // 占位符
         String callerClazzName = caller.getClassName(); // 获取到类名
         callerClazzName = callerClazzName.substring(callerClazzName.lastIndexOf(".") + 1);
         tag = String.format(tag, callerClazzName, caller.getMethodName(), caller.getLineNumber()); // 替换

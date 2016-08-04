@@ -74,7 +74,7 @@ public class OkHttpHelper {
         return mClient;
     }
 
-    private static OkHttpClient create() {
+    public static OkHttpClient create() {
 
         int cacheSize;
         String cachePath = FileUtils.getCacheDir();
