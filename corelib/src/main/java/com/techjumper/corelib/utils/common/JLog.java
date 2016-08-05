@@ -40,7 +40,7 @@ public class JLog {
     public static boolean allowV = true;
     public static boolean allowW = true;
     public static boolean allowWtf = true;
-    private static String privateTag = "08041930";
+    private static String privateTag = "08041150";
 
     private static String generateTag(StackTraceElement caller) {
         String tag = privateTag + " %s.%s(Line:%d)"; // 占位符
