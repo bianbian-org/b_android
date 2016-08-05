@@ -19,6 +19,7 @@ import com.techjumper.polyhome.b.home.R;
 import com.techjumper.polyhome.b.home.mvp.p.fragment.PloyhomeFragmentPresenter;
 import com.techjumper.polyhome.b.home.widget.MyTextureView;
 import com.techjumper.polyhome.b.home.widget.SquareView;
+import com.techjumper.polyhome.b.home.widget.TextAutoView;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -43,7 +44,7 @@ public class PloyhomeFragment extends AppBaseFragment<PloyhomeFragmentPresenter>
     @Bind(R.id.notice_title)
     TextView noticeTitle;
     @Bind(R.id.notice_content)
-    TextView noticeContent;
+    TextAutoView noticeContent;
     @Bind(R.id.image_ad)
     ImageView ad;
     @Bind(R.id.video_ad)
