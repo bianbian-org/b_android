@@ -1,6 +1,7 @@
 package com.techjumper.polyhomeb.adapter.recycler_ViewHolder;
 
 import android.app.Activity;
+import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 
@@ -8,6 +9,7 @@ import com.steve.creact.annotation.DataBean;
 import com.steve.creact.library.viewholder.BaseRecyclerViewHolder;
 import com.techjumper.corelib.utils.common.AcHelper;
 import com.techjumper.lightwidget.textview.MarqueeTextView;
+import com.techjumper.polyhomeb.Constant;
 import com.techjumper.polyhomeb.R;
 import com.techjumper.polyhomeb.adapter.recycler_Data.PropertyPlacardContentData;
 import com.techjumper.polyhomeb.mvp.v.activity.PlacardDetailActivity;
@@ -32,12 +34,17 @@ public class PropertyPlacardContentViewHolder extends BaseRecyclerViewHolder<Pro
         if (data == null) return;
         ((MarqueeTextView) getView(R.id.tv_notice)).setText(data.getTitle());
         setVisibility(R.id.iv_dot, data.isRead() ? View.INVISIBLE : View.VISIBLE);
-        ((Button) getView(R.id.btn)).setText(data.getBtnName());
+        ((Button) getView(R.id.btn)).setText(data.getType());
         setText(R.id.tv_content, data.getContent());
         setText(R.id.tv_time, data.getTime());
         setOnClickListener(R.id.layout_content, v -> {
-            new AcHelper.Builder((Activity) getContext()).target(PlacardDetailActivity.class).start();
+            Bundle bundle = new Bundle();
+            bundle.putInt(Constant.PLACARD_DETAIL_ID, data.getId());
+            bundle.putString(Constant.PLACARD_DETAIL_CONTENT, data.getContent());
+            bundle.putString(Constant.PLACARD_DETAIL_TIME, data.getTime());
+            bundle.putString(Constant.PLACARD_DETAIL_TITLE, data.getTitle());
+            bundle.putString(Constant.PLACARD_DETAIL_TYPE, data.getType());
+            new AcHelper.Builder((Activity) getContext()).extra(bundle).target(PlacardDetailActivity.class).start();
         });
-
     }
 }

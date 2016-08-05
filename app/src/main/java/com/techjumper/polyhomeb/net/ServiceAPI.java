@@ -2,8 +2,13 @@ package com.techjumper.polyhomeb.net;
 
 
 import com.techjumper.polyhomeb.entity.BaseArgumentsEntity;
+import com.techjumper.polyhomeb.entity.ComplainDetailEntity;
 import com.techjumper.polyhomeb.entity.LoginEntity;
+import com.techjumper.polyhomeb.entity.PropertyComplainEntity;
+import com.techjumper.polyhomeb.entity.PropertyPlacardDetailEntity;
+import com.techjumper.polyhomeb.entity.PropertyPlacardEntity;
 import com.techjumper.polyhomeb.entity.TrueEntity;
+import com.techjumper.polyhomeb.entity.UploadPicEntity;
 
 import java.util.Map;
 
@@ -93,4 +98,160 @@ public interface ServiceAPI {
     @POST("password/reset")
     Observable<TrueEntity> findPassword(@Body BaseArgumentsEntity entity);
 
+    /**
+     * 物业管理-物业公告列表
+     * <p>
+     * get '/notices'
+     * <p>
+     * params:
+     * user_id # 用户ID
+     * family_id:1,
+     * ticket # session登录验证
+     * page: 1 #页号
+     * count:3 #每页数据条数
+     * "data": {
+     * "notices": [
+     * {
+     * "id": 10,    #公告ID
+     * "title": "54trerf",   #公告标题
+     * "types": 1,  #公告类型 1-公告 2-资讯
+     * "content": "u003cpu003e3243erewu003c/pu003e", #内容
+     * "time": "2016-05-06"  #时间
+     * },
+     * {
+     * "id": 9,
+     * "title": "tgrs345",
+     * "types": 1,
+     * "content": "u003cpu003ef34545tu003c/pu003e",
+     * "time": "2016-05-06"
+     * },
+     */
+    @GET("notices")
+    Observable<PropertyPlacardEntity> propertyNotice(@QueryMap Map<String, String> args);
+
+    /**
+     * 公告详情
+     * get '/notices/show'
+     * params:
+     * user_id # 用户ID
+     * ticket # session登录验证
+     * id #公告ID
+     * return:
+     * "error_code": 0,
+     * "error_msg": null,
+     * "data": {
+     * "id": 10,  #公告ID
+     * "title": "54trerf", #公告标题
+     * "types": 1,  #公告类型 1-公告 2-资讯
+     * "content": "u003cpu003e3243erewu003c/pu003e",  #内容
+     * "time": "2016-05-06"  #时间
+     */
+    @GET("notices/show")
+    Observable<PropertyPlacardDetailEntity> propertyNoticeDetail(@QueryMap Map<String, String> stringStringMap);
+
+    /**
+     * 物业管理-投诉建议列表
+     * params:
+     * user_id # 用户ID
+     * ticket # session登录验证
+     * page: 1 #页号
+     * count:3 #每页数据条数
+     * return:
+     * {
+     * "error_code": 0,
+     * "error_msg": null,
+     * "data": {
+     * "suggestions": [
+     * {
+     * "id": 8,
+     * "content": "toutoutoutotuotutu",
+     * "user_name": "啦啦啦",
+     * "status": 0,  #0-未处理 1-已回复 2-已处理 3-已关闭
+     * "types": 1, #标题
+     * "user_id": 1,
+     * "created_at": "时间"
+     * # ERROR CODE
+     * error_code: 109,	error_msg: '此功能登录后可使用！'
+     */
+    @GET("suggestions")
+    Observable<PropertyComplainEntity> propertyComplain(@QueryMap Map<String, String> stringStringMap);
+
+    /**
+     * 新建投诉
+     * post '/suggestions'
+     * params:
+     * user_id # 用户ID
+     * ticket # session登录验证
+     * mobile #用户联系电话
+     * types #投诉类型 1-投诉 2-建议 3-表扬
+     * content #内容
+     * imgs: "['img1.jpg','img2.jpg','img3.jpg']"  #多个图片信息（数组）
+     * return:
+     * {
+     * "error_code": 0,
+     * "error_msg": null,
+     * "data": {
+     * "result": "true"
+     * }
+     * }
+     * # ERROR CODE
+     * error_code: 109,	error_msg: '此功能登录后可使用！'
+     */
+    @POST("suggestions")
+    Observable<TrueEntity> newComplain(@Body BaseArgumentsEntity entity);
+
+    /**
+     * 上传图片
+     * post '/upload/image/base64'
+     * params:
+     * user_id # 用户ID
+     * ticket # session登录验证
+     * file # 上传文件base64编码
+     * return:
+     * url: # 上传成功返回url
+     * # ERROR CODE
+     * error_code: 109,	error_msg: '此功能登录后可使用！'
+     * error_code: 208,	error_msg: '上传文件失败'
+     */
+    @POST("upload/image/base64")
+    Observable<UploadPicEntity> uploadPic(@Body BaseArgumentsEntity entity);
+
+    /**
+     * 投诉详情(聊天)
+     * get '/suggestions/show'
+     * <p>
+     * params:
+     * user_id # 用户ID
+     * ticket # session登录验证
+     * id #投诉消息ID
+     * # ERROR CODE
+     * error_code: 109,	error_msg: '此功能登录后可使用！'
+     * error_code: 404,	error_msg: '未找到内容！'
+     */
+    @GET("suggestions/show")
+    Observable<ComplainDetailEntity> getComplainDetail(@QueryMap Map<String, String> stringStringMap);
+
+    /**
+     * 物业管理-投诉建议回复
+     * post '/suggestions/reply'
+     * <p>
+     * params:
+     * user_id # 用户ID
+     * ticket # session登录验证
+     * content # 回复内容
+     * suggestion_id #投诉消息ID
+     * return:
+     * {
+     * "error_code": 0,
+     * "error_msg": null,
+     * "data": {
+     * "result": "true"
+     * }
+     * }
+     * # ERROR CODE
+     * error_code: 109,	error_msg: '此功能登录后可使用！'
+     * error_code: 404,	error_msg: '未找到内容！'
+     */
+    @POST("suggestions/reply")
+    Observable<TrueEntity> complainDetailReply(@Body BaseArgumentsEntity entity);
 }

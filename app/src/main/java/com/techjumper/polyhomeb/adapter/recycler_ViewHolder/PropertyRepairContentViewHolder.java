@@ -1,6 +1,7 @@
 package com.techjumper.polyhomeb.adapter.recycler_ViewHolder;
 
 import android.app.Activity;
+import android.os.Bundle;
 import android.view.View;
 import android.widget.TextView;
 
@@ -9,9 +10,10 @@ import com.steve.creact.library.viewholder.BaseRecyclerViewHolder;
 import com.techjumper.corelib.utils.common.AcHelper;
 import com.techjumper.corelib.utils.common.ResourceUtils;
 import com.techjumper.lightwidget.textview.MarqueeTextView;
+import com.techjumper.polyhomeb.Constant;
 import com.techjumper.polyhomeb.R;
 import com.techjumper.polyhomeb.adapter.recycler_Data.PropertyRepairContentData;
-import com.techjumper.polyhomeb.mvp.v.activity.RepairDetailActivity;
+import com.techjumper.polyhomeb.mvp.v.activity.ComplainDetailActivity;
 
 /**
  * * * * * * * * * * * * * * * * * * * * * * *
@@ -37,16 +39,29 @@ public class PropertyRepairContentViewHolder extends BaseRecyclerViewHolder<Prop
         setText(R.id.tv_time, data.getTime());
         setVisibility(R.id.iv_dot, data.isRead() ? View.INVISIBLE : View.VISIBLE);
 
-        if (data.getBtnName().equals("已完成")) {
-            getView(R.id.btn).setEnabled(false);
-            ((TextView) getView(R.id.btn)).setTextColor(ResourceUtils.getColorResource(R.color.color_acacac));
-        } else {
-            getView(R.id.btn).setEnabled(true);
-            ((TextView) getView(R.id.btn)).setTextColor(ResourceUtils.getColorResource(R.color.color_37a991));
+        switch (data.getStatus()) {
+            case 0:   //未处理
+                getView(R.id.btn).setEnabled(true);
+                ((TextView) getView(R.id.btn)).setTextColor(ResourceUtils.getColorResource(R.color.color_37a991));
+                break;
+            case 1:  //已回复
+                getView(R.id.btn).setEnabled(true);
+                ((TextView) getView(R.id.btn)).setTextColor(ResourceUtils.getColorResource(R.color.color_37a991));
+                break;
+            case 2:  //已处理
+                getView(R.id.btn).setEnabled(false);
+                ((TextView) getView(R.id.btn)).setTextColor(ResourceUtils.getColorResource(R.color.color_acacac));
+                break;
+            case 3:  //已关闭
+                getView(R.id.btn).setEnabled(false);
+                ((TextView) getView(R.id.btn)).setTextColor(ResourceUtils.getColorResource(R.color.color_acacac));
+                break;
         }
 
         setOnClickListener(R.id.layout_content, v -> {
-            new AcHelper.Builder((Activity) getContext()).target(RepairDetailActivity.class).start();
+            Bundle bundle = new Bundle();
+            bundle.putInt(Constant.PROPERTY_DATA_ID, data.getId());
+            new AcHelper.Builder((Activity) getContext()).target(ComplainDetailActivity.class).extra(bundle).start();
         });
 
     }

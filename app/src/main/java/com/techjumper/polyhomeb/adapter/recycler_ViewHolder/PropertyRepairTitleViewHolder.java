@@ -58,10 +58,10 @@ public class PropertyRepairTitleViewHolder extends BaseRecyclerViewHolder<Proper
         mPop.setMarginRight(8);
         mPop.setMarginTop(55);
         List<String> datas = new ArrayList<>();
-        datas.add(getContext().getResources().getString(R.string.repair_all));
-        datas.add(getContext().getResources().getString(R.string.pop_commited));
+        datas.add(getContext().getResources().getString(R.string.pop_all));
+        datas.add(getContext().getResources().getString(R.string.pop_all));
         datas.add(getContext().getResources().getString(R.string.pop_reply));
-        datas.add(getContext().getResources().getString(R.string.pop_done));
+        datas.add(getContext().getResources().getString(R.string.pop_closed));
         mPop.initData(datas);
     }
 

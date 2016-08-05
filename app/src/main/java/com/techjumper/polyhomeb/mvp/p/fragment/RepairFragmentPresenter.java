@@ -34,7 +34,7 @@ public class RepairFragmentPresenter extends AppBaseFragmentPresenter<RepairFrag
 //    public void setUserVisibleHint(boolean isVisibleToUser) {
 //        if (mIsFirst && isVisibleToUser) {
 //            mIsFirst = false;
-//            mDatas = mModel.initPlacardData();
+//            mDatas = mModel.updateNoticeData();
 //            getView().show(mDatas);
 //        }
 //    }

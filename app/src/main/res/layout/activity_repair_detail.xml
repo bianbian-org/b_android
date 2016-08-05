@@ -20,16 +20,16 @@
             android:layout_height="@dimen/dp_50">
 
             <TextView
-                android:id="@+id/tv_title"
+                android:id="@+id/tv_title_"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
                 android:layout_marginLeft="@dimen/dp_14"
-                android:text="个人报修-门窗"
                 android:textColor="@color/color_727272"
                 android:textSize="@dimen/sp_16" />
 
             <Button
+                android:visibility="invisible"
                 android:id="@+id/btn"
                 android:layout_width="@dimen/dp_54"
                 android:layout_height="@dimen/dp_25"
@@ -37,7 +37,6 @@
                 android:layout_centerVertical="true"
                 android:layout_marginRight="@dimen/dp_14"
                 android:background="@drawable/selector_btn_bg_color_green_gry"
-                android:text="已回复"
                 android:textColor="@color/color_37a991"
                 android:textSize="@dimen/sp_14" />
 
@@ -67,7 +66,6 @@
                         android:paddingLeft="@dimen/dp_14"
                         android:paddingRight="@dimen/dp_14"
                         android:paddingTop="@dimen/dp_14"
-                        android:text="让我返回为归结为efefefefefeefefefefefefefefefefefefefefefefefefef攻击我配个为非法违法而非任务范围分为访问服务范围而外围绯闻绯闻绯闻金额为快乐女接wefefwejfjwefwefewfewfwefwefewfwefwekwejf而分为of问佛我威锋网付金额为 去看附件二起来可访问附件为浪费金额为浪费金额为放假前为了减肥我放进去了二级网 吻挎包vwekgwekbgwelkbgweklnvwkefhqpofhwev   而无法为库房内为开发快忘了发"
                         android:textColor="@color/color_3e3e3e"
                         android:textSize="@dimen/sp_16" />
 
@@ -78,13 +76,14 @@
                 android:id="@+id/rv_received_pic"
                 android:layout_width="wrap_content"
                 android:layout_height="70dp"
-                android:visibility="visible"
                 android:layout_marginLeft="@dimen/dp_14"
                 android:layout_marginRight="@dimen/dp_7"
                 android:layout_marginTop="@dimen/dp_7"
-                android:overScrollMode="never" />
+                android:overScrollMode="never"
+                android:visibility="visible" />
 
             <TextView
+                android:visibility="invisible"
                 android:id="@+id/tv_time"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -94,7 +93,6 @@
                 android:background="@drawable/shape_textview_bg_gray"
                 android:gravity="center"
                 android:padding="@dimen/dp_3"
-                android:text="12月25日"
                 android:textSize="@dimen/sp_12" />
 
         </LinearLayout>
@@ -122,7 +120,7 @@
         android:layout_marginBottom="@dimen/dp_5">
 
         <EditText
-            android:id="@+id/et_content"
+            android:id="@+id/et_reply_content"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"

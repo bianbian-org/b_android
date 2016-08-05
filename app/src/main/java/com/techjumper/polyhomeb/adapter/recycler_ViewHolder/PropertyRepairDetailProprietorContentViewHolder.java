@@ -5,10 +5,11 @@ import android.view.View;
 
 import com.steve.creact.annotation.DataBean;
 import com.steve.creact.library.viewholder.BaseRecyclerViewHolder;
+import com.techjumper.corelib.rx.tools.RxBus;
 import com.techjumper.corelib.utils.window.DialogUtils;
-import com.techjumper.corelib.utils.window.ToastUtils;
 import com.techjumper.polyhomeb.R;
 import com.techjumper.polyhomeb.adapter.recycler_Data.PropertyRepairDetailProprietorContentData;
+import com.techjumper.polyhomeb.entity.event.ResendMessageEvent;
 
 /**
  * * * * * * * * * * * * * * * * * * * * * * *
@@ -37,10 +38,9 @@ public class PropertyRepairDetailProprietorContentViewHolder extends BaseRecycle
                 .onAny((dialog, which) -> {
                     switch (which) {
                         case POSITIVE:
-                            ToastUtils.show("重新发送");
+                            RxBus.INSTANCE.send(new ResendMessageEvent(data.getContent(), getLayoutPosition(),data));
                             break;
                         case NEGATIVE:
-                            ToastUtils.show("不重新发送");
                             break;
                     }
                 })

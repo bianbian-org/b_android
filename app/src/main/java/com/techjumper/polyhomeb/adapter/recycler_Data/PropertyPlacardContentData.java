@@ -10,9 +10,18 @@ public class PropertyPlacardContentData {
 
     private String title;
     private String content;
-    private String btnName;
+    private String type;
     private String time;
     private boolean isRead;
+    private int id;
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
 
     public String getTitle() {
         return title;
@@ -30,12 +39,12 @@ public class PropertyPlacardContentData {
         this.content = content;
     }
 
-    public String getBtnName() {
-        return btnName;
+    public String getType() {
+        return type;
     }
 
-    public void setBtnName(String btnName) {
-        this.btnName = btnName;
+    public void setType(String type) {
+        this.type = type;
     }
 
     public String getTime() {

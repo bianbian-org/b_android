@@ -7,7 +7,6 @@ import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 
-import com.steve.creact.library.display.DisplayBean;
 import com.techjumper.corelib.mvp.factory.Presenter;
 import com.techjumper.polyhomeb.R;
 import com.techjumper.polyhomeb.adapter.HomePageAdapter;
@@ -16,8 +15,6 @@ import com.techjumper.polyhomeb.other.DividerItemDecoration;
 import com.techjumper.ptr_lib.PtrClassicFrameLayout;
 import com.techjumper.ptr_lib.PtrDefaultHandler;
 import com.techjumper.ptr_lib.PtrFrameLayout;
-
-import java.util.List;
 
 import butterknife.Bind;
 import cn.finalteam.loadingviewfinal.RecyclerViewFinal;
@@ -79,24 +76,5 @@ public class HomeFragment extends AppBaseFragment<HomeFragmentPresenter> {
                 showHint(msg);
             mPtr.refreshComplete();
         }
-    }
-
-    public void show(List<DisplayBean> datas) {
-        mRv.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false));
-        mAdapter = new HomePageAdapter();
-        mRv.addItemDecoration(new DividerItemDecoration(28));
-        mRv.setAdapter(mAdapter);
-        mAdapter.loadData(datas);
-        mPtr.setPtrHandler(new PtrDefaultHandler() {
-            @Override
-            public void onRefreshBegin(PtrFrameLayout frame) {
-                new Handler().postDelayed(() -> stopRefresh(""), 3000);
-            }
-
-            @Override
-            public boolean checkCanDoRefresh(PtrFrameLayout frame, View content, View header) {
-                return PtrDefaultHandler.checkContentCanBePulledDown(frame, content, header);
-            }
-        });
     }
 }

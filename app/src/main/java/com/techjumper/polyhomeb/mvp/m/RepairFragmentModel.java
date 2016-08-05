@@ -1,21 +1,7 @@
 package com.techjumper.polyhomeb.mvp.m;
 
-import android.text.TextUtils;
-
 import com.steve.creact.library.display.DisplayBean;
-import com.techjumper.polyhomeb.adapter.recycler_Data.PropertyPlacardDividerData;
-import com.techjumper.polyhomeb.adapter.recycler_Data.PropertyPlacardDividerLongData;
-import com.techjumper.polyhomeb.adapter.recycler_Data.PropertyRepairBigDividerData;
-import com.techjumper.polyhomeb.adapter.recycler_Data.PropertyRepairContentData;
-import com.techjumper.polyhomeb.adapter.recycler_Data.PropertyRepairPropertyResponseData;
-import com.techjumper.polyhomeb.adapter.recycler_Data.PropertyRepairTitleData;
-import com.techjumper.polyhomeb.adapter.recycler_ViewHolder.databean.PropertyPlacardDividerBean;
-import com.techjumper.polyhomeb.adapter.recycler_ViewHolder.databean.PropertyPlacardDividerLongBean;
-import com.techjumper.polyhomeb.adapter.recycler_ViewHolder.databean.PropertyRepairBigDividerBean;
-import com.techjumper.polyhomeb.adapter.recycler_ViewHolder.databean.PropertyRepairContentBean;
-import com.techjumper.polyhomeb.adapter.recycler_ViewHolder.databean.PropertyRepairPropertyResponseBean;
-import com.techjumper.polyhomeb.adapter.recycler_ViewHolder.databean.PropertyRepairTitleBean;
-import com.techjumper.polyhomeb.entity.PropertyRepairEntity;
+import com.techjumper.polyhomeb.entity.PropertyComplainEntity;
 import com.techjumper.polyhomeb.mvp.p.fragment.RepairFragmentPresenter;
 
 import java.util.ArrayList;
@@ -33,95 +19,95 @@ public class RepairFragmentModel extends BaseModel<RepairFragmentPresenter> {
         super(presenter);
     }
 
-    private PropertyRepairEntity fake() {
-        PropertyRepairEntity propertyRepairEntity = new PropertyRepairEntity();
-        PropertyRepairEntity.DataBean dataBean = new PropertyRepairEntity.DataBean();
+    private PropertyComplainEntity fake() {
+        PropertyComplainEntity propertyComplainEntity = new PropertyComplainEntity();
+        PropertyComplainEntity.DataBean dataBean = new PropertyComplainEntity.DataBean();
 
-        List<PropertyRepairEntity.DataBean.ListBean> listBeanList = new ArrayList<>();
-        for (int i = 0; i < 6; i++) {
-            PropertyRepairEntity.DataBean.ListBean listBean = new PropertyRepairEntity.DataBean.ListBean();
-            listBean.setContent("这是内容" + i + "任务房违法和微风我果然够");
-            listBean.setTime("2月" + i + "日");
-            listBean.setRead(i == 3 ? true : false);
-            listBean.setPropertyResponse(i != 2 ? null : "物业回复:南海是中国的");
-            listBean.setTitle("这是第" + i + "个标题");
-            listBean.setBtnName(i == 2 ? "已回复" : i == 3 ? "已提交" : "已完成");
-            listBeanList.add(listBean);
-        }
+//        List<PropertyComplainEntity.DataBean.ListBean> listBeanList = new ArrayList<>();
+//        for (int i = 0; i < 6; i++) {
+//            PropertyComplainEntity.DataBean.ListBean listBean = new PropertyComplainEntity.DataBean.ListBean();
+//            listBean.setContent("这是内容" + i + "任务房违法和微风我果然够");
+//            listBean.setTime("2月" + i + "日");
+//            listBean.setRead(i == 3 ? true : false);
+//            listBean.setPropertyResponse(i != 2 ? null : "物业回复:南海是中国的");
+//            listBean.setTitle("这是第" + i + "个标题");
+//            listBean.setBtnName(i == 2 ? "已回复" : i == 3 ? "已提交" : "已完成");
+//            listBeanList.add(listBean);
+//        }
+//
+//        dataBean.setList(listBeanList);
+//        propertyComplainEntity.setData(dataBean);
 
-        dataBean.setList(listBeanList);
-        propertyRepairEntity.setData(dataBean);
-
-        return propertyRepairEntity;
+        return propertyComplainEntity;
     }
 
     public List<DisplayBean> initPlacardData() {
 
-        PropertyRepairEntity fake = fake();
-        PropertyRepairEntity.DataBean data = fake.getData();
-        List<PropertyRepairEntity.DataBean.ListBean> list = data.getList();
-
-        if (list == null || list.size() == 0) return null;
-
+//        PropertyComplainEntity fake = fake();
+//        PropertyComplainEntity.DataBean data = fake.getData();
+//        List<PropertyComplainEntity.DataBean.ListBean> list = data.getList();
+//
+//        if (list == null || list.size() == 0) return null;
+//
         List<DisplayBean> displayBeen = new ArrayList<>();
-
-        //第0个item,大分割线
-        PropertyRepairBigDividerData propertyRepairBigDividerData = new PropertyRepairBigDividerData();
-        PropertyRepairBigDividerBean propertyRepairBigDividerBean = new PropertyRepairBigDividerBean(propertyRepairBigDividerData);
-        displayBeen.add(propertyRepairBigDividerBean);
-
-        //第一个item,带总数量什么的
-        PropertyRepairTitleData propertyRepairTitleData = new PropertyRepairTitleData();
-        propertyRepairTitleData.setTitle("报修记录");
-        propertyRepairTitleData.setCount(list.size());
-        PropertyRepairTitleBean propertyRepairTitleBean = new PropertyRepairTitleBean(propertyRepairTitleData);
-        displayBeen.add(propertyRepairTitleBean);
-
-        //第二个item,长的分割线
-        PropertyPlacardDividerLongData propertyPlacardDividerLongData = new PropertyPlacardDividerLongData();
-        PropertyPlacardDividerLongBean propertyPlacardDividerLongBean = new PropertyPlacardDividerLongBean(propertyPlacardDividerLongData);
-        displayBeen.add(propertyPlacardDividerLongBean);
-
-        for (int i = 0; i < list.size(); i++) {
-
-            PropertyRepairEntity.DataBean.ListBean listBean = list.get(i);
-
-            //第三个item,内容
-            PropertyRepairContentData propertyRepairContentData = new PropertyRepairContentData();
-            propertyRepairContentData.setTitle(listBean.getTitle());
-            propertyRepairContentData.setRead(listBean.isRead());
-            propertyRepairContentData.setBtnName(listBean.getBtnName());
-            propertyRepairContentData.setTime(listBean.getTime());
-            propertyRepairContentData.setContent(listBean.getContent());
-            PropertyRepairContentBean propertyRepairContentBean = new PropertyRepairContentBean(propertyRepairContentData);
-            displayBeen.add(propertyRepairContentBean);
-
-            if (TextUtils.isEmpty(listBean.getPropertyResponse())) {
-                //如果物业回复是空的,那么直接加一个大的分割线
-                //如果当前的listBean是总数据的最后一个,那么就不能加大的分割线了
-                if (i != list.size() - 1) {
-                    displayBeen.add(propertyRepairBigDividerBean);
-                }
-
-            } else {
-                //第四个item,短点的分割线
-                PropertyPlacardDividerData dividerData = new PropertyPlacardDividerData();
-                PropertyPlacardDividerBean dividerBean = new PropertyPlacardDividerBean(dividerData);
-                displayBeen.add(dividerBean);
-
-                //第五个item,物业回复
-                PropertyRepairPropertyResponseData propertyRepairPropertyResponseData = new PropertyRepairPropertyResponseData();
-                propertyRepairPropertyResponseData.setResponse(listBean.getPropertyResponse());
-                PropertyRepairPropertyResponseBean propertyRepairPropertyResponseBean = new PropertyRepairPropertyResponseBean(propertyRepairPropertyResponseData);
-                displayBeen.add(propertyRepairPropertyResponseBean);
-
-                //如果物业回复不是空的话,那么在短点的分割线以及物业回复之后再加大的分割线
-                //如果当前的listBean是总数据的最后一个,那么就不能加大的分割线了
-                if (i != list.size() - 1) {
-                    displayBeen.add(propertyRepairBigDividerBean);
-                }
-            }
-        }
+//
+//        //第0个item,大分割线
+//        PropertyRepairBigDividerData propertyRepairBigDividerData = new PropertyRepairBigDividerData();
+//        PropertyRepairBigDividerBean propertyRepairBigDividerBean = new PropertyRepairBigDividerBean(propertyRepairBigDividerData);
+//        displayBeen.add(propertyRepairBigDividerBean);
+//
+//        //第一个item,带总数量什么的
+//        PropertyRepairTitleData propertyRepairTitleData = new PropertyRepairTitleData();
+//        propertyRepairTitleData.setTitle("报修记录");
+//        propertyRepairTitleData.setCount(list.size());
+//        PropertyRepairTitleBean propertyRepairTitleBean = new PropertyRepairTitleBean(propertyRepairTitleData);
+//        displayBeen.add(propertyRepairTitleBean);
+//
+//        //第二个item,长的分割线
+//        PropertyPlacardDividerLongData propertyPlacardDividerLongData = new PropertyPlacardDividerLongData();
+//        PropertyPlacardDividerLongBean propertyPlacardDividerLongBean = new PropertyPlacardDividerLongBean(propertyPlacardDividerLongData);
+//        displayBeen.add(propertyPlacardDividerLongBean);
+//
+//        for (int i = 0; i < list.size(); i++) {
+//
+//            PropertyComplainEntity.DataBean.ListBean listBean = list.get(i);
+//
+//            //第三个item,内容
+//            PropertyRepairContentData propertyRepairContentData = new PropertyRepairContentData();
+//            propertyRepairContentData.setTitle(listBean.getTitle());
+//            propertyRepairContentData.setRead(listBean.isRead());
+//            propertyRepairContentData.setStatus(listBean.getBtnName());
+//            propertyRepairContentData.setTime(listBean.getTime());
+//            propertyRepairContentData.setContent(listBean.getContent());
+//            PropertyRepairContentBean propertyRepairContentBean = new PropertyRepairContentBean(propertyRepairContentData);
+//            displayBeen.add(propertyRepairContentBean);
+//
+//            if (TextUtils.isEmpty(listBean.getPropertyResponse())) {
+//                //如果物业回复是空的,那么直接加一个大的分割线
+//                //如果当前的listBean是总数据的最后一个,那么就不能加大的分割线了
+//                if (i != list.size() - 1) {
+//                    displayBeen.add(propertyRepairBigDividerBean);
+//                }
+//
+//            } else {
+//                //第四个item,短点的分割线
+//                PropertyPlacardDividerData dividerData = new PropertyPlacardDividerData();
+//                PropertyPlacardDividerBean dividerBean = new PropertyPlacardDividerBean(dividerData);
+//                displayBeen.add(dividerBean);
+//
+//                //第五个item,物业回复
+//                PropertyRepairPropertyResponseData propertyRepairPropertyResponseData = new PropertyRepairPropertyResponseData();
+//                propertyRepairPropertyResponseData.setResponse(listBean.getPropertyResponse());
+//                PropertyRepairPropertyResponseBean propertyRepairPropertyResponseBean = new PropertyRepairPropertyResponseBean(propertyRepairPropertyResponseData);
+//                displayBeen.add(propertyRepairPropertyResponseBean);
+//
+//                //如果物业回复不是空的话,那么在短点的分割线以及物业回复之后再加大的分割线
+//                //如果当前的listBean是总数据的最后一个,那么就不能加大的分割线了
+//                if (i != list.size() - 1) {
+//                    displayBeen.add(propertyRepairBigDividerBean);
+//                }
+//            }
+//        }
 
         return displayBeen;
     }

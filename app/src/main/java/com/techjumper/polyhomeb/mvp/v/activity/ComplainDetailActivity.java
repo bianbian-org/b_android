@@ -5,6 +5,7 @@ import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
@@ -12,11 +13,15 @@ import android.widget.TextView;
 
 import com.jakewharton.rxbinding.widget.RxTextView;
 import com.techjumper.corelib.mvp.factory.Presenter;
+import com.techjumper.corelib.utils.common.ResourceUtils;
 import com.techjumper.corelib.utils.common.RuleUtils;
 import com.techjumper.polyhomeb.R;
 import com.techjumper.polyhomeb.adapter.RepairDetailAdapter;
 import com.techjumper.polyhomeb.adapter.RepairDetailPicAdapter;
-import com.techjumper.polyhomeb.mvp.p.activity.RepairDetailActivityPresenter;
+import com.techjumper.polyhomeb.entity.ComplainDetailEntity;
+import com.techjumper.polyhomeb.mvp.p.activity.ComplainDetailActivityPresenter;
+
+import java.util.List;
 
 import butterknife.Bind;
 import cn.finalteam.loadingviewfinal.RecyclerViewFinal;
@@ -27,19 +32,27 @@ import cn.finalteam.loadingviewfinal.RecyclerViewFinal;
  * Date: 16/7/25
  * * * * * * * * * * * * * * * * * * * * * * *
  **/
-@Presenter(RepairDetailActivityPresenter.class)
-public class RepairDetailActivity extends AppBaseActivity<RepairDetailActivityPresenter> implements View.OnLayoutChangeListener {
+@Presenter(ComplainDetailActivityPresenter.class)
+public class ComplainDetailActivity extends AppBaseActivity<ComplainDetailActivityPresenter> implements View.OnLayoutChangeListener {
 
     @Bind(R.id.rv)
     RecyclerViewFinal mRv;
-    @Bind(R.id.et_content)
-    EditText mEtContent;
+    @Bind(R.id.et_reply_content)
+    EditText mEtReplyContent;
     @Bind(R.id.layout_root)
     View mRootView;
     @Bind(R.id.layout_static_head)
     View mStaticHead;
     @Bind(R.id.tv_send)
     TextView mTvSend;
+    @Bind(R.id.tv_title_)
+    TextView mTvTitle;
+    @Bind(R.id.tv_content)
+    TextView mTvContent;
+    @Bind(R.id.btn)
+    Button mBtnStatus;
+    @Bind(R.id.tv_time)
+    TextView mTvTime;
 
     //默认是有图片
     //当有图片的时候,mLayoutNotice的高度是284DP,其中70DP是mRvReceivedPic,14DP是mRvReceivedPic的margin
@@ -64,18 +77,13 @@ public class RepairDetailActivity extends AppBaseActivity<RepairDetailActivityPr
 
     @Override
     protected void initView(Bundle savedInstanceState) {
-        mRv.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
-        mAdapter = new RepairDetailAdapter();
-        mRv.setAdapter(mAdapter);
-        mAdapter.loadData(getPresenter().getDatas());
         processScreenHeightAndIME();
         processEditTextLines();
-
     }
 
     @Override
     public String getLayoutTitle() {
-        return getString(R.string.repair_detail);
+        return getString(R.string.complain_detail);
     }
 
     @Override
@@ -106,9 +114,9 @@ public class RepairDetailActivity extends AppBaseActivity<RepairDetailActivityPr
     }
 
     private void processEditTextLines() {
-        RxTextView.afterTextChangeEvents(mEtContent).subscribe(textViewAfterTextChangeEvent -> {
+        RxTextView.afterTextChangeEvents(mEtReplyContent).subscribe(textViewAfterTextChangeEvent -> {
             //文字行数改变的时候需要让rv跳转到最后一个item
-            if (mEtContent.getLineCount() > 1) {
+            if (mEtReplyContent.getLineCount() > 1) {
                 mRv.smoothScrollToPosition(mAdapter.getItemCount() + 1);
                 RelativeLayout.LayoutParams layoutParams = (RelativeLayout.LayoutParams) mTvSend.getLayoutParams();
                 layoutParams.addRule(RelativeLayout.ALIGN_BASELINE, R.id.et_content);
@@ -129,26 +137,70 @@ public class RepairDetailActivity extends AppBaseActivity<RepairDetailActivityPr
         return mAdapter;
     }
 
+    public EditText getEtReplyContent() {
+        return mEtReplyContent;
+    }
 
     //处理是不是含有图片
-    public void processChoosedPicLayout(boolean hasPic) {
+    private void processChoosedPicLayout(boolean hasPic, ComplainDetailEntity complainDetailEntity) {
         if (hasPic) {
             ViewGroup.LayoutParams layoutParams = mLayoutNotice.getLayoutParams();
             layoutParams.height = RuleUtils.dp2Px(284);
             mLayoutNotice.setLayoutParams(layoutParams);
             mRvReceivedPic.setVisibility(View.VISIBLE);
 
-            // TODO: 16/7/28 mRvReceivedPic做一系列的操作
             mRvReceivedPic.setLayoutManager(new GridLayoutManager(this, 3));
             mAdapter_ = new RepairDetailPicAdapter();
             mRvReceivedPic.setAdapter(mAdapter_);
-            mAdapter_.loadData(getPresenter().alreadyChoosedPic());
+            mAdapter_.loadData(getPresenter().alreadyChoosedPic(complainDetailEntity));
 
         } else {
             mRvReceivedPic.setVisibility(View.GONE);
             ViewGroup.LayoutParams layoutParams = mLayoutNotice.getLayoutParams();
             layoutParams.height = RuleUtils.dp2Px(200);
             mLayoutNotice.setLayoutParams(layoutParams);
+        }
+    }
+
+    public void onComplainDataReceive(ComplainDetailEntity complainDetailEntity) {
+        mTvTitle.setText(getPresenter().getTitle(complainDetailEntity.getData().getTypes()));
+        mTvContent.setText(complainDetailEntity.getData().getContent());
+        mTvTime.setText(getPresenter().getMonthAndDayTime(complainDetailEntity.getData().getCreated_at()));
+        mTvTime.setVisibility(View.VISIBLE);
+        mBtnStatus.setText(getPresenter().getStatusName(complainDetailEntity.getData().getStatus()));
+        mBtnStatus.setVisibility(View.VISIBLE);
+        if (complainDetailEntity.getData().getStatus() == 2 || complainDetailEntity.getData().getStatus() == 3) {
+            mBtnStatus.setTextColor(ResourceUtils.getColorResource(R.color.color_acacac));
+            mBtnStatus.setEnabled(false);
+        } else {
+            mBtnStatus.setTextColor(ResourceUtils.getColorResource(R.color.color_37a991));
+            mBtnStatus.setEnabled(true);
+        }
+
+        String[] imgs = complainDetailEntity.getData().getImgs();
+        if (imgs != null && imgs.length != 0) {
+            processChoosedPicLayout(true, complainDetailEntity);
+        } else {
+            processChoosedPicLayout(false, null);
+        }
+
+        List<ComplainDetailEntity.DataBean.RepliesBean> replies = complainDetailEntity.getData().getReplies();
+        if (replies != null && replies.size() != 0) {
+            processHasReply(true, replies);
+        } else {
+            processHasReply(false, null);
+        }
+    }
+
+    private void processHasReply(boolean hasReply, List<ComplainDetailEntity.DataBean.RepliesBean> replies) {
+        mRv.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
+        mAdapter = new RepairDetailAdapter();
+        if (hasReply) {
+            mRv.setAdapter(mAdapter);
+            mAdapter.loadData(getPresenter().getReplyDatas(replies));
+        } else {
+            mRv.setAdapter(mAdapter);
+            mAdapter.loadData(getPresenter().getEmptyData());
         }
     }
 }

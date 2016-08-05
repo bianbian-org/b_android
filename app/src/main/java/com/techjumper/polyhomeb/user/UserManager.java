@@ -33,6 +33,7 @@ public enum UserManager {
     public static final String KEY_SEX = "key_sex";
     public static final String KEY_EMAIL = "key_email";
     public static final String KEY_BIRTHDAY = "key_birthday";
+    public static final String KEY_ALL_FAMILIES = "key_all_families";
 
     /**
      * 通过LoginEntity将用户信息同步到本地
@@ -42,14 +43,21 @@ public enum UserManager {
         if (!TextUtils.isEmpty(dataEntity.getMobile())) {  //登录接口没有返回mobile,注册接口才有
             PreferenceUtils.save(KEY_PHONE_NUMBER, dataEntity.getMobile());
         }
-        if (!TextUtils.isEmpty(dataEntity.getMobile())) {  //登录接口多出来的
+        if (!TextUtils.isEmpty(dataEntity.getSex())) {  //登录接口多出来的
             PreferenceUtils.save(KEY_SEX, dataEntity.getSex());
         }
-        if (!TextUtils.isEmpty(dataEntity.getMobile())) {  //登录接口多出来的
+        if (!TextUtils.isEmpty(dataEntity.getEmail())) {  //登录接口多出来的
             PreferenceUtils.save(KEY_EMAIL, dataEntity.getEmail());
         }
-        if (!TextUtils.isEmpty(dataEntity.getMobile())) {  //登录接口多出来的
+        if (!TextUtils.isEmpty(dataEntity.getBirthday())) {  //登录接口多出来的
             PreferenceUtils.save(KEY_BIRTHDAY, dataEntity.getBirthday());
+        }
+        if (entity.getData().getFamilies() != null && entity.getData().getFamilies().size() != 0) {//登录接口多出来的
+            PreferenceUtils.save(KEY_ALL_FAMILIES, entity.getData().getFamilies());
+            for (String currentFamilyId : entity.getData().getFamilies()) {
+                PreferenceUtils.save(KEY_CURRENT_FAMILY_ID, currentFamilyId);
+                break;
+            }
         }
         PreferenceUtils.save(KEY_ID, dataEntity.getId());
         updateTicket(dataEntity.getTicket());

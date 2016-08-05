@@ -4,12 +4,10 @@ import android.os.Bundle;
 
 import com.techjumper.corelib.mvp.presenter.BaseActivityPresenterImp;
 import com.techjumper.corelib.rx.tools.RxUtils;
-import com.techjumper.corelib.utils.common.AcHelper;
 import com.techjumper.polyhomeb.R;
 import com.techjumper.polyhomeb.entity.BaseEntity;
 import com.techjumper.polyhomeb.mvp.v.activity.AppBaseActivity;
 import com.techjumper.polyhomeb.net.NetHelper;
-import com.techjumper.polyhomeb.user.UserManager;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -68,6 +66,8 @@ public abstract class AppBaseActivityPresenter<T extends AppBaseActivity> extend
 //                        .start();
             } else if (entity.getError_code() == NetHelper.CODE_NO_DATA) {
                 getView().showHintShort(getView().getString(R.string.error_no_data));
+            } else if (entity.getError_code() == NetHelper.CODE_UPLOAD_FAILED) {
+                getView().showHintShort(getView().getString(R.string.upload_failed));
             }
         } else
             getView().showError(null);

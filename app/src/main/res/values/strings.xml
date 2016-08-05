@@ -37,8 +37,9 @@
     <string name="toady">今天</string>
     <string name="checkout">查看</string>
     <string name="repair">维修</string>
-    <string name="complaint">投诉</string>
+    <string name="complain">投诉</string>
     <string name="placard">公告</string>
+    <string name="information">资讯</string>
     <string name="payment">缴费</string>
     <string name="jujia">聚家</string>
     <string name="express">快递</string>
@@ -55,10 +56,17 @@
     <string name="exit_app">再按一次, 退出应用</string>
     <string name="repair_">报修</string>
     <string name="complaint_">投诉建议</string>
-    <string name="placard_detail">公告详情</string>
+    <string name="placard_detail"> %1$s 详情</string>
+    <string name="error_no_browser">无可用浏览器，请下载后重试</string>
     <string name="new_repair">新增报修</string>
     <string name="repair_device">报修设备</string>
-    <string name="repair_all">全部</string>
+
+    <string name="pop_not_process">未处理</string>
+    <string name="pop_reply">已回复</string>
+    <string name="pop_processed">已处理</string>
+    <string name="pop_closed">已关闭</string>
+    <string name="pop_all">全部</string>
+
     <string name="repair_windows">门窗类</string>
     <string name="repair_walls">墙类</string>
     <string name="repair_elevators">电梯类</string>
@@ -71,9 +79,6 @@
     <string name="repair_none">未选择</string>
     <string name="repair_personal">个人</string>
     <string name="repair_common">公共</string>
-    <string name="pop_commited">已提交</string>
-    <string name="pop_reply">已回复</string>
-    <string name="pop_done">已完成</string>
     <string name="complain_theme">主题</string>
     <string name="complain_text_hint">请输入你的内容...</string>
     <string name="complain_text_hint_complaint">输入你的投诉内容...</string>
@@ -82,7 +87,7 @@
     <string name="advice">建议</string>
     <string name="celebrate">表扬</string>
     <string name="new_complain">新增投诉</string>
-    <string name="repair_detail">报修详情</string>
+    <string name="complain_detail">投诉建议</string>
     <string name="confirm_resend">重新发送?</string>
     <string name="ok">确定</string>
     <string name="cancel">取消</string>
@@ -112,6 +117,23 @@
     <string name="regist_get_verification_code">获取验证码</string>
     <string name="regist_get_verification_later">s后重新获取</string>
     <string name="regist_find_password">找回密码</string>
+    <string name="im_no_message">暂无消息</string>
+    <string name="no_data">暂无数据</string>
+    <string name="month">月</string>
+    <string name="day">日</string>
+    <string name="complain_header_title">反馈记录</string>
+    <string name="please_choose_theme">请选择主题</string>
+    <string name="please_input_your_content">请输入你的内容</string>
+    <string name="please_input_your_phone">请输入联系方式</string>
+    <string name="upload_pic_failed">图片上传失败</string>
+    <string name="commit_success">提交成功</string>
+    <string name="commit_failed">提交失败</string>
+    <string name="upload_failed">上传文件失败</string>
+    <string name="phone">手机</string>
+    <string name="no_title">无标题</string>
+    <string name="please_do_not_send_empty_message">请不要发送空消息^_^</string>
+    <string name="send_success">发送成功</string>
+    <string name="pattren_M_D">M月d日</string>
 
 
 </resources>

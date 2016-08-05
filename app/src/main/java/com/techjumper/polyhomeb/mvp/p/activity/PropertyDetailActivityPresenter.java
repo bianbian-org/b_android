@@ -6,11 +6,17 @@ import android.os.Bundle;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 
+import com.techjumper.corelib.rx.tools.RxBus;
+import com.techjumper.corelib.rx.tools.RxUtils;
 import com.techjumper.corelib.utils.common.AcHelper;
+import com.techjumper.polyhomeb.Constant;
+import com.techjumper.polyhomeb.entity.event.ComplainStatusEvent;
 import com.techjumper.polyhomeb.mvp.m.PropertyDetailActivityModel;
 import com.techjumper.polyhomeb.mvp.v.activity.NewComplainActivity;
 import com.techjumper.polyhomeb.mvp.v.activity.NewRepairActivity;
 import com.techjumper.polyhomeb.mvp.v.activity.PropertyDetailActivity;
+
+import rx.Subscription;
 
 /**
  * * * * * * * * * * * * * * * * * * * * * * *
@@ -21,6 +27,8 @@ import com.techjumper.polyhomeb.mvp.v.activity.PropertyDetailActivity;
 public class PropertyDetailActivityPresenter extends AppBaseActivityPresenter<PropertyDetailActivity> {
 
     private PropertyDetailActivityModel mModel = new PropertyDetailActivityModel(this);
+    private int mComplainStatus = -1;
+    private Subscription mSubs1;
 
     @Override
     public void initData(Bundle savedInstanceState) {
@@ -30,6 +38,7 @@ public class PropertyDetailActivityPresenter extends AppBaseActivityPresenter<Pr
     @Override
     public void onViewInited(Bundle savedInstanceState) {
         processIME();
+        getComplainStatues();
     }
 
     public int comeFromWitchButton() {
@@ -37,15 +46,29 @@ public class PropertyDetailActivityPresenter extends AppBaseActivityPresenter<Pr
     }
 
     public void onTitleRightClick() {
-
+        Bundle bundle = new Bundle();
         switch (getView().getViewPager().getCurrentItem()) {
             case 1:
-                new AcHelper.Builder(getView()).target(NewRepairActivity.class).start();
+                new AcHelper.Builder(getView()).extra(bundle).target(NewRepairActivity.class).start();
                 break;
             case 2:
-                new AcHelper.Builder(getView()).target(NewComplainActivity.class).start();
+                bundle.putInt(Constant.PROPERTY_COMPLAIN_STATUS, mComplainStatus);
+                new AcHelper.Builder(getView()).extra(bundle).target(NewComplainActivity.class).start();
                 break;
         }
+    }
+
+    private void getComplainStatues() {
+        RxUtils.unsubscribeIfNotNull(mSubs1);
+        addSubscription(
+                mSubs1 = RxBus.INSTANCE
+                        .asObservable()
+                        .subscribe(o -> {
+                            if (o instanceof ComplainStatusEvent) {
+                                ComplainStatusEvent event = (ComplainStatusEvent) o;
+                                mComplainStatus = event.getStatus();
+                            }
+                        }));
     }
 
     /**

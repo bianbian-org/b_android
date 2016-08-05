@@ -46,7 +46,7 @@
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
                         android:gravity="center"
-                        android:text="@string/repair_all"
+                        android:text="@string/pop_all"
                         android:textColor="@color/color_37a991"
                         android:textSize="@dimen/sp_16" />
 

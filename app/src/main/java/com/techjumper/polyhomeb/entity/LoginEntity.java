@@ -1,5 +1,7 @@
 package com.techjumper.polyhomeb.entity;
 
+import java.util.List;
+
 /**
  * * * * * * * * * * * * * * * * * * * * * * *
  * Created by lixin
@@ -21,6 +23,7 @@ public class LoginEntity extends BaseEntity<LoginEntity.LoginDataEntity> {
         private String sex;
         private String email;
         private String birthday;
+        private List<String> families;
 
         public String getSex() {
             return sex;
@@ -86,6 +89,14 @@ public class LoginEntity extends BaseEntity<LoginEntity.LoginDataEntity> {
             this.ticket = ticket;
         }
 
+        public List<String> getFamilies() {
+            return families;
+        }
+
+        public void setFamilies(List<String> families) {
+            this.families = families;
+        }
+
         @Override
         public String toString() {
             return "LoginDataEntity{" +
@@ -97,6 +108,7 @@ public class LoginEntity extends BaseEntity<LoginEntity.LoginDataEntity> {
                     ", sex='" + sex + '\'' +
                     ", email='" + email + '\'' +
                     ", birthday='" + birthday + '\'' +
+                    ", families=" + families +
                     '}';
         }
     }

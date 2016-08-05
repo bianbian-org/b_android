@@ -1,17 +1,30 @@
 package com.techjumper.polyhomeb.mvp.m;
 
 import com.steve.creact.library.display.DisplayBean;
+import com.techjumper.corelib.rx.tools.CommonWrap;
+import com.techjumper.lib2.others.KeyValuePair;
+import com.techjumper.lib2.utils.RetrofitHelper;
+import com.techjumper.polyhomeb.R;
+import com.techjumper.polyhomeb.adapter.recycler_Data.NoDataData;
 import com.techjumper.polyhomeb.adapter.recycler_Data.PropertyPlacardContentData;
 import com.techjumper.polyhomeb.adapter.recycler_Data.PropertyPlacardDividerData;
 import com.techjumper.polyhomeb.adapter.recycler_Data.PropertyPlacardTimeLineData;
+import com.techjumper.polyhomeb.adapter.recycler_ViewHolder.databean.NoDataBean;
 import com.techjumper.polyhomeb.adapter.recycler_ViewHolder.databean.PropertyPlacardContentBean;
 import com.techjumper.polyhomeb.adapter.recycler_ViewHolder.databean.PropertyPlacardDividerBean;
 import com.techjumper.polyhomeb.adapter.recycler_ViewHolder.databean.PropertyPlacardTimeLineBean;
 import com.techjumper.polyhomeb.entity.PropertyPlacardEntity;
 import com.techjumper.polyhomeb.mvp.p.fragment.PlacardFragmentPresenter;
+import com.techjumper.polyhomeb.net.KeyValueCreator;
+import com.techjumper.polyhomeb.net.NetHelper;
+import com.techjumper.polyhomeb.net.ServiceAPI;
+import com.techjumper.polyhomeb.user.UserManager;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+
+import rx.Observable;
 
 /**
  * * * * * * * * * * * * * * * * * * * * * * *
@@ -21,92 +34,165 @@ import java.util.List;
  **/
 public class PlacardFragmentModel extends BaseModel<PlacardFragmentPresenter> {
 
+    private String lastTime = "";
+    private int mCurrentPage = 1;
+    private int mOnePageCount = 8;
+    private List<DisplayBean> mDataList = new ArrayList<>();
+
     public PlacardFragmentModel(PlacardFragmentPresenter presenter) {
         super(presenter);
     }
 
-    private PropertyPlacardEntity fakeEntity() {
-        PropertyPlacardEntity entity = new PropertyPlacardEntity();
-
-        List<PropertyPlacardEntity.DataBean.ListBean.DatasBean.SencesBean> sencesBeanList = new ArrayList<>();
-        for (int i = 0; i < 3; i++) {
-            PropertyPlacardEntity.DataBean.ListBean.DatasBean.SencesBean sencesBean = new PropertyPlacardEntity.DataBean.ListBean.DatasBean.SencesBean();
-            sencesBean.setBtn_name(i == 2 ? "公告" : "资讯");
-            sencesBean.setContent("这些是内容" + i + "为丰富和企鹅和放弃而话费卡多出去额空间发过去诶哦而且就放弃而返回去金额防火墙而房价和企鹅哦");
-            sencesBean.setTime("12月" + i + "日");
-            sencesBean.setTitle("这是标题" + i + "而非和勤奋和气");
-            sencesBeanList.add(sencesBean);
-        }
-
-        List<PropertyPlacardEntity.DataBean.ListBean.DatasBean> datasBeanList = new ArrayList<>();
-        for (int i = 0; i < 1; i++) {
-            PropertyPlacardEntity.DataBean.ListBean.DatasBean datasBean = new PropertyPlacardEntity.DataBean.ListBean.DatasBean();
-            datasBean.setSences(sencesBeanList);
-            datasBeanList.add(datasBean);
-        }
-
-        List<PropertyPlacardEntity.DataBean.ListBean> listBeanList = new ArrayList<>();
-        for (int i = 0; i < 4; i++) {
-            PropertyPlacardEntity.DataBean.ListBean listBean = new PropertyPlacardEntity.DataBean.ListBean();
-            listBean.setTime(12 + "月");
-            listBean.setDatas(datasBeanList);
-            listBeanList.add(listBean);
-        }
-
-        PropertyPlacardEntity.DataBean dataBean = new PropertyPlacardEntity.DataBean();
-        dataBean.setList(listBeanList);
-
-        entity.setData(dataBean);
-
-        return entity;
+    public Observable<PropertyPlacardEntity> getNotice() {
+        KeyValuePair keyValuePair = KeyValueCreator.propertyNotice(
+                UserManager.INSTANCE.getUserInfo(UserManager.KEY_ID)
+                , UserManager.INSTANCE.getUserInfo(UserManager.KEY_CURRENT_FAMILY_ID)
+                , UserManager.INSTANCE.getTicket()
+                , mCurrentPage + ""
+                , mOnePageCount + "");
+        Map<String, String> baseArgumentsMap = NetHelper.createBaseArgumentsMap(keyValuePair);
+        return RetrofitHelper.<ServiceAPI>createDefault()
+                .propertyNotice(baseArgumentsMap)
+                .compose(CommonWrap.wrap());
     }
 
+    public boolean hasMoreData(PropertyPlacardEntity entity) {
+        return !(entity == null || entity.getData() == null || entity.getData().getNotices() == null
+                || entity.getData().getNotices().size() < mOnePageCount);
+    }
 
-    public List<DisplayBean> initPlacardData() {
+    public void updateNoticeData(PropertyPlacardEntity entity) {
 
-        PropertyPlacardEntity propertyPlacardEntity = fakeEntity();
-        PropertyPlacardEntity.DataBean data1 = propertyPlacardEntity.getData();
-        List<PropertyPlacardEntity.DataBean.ListBean> list1 = data1.getList();
+        if (entity == null || entity.getData() == null
+                || entity.getData().getNotices() == null || entity.getData().getNotices().size() == 0)
+            return;
 
+        if (mCurrentPage == 1) {
+            mDataList.clear();
+        }
 
-        //总的数据源
-        List<DisplayBean> displayBeans = new ArrayList<>();
+        PropertyPlacardEntity.DataBean dataBean = entity.getData();
+        List<PropertyPlacardEntity.DataBean.NoticesBean> notices = dataBean.getNotices();
 
-        for (int i = 0; i < list1.size(); i++) {
-            PropertyPlacardEntity.DataBean.ListBean listBean = list1.get(i);
-            String time = listBean.getTime();
-            List<PropertyPlacardEntity.DataBean.ListBean.DatasBean> datas = listBean.getDatas();
+        //只有一条数据的时候
+        if (notices.size() == 1) {
+            int id = notices.get(0).getId();
+            String content = notices.get(0).getContent();
+            String time = notices.get(0).getTime();
+            String title = notices.get(0).getTitle();
+            int types = notices.get(0).getTypes();
+            String type = types == 1 ? getPresenter().getView().getString(R.string.placard) : getPresenter().getView().getString(R.string.information);//#公告类型 1-公告 2-资讯
 
+            String titleTime1 = time.substring(5, 7);  //2015-01-22   ->01
+            if (Integer.parseInt(titleTime1) < 10)
+                titleTime1 = titleTime1.substring(1);  //去掉01前面的0
+            String titleTime2 = time.substring(time.length() - 1, time.length());  //2015-01-22   ->22
+            String contentTime = titleTime1;
+
+            //绿色的 12月 那个时间轴
             PropertyPlacardTimeLineData timeLineData = new PropertyPlacardTimeLineData();
-
-            timeLineData.setTime(time);
-
+            timeLineData.setTime(contentTime + getPresenter().getView().getString(R.string.month));
             PropertyPlacardTimeLineBean timeLineBean = new PropertyPlacardTimeLineBean(timeLineData);
-            displayBeans.add(timeLineBean);
+            mDataList.add(timeLineBean);
 
-            for (int j = 0; j < datas.size(); j++) {
-                List<PropertyPlacardEntity.DataBean.ListBean.DatasBean.SencesBean> sences = datas.get(j).getSences();
+            //中间的item
+            PropertyPlacardContentData propertyPlacardContentData = new PropertyPlacardContentData();
+            propertyPlacardContentData.setTitle(title);
+            propertyPlacardContentData.setRead(false);
+            propertyPlacardContentData.setType(type);
+            propertyPlacardContentData.setTime(titleTime1 + getPresenter().getView().getString(R.string.month) + titleTime2 + getPresenter().getView().getString(R.string.day));
+            propertyPlacardContentData.setContent(content);
+            propertyPlacardContentData.setId(id);
+            PropertyPlacardContentBean contentBean = new PropertyPlacardContentBean(propertyPlacardContentData);
+            mDataList.add(contentBean);
 
-                for (int k = 0; k < sences.size(); k++) {
-                    PropertyPlacardContentData contentData = new PropertyPlacardContentData();
-                    contentData.setTime(sences.get(k).getTime());
-                    contentData.setBtnName(sences.get(k).getBtn_name());
-                    contentData.setContent(sences.get(k).getContent());
-                    contentData.setRead(false);
-                    contentData.setTitle(sences.get(k).getTitle());
+        } else {
+            //两条数据或者多条数据的时候
+            for (int i = 0; i < notices.size(); i++) {
 
-                    PropertyPlacardContentBean contentBean = new PropertyPlacardContentBean(contentData);
+                PropertyPlacardEntity.DataBean.NoticesBean noticesBean = notices.get(i);
 
-                    displayBeans.add(contentBean);
+                String content = noticesBean.getContent();
+                int id = noticesBean.getId();
+                String time = noticesBean.getTime();
+                String title = noticesBean.getTitle();
+                int types = noticesBean.getTypes();
+                String type = types == 1 ? getPresenter().getView().getString(R.string.placard) : getPresenter().getView().getString(R.string.information);//#公告类型 1-公告 2-资讯
 
-                    if (sences.size() != 1 & k != sences.size() - 1) { //只有一条数据的时候没有分割线,最后一条数据下面也没有分割线
-                        PropertyPlacardDividerData dividerData = new PropertyPlacardDividerData();
-                        PropertyPlacardDividerBean dividerBean = new PropertyPlacardDividerBean(dividerData);
-                        displayBeans.add(dividerBean);
-                    }
+                String titleTime1 = time.substring(5, 7);  //2015-01-22   ->01
+                if (Integer.parseInt(titleTime1) < 10)
+                    titleTime1 = titleTime1.substring(1);  //去掉01前面的0
+                String titleTime2 = time.substring(time.length() - 1, time.length());//2015-01-22   ->22
+                String contentTime = titleTime1;
+
+                if (!lastTime.equals(time)) {//就说明第一个时间区域完结,此时布局需要加载新的时间轴title
+
+                    //绿色的 12月 那个时间轴
+                    PropertyPlacardTimeLineData timeLineData = new PropertyPlacardTimeLineData();
+                    timeLineData.setTime(contentTime + getPresenter().getView().getString(R.string.month));
+                    PropertyPlacardTimeLineBean timeLineBean = new PropertyPlacardTimeLineBean(timeLineData);
+                    mDataList.add(timeLineBean);
+
+                    //中间的item
+                    PropertyPlacardContentData propertyPlacardContentData = new PropertyPlacardContentData();
+                    propertyPlacardContentData.setTitle(title);
+                    propertyPlacardContentData.setRead(false);
+                    propertyPlacardContentData.setType(type);
+                    propertyPlacardContentData.setTime(titleTime1 + getPresenter().getView().getString(R.string.month) + titleTime2 + getPresenter().getView().getString(R.string.day));
+                    propertyPlacardContentData.setContent(content);
+                    propertyPlacardContentData.setId(id);
+                    PropertyPlacardContentBean contentBean = new PropertyPlacardContentBean(propertyPlacardContentData);
+                    mDataList.add(contentBean);
+
+                } else {//就说明第一个时间区域还有数据,需要继续走,此时布局只是连续加载分割线和item
+
+                    //短一点的分割线
+                    PropertyPlacardDividerData dividerData = new PropertyPlacardDividerData();
+                    PropertyPlacardDividerBean dividerBean = new PropertyPlacardDividerBean(dividerData);
+                    mDataList.add(dividerBean);
+
+                    //中间的item
+                    PropertyPlacardContentData propertyPlacardContentData = new PropertyPlacardContentData();
+                    propertyPlacardContentData.setTitle(title);
+                    propertyPlacardContentData.setRead(false);
+                    propertyPlacardContentData.setType(type);
+                    propertyPlacardContentData.setTime(titleTime1 + getPresenter().getView().getString(R.string.month) + titleTime2 + getPresenter().getView().getString(R.string.day));
+                    propertyPlacardContentData.setContent(content);
+                    propertyPlacardContentData.setId(id);
+                    PropertyPlacardContentBean contentBean = new PropertyPlacardContentBean(propertyPlacardContentData);
+                    mDataList.add(contentBean);
                 }
+                lastTime = time;
             }
         }
-        return displayBeans;
+
+        if (hasMoreData(entity)) {
+            increasePage();
+        }
+    }
+
+    //无数据的时候显示的视图
+    public List<DisplayBean> noData() {
+        List<DisplayBean> displayBeen = new ArrayList<>();
+        NoDataData noDataData = new NoDataData();
+        NoDataBean noDataBean = new NoDataBean(noDataData);
+        displayBeen.add(noDataBean);
+        return displayBeen;
+    }
+
+    public List<DisplayBean> getNoticeData() {
+        return mDataList;
+    }
+
+    private void increasePage() {
+        mCurrentPage++;
+    }
+
+    public int getCurrentPage() {
+        return mCurrentPage;
+    }
+
+    public void setCurrentPage(int page) {
+        mCurrentPage = page;
     }
 }

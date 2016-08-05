@@ -105,7 +105,7 @@
             polymodeview:centerIconWidth="60"
             polymodeview:ratio="1.333"
             polymodeview:src="@mipmap/icon_complaint"
-            polymodeview:text="@string/complaint"
+            polymodeview:text="@string/complain"
             polymodeview:textColor="@color/color_727272"
             polymodeview:textMarginTop="5dp"
             polymodeview:textSize="@dimen/sp_13" />

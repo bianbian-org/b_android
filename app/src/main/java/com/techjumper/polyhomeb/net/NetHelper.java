@@ -25,6 +25,7 @@ public class NetHelper {
     public static final int CODE_NOT_LOGIN = 109;
     public static final int CODE_NO_DATA = 404;
     public static final int CODE_NO_THIS_FAMILY = 301;
+    public static final int CODE_UPLOAD_FAILED = 208;
 
     /**
      * 全局超时时间

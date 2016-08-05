@@ -2,6 +2,7 @@ package com.techjumper.polyhomeb.adapter;
 
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentPagerAdapter;
+import android.view.ViewGroup;
 
 import com.techjumper.polyhomeb.mvp.v.activity.AppBaseActivity;
 import com.techjumper.polyhomeb.mvp.v.fragment.AppBaseFragment;
@@ -33,5 +34,10 @@ public class FragmentAdapter extends FragmentPagerAdapter {
     @Override
     public int getCount() {
         return mDataList.size();
+    }
+
+    @Override
+    public void destroyItem(ViewGroup container, int position, Object object) {
+
     }
 }
