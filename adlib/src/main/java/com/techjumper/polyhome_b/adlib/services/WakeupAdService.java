@@ -25,7 +25,7 @@ import java.util.TimeZone;
  **/
 public class WakeupAdService extends Service {
 
-    public static final String ACTION_WAKE_UP = "action_wake_up";
+    public static final String ACTION_WAKE_UP = "action_polyhome_ad_wake_up";
 
     @Nullable
     @Override

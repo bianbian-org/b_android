@@ -175,8 +175,8 @@ public class AdController {
 
         long timeMillis = getTriggerTime();
 
-        PollingUtils.startPollingService(Utils.appContext
-                , timeMillis, 60 * 60L, AlarmService.class, "", CODE_ALARM_SERVICE);
+        PollingUtils.startPollingServiceBySet(Utils.appContext
+                , timeMillis, AlarmService.class, "", true, CODE_ALARM_SERVICE, true);
         notifyAlarmListener(fromCache);
 //        PollingUtils.startPollingService(Utils.appContext
 //                , timeMillis, 30L, AlarmService.class, "", CODE_ALARM_SERVICE);
