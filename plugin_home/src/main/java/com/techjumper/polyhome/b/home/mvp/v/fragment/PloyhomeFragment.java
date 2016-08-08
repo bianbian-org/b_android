@@ -62,10 +62,6 @@ public class PloyhomeFragment extends AppBaseFragment<PloyhomeFragmentPresenter>
     @Bind(R.id.ad)
     FrameLayout ad_layout;
 
-    private Timer timer = new Timer();
-    private int position = 0;
-    private List<NoticeEntity.Unread> unreads = new ArrayList<>();
-
     public TextView getNoticeTitle() {
         return noticeTitle;
     }
@@ -94,10 +90,6 @@ public class PloyhomeFragment extends AppBaseFragment<PloyhomeFragmentPresenter>
         return new PloyhomeFragment();
     }
 
-    public List<NoticeEntity.Unread> getUnreads() {
-        return unreads;
-    }
-
     public SquareView getProperty() {
         return property;
     }
@@ -122,6 +114,10 @@ public class PloyhomeFragment extends AppBaseFragment<PloyhomeFragmentPresenter>
         return ad_layout;
     }
 
+    public TextView getNoticeNum() {
+        return noticeNum;
+    }
+
     @Override
     protected View inflateView(LayoutInflater inflater, Bundle savedInstanceState) {
         return inflater.inflate(R.layout.fragment_ployhome, null);
@@ -129,79 +125,5 @@ public class PloyhomeFragment extends AppBaseFragment<PloyhomeFragmentPresenter>
 
     @Override
     protected void initView(Bundle savedInstanceState) {
-    }
-
-    @Override
-    public void onDestroy() {
-        super.onDestroy();
-        if (timer != null) {
-            timer.cancel();
-        }
-    }
-
-    public void initNotices(NoticeEntity.NoticeDataEntity entity) {
-        if (entity == null)
-            return;
-
-        if (timer != null) {
-            timer.cancel();
-        }
-
-        if (unreads != null && unreads.size() > 0)
-            unreads.clear();
-
-        unreads = entity.getUnread();
-        if (unreads != null) {
-            int num = 0;
-            if (unreads.size() > 0) {
-                for (int i = 0; i < unreads.size(); i++) {
-                    num += unreads.get(i).getCount();
-                }
-            }
-            noticeNum.setText(String.valueOf(num));
-        }
-
-        List<NoticeEntity.Message> messages = entity.getMessages();
-        position = 0;
-
-        if (messages != null && messages.size() > 0) {
-            if (messages.size() == 1) {
-                NoticeEntity.Message message = messages.get(0);
-                RxBus.INSTANCE.send(new NoticeEvent(message.getTitle(), message.getContent(), message.getTypes()));
-            } else {
-                timer = new Timer();
-
-                timer.schedule(new TimerTask() {
-                    @Override
-                    public void run() {
-                        NoticeEntity.Message message = messages.get(position);
-
-                        RxBus.INSTANCE.send(new NoticeEvent(message.getTitle(), message.getContent(), message.getTypes()));
-
-                        if (position == messages.size() - 1) {
-                            position = 0;
-                        } else {
-                            position++;
-                        }
-                    }
-                }, 1000, 3000);
-            }
-        } else {
-            RxBus.INSTANCE.send(new NoticeEvent(getString(R.string.info_not_new), "", -1));
-        }
-    }
-
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        // TODO: inflate a fragment view
-        View rootView = super.onCreateView(inflater, container, savedInstanceState);
-        ButterKnife.bind(this, rootView);
-        return rootView;
-    }
-
-    @Override
-    public void onDestroyView() {
-        super.onDestroyView();
-        ButterKnife.unbind(this);
     }
 }

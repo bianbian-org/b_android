@@ -20,6 +20,7 @@ import com.techjumper.commonres.entity.event.AdTemEvent;
 import com.techjumper.commonres.entity.event.InfoMediaPlayerEvent;
 import com.techjumper.commonres.entity.event.NoticeEvent;
 import com.techjumper.commonres.entity.event.ShowMainAdEvent;
+import com.techjumper.commonres.entity.event.TimerEvent;
 import com.techjumper.commonres.entity.event.UserInfoEvent;
 import com.techjumper.commonres.entity.event.WeatherEvent;
 import com.techjumper.commonres.entity.event.pushevent.NoticePushEvent;
@@ -50,6 +51,10 @@ import com.techjumper.polyhome_b.adlib.manager.AdController;
 import com.techjumper.polyhome_b.adlib.window.AdWindowManager;
 
 import java.io.File;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Timer;
+import java.util.TimerTask;
 
 import rx.Subscriber;
 import rx.android.schedulers.AndroidSchedulers;
@@ -75,6 +80,13 @@ public class PloyhomeFragmentPresenter extends AppBaseFragmentPresenter<Ployhome
     private boolean mIsGetAd;
     private boolean mIsGetNewAd;
 
+    private Timer timer = new Timer();
+    private int position = 0;
+    private List<NoticeEntity.Unread> unreads = new ArrayList<>();
+    private List<NoticeEntity.Message> messages = new ArrayList<>();
+    private boolean isTimer = true;
+    private boolean isOnResume;
+
     @Override
     public void onDestroy() {
         if (adController != null) {
@@ -83,6 +95,7 @@ public class PloyhomeFragmentPresenter extends AppBaseFragmentPresenter<Ployhome
             adController.stopWakeUpTimer();
             adController.cancelAll();
         }
+        cancelTimer();
         super.onDestroy();
     }
 
@@ -131,7 +144,7 @@ public class PloyhomeFragmentPresenter extends AppBaseFragmentPresenter<Ployhome
                     String ticket = UserInfoManager.getTicket();
 
                     NoticeEntity.InfoUnread infoUnread = new NoticeEntity.InfoUnread();
-                    infoUnread.setUnreads(getView().getUnreads());
+                    infoUnread.setUnreads(unreads);
                     String unreadString = GsonUtils.toJson(infoUnread);
 
                     PluginEngineUtil.startInfo(userId, familyId, ticket, type, unreadString);
@@ -255,6 +268,16 @@ public class PloyhomeFragmentPresenter extends AppBaseFragmentPresenter<Ployhome
                                 textureView.initMediaPlayer();
                             }
                         }
+                    } else if (o instanceof TimerEvent) {
+                        TimerEvent event = (TimerEvent) o;
+                        isTimer = event.isTimer();
+                        if (isTimer) {
+                            if (isOnResume) {
+                                initTimer();
+                            }
+                        } else {
+                            cancelTimer();
+                        }
                     }
                 }));
 
@@ -286,28 +309,95 @@ public class PloyhomeFragmentPresenter extends AppBaseFragmentPresenter<Ployhome
                                 noticeEntity.getData() == null)
                             return;
 
-                        getView().initNotices(noticeEntity.getData());
+                        initNotices(noticeEntity.getData());
                     }
                 }));
     }
 
+    public void initNotices(NoticeEntity.NoticeDataEntity entity) {
+        if (entity == null)
+            return;
 
+        if (timer != null) {
+            timer.cancel();
+        }
+
+        if (unreads != null && unreads.size() > 0)
+            unreads.clear();
+
+        unreads = entity.getUnread();
+        if (unreads != null) {
+            int num = 0;
+            if (unreads.size() > 0) {
+                for (int i = 0; i < unreads.size(); i++) {
+                    num += unreads.get(i).getCount();
+                }
+            }
+            getView().getNoticeNum().setText(String.valueOf(num));
+        }
+
+        messages = entity.getMessages();
+        position = 0;
+
+        if (messages != null && messages.size() > 0) {
+            if (messages.size() == 1) {
+                NoticeEntity.Message message = messages.get(0);
+                RxBus.INSTANCE.send(new NoticeEvent(message.getTitle(), message.getContent(), message.getTypes()));
+            } else {
+                initTimer();
+            }
+        } else {
+            RxBus.INSTANCE.send(new NoticeEvent(getView().getString(R.string.info_not_new), "", -1));
+        }
+    }
+
+    private void initTimer() {
+        if (timer != null) {
+            timer.cancel();
+        }
+
+        timer = new Timer();
+        timer.schedule(new TimerTask() {
+            @Override
+            public void run() {
+                NoticeEntity.Message message = messages.get(position);
+
+                RxBus.INSTANCE.send(new NoticeEvent(message.getTitle(), message.getContent(), message.getTypes()));
+
+                if (position == messages.size() - 1) {
+                    position = 0;
+                } else {
+                    position++;
+                }
+            }
+        }, 1000, 3000);
+    }
+
+    private void cancelTimer() {
+        if (timer != null) {
+            timer.cancel();
+            timer = null;
+        }
+    }
 
     @Override
     public void onPause() {
         super.onPause();
+        isOnResume = false;
         if (mIsVisibleToUser) {
             if (adController != null) {
                 adController.cancel(AdController.TYPE_HOME);
             }
             initAd();
             mIsGetAd = false;
+            RxBus.INSTANCE.send(new TimerEvent(false));
         }
     }
 
     @Override
     public void onResume() {
         super.onResume();
+        isOnResume = true;
         Log.d("ergou", "onResume");
         if (mIsVisibleToUser) {
             if (textureView != null) {
@@ -315,6 +405,7 @@ public class PloyhomeFragmentPresenter extends AppBaseFragmentPresenter<Ployhome
                 textureView.initMediaPlayer();
             }
             RxBus.INSTANCE.send(new InfoMediaPlayerEvent(InfoMediaPlayerEvent.INFO));
+            RxBus.INSTANCE.send(new TimerEvent(true));
             getNormalAd(mIsGetNewAd);
             mIsGetAd = true;
         }

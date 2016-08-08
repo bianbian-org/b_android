@@ -106,7 +106,6 @@ public class CommonDateUtil {
     public static long delayToPoint() {
         initCalendar();
         int currentSecond = calendar.get(Calendar.SECOND);
-        Log.d("currentSecond", currentSecond + "");
         return (60 - currentSecond) * 1000;
     }
 }

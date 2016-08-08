@@ -26,8 +26,8 @@
         tools:replace="android:allowBackup">
         <activity
             android:name=".mvp.v.activity.MainActivity"
-            android:launchMode="singleTask"
             android:hardwareAccelerated="true"
+            android:launchMode="singleTask"
             android:theme="@style/AppTheme">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -71,15 +71,19 @@
             </intent-filter>
         </receiver>
 
+        <receiver android:name=".receiver.ScreenOffReceiver">
+            <intent-filter>
+                <action android:name="android.intent.action.SCREEN_OFF" />
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </receiver>
 
-        <!--<receiver-->
-        <!--android:name=".receiver.SettingReceiver"-->
-        <!--android:exported="true">-->
-        <!--<intent-filter>-->
-        <!--<action android:name="action_other_apk_reply" />-->
-        <!--<category android:name="android.intent.category.DEFAULT" />-->
-        <!--</intent-filter>-->
-        <!--</receiver>-->
+        <receiver android:name=".receiver.ScreenOnReceiver">
+            <intent-filter>
+                <action android:name="android.intent.action.SCREEN_ON" />
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </receiver>
+
     </application>
-
 </manifest>
