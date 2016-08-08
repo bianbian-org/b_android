@@ -75,7 +75,7 @@ public class JujiaActivity extends AppBaseActivity<JujiaActivityPresenter> {
             public void run() {
                 RxBus.INSTANCE.send(new TimeEvent());
             }
-        }, 5000, 60000);
+        }, CommonDateUtil.delayToPoint(), 60000);
     }
 
     @Override

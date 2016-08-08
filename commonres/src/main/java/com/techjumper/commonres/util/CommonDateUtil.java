@@ -1,5 +1,7 @@
 package com.techjumper.commonres.util;
 
+import android.util.Log;
+
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
@@ -10,9 +12,10 @@ import java.util.TimeZone;
  */
 public class CommonDateUtil {
 
+    private static Calendar calendar;
+
     public static String getTitleDate() {
-        Calendar calendar = Calendar.getInstance();
-        calendar.setTimeZone(TimeZone.getTimeZone("GMT+8:00"));
+        initCalendar();
         String month = String.valueOf(calendar.get(Calendar.MONTH) + 1);
         String day = String.valueOf(calendar.get(Calendar.DAY_OF_MONTH));
         String hour = String.valueOf(calendar.get(Calendar.HOUR_OF_DAY));
@@ -54,14 +57,18 @@ public class CommonDateUtil {
         return content;
     }
 
+    private static void initCalendar() {
+        calendar = Calendar.getInstance();
+        calendar.setTimeZone(TimeZone.getTimeZone("GMT+8:00"));
+    }
+
     /**
      * 获取09：21格式
      *
      * @return
      */
     public static String getTime() {
-        Calendar calendar = Calendar.getInstance();
-        calendar.setTimeZone(TimeZone.getTimeZone("GMT+8:00"));
+        initCalendar();
         String hour = String.valueOf(calendar.get(Calendar.HOUR_OF_DAY));
         String minute = String.valueOf(calendar.get(Calendar.MINUTE));
 
@@ -70,29 +77,36 @@ public class CommonDateUtil {
 
     /**
      * 获取小时
+     *
      * @return
      */
     public static int getHour() {
-        Calendar calendar = Calendar.getInstance();
-        calendar.setTimeZone(TimeZone.getTimeZone("GMT+8:00"));
+        initCalendar();
         return calendar.get(Calendar.HOUR_OF_DAY);
     }
 
     /**
      * 获取分钟
+     *
      * @return
      */
     public static int getMinute() {
-        Calendar calendar = Calendar.getInstance();
-        calendar.setTimeZone(TimeZone.getTimeZone("GMT+8:00"));
+        initCalendar();
         return calendar.get(Calendar.MINUTE);
     }
 
-    public static String getCurrentTime(){
+    public static String getCurrentTime() {
         Date date = new Date(System.currentTimeMillis());
 
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         String dateString = simpleDateFormat.format(date);
         return dateString;
+    }
+
+    public static long delayToPoint() {
+        initCalendar();
+        int currentSecond = calendar.get(Calendar.SECOND);
+        Log.d("currentSecond", currentSecond + "");
+        return (60 - currentSecond) * 1000;
     }
 }

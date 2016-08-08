@@ -102,7 +102,7 @@ public class MainActivity extends AppBaseActivity<MainActivityPresenter> {
             public void run() {
                 RxBus.INSTANCE.send(new TimeEvent());
             }
-        }, 5000, 60000);
+        }, CommonDateUtil.delayToPoint(), 60000);
 
         addSubscription(RxBus.INSTANCE.asObservable()
                 .observeOn(AndroidSchedulers.mainThread())

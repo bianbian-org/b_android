@@ -76,7 +76,7 @@ public class ShoppingActivity extends AppBaseActivity<ShoppingActivityPresenter>
             public void run() {
                 RxBus.INSTANCE.send(new TimeEvent());
             }
-        }, 5000, 60000);
+        }, CommonDateUtil.delayToPoint(), 60000);
     }
 
     @Override

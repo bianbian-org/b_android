@@ -305,7 +305,7 @@ public class InfoMainActivity extends AppBaseActivity {
             public void run() {
                 RxBus.INSTANCE.send(new TimeEvent());
             }
-        }, 5000, 60000);
+        }, CommonDateUtil.delayToPoint(), 60000);
     }
 
     public void getList(InfoEntity.InfoResultEntity infoResultEntity, int page) {

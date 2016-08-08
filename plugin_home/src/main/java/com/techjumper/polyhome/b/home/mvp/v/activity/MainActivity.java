@@ -164,7 +164,7 @@ public class MainActivity extends AppBaseActivity {
             public void run() {
                 RxBus.INSTANCE.send(new TimeEvent());
             }
-        }, 5000, 60000);
+        }, CommonDateUtil.delayToPoint(), 60000);
 
         IntentFilter intentFilter = new IntentFilter(ACTION_HOME_HEARTBEAT);
         registerReceiver(mheartbeatReceiver, intentFilter);
