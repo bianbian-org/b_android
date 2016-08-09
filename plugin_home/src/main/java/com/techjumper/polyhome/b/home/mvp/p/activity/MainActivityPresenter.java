@@ -265,7 +265,7 @@ public class MainActivityPresenter extends AppBaseActivityPresenter<MainActivity
         mainAdVideo = getView().getMainAdVideo();
         mainAdImg = getView().getMainAdImg();
 
-        RxBus.INSTANCE.asObservable()
+        addSubscription(RxBus.INSTANCE.asObservable()
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(o -> {
                     if (o instanceof TimeEvent) {
@@ -292,7 +292,7 @@ public class MainActivityPresenter extends AppBaseActivityPresenter<MainActivity
                     } else if (o instanceof AdClickEvent) {
                         submitClicks();
                     }
-                });
+                }));
 
 //        PluginEngineUtil.getMedical();
 //        UserInfoEntity userInfoEntity2 = new UserInfoEntity();

@@ -110,7 +110,7 @@ public class PloyhomeFragmentPresenter extends AppBaseFragmentPresenter<Ployhome
         getAd(true);
         getNotices();
 
-        RxView.clicks(getView().getProperty())
+        addSubscription(RxView.clicks(getView().getProperty())
                 .filter(aVoid -> {
                     if (UserInfoManager.isLogin())
                         return true;
@@ -124,9 +124,9 @@ public class PloyhomeFragmentPresenter extends AppBaseFragmentPresenter<Ployhome
                     long userId = UserInfoManager.getLongUserId();
                     String ticket = UserInfoManager.getTicket();
                     PluginEngineUtil.startProperty(familyId, userId, ticket);
-                });
+                }));
 
-        RxView.clicks(getView().getNoticeLayout())
+        addSubscription(RxView.clicks(getView().getNoticeLayout())
                 .filter(aVoid -> {
                     if (UserInfoManager.isLogin())
                         return true;
@@ -146,9 +146,9 @@ public class PloyhomeFragmentPresenter extends AppBaseFragmentPresenter<Ployhome
                     String unreadString = GsonUtils.toJson(infoUnread);
 
                     PluginEngineUtil.startInfo(userId, familyId, ticket, type, unreadString);
-                });
+                }));
 
-        RxView.clicks(getView().getAd_layout())
+        addSubscription(RxView.clicks(getView().getAd_layout())
                 .filter(aVoid -> {
                     if (mAdsEntity != null && !TextUtils.isEmpty(mAdsEntity.getMedia_type()))
                         return true;
@@ -161,9 +161,9 @@ public class PloyhomeFragmentPresenter extends AppBaseFragmentPresenter<Ployhome
                     Intent intent = new Intent(getView().getActivity(), AdActivity.class);
                     intent.putExtra(AdActivity.ADITEM, mAdsEntity);
                     getView().getActivity().startActivity(intent);
-                });
+                }));
 
-        RxView.clicks(getView().getShopping())
+        addSubscription(RxView.clicks(getView().getShopping())
                 .filter(aVoid -> {
                     if (UserInfoManager.isLogin())
                         return true;
@@ -175,23 +175,23 @@ public class PloyhomeFragmentPresenter extends AppBaseFragmentPresenter<Ployhome
                 .subscribe(aVoid -> {
                     Intent intent = new Intent(getView().getActivity(), ShoppingActivity.class);
                     getView().startActivity(intent);
-                });
+                }));
 
-        RxView.clicks(getView().getJujia())
+        addSubscription(RxView.clicks(getView().getJujia())
                 .compose(RxUtil.applySchedulers())
                 .subscribe(aVoid -> {
                     Intent intent = new Intent(getView().getActivity(), JujiaActivity.class);
                     getView().startActivity(intent);
-                });
+                }));
 
-        RxView.clicks(getView().getSmarthome())
+        addSubscription(RxView.clicks(getView().getSmarthome())
                 .compose(RxUtil.applySchedulers())
                 .subscribe(aVoid -> {
                     PluginEngineUtil.startSmartHome();
-                });
+                }));
 
 
-        RxBus.INSTANCE.asObservable()
+        addSubscription(RxBus.INSTANCE.asObservable()
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(o -> {
                     if (o instanceof NoticeEvent) {
@@ -221,7 +221,7 @@ public class PloyhomeFragmentPresenter extends AppBaseFragmentPresenter<Ployhome
                         Log.d("pluginUserInfo", "推送更新广告");
                         getAd(false);
                     }
-                });
+                }));
 
         addSubscription(RxBus.INSTANCE.asObservable()
                 .observeOn(AndroidSchedulers.mainThread())

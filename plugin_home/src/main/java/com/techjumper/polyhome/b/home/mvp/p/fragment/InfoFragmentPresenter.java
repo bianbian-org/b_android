@@ -108,31 +108,31 @@ public class InfoFragmentPresenter extends AppBaseFragmentPresenter<InfoFragment
 
         AlarmManagerUtil.setWeatherTime(Utils.appContext, 0, 30 + new Random().nextInt(30));
 
-        RxView.clicks(getView().getSetting())
+        addSubscription(RxView.clicks(getView().getSetting())
                 .compose(RxUtil.applySchedulers())
                 .subscribe(aVoid -> {
                     Intent it = new Intent();
                     ComponentName componentName = new ComponentName("com.dnake.talk", "com.dnake.setting.activity.SettingActivity");
                     it.setComponent(componentName);
                     getView().startActivity(it);
-                });
+                }));
 
-        RxView.clicks(getView().getDetectLayout())
+        addSubscription(RxView.clicks(getView().getDetectLayout())
                 .compose(RxUtil.applySchedulers())
                 .subscribe(aVoid -> {
                     PluginEngineUtil.startMedical();
-                });
+                }));
 
-        RxView.clicks(getView().getSpeak())
+        addSubscription(RxView.clicks(getView().getSpeak())
                 .compose(RxUtil.applySchedulers())
                 .subscribe(aVoid -> {
                     Intent it = new Intent();
                     ComponentName componentName = new ComponentName("com.dnake.talk", "com.dnake.activity.CallingActivity");
                     it.setComponent(componentName);
                     getView().startActivity(it);
-                });
+                }));
 
-        RxView.clicks(getView().getAdTem())
+        addSubscription(RxView.clicks(getView().getAdTem())
                 .filter(aVoid -> {
                     if (mAdsEntity != null && !TextUtils.isEmpty(mAdsEntity.getMedia_type()))
                         return true;
@@ -145,18 +145,18 @@ public class InfoFragmentPresenter extends AppBaseFragmentPresenter<InfoFragment
                     Intent intent = new Intent(getView().getActivity(), AdActivity.class);
                     intent.putExtra(AdActivity.ADITEM, mAdsEntity);
                     getView().getActivity().startActivity(intent);
-                });
+                }));
 
-        RxBus.INSTANCE.asObservable()
+        addSubscription(RxBus.INSTANCE.asObservable()
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(o -> {
                     if (o instanceof WeatherDateEvent) {
                         getWeatherInfo();
                         getCalendarInfo();
                     }
-                });
+                }));
 
-        RxBus.INSTANCE.asObservable()
+        addSubscription(RxBus.INSTANCE.asObservable()
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(o -> {
                     if (o instanceof UserInfoEvent) {
@@ -216,7 +216,7 @@ public class InfoFragmentPresenter extends AppBaseFragmentPresenter<InfoFragment
                             }
                         }
                     }
-                });
+                }));
 
     }
 
