@@ -12,8 +12,8 @@ import com.techjumper.corelib.utils.common.ResourceUtils;
 import com.techjumper.lightwidget.textview.MarqueeTextView;
 import com.techjumper.polyhomeb.Constant;
 import com.techjumper.polyhomeb.R;
-import com.techjumper.polyhomeb.adapter.recycler_Data.PropertyRepairContentData;
-import com.techjumper.polyhomeb.mvp.v.activity.RepairDetailActivity;
+import com.techjumper.polyhomeb.adapter.recycler_Data.PropertyComplainContentData;
+import com.techjumper.polyhomeb.mvp.v.activity.ComplainDetailActivity;
 
 /**
  * * * * * * * * * * * * * * * * * * * * * * *
@@ -21,17 +21,17 @@ import com.techjumper.polyhomeb.mvp.v.activity.RepairDetailActivity;
  * Date: 16/7/15
  * * * * * * * * * * * * * * * * * * * * * * *
  **/
-@DataBean(beanName = "PropertyRepairContentBean", data = PropertyRepairContentData.class)
-public class PropertyRepairContentViewHolder extends BaseRecyclerViewHolder<PropertyRepairContentData> {
+@DataBean(beanName = "PropertyComplainContentBean", data = PropertyComplainContentData.class)
+public class PropertyComplainContentViewHolder extends BaseRecyclerViewHolder<PropertyComplainContentData> {
 
     public static final int LAYOUT_ID = R.layout.item_property_repair_content;
 
-    public PropertyRepairContentViewHolder(View itemView) {
+    public PropertyComplainContentViewHolder(View itemView) {
         super(itemView);
     }
 
     @Override
-    public void setData(PropertyRepairContentData data) {
+    public void setData(PropertyComplainContentData data) {
         if (data == null) return;
         ((MarqueeTextView) getView(R.id.tv_notice)).setText(data.getTitle());
         setText(R.id.btn, data.getBtnName());
@@ -60,8 +60,8 @@ public class PropertyRepairContentViewHolder extends BaseRecyclerViewHolder<Prop
 
         setOnClickListener(R.id.layout_content, v -> {
             Bundle bundle = new Bundle();
-            bundle.putInt(Constant.PROPERTY_REPAIR_DATA_ID, data.getId());
-            new AcHelper.Builder((Activity) getContext()).extra(bundle).target(RepairDetailActivity.class).start();
+            bundle.putInt(Constant.PROPERTY_COMPLAIN_DATA_ID, data.getId());
+            new AcHelper.Builder((Activity) getContext()).target(ComplainDetailActivity.class).extra(bundle).start();
         });
 
     }

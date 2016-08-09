@@ -9,14 +9,14 @@ package com.techjumper.polyhomeb.adapter.recycler_Data;
 public class PropertyRepairDetailProprietorContentData {
 
     private String content;
-    private boolean isFailed;
+    private int sendStatus;
 
-    public boolean isFailed() {
-        return isFailed;
+    public int getSendStatus() {
+        return sendStatus;
     }
 
-    public void setFailed(boolean failed) {
-        isFailed = failed;
+    public void setSendStatus(int sendStatus) {
+        this.sendStatus = sendStatus;
     }
 
     public String getContent() {

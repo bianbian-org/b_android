@@ -6,10 +6,10 @@ import com.steve.creact.library.viewholder.BaseRecyclerViewHolder;
 /**
  * * * * * * * * * * * * * * * * * * * * * * *
  * Created by lixin
- * Date: 16/8/8
+ * Date: 16/7/28
  * * * * * * * * * * * * * * * * * * * * * * *
  **/
-public class RepairDetailPicAdapter extends BaseRecyclerPowerfulAdapter {
+public class ComplainDetailPicAdapter extends BaseRecyclerPowerfulAdapter {
     @Override
     public void setListener(BaseRecyclerViewHolder holder, DisplayBean bindBean, int position) {
 

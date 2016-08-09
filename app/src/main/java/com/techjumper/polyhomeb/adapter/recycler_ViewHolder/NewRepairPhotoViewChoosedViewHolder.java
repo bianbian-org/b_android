@@ -11,7 +11,7 @@ import com.steve.creact.library.viewholder.BaseRecyclerViewHolder;
 import com.techjumper.corelib.rx.tools.RxBus;
 import com.techjumper.polyhomeb.R;
 import com.techjumper.polyhomeb.adapter.recycler_Data.NewRepairPhotoViewChoosedData;
-import com.techjumper.polyhomeb.entity.event.DeleteNotifyEvent;
+import com.techjumper.polyhomeb.entity.event.DeletePicNotifyEvent;
 
 /**
  * * * * * * * * * * * * * * * * * * * * * * *
@@ -33,7 +33,7 @@ public class NewRepairPhotoViewChoosedViewHolder extends BaseRecyclerViewHolder<
         if (data == null) return;
         getView(R.id.iv_delete).setVisibility(View.VISIBLE);
         setOnClickListener(R.id.iv_delete, v -> {
-            RxBus.INSTANCE.send(new DeleteNotifyEvent(getPosition())); //此处在NewRepairActivityPresenter中进行接收
+            RxBus.INSTANCE.send(new DeletePicNotifyEvent(getPosition())); //此处在NewRepairActivityPresenter中进行接收
         });
         Glide.with((Activity) getContext())
                 .load(data.getMapPath())

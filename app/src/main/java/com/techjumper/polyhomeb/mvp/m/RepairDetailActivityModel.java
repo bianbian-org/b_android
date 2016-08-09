@@ -18,18 +18,18 @@ import com.techjumper.polyhomeb.adapter.recycler_ViewHolder.databean.PropertyRep
 import com.techjumper.polyhomeb.adapter.recycler_ViewHolder.databean.PropertyRepairDetailProprietorContentBean;
 import com.techjumper.polyhomeb.adapter.recycler_ViewHolder.databean.RepairDetailTimeBean;
 import com.techjumper.polyhomeb.entity.BaseArgumentsEntity;
-import com.techjumper.polyhomeb.entity.PropertyComplainDetailEntity;
+import com.techjumper.polyhomeb.entity.PropertyRepairDetailEntity;
 import com.techjumper.polyhomeb.entity.TrueEntity;
-import com.techjumper.polyhomeb.mvp.p.activity.ComplainDetailActivityPresenter;
+import com.techjumper.polyhomeb.mvp.p.activity.RepairDetailActivityPresenter;
 import com.techjumper.polyhomeb.net.KeyValueCreator;
 import com.techjumper.polyhomeb.net.NetHelper;
 import com.techjumper.polyhomeb.net.ServiceAPI;
 import com.techjumper.polyhomeb.user.UserManager;
 
-import java.sql.Date;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -38,32 +38,47 @@ import rx.Observable;
 /**
  * * * * * * * * * * * * * * * * * * * * * * *
  * Created by lixin
- * Date: 16/7/25
+ * Date: 16/8/8
  * * * * * * * * * * * * * * * * * * * * * * *
  **/
-public class ComplainDetailActivityModel extends BaseModel<ComplainDetailActivityPresenter> {
+public class RepairDetailActivityModel extends BaseModel<RepairDetailActivityPresenter> {
 
     private ArrayList<String> mPics = new ArrayList<>();
     private List<DisplayBean> mReplyDatas = new ArrayList<>();
 
-    public ComplainDetailActivityModel(ComplainDetailActivityPresenter presenter) {
+    public RepairDetailActivityModel(RepairDetailActivityPresenter presenter) {
         super(presenter);
     }
 
     private int getDataId() {
-        return getPresenter().getView().getIntent().getExtras().getInt(Constant.PROPERTY_COMPLAIN_DATA_ID, -1);
+        return getPresenter().getView().getIntent().getExtras().getInt(Constant.PROPERTY_REPAIR_DATA_ID, -1);
     }
 
-    public String getTypes(int types) {
-        switch (types) {//1-投诉 2-建议 3-表扬
+    public String getRepairType(int types) {
+        switch (types) {  //报修类型 1-个人报修 2-公共区域报修
             case 1:
-                return getPresenter().getView().getResources().getString(R.string.complain);
+                return getPresenter().getView().getResources().getString(R.string.repair_personal);
             case 2:
-                return getPresenter().getView().getResources().getString(R.string.advice);
-            case 3:
-                return getPresenter().getView().getResources().getString(R.string.celebrate);
+                return getPresenter().getView().getResources().getString(R.string.repair_common);
             default:
-                return getPresenter().getView().getResources().getString(R.string.no_title);
+                return getPresenter().getView().getResources().getString(R.string.no_type);
+        }
+    }
+
+    public String getRepairDevice(int repairDevice) {
+        switch (repairDevice) {  //报修设备 1-门窗类 2-水电类 3-锁类 4-电梯类 5-墙类
+            case 1:
+                return getPresenter().getView().getResources().getString(R.string.pop_windows);
+            case 2:
+                return getPresenter().getView().getResources().getString(R.string.pop_water_elec);
+            case 3:
+                return getPresenter().getView().getResources().getString(R.string.pop_locks);
+            case 4:
+                return getPresenter().getView().getResources().getString(R.string.pop_elevators);
+            case 5:
+                return getPresenter().getView().getResources().getString(R.string.pop_walls);
+            default:
+                return getPresenter().getView().getResources().getString(R.string.no_device);
         }
     }
 
@@ -89,8 +104,8 @@ public class ComplainDetailActivityModel extends BaseModel<ComplainDetailActivit
         }
     }
 
-    public List<DisplayBean> getAlreadyChoosedPic(PropertyComplainDetailEntity propertyComplainDetailEntity) {
-        String[] imgs = propertyComplainDetailEntity.getData().getImgs();
+    public List<DisplayBean> getAlreadyChoosedPic(PropertyRepairDetailEntity propertyRepairDetailEntity) {
+        String[] imgs = propertyRepairDetailEntity.getData().getImgs();
         if (imgs != null && imgs.length != 0) {
             mPics.clear();
             for (int i = 0; i < imgs.length; i++) {
@@ -108,15 +123,15 @@ public class ComplainDetailActivityModel extends BaseModel<ComplainDetailActivit
         return displayBeen;
     }
 
-    public Observable<PropertyComplainDetailEntity> getComplainDetail() {
-        KeyValuePair keyValuePair = KeyValueCreator.getComplainDetail(
+    public Observable<PropertyRepairDetailEntity> getRepairDetail() {
+        KeyValuePair keyValuePair = KeyValueCreator.getRepairDetail(
                 UserManager.INSTANCE.getUserInfo(UserManager.KEY_ID)
                 , UserManager.INSTANCE.getTicket()
                 , getDataId());
         Map<String, String> baseArgumentsMap = NetHelper.createBaseArgumentsMap(keyValuePair);
         return RetrofitHelper
                 .<ServiceAPI>createDefault()
-                .getComplainDetail(baseArgumentsMap)
+                .getRepairDetail(baseArgumentsMap)
                 .compose(CommonWrap.wrap());
     }
 
@@ -127,8 +142,8 @@ public class ComplainDetailActivityModel extends BaseModel<ComplainDetailActivit
 
     /*----------------------------------------聊天-----------------------------------------*/
 
-    public Observable<TrueEntity> complainDetailReply(String content) {
-        KeyValuePair keyValuePair = KeyValueCreator.complainDetailReply(
+    public Observable<TrueEntity> repairDetailReply(String content) {
+        KeyValuePair keyValuePair = KeyValueCreator.repairDetailReply(
                 UserManager.INSTANCE.getUserInfo(UserManager.KEY_ID)
                 , UserManager.INSTANCE.getTicket()
                 , content
@@ -136,7 +151,7 @@ public class ComplainDetailActivityModel extends BaseModel<ComplainDetailActivit
         BaseArgumentsEntity baseArgumentsEntity = NetHelper.createBaseArguments(keyValuePair);
         return RetrofitHelper
                 .<ServiceAPI>createDefault()
-                .complainDetailReply(baseArgumentsEntity)
+                .repairDetailReply(baseArgumentsEntity)
                 .compose(CommonWrap.wrap());
     }
 
@@ -149,7 +164,7 @@ public class ComplainDetailActivityModel extends BaseModel<ComplainDetailActivit
         return displayBeen;
     }
 
-    public List<DisplayBean> getReplyDatas(List<PropertyComplainDetailEntity.DataBean.RepliesBean> replies) {
+    public List<DisplayBean> getReplyDatas(List<PropertyRepairDetailEntity.DataBean.RepliesBean> replies) {
 
         Collections.reverse(replies);
         List<DisplayBean> displayBeen = new ArrayList<>();
@@ -158,7 +173,6 @@ public class ComplainDetailActivityModel extends BaseModel<ComplainDetailActivit
         for (int i = 0; i < replies.size(); i++) {
 
             int user_id = replies.get(i).getUser_id();
-
             String time = replies.get(i).getTime();
 
             if (this_user_id == user_id) {
@@ -198,5 +212,4 @@ public class ComplainDetailActivityModel extends BaseModel<ComplainDetailActivit
     public List<DisplayBean> getReplyDatas() {
         return mReplyDatas;
     }
-
 }

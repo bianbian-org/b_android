@@ -6,11 +6,11 @@ package com.techjumper.polyhomeb.entity.event;
  * Date: 16/7/21
  * * * * * * * * * * * * * * * * * * * * * * *
  **/
-public class DeleteNotifyEvent {
+public class DeletePicNotifyEvent {
 
     private int position;
 
-    public DeleteNotifyEvent(int position) {
+    public DeletePicNotifyEvent(int position) {
         this.position = position;
     }
 

@@ -11,6 +11,7 @@ import com.techjumper.corelib.rx.tools.RxUtils;
 import com.techjumper.corelib.utils.common.AcHelper;
 import com.techjumper.polyhomeb.Constant;
 import com.techjumper.polyhomeb.entity.event.ComplainStatusEvent;
+import com.techjumper.polyhomeb.entity.event.RepairStatusEvent;
 import com.techjumper.polyhomeb.mvp.m.PropertyDetailActivityModel;
 import com.techjumper.polyhomeb.mvp.v.activity.NewComplainActivity;
 import com.techjumper.polyhomeb.mvp.v.activity.NewRepairActivity;
@@ -28,7 +29,8 @@ public class PropertyDetailActivityPresenter extends AppBaseActivityPresenter<Pr
 
     private PropertyDetailActivityModel mModel = new PropertyDetailActivityModel(this);
     private int mComplainStatus = -1;
-    private Subscription mSubs1;
+    private int mRepairStatus = -1;
+    private Subscription mSubs1, mSubs2;
 
     @Override
     public void initData(Bundle savedInstanceState) {
@@ -39,6 +41,7 @@ public class PropertyDetailActivityPresenter extends AppBaseActivityPresenter<Pr
     public void onViewInited(Bundle savedInstanceState) {
         processIME();
         getComplainStatues();
+        getRepairStatues();
     }
 
     public int comeFromWitchButton() {
@@ -49,6 +52,7 @@ public class PropertyDetailActivityPresenter extends AppBaseActivityPresenter<Pr
         Bundle bundle = new Bundle();
         switch (getView().getViewPager().getCurrentItem()) {
             case 1:
+                bundle.putInt(Constant.PROPERTY_REPAIR_STATUS, mRepairStatus);
                 new AcHelper.Builder(getView()).extra(bundle).target(NewRepairActivity.class).start();
                 break;
             case 2:
@@ -71,6 +75,19 @@ public class PropertyDetailActivityPresenter extends AppBaseActivityPresenter<Pr
                         }));
     }
 
+    private void getRepairStatues() {
+        RxUtils.unsubscribeIfNotNull(mSubs2);
+        addSubscription(
+                mSubs2 = RxBus.INSTANCE
+                        .asObservable()
+                        .subscribe(o -> {
+                            if (o instanceof RepairStatusEvent) {
+                                RepairStatusEvent event = (RepairStatusEvent) o;
+                                mRepairStatus = event.getStatus();
+                            }
+                        }));
+    }
+
     /**
      * 判断键盘是不是弹出的,是的话就隐藏起来,不是就不管
      */
@@ -79,9 +96,9 @@ public class PropertyDetailActivityPresenter extends AppBaseActivityPresenter<Pr
         decorView.getViewTreeObserver().addOnGlobalLayoutListener(() -> {
             Rect rect = new Rect();
             decorView.getWindowVisibleDisplayFrame(rect);
-            int displayHight = rect.bottom - rect.top;
-            int hight = decorView.getHeight();
-            boolean visible = (double) displayHight / hight < 0.8;
+            int displayHeight = rect.bottom - rect.top;
+            int height = decorView.getHeight();
+            boolean visible = (double) displayHeight / height < 0.8;
             if (visible) {
                 //隐藏键盘
                 InputMethodManager imm = (InputMethodManager) getView().getSystemService(Context.INPUT_METHOD_SERVICE);

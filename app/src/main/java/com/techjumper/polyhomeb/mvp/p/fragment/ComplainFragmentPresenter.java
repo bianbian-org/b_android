@@ -45,17 +45,15 @@ public class ComplainFragmentPresenter extends AppBaseFragmentPresenter<Complain
                         .asObservable()
                         .subscribe(o -> {
                             if (o instanceof RefreshComplainListDataEvent) {
-                                if (o instanceof RefreshComplainListDataEvent) {
-                                    //增加下面这个判断可以节约流量,
-//                                  //因为当前提交的内容肯定是在全部和未处理里面的,
-//                                  //当处在这两个标签(status)下时,提交之后肯定希望看到界面的变化,自己提交的东西能即时实时显示出来,所以需要刷新
-//                                  //如果当前不在这两个标签下,那么就没有刷新的必要了,
-//                                  //因为切换标签的时候又会去重新请求一次那个标签的数据,刚提交的数据自然而然地会从服务器拿到
-                                    RefreshComplainListDataEvent event = (RefreshComplainListDataEvent) o;
-                                    int complainStatus = event.getComplainStatus();
-                                    if (Constant.STATUS_ALL == complainStatus || Constant.STATUS_NOT_PROCESS == complainStatus) {
-                                        getView().getPtr().autoRefresh();
-                                    }
+                                //增加下面这个判断可以节约流量,
+                                //因为当前提交的内容肯定是在全部和未处理里面的,
+                                //当处在这两个标签(status)下时,提交之后肯定希望看到界面的变化,自己提交的东西能即时实时显示出来,所以需要刷新
+                                //如果当前不在这两个标签下,那么就没有刷新的必要了,
+                                //因为切换标签的时候又会去重新请求一次那个标签的数据,刚提交的数据自然而然地会从服务器拿到
+                                RefreshComplainListDataEvent event = (RefreshComplainListDataEvent) o;
+                                int complainStatus = event.getComplainStatus();
+                                if (Constant.STATUS_ALL == complainStatus || Constant.STATUS_NOT_PROCESS == complainStatus) {
+                                    getView().getPtr().autoRefresh();
                                 }
                             }
                         }));
@@ -106,8 +104,12 @@ public class ComplainFragmentPresenter extends AppBaseFragmentPresenter<Complain
                                 boolean hasMoreData = mModel.hasMoreData(entity);
                                 getView().setHasMoreData(hasMoreData);
 
-                                if (!hasMoreData && mModel.getCurrentPage() == 1) {
+//                                if (!hasMoreData && mModel.getCurrentPage() == 1) {
+//                                    getView().onComplainDataReceive(mModel.noData());
+//                                }
+                                if (entity.getData().getCount() == 0) {
                                     getView().onComplainDataReceive(mModel.noData());
+                                    return;
                                 }
                                 mModel.updateComplainData(entity);
                                 getView().onComplainDataReceive(mModel.getComplainData());

@@ -47,7 +47,6 @@
             android:launchMode="singleTask"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden|adjustPan|" />
-
         <activity
             android:name=".mvp.v.activity.PlacardDetailActivity"
             android:configChanges="keyboardHidden|orientation|screenSize"
@@ -109,6 +108,12 @@
             android:windowSoftInputMode="stateHidden|adjustPan|" />
         <activity
             android:name=".mvp.v.activity.FindPasswordActivity"
+            android:configChanges="keyboardHidden|orientation|screenSize"
+            android:launchMode="singleTask"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateHidden|stateUnchanged" />
+        <activity
+            android:name=".mvp.v.activity.RepairDetailActivity"
             android:configChanges="keyboardHidden|orientation|screenSize"
             android:launchMode="singleTask"
             android:screenOrientation="portrait"

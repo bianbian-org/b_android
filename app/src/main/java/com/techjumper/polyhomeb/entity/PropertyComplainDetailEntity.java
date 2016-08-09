@@ -9,7 +9,7 @@ import java.util.List;
  * Date: 16/8/4
  * * * * * * * * * * * * * * * * * * * * * * *
  **/
-public class ComplainDetailEntity extends BaseEntity<ComplainDetailEntity.DataBean> {
+public class PropertyComplainDetailEntity extends BaseEntity<PropertyComplainDetailEntity.DataBean> {
 
     public static class DataBean {
         private int id;

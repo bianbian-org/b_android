@@ -18,7 +18,6 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
             android:layout_marginRight="@dimen/dp_10"
-            android:background="@mipmap/icon_send_failed"
             android:visibility="visible" />
 
         <TextView

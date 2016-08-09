@@ -7,9 +7,10 @@ import android.widget.ImageView;
 
 import com.steve.creact.annotation.DataBean;
 import com.steve.creact.library.viewholder.BaseRecyclerViewHolder;
-import com.techjumper.corelib.utils.window.ToastUtils;
+import com.techjumper.corelib.rx.tools.RxBus;
 import com.techjumper.polyhomeb.R;
 import com.techjumper.polyhomeb.adapter.recycler_Data.PropertyRepairTitleData;
+import com.techjumper.polyhomeb.entity.event.RepairStatusEvent;
 import com.techjumper.polyhomeb.widget.PolyPopupWindow;
 
 import java.util.ArrayList;
@@ -56,42 +57,44 @@ public class PropertyRepairTitleViewHolder extends BaseRecyclerViewHolder<Proper
 
         mPop = new PolyPopupWindow((Activity) getContext(), R.style.popup_anim, new PopListItemClick(), mRootView, new PopDismiss());
         mPop.setMarginRight(8);
-        mPop.setMarginTop(55);
+        mPop.setMarginTop(28);
         List<String> datas = new ArrayList<>();
-        datas.add(getContext().getResources().getString(R.string.pop_all));
-        datas.add(getContext().getResources().getString(R.string.pop_all));
+        datas.add(getContext().getResources().getString(R.string.pop_not_process));
         datas.add(getContext().getResources().getString(R.string.pop_reply));
+        datas.add(getContext().getResources().getString(R.string.pop_processed));
         datas.add(getContext().getResources().getString(R.string.pop_closed));
+        datas.add(getContext().getResources().getString(R.string.pop_all));
         mPop.initData(datas);
     }
 
     private class PopListItemClick implements PolyPopupWindow.ItemClickCallBack {
 
-        // TODO: 16/7/17  点击了对应的item之后,应该按照那个item的协议来对数据进行过滤
-
+        @Override
         public void callBack(int position, String s) {
+            //#0-未处理 1-已回复 2-已处理 3-已关闭(查询全部，则为空)
             switch (position) {
                 case 0:
                     mPop.thisDismiss(PolyPopupWindow.AnimStyle.ALPHA);
-                    ToastUtils.show("点击了全部");
-                    setText(R.id.tv_type, "全部");
+                    setText(R.id.tv_type, getContext().getResources().getString(R.string.pop_not_process));  //未处理
                     break;
                 case 1:
                     mPop.thisDismiss(PolyPopupWindow.AnimStyle.ALPHA);
-                    ToastUtils.show("点击了已提交");
-                    setText(R.id.tv_type, "已提交");
+                    setText(R.id.tv_type, getContext().getResources().getString(R.string.pop_reply));//已回复
                     break;
                 case 2:
                     mPop.thisDismiss(PolyPopupWindow.AnimStyle.ALPHA);
-                    ToastUtils.show("点击了已回复");
-                    setText(R.id.tv_type, "已回复");
+                    setText(R.id.tv_type, getContext().getResources().getString(R.string.pop_processed));//已处理
                     break;
                 case 3:
                     mPop.thisDismiss(PolyPopupWindow.AnimStyle.ALPHA);
-                    ToastUtils.show("点击了已完成");
-                    setText(R.id.tv_type, "已完成");
+                    setText(R.id.tv_type, getContext().getResources().getString(R.string.pop_closed)); //已关闭
+                    break;
+                case 4:
+                    mPop.thisDismiss(PolyPopupWindow.AnimStyle.ALPHA);
+                    setText(R.id.tv_type, getContext().getResources().getString(R.string.pop_all));  //全部
                     break;
             }
+            RxBus.INSTANCE.send(new RepairStatusEvent(position)); //点击之后发送消息,然后刷新重新调用接口
         }
     }
 

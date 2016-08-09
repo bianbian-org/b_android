@@ -2,11 +2,13 @@ package com.techjumper.polyhomeb.net;
 
 
 import com.techjumper.polyhomeb.entity.BaseArgumentsEntity;
-import com.techjumper.polyhomeb.entity.ComplainDetailEntity;
 import com.techjumper.polyhomeb.entity.LoginEntity;
+import com.techjumper.polyhomeb.entity.PropertyComplainDetailEntity;
 import com.techjumper.polyhomeb.entity.PropertyComplainEntity;
 import com.techjumper.polyhomeb.entity.PropertyPlacardDetailEntity;
 import com.techjumper.polyhomeb.entity.PropertyPlacardEntity;
+import com.techjumper.polyhomeb.entity.PropertyRepairEntity;
+import com.techjumper.polyhomeb.entity.PropertyRepairDetailEntity;
 import com.techjumper.polyhomeb.entity.TrueEntity;
 import com.techjumper.polyhomeb.entity.UploadPicEntity;
 
@@ -156,25 +158,27 @@ public interface ServiceAPI {
      * ticket # session登录验证
      * page: 1 #页号
      * count:3 #每页数据条数
-     * return:
-     * {
-     * "error_code": 0,
-     * "error_msg": null,
-     * "data": {
-     * "suggestions": [
-     * {
-     * "id": 8,
-     * "content": "toutoutoutotuotutu",
-     * "user_name": "啦啦啦",
-     * "status": 0,  #0-未处理 1-已回复 2-已处理 3-已关闭
-     * "types": 1, #标题
-     * "user_id": 1,
-     * "created_at": "时间"
      * # ERROR CODE
      * error_code: 109,	error_msg: '此功能登录后可使用！'
      */
     @GET("suggestions")
     Observable<PropertyComplainEntity> propertyComplain(@QueryMap Map<String, String> stringStringMap);
+
+    /**
+     * get '/repairs'
+     * <p>
+     * params:
+     * user_id # 用户ID
+     * ticket # session登录验证
+     * status:0 #报修状态 0-未处理 1-已回复 2-已处理 3-已关闭(查询全部则为空)
+     * page: 1 #页号
+     * count:3 #每页数据条数
+     * <p>
+     * # ERROR CODE
+     * error_code: 109,	error_msg: '此功能登录后可使用！'
+     */
+    @GET("repairs")
+    Observable<PropertyRepairEntity> propertyRepair(@QueryMap Map<String, String> stringStringMap);
 
     /**
      * 新建投诉
@@ -199,6 +203,31 @@ public interface ServiceAPI {
      */
     @POST("suggestions")
     Observable<TrueEntity> newComplain(@Body BaseArgumentsEntity entity);
+
+    /**
+     * 新建报修
+     * post '/repairs'
+     * <p>
+     * params:
+     * user_id # 用户ID
+     * ticket # session登录验证
+     * family_id #家庭ID
+     * mobile #用户手机号
+     * repair_type #报修类型 1-个人报修 2-公共区域报修
+     * repair_device #报修设备 1-门窗类 2-水电类 3-锁类 4-电梯类 5-墙类
+     * note #备注
+     * imgs: ['img1.jpg','img2.jpg','img3.jpg']  #多个图片信息（数组）
+     * return:
+     * {
+     * "error_code": 0,
+     * "error_msg": null,
+     * "data": {
+     * "result": "true"
+     * }
+     * }
+     */
+    @POST("repairs")
+    Observable<TrueEntity> newRepair(@Body BaseArgumentsEntity entity);
 
     /**
      * 上传图片
@@ -229,7 +258,7 @@ public interface ServiceAPI {
      * error_code: 404,	error_msg: '未找到内容！'
      */
     @GET("suggestions/show")
-    Observable<ComplainDetailEntity> getComplainDetail(@QueryMap Map<String, String> stringStringMap);
+    Observable<PropertyComplainDetailEntity> getComplainDetail(@QueryMap Map<String, String> stringStringMap);
 
     /**
      * 物业管理-投诉建议回复
@@ -254,4 +283,71 @@ public interface ServiceAPI {
      */
     @POST("suggestions/reply")
     Observable<TrueEntity> complainDetailReply(@Body BaseArgumentsEntity entity);
+
+
+    /**
+     * 报修详情
+     * get '/repairs/show'
+     * params:
+     * user_id # 用户ID
+     * ticket # session登录验证
+     * repair_id #报修记录ID
+     * return:
+     * {
+     * "error_code": 0,
+     * "error_msg": null,
+     * "data": {
+     * "id": 1
+     * "repair_type": 1,
+     * "repair_device": 3,
+     * "status": 0,
+     * "repair_date": "2016-05-16",
+     * "note": "备注",
+     * "imgs": [      #图片信息
+     * '/upload/images/img1.jpg',
+     * '/upload/images/img2.jpg',
+     * '/upload/images/img3.jpg'
+     * ],
+     * "replies": [
+     * {
+     * "user_id": 1,  #用户ID
+     * "content": "啦啦啦已提交报修", #回复内容
+     * "time": "2016-05-1617: 37" #回复时间
+     * },
+     * {
+     * "user_id": 1,
+     * "content": "这里是回复",
+     * "time": "2016-05-1617: 44"
+     * # ERROR CODE
+     * error_code: 109,	error_msg: '此功能登录后可使用！'
+     * error_code: 404,	error_msg: '未找到内容！'
+     */
+    @GET("repairs/show")
+    Observable<PropertyRepairDetailEntity> getRepairDetail(@QueryMap Map<String, String> stringStringMap);
+
+
+    /**
+     * 报修-回复
+     * post '/repairs/reply'
+     * <p>
+     * params:
+     * user_id # 用户ID
+     * ticket # session登录验证
+     * content # 回复内容
+     * repair_id #报修记录ID
+     * return:
+     * {
+     * "error_code": 0,
+     * "error_msg": null,
+     * "data": {
+     * "result": "true"
+     * }
+     * }
+     * <p>
+     * # ERROR CODE
+     * error_code: 109,	error_msg: '此功能登录后可使用！'
+     * error_code: 404,	error_msg: '未找到内容！'
+     */
+    @POST("repairs/reply")
+    Observable<TrueEntity> repairDetailReply(@Body BaseArgumentsEntity entity);
 }

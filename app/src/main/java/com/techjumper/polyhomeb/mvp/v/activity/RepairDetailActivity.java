@@ -16,10 +16,10 @@ import com.techjumper.corelib.mvp.factory.Presenter;
 import com.techjumper.corelib.utils.common.ResourceUtils;
 import com.techjumper.corelib.utils.common.RuleUtils;
 import com.techjumper.polyhomeb.R;
-import com.techjumper.polyhomeb.adapter.ComplainDetailAdapter;
-import com.techjumper.polyhomeb.adapter.ComplainDetailPicAdapter;
-import com.techjumper.polyhomeb.entity.PropertyComplainDetailEntity;
-import com.techjumper.polyhomeb.mvp.p.activity.ComplainDetailActivityPresenter;
+import com.techjumper.polyhomeb.adapter.RepairDetailAdapter;
+import com.techjumper.polyhomeb.adapter.RepairDetailPicAdapter;
+import com.techjumper.polyhomeb.entity.PropertyRepairDetailEntity;
+import com.techjumper.polyhomeb.mvp.p.activity.RepairDetailActivityPresenter;
 
 import java.util.List;
 
@@ -29,11 +29,11 @@ import cn.finalteam.loadingviewfinal.RecyclerViewFinal;
 /**
  * * * * * * * * * * * * * * * * * * * * * * *
  * Created by lixin
- * Date: 16/7/25
+ * Date: 16/8/6
  * * * * * * * * * * * * * * * * * * * * * * *
  **/
-@Presenter(ComplainDetailActivityPresenter.class)
-public class ComplainDetailActivity extends AppBaseActivity<ComplainDetailActivityPresenter> implements View.OnLayoutChangeListener {
+@Presenter(RepairDetailActivityPresenter.class)
+public class RepairDetailActivity extends AppBaseActivity<RepairDetailActivityPresenter> implements View.OnLayoutChangeListener {
 
     @Bind(R.id.rv)
     RecyclerViewFinal mRv;
@@ -67,12 +67,12 @@ public class ComplainDetailActivity extends AppBaseActivity<ComplainDetailActivi
     //软件盘弹起后所占高度阀值
     private int mKeyHeight = 0;
 
-    private ComplainDetailAdapter mAdapter;
-    private ComplainDetailPicAdapter mAdapter_;
+    private RepairDetailAdapter mAdapter;
+    private RepairDetailPicAdapter mAdapter_;
 
     @Override
     protected View inflateView(Bundle savedInstanceState) {
-        return inflate(R.layout.activity_complain_detail);
+        return inflate(R.layout.activity_repair_detail);
     }
 
     @Override
@@ -83,7 +83,7 @@ public class ComplainDetailActivity extends AppBaseActivity<ComplainDetailActivi
 
     @Override
     public String getLayoutTitle() {
-        return getString(R.string.complain_detail);
+        return getString(R.string.repair_detail);
     }
 
     @Override
@@ -133,7 +133,7 @@ public class ComplainDetailActivity extends AppBaseActivity<ComplainDetailActivi
         return mRv;
     }
 
-    public ComplainDetailAdapter getAdapter() {
+    public RepairDetailAdapter getAdapter() {
         return mAdapter;
     }
 
@@ -146,7 +146,7 @@ public class ComplainDetailActivity extends AppBaseActivity<ComplainDetailActivi
     }
 
     //处理是不是含有图片
-    private void processChoosedPicLayout(boolean hasPic, PropertyComplainDetailEntity propertyComplainDetailEntity) {
+    private void processChoosedPicLayout(boolean hasPic, PropertyRepairDetailEntity propertyRepairDetailEntity) {
         if (hasPic) {
             ViewGroup.LayoutParams layoutParams = mLayoutNotice.getLayoutParams();
             layoutParams.height = RuleUtils.dp2Px(284);
@@ -154,9 +154,9 @@ public class ComplainDetailActivity extends AppBaseActivity<ComplainDetailActivi
             mRvReceivedPic.setVisibility(View.VISIBLE);
 
             mRvReceivedPic.setLayoutManager(new GridLayoutManager(this, 3));
-            mAdapter_ = new ComplainDetailPicAdapter();
+            mAdapter_ = new RepairDetailPicAdapter();
             mRvReceivedPic.setAdapter(mAdapter_);
-            mAdapter_.loadData(getPresenter().alreadyChoosedPic(propertyComplainDetailEntity));
+            mAdapter_.loadData(getPresenter().alreadyChoosedPic(propertyRepairDetailEntity));
 
         } else {
             mRvReceivedPic.setVisibility(View.GONE);
@@ -166,14 +166,14 @@ public class ComplainDetailActivity extends AppBaseActivity<ComplainDetailActivi
         }
     }
 
-    public void onComplainDataReceive(PropertyComplainDetailEntity propertyComplainDetailEntity) {
-        mTvTitle.setText(getPresenter().getTitle(propertyComplainDetailEntity.getData().getTypes()));
-        mTvContent.setText(propertyComplainDetailEntity.getData().getContent());
-        mTvTime.setText(getPresenter().getMonthAndDayTime(propertyComplainDetailEntity.getData().getCreated_at()));
+    public void onRepairDataReceive(PropertyRepairDetailEntity propertyRepairDetailEntity) {
+        mTvTitle.setText(getPresenter().getTitle(propertyRepairDetailEntity.getData().getRepair_type(), propertyRepairDetailEntity.getData().getRepair_device()));
+        mTvContent.setText(propertyRepairDetailEntity.getData().getNote());
+        mTvTime.setText(getPresenter().getMonthAndDayTime(propertyRepairDetailEntity.getData().getRepair_date()));
         mTvTime.setVisibility(View.VISIBLE);
-        mBtnStatus.setText(getPresenter().getStatusName(propertyComplainDetailEntity.getData().getStatus()));
+        mBtnStatus.setText(getPresenter().getStatusName(propertyRepairDetailEntity.getData().getStatus()));
         mBtnStatus.setVisibility(View.VISIBLE);
-        if (propertyComplainDetailEntity.getData().getStatus() == 2 || propertyComplainDetailEntity.getData().getStatus() == 3) {
+        if (propertyRepairDetailEntity.getData().getStatus() == 2 || propertyRepairDetailEntity.getData().getStatus() == 3) {
             mBtnStatus.setTextColor(ResourceUtils.getColorResource(R.color.color_acacac));
             mBtnStatus.setEnabled(false);
         } else {
@@ -181,14 +181,14 @@ public class ComplainDetailActivity extends AppBaseActivity<ComplainDetailActivi
             mBtnStatus.setEnabled(true);
         }
 
-        String[] imgs = propertyComplainDetailEntity.getData().getImgs();
+        String[] imgs = propertyRepairDetailEntity.getData().getImgs();
         if (imgs != null && imgs.length != 0) {
-            processChoosedPicLayout(true, propertyComplainDetailEntity);
+            processChoosedPicLayout(true, propertyRepairDetailEntity);
         } else {
             processChoosedPicLayout(false, null);
         }
 
-        List<PropertyComplainDetailEntity.DataBean.RepliesBean> replies = propertyComplainDetailEntity.getData().getReplies();
+        List<PropertyRepairDetailEntity.DataBean.RepliesBean> replies = propertyRepairDetailEntity.getData().getReplies();
         if (replies != null && replies.size() != 0) {
             processHasReply(true, replies);
         } else {
@@ -196,9 +196,9 @@ public class ComplainDetailActivity extends AppBaseActivity<ComplainDetailActivi
         }
     }
 
-    private void processHasReply(boolean hasReply, List<PropertyComplainDetailEntity.DataBean.RepliesBean> replies) {
+    private void processHasReply(boolean hasReply, List<PropertyRepairDetailEntity.DataBean.RepliesBean> replies) {
         mRv.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
-        mAdapter = new ComplainDetailAdapter();
+        mAdapter = new RepairDetailAdapter();
         if (hasReply) {
             mRv.setAdapter(mAdapter);
             mAdapter.loadData(getPresenter().getReplyDatas(replies));

@@ -6,7 +6,7 @@ import com.steve.creact.library.viewholder.BaseRecyclerViewHolder;
 /**
  * * * * * * * * * * * * * * * * * * * * * * *
  * Created by lixin
- * Date: 16/7/25
+ * Date: 16/8/8
  * * * * * * * * * * * * * * * * * * * * * * *
  **/
 public class RepairDetailAdapter extends BaseRecyclerPowerfulAdapter {

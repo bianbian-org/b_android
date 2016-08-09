@@ -1,15 +1,28 @@
 package com.techjumper.polyhomeb.mvp.m;
 
 import com.steve.creact.library.display.DisplayBean;
+import com.techjumper.corelib.rx.tools.CommonWrap;
+import com.techjumper.lib2.others.KeyValuePair;
+import com.techjumper.lib2.utils.RetrofitHelper;
+import com.techjumper.polyhomeb.Constant;
 import com.techjumper.polyhomeb.R;
 import com.techjumper.polyhomeb.adapter.recycler_Data.NewRepairPhotoViewChoosedData;
 import com.techjumper.polyhomeb.adapter.recycler_Data.NewRepairPhotoViewDefaultPlusData;
 import com.techjumper.polyhomeb.adapter.recycler_ViewHolder.databean.NewRepairPhotoViewChoosedBean;
 import com.techjumper.polyhomeb.adapter.recycler_ViewHolder.databean.NewRepairPhotoViewDefaultPlusBean;
+import com.techjumper.polyhomeb.entity.BaseArgumentsEntity;
+import com.techjumper.polyhomeb.entity.TrueEntity;
+import com.techjumper.polyhomeb.entity.UploadPicEntity;
 import com.techjumper.polyhomeb.mvp.p.activity.NewRepairActivityPresenter;
+import com.techjumper.polyhomeb.net.KeyValueCreator;
+import com.techjumper.polyhomeb.net.NetHelper;
+import com.techjumper.polyhomeb.net.ServiceAPI;
+import com.techjumper.polyhomeb.user.UserManager;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import rx.Observable;
 
 /**
  * * * * * * * * * * * * * * * * * * * * * * *
@@ -57,6 +70,46 @@ public class NewRepairActivityModel extends BaseModel<NewRepairActivityPresenter
             }
         }
         return displayBeen;
+    }
+
+    public Observable<TrueEntity> commitRepair(String repairType, String repairDevice, String note, List<String> mUrls) {
+        KeyValuePair keyValuePair = KeyValueCreator.newRepair(
+                UserManager.INSTANCE.getUserInfo(UserManager.KEY_ID)
+                , UserManager.INSTANCE.getTicket()
+                , UserManager.INSTANCE.getCurrentFamilyInfo(UserManager.KEY_CURRENT_FAMILY_ID)
+                , getPresenter().getEtPhone().getEditableText().toString().trim()
+                , repairType
+                , repairDevice
+                , note
+                , list2Array(mUrls));
+        BaseArgumentsEntity entity = NetHelper.createBaseArguments(keyValuePair);
+        return RetrofitHelper.<ServiceAPI>createDefault()
+                .newRepair(entity)
+                .compose(CommonWrap.wrap());
+    }
+
+    public Observable<UploadPicEntity> uploadPic(String base64) {
+        KeyValuePair keyValuePair = KeyValueCreator.uploadPic(
+                UserManager.INSTANCE.getUserInfo(UserManager.KEY_ID)
+                , UserManager.INSTANCE.getTicket()
+                , base64);
+        BaseArgumentsEntity entity = NetHelper.createBaseArguments(keyValuePair);
+        return RetrofitHelper.<ServiceAPI>createDefault()
+                .uploadPic(entity)
+                .compose(CommonWrap.wrap());
+    }
+
+    private String[] list2Array(List<String> mUrls) {
+        if (mUrls.size() == 0) return new String[0];
+        String[] arrays = new String[mUrls.size()];
+        for (int i = 0; i < mUrls.size(); i++) {
+            arrays[i] = mUrls.get(i);
+        }
+        return arrays;
+    }
+
+    public int getRepairStatus() {
+        return getPresenter().getView().getIntent().getExtras().getInt(Constant.PROPERTY_REPAIR_STATUS, -1);
     }
 
 }

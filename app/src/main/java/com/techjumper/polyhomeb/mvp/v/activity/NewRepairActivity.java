@@ -37,7 +37,7 @@ import me.iwf.photopicker.PhotoPreview;
  * * * * * * * * * * * * * * * * * * * * * * *
  **/
 @Presenter(NewRepairActivityPresenter.class)
-public class NewRepairActivity extends AppBaseActivity<NewRepairActivityPresenter>{
+public class NewRepairActivity extends AppBaseActivity<NewRepairActivityPresenter> {
 
     @Bind(R.id.rv)
     RecyclerViewFinal mRv;
@@ -61,6 +61,8 @@ public class NewRepairActivity extends AppBaseActivity<NewRepairActivityPresente
     TextView mTvInput;
     @Bind(R.id.title_group)
     View mTitle;
+    @Bind(R.id.et_phone)
+    EditText mEtPhone;
 
     //屏幕高度
     private int mScreenHeight = 0;
@@ -158,22 +160,24 @@ public class NewRepairActivity extends AppBaseActivity<NewRepairActivityPresente
             }
             mIMEHeight = mHeight2 - mHeight1;
 
-            if (visible && !isIMEVisible) {
-                mStaticHead.setVisibility(View.GONE);
+            if (mEtContent.hasFocus()) {  //只有当输入内容的时候才会进行以下操作,输入手机号码的时候则不会
+                if (visible && !isIMEVisible) {
+                    mStaticHead.setVisibility(View.GONE);
 //                JLog.e("mScreenHeight..." + mScreenHeight + "mIMEHeight..." + mIMEHeight + "mTitle.getHeight()..." + mTitle.getHeight() + " mTvInput.getHeight()..." + mTvInput.getHeight());
-                ViewGroup.LayoutParams layoutParams = mEtContent.getLayoutParams();
-                layoutParams.height = mScreenHeight - mIMEHeight - mTitle.getHeight() - mRv.getHeight() - mTvInput.getHeight() - RuleUtils.dp2Px(14) - StatusbarHelper.getStatusBarHeightPx(this);
-                mEtContent.setLayoutParams(layoutParams);
-                mEtContent.requestLayout();
-                mSv.smoothScrollTo(0, 0);
-                isIMEVisible = true;
-            } else if (!visible && isIMEVisible) {
-                mStaticHead.setVisibility(View.VISIBLE);
-                ViewGroup.LayoutParams layoutParams = mEtContent.getLayoutParams();
-                layoutParams.height = RuleUtils.dp2Px(200);
-                mEtContent.setLayoutParams(layoutParams);
-                mEtContent.requestLayout();
-                isIMEVisible = false;
+                    ViewGroup.LayoutParams layoutParams = mEtContent.getLayoutParams();
+                    layoutParams.height = mScreenHeight - mIMEHeight - mTitle.getHeight() - mRv.getHeight() - mTvInput.getHeight() - RuleUtils.dp2Px(14) - StatusbarHelper.getStatusBarHeightPx(this);
+                    mEtContent.setLayoutParams(layoutParams);
+                    mEtContent.requestLayout();
+                    mSv.smoothScrollTo(0, 0);
+                    isIMEVisible = true;
+                } else if (!visible && isIMEVisible) {
+                    mStaticHead.setVisibility(View.VISIBLE);
+                    ViewGroup.LayoutParams layoutParams = mEtContent.getLayoutParams();
+                    layoutParams.height = RuleUtils.dp2Px(200);
+                    mEtContent.setLayoutParams(layoutParams);
+                    mEtContent.requestLayout();
+                    isIMEVisible = false;
+                }
             }
         });
     }
@@ -223,5 +227,10 @@ public class NewRepairActivity extends AppBaseActivity<NewRepairActivityPresente
     public FrameLayout getRightGroup() {
         return mRightGroup;
     }
+
+    public EditText getEtPhone() {
+        return mEtPhone;
+    }
+
 
 }

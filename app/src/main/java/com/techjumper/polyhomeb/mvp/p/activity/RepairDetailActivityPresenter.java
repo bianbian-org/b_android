@@ -15,13 +15,13 @@ import com.techjumper.polyhomeb.adapter.recycler_Data.PropertyRepairDetailPropri
 import com.techjumper.polyhomeb.adapter.recycler_Data.RepairDetailTimeData;
 import com.techjumper.polyhomeb.adapter.recycler_ViewHolder.databean.PropertyRepairDetailProprietorContentBean;
 import com.techjumper.polyhomeb.adapter.recycler_ViewHolder.databean.RepairDetailTimeBean;
-import com.techjumper.polyhomeb.entity.PropertyComplainDetailEntity;
+import com.techjumper.polyhomeb.entity.PropertyRepairDetailEntity;
 import com.techjumper.polyhomeb.entity.TrueEntity;
 import com.techjumper.polyhomeb.entity.event.PhotoViewEvent;
 import com.techjumper.polyhomeb.entity.event.ResendMessageEvent;
-import com.techjumper.polyhomeb.mvp.m.ComplainDetailActivityModel;
-import com.techjumper.polyhomeb.mvp.v.activity.ComplainDetailActivity;
+import com.techjumper.polyhomeb.mvp.m.RepairDetailActivityModel;
 import com.techjumper.polyhomeb.mvp.v.activity.PicViewActivity;
+import com.techjumper.polyhomeb.mvp.v.activity.RepairDetailActivity;
 
 import java.sql.Date;
 import java.text.SimpleDateFormat;
@@ -35,12 +35,12 @@ import rx.Subscription;
 /**
  * * * * * * * * * * * * * * * * * * * * * * *
  * Created by lixin
- * Date: 16/7/25
+ * Date: 16/8/6
  * * * * * * * * * * * * * * * * * * * * * * *
  **/
-public class ComplainDetailActivityPresenter extends AppBaseActivityPresenter<ComplainDetailActivity> {
+public class RepairDetailActivityPresenter extends AppBaseActivityPresenter<RepairDetailActivity> {
 
-    private ComplainDetailActivityModel mModel = new ComplainDetailActivityModel(this);
+    private RepairDetailActivityModel mModel = new RepairDetailActivityModel(this);
 
     private Subscription mSubs1, mSubs2, mSubs3, mSubs4, mSubs5;
     private String mCurrentUrl = "";
@@ -55,11 +55,11 @@ public class ComplainDetailActivityPresenter extends AppBaseActivityPresenter<Co
     @Override
     public void onViewInited(Bundle savedInstanceState) {
         onPicClicked();
-        getComplainDetailData();
+        getRepairDetailData();
         resendMessageSubs();
     }
 
-    public List<DisplayBean> getReplyDatas(List<PropertyComplainDetailEntity.DataBean.RepliesBean> replies) {
+    public List<DisplayBean> getReplyDatas(List<PropertyRepairDetailEntity.DataBean.RepliesBean> replies) {
         return mModel.getReplyDatas(replies);
     }
 
@@ -109,58 +109,59 @@ public class ComplainDetailActivityPresenter extends AppBaseActivityPresenter<Co
 
         // TODO: 16/8/8  屏蔽其他感叹号的点击事件
 
-
         //更改  你正在重新发送的消息的 感叹号为菊花
         data.setSendStatus(Constant.MESSAGE_SENDING);
         getView().getAdapter().notifyItemChanged(position);
-
         RxUtils.unsubscribeIfNotNull(mSubs5);
         addSubscription(
-                mSubs5 = mModel.complainDetailReply(content)
+                mSubs5 = mModel.repairDetailReply(content)
                         .subscribe(new Observer<TrueEntity>() {
-                            @Override
-                            public void onCompleted() {
-                            }
+                                       @Override
+                                       public void onCompleted() {
+                                       }
 
-                            @Override
-                            public void onError(Throwable e) {
-                                getView().showError(e);
-                                data.setSendStatus(Constant.MESSAGE_SEND_FAILED);
-                                getView().getAdapter().notifyItemChanged(position);
-                                getView().getTvSend().setEnabled(true);
-                                getView().getTvSend().setClickable(true);
+                                       @Override
+                                       public void onError(Throwable e) {
+                                           getView().showError(e);
+                                           data.setSendStatus(Constant.MESSAGE_SEND_FAILED);
+                                           getView().getAdapter().notifyItemChanged(position);
+                                           getView().getTvSend().setEnabled(true);
+                                           getView().getTvSend().setClickable(true);
 
-                                // TODO: 16/8/8  恢复其他感叹号的点击事件
-                            }
+                                           // TODO: 16/8/8  恢复其他感叹号的点击事件
+                                       }
 
-                            @Override
-                            public void onNext(TrueEntity trueEntity) {
-                                if (!processNetworkResult(trueEntity)) return;
-                                if (Constant.TRUE_ENTITY_RESULT.equals(trueEntity.getData().getResult())) {
-                                    ToastUtils.show(getView().getString(R.string.send_success));
+                                       @Override
+                                       public void onNext(TrueEntity trueEntity) {
+                                           if (!processNetworkResult(trueEntity)) return;
+                                           if (Constant.TRUE_ENTITY_RESULT.equals(trueEntity.getData().getResult())) {
+                                               ToastUtils.show(getView().getString(R.string.send_success));
 
-                                    data.setSendStatus(Constant.MESSAGE_SEND_SUCCESS);
-                                    getView().getAdapter().notifyItemChanged(position);
-                                } else {
-                                    data.setSendStatus(Constant.MESSAGE_SEND_FAILED);
-                                    getView().getAdapter().notifyItemChanged(position);
-                                }
-                                getView().getTvSend().setEnabled(true);
-                                getView().getTvSend().setClickable(true);
+                                               data.setSendStatus(Constant.MESSAGE_SEND_SUCCESS);
+                                               getView().getAdapter().notifyItemChanged(position);
+                                           } else {
+                                               data.setSendStatus(Constant.MESSAGE_SEND_FAILED);
+                                               getView().getAdapter().notifyItemChanged(position);
+                                           }
+                                           getView().getTvSend().setEnabled(true);
+                                           getView().getTvSend().setClickable(true);
 
-                                // TODO: 16/8/8  恢复其他感叹号的点击事件
-                            }
-                        }));
+                                           // TODO: 16/8/8  恢复其他感叹号的点击事件
+                                       }
+                                   }
+
+                        ));
+
         getView().getEtReplyContent().setText("");
+
     }
 
-
-    private void getComplainDetailData() {
+    private void getRepairDetailData() {
         getView().showLoading();
         RxUtils.unsubscribeIfNotNull(mSubs2);
         addSubscription(
-                mSubs2 = mModel.getComplainDetail()
-                        .subscribe(new Observer<PropertyComplainDetailEntity>() {
+                mSubs2 = mModel.getRepairDetail()
+                        .subscribe(new Observer<PropertyRepairDetailEntity>() {
                             @Override
                             public void onCompleted() {
                                 getView().dismissLoading();
@@ -173,9 +174,9 @@ public class ComplainDetailActivityPresenter extends AppBaseActivityPresenter<Co
                             }
 
                             @Override
-                            public void onNext(PropertyComplainDetailEntity propertyComplainDetailEntity) {
-                                if (!processNetworkResult(propertyComplainDetailEntity)) return;
-                                getView().onComplainDataReceive(propertyComplainDetailEntity);
+                            public void onNext(PropertyRepairDetailEntity propertyRepairDetailEntity) {
+                                if (!processNetworkResult(propertyRepairDetailEntity)) return;
+                                getView().onRepairDataReceive(propertyRepairDetailEntity);
                                 getView().dismissLoading();
                             }
                         }));
@@ -196,7 +197,7 @@ public class ComplainDetailActivityPresenter extends AppBaseActivityPresenter<Co
         sendingMessage(content);
         RxUtils.unsubscribeIfNotNull(mSubs3);
         addSubscription(
-                mSubs3 = mModel.complainDetailReply(content)
+                mSubs3 = mModel.repairDetailReply(content)
                         .subscribe(new Observer<TrueEntity>() {
                             @Override
                             public void onCompleted() {
@@ -268,12 +269,12 @@ public class ComplainDetailActivityPresenter extends AppBaseActivityPresenter<Co
         getView().getTvSend().setClickable(true);
     }
 
-    public List<DisplayBean> alreadyChoosedPic(PropertyComplainDetailEntity propertyComplainDetailEntity) {
-        return mModel.getAlreadyChoosedPic(propertyComplainDetailEntity);
+    public List<DisplayBean> alreadyChoosedPic(PropertyRepairDetailEntity propertyRepairDetailEntity) {
+        return mModel.getAlreadyChoosedPic(propertyRepairDetailEntity);
     }
 
-    public String getTitle(int types) {
-        return mModel.getTypes(types);
+    public String getTitle(int repairType, int repairDevice) {
+        return mModel.getRepairType(repairType) + "-" + mModel.getRepairDevice(repairDevice);
     }
 
     public String getStatusName(int status) {

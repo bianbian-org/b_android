@@ -67,18 +67,18 @@
     <string name="pop_closed">已关闭</string>
     <string name="pop_all">全部</string>
 
-    <string name="repair_windows">门窗类</string>
-    <string name="repair_walls">墙类</string>
-    <string name="repair_elevators">电梯类</string>
-    <string name="repair_water_elec">水电类</string>
-    <string name="repair_locks">锁类</string>
+    <string name="pop_windows">门窗类</string>
+    <string name="pop_walls">墙类</string>
+    <string name="pop_elevators">电梯类</string>
+    <string name="pop_water_elec">水电类</string>
+    <string name="pop_locks">锁类</string>
     <string name="repair_type">报修类型</string>
     <string name="repair_unchecked">未选择</string>
     <string name="repair_record">报修记录</string>
     <string name="repair_text_hint">输入你的报修内容...</string>
     <string name="repair_none">未选择</string>
-    <string name="repair_personal">个人</string>
-    <string name="repair_common">公共</string>
+    <string name="pop_personal">个人</string>
+    <string name="pop_common">公共</string>
     <string name="complain_theme">主题</string>
     <string name="complain_text_hint">请输入你的内容...</string>
     <string name="complain_text_hint_complaint">输入你的投诉内容...</string>
@@ -134,6 +134,14 @@
     <string name="please_do_not_send_empty_message">请不要发送空消息^_^</string>
     <string name="send_success">发送成功</string>
     <string name="pattren_M_D">M月d日</string>
+    <string name="please_choose_repair_device">请选择报修设备</string>
+    <string name="please_choose_repair_type">请选择报修类型</string>
+    <string name="repair_header_title">报修记录</string>
+    <string name="repair_detail">报修详情</string>
+    <string name="repair_personal">个人报修</string>
+    <string name="repair_common">公共区域报修</string>
+    <string name="no_type">未指定类型</string>
+    <string name="no_device">未指定设备</string>
 
 
 </resources>

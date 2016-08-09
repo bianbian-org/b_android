@@ -3,10 +3,10 @@ package com.techjumper.polyhomeb.adapter.recycler_Data;
 /**
  * * * * * * * * * * * * * * * * * * * * * * *
  * Created by lixin
- * Date: 16/8/6
+ * Date: 16/7/15
  * * * * * * * * * * * * * * * * * * * * * * *
  **/
-public class PropertyRepairContentData {
+public class PropertyComplainContentData {
 
     private String title;
     private String content;
@@ -18,23 +18,14 @@ public class PropertyRepairContentData {
     private int user_id;
     private String user_name;
     private String create_time;
-    private int repair_type;
-    private int repair_device;
+    private int types;
 
-    public int getRepair_type() {
-        return repair_type;
+    public int getTypes() {
+        return types;
     }
 
-    public void setRepair_type(int repair_type) {
-        this.repair_type = repair_type;
-    }
-
-    public int getRepair_device() {
-        return repair_device;
-    }
-
-    public void setRepair_device(int repair_device) {
-        this.repair_device = repair_device;
+    public void setTypes(int types) {
+        this.types = types;
     }
 
     public String getCreate_time() {
@@ -62,6 +53,7 @@ public class PropertyRepairContentData {
     }
 
     public int getUser_id() {
+
         return user_id;
     }
 

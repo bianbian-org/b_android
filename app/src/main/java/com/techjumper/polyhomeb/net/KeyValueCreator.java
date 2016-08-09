@@ -65,6 +65,15 @@ public class KeyValueCreator {
                 .put("count", count);
     }
 
+    public static KeyValuePair propertyRepair(String user_id, String ticket, String status, String page, String count) {
+        return newPair()
+                .put("user_id", user_id)
+                .put("ticket", ticket)
+                .put("status", status)
+                .put("page", page)
+                .put("count", count);
+    }
+
     public static KeyValuePair newComplain(String user_id, String ticket, String mobile, String types, String content, String[] imgs) {
         return newPair()
                 .put("user_id", user_id)
@@ -72,6 +81,18 @@ public class KeyValueCreator {
                 .put("mobile", mobile)
                 .put("types", types)
                 .put("content", content)
+                .put("imgs", imgs);
+    }
+
+    public static KeyValuePair newRepair(String user_id, String ticket, String family_id, String mobile, String repair_type, String repair_device, String note, String[] imgs) {
+        return newPair()
+                .put("user_id", user_id)
+                .put("ticket", ticket)
+                .put("family_id", family_id)
+                .put("mobile", mobile)
+                .put("repair_type", repair_type)
+                .put("repair_device", repair_device)
+                .put("note", note)
                 .put("imgs", imgs);
     }
 
@@ -95,5 +116,20 @@ public class KeyValueCreator {
                 .put("ticket", ticket)
                 .put("content", content)
                 .put("suggestion_id", suggestion_id);
+    }
+
+    public static KeyValuePair getRepairDetail(String user_id, String ticket, int repair_id) {
+        return newPair()
+                .put("user_id", user_id)
+                .put("ticket", ticket)
+                .put("repair_id", repair_id);
+    }
+
+    public static KeyValuePair repairDetailReply(String user_id, String ticket, String content, String repair_id) {
+        return newPair()
+                .put("user_id", user_id)
+                .put("ticket", ticket)
+                .put("content", content)
+                .put("repair_id", repair_id);
     }
 }

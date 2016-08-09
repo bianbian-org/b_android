@@ -8,18 +8,18 @@ import com.techjumper.lib2.others.KeyValuePair;
 import com.techjumper.lib2.utils.RetrofitHelper;
 import com.techjumper.polyhomeb.R;
 import com.techjumper.polyhomeb.adapter.recycler_Data.NoDataData;
+import com.techjumper.polyhomeb.adapter.recycler_Data.PropertyComplainContentData;
 import com.techjumper.polyhomeb.adapter.recycler_Data.PropertyComplainTitleData;
 import com.techjumper.polyhomeb.adapter.recycler_Data.PropertyPlacardDividerData;
 import com.techjumper.polyhomeb.adapter.recycler_Data.PropertyPlacardDividerLongData;
 import com.techjumper.polyhomeb.adapter.recycler_Data.PropertyRepairBigDividerData;
-import com.techjumper.polyhomeb.adapter.recycler_Data.PropertyRepairContentData;
 import com.techjumper.polyhomeb.adapter.recycler_Data.PropertyRepairPropertyResponseData;
 import com.techjumper.polyhomeb.adapter.recycler_ViewHolder.databean.NoDataBean;
+import com.techjumper.polyhomeb.adapter.recycler_ViewHolder.databean.PropertyComplainContentBean;
 import com.techjumper.polyhomeb.adapter.recycler_ViewHolder.databean.PropertyComplainTitleBean;
 import com.techjumper.polyhomeb.adapter.recycler_ViewHolder.databean.PropertyPlacardDividerBean;
 import com.techjumper.polyhomeb.adapter.recycler_ViewHolder.databean.PropertyPlacardDividerLongBean;
 import com.techjumper.polyhomeb.adapter.recycler_ViewHolder.databean.PropertyRepairBigDividerBean;
-import com.techjumper.polyhomeb.adapter.recycler_ViewHolder.databean.PropertyRepairContentBean;
 import com.techjumper.polyhomeb.adapter.recycler_ViewHolder.databean.PropertyRepairPropertyResponseBean;
 import com.techjumper.polyhomeb.entity.PropertyComplainEntity;
 import com.techjumper.polyhomeb.mvp.p.fragment.ComplainFragmentPresenter;
@@ -150,20 +150,20 @@ public class ComplainFragmentModel extends BaseModel<ComplainFragmentPresenter> 
             String time = format.format(new Date(time_ * 1000));
 
             //第三个item,内容
-            PropertyRepairContentData propertyRepairContentData = new PropertyRepairContentData();
-            propertyRepairContentData.setTitle(title);
-            propertyRepairContentData.setRead(false);
-            propertyRepairContentData.setUser_id(user_id);
-            propertyRepairContentData.setBtnName(btnName);
-            propertyRepairContentData.setUser_name(user_name);
-            propertyRepairContentData.setStatus(status);
-            propertyRepairContentData.setCreate_time(created_at);
-            propertyRepairContentData.setTime(time);
-            propertyRepairContentData.setContent(content);
-            propertyRepairContentData.setId(id);
-            propertyRepairContentData.setTypes(types);
-            PropertyRepairContentBean propertyRepairContentBean = new PropertyRepairContentBean(propertyRepairContentData);
-            mDataList.add(propertyRepairContentBean);
+            PropertyComplainContentData propertyComplainContentData = new PropertyComplainContentData();
+            propertyComplainContentData.setTitle(title);
+            propertyComplainContentData.setRead(false);
+            propertyComplainContentData.setUser_id(user_id);
+            propertyComplainContentData.setBtnName(btnName);
+            propertyComplainContentData.setUser_name(user_name);
+            propertyComplainContentData.setStatus(status);
+            propertyComplainContentData.setCreate_time(created_at);
+            propertyComplainContentData.setTime(time);
+            propertyComplainContentData.setContent(content);
+            propertyComplainContentData.setId(id);
+            propertyComplainContentData.setTypes(types);
+            PropertyComplainContentBean propertyComplainContentBean = new PropertyComplainContentBean(propertyComplainContentData);
+            mDataList.add(propertyComplainContentBean);
 
             if (TextUtils.isEmpty(replies)) {
                 //如果物业回复是空的,那么直接加一个大的分割线
@@ -199,6 +199,17 @@ public class ComplainFragmentModel extends BaseModel<ComplainFragmentPresenter> 
      */
     public List<DisplayBean> noData() {
         List<DisplayBean> displayBeen = new ArrayList<>();
+
+        PropertyRepairBigDividerData propertyRepairBigDividerData = new PropertyRepairBigDividerData();
+        PropertyRepairBigDividerBean propertyRepairBigDividerBean = new PropertyRepairBigDividerBean(propertyRepairBigDividerData);
+        displayBeen.add(propertyRepairBigDividerBean);
+
+        PropertyComplainTitleData propertyComplainTitleData = new PropertyComplainTitleData();
+        propertyComplainTitleData.setTitle(getPresenter().getView().getString(R.string.complain_header_title));
+        propertyComplainTitleData.setCount(0);
+        PropertyComplainTitleBean propertyComplainTitleBean = new PropertyComplainTitleBean(propertyComplainTitleData);
+        displayBeen.add(propertyComplainTitleBean);
+
         NoDataData noDataData = new NoDataData();
         NoDataBean noDataBean = new NoDataBean(noDataData);
         displayBeen.add(noDataBean);
