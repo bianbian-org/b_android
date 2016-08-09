@@ -432,8 +432,13 @@ public class AdController {
             cancel(TYPE_VIDEO);
 
             AdRuleExecutor wakeUpExecutor = mExecutorMap.get(AdController.TYPE_WAKEUP);
-            if (wakeUpExecutor != null && !wakeUpExecutor.isInterrupt()) {
-                JLog.d("已经在执行唤醒广告, 所以不再发布休眠消息");
+            if (wakeUpExecutor != null) {
+                if (!wakeUpExecutor.isInterrupt())
+                    JLog.d("已经在执行唤醒广告, 所以不再发布休眠消息");
+                else
+                    JLog.d("唤醒广告执行完毕, 所以关闭屏幕后不再发布休眠消息");
+                mExecutorMap.put(TYPE_WAKEUP, null);
+                mExecutorMap.put(TYPE_SLEEP, null);
                 return;
             }
 
@@ -442,6 +447,8 @@ public class AdController {
 //                setScreenOffTime(mScreenOffTime);
 //                return;
 //            }
+
+
             AdRuleExecutor sleepExecutor = mExecutorMap.get(AdController.TYPE_SLEEP);
             if (sleepExecutor != null && sleepExecutor.isSleepingFinished()) {
                 JLog.d("已经播完了休眠广告, 不再重复触发休眠");
@@ -587,7 +594,6 @@ public class AdController {
 
             //将播放的广告统计到数据库
             String adId = rule.getId();
-            saveAdStatToDb(adId);
 
             //因为首页需要不停的播放, 所以把时间强制设置为一小时以上,这样就可以不间断获取
             if (TYPE_HOME.equalsIgnoreCase(mRuleType)) {
@@ -628,7 +634,6 @@ public class AdController {
                 timer(totalTime, adEntities, adId);
                 return;
             }
-            adsEntity.setAdId(adId);
             long delay = NumberUtil.convertTolong(adsEntity.getRunning_time(), 0);
             final int executeTime = NumberUtil.convertToint(currentTimeToRuleKey(), 0);
             oneTimer(delay, adsEntity, new ITimer() {
@@ -694,6 +699,7 @@ public class AdController {
         }
 
         public void quit(boolean shouldNotify) {
+            mInterrupt = true;
             if (shouldNotify) {
                 notifyPlayFinished();
             }
@@ -717,6 +723,8 @@ public class AdController {
                 }
 
                 notifyAdReceive(adsEntity, file);
+                //保存广告ID到数据库
+                saveAdStatToDb(adsEntity.getId());
                 Observable.timer(delay, TimeUnit.SECONDS)
                         .observeOn(AndroidSchedulers.mainThread())
                         .subscribe(aLong -> {
@@ -752,12 +760,18 @@ public class AdController {
             if (iExecuteRule != null) {
                 iExecuteRule.onAdExecuteFailed(reason);
             }
+            if (TYPE_WAKEUP.equals(mRuleType)) {
+                mExecutorMap.put(TYPE_WAKEUP, null);
+            }
             interrupt();
         }
 
         private void notifyNoExist() {
             if (iExecuteRule != null) {
                 iExecuteRule.onAdNoExist(mRuleType, currentTimeToRuleKey());
+            }
+            if (TYPE_WAKEUP.equals(mRuleType)) {
+                mExecutorMap.put(TYPE_WAKEUP, null);
             }
             interrupt();
         }
