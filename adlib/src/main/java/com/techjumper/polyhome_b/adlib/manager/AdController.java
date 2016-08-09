@@ -110,7 +110,7 @@ public class AdController {
             return false;
         }
         JLog.d("唤醒屏幕");
-        setScreenOffTime(mLockTime);
+//        setScreenOffTime(mLockTime);
         PowerUtil.wakeUpScreen();
         return true;
     }
@@ -249,10 +249,10 @@ public class AdController {
         JLog.d("开始接收屏幕关闭的消息");
     }
 
-    public void resetSleepTime() {
-        JLog.d("恢复休眠时间: " + mLockTime);
-        setScreenOffTime(mLockTime);
-    }
+//    public void resetSleepTime() {
+//        JLog.d("恢复休眠时间: " + mLockTime);
+//        setScreenOffTime(mLockTime);
+//    }
 
     public void stopReceiveScreenOff() {
         try {
@@ -347,29 +347,28 @@ public class AdController {
 
 
     public void turnOffScreen() {
-        int debounce = 4 * 60 * 1000;
-        if (debounce == mLockTime) {
-            debounce -= 60 * 1000;
-        }
-        setScreenOffTime(debounce); //里面的数字是随便写的,只要不跟初始化的值一样就行了
-        Utils.appContext.sendBroadcast(new Intent("action_bhost_lock_screen"));
+//        int debounce = 4 * 60 * 1000;
+//        if (debounce == mLockTime) {
+//            debounce -= 60 * 1000;
+//        }
 //        if (mScreenOffReceiver == null) {
 //            throw new NullPointerException("please call receiveScreenOff() first");
 //        }
 //        receiveScreenOff(mScreenOffReceiver.getScreenOffListener());
+        Utils.appContext.sendBroadcast(new Intent("action_bhost_lock_screen"));
     }
 
-    private static int getScreenOffTime() {
-        int screenOffTime = -2;
-        try {
-            screenOffTime = Settings.System.getInt(Utils.appContext.getContentResolver(),
-                    Settings.System.SCREEN_OFF_TIMEOUT);
-        } catch (Exception e) {
-            JLog.d("获取系统时间失败: " + e);
-        }
-//        JLog.d("当前系统休眠时间为: " + screenOffTime);
-        return screenOffTime;
-    }
+//    private static int getScreenOffTime() {
+//        int screenOffTime = -2;
+//        try {
+//            screenOffTime = Settings.System.getInt(Utils.appContext.getContentResolver(),
+//                    Settings.System.SCREEN_OFF_TIMEOUT);
+//        } catch (Exception e) {
+//            JLog.d("获取系统时间失败: " + e);
+//        }
+////        JLog.d("当前系统休眠时间为: " + screenOffTime);
+//        return screenOffTime;
+//    }
 
     private static void setScreenOffTime(int paramInt) {
         try {
@@ -427,6 +426,7 @@ public class AdController {
 
         @Override
         public void onReceive(Context context, Intent intent) {
+            JLog.d("屏幕关闭了");
             //只要是休眠就停首页广告
             cancel(TYPE_HOME);
             cancel(TYPE_VIDEO);
@@ -437,12 +437,19 @@ public class AdController {
                 return;
             }
 
-            if (getScreenOffTime() != mScreenOffTime) {
-                JLog.d("代码控制关闭屏幕, 不触发回调; getScreenOffTime()=" + getScreenOffTime() + ", mScreenOffTime=" + mScreenOffTime);
-                setScreenOffTime(mScreenOffTime);
+//            if (getScreenOffTime() != mScreenOffTime) {
+//                JLog.d("代码控制关闭屏幕, 不触发回调; getScreenOffTime()=" + getScreenOffTime() + ", mScreenOffTime=" + mScreenOffTime);
+//                setScreenOffTime(mScreenOffTime);
+//                return;
+//            }
+            AdRuleExecutor sleepExecutor = mExecutorMap.get(AdController.TYPE_SLEEP);
+            if (sleepExecutor != null && sleepExecutor.isSleepingFinished()) {
+                JLog.d("已经播完了休眠广告, 不再重复触发休眠");
+                mExecutorMap.put(TYPE_SLEEP, null);
                 return;
             }
-            JLog.d("屏幕关闭了");
+
+
             if (iScreenOff != null) {
                 iScreenOff.onSleepAdExecute();
             }
@@ -487,6 +494,10 @@ public class AdController {
         private int mCurrentTimerIndex;
         private long mAlreadyExecuteTime;
         private boolean mInterrupt;
+        /**
+         * 是否是休眠播放完成
+         */
+        private boolean mIsSleepFinished;
 
         public AdRuleExecutor(String ruleType) {
             mRuleType = ruleType;
@@ -636,6 +647,9 @@ public class AdController {
 //                    }
 
                     if (mAlreadyExecuteTime >= totalTime) {
+                        if (TYPE_SLEEP.equals(mRuleType)) {
+                            mIsSleepFinished = true;
+                        }
                         quit(true);
                         return;
                     }
@@ -669,6 +683,10 @@ public class AdController {
 
         public boolean isInterrupt() {
             return mInterrupt;
+        }
+
+        public boolean isSleepingFinished() {
+            return mIsSleepFinished;
         }
 
         public void quit() {
@@ -734,12 +752,14 @@ public class AdController {
             if (iExecuteRule != null) {
                 iExecuteRule.onAdExecuteFailed(reason);
             }
+            interrupt();
         }
 
         private void notifyNoExist() {
             if (iExecuteRule != null) {
                 iExecuteRule.onAdNoExist(mRuleType, currentTimeToRuleKey());
             }
+            interrupt();
         }
 
         private void notifyAdDownloadError(AdEntity.AdsEntity adsEntity) {

@@ -21,7 +21,6 @@ import com.techjumper.commonres.entity.event.AdMainEvent;
 import com.techjumper.commonres.entity.event.AdShowEvent;
 import com.techjumper.commonres.entity.event.MedicalEvent;
 import com.techjumper.commonres.entity.event.ShowMainAdEvent;
-import com.techjumper.commonres.entity.event.SubmitOnlineEvent;
 import com.techjumper.commonres.entity.event.TimeEvent;
 import com.techjumper.commonres.entity.event.UserInfoEvent;
 import com.techjumper.commonres.util.CommonDateUtil;
@@ -50,7 +49,6 @@ import com.techjumper.polyhome_b.adlib.manager.AdController;
 import com.techjumper.polyhome_b.adlib.window.AdWindowManager;
 
 import java.io.File;
-import java.io.PipedReader;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -240,7 +238,7 @@ public class MainActivityPresenter extends AppBaseActivityPresenter<MainActivity
             @Override
             public void onAdWindowClose(boolean byUser) {
                 if (byUser) {
-                    AdController.getInstance().resetSleepTime();
+//                    AdController.getInstance().resetSleepTime();
                     RxBus.INSTANCE.send(new ShowMainAdEvent());
                 } else {
                     AdController.getInstance().turnOffScreen();

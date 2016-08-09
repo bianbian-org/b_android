@@ -10,7 +10,6 @@ import android.widget.ImageView;
 import com.jakewharton.rxbinding.view.RxView;
 import com.techjumper.commonres.UserInfoEntity;
 import com.techjumper.commonres.entity.NoticeEntity;
-import com.techjumper.commonres.entity.TrueEntity;
 import com.techjumper.commonres.entity.WeatherEntity;
 import com.techjumper.commonres.entity.event.AdControllerEvent;
 import com.techjumper.commonres.entity.event.AdEvent;
@@ -24,7 +23,6 @@ import com.techjumper.commonres.entity.event.TimerEvent;
 import com.techjumper.commonres.entity.event.UserInfoEvent;
 import com.techjumper.commonres.entity.event.WeatherEvent;
 import com.techjumper.commonres.entity.event.pushevent.NoticePushEvent;
-import com.techjumper.commonres.util.CommonDateUtil;
 import com.techjumper.commonres.util.PluginEngineUtil;
 import com.techjumper.commonres.util.RxUtil;
 import com.techjumper.corelib.rx.tools.RxBus;
@@ -75,7 +73,7 @@ public class PloyhomeFragmentPresenter extends AppBaseFragmentPresenter<Ployhome
     private int videoPosition = 0;
     private ImageView adImageView;
     private MyTextureView textureView;
-    private boolean mShouldSleep = true;
+    //    private boolean mShouldSleep = true;
     private boolean mIsVisibleToUser;
     private boolean mIsGetAd;
     private boolean mIsGetNewAd;
@@ -252,7 +250,7 @@ public class PloyhomeFragmentPresenter extends AppBaseFragmentPresenter<Ployhome
                         }
                     } else if (o instanceof AdControllerEvent) {
                         if (adController != null) {
-                            mShouldSleep = false;
+//                            mShouldSleep = false;
                             adController.interrupt(AdController.TYPE_WAKEUP);
                             adController.interrupt(AdController.TYPE_SLEEP);
                         }
@@ -629,12 +627,11 @@ public class PloyhomeFragmentPresenter extends AppBaseFragmentPresenter<Ployhome
                         @Override
                         public void onAdPlayFinished() {
                             JLog.d("广告播放完成  ");
-                            if (!mShouldSleep) {
-                                adController.resetSleepTime();
-                                mShouldSleep = true;
-                            } else {
-                                adController.turnOffScreen(); //保持休眠
-                            }
+//                            if (!mShouldSleep) {
+//                                mShouldSleep = true;
+//                            } else {
+                            adController.turnOffScreen(); //保持休眠
+//                            }
                             RxBus.INSTANCE.send(new AdShowEvent(false));
                         }
 
