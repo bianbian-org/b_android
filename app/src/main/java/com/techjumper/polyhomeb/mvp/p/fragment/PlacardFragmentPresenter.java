@@ -45,6 +45,7 @@ public class PlacardFragmentPresenter extends AppBaseFragmentPresenter<PlacardFr
                             public void onError(Throwable e) {
                                 getView().showError(e);
                                 loadMoreError();
+                                getView().onNoticeDataReceive(mModel.noData());
                                 getView().stopRefresh("");
                             }
 

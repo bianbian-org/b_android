@@ -90,6 +90,7 @@ public class ComplainFragmentPresenter extends AppBaseFragmentPresenter<Complain
                             public void onError(Throwable e) {
                                 getView().showError(e);
                                 loadMoreError();
+                                getView().onComplainDataReceive(mModel.noData());
                                 getView().stopRefresh("");
                             }
 

@@ -90,6 +90,7 @@ public class RepairFragmentPresenter extends AppBaseFragmentPresenter<RepairFrag
                             public void onError(Throwable e) {
                                 getView().showError(e);
                                 loadMoreError();
+                                getView().onRepairDataReceive(mModel.noData());
                                 getView().stopRefresh("");
                             }
 

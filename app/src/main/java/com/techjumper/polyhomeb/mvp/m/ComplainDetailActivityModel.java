@@ -185,7 +185,7 @@ public class ComplainDetailActivityModel extends BaseModel<ComplainDetailActivit
 
                 //物业聊天
                 PropertyRepairDetailPropertyContentData propertyRepairDetailPropertyContentData = new PropertyRepairDetailPropertyContentData();
-                propertyRepairDetailPropertyContentData.setResId(R.mipmap.ic_launcher);
+                propertyRepairDetailPropertyContentData.setResId(R.mipmap.icon_property_avatar);
                 propertyRepairDetailPropertyContentData.setContent(replies.get(i).getContent());
                 PropertyRepairDetailPropertyBean propertyRepairDetailPropertyBean = new PropertyRepairDetailPropertyBean(propertyRepairDetailPropertyContentData);
                 displayBeen.add(propertyRepairDetailPropertyBean);

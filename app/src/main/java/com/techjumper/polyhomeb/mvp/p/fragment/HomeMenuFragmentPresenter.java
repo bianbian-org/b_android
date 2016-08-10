@@ -67,19 +67,15 @@ public class HomeMenuFragmentPresenter extends AppBaseFragmentPresenter<HomeMenu
 
     public void setAvatarAndName(boolean isLogin) {
         getView().getTvUserName().setText(isLogin ? (UserManager.INSTANCE.getUserNickName()) : getView().getActivity().getString(R.string.click_to_login_in));
-//        try {
-//            getView().getIvAvatar().setImageBitmap(isLogin ? (PicassoHelper.load(UserManager.INSTANCE.getUserInfo(UserManager.KEY_AVATAR)).get()) : (PicassoHelper.load(R.mipmap.ic_launcher).get()));
-//        } catch (IOException e) {
-//            e.printStackTrace();
-//        }
+        String avatarUrl = UserManager.INSTANCE.getUserInfo(UserManager.KEY_AVATAR);
         if (isLogin) {
-            if (!TextUtils.isEmpty(UserManager.INSTANCE.getUserInfo(UserManager.KEY_AVATAR))) {
-                PicassoHelper.load(UserManager.INSTANCE.getUserInfo(UserManager.KEY_AVATAR)).transform(new CircleTransform()).into(getView().getIvAvatar());
+            if (!TextUtils.isEmpty(avatarUrl)) {
+                PicassoHelper.load(avatarUrl).transform(new CircleTransform()).into(getView().getIvAvatar());
             } else {
-                PicassoHelper.load(R.mipmap.ic_launcher).into(getView().getIvAvatar());
+                PicassoHelper.load(R.mipmap.icon_avatar_too_handsome).transform(new CircleTransform()).into(getView().getIvAvatar());
             }
         } else {
-            PicassoHelper.load(R.mipmap.ic_launcher).into(getView().getIvAvatar());
+            PicassoHelper.load(R.mipmap.icon_avatar_not_login).transform(new CircleTransform()).into(getView().getIvAvatar());
         }
     }
 

@@ -15,8 +15,7 @@
             android:id="@+id/iv_avatar"
             android:layout_width="@dimen/dp_110"
             android:layout_height="@dimen/dp_110"
-            android:layout_gravity="center_horizontal"
-            android:background="@mipmap/ic_launcher" />
+            android:layout_gravity="center_horizontal" />
 
         <TextView
             android:id="@+id/tv_user_name"
