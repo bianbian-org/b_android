@@ -106,6 +106,8 @@ public abstract class BaseViewFragment<P extends IBaseFragmentPresenter> extends
     public void onDestroy() {
         super.onDestroy();
         getPresenter().onDestroy();
+        mPresenter.dropView();
+        mPresenter = null;
     }
 
     @Override
