@@ -116,7 +116,7 @@
         android:layout_centerHorizontal="true"
         android:layout_marginLeft="@dimen/dp_60"
         android:layout_marginTop="@dimen/dp_20"
-        android:background="@color/color_14ce63"
+        android:background="@drawable/selector_color_14ce63"
         android:gravity="center"
         android:text="@string/property_submit"
         android:textColor="@color/color_ffffff"

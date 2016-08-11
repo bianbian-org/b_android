@@ -20,7 +20,7 @@
                 android:id="@+id/jujia"
                 android:layout_width="@dimen/dp_160"
                 android:layout_height="@dimen/dp_160"
-                app:bg_color="@color/color_0ca9e4"
+                app:bg="@drawable/selector_button_0ca9e4"
                 app:content_img="@mipmap/bg_jujia"
                 app:title_text="@string/title_jujia" />
 
@@ -29,7 +29,7 @@
                 android:layout_width="@dimen/dp_160"
                 android:layout_height="@dimen/dp_160"
                 android:layout_marginLeft="@dimen/dp_10"
-                app:bg_color="@color/color_0ca9e4"
+                app:bg="@drawable/selector_button_0ca9e4"
                 app:content_img="@mipmap/bg_smarthome_new"
                 app:title_text="@string/title_smarthome" />
 
@@ -38,7 +38,7 @@
                 android:layout_width="@dimen/dp_160"
                 android:layout_height="@dimen/dp_160"
                 android:layout_marginLeft="@dimen/dp_10"
-                app:bg_color="@color/color_0ca9e4"
+                app:bg="@drawable/selector_button_0ca9e4"
                 app:content_img="@mipmap/bg_property"
                 app:title_text="@string/title_property" />
 
@@ -114,7 +114,7 @@
                 android:layout_width="@dimen/dp_160"
                 android:layout_height="@dimen/dp_160"
                 android:layout_marginTop="@dimen/dp_10"
-                app:bg_color="@color/color_0ca9e4"
+                app:bg="@drawable/selector_button_0ca9e4"
                 app:content_img="@mipmap/bg_shopping_new"
                 app:title_text="@string/title_shopping" />
         </LinearLayout>

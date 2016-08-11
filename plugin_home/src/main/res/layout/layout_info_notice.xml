@@ -3,7 +3,7 @@
     android:id="@+id/notice_layout"
     android:layout_width="@dimen/dp_330"
     android:layout_height="@dimen/dp_330"
-    android:background="@color/color_466780">
+    android:background="@drawable/selector_button_466780">
 
     <TextView
         android:id="@+id/notice_title"
