@@ -39,6 +39,7 @@ public class SquareView extends RelativeLayout {
     private int bgColor; //背景颜色
     private int contentImgId; //内容icon的resId（中间大的那块区域）
     private int quarterImgId; //右上角的img的resId
+    private int bgId;
     private String contentText; //内容的文字内容（中间大的那块区域）
     private String titleText; //标题的文字内容（下面那块小的）
     private String quarterText; //右上角的文字内容
@@ -61,12 +62,18 @@ public class SquareView extends RelativeLayout {
         bgColor = typedArray.getColor(R.styleable.SquareView_bg_color, getResources().getColor(R.color.color_20c3f3));
         contentImgId = typedArray.getResourceId(R.styleable.SquareView_content_img, 0);
         quarterImgId = typedArray.getResourceId(R.styleable.SquareView_quarter_img, 0);
+        bgId = typedArray.getResourceId(R.styleable.SquareView_bg, 0);
         contentText = typedArray.getString(R.styleable.SquareView_content_text);
         titleText = typedArray.getString(R.styleable.SquareView_title_text);
         quarterText = typedArray.getString(R.styleable.SquareView_quarter_text);
         quarterLayoutVisible = typedArray.getBoolean(R.styleable.SquareView_quarter_layout_visible, false);
 
-        bgMain.setBackgroundColor(bgColor);
+
+        if (bgId == 0) {
+            bgMain.setBackgroundColor(bgColor);
+        } else {
+            bgMain.setBackgroundResource(bgId);
+        }
 
         showContentText(contentText);
         showContentIcon(contentImgId);
@@ -125,7 +132,7 @@ public class SquareView extends RelativeLayout {
         }
     }
 
-    public void showTitleText(String text){
+    public void showTitleText(String text) {
         if (!TextUtils.isEmpty(text)) {
             titleTv.setText(text);
         }

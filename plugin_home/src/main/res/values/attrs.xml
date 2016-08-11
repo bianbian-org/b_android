@@ -4,6 +4,7 @@
         <attr name="bg_color" format="color" />
         <attr name="content_img" format="reference" />
         <attr name="quarter_img" format="reference" />
+        <attr name="bg" format="reference" />
         <attr name="content_text" format="string" />
         <attr name="title_text" format="string" />
         <attr name="quarter_text" format="string" />

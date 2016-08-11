@@ -270,7 +270,9 @@ public class PloyhomeFragmentPresenter extends AppBaseFragmentPresenter<Ployhome
                         TimerEvent event = (TimerEvent) o;
                         isTimer = event.isTimer();
                         if (isTimer) {
-                            if (isOnResume) {
+                            if (isOnResume &&
+                                    messages != null &&
+                                    messages.size() > 0) {
                                 initTimer();
                             }
                         } else {

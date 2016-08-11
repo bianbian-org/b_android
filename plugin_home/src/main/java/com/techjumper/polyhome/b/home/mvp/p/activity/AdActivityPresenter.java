@@ -30,6 +30,8 @@ public class AdActivityPresenter extends AppBaseActivityPresenter<AdActivity> {
     private ImageView imageView;
     private MyTextureView textureView;
 
+    private AdEntity.AdsEntity adsEntity;
+
     @OnClick(R.id.img)
     void ad() {
         if (getView().getAdType() == PloyhomeFragmentPresenter.IMAGE_AD_TYPE) {
@@ -57,7 +59,7 @@ public class AdActivityPresenter extends AppBaseActivityPresenter<AdActivity> {
         super.onResume();
         if (textureView != null) {
             textureView.initMediaPlayer();
-            textureView.start();
+            textureView.play(adsEntity.getMedia_url());
         }
     }
 
@@ -65,15 +67,14 @@ public class AdActivityPresenter extends AppBaseActivityPresenter<AdActivity> {
     public void onPause() {
         super.onPause();
         if (textureView != null) {
-            textureView.pause();
+            textureView.stop();
         }
     }
 
     @Override
     public void onViewInited(Bundle savedInstanceState) {
-        AdEntity.AdsEntity adsEntity = getView().getAdsEntity();
-//        if (adsEntity == null || TextUtils.isEmpty(adsEntity.getUrl()))
-//            return;
+        adsEntity = getView().getAdsEntity();
+//        AdEntity.AdsEntity adsEntity = getView().getAdsEntity();
 
         if (getView().getAdType().equals(PloyhomeFragmentPresenter.VIDEO_AD_TYPE)) {
             imageView = getView().getImg();
