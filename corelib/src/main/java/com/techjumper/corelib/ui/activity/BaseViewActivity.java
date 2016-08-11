@@ -80,9 +80,11 @@ public abstract class BaseViewActivity<P extends IBaseActivityPresenter> extends
 
     @Override
     protected void onDestroy() {
-        super.onDestroy();
         getPresenter().onDestroy();
         getPresenter().unBind();
+        mPresenter.dropView();
+        mPresenter = null;
+        super.onDestroy();
     }
 
     @Override
