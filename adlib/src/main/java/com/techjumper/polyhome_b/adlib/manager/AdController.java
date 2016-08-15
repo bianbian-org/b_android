@@ -604,17 +604,17 @@ public class AdController {
 
         }
 
-        private void saveAdStatToDb(String id) {
+        private void saveAdStatToDb(String id, String type) {
             AdStatDbExecutor.BriteDatabaseHelper dbHelper = getDbHelper();
-            dbHelper.increase(id)
-                    .flatMap(aLong -> dbHelper.query(id))
+            dbHelper.increase(id, type)
+                    .flatMap(aLong -> dbHelper.query(id, type))
                     .subscribe(adStat -> {
                         if (adStat == null) {
-                            JLog.d("<ad> 查找ID为" + id + "的广告失败");
+                            JLog.d("<ad> 查找ID为" + id + ", position为" + type + " 的广告失败");
                             return;
                         }
 
-                        JLog.d("<ad> 统计广告次数, id=" + id + ", count=" + adStat.count());
+                        JLog.d("<ad> 统计广告次数, id=" + id + ", position=" + type + ", count=" + adStat.count());
                     });
         }
 
@@ -724,7 +724,7 @@ public class AdController {
 
                 notifyAdReceive(adsEntity, file);
                 //保存广告ID到数据库
-                saveAdStatToDb(adsEntity.getId());
+                saveAdStatToDb(adsEntity.getId(), mRuleType);
                 Observable.timer(delay, TimeUnit.SECONDS)
                         .observeOn(AndroidSchedulers.mainThread())
                         .subscribe(aLong -> {

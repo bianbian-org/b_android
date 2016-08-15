@@ -1,13 +1,16 @@
 CREATE TABLE adstat (
   _id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
-  count INTEGER NOT NULL
+  adId INTEGER NOT NULL,
+  count INTEGER NOT NULL,
+  position INTEGER NOT NULL
 );
 
 select_all:
 SELECT *
 FROM adstat;
 
-select_by_adid:
+select_by_adid_and_type:
 SELECT *
 FROM adstat
-WHERE _id = ?;
+WHERE adId = ?
+AND position = ?;

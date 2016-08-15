@@ -28,6 +28,15 @@ public class AdStatParamEntity {
     public static class AdsEntity {
         private String ad_id;
         private String count;
+        private String position;
+
+        public String getPosition() {
+            return position;
+        }
+
+        public void setPosition(String position) {
+            this.position = position;
+        }
 
         public String getAd_id() {
             return ad_id;

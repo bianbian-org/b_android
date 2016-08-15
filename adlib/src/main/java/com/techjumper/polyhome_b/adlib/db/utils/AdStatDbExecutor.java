@@ -45,8 +45,8 @@ public class AdStatDbExecutor {
             mDb = briteDatabase;
         }
 
-        public Observable<AdStat> query(String adId) {
-            return mDb.createQuery(AdStat.TABLE_NAME, AdStat.SELECT_BY_ADID, adId)
+        public Observable<AdStat> query(String adId, String type) {
+            return mDb.createQuery(AdStat.TABLE_NAME, AdStat.SELECT_BY_ADID_AND_TYPE, adId, type)
                     .map(query -> {
                         Cursor cursor = query.run();
                         if (cursor == null || !cursor.moveToNext()) {
@@ -83,28 +83,28 @@ public class AdStatDbExecutor {
                     .first();
         }
 
-        public Observable<Long> insertOrUpdate(String adId, int count) {
-            return query(adId)
+        public Observable<Long> insertOrUpdate(String adId, int count, String type) {
+            return query(adId, type)
                     .map(adStat -> {
                         if (adStat == null) {
-                            return insert(adId, count);
+                            return insert(adId, count, type);
                         }
-                        return (long) update(adId, count);
+                        return (long) update(adId, count, type);
                     });
         }
 
-        public Observable<Long> increase(String adId) {
-            return query(adId)
+        public Observable<Long> increase(String adId, String type) {
+            return query(adId, type)
                     .map(adStat -> {
                         if (adStat == null) {
-                            return insert(adId, 1);
+                            return insert(adId, 1, type);
                         }
-                        return (long) update(adId, (int) (adStat.count() + 1));
+                        return (long) update(adId, adStat.count() + 1L, type);
                     });
         }
 
-        public int delete(String adId) {
-            return mDb.delete(AdStat.TABLE_NAME, AdStat._ID + "=?", adId);
+        public int delete(String adId, String type) {
+            return mDb.delete(AdStat.TABLE_NAME, AdStat.ADID + "=? and " + AdStat.POSITION + " =?", adId, type);
         }
 
         public boolean deleteAll() {
@@ -123,23 +123,24 @@ public class AdStatDbExecutor {
             return mDb == null;
         }
 
-        private long insert(String adId, int count) {
+        private long insert(String adId, int count, String type) {
             return
                     mDb.insert(AdStat.TABLE_NAME
                             , AdStat.FACTORY.marshal()
-                                    ._id(NumberUtil.convertToint(adId, -1))
+                                    .adId(NumberUtil.convertTolong(adId, -1L))
                                     .count(count)
+                                    .position(NumberUtil.convertTolong(type, 0L))
                                     .asContentValues()
                     );
         }
 
-        private int update(String adId, int count) {
+        private int update(String adId, long count, String type) {
             return
                     mDb.update(AdStat.TABLE_NAME
                             , AdStat.FACTORY.marshal()
                                     .count(count)
                                     .asContentValues()
-                            , AdStat._ID + "=?", adId);
+                            , AdStat.ADID + "=? and " + AdStat.POSITION + " =?", adId, type);
         }
 
     }
