@@ -25,6 +25,7 @@ import com.techjumper.commonres.util.RxUtil;
 import com.techjumper.corelib.rx.tools.RxBus;
 import com.techjumper.corelib.utils.Utils;
 import com.techjumper.corelib.utils.common.JLog;
+import com.techjumper.corelib.utils.window.ToastUtils;
 import com.techjumper.lib2.utils.PicassoHelper;
 import com.techjumper.polyhome.b.home.R;
 import com.techjumper.polyhome.b.home.UserInfoManager;
@@ -117,7 +118,23 @@ public class InfoFragmentPresenter extends AppBaseFragmentPresenter<InfoFragment
                     getView().startActivity(it);
                 }));
 
-        addSubscription(RxView.clicks(getView().getDetectLayout())
+        addSubscription(RxView.clicks(getView().getAdvDetect())
+                .compose(RxUtil.applySchedulers())
+                .subscribe(aVoid -> {
+                    ToastUtils.show("hehe");
+                    PluginEngineUtil.startMedical();
+                }));
+        addSubscription(RxView.clicks(getView().getAdvHeartrate())
+                .compose(RxUtil.applySchedulers())
+                .subscribe(aVoid -> {
+                    PluginEngineUtil.startMedical();
+                }));
+        addSubscription(RxView.clicks(getView().getAdvBloodsugar())
+                .compose(RxUtil.applySchedulers())
+                .subscribe(aVoid -> {
+                    PluginEngineUtil.startMedical();
+                }));
+        addSubscription(RxView.clicks(getView().getAdvBloodpressure())
                 .compose(RxUtil.applySchedulers())
                 .subscribe(aVoid -> {
                     PluginEngineUtil.startMedical();

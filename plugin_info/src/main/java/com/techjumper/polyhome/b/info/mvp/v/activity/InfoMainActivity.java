@@ -207,7 +207,7 @@ public class InfoMainActivity extends AppBaseActivity {
         }
 //        UserInfoEntity userInfoEntity = new UserInfoEntity();
 //        userInfoEntity.setUser_id(362);
-//        userInfoEntity.setTicket("dd308c13b0da7c565fbea024a53068bea92af170");
+//        userInfoEntity.setTicket("3e5f8b6504bef67abe0c9d71552fb8f501e8ad6a");
 //        userInfoEntity.setId(434);
 //        UserInfoManager.saveUserInfo(userInfoEntity);
 

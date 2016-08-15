@@ -27,6 +27,7 @@
         <attr name="data_content_text" format="string" />
         <attr name="data_title_text" format="string" />
         <attr name="data_subtitle_text" format="string" />
+        <attr name="data_bg" format="reference" />
     </declare-styleable>
 
     <declare-styleable name="AlmanacView">

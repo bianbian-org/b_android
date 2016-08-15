@@ -20,6 +20,8 @@
 
     <!-- 60% 000-->
     <color name="color_99020405">#99020405</color>
+    <!-- 80% 000-->
+    <color name="color_CC000000">#CC000000</color>
 
     <color name="color_00f48924">#00f48924</color>
 
@@ -34,11 +36,15 @@
     <color name="color_ffffff">#fff</color>
     <color name="color_000000">#000</color>
     <color name="color_42aa2c">#42aa2c</color>
+    <color name="color_CC42aa2c">#CC42aa2c</color>
     <color name="color_7de568">#7de568</color>
     <color name="color_CC7de568">#CC7de568</color>
     <color name="color_73d95e">#73d95e</color>
+    <color name="color_CC73d95e">#CC73d95e</color>
     <color name="color_4fb939">#4fb939</color>
+    <color name="color_CC4fb939">#CC4fb939</color>
     <color name="color_ff6c32">#ff6c32</color>
+    <color name="color_CCff6c32">#CCff6c32</color>
     <color name="color_ff9938">#ff9938</color>
     <color name="color_EA8422">#EA8422</color>
     <color name="color_ffad5f">#ffad5f</color>
