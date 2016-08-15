@@ -2,7 +2,8 @@ CREATE TABLE adclick (
   _id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
   ad_id INTEGER NOT NULL,
   family_id INTEGER NOT NULL,
-  time TEXT NOT NULL
+  time TEXT NOT NULL,
+  position TEXT NOT NULL
 );
 
 select_all:

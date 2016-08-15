@@ -157,7 +157,7 @@ public class PloyhomeFragmentPresenter extends AppBaseFragmentPresenter<Ployhome
                 })
                 .compose(RxUtil.applySchedulers())
                 .subscribe(aVoid -> {
-                    AdClickDbUtil.insert(Long.valueOf(mAdsEntity.getId()));
+                    AdClickDbUtil.insert(Long.valueOf(mAdsEntity.getId()), AdController.TYPE_HOME);
                     Intent intent = new Intent(getView().getActivity(), AdActivity.class);
                     intent.putExtra(AdActivity.ADITEM, mAdsEntity);
                     getView().getActivity().startActivity(intent);

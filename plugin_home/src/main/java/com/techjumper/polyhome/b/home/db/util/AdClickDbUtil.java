@@ -21,16 +21,16 @@ import rx.Observable;
 public class AdClickDbUtil {
     private static AdClickDbExecutor.BriteDatabaseHelper helper;
 
-    public static void insert(long adId) {
+    public static void insert(long adId, String position) {
         helper = AdClickDbExecutor.getHelper();
-        helper.insert(adId, UserInfoManager.getLongFamilyId(), CommonDateUtil.getCurrentTime())
+        helper.insert(adId, UserInfoManager.getLongFamilyId(), CommonDateUtil.getCurrentTime(), position)
                 .flatMap(aLong -> helper.query(String.valueOf(aLong)))
                 .subscribe(adClick -> {
                     if (adClick == null) {
                         Log.d("adclick", "查找ID为" + adId + "的广告失败");
                         return;
                     }
-                    Log.d("adclick", "插入成功 id=" + adId + " familyid=" + adClick.family_id() + " time=" + adClick.time());
+                    Log.d("adclick", "插入成功 id=" + adId + " familyid=" + adClick.family_id() + " time=" + adClick.time() + " position=" + adClick.position());
                 });
         ;
     }
