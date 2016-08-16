@@ -65,9 +65,10 @@ public class AdClickDbUtil {
         for (int i = 0; i < adClicks.size(); i++) {
             AdClick adClick = adClicks.get(i);
             AdClickEntity.AdClickItemEntity adClickItemEntity = new AdClickEntity.AdClickItemEntity();
-            adClickItemEntity.setAd_id(String.valueOf(adClick._id()));
+            adClickItemEntity.setAd_id(String.valueOf(adClick.ad_id()));
             adClickItemEntity.setFamily_id(String.valueOf(adClick.family_id()));
             adClickItemEntity.setTime(String.valueOf(adClick.time()));
+            adClickItemEntity.setPosition(adClick.position());
             entities.add(adClickItemEntity);
         }
 

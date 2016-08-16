@@ -21,6 +21,7 @@ public class AdClickEntity {
         private String ad_id;
         private String family_id;
         private String time;
+        private String position;
 
         public String getAd_id() {
             return ad_id;
@@ -44,6 +45,14 @@ public class AdClickEntity {
 
         public void setTime(String time) {
             this.time = time;
+        }
+
+        public String getPosition() {
+            return position;
+        }
+
+        public void setPosition(String position) {
+            this.position = position;
         }
     }
 }
