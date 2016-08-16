@@ -120,7 +120,7 @@ public class AdStatService extends Service {
 
         for (AdStat adStat : adStats) {
             AdStatParamEntity.AdsEntity adsEntity = new AdStatParamEntity.AdsEntity();
-            adsEntity.setAd_id(adStat._id() + "");
+            adsEntity.setAd_id(adStat.adId() + "");
             adsEntity.setCount(adStat.count() + "");
             adsEntity.setPosition(adStat.position() + "");
             adsEntities.add(adsEntity);

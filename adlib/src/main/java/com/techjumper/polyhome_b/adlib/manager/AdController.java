@@ -528,6 +528,7 @@ public class AdController {
                 return;
             }
             //保存familyId到sp,用于广告统计
+            JLog.d("更新familyId, 用于广告统计: " + family_id);
             PreferenceUtils.getPreference(AdStatService.SP_NAME).edit().putString(AdStatService.KEY_FAMILY_ID, family_id).apply();
 
             AdController.this.fetchAd(family_id, user_id, ticket, fromCache, adData -> {
