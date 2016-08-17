@@ -435,9 +435,10 @@ public class AdController {
             if (wakeUpExecutor != null) {
                 if (!wakeUpExecutor.isInterrupt())
                     JLog.d("已经在执行唤醒广告, 所以不再发布休眠消息");
-                else
+                else {
                     JLog.d("唤醒广告执行完毕, 所以关闭屏幕后不再发布休眠消息");
-                mExecutorMap.put(TYPE_WAKEUP, null);
+                    mExecutorMap.put(TYPE_WAKEUP, null);
+                }
                 mExecutorMap.put(TYPE_SLEEP, null);
                 return;
             }
