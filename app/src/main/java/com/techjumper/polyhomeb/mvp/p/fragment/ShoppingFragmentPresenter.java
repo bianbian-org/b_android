@@ -1,14 +1,13 @@
 package com.techjumper.polyhomeb.mvp.p.fragment;
 
 import android.os.Bundle;
-import android.view.View;
 
 import com.techjumper.corelib.rx.tools.RxBus;
-import com.techjumper.polyhomeb.R;
-import com.techjumper.polyhomeb.entity.event.ToggleMenuClickEvent;
+import com.techjumper.corelib.rx.tools.RxUtils;
+import com.techjumper.polyhomeb.entity.event.ReloadWebPageEvent;
 import com.techjumper.polyhomeb.mvp.v.fragment.ShoppingFragment;
 
-import butterknife.OnClick;
+import rx.Subscription;
 
 /**
  * * * * * * * * * * * * * * * * * * * * * * *
@@ -18,6 +17,8 @@ import butterknife.OnClick;
  **/
 public class ShoppingFragmentPresenter extends AppBaseFragmentPresenter<ShoppingFragment> {
 
+    private Subscription mSub1;
+
     @Override
     public void initData(Bundle savedInstanceState) {
 
@@ -25,15 +26,17 @@ public class ShoppingFragmentPresenter extends AppBaseFragmentPresenter<Shopping
 
     @Override
     public void onViewInited(Bundle savedInstanceState) {
-
+        reloadPage();
     }
 
-    @OnClick(R.id.iv_left_icon)
-    public void onClick(View view) {
-        switch (view.getId()) {
-            case R.id.iv_left_icon:
-                RxBus.INSTANCE.send(new ToggleMenuClickEvent());
-                break;
-        }
+    private void reloadPage() {
+        RxUtils.unsubscribeIfNotNull(mSub1);
+        addSubscription(
+                mSub1 = RxBus.INSTANCE.asObservable().subscribe(o -> {
+                    if (o instanceof ReloadWebPageEvent) {
+                        getView().getWebView().reload();
+                    }
+                }));
+
     }
 }

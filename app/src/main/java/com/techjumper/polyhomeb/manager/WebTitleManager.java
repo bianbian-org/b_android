@@ -7,6 +7,9 @@ import com.techjumper.corelib.utils.common.JLog;
 import com.techjumper.polyhomeb.interfaces.IWebViewTitleClick;
 import com.techjumper.polyhomeb.utils.WebTitleHelper;
 
+import java.io.UnsupportedEncodingException;
+import java.net.URLDecoder;
+
 /**
  * * * * * * * * * * * * * * * * * * * * * * *
  * Created by lixin
@@ -22,6 +25,10 @@ public class WebTitleManager {
 
     //格式如下
     //http://pl.techjumper.com/neighbor/articles/show/49?title=帖子详情&left=::NativeReturn,::&right=::,::
+    //其中,参数的格式如下
+    //title=帖子详情&left=::NativeReturn,::&right=::,::
+    //当没有某个View的时候,比如没有右边第二个,右边第一个,也就是右边都没有的时候,格式如下
+    //title=帖子详情&left=::NativeReturn,::&right=
 
     private String mUrl;
     private String mRealUrl;
@@ -71,10 +78,14 @@ public class WebTitleManager {
         String split = content[1];  //title=帖子详情&left=::NativeReturn,::&right=::,::
 
         String[] splits = split.split("&");
-        mTitle = splits[0].replace("title=", "");
+        try {
+            mTitle = URLDecoder.decode(splits[0].replace("title=", ""), "UTF-8");
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+        }
 
-        processLeft(splits[1]);
-        processRight(splits[2]);
+//        processLeft(splits[1]);
+//        processRight(splits[2]);
 
     }
 
@@ -100,12 +111,20 @@ public class WebTitleManager {
                 }
                 if (!TextUtils.isEmpty(s1)) {
                     mIsLeftFirstIsTextView = true;
-                    mLeftFirstText = s1;
+                    try {
+                        mLeftFirstText = URLDecoder.decode(s1, "UTF-8");
+                    } catch (UnsupportedEncodingException e) {
+                        e.printStackTrace();
+                    }
                 }
                 if (!TextUtils.isEmpty(s2)) {
                     mIsLeftFirstIsTextView = false;
                     mLeftFirstText = "";
-                    mLeftFirstPicUrl = "http://" + s2;
+                    try {
+                        mLeftFirstPicUrl = URLDecoder.decode(s2, "UTF-8");
+                    } catch (UnsupportedEncodingException e) {
+                        e.printStackTrace();
+                    }
                 }
 
                 //虽然不可能为null(只要是要显示的话就不可能为null),但是还是判断一下
@@ -131,13 +150,20 @@ public class WebTitleManager {
                 }
                 if (!TextUtils.isEmpty(s1)) {
                     mIsLeftSecondIsTextView = true;
-                    mLeftSecondText = s1;
+                    try {
+                        mLeftSecondText = URLDecoder.decode(s1, "UTF-8");
+                    } catch (UnsupportedEncodingException e) {
+                        e.printStackTrace();
+                    }
                 }
                 if (!TextUtils.isEmpty(s2)) {
                     mIsLeftSecondIsTextView = false;
                     mLeftSecondText = "";
-                    mLeftSecondPicUrl = "http://" + s2;
-                    ;
+                    try {
+                        mLeftSecondPicUrl = URLDecoder.decode(s2, "UTF-8");
+                    } catch (UnsupportedEncodingException e) {
+                        e.printStackTrace();
+                    }
                 }
 
                 //虽然不可能为null(只要是要显示的话就不可能为null),但是还是判断一下
@@ -170,13 +196,20 @@ public class WebTitleManager {
 
                 if (!TextUtils.isEmpty(s1)) {
                     mIsRightFirstIsTextView = true;
-                    mRightFirstText = s1;
+                    try {
+                        mRightFirstText = URLDecoder.decode(s1, "UTF-8");
+                    } catch (UnsupportedEncodingException e) {
+                        e.printStackTrace();
+                    }
                 }
                 if (!TextUtils.isEmpty(s2)) {
                     mIsRightFirstIsTextView = false;
                     mRightFirstText = "";
-                    mRightFirstPicUrl = "http://" + s2;
-                    ;
+                    try {
+                        mRightFirstPicUrl = URLDecoder.decode(s2, "UTF-8");
+                    } catch (UnsupportedEncodingException e) {
+                        e.printStackTrace();
+                    }
                 }
 
                 //虽然不可能为null(只要是要显示的话就不可能为null),但是还是判断一下
@@ -203,13 +236,20 @@ public class WebTitleManager {
 
                 if (!TextUtils.isEmpty(s1)) {
                     mIsRightSecondIsTextView = true;
-                    mRightSecondText = s1;
+                    try {
+                        mRightSecondText = URLDecoder.decode(s1, "UTF-8");
+                    } catch (UnsupportedEncodingException e) {
+                        e.printStackTrace();
+                    }
                 }
                 if (!TextUtils.isEmpty(s2)) {
                     mIsRightSecondIsTextView = false;
                     mRightSecondText = "";
-                    mRightSecondPicUrl = "http://" + s2;
-
+                    try {
+                        mRightSecondPicUrl = URLDecoder.decode(s2, "UTF-8");
+                    } catch (UnsupportedEncodingException e) {
+                        e.printStackTrace();
+                    }
                 }
 
                 //虽然不可能为null(只要是要显示的话就不可能为null),但是还是判断一下

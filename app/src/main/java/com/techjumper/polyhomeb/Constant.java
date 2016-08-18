@@ -45,7 +45,6 @@ public class Constant {
     /**
      * className
      */
-    public static final String JS_REPLY_ARTICLE = "article";
     public static final String JS_NATIVE_BRIDGE = "NativeBridge";
 
     /**
@@ -54,7 +53,8 @@ public class Constant {
     public static final String JS_REPLY_ARTICLE_ID = "article_id";
     public static final String JS_REPLY_COMMENT_ID = "comment_id";
     public static final String JS_PAGE_JUMP_URL = "page_jump_url";
-
+    public static final String JS_PAGE_JUMP_MAP = "page_jump_map";
+    public static final String JS_PAGE_JUMP_METHOD = "page_jump_method";
 
 
 }

@@ -24,6 +24,4 @@ public class ReplyDetailActivityModel extends BaseModel<ReplyDetailActivityPrese
     public String getUrl() {
         return getExtras().getString(Constant.JS_PAGE_JUMP_URL, "");
     }
-
-
 }

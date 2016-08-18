@@ -7,7 +7,6 @@ import android.widget.ImageView;
 
 import com.techjumper.corelib.mvp.factory.Presenter;
 import com.techjumper.corelib.rx.tools.RxBus;
-import com.techjumper.corelib.utils.window.ToastUtils;
 import com.techjumper.polyhomeb.Config;
 import com.techjumper.polyhomeb.Constant;
 import com.techjumper.polyhomeb.R;
@@ -64,11 +63,9 @@ public class FriendFragment extends AppBaseFragment<FriendFragmentPresenter> imp
             case WebTitleHelper.NATIVE_ICON_TYPE_RETURN:
                 break;
             case WebTitleHelper.NATIVE_ICON_TYPE_HOME_MENU:
-                ToastUtils.show("左1响应菜单");
                 RxBus.INSTANCE.send(new ToggleMenuClickEvent());
                 break;
             case WebTitleHelper.NATIVE_ICON_TYPE_NEW_ARTICLE:
-                ToastUtils.show("左1响应新建文章");
                 getPresenter().onTitleRightClick();
                 break;
         }
@@ -80,11 +77,9 @@ public class FriendFragment extends AppBaseFragment<FriendFragmentPresenter> imp
             case WebTitleHelper.NATIVE_ICON_TYPE_RETURN:
                 break;
             case WebTitleHelper.NATIVE_ICON_TYPE_HOME_MENU:
-                ToastUtils.show("左2响应菜单");
                 RxBus.INSTANCE.send(new ToggleMenuClickEvent());
                 break;
             case WebTitleHelper.NATIVE_ICON_TYPE_NEW_ARTICLE:
-                ToastUtils.show("左2响应新建文章");
                 getPresenter().onTitleRightClick();
                 break;
         }
@@ -96,11 +91,9 @@ public class FriendFragment extends AppBaseFragment<FriendFragmentPresenter> imp
             case WebTitleHelper.NATIVE_ICON_TYPE_RETURN:
                 break;
             case WebTitleHelper.NATIVE_ICON_TYPE_HOME_MENU:
-                ToastUtils.show("右1响应菜单");
                 RxBus.INSTANCE.send(new ToggleMenuClickEvent());
                 break;
             case WebTitleHelper.NATIVE_ICON_TYPE_NEW_ARTICLE:
-                ToastUtils.show("右1响应新建文章");
                 getPresenter().onTitleRightClick();
                 break;
         }
@@ -112,11 +105,9 @@ public class FriendFragment extends AppBaseFragment<FriendFragmentPresenter> imp
             case WebTitleHelper.NATIVE_ICON_TYPE_RETURN:
                 break;
             case WebTitleHelper.NATIVE_ICON_TYPE_HOME_MENU:
-                ToastUtils.show("右2响应菜单");
                 RxBus.INSTANCE.send(new ToggleMenuClickEvent());
                 break;
             case WebTitleHelper.NATIVE_ICON_TYPE_NEW_ARTICLE:
-                ToastUtils.show("右2响应新建文章");
                 getPresenter().onTitleRightClick();
                 break;
         }

@@ -42,7 +42,7 @@ public class ReplyDetailActivity extends AppBaseActivity<ReplyDetailActivityPres
     protected void initView(Bundle savedInstanceState) {
         String url = getPresenter().getUrl();
         new WebTitleManager(url, mViewRoot, this);
-        mWebView.addJsInterface(this, Constant.JS_REPLY_ARTICLE);
+        mWebView.addJsInterface(this, Constant.JS_NATIVE_BRIDGE);
         mWebView.processBack();
         mWebView.loadUrl(url);
     }
@@ -118,5 +118,15 @@ public class ReplyDetailActivity extends AppBaseActivity<ReplyDetailActivityPres
                 ToastUtils.show("右2响应新建文章");
                 break;
         }
+    }
+
+    @Override
+    public void onBackPressed() {
+        RxBus.INSTANCE.send(new ReloadWebPageEvent());
+        super.onBackPressed();
+    }
+
+    public PolyWebView getWebView() {
+        return mWebView;
     }
 }
