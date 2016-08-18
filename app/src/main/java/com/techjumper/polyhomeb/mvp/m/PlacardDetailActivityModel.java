@@ -37,10 +37,7 @@ public class PlacardDetailActivityModel extends BaseModel<PlacardDetailActivityP
     public String getTime() {
         String temp = getExtras().getString(Constant.PLACARD_DETAIL_TIME, "");
         if (TextUtils.isEmpty(temp)) return "";
-        String time = temp.substring(5, 7); //2014-01-01
-        if (Integer.parseInt(time) < 10)
-            time = time.substring(1);  //去掉01前面的0
-        return time;
+        return temp;
     }
 
     public int getId() {

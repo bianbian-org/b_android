@@ -7,8 +7,8 @@ import com.techjumper.polyhomeb.entity.PropertyComplainDetailEntity;
 import com.techjumper.polyhomeb.entity.PropertyComplainEntity;
 import com.techjumper.polyhomeb.entity.PropertyPlacardDetailEntity;
 import com.techjumper.polyhomeb.entity.PropertyPlacardEntity;
-import com.techjumper.polyhomeb.entity.PropertyRepairEntity;
 import com.techjumper.polyhomeb.entity.PropertyRepairDetailEntity;
+import com.techjumper.polyhomeb.entity.PropertyRepairEntity;
 import com.techjumper.polyhomeb.entity.TrueEntity;
 import com.techjumper.polyhomeb.entity.UploadPicEntity;
 
@@ -350,4 +350,12 @@ public interface ServiceAPI {
      */
     @POST("repairs/reply")
     Observable<TrueEntity> repairDetailReply(@Body BaseArgumentsEntity entity);
+
+    /**
+     * 回复帖子
+     * @param entity
+     * @return
+     */
+    @POST("comment")
+    Observable<TrueEntity> replyComment(@Body BaseArgumentsEntity entity);
 }

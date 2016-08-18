@@ -132,4 +132,14 @@ public class KeyValueCreator {
                 .put("content", content)
                 .put("repair_id", repair_id);
     }
+
+    public static KeyValuePair replyComment(String user_id, String ticket, String forum_article_id, String comment_id,String content,String comment_image) {
+        return newPair()
+                .put("user_id", user_id)
+                .put("ticket", ticket)
+                .put("forum_article_id", forum_article_id)
+                .put("comment_id", comment_id)
+                .put("content", content)
+                .put("comment_image", comment_image);
+    }
 }

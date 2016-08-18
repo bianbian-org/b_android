@@ -3,6 +3,7 @@ package com.techjumper.polyhomeb.widget;
 import android.app.Activity;
 import android.graphics.Rect;
 import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -13,10 +14,12 @@ import android.view.animation.AlphaAnimation;
 import android.view.animation.Animation;
 import android.view.animation.ScaleAnimation;
 import android.widget.BaseAdapter;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.PopupWindow;
 import android.widget.TextView;
 
+import com.techjumper.corelib.utils.common.ResourceUtils;
 import com.techjumper.corelib.utils.common.RuleUtils;
 import com.techjumper.polyhomeb.R;
 
@@ -37,6 +40,7 @@ public class PolyPopupWindow extends PopupWindow implements PopupWindow.OnDismis
     private View mRootView;
     private OnPopDismiss mOnPopDismiss;
     private float mMarginRight, mMarginTop = 0F;
+    private Drawable mBgPic;
 
     public enum AnimStyle {
         LEFTANIM, RIGHTANIM, ALPHA
@@ -84,6 +88,14 @@ public class PolyPopupWindow extends PopupWindow implements PopupWindow.OnDismis
     }
 
     public void show(AnimStyle style) {
+
+        LinearLayout layout = (LinearLayout) rootView.findViewById(R.id.root_view);
+        if (mBgPic != null) {
+            layout.setBackground(mBgPic);
+        } else {
+            layout.setBackground(ResourceUtils.getDrawableRes(R.drawable.bg_pop));
+        }
+
         Rect frame = new Rect();
         mActivity.getWindow().getDecorView()
                 .getWindowVisibleDisplayFrame(frame);
@@ -100,6 +112,10 @@ public class PolyPopupWindow extends PopupWindow implements PopupWindow.OnDismis
 
     public void setMarginTop(float marginTop) {
         this.mMarginTop = marginTop;
+    }
+
+    public void setBgPic(Drawable mBgPic) {
+        this.mBgPic = mBgPic;
     }
 
     /**

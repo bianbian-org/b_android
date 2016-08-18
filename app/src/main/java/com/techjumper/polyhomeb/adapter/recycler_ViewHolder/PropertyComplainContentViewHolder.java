@@ -62,6 +62,7 @@ public class PropertyComplainContentViewHolder extends BaseRecyclerViewHolder<Pr
             Bundle bundle = new Bundle();
             bundle.putInt(Constant.PROPERTY_COMPLAIN_DATA_ID, data.getId());
             new AcHelper.Builder((Activity) getContext()).target(ComplainDetailActivity.class).extra(bundle).start();
+//            new AcHelper.Builder((Activity) getContext()).extra(bundle).target(TestActivity.class).start();
         });
 
     }

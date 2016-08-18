@@ -40,4 +40,21 @@ public class Constant {
     public static final int MESSAGE_SEND_SUCCESS = 2;  //发送成功
 
 
+    /* ------------------JS -------------------*/
+
+    /**
+     * className
+     */
+    public static final String JS_REPLY_ARTICLE = "article";
+    public static final String JS_NATIVE_BRIDGE = "NativeBridge";
+
+    /**
+     *
+     */
+    public static final String JS_REPLY_ARTICLE_ID = "article_id";
+    public static final String JS_REPLY_COMMENT_ID = "comment_id";
+    public static final String JS_PAGE_JUMP_URL = "page_jump_url";
+
+
+
 }

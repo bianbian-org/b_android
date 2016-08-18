@@ -31,8 +31,8 @@ public class ShoppingFragment extends AppBaseFragment<ShoppingFragmentPresenter>
 
     }
 
-    @Override
-    public String getTitle() {
-        return "商城";
-    }
+//    @Override
+//    protected boolean isWebViewFragment() {
+//        return true;
+//    }
 }

@@ -14,6 +14,15 @@ public class PropertyPlacardContentData {
     private String time;
     private boolean isRead;
     private int id;
+    private String content_;
+
+    public String getContent_() {
+        return content_;
+    }
+
+    public void setContent_(String content_) {
+        this.content_ = content_;
+    }
 
     public int getId() {
         return id;

@@ -190,7 +190,7 @@
                 android:layout_gravity="right"
                 android:layout_marginLeft="@dimen/dp_3"
                 android:layout_marginRight="@dimen/dp_6"
-                android:text="还可输入"
+                android:text="@string/input_more"
                 android:textColor="@color/color_d43a2d"
                 android:textSize="@dimen/dp_14"
                 android:visibility="invisible" />

@@ -44,24 +44,17 @@ public abstract class AppBaseActivity<T extends AppBaseActivityPresenter> extend
                 .setStyle(KProgressHUD.Style.SPIN_INDETERMINATE)
                 .setOnDismissListener(dialog -> onDialogDismiss());
 
-        //右边是文字的,右边是图片的,右边是点击切换文字的,右边是点击切换图片的,要多增加这四种
+        if (!isWebViewActivity()) {
+            initGeneralTitle();
+        }
+    }
 
-        mTitleBuilder = TitleHelper.create(mViewRoot)
-                .title(getLayoutTitle())
-                .showLeft(showTitleLeft())
-                .showRight(showTitleRight())
-                .leftIconClick(v -> {
-                    if (!onTitleLeftClick()) {
-                        onBackPressed();
-                    }
-                })
-                .rightIconClick(v1 -> {
-                    if (!onTitleRightClick()) {
-                        KeyboardUtils.closeKeyboard(mViewRoot);
+    public String getLayoutTitle() {
+        return "";
+    }
 
-                    }
-                });
-        mTitleBuilder.process();
+    protected boolean isWebViewActivity() {
+        return false;
     }
 
     protected boolean showTitleRight() {
@@ -84,15 +77,28 @@ public abstract class AppBaseActivity<T extends AppBaseActivityPresenter> extend
         return true;
     }
 
-    public String getLayoutTitle() {
-        return "";
+    private void initGeneralTitle() {
+        mTitleBuilder = TitleHelper.create(mViewRoot)
+                .title(getLayoutTitle())
+                .showLeft(showTitleLeft())
+                .showRight(showTitleRight())
+                .leftIconClick(v -> {
+                    if (!onTitleLeftClick()) {
+                        onBackPressed();
+                    }
+                })
+                .rightIconClick(v1 -> {
+                    if (!onTitleRightClick()) {
+                        KeyboardUtils.closeKeyboard(mViewRoot);
+
+                    }
+                });
+        mTitleBuilder.process();
     }
 
     @Override
     protected StatusbarHelper.Builder onStatusbarTransform(StatusbarHelper.Builder builder) {
         View titleGroup = findViewById(R.id.title_group);
-//        View titleGroup = null;
-//        builder.setLayoutRoot(null);
         return titleGroup == null ? super.onStatusbarTransform(builder) :
                 (useStatusBarTransform_() ? builder.setActionbarView(titleGroup) : super.onStatusbarTransform(builder));
     }
@@ -116,7 +122,6 @@ public abstract class AppBaseActivity<T extends AppBaseActivityPresenter> extend
         for (Subscription sub : mSubList) {
             RxUtils.unsubscribeIfNotNull(sub);
         }
-
     }
 
     @Override

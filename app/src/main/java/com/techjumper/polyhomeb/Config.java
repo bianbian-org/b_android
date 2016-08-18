@@ -16,11 +16,14 @@ public class Config {
 
     public static String sHost = "http://poly.techjumper.com";
 
+    public static String sFriend = "http://pl.techjumper.com/neighbor?title=友邻居&left=::NativeMenu,::&right=::NativeNewArticle,::";
+
 //    static {
 //        sHost = DEBUG ? "http://poly.techjumper.com" : "http://api.ourjujia.com";
 //    }
 
-    /**"http://poly.techjumper.com"
+    /**
+     * "http://poly.techjumper.com"
      * 默认接口地址
      */
     public static String sBaseUrl = sHost + "/api/v1bm/";

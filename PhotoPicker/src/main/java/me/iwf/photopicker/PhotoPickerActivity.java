@@ -114,6 +114,14 @@ public class PhotoPickerActivity extends AppCompatActivity implements View.OnCli
 //                menuDoneItem.setEnabled(total > 0);
                 mRight.setEnabled(total > 0);
 
+                if (total > maxCount) {
+                    Toast.makeText(getActivity(), getString(R.string.__picker_over_max_count_tips, maxCount),
+                            LENGTH_LONG).show();
+                    return false;
+                }
+
+                mRight.setText(getString(R.string.__picker_done_with_count, total, maxCount));
+
                 if (maxCount <= 1) {
                     List<Photo> photos = pickerFragment.getPhotoGridAdapter().getSelectedPhotos();
                     if (!photos.contains(photo)) {
@@ -123,13 +131,14 @@ public class PhotoPickerActivity extends AppCompatActivity implements View.OnCli
                     return true;
                 }
 
-                if (total > maxCount) {
-                    Toast.makeText(getActivity(), getString(R.string.__picker_over_max_count_tips, maxCount),
-                            LENGTH_LONG).show();
-                    return false;
-                }
+//                if (total > maxCount) {  8/16将这里注释,然后移动到int total下面,因为当总数量只能选择一张的时候,无法弹出toast,并且return false
+//                    Toast.makeText(getActivity(), getString(R.string.__picker_over_max_count_tips, maxCount),
+//                            LENGTH_LONG).show();
+//                    return false;
+//                }
 //                menuDoneItem.setTitle(getString(R.string.__picker_done_with_count, total, maxCount));
-                mRight.setText(getString(R.string.__picker_done_with_count, total, maxCount));
+
+//                mRight.setText(getString(R.string.__picker_done_with_count, total, maxCount));  8/16将这里注释,然后移动到int total下面,因为当总数量只能选择一张的时候,title会不显示已选择数量
                 return true;
             }
         });
@@ -149,7 +158,7 @@ public class PhotoPickerActivity extends AppCompatActivity implements View.OnCli
 
         StatusbarHelper.Builder statusbarBuidler = StatusbarHelper.from(this)
                 .noActionBar(true)
-                .setLightStatusBar(true)
+                .setLightStatusBar(false)
                 .setTransparentStatusbar(true);
 
         statusbarBuidler.setActionbarView(findViewById(R.id.title_group));

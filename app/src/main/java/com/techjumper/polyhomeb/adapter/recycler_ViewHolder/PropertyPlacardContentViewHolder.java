@@ -40,7 +40,7 @@ public class PropertyPlacardContentViewHolder extends BaseRecyclerViewHolder<Pro
         setOnClickListener(R.id.layout_content, v -> {
             Bundle bundle = new Bundle();
             bundle.putInt(Constant.PLACARD_DETAIL_ID, data.getId());
-            bundle.putString(Constant.PLACARD_DETAIL_CONTENT, data.getContent());
+            bundle.putString(Constant.PLACARD_DETAIL_CONTENT, data.getContent_());
             bundle.putString(Constant.PLACARD_DETAIL_TIME, data.getTime());
             bundle.putString(Constant.PLACARD_DETAIL_TITLE, data.getTitle());
             bundle.putString(Constant.PLACARD_DETAIL_TYPE, data.getType());

@@ -7,6 +7,7 @@ import android.net.Uri;
 import android.net.http.SslError;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.util.DisplayMetrics;
 import android.view.View;
 import android.webkit.DownloadListener;
 import android.webkit.SslErrorHandler;
@@ -32,7 +33,7 @@ import butterknife.Bind;
 @Presenter(PlacardDetailActivityPresenter.class)
 public class PlacardDetailActivity extends AppBaseActivity<PlacardDetailActivityPresenter> {
 
-    @Bind(R.id.tv_title)
+    @Bind(R.id.tv_title_)
     TextView mTvTitle;
     @Bind(R.id.btn_type)
     Button mBtnType;
@@ -62,7 +63,6 @@ public class PlacardDetailActivity extends AppBaseActivity<PlacardDetailActivity
         mTvTitle.setText(getPresenter().getTitle());
         mBtnType.setText(getPresenter().getType());
         mTvTime.setText(getPresenter().getTime());
-
     }
 
     @SuppressLint("SetJavaScriptEnabled")
@@ -73,13 +73,33 @@ public class PlacardDetailActivity extends AppBaseActivity<PlacardDetailActivity
         mWebSettings.setBuiltInZoomControls(true);
         mWebSettings.setDisplayZoomControls(false);
         mWebSettings.setSupportZoom(true);
+        mWebSettings.setLoadsImagesAutomatically(true);
+        mWebSettings.setBlockNetworkImage(false);
         mWebSettings.setUseWideViewPort(true);
         mWebSettings.setLoadWithOverviewMode(true);
+        mWebSettings.setJavaScriptEnabled(true);
+        mWebSettings.setJavaScriptCanOpenWindowsAutomatically(true);
+        mWebSettings.setPluginState(WebSettings.PluginState.ON);
+
+        DisplayMetrics metrics = new DisplayMetrics();
+        getWindowManager().getDefaultDisplay().getMetrics(metrics);
+        int mDensity = metrics.densityDpi;
+        if (mDensity == 240) {
+            mWebSettings.setDefaultZoom(WebSettings.ZoomDensity.FAR);
+        } else if (mDensity == 160) {
+            mWebSettings.setDefaultZoom(WebSettings.ZoomDensity.MEDIUM);
+        } else if (mDensity == 120) {
+            mWebSettings.setDefaultZoom(WebSettings.ZoomDensity.CLOSE);
+        } else if (mDensity == DisplayMetrics.DENSITY_XHIGH) {
+            mWebSettings.setDefaultZoom(WebSettings.ZoomDensity.FAR);
+        } else if (mDensity == DisplayMetrics.DENSITY_TV) {
+            mWebSettings.setDefaultZoom(WebSettings.ZoomDensity.FAR);
+        }
+
         mWebView.setWebViewClient(new PolyWebViewClient());
         mWebView.setDownloadListener(new MyWebViewDownLoadListener());
-        mWebView.getSettings().setJavaScriptEnabled(true);
-        mWebView.getSettings().setPluginState(WebSettings.PluginState.ON);
     }
+
 
     public void onDataReceive(String data) {
         if (TextUtils.isEmpty(data)) return;

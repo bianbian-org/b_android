@@ -103,9 +103,13 @@ public class TitleHelper {
             if (ui.findById(R.id.title_group) == null) return;
             View back = ui.findById(R.id.left_group);
             View right = ui.findById(R.id.right_group);
-            if (back == null) return;
-            back.setVisibility(showLeft ? View.VISIBLE : View.GONE);
-            back.setOnClickListener(leftIconClickListener);
+//            if (back == null) return;
+//            back.setVisibility(showLeft ? View.VISIBLE : View.GONE);
+//            back.setOnClickListener(leftIconClickListener);
+            if (back != null) {
+                back.setVisibility(showLeft ? View.VISIBLE : View.GONE);
+                back.setOnClickListener(leftIconClickListener);
+            }
             if (right != null) {
                 right.setVisibility(showRight ? View.VISIBLE : View.GONE);
                 right.setOnClickListener(rightIconClickListener);

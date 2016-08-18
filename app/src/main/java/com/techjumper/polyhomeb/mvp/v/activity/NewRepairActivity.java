@@ -97,7 +97,7 @@ public class NewRepairActivity extends AppBaseActivity<NewRepairActivityPresente
             int length = mEtContent.getText().toString().length();
             if (length >= 800) {
                 mTvInput.setVisibility(View.VISIBLE);
-                mTvInput.setText(String.format(getResources().getString(R.string.input_limit), length));
+                mTvInput.setText(String.format(getResources().getString(R.string.input_limit_1000), length));
             } else {
                 mTvInput.setVisibility(View.INVISIBLE);
             }

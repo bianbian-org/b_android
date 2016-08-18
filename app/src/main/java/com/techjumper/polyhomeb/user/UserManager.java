@@ -4,9 +4,12 @@ import android.text.TextUtils;
 
 import com.techjumper.corelib.rx.tools.RxBus;
 import com.techjumper.corelib.utils.file.PreferenceUtils;
+import com.techjumper.lib2.utils.GsonUtils;
 import com.techjumper.polyhomeb.entity.LoginEntity;
 import com.techjumper.polyhomeb.user.event.LoginEvent;
 import com.techjumper.polyhomeb.utils.HostIpHelper;
+
+import java.util.List;
 
 /**
  * * * * * * * * * * * * * * * * * * * * * * *
@@ -27,7 +30,7 @@ public enum UserManager {
     public static final String KEY_TICKET = "key_ticket";
     public static final String KEY_CURRENT_FAMILY_ID = "key_current_family_id";
     public static final String KEY_DEVICE_ID = "key_device_id";
-    public static final String KEY_HAS_BINDING = "key_has_binding";
+    //    public static final String KEY_HAS_BINDING = "key_has_binding";
     public static final String KEY_USER_NAME = "key_user_name";
     public static final String KEY_AVATAR = "key_avatar";
     public static final String KEY_SEX = "key_sex";
@@ -37,6 +40,12 @@ public enum UserManager {
 
     /**
      * 通过LoginEntity将用户信息同步到本地
+     */
+
+    /**
+     * user_id:412,family_id:463,village_id:5,ticket:
+     *
+     * @param entity
      */
     public void saveUserInfo(LoginEntity entity) {
         LoginEntity.LoginDataEntity dataEntity = entity.getData();
@@ -52,13 +61,15 @@ public enum UserManager {
         if (!TextUtils.isEmpty(dataEntity.getBirthday())) {  //登录接口多出来的
             PreferenceUtils.save(KEY_BIRTHDAY, dataEntity.getBirthday());
         }
-        if (entity.getData().getFamilies() != null && entity.getData().getFamilies().size() != 0) {//登录接口多出来的
-            PreferenceUtils.save(KEY_ALL_FAMILIES, entity.getData().getFamilies());
-            for (String currentFamilyId : entity.getData().getFamilies()) {
-                PreferenceUtils.save(KEY_CURRENT_FAMILY_ID, currentFamilyId);
-                break;
-            }
-        }
+        PreferenceUtils.save(KEY_CURRENT_FAMILY_ID, 463 + "");
+//        if (entity.getData().getFamilies() != null && entity.getData().getFamilies().size() != 0) {
+//            //登录接口多出来的
+//            PreferenceUtils.save(KEY_ALL_FAMILIES, GsonUtils.toJson(entity.getData().getFamilies()));
+//            for (String currentFamilyId : entity.getData().getFamilies()) {
+//                PreferenceUtils.save(KEY_CURRENT_FAMILY_ID, currentFamilyId);
+//                break;
+//            }
+//        }
         PreferenceUtils.save(KEY_ID, dataEntity.getId());
         updateTicket(dataEntity.getTicket());
         PreferenceUtils.save(KEY_USER_NAME, dataEntity.getUsername());
@@ -78,6 +89,17 @@ public enum UserManager {
     public String updateTicket(String ticket) {
         PreferenceUtils.save(KEY_TICKET, ticket);
         return ticket;
+    }
+
+    /**
+     * 得到用户所有家庭
+     *
+     * @param key
+     * @return
+     */
+    public List<String> getUserAllFamilies(String key) {
+        String allFamiliesJson = PreferenceUtils.get(KEY_ALL_FAMILIES, key);
+        return GsonUtils.fromJson(allFamiliesJson, List.class);
     }
 
     /**
@@ -107,9 +129,11 @@ public enum UserManager {
         PreferenceUtils.save(KEY_ID, "");
         PreferenceUtils.save(KEY_PHONE_NUMBER, "");
         PreferenceUtils.save(KEY_TICKET, "");
-        PreferenceUtils.save(KEY_HAS_BINDING, "");
+//        PreferenceUtils.save(KEY_HAS_BINDING, "");
         PreferenceUtils.save(KEY_AVATAR, "");
         PreferenceUtils.save(KEY_USER_NAME, "");
+        PreferenceUtils.save(KEY_CURRENT_FAMILY_ID, "");
+        PreferenceUtils.save(KEY_ALL_FAMILIES, "");
         HostIpHelper.getInstance().clear();
         if (notify)
             notifyLoginOrLogoutEvent(false);

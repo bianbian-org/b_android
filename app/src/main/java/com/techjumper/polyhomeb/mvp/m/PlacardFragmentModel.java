@@ -1,5 +1,7 @@
 package com.techjumper.polyhomeb.mvp.m;
 
+import android.text.Html;
+
 import com.steve.creact.library.display.DisplayBean;
 import com.techjumper.corelib.rx.tools.CommonWrap;
 import com.techjumper.lib2.others.KeyValuePair;
@@ -20,6 +22,8 @@ import com.techjumper.polyhomeb.net.NetHelper;
 import com.techjumper.polyhomeb.net.ServiceAPI;
 import com.techjumper.polyhomeb.user.UserManager;
 
+import java.sql.Date;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -34,7 +38,7 @@ import rx.Observable;
  **/
 public class PlacardFragmentModel extends BaseModel<PlacardFragmentPresenter> {
 
-    private String lastTime = "";
+    private String lastMonth = "";
     private int mCurrentPage = 1;
     private int mOnePageCount = 8;
     private List<DisplayBean> mDataList = new ArrayList<>();
@@ -78,20 +82,18 @@ public class PlacardFragmentModel extends BaseModel<PlacardFragmentPresenter> {
         if (notices.size() == 1) {
             int id = notices.get(0).getId();
             String content = notices.get(0).getContent();
-            String time = notices.get(0).getTime();
+            String timeLong = notices.get(0).getTime();
             String title = notices.get(0).getTitle();
             int types = notices.get(0).getTypes();
             String type = types == 1 ? getPresenter().getView().getString(R.string.placard) : getPresenter().getView().getString(R.string.information);//#公告类型 1-公告 2-资讯
 
-            String titleTime1 = time.substring(5, 7);  //2015-01-22   ->01
-            if (Integer.parseInt(titleTime1) < 10)
-                titleTime1 = titleTime1.substring(1);  //去掉01前面的0
-            String titleTime2 = time.substring(time.length() - 1, time.length());  //2015-01-22   ->22
-            String contentTime = titleTime1;
+            long time_ = Long.parseLong(timeLong);
+            SimpleDateFormat format = new SimpleDateFormat(getPresenter().getView().getResources().getString(R.string.pattren_M_D));
+            String time = format.format(new Date(time_ * 1000));
 
             //绿色的 12月 那个时间轴
             PropertyPlacardTimeLineData timeLineData = new PropertyPlacardTimeLineData();
-            timeLineData.setTime(contentTime + getPresenter().getView().getString(R.string.month));
+            timeLineData.setTime(time.substring(0, 1) + getPresenter().getView().getString(R.string.month));
             PropertyPlacardTimeLineBean timeLineBean = new PropertyPlacardTimeLineBean(timeLineData);
             mDataList.add(timeLineBean);
 
@@ -100,8 +102,9 @@ public class PlacardFragmentModel extends BaseModel<PlacardFragmentPresenter> {
             propertyPlacardContentData.setTitle(title);
             propertyPlacardContentData.setRead(false);
             propertyPlacardContentData.setType(type);
-            propertyPlacardContentData.setTime(titleTime1 + getPresenter().getView().getString(R.string.month) + titleTime2 + getPresenter().getView().getString(R.string.day));
-            propertyPlacardContentData.setContent(content);
+            propertyPlacardContentData.setTime(time);
+            propertyPlacardContentData.setContent(replaceWebTag(content));
+            propertyPlacardContentData.setContent_(content);
             propertyPlacardContentData.setId(id);
             PropertyPlacardContentBean contentBean = new PropertyPlacardContentBean(propertyPlacardContentData);
             mDataList.add(contentBean);
@@ -114,22 +117,20 @@ public class PlacardFragmentModel extends BaseModel<PlacardFragmentPresenter> {
 
                 String content = noticesBean.getContent();
                 int id = noticesBean.getId();
-                String time = noticesBean.getTime();
+                String timeLong = noticesBean.getTime();
                 String title = noticesBean.getTitle();
                 int types = noticesBean.getTypes();
                 String type = types == 1 ? getPresenter().getView().getString(R.string.placard) : getPresenter().getView().getString(R.string.information);//#公告类型 1-公告 2-资讯
 
-                String titleTime1 = time.substring(5, 7);  //2015-01-22   ->01
-                if (Integer.parseInt(titleTime1) < 10)
-                    titleTime1 = titleTime1.substring(1);  //去掉01前面的0
-                String titleTime2 = time.substring(time.length() - 1, time.length());//2015-01-22   ->22
-                String contentTime = titleTime1;
+                long time_ = Long.parseLong(timeLong);
+                SimpleDateFormat format = new SimpleDateFormat(getPresenter().getView().getResources().getString(R.string.pattren_M_D));
+                String time = format.format(new Date(time_ * 1000));
 
-                if (!lastTime.equals(time)) {//就说明第一个时间区域完结,此时布局需要加载新的时间轴title
+                if (!lastMonth.equals(time.substring(0, 1))) {//就说明第一个时间区域完结,此时布局需要加载新的时间轴title
 
                     //绿色的 12月 那个时间轴
                     PropertyPlacardTimeLineData timeLineData = new PropertyPlacardTimeLineData();
-                    timeLineData.setTime(contentTime + getPresenter().getView().getString(R.string.month));
+                    timeLineData.setTime(time.substring(0, 1) + getPresenter().getView().getString(R.string.month));
                     PropertyPlacardTimeLineBean timeLineBean = new PropertyPlacardTimeLineBean(timeLineData);
                     mDataList.add(timeLineBean);
 
@@ -138,8 +139,9 @@ public class PlacardFragmentModel extends BaseModel<PlacardFragmentPresenter> {
                     propertyPlacardContentData.setTitle(title);
                     propertyPlacardContentData.setRead(false);
                     propertyPlacardContentData.setType(type);
-                    propertyPlacardContentData.setTime(titleTime1 + getPresenter().getView().getString(R.string.month) + titleTime2 + getPresenter().getView().getString(R.string.day));
-                    propertyPlacardContentData.setContent(content);
+                    propertyPlacardContentData.setTime(time);
+                    propertyPlacardContentData.setContent(replaceWebTag(content));
+                    propertyPlacardContentData.setContent_(content);
                     propertyPlacardContentData.setId(id);
                     PropertyPlacardContentBean contentBean = new PropertyPlacardContentBean(propertyPlacardContentData);
                     mDataList.add(contentBean);
@@ -156,13 +158,14 @@ public class PlacardFragmentModel extends BaseModel<PlacardFragmentPresenter> {
                     propertyPlacardContentData.setTitle(title);
                     propertyPlacardContentData.setRead(false);
                     propertyPlacardContentData.setType(type);
-                    propertyPlacardContentData.setTime(titleTime1 + getPresenter().getView().getString(R.string.month) + titleTime2 + getPresenter().getView().getString(R.string.day));
-                    propertyPlacardContentData.setContent(content);
+                    propertyPlacardContentData.setTime(time);
+                    propertyPlacardContentData.setContent(replaceWebTag(content));
+                    propertyPlacardContentData.setContent_(content);
                     propertyPlacardContentData.setId(id);
                     PropertyPlacardContentBean contentBean = new PropertyPlacardContentBean(propertyPlacardContentData);
                     mDataList.add(contentBean);
                 }
-                lastTime = time;
+                lastMonth = time.substring(0, 1);
             }
         }
 
@@ -194,5 +197,15 @@ public class PlacardFragmentModel extends BaseModel<PlacardFragmentPresenter> {
 
     public void setCurrentPage(int page) {
         mCurrentPage = page;
+    }
+
+    private String replaceWebTag(String webContent) {
+//        String content = webContent
+//                .replace("<p>", "")
+//                .replace("<br>", "")
+//                .replace("</p>", "")
+//                .replace("</br>", "");
+//        return content;
+        return Html.fromHtml(webContent).toString();
     }
 }

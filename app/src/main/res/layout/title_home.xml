@@ -42,4 +42,20 @@
             android:textSize="@dimen/sp_20" />
 
     </LinearLayout>
+
+    <FrameLayout
+        android:id="@+id/right_group"
+        android:layout_width="50dp"
+        android:layout_height="43dp"
+        android:layout_alignParentRight="true"
+        android:visibility="gone">
+
+        <ImageView
+            android:layout_gravity="center"
+            android:id="@+id/iv_right_icon"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@mipmap/icon_add" />
+    </FrameLayout>
+
 </RelativeLayout>
