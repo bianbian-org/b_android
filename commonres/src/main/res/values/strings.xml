@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">"CommonRes "</string>
+    <string name="limit_max">"不能超过1000个字"</string>
 </resources>

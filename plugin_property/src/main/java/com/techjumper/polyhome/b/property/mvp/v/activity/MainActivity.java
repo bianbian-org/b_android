@@ -81,11 +81,11 @@ public class MainActivity extends AppBaseActivity<MainActivityPresenter> {
             }
         }
 
-        UserInfoEntity userInfoEntity = new UserInfoEntity();
-        userInfoEntity.setUser_id(362);
-        userInfoEntity.setTicket("9d99afffcd6b5620aea4d062e7448e85bcdbcf2a");
-        userInfoEntity.setId(434);
-        UserInfoManager.saveUserInfo(userInfoEntity);
+//        UserInfoEntity userInfoEntity = new UserInfoEntity();
+//        userInfoEntity.setUser_id(362);
+//        userInfoEntity.setTicket("745090aaa098235c03790ac8bbc597e222ce7031");
+//        userInfoEntity.setId(434);
+//        UserInfoManager.saveUserInfo(userInfoEntity);
 
         if (showType != -1) {
             if (showType == PropertyMessageDetailEvent.COMPLAINT) {
