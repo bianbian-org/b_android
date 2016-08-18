@@ -1,7 +1,6 @@
 package com.techjumper.polyhomeb.mvp.p.fragment;
 
 import android.os.Bundle;
-import android.view.View;
 
 import com.techjumper.corelib.rx.tools.RxBus;
 import com.techjumper.corelib.rx.tools.RxUtils;
@@ -9,7 +8,6 @@ import com.techjumper.corelib.utils.common.AcHelper;
 import com.techjumper.corelib.utils.common.ResourceUtils;
 import com.techjumper.polyhomeb.R;
 import com.techjumper.polyhomeb.entity.event.ReloadWebPageEvent;
-import com.techjumper.polyhomeb.entity.event.ToggleMenuClickEvent;
 import com.techjumper.polyhomeb.mvp.v.activity.NewInvitationActivity;
 import com.techjumper.polyhomeb.mvp.v.activity.NewUnusedActivity;
 import com.techjumper.polyhomeb.mvp.v.fragment.FriendFragment;
@@ -18,7 +16,6 @@ import com.techjumper.polyhomeb.widget.PolyPopupWindow;
 import java.util.ArrayList;
 import java.util.List;
 
-import butterknife.OnClick;
 import rx.Subscription;
 
 /**
@@ -65,17 +62,8 @@ public class FriendFragmentPresenter extends AppBaseFragmentPresenter<FriendFrag
         mPopDevice.show(PolyPopupWindow.AnimStyle.ALPHA);
     }
 
-    @OnClick(R.id.iv_left_icon)
-    public void onClick(View view) {
-        switch (view.getId()) {
-            case R.id.iv_left_icon:
-                RxBus.INSTANCE.send(new ToggleMenuClickEvent());
-                break;
-        }
-    }
-
     private void initPop() {
-        mPopDevice = new PolyPopupWindow(getView().getActivity(), R.style.popup_anim, new PopListClick(), getView().getRightIcon(), () -> {
+        mPopDevice = new PolyPopupWindow(getView().getActivity(), R.style.popup_anim, new PopListClick(), getView().getIvRightFirst(), () -> {
         });
         mPopDevice.setMarginRight(10);
         mPopDevice.setMarginTop(210);

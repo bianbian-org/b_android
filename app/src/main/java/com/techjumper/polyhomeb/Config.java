@@ -16,7 +16,7 @@ public class Config {
 
     public static String sHost = "http://poly.techjumper.com";
 
-    public static String sFriend = "http://pl.techjumper.com/neighbor?title=友邻居&left=::NativeMenu,::&right=::NativeNewArticle,::";
+    public static String sFriend = "http://pl.techjumper.com/neighbor?title=友邻&left=::NativeMenu,::&right=::NativeNewArticle,::";
 
 //    static {
 //        sHost = DEBUG ? "http://poly.techjumper.com" : "http://api.ourjujia.com";

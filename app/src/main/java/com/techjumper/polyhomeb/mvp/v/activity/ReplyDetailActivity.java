@@ -2,11 +2,15 @@ package com.techjumper.polyhomeb.mvp.v.activity;
 
 import android.os.Bundle;
 import android.view.View;
+import android.widget.ImageView;
 
 import com.techjumper.corelib.mvp.factory.Presenter;
+import com.techjumper.corelib.rx.tools.RxBus;
 import com.techjumper.corelib.utils.window.ToastUtils;
 import com.techjumper.polyhomeb.Constant;
 import com.techjumper.polyhomeb.R;
+import com.techjumper.polyhomeb.entity.event.ReloadWebPageEvent;
+import com.techjumper.polyhomeb.entity.event.ToggleMenuClickEvent;
 import com.techjumper.polyhomeb.interfaces.IWebViewTitleClick;
 import com.techjumper.polyhomeb.manager.WebTitleManager;
 import com.techjumper.polyhomeb.mvp.p.activity.ReplyDetailActivityPresenter;
@@ -26,6 +30,8 @@ public class ReplyDetailActivity extends AppBaseActivity<ReplyDetailActivityPres
 
     @Bind(R.id.wb)
     PolyWebView mWebView;
+    @Bind(R.id.left_first_iv)
+    ImageView iv;
 
     @Override
     protected View inflateView(Bundle savedInstanceState) {
@@ -50,10 +56,12 @@ public class ReplyDetailActivity extends AppBaseActivity<ReplyDetailActivityPres
     public void onTitleLeftFirstClick(int mLeftFirstIconType) {
         switch (mLeftFirstIconType) {
             case WebTitleHelper.NATIVE_ICON_TYPE_RETURN:
-                ToastUtils.show("左1响应返回");
+                RxBus.INSTANCE.send(new ReloadWebPageEvent());
+                finish();
                 break;
             case WebTitleHelper.NATIVE_ICON_TYPE_HOME_MENU:
                 ToastUtils.show("左1响应菜单");
+                RxBus.INSTANCE.send(new ToggleMenuClickEvent());
                 break;
             case WebTitleHelper.NATIVE_ICON_TYPE_NEW_ARTICLE:
                 ToastUtils.show("左1响应新建文章");
@@ -65,10 +73,12 @@ public class ReplyDetailActivity extends AppBaseActivity<ReplyDetailActivityPres
     public void onTitleLeftSecondClick(int mLeftSecondIconType) {
         switch (mLeftSecondIconType) {
             case WebTitleHelper.NATIVE_ICON_TYPE_RETURN:
-                ToastUtils.show("左2响应返回");
+                RxBus.INSTANCE.send(new ReloadWebPageEvent());
+                finish();
                 break;
             case WebTitleHelper.NATIVE_ICON_TYPE_HOME_MENU:
                 ToastUtils.show("左2响应菜单");
+                RxBus.INSTANCE.send(new ToggleMenuClickEvent());
                 break;
             case WebTitleHelper.NATIVE_ICON_TYPE_NEW_ARTICLE:
                 ToastUtils.show("左2响应新建文章");
@@ -80,10 +90,12 @@ public class ReplyDetailActivity extends AppBaseActivity<ReplyDetailActivityPres
     public void onTitleRightFirstClick(int mRightFirstIconType) {
         switch (mRightFirstIconType) {
             case WebTitleHelper.NATIVE_ICON_TYPE_RETURN:
-                ToastUtils.show("右1响应返回");
+                RxBus.INSTANCE.send(new ReloadWebPageEvent());
+                finish();
                 break;
             case WebTitleHelper.NATIVE_ICON_TYPE_HOME_MENU:
                 ToastUtils.show("右1响应菜单");
+                RxBus.INSTANCE.send(new ToggleMenuClickEvent());
                 break;
             case WebTitleHelper.NATIVE_ICON_TYPE_NEW_ARTICLE:
                 ToastUtils.show("右1响应新建文章");
@@ -95,10 +107,12 @@ public class ReplyDetailActivity extends AppBaseActivity<ReplyDetailActivityPres
     public void onTitleRightSecondClick(int mRightSecondIconType) {
         switch (mRightSecondIconType) {
             case WebTitleHelper.NATIVE_ICON_TYPE_RETURN:
-                ToastUtils.show("右2响应返回");
+                RxBus.INSTANCE.send(new ReloadWebPageEvent());
+                finish();
                 break;
             case WebTitleHelper.NATIVE_ICON_TYPE_HOME_MENU:
                 ToastUtils.show("右2响应菜单");
+                RxBus.INSTANCE.send(new ToggleMenuClickEvent());
                 break;
             case WebTitleHelper.NATIVE_ICON_TYPE_NEW_ARTICLE:
                 ToastUtils.show("右2响应新建文章");

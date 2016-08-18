@@ -54,23 +54,30 @@ public abstract class AppBaseFragment<T extends AppBaseFragmentPresenter> extend
         if (offsetView != null)
             StatusbarHelper.setStatusBarOffset(offsetView);
 
-        mTitleBuilder = TitleHelper.create(mViewRoot)
-                .title(getTitle())
-                .showLeft(showTitleLeft())
-                .showRight(showTitleRight())
-                .leftIconClick(v -> {
-                    if (!onTitleLeftClick()) {
-                        AcHelper.finish(getActivity());
-                    }
-                })
-                .rightIconClick(v1 -> {
-                    if (!onTitleRightClick()) {
-                        KeyboardUtils.closeKeyboard(mViewRoot);
+        if (!isWebViewFragment()) {
+            mTitleBuilder = TitleHelper.create(mViewRoot)
+                    .title(getTitle())
+                    .showLeft(showTitleLeft())
+                    .showRight(showTitleRight())
+                    .leftIconClick(v -> {
+                        if (!onTitleLeftClick()) {
+                            AcHelper.finish(getActivity());
+                        }
+                    })
+                    .rightIconClick(v1 -> {
+                        if (!onTitleRightClick()) {
+                            KeyboardUtils.closeKeyboard(mViewRoot);
 
-                    }
-                });
-        mTitleBuilder.process();
+                        }
+                    });
+            mTitleBuilder.process();
+        }
+
         return view;
+    }
+
+    protected boolean isWebViewFragment() {
+        return false;
     }
 
     protected boolean showTitleRight() {

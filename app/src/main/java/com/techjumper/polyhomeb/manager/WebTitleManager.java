@@ -332,5 +332,4 @@ public class WebTitleManager {
         return mRealUrl;
     }
 
-
 }
