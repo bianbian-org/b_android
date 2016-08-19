@@ -121,7 +121,6 @@ public class InfoFragmentPresenter extends AppBaseFragmentPresenter<InfoFragment
         addSubscription(RxView.clicks(getView().getAdvDetect())
                 .compose(RxUtil.applySchedulers())
                 .subscribe(aVoid -> {
-                    ToastUtils.show("hehe");
                     PluginEngineUtil.startMedical();
                 }));
         addSubscription(RxView.clicks(getView().getAdvHeartrate())
