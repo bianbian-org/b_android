@@ -20,6 +20,7 @@ import com.techjumper.commonres.entity.event.PropertyMessageDetailEvent;
 import com.techjumper.commonres.entity.event.PropertyNormalDetailEvent;
 import com.techjumper.commonres.entity.event.UserInfoEvent;
 import com.techjumper.commonres.entity.event.loadmoreevent.LoadmorePresenterEvent;
+import com.techjumper.commonres.util.RxUtil;
 import com.techjumper.corelib.rx.tools.RxBus;
 import com.techjumper.corelib.utils.window.ToastUtils;
 import com.techjumper.polyhome.b.property.Constant;
@@ -230,6 +231,10 @@ public class ListFragmentPresenter extends AppBaseFragmentPresenter<ListFragment
         }
 
         RxBus.INSTANCE.send(new BackEvent(BackEvent.FINISH));
+
+        addSubscription(RxUtil.limitLength(getView().getLacContent()));
+        addSubscription(RxUtil.limitLength(getView().getLarContent()));
+        addSubscription(RxUtil.limitLength(getView().getLmdMessageContent()));
 
         addSubscription(RxBus.INSTANCE.asObservable()
                 .observeOn(AndroidSchedulers.mainThread())
