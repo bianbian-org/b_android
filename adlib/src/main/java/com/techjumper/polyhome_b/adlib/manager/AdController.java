@@ -731,7 +731,6 @@ public class AdController {
                 }
 
                 notifyAdReceive(adsEntity, file);
-                JLog.d("下个广告延迟: " + delay + "秒");
                 //保存广告ID到数据库
                 saveAdStatToDb(adsEntity.getId(), mRuleType);
                 Observable.timer(delay, TimeUnit.SECONDS)
