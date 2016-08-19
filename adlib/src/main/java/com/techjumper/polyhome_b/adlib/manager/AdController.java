@@ -494,6 +494,7 @@ public class AdController {
         public static final String ERROR_NO_TIME_LENGTH = "未指定持续时间";
         public static final String ERROR_NO_ADS = "无广告数据";
 
+        private String mUniqueId;
         private IExecuteRule iExecuteRule;
         private String mRuleType;
         private String mFamilyId;
@@ -508,6 +509,10 @@ public class AdController {
         private boolean mIsSleepFinished;
 
         public AdRuleExecutor(String ruleType) {
+
+            //用一个随机值来唯一标识一个任务
+            mUniqueId = Math.random() * 100000 + "";
+
             mRuleType = ruleType;
             if (mRuleType == null) {
                 mRuleType = "";
@@ -616,7 +621,8 @@ public class AdController {
                             return;
                         }
 
-                        JLog.d("<ad> 统计广告次数, id=" + id + ", position=" + type + ", count=" + adStat.count());
+                        JLog.d("<ad> 统计广告次数, id=" + id + ", position=" + type
+                                + ", count=" + adStat.count() + ", mUniqueId=" + mUniqueId);
                     });
         }
 
@@ -725,6 +731,7 @@ public class AdController {
                 }
 
                 notifyAdReceive(adsEntity, file);
+                JLog.d("下个广告延迟: " + delay + "秒");
                 //保存广告ID到数据库
                 saveAdStatToDb(adsEntity.getId(), mRuleType);
                 Observable.timer(delay, TimeUnit.SECONDS)
