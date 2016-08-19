@@ -48,13 +48,17 @@ public class Constant {
     public static final String JS_NATIVE_BRIDGE = "NativeBridge";
 
     /**
-     *
+     * jsConstant
      */
     public static final String JS_REPLY_ARTICLE_ID = "article_id";
     public static final String JS_REPLY_COMMENT_ID = "comment_id";
     public static final String JS_PAGE_JUMP_URL = "page_jump_url";
-    public static final String JS_PAGE_JUMP_MAP = "page_jump_map";
-    public static final String JS_PAGE_JUMP_METHOD = "page_jump_method";
+
+    /**
+     * 查看H5大图
+     */
+    public static final String JS_BIG_PIC_INDEX = "js_big_pic_index";
+    public static final String JS_BIG_PIC_ARRAY = "js_big_pic_array";
 
 
 }

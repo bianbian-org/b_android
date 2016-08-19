@@ -34,13 +34,14 @@ import java.util.List;
 public class PolyPopupWindow extends PopupWindow implements PopupWindow.OnDismissListener, Animation.AnimationListener {
 
     private Activity mActivity;
-    private View rootView;
+    private View rootView, anchorView;
     private ListView mListView;
     private DataAdapter mAdapter;
     private View mRootView;
     private OnPopDismiss mOnPopDismiss;
-    private float mMarginRight, mMarginTop = 0F;
+    private float mMarginRight, mMarginTop = -1F;
     private Drawable mBgPic;
+    private int xoff;
 
     public enum AnimStyle {
         LEFTANIM, RIGHTANIM, ALPHA
@@ -99,19 +100,36 @@ public class PolyPopupWindow extends PopupWindow implements PopupWindow.OnDismis
         Rect frame = new Rect();
         mActivity.getWindow().getDecorView()
                 .getWindowVisibleDisplayFrame(frame);
-        int marginRight = RuleUtils.dp2Px(mMarginRight);
-        int marginTop = RuleUtils.dp2Px(mMarginTop);
-        showAtLocation(mRootView, Gravity.RIGHT, marginRight, -marginTop);
-//        popupShowAlpha();
+        if (mMarginRight == -1F || mMarginTop == -1F) {
+            showAsDropDown(anchorView, -xoff, 0);
+        } else {
+            int marginRight = RuleUtils.dp2Px(mMarginRight);
+            int marginTop = RuleUtils.dp2Px(mMarginTop);
+            showAtLocation(mRootView, Gravity.RIGHT, marginRight, -marginTop);
+        }
         showAnim(style);
     }
 
+    /*********************
+     * showAtLocation
+     *****************/
     public void setMarginRight(float marginRight) {
         this.mMarginRight = marginRight;
     }
 
     public void setMarginTop(float marginTop) {
         this.mMarginTop = marginTop;
+    }
+
+    /********************
+     * showAsDropDown
+     *****************/
+    public void setAnchorView(View anchorView) {
+        this.anchorView = anchorView;
+    }
+
+    public void setXoff(int xoff) {
+        this.xoff= xoff;
     }
 
     public void setBgPic(Drawable mBgPic) {

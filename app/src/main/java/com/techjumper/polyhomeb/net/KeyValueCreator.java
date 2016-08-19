@@ -133,7 +133,7 @@ public class KeyValueCreator {
                 .put("repair_id", repair_id);
     }
 
-    public static KeyValuePair replyComment(String user_id, String ticket, String forum_article_id, String comment_id,String content,String comment_image) {
+    public static KeyValuePair replyComment(String user_id, String ticket, String forum_article_id, String comment_id, String content, String comment_image) {
         return newPair()
                 .put("user_id", user_id)
                 .put("ticket", ticket)
@@ -141,5 +141,71 @@ public class KeyValueCreator {
                 .put("comment_id", comment_id)
                 .put("content", content)
                 .put("comment_image", comment_image);
+    }
+
+    public static KeyValuePair getSections(String user_id, String ticket) {
+        return newPair()
+                .put("user_id", user_id)
+                .put("ticket", ticket);
+    }
+
+    /**
+     * 新建帖子
+     *
+     * @param user_id          # 用户ID
+     * @param ticket           # session登录验证
+     * @param village_id       # 小区ID
+     * @param forum_section_id # 版块ID
+     * @param title            # 帖子标题
+     * @param content          # 帖子内容
+     * @param article_images   # 帖子图片
+     * @param category         # 帖子类型 0-非闲置 1-闲置
+     * @param price            # 现价
+     * @param origin_price     # 原价
+     * @param discount         # 是否接受议价 0-接受 1-不接受
+     * @return
+     */
+    public static KeyValuePair newArticle(String user_id, String ticket, String village_id, String forum_section_id, String title, String content, String[] article_images, String category, String price, String origin_price, String discount) {
+        return newPair()
+                .put("user_id", user_id)
+                .put("ticket", ticket)
+                .put("village_id", village_id)
+                .put("forum_section_id", forum_section_id)
+                .put("title", title)
+                .put("content", content)
+                .put("article_images", article_images)
+                .put("category", category)
+                .put("price", price)
+                .put("origin_price", origin_price)
+                .put("discount", discount);
+    }
+
+    /**
+     * 新建闲置
+     *
+     * @param user_id        # 用户ID
+     * @param ticket         # session登录验证
+     * @param village_id     # 小区ID
+     * @param title          # 帖子标题
+     * @param content        # 帖子内容
+     * @param article_images #帖子图片
+     * @param category       # 帖子类型 0-非闲置 1-闲置
+     * @param price          # 现价
+     * @param origin_price   # 原价
+     * @param discount       # 是否接受议价 0-接受 1-不接受
+     * @return
+     */
+    public static KeyValuePair newArticle(String user_id, String ticket, String village_id, String title, String content, String[] article_images, String category, String price, String origin_price, String discount) {
+        return newPair()
+                .put("user_id", user_id)
+                .put("ticket", ticket)
+                .put("village_id", village_id)
+                .put("title", title)
+                .put("content", content)
+                .put("article_images", article_images)
+                .put("category", category)
+                .put("price", price)
+                .put("origin_price", origin_price)
+                .put("discount", discount);
     }
 }

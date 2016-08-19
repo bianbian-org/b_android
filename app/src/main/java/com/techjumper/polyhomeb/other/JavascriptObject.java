@@ -5,10 +5,10 @@ import android.os.Bundle;
 import android.webkit.JavascriptInterface;
 
 import com.techjumper.corelib.utils.common.AcHelper;
-import com.techjumper.corelib.utils.common.JLog;
 import com.techjumper.polyhomeb.Constant;
 import com.techjumper.polyhomeb.mvp.v.activity.ReplyCommentActivity;
 import com.techjumper.polyhomeb.mvp.v.activity.ReplyDetailActivity;
+import com.techjumper.polyhomeb.mvp.v.activity.WebViewShowBigPicActivity;
 
 /**
  * * * * * * * * * * * * * * * * * * * * * * *
@@ -24,6 +24,11 @@ public class JavascriptObject {
         this.mActivity = mActivity;
     }
 
+    /**
+     * 跳转界面:回复评论,帖子详情
+     *
+     * @param url
+     */
     //两种情况,event对应事件,没有链接,http对应链接
     //event://NativeNewComment?id=11&token=123232
     //http://www.baidu.com?id=11&type=1
@@ -34,7 +39,6 @@ public class JavascriptObject {
             bundle.putString(Constant.JS_PAGE_JUMP_URL, url);
             new AcHelper.Builder(mActivity).extra(bundle).target(ReplyDetailActivity.class).start();
         } else if (url.startsWith("event")) {
-            JLog.e(url);
             //跳转回复帖子界面
             if (url.indexOf("NativeNewComment") > 0) {
                 String article_id;
@@ -76,5 +80,16 @@ public class JavascriptObject {
                 new AcHelper.Builder(mActivity).extra(bundle).target(ReplyCommentActivity.class).start();
             }
         }
+    }
+
+    /**
+     * 查看大图
+     */
+    @JavascriptInterface
+    public void imageView(int index, String[] s) {
+        Bundle bundle = new Bundle();
+        bundle.putInt(Constant.JS_BIG_PIC_INDEX, index);
+        bundle.putStringArray(Constant.JS_BIG_PIC_ARRAY, s);
+        new AcHelper.Builder(mActivity).extra(bundle).target(WebViewShowBigPicActivity.class).start();
     }
 }

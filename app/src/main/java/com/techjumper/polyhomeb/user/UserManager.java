@@ -37,6 +37,7 @@ public enum UserManager {
     public static final String KEY_EMAIL = "key_email";
     public static final String KEY_BIRTHDAY = "key_birthday";
     public static final String KEY_ALL_FAMILIES = "key_all_families";
+    public static final String KEY_CURRENT_VILLAGE_ID = "key_current_village_id";
 
     /**
      * 通过LoginEntity将用户信息同步到本地
@@ -62,6 +63,7 @@ public enum UserManager {
             PreferenceUtils.save(KEY_BIRTHDAY, dataEntity.getBirthday());
         }
         PreferenceUtils.save(KEY_CURRENT_FAMILY_ID, 463 + "");
+        PreferenceUtils.save(KEY_CURRENT_VILLAGE_ID, 5 + "");
 //        if (entity.getData().getFamilies() != null && entity.getData().getFamilies().size() != 0) {
 //            //登录接口多出来的
 //            PreferenceUtils.save(KEY_ALL_FAMILIES, GsonUtils.toJson(entity.getData().getFamilies()));

@@ -224,9 +224,6 @@ public class NewComplainActivityPresenter extends AppBaseActivityPresenter<NewCo
         public void callBack(int position, String s) {
             getView().getTv().setText(s);
             mPop.thisDismiss(PolyPopupWindow.AnimStyle.ALPHA);
-//            ObjectAnimator animator = ObjectAnimator.ofFloat(getView().getIvTriangle(), "rotation", 90f, 0f);
-//            animator.setDuration(300);
-//            animator.start();
             mComplainChoose = position + 1;  //1-投诉 2-建议 3-表扬
             switch (position) {
                 case 0:

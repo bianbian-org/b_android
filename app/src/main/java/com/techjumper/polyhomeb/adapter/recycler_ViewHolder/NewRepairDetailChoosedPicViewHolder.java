@@ -44,12 +44,6 @@ public class NewRepairDetailChoosedPicViewHolder extends BaseRecyclerViewHolder<
         layoutParams.rightMargin = 20;
         getView(R.id.iv).setLayoutParams(layoutParams);
 
-//        PhotoPreview.builder()
-//                .setPhotos(selectedPhotos)
-//                .setCurrentItem(position)
-//                .start(MainActivity.this);
-
-        // TODO: 16/7/28 加载大图的话,可以使用上面这个,然后进去改改界面,并且将所有的data都存到selectedPhotos里面,也是String的
         setOnClickListener(R.id.iv, v -> RxBus.INSTANCE.send(new PhotoViewEvent(data.getPicUrl())));
 
     }

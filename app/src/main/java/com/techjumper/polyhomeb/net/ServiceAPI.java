@@ -9,6 +9,7 @@ import com.techjumper.polyhomeb.entity.PropertyPlacardDetailEntity;
 import com.techjumper.polyhomeb.entity.PropertyPlacardEntity;
 import com.techjumper.polyhomeb.entity.PropertyRepairDetailEntity;
 import com.techjumper.polyhomeb.entity.PropertyRepairEntity;
+import com.techjumper.polyhomeb.entity.SectionsEntity;
 import com.techjumper.polyhomeb.entity.TrueEntity;
 import com.techjumper.polyhomeb.entity.UploadPicEntity;
 
@@ -353,9 +354,21 @@ public interface ServiceAPI {
 
     /**
      * 回复帖子
-     * @param entity
-     * @return
      */
     @POST("comment")
     Observable<TrueEntity> replyComment(@Body BaseArgumentsEntity entity);
+
+    /**
+     * 友邻-获取版块接口
+     */
+    @GET("sections")
+    Observable<SectionsEntity> getSections(@QueryMap Map<String, String> stringStringMap);
+
+    /**
+     * 友邻发帖或者闲置
+     */
+    @POST("article")
+    Observable<TrueEntity> newArticle(@Body BaseArgumentsEntity entity);
+
 }
+
