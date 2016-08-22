@@ -73,6 +73,7 @@
                         style="@style/InfoTitleStyle"
                         android:layout_width="164.5dp"
                         android:layout_height="62dp"
+                        android:visibility="gone"
                         android:text="@string/info_medical_title" />
                 </RadioGroup>
             </LinearLayout>
