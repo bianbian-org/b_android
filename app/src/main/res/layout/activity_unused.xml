@@ -73,6 +73,7 @@
             android:orientation="horizontal">
 
             <EditText
+                android:singleLine="true"
                 android:id="@+id/et_title"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
@@ -191,6 +192,7 @@
                     android:textSize="@dimen/sp_14" />
 
                 <EditText
+                    
                     android:layout_centerVertical="true"
                     android:id="@+id/et_second_hand_price"
                     android:layout_width="match_parent"

@@ -4,8 +4,11 @@ import android.app.Activity;
 import android.os.Bundle;
 import android.webkit.JavascriptInterface;
 
+import com.techjumper.corelib.rx.tools.RxBus;
 import com.techjumper.corelib.utils.common.AcHelper;
+import com.techjumper.corelib.utils.window.ToastUtils;
 import com.techjumper.polyhomeb.Constant;
+import com.techjumper.polyhomeb.entity.event.RefreshStopEvent;
 import com.techjumper.polyhomeb.mvp.v.activity.ReplyCommentActivity;
 import com.techjumper.polyhomeb.mvp.v.activity.ReplyDetailActivity;
 import com.techjumper.polyhomeb.mvp.v.activity.WebViewShowBigPicActivity;
@@ -86,10 +89,18 @@ public class JavascriptObject {
      * 查看大图
      */
     @JavascriptInterface
-    public void imageView(int index, String[] s) {
+    public void imageView(int index, String[] urls) {
         Bundle bundle = new Bundle();
         bundle.putInt(Constant.JS_BIG_PIC_INDEX, index);
-        bundle.putStringArray(Constant.JS_BIG_PIC_ARRAY, s);
+        bundle.putStringArray(Constant.JS_BIG_PIC_ARRAY, urls);
         new AcHelper.Builder(mActivity).extra(bundle).target(WebViewShowBigPicActivity.class).start();
+    }
+
+    /**
+     * 刷新
+     */
+    @JavascriptInterface
+    public void response(String s) {
+        RxBus.INSTANCE.send(new RefreshStopEvent());
     }
 }

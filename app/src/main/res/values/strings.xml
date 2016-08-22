@@ -164,6 +164,7 @@
     <string name="origin_price">原价:</string>
     <string name="discount">是否接受议价</string>
     <string name="please_input_your_second_hand_price">请输入闲置物品的二手价</string>
+    <string name="web_view_load_error">加载失败了,点我或者下拉刷新试试</string>
 
 
 </resources>

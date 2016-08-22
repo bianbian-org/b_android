@@ -7,6 +7,7 @@ import com.techjumper.corelib.rx.tools.RxUtils;
 import com.techjumper.corelib.utils.common.AcHelper;
 import com.techjumper.corelib.utils.common.ResourceUtils;
 import com.techjumper.polyhomeb.R;
+import com.techjumper.polyhomeb.entity.event.RefreshStopEvent;
 import com.techjumper.polyhomeb.entity.event.ReloadWebPageEvent;
 import com.techjumper.polyhomeb.mvp.v.activity.NewInvitationActivity;
 import com.techjumper.polyhomeb.mvp.v.activity.NewUnusedActivity;
@@ -46,6 +47,8 @@ public class FriendFragmentPresenter extends AppBaseFragmentPresenter<FriendFrag
                 mSub1 = RxBus.INSTANCE.asObservable().subscribe(o -> {
                     if (o instanceof ReloadWebPageEvent) {
                         getView().getWebView().reload();
+                    } else if (o instanceof RefreshStopEvent) {
+                        getView().stopRefresh("");
                     }
                 }));
 
