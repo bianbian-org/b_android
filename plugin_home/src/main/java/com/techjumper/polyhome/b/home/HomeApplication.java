@@ -1,5 +1,7 @@
 package com.techjumper.polyhome.b.home;
 
+import android.util.Log;
+
 import com.techjumper.corelib.utils.Utils;
 import com.techjumper.lib2.others.Lib2Application;
 import com.techjumper.plugincommunicateengine.PluginEngine;
@@ -24,6 +26,7 @@ public class HomeApplication extends Lib2Application {
 
     @Override
     protected String getDefaultBaseUrl() {
+        Log.d("hehe", Config.sBaseUrl);
         return Config.sBaseUrl;
     }
 

@@ -2,6 +2,7 @@ package com.techjumper.polyhome.b.home.mvp.p.fragment;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.Html;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
@@ -204,7 +205,8 @@ public class PloyhomeFragmentPresenter extends AppBaseFragmentPresenter<Ployhome
 
                         Log.d("pluginUserInfo", "更新公告结果: Content: " + entity.getContent() + "Title :" + entity.getTitle());
 
-                        getView().getNoticeContent().setText(StringUtil.delHTMLTag(entity.getContent()));
+//                        getView().getNoticeContent().setText(StringUtil.delHTMLTag(entity.getContent()));
+                        getView().getNoticeContent().setText(Html.fromHtml(entity.getContent()));
                         getView().getNoticeTitle().setText(TextUtils.isEmpty(entity.getTitle()) ? "" : entity.getTitle());
 
                         type = entity.getType();

@@ -1,6 +1,7 @@
 package com.techjumper.polyhome.b.info.viewholder;
 
 
+import android.text.Html;
 import android.view.View;
 
 import com.steve.creact.annotation.DataBean;
@@ -33,7 +34,8 @@ public class AnnouncementViewHolder extends BaseRecyclerViewHolder<AnnouncementE
         String date = data.getTime();
 
         setText(R.id.info_title, title);
-        setText(R.id.info_content, StringUtil.delHTMLTag(content));
+//        setText(R.id.info_content, StringUtil.delHTMLTag(content));
+        setText(R.id.info_content, Html.fromHtml(content));
         setText(R.id.info_date, date);
 
         setOnItemClickListener(v -> {

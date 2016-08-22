@@ -1,5 +1,7 @@
 package com.techjumper.polyhome.b.info;
 
+import com.techjumper.commonres.ComConstant;
+
 /**
  * * * * * * * * * * * * * * * * * * * * * * *
  * Created by zhaoyiding
@@ -15,8 +17,8 @@ public class Config {
     /**
      * 默认接口地址
      */
-    public static String sBaseUrl = "http://pl.techjumper.com/api/v1/";
+    public static String sBaseUrl = ComConstant.BASE_DEBUG_URL;
 
-    public static String sBaseBUrl = "http://pl.techjumper.com/api/v1b/";
+    public static String sBaseBUrl = ComConstant.BASE_DEBUG_B_URL;
 
 }
