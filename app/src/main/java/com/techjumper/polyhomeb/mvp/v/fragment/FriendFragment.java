@@ -1,5 +1,7 @@
 package com.techjumper.polyhomeb.mvp.v.fragment;
 
+import android.annotation.TargetApi;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.text.TextUtils;
@@ -12,6 +14,7 @@ import android.widget.ImageView;
 
 import com.techjumper.corelib.mvp.factory.Presenter;
 import com.techjumper.corelib.rx.tools.RxBus;
+import com.techjumper.corelib.utils.window.ToastUtils;
 import com.techjumper.polyhomeb.Config;
 import com.techjumper.polyhomeb.Constant;
 import com.techjumper.polyhomeb.R;
@@ -49,8 +52,9 @@ public class FriendFragment extends AppBaseFragment<FriendFragmentPresenter>
     @Bind(R.id.ptr)
     PtrClassicFrameLayout mPtr;
 
-    private boolean mCanRefresh = true;
-    private String mRefreshType = "";
+    private boolean mCanRefresh = true;   //可否下拉刷新
+    private String mRefreshType = "";     //下拉刷新的类型:根据url带的refresh=这个参数来判断
+    private boolean mIsOtherError = false;//是不是其他类型的错误(其他类型错误包括:404.500,等等,以及断网这种错误)
 
     public static FriendFragment getInstance() {
         return new FriendFragment();
@@ -140,7 +144,14 @@ public class FriendFragment extends AppBaseFragment<FriendFragmentPresenter>
         mPtr.setPtrHandler(new PtrDefaultHandler() {
             @Override
             public void onRefreshBegin(PtrFrameLayout frame) {
-                refresh();
+                //判断是哪种情况的刷新:如果是404,500之类的,或者断网这种错误,导致用户手动刷新的,那么肯定就需要reload
+                //如果不是以上情况导致的用户手动下拉刷新,那么就调用refresh()刷新,具体的刷新方式,按照url的refresh=参数来做,也就是refresh()自己去判断
+                if (mIsOtherError) {
+                    mWebView.reload();
+                    mIsOtherError = false;
+                } else {
+                    refresh();
+                }
                 new Handler().postDelayed(() -> stopRefresh(""), NetHelper.GLOBAL_TIMEOUT);
             }
 
@@ -201,15 +212,20 @@ public class FriendFragment extends AppBaseFragment<FriendFragmentPresenter>
     public void onReceivedError(WebView view, int errorCode, String description, String failingUrl) {
 //        mWebView.loadUrl("http://pl.techjumper.com/neighbor/404");
 //        mWebView.loadUrl(Config.sFriendErrorPage);
+        ToastUtils.show("网页错误,错误码:" + errorCode);
+        mIsOtherError = true;
     }
 
     /**
      * 处理Http是不是Error的接口
      */
+    @TargetApi(Build.VERSION_CODES.LOLLIPOP)
     @Override
     public void onReceivedHttpError(WebView view, WebResourceRequest request, WebResourceResponse errorResponse) {
 //        mWebView.loadUrl("http://pl.techjumper.com/neighbor/404");
 //        mWebView.loadUrl(Config.sFriendErrorPage);
+        ToastUtils.show("HTTP错误,Status码:" + errorResponse.getStatusCode());
+        mIsOtherError = true;
     }
 
     /**
