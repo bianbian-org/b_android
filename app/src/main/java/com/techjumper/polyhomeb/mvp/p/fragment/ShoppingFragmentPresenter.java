@@ -4,6 +4,7 @@ import android.os.Bundle;
 
 import com.techjumper.corelib.rx.tools.RxBus;
 import com.techjumper.corelib.rx.tools.RxUtils;
+import com.techjumper.polyhomeb.entity.event.RefreshStopEvent;
 import com.techjumper.polyhomeb.entity.event.ReloadWebPageEvent;
 import com.techjumper.polyhomeb.mvp.v.fragment.ShoppingFragment;
 
@@ -35,6 +36,8 @@ public class ShoppingFragmentPresenter extends AppBaseFragmentPresenter<Shopping
                 mSub1 = RxBus.INSTANCE.asObservable().subscribe(o -> {
                     if (o instanceof ReloadWebPageEvent) {
                         getView().getWebView().reload();
+                    } else if (o instanceof RefreshStopEvent) {
+                        getView().stopRefresh("");
                     }
                 }));
 

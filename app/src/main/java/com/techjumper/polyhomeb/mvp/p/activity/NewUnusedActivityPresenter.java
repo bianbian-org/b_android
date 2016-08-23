@@ -30,7 +30,8 @@ import rx.Subscription;
  * Date: 16/8/11
  * * * * * * * * * * * * * * * * * * * * * * *
  **/
-public class NewUnusedActivityPresenter extends AppBaseActivityPresenter<NewUnusedActivity> implements CompoundButton.OnCheckedChangeListener {
+public class NewUnusedActivityPresenter extends AppBaseActivityPresenter<NewUnusedActivity>
+        implements CompoundButton.OnCheckedChangeListener {
 
     private NewUnusedActivityModel mModel = new NewUnusedActivityModel(this);
 

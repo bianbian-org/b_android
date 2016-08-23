@@ -164,6 +164,22 @@ public class FriendFragment extends AppBaseFragment<FriendFragmentPresenter>
         }
     }
 
+    @Override
+    public void onDestroy() {
+        if (mWebView != null)
+            mWebView.destroy();
+        super.onDestroy();
+    }
+
+    @Override
+    public void onDetach() {
+        if (mWebView != null) {
+            mWebView.loadUrl("");
+            mWebView.destroy();
+        }
+        super.onDetach();
+    }
+
     /**
      * 页面加载完毕之后的接口
      */

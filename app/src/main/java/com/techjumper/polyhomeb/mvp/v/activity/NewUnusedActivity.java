@@ -3,12 +3,10 @@ package com.techjumper.polyhomeb.mvp.v.activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.widget.GridLayoutManager;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.ScrollView;
 import android.widget.TextView;
 
 import com.jakewharton.rxbinding.widget.RxTextView;
@@ -53,8 +51,8 @@ public class NewUnusedActivity extends AppBaseActivity<NewUnusedActivityPresente
     ImageView mIvTriangle;  //栏目类型的指示器
     @Bind(R.id.layout_root)
     View mRootView;   //页面跟布局,供popupwindow使用
-    @Bind(R.id.layout)
-    ScrollView mSv;
+//    @Bind(R.id.layout)
+//    ScrollView mSv;
     @Bind(R.id.layout_static_head)
     View mStaticHead;
     @Bind(R.id.title_group)
@@ -99,7 +97,6 @@ public class NewUnusedActivity extends AppBaseActivity<NewUnusedActivityPresente
 
         getIMEHeight();
         processScreenHeightAndIME();
-        dispatchScrollEvent();
 
         RxTextView.textChangeEvents(mEtContent).subscribe(textViewTextChangeEvent -> {
             int length = mEtContent.getText().toString().length();
@@ -186,7 +183,7 @@ public class NewUnusedActivity extends AppBaseActivity<NewUnusedActivityPresente
                 if (visible && !mIsIMEVisible) {
                     mStaticHead.setVisibility(View.GONE);
                     calculateHeight(false);
-                    mSv.smoothScrollTo(0, 0);
+//                    mSv.smoothScrollTo(0, 0);
                     mIsIMEVisible = true;
                 } else if (!visible && mIsIMEVisible) {
                     mStaticHead.setVisibility(View.VISIBLE);
@@ -196,20 +193,6 @@ public class NewUnusedActivity extends AppBaseActivity<NewUnusedActivityPresente
                     mIsIMEVisible = false;
                 }
             }
-        });
-    }
-
-    private void dispatchScrollEvent() {
-        mEtContent.setOnTouchListener((v, event) -> {
-            switch (event.getActionMasked()) {
-                case MotionEvent.ACTION_DOWN:
-                    mSv.requestDisallowInterceptTouchEvent(true);
-                    break;
-                case MotionEvent.ACTION_UP:
-                    mSv.requestDisallowInterceptTouchEvent(false);
-                    break;
-            }
-            return false;
         });
     }
 

@@ -39,8 +39,7 @@ public class JavascriptObject {
     //两种情况,event对应事件,没有链接,http对应链接
     //event://NativeNewComment?id=11&token=123232
     //http://www.baidu.com?id=11&type=1
-    @JavascriptInterface
-    public void pageJump(String url) {
+    private void pageJump(String url) {
         if (url.startsWith("http")) {
             Bundle bundle = new Bundle();
             bundle.putString(Constant.JS_PAGE_JUMP_URL, url);
@@ -92,8 +91,7 @@ public class JavascriptObject {
     /**
      * 查看大图
      */
-    @JavascriptInterface
-    public void imageView(int index, String[] urls) {
+    private void imageView(int index, String[] urls) {
         Bundle bundle = new Bundle();
         bundle.putInt(Constant.JS_BIG_PIC_INDEX, index);
         bundle.putStringArray(Constant.JS_BIG_PIC_ARRAY, urls);
@@ -103,8 +101,7 @@ public class JavascriptObject {
     /**
      * 刷新
      */
-    @JavascriptInterface
-    public void response(String s) {
+    private void response() {
         RxBus.INSTANCE.send(new RefreshStopEvent());
     }
 
@@ -113,6 +110,7 @@ public class JavascriptObject {
      */
     @JavascriptInterface
     public void postMessage(String json) {
+
         if (TextUtils.isEmpty(json)) return;
         JS2JavaBaseEntity baseEntity = GsonUtils.fromJson(json, JS2JavaBaseEntity.class);
         if (baseEntity == null) return;
@@ -122,21 +120,23 @@ public class JavascriptObject {
         switch (method) {
             case "PageJump":
                 JS2JavaPageJumpEntity js2JavaPageJumpEntity = GsonUtils.fromJson(json, JS2JavaPageJumpEntity.class);
-                List<JS2JavaPageJumpEntity.DataBean.Params> params = js2JavaPageJumpEntity.getData().getParams();
-                JS2JavaPageJumpEntity.DataBean.Params params1 = params.get(0);
-                String url = params1.getUrl();
+                JS2JavaPageJumpEntity.ParamsBean params = js2JavaPageJumpEntity.getParams();
+                String url = params.getUrl();
                 pageJump(url);
                 break;
             case "ImageView":
                 JS2JavaImageViewEntity js2JavaImageViewEntity = GsonUtils.fromJson(json, JS2JavaImageViewEntity.class);
-                List<JS2JavaImageViewEntity.DataBean.Params> params2 = js2JavaImageViewEntity.getData().getParams();
-                JS2JavaImageViewEntity.DataBean.Params params3 = params2.get(0);
-                int index = params3.getIndex();
-                String[] images = params3.getImages();
-                imageView(index, images);
+                JS2JavaImageViewEntity.ParamsBean params1 = js2JavaImageViewEntity.getParams();
+                int index = params1.getIndex();
+                List<String> images = params1.getImages();
+                String[] imageArray = new String[images.size()];
+                for (int i = 0; i < images.size(); i++) {
+                    imageArray[i] = images.get(i);
+                }
+                imageView(index, imageArray);
                 break;
             case "RefreshLoaded":
-                response("");
+                response();
                 break;
 
         }

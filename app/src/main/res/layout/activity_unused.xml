@@ -9,7 +9,8 @@
 
     <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="match_parent"
+        android:scrollbars="none">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -100,47 +101,39 @@
 
             </LinearLayout>
 
-            <ScrollView
-                android:id="@+id/layout"
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@color/color_ffffff"
-                android:fillViewport="true">
+                android:orientation="vertical">
 
-                <LinearLayout
+                <EditText
+                    android:id="@+id/et_content"
                     android:layout_width="match_parent"
+                    android:layout_height="@dimen/dp_200"
+                    android:background="@null"
+                    android:gravity="top"
+                    android:hint="@string/complain_text_hint"
+                    android:maxLength="1000"
+                    android:overScrollMode="always"
+                    android:padding="@dimen/dp_7"
+                    android:scrollbars="vertical"
+                    android:textColor="@color/color_727272"
+                    android:textColorHint="@color/color_acacac"
+                    android:textSize="@dimen/sp_16" />
+
+                <cn.finalteam.loadingviewfinal.RecyclerViewFinal
+                    android:id="@+id/rv"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:background="@color/color_ffffff"
-                    android:orientation="vertical">
+                    android:layout_marginBottom="@dimen/dp_7"
+                    android:layout_marginLeft="@dimen/dp_7"
+                    android:layout_marginRight="@dimen/dp_7"
+                    android:layout_marginTop="@dimen/dp_7"
+                    android:overScrollMode="never" />
 
-                    <EditText
-                        android:id="@+id/et_content"
-                        android:layout_width="match_parent"
-                        android:layout_height="@dimen/dp_200"
-                        android:background="@null"
-                        android:gravity="top"
-                        android:hint="@string/complain_text_hint"
-                        android:maxLength="1000"
-                        android:overScrollMode="always"
-                        android:padding="@dimen/dp_7"
-                        android:scrollbars="vertical"
-                        android:textColor="@color/color_727272"
-                        android:textColorHint="@color/color_acacac"
-                        android:textSize="@dimen/sp_16" />
-
-                    <cn.finalteam.loadingviewfinal.RecyclerViewFinal
-                        android:id="@+id/rv"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginBottom="@dimen/dp_7"
-                        android:layout_marginLeft="@dimen/dp_7"
-                        android:layout_marginRight="@dimen/dp_7"
-                        android:layout_marginTop="@dimen/dp_7"
-                        android:overScrollMode="never" />
-
-                    <include layout="@layout/item_property_repair_divider_long" />
-                </LinearLayout>
-            </ScrollView>
+                <include layout="@layout/item_property_repair_divider_long" />
+            </LinearLayout>
 
             <FrameLayout
                 android:layout_width="match_parent"
@@ -160,140 +153,141 @@
                     android:visibility="invisible" />
             </FrameLayout>
 
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/dp_25"
+                android:background="@color/color_ffffff"
+                android:orientation="vertical">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/dp_50"
+                    android:orientation="horizontal">
+
+                    <RelativeLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:paddingBottom="@dimen/dp_16"
+                        android:paddingLeft="@dimen/dp_14"
+                        android:paddingRight="@dimen/dp_14"
+                        android:paddingTop="@dimen/dp_16">
+
+                        <TextView
+                            android:id="@+id/tv_second_hand_price"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginRight="@dimen/dp_5"
+                            android:text="@string/second_hand_price"
+                            android:textColor="@color/color_727272"
+                            android:textSize="@dimen/sp_14" />
+
+                        <TextView
+                            android:id="@+id/tv_second_hand_￥"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="@dimen/dp_5"
+                            android:layout_toRightOf="@+id/tv_second_hand_price"
+                            android:text="@string/￥"
+                            android:textColor="@color/color_a8a8a8"
+                            android:textSize="@dimen/sp_14" />
+
+                        <EditText
+                            android:id="@+id/et_second_hand_price"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_centerVertical="true"
+                            android:layout_toRightOf="@+id/tv_second_hand_￥"
+                            android:background="@null"
+                            android:imeOptions="actionNext"
+                            android:inputType="number"
+                            android:maxLength="7"
+                            android:singleLine="true"
+                            android:textColor="@color/color_3e3e3e"
+                            android:textSize="@dimen/sp_14" />
+
+                    </RelativeLayout>
+
+                    <View
+                        android:layout_width="0.5dp"
+                        android:layout_height="wrap_content"
+                        android:background="@color/color_ceced2" />
+
+                    <RelativeLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:paddingBottom="@dimen/dp_16"
+                        android:paddingLeft="@dimen/dp_14"
+                        android:paddingRight="@dimen/dp_14"
+                        android:paddingTop="@dimen/dp_16">
+
+                        <TextView
+                            android:id="@+id/tv_origin_price"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginRight="@dimen/dp_5"
+                            android:text="@string/origin_price"
+                            android:textColor="@color/color_727272"
+                            android:textSize="@dimen/sp_14" />
+
+                        <TextView
+                            android:id="@+id/tv_origin_￥"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="@dimen/dp_5"
+                            android:layout_toRightOf="@+id/tv_origin_price"
+                            android:text="@string/￥"
+                            android:textColor="@color/color_a8a8a8"
+                            android:textSize="@dimen/sp_14" />
+
+                        <EditText
+                            android:id="@+id/et_origin_price"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_centerVertical="true"
+                            android:layout_toRightOf="@+id/tv_origin_￥"
+                            android:background="@null"
+                            android:imeOptions="actionDone"
+                            android:inputType="number"
+                            android:maxLength="7"
+                            android:singleLine="true"
+                            android:textColor="@color/color_3e3e3e"
+                            android:textSize="@dimen/sp_14" />
+
+                    </RelativeLayout>
+                </LinearLayout>
+
+                <include layout="@layout/item_property_repair_divider_long" />
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/dp_50">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentLeft="true"
+                        android:layout_centerVertical="true"
+                        android:layout_marginLeft="@dimen/dp_14"
+                        android:text="@string/discount"
+                        android:textColor="@color/color_3e3e3e"
+                        android:textSize="@dimen/sp_16" />
+
+                    <com.techjumper.polyhomeb.widget.SwitchButton
+                        android:id="@+id/sb"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentRight="true"
+                        android:layout_centerVertical="true"
+                        android:layout_marginRight="@dimen/dp_14" />
+
+                </RelativeLayout>
+            </LinearLayout>
+
         </LinearLayout>
 
     </ScrollView>
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/dp_25"
-        android:background="@color/color_ffffff"
-        android:orientation="vertical">
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/dp_50"
-            android:orientation="horizontal">
-
-            <RelativeLayout
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:paddingBottom="@dimen/dp_16"
-                android:paddingLeft="@dimen/dp_14"
-                android:paddingRight="@dimen/dp_14"
-                android:paddingTop="@dimen/dp_16">
-
-                <TextView
-                    android:id="@+id/tv_second_hand_price"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginRight="@dimen/dp_5"
-                    android:text="@string/second_hand_price"
-                    android:textColor="@color/color_727272"
-                    android:textSize="@dimen/sp_14" />
-
-                <TextView
-                    android:id="@+id/tv_second_hand_￥"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="@dimen/dp_5"
-                    android:layout_toRightOf="@+id/tv_second_hand_price"
-                    android:text="@string/￥"
-                    android:textColor="@color/color_a8a8a8"
-                    android:textSize="@dimen/sp_14" />
-
-                <EditText
-                    android:textSize="@dimen/sp_14"
-                    android:id="@+id/et_second_hand_price"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_centerVertical="true"
-                    android:layout_toRightOf="@+id/tv_second_hand_￥"
-                    android:background="@null"
-                    android:imeOptions="actionNext"
-                    android:inputType="number"
-                    android:maxLength="7"
-                    android:singleLine="true"
-                    android:textColor="@color/color_3e3e3e" />
-
-            </RelativeLayout>
-
-            <View
-                android:layout_width="0.5dp"
-                android:layout_height="wrap_content"
-                android:background="@color/color_ceced2" />
-
-            <RelativeLayout
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:paddingBottom="@dimen/dp_16"
-                android:paddingLeft="@dimen/dp_14"
-                android:paddingRight="@dimen/dp_14"
-                android:paddingTop="@dimen/dp_16">
-
-                <TextView
-                    android:id="@+id/tv_origin_price"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginRight="@dimen/dp_5"
-                    android:text="@string/origin_price"
-                    android:textColor="@color/color_727272"
-                    android:textSize="@dimen/sp_14" />
-
-                <TextView
-                    android:id="@+id/tv_origin_￥"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="@dimen/dp_5"
-                    android:layout_toRightOf="@+id/tv_origin_price"
-                    android:text="@string/￥"
-                    android:textColor="@color/color_a8a8a8"
-                    android:textSize="@dimen/sp_14" />
-
-                <EditText
-                    android:textSize="@dimen/sp_14"
-                    android:id="@+id/et_origin_price"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_centerVertical="true"
-                    android:layout_toRightOf="@+id/tv_origin_￥"
-                    android:background="@null"
-                    android:imeOptions="actionDone"
-                    android:inputType="number"
-                    android:maxLength="7"
-                    android:singleLine="true"
-                    android:textColor="@color/color_3e3e3e" />
-
-            </RelativeLayout>
-        </LinearLayout>
-
-        <include layout="@layout/item_property_repair_divider_long" />
-
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/dp_50">
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentLeft="true"
-                android:layout_centerVertical="true"
-                android:layout_marginLeft="@dimen/dp_14"
-                android:text="@string/discount"
-                android:textColor="@color/color_3e3e3e"
-                android:textSize="@dimen/sp_16" />
-
-            <com.techjumper.polyhomeb.widget.SwitchButton
-                android:id="@+id/sb"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentRight="true"
-                android:layout_centerVertical="true"
-                android:layout_marginRight="@dimen/dp_14" />
-
-        </RelativeLayout>
-    </LinearLayout>
 </LinearLayout>

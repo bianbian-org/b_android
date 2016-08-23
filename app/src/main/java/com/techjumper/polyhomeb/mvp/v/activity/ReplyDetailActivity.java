@@ -126,6 +126,12 @@ public class ReplyDetailActivity extends AppBaseActivity<ReplyDetailActivityPres
         super.onBackPressed();
     }
 
+    @Override
+    protected void onDestroy() {
+        if (mWebView != null) mWebView.destroy();
+        super.onDestroy();
+    }
+
     public PolyWebView getWebView() {
         return mWebView;
     }
