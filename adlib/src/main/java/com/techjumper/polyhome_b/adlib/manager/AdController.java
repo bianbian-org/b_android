@@ -73,6 +73,14 @@ public class AdController {
     private WakeUpReceiver mWakeUpReceiver = new WakeUpReceiver();
 
     private ArrayList<IAlarm> iAlarmListeners = new ArrayList<>();
+    /**
+     * 是否开始上传广告
+     */
+    private static boolean sIsStartedUploadAd;
+    /**
+     * 下一次广告上传的时间(时间戳)
+     */
+    private static long sUploadAdTime;
 
     Subscription subscribe = null;
     private int count;
@@ -100,8 +108,25 @@ public class AdController {
         PollingUtils.stopPollingService(Utils.appContext
                 , AdStatService.class, "", CODE_AD_STAT);
         PollingUtils.startPollingServiceBySet(Utils.appContext
-                , System.currentTimeMillis() + AdController.AD_STAT_INTERVAL
+                , getAdStatUploadNextTime()
                 , AdStatService.class, "", true, AdController.CODE_AD_STAT, true);
+        sIsStartedUploadAd = true;
+    }
+
+    public static boolean isStartedUploadAd() {
+        return sIsStartedUploadAd;
+    }
+
+    public static long getAdStatUploadNextTime() {
+        return getAdStatUploadNextTime(false);
+    }
+
+    public static long getAdStatUploadNextTime(boolean justReturn) {
+        if (justReturn) {
+            return sUploadAdTime;
+        }
+        sUploadAdTime = System.currentTimeMillis() + AdController.AD_STAT_INTERVAL;
+        return sUploadAdTime;
     }
 
     public boolean wakeUpScreen() {

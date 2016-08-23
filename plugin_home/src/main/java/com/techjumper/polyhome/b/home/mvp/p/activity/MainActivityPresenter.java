@@ -49,9 +49,11 @@ import com.techjumper.polyhome_b.adlib.manager.AdController;
 import com.techjumper.polyhome_b.adlib.window.AdWindowManager;
 
 import java.io.File;
+import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.TimeZone;
 import java.util.concurrent.TimeUnit;
 
 import butterknife.OnClick;
@@ -162,12 +164,23 @@ public class MainActivityPresenter extends AppBaseActivityPresenter<MainActivity
         AlarmManagerUtil.setNoticeTime(Utils.appContext);
     };
 
-//    @OnClick(R.id.title_img)
-//    void titleImg() {
+    @OnClick(R.id.title_img)
+    void titleImg() {
 //        if (ComConstant.titleFinish) {
 //            getView().finish();
 //        }
-//    }
+        if (!AdController.isStartedUploadAd()) {
+            ToastUtils.show("还没有开始获取广告");
+            return;
+        }
+
+        long adStatUploadNextTime = AdController.getAdStatUploadNextTime(true);
+        Calendar c = Calendar.getInstance();
+        c.setTimeZone(TimeZone.getTimeZone("GMT+8"));
+        c.setTimeInMillis(adStatUploadNextTime);
+        ToastUtils.show("下次上报广告时间 (播放次数统计)\n"
+                + c.get(Calendar.HOUR_OF_DAY) + "点" + c.get(Calendar.MINUTE) + "分" + c.get(Calendar.SECOND) + "秒");
+    }
 
     @OnClick(R.id.title)
     void title() {

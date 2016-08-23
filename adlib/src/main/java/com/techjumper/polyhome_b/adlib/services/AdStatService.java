@@ -47,7 +47,7 @@ public class AdStatService extends Service {
     public int onStartCommand(Intent intent, int flags, int startId) {
 
         PollingUtils.startPollingServiceBySet(Utils.appContext
-                , System.currentTimeMillis() + AdController.AD_STAT_INTERVAL
+                , AdController.getAdStatUploadNextTime()
                 , AdStatService.class, "", true, AdController.CODE_AD_STAT, true);
 
         String familyId = PreferenceUtils.getPreference(SP_NAME).getString(KEY_FAMILY_ID, "");
