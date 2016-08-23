@@ -145,7 +145,7 @@ public class ShoppingFragment extends AppBaseFragment<ShoppingFragmentPresenter>
      * 此处的刷新不是调用webView的reload(),而是调用js的方法->JAVA_2_JS_REFRESH;js那边通过Ajax来刷新,所以不用单纯重新刷新界面
      */
     private void refresh() {
-        mWebView.loadUrl(Constant.JAVA_2_JS_REFRESH);
+        mWebView.reload();
     }
 
     public void stopRefresh(String msg) {

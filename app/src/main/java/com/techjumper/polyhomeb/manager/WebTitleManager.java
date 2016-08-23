@@ -18,7 +18,8 @@ import java.net.URLDecoder;
 public class WebTitleManager {
 
     //标准格式如下
-    //http://pl.techjumper.com/neighbor/articles/show/49?title=帖子详情&left=::NativeReturn,::&right=呵呵::,呵呵::
+
+    //http://pl.techjumper.com/neighbor/articles/show/49?title=帖子详情&left=::NativeReturn,::&right=呵呵::,呵呵::&refresh=refresh
     //其中,参数的格式如下
     //title=帖子详情&left=::NativeReturn,::&right=呵呵::,呵呵::
     //当title没有某个View的时候,比如没有右边第二个,右边第一个,左边第二个,实际格式如下
@@ -28,13 +29,13 @@ public class WebTitleManager {
     private static final int LEFT_SECOND = 1;
     private static final int RIGHT_FIRST = 2;
     private static final int RIGHT_SECOND = 3;
-
     private String mUrl;
     private String mRealUrl;
     private String mTitle;
     private View mViewRoot;
     private IWebViewTitleClick mIWebViewTitleClick;
     private WebTitleHelper.Builder mWebTitleBuilder;
+    private String mRefreshType = "";
 
     /**
      * 图片icon地址
@@ -73,7 +74,7 @@ public class WebTitleManager {
 
         String[] content = mUrl.split("\\?");
         mRealUrl = content[0];   //http://pl.techjumper.com/neighbor/articles/show/49
-        String split = content[1];  //title=帖子详情&left=::NativeReturn,::&right=::,::
+        String split = content[1];  //title=帖子详情&left=::NativeReturn,::&right=::,::&refresh=refresh
 
         String[] splits = split.split("&");
         try {
@@ -85,6 +86,20 @@ public class WebTitleManager {
         processLeft(splits[1]); //left=呵呵::NativeReturn  或者  left=呵呵::NativeReturn,哈哈::NativeMenu
         processRight(splits[2]); //right=呵呵::,呵呵::  或者直接是right=(此时代表右边没有东西)
 
+        //获取刷新类型
+        if (split.indexOf("refresh=") > 0) {
+            String refresh = splits[3];
+            //证明后面还有其他的字段,还带有&,
+            if (refresh.indexOf("&") > 0) {
+                String[] split1 = refresh.split("&");
+                String s = split1[0];  //得到refresh=refresh
+                String replace = s.replace("refresh=", "");
+                mRefreshType = replace;
+            } else {  //证明后面没得其他字段了
+                String replace = refresh.replace("refresh=", "");
+                mRefreshType = replace;
+            }
+        }
     }
 
     //left=左1:url:NativeReturn,左2:url:NativeMenu
@@ -568,6 +583,10 @@ public class WebTitleManager {
 
     public String getRealUrl() {
         return mRealUrl;
+    }
+
+    public String getRefreshType() {
+        return mRefreshType;
     }
 
 }

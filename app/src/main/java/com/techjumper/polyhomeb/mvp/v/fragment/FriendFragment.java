@@ -50,6 +50,7 @@ public class FriendFragment extends AppBaseFragment<FriendFragmentPresenter>
     PtrClassicFrameLayout mPtr;
 
     private boolean mCanRefresh = true;
+    private String mRefreshType = "";
 
     public static FriendFragment getInstance() {
         return new FriendFragment();
@@ -64,7 +65,8 @@ public class FriendFragment extends AppBaseFragment<FriendFragmentPresenter>
     @Override
     protected void initView(Bundle savedInstanceState) {
         String url = Config.sFriend;
-        new WebTitleManager(url, mViewRoot, this);
+        WebTitleManager webTitleManager = new WebTitleManager(url, mViewRoot, this);
+        mRefreshType = webTitleManager.getRefreshType();
         mWebView.addJsInterface(getActivity(), Constant.JS_NATIVE_BRIDGE);
         mWebView.processBack();
         mWebView.loadUrl(url);
@@ -153,7 +155,11 @@ public class FriendFragment extends AppBaseFragment<FriendFragmentPresenter>
      * 此处的刷新不是调用webView的reload(),而是调用js的方法->JAVA_2_JS_REFRESH;js那边通过Ajax来刷新,所以不用单纯重新刷新界面
      */
     private void refresh() {
-        mWebView.loadUrl(Constant.JAVA_2_JS_REFRESH);
+        if (TextUtils.isEmpty(mRefreshType)) {
+            mWebView.reload();
+        } else {
+            mWebView.loadUrl("javascript:" + mRefreshType + "()");
+        }
     }
 
     public void stopRefresh(String msg) {

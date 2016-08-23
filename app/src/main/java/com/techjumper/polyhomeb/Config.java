@@ -16,7 +16,7 @@ public class Config {
 
     public static String sHost = "http://poly.techjumper.com";
 
-    public static String sFriend = "http://pl.techjumper.com/neighbor?title=友邻&left=::NativeMenu&right=::NativeNewArticle";
+    public static String sFriend = "http://pl.techjumper.com/neighbor?title=友邻&left=::NativeMenu&right=::NativeNewArticle&refresh=refresh";
     public static String sShopping = "http://pl.techjumper.com/shop/mobile?title=商城&left=::NativeMenu&right=";
     public static String sFriendErrorPage = "file:///android_asset/404.html";
 

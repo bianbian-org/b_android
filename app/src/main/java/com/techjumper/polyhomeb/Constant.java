@@ -43,11 +43,6 @@ public class Constant {
     /* ------------------JS -------------------*/
 
     /**
-     * java调用JS的刷新
-     */
-    public static final String JAVA_2_JS_REFRESH = "javascript:refresh()";
-
-    /**
      * className
      */
     public static final String JS_NATIVE_BRIDGE = "NativeBridge";
