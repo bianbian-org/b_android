@@ -229,7 +229,7 @@ public class NewUnusedActivityPresenter extends AppBaseActivityPresenter<NewUnus
 //                            }
 //
 //                            @Override
-//                            public void onError(Throwable e) {
+//                            public void onReceivedError(Throwable e) {
 //                                isFirstRequestSuccess = false;
 //                                ToastUtils.show(getView().getString(R.string.get_sections));
 //                            }

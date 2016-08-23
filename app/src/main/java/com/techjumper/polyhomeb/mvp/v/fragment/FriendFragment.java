@@ -5,6 +5,8 @@ import android.os.Handler;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.webkit.WebResourceRequest;
+import android.webkit.WebResourceResponse;
 import android.webkit.WebView;
 import android.widget.ImageView;
 
@@ -147,6 +149,9 @@ public class FriendFragment extends AppBaseFragment<FriendFragmentPresenter>
         });
     }
 
+    /**
+     * 此处的刷新不是调用webView的reload(),而是调用js的方法->JAVA_2_JS_REFRESH;js那边通过Ajax来刷新,所以不用单纯重新刷新界面
+     */
     private void refresh() {
         mWebView.loadUrl(Constant.JAVA_2_JS_REFRESH);
     }
@@ -159,16 +164,35 @@ public class FriendFragment extends AppBaseFragment<FriendFragmentPresenter>
         }
     }
 
+    /**
+     * 页面加载完毕之后的接口
+     */
     @Override
     public void onPageLoadFinish(WebView view, int newProgress) {
         stopRefresh("");
     }
 
+    /**
+     * 处理接收的Error的接口
+     */
     @Override
-    public void onError(WebView view, int errorCode, String description, String failingUrl) {
-        // TODO: 16/8/22 错误时候加载本地html
+    public void onReceivedError(WebView view, int errorCode, String description, String failingUrl) {
+//        mWebView.loadUrl("http://pl.techjumper.com/neighbor/404");
+//        mWebView.loadUrl(Config.sFriendErrorPage);
     }
 
+    /**
+     * 处理Http是不是Error的接口
+     */
+    @Override
+    public void onReceivedHttpError(WebView view, WebResourceRequest request, WebResourceResponse errorResponse) {
+//        mWebView.loadUrl("http://pl.techjumper.com/neighbor/404");
+//        mWebView.loadUrl(Config.sFriendErrorPage);
+    }
+
+    /**
+     * 判断mPtr能否滑动的监听
+     */
     @Override
     public void onScrollChanged(int l, int t, int oldl, int oldt) {
         if (mWebView.getTop() == t) {

@@ -10,6 +10,7 @@ import android.view.KeyEvent;
 import android.webkit.WebChromeClient;
 import android.webkit.WebResourceError;
 import android.webkit.WebResourceRequest;
+import android.webkit.WebResourceResponse;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
@@ -124,7 +125,14 @@ public class PolyWebView extends WebView {
         @Override
         public void onReceivedError(WebView view, int errorCode, String description, String failingUrl) {
             if (iWebView != null) {
-                iWebView.onError(view, errorCode, description, failingUrl);
+                iWebView.onReceivedError(view, errorCode, description, failingUrl);
+            }
+        }
+
+        @Override
+        public void onReceivedHttpError(WebView view, WebResourceRequest request, WebResourceResponse errorResponse) {
+            if (iWebView != null) {
+                iWebView.onReceivedHttpError(view, request, errorResponse);
             }
         }
     }

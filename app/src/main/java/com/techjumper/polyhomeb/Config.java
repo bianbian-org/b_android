@@ -18,6 +18,8 @@ public class Config {
 
     public static String sFriend = "http://pl.techjumper.com/neighbor?title=友邻&left=::NativeMenu&right=::NativeNewArticle";
 
+    public static String sFriendErrorPage = "file:///android_asset/404.html";
+
 //    static {
 //        sHost = DEBUG ? "http://poly.techjumper.com" : "http://api.ourjujia.com";
 //    }

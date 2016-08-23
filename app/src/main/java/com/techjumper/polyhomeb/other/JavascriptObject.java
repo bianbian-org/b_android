@@ -2,16 +2,22 @@ package com.techjumper.polyhomeb.other;
 
 import android.app.Activity;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.webkit.JavascriptInterface;
 
 import com.techjumper.corelib.rx.tools.RxBus;
 import com.techjumper.corelib.utils.common.AcHelper;
-import com.techjumper.corelib.utils.window.ToastUtils;
+import com.techjumper.lib2.utils.GsonUtils;
 import com.techjumper.polyhomeb.Constant;
+import com.techjumper.polyhomeb.entity.JS2JavaBaseEntity;
+import com.techjumper.polyhomeb.entity.JS2JavaImageViewEntity;
+import com.techjumper.polyhomeb.entity.JS2JavaPageJumpEntity;
 import com.techjumper.polyhomeb.entity.event.RefreshStopEvent;
 import com.techjumper.polyhomeb.mvp.v.activity.ReplyCommentActivity;
 import com.techjumper.polyhomeb.mvp.v.activity.ReplyDetailActivity;
 import com.techjumper.polyhomeb.mvp.v.activity.WebViewShowBigPicActivity;
+
+import java.util.List;
 
 /**
  * * * * * * * * * * * * * * * * * * * * * * *
@@ -29,8 +35,6 @@ public class JavascriptObject {
 
     /**
      * 跳转界面:回复评论,帖子详情
-     *
-     * @param url
      */
     //两种情况,event对应事件,没有链接,http对应链接
     //event://NativeNewComment?id=11&token=123232
@@ -103,4 +107,40 @@ public class JavascriptObject {
     public void response(String s) {
         RxBus.INSTANCE.send(new RefreshStopEvent());
     }
+
+    /**
+     * 总的交互入口,根据json来判断执行的操作
+     */
+    @JavascriptInterface
+    public void postMessage(String json) {
+        if (TextUtils.isEmpty(json)) return;
+        JS2JavaBaseEntity baseEntity = GsonUtils.fromJson(json, JS2JavaBaseEntity.class);
+        if (baseEntity == null) return;
+        String method = baseEntity.getMethod();
+        if (TextUtils.isEmpty(method)) return;
+
+        switch (method) {
+            case "PageJump":
+                JS2JavaPageJumpEntity js2JavaPageJumpEntity = GsonUtils.fromJson(json, JS2JavaPageJumpEntity.class);
+                List<JS2JavaPageJumpEntity.DataBean.Params> params = js2JavaPageJumpEntity.getData().getParams();
+                JS2JavaPageJumpEntity.DataBean.Params params1 = params.get(0);
+                String url = params1.getUrl();
+                pageJump(url);
+                break;
+            case "ImageView":
+                JS2JavaImageViewEntity js2JavaImageViewEntity = GsonUtils.fromJson(json, JS2JavaImageViewEntity.class);
+                List<JS2JavaImageViewEntity.DataBean.Params> params2 = js2JavaImageViewEntity.getData().getParams();
+                JS2JavaImageViewEntity.DataBean.Params params3 = params2.get(0);
+                int index = params3.getIndex();
+                String[] images = params3.getImages();
+                imageView(index, images);
+                break;
+            case "RefreshLoaded":
+                response("");
+                break;
+
+        }
+
+    }
+
 }

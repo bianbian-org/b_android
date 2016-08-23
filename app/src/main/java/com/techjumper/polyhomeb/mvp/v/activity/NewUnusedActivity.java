@@ -13,6 +13,7 @@ import android.widget.TextView;
 
 import com.jakewharton.rxbinding.widget.RxTextView;
 import com.techjumper.corelib.mvp.factory.Presenter;
+import com.techjumper.corelib.utils.common.ResourceUtils;
 import com.techjumper.corelib.utils.common.RuleUtils;
 import com.techjumper.corelib.utils.window.StatusbarHelper;
 import com.techjumper.polyhomeb.R;
@@ -65,6 +66,10 @@ public class NewUnusedActivity extends AppBaseActivity<NewUnusedActivityPresente
     EditText mEtOriginPrice;  //原价
     @Bind(R.id.sb)
     SwitchButton mSb;  //是否接受议价
+    @Bind(R.id.tv_second_hand_￥)
+    TextView mTvSecondHand;
+    @Bind(R.id.tv_origin_￥)
+    TextView mTvOrigin;
 
     private ArrayList<String> mChoosedPhoto = new ArrayList<>();
     private NewInvitationActivityPhotoAdapter mAdapter;
@@ -105,6 +110,25 @@ public class NewUnusedActivity extends AppBaseActivity<NewUnusedActivityPresente
                 mTvInput.setVisibility(View.INVISIBLE);
             }
         });
+
+        RxTextView.textChangeEvents(mEtSecondHandPrice).subscribe(textViewTextChangeEvent -> {
+            int length = mEtSecondHandPrice.getText().toString().length();
+            if (length > 0) {
+                mTvSecondHand.setTextColor(ResourceUtils.getColorResource(R.color.color_000000));
+            } else {
+                mTvSecondHand.setTextColor(ResourceUtils.getColorResource(R.color.color_a8a8a8));
+            }
+        });
+
+        RxTextView.textChangeEvents(mEtOriginPrice).subscribe(textViewTextChangeEvent -> {
+            int length = mEtOriginPrice.getText().toString().length();
+            if (length > 0) {
+                mTvOrigin.setTextColor(ResourceUtils.getColorResource(R.color.color_000000));
+            } else {
+                mTvOrigin.setTextColor(ResourceUtils.getColorResource(R.color.color_a8a8a8));
+            }
+        });
+
     }
 
     @Override
