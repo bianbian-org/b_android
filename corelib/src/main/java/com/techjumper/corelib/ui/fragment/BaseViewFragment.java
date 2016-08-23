@@ -115,8 +115,6 @@ public abstract class BaseViewFragment<P extends IBaseFragmentPresenter> extends
     public void onDetach() {
         super.onDetach();
         getPresenter().onDetach();
-        mPresenter.dropView();
-        mPresenter = null;
     }
 
     @Override
