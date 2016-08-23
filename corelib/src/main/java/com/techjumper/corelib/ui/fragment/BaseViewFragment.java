@@ -26,12 +26,15 @@ import com.techjumper.corelib.mvp.interfaces.IView;
 public abstract class BaseViewFragment<P extends IBaseFragmentPresenter> extends BaseFragment
         implements IView<P> {
 
-    private P mPresenter = ReflectionPresenterFactory.<P>from(getClass()).createPresenter();
+    private P mPresenter;
     private static final Object mLock = new Object();
 
     @SuppressWarnings("unchecked")
     @Override
     public P getPresenter() {
+        if (mPresenter == null) {
+            mPresenter = ReflectionPresenterFactory.<P>from(getClass()).createPresenter();
+        }
         if (!mPresenter.hasView()) {
             synchronized (mLock) {
                 if (!mPresenter.hasView()) {
