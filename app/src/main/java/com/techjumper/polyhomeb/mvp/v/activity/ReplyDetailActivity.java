@@ -1,12 +1,12 @@
 package com.techjumper.polyhomeb.mvp.v.activity;
 
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.ImageView;
 
 import com.techjumper.corelib.mvp.factory.Presenter;
 import com.techjumper.corelib.rx.tools.RxBus;
-import com.techjumper.corelib.utils.window.ToastUtils;
 import com.techjumper.polyhomeb.Constant;
 import com.techjumper.polyhomeb.R;
 import com.techjumper.polyhomeb.entity.event.ReloadWebPageEvent;
@@ -53,71 +53,79 @@ public class ReplyDetailActivity extends AppBaseActivity<ReplyDetailActivityPres
     }
 
     @Override
-    public void onTitleLeftFirstClick(int mLeftFirstIconType) {
-        switch (mLeftFirstIconType) {
-            case WebTitleHelper.NATIVE_ICON_TYPE_RETURN:
+    public void onTitleLeftFirstClick(String mLeftFirstMethod) {
+        switch (mLeftFirstMethod) {
+            case WebTitleHelper.NATIVE_METHOD_RETURN:
                 RxBus.INSTANCE.send(new ReloadWebPageEvent());
-                finish();
                 break;
-            case WebTitleHelper.NATIVE_ICON_TYPE_HOME_MENU:
-                ToastUtils.show("左1响应菜单");
+            case WebTitleHelper.NATIVE_METHOD_MENU:
                 RxBus.INSTANCE.send(new ToggleMenuClickEvent());
                 break;
-            case WebTitleHelper.NATIVE_ICON_TYPE_NEW_ARTICLE:
-                ToastUtils.show("左1响应新建文章");
+            case WebTitleHelper.NATIVE_METHOD_NEW_ARTICLE:
+                break;
+            default:
+                onLineMethod(mLeftFirstMethod);
                 break;
         }
     }
 
     @Override
-    public void onTitleLeftSecondClick(int mLeftSecondIconType) {
-        switch (mLeftSecondIconType) {
-            case WebTitleHelper.NATIVE_ICON_TYPE_RETURN:
+    public void onTitleLeftSecondClick(String mLeftSecondMethod) {
+        switch (mLeftSecondMethod) {
+            case WebTitleHelper.NATIVE_METHOD_RETURN:
                 RxBus.INSTANCE.send(new ReloadWebPageEvent());
-                finish();
                 break;
-            case WebTitleHelper.NATIVE_ICON_TYPE_HOME_MENU:
-                ToastUtils.show("左2响应菜单");
+            case WebTitleHelper.NATIVE_METHOD_MENU:
                 RxBus.INSTANCE.send(new ToggleMenuClickEvent());
                 break;
-            case WebTitleHelper.NATIVE_ICON_TYPE_NEW_ARTICLE:
-                ToastUtils.show("左2响应新建文章");
+            case WebTitleHelper.NATIVE_METHOD_NEW_ARTICLE:
+                break;
+            default:
+                onLineMethod(mLeftSecondMethod);
                 break;
         }
     }
 
     @Override
-    public void onTitleRightFirstClick(int mRightFirstIconType) {
-        switch (mRightFirstIconType) {
-            case WebTitleHelper.NATIVE_ICON_TYPE_RETURN:
+    public void onTitleRightFirstClick(String mRightFirstMethod) {
+        switch (mRightFirstMethod) {
+            case WebTitleHelper.NATIVE_METHOD_RETURN:
                 RxBus.INSTANCE.send(new ReloadWebPageEvent());
-                finish();
                 break;
-            case WebTitleHelper.NATIVE_ICON_TYPE_HOME_MENU:
-                ToastUtils.show("右1响应菜单");
+            case WebTitleHelper.NATIVE_METHOD_MENU:
                 RxBus.INSTANCE.send(new ToggleMenuClickEvent());
                 break;
-            case WebTitleHelper.NATIVE_ICON_TYPE_NEW_ARTICLE:
-                ToastUtils.show("右1响应新建文章");
+            case WebTitleHelper.NATIVE_METHOD_NEW_ARTICLE:
+                break;
+            default:
+                onLineMethod(mRightFirstMethod);
                 break;
         }
     }
 
     @Override
-    public void onTitleRightSecondClick(int mRightSecondIconType) {
-        switch (mRightSecondIconType) {
-            case WebTitleHelper.NATIVE_ICON_TYPE_RETURN:
+    public void onTitleRightSecondClick(String mRightSecondMethod) {
+        switch (mRightSecondMethod) {
+            case WebTitleHelper.NATIVE_METHOD_RETURN:
                 RxBus.INSTANCE.send(new ReloadWebPageEvent());
-                finish();
                 break;
-            case WebTitleHelper.NATIVE_ICON_TYPE_HOME_MENU:
-                ToastUtils.show("右2响应菜单");
+            case WebTitleHelper.NATIVE_METHOD_MENU:
                 RxBus.INSTANCE.send(new ToggleMenuClickEvent());
                 break;
-            case WebTitleHelper.NATIVE_ICON_TYPE_NEW_ARTICLE:
-                ToastUtils.show("右2响应新建文章");
+            case WebTitleHelper.NATIVE_METHOD_NEW_ARTICLE:
+                break;
+            default:
+                onLineMethod(mRightSecondMethod);
                 break;
         }
+    }
+
+    /**
+     * 根据url传回来的method,调用页面的function
+     */
+    private void onLineMethod(String method) {
+        if (TextUtils.isEmpty(method)) return;
+        mWebView.loadUrl("javascript:" + method + "()");
     }
 
     @Override

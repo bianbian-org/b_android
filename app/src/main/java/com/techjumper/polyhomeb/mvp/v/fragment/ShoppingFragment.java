@@ -11,6 +11,7 @@ import android.webkit.WebView;
 
 import com.techjumper.corelib.mvp.factory.Presenter;
 import com.techjumper.corelib.rx.tools.RxBus;
+import com.techjumper.corelib.utils.window.ToastUtils;
 import com.techjumper.polyhomeb.Config;
 import com.techjumper.polyhomeb.Constant;
 import com.techjumper.polyhomeb.R;
@@ -46,7 +47,9 @@ public class ShoppingFragment extends AppBaseFragment<ShoppingFragmentPresenter>
     @Bind(R.id.ptr)
     PtrClassicFrameLayout mPtr;
 
-    private boolean mCanRefresh = true;
+    private boolean mCanRefresh = true;   //可否下拉刷新
+    private String mRefreshType = "";     //下拉刷新的类型:根据url带的refresh=这个参数来判断
+    private boolean mIsOtherError = false;//是不是其他类型的错误(其他类型错误包括:404.500,等等,以及断网这种错误)
 
     public static ShoppingFragment getInstance() {
         return new ShoppingFragment();
@@ -60,7 +63,8 @@ public class ShoppingFragment extends AppBaseFragment<ShoppingFragmentPresenter>
     @Override
     protected void initView(Bundle savedInstanceState) {
         String url = Config.sShopping;
-        new WebTitleManager(url, mViewRoot, this);
+        WebTitleManager webTitleManager = new WebTitleManager(url, mViewRoot, this);
+        mRefreshType = webTitleManager.getRefreshType();
         mWebView.addJsInterface(getActivity(), Constant.JS_NATIVE_BRIDGE);
         mWebView.processBack();
         mWebView.loadUrl(url);
@@ -73,55 +77,75 @@ public class ShoppingFragment extends AppBaseFragment<ShoppingFragmentPresenter>
     }
 
     @Override
-    public void onTitleLeftFirstClick(int mLeftFirstIconType) {
-        switch (mLeftFirstIconType) {
-            case WebTitleHelper.NATIVE_ICON_TYPE_RETURN:
+    public void onTitleLeftFirstClick(String mLeftFirstMethod) {
+        switch (mLeftFirstMethod) {
+            case WebTitleHelper.NATIVE_METHOD_RETURN:
                 break;
-            case WebTitleHelper.NATIVE_ICON_TYPE_HOME_MENU:
+            case WebTitleHelper.NATIVE_METHOD_MENU:
                 RxBus.INSTANCE.send(new ToggleMenuClickEvent());
                 break;
-            case WebTitleHelper.NATIVE_ICON_TYPE_NEW_ARTICLE:
+            case WebTitleHelper.NATIVE_METHOD_NEW_ARTICLE:
+                break;
+            default:
+                onLineMethod(mLeftFirstMethod);
                 break;
         }
     }
 
     @Override
-    public void onTitleLeftSecondClick(int mLeftSecondIconType) {
-        switch (mLeftSecondIconType) {
-            case WebTitleHelper.NATIVE_ICON_TYPE_RETURN:
+    public void onTitleLeftSecondClick(String mLeftSecondMethod) {
+        switch (mLeftSecondMethod) {
+            case WebTitleHelper.NATIVE_METHOD_RETURN:
                 break;
-            case WebTitleHelper.NATIVE_ICON_TYPE_HOME_MENU:
+            case WebTitleHelper.NATIVE_METHOD_MENU:
                 RxBus.INSTANCE.send(new ToggleMenuClickEvent());
                 break;
-            case WebTitleHelper.NATIVE_ICON_TYPE_NEW_ARTICLE:
+            case WebTitleHelper.NATIVE_METHOD_NEW_ARTICLE:
+                break;
+            default:
+                onLineMethod(mLeftSecondMethod);
                 break;
         }
     }
 
     @Override
-    public void onTitleRightFirstClick(int mRightFirstIconType) {
-        switch (mRightFirstIconType) {
-            case WebTitleHelper.NATIVE_ICON_TYPE_RETURN:
+    public void onTitleRightFirstClick(String mRightFirstMethod) {
+        switch (mRightFirstMethod) {
+            case WebTitleHelper.NATIVE_METHOD_RETURN:
                 break;
-            case WebTitleHelper.NATIVE_ICON_TYPE_HOME_MENU:
+            case WebTitleHelper.NATIVE_METHOD_MENU:
                 RxBus.INSTANCE.send(new ToggleMenuClickEvent());
                 break;
-            case WebTitleHelper.NATIVE_ICON_TYPE_NEW_ARTICLE:
+            case WebTitleHelper.NATIVE_METHOD_NEW_ARTICLE:
+                break;
+            default:
+                onLineMethod(mRightFirstMethod);
                 break;
         }
     }
 
     @Override
-    public void onTitleRightSecondClick(int mRightSecondIconType) {
-        switch (mRightSecondIconType) {
-            case WebTitleHelper.NATIVE_ICON_TYPE_RETURN:
+    public void onTitleRightSecondClick(String mRightSecondMethod) {
+        switch (mRightSecondMethod) {
+            case WebTitleHelper.NATIVE_METHOD_RETURN:
                 break;
-            case WebTitleHelper.NATIVE_ICON_TYPE_HOME_MENU:
+            case WebTitleHelper.NATIVE_METHOD_MENU:
                 RxBus.INSTANCE.send(new ToggleMenuClickEvent());
                 break;
-            case WebTitleHelper.NATIVE_ICON_TYPE_NEW_ARTICLE:
+            case WebTitleHelper.NATIVE_METHOD_NEW_ARTICLE:
+                break;
+            default:
+                onLineMethod(mRightSecondMethod);
                 break;
         }
+    }
+
+    /**
+     * 根据url传回来的method,调用页面的function
+     */
+    private void onLineMethod(String method) {
+        if (TextUtils.isEmpty(method)) return;
+        mWebView.loadUrl("javascript:" + method + "()");
     }
 
     private void initListener() {
@@ -130,7 +154,14 @@ public class ShoppingFragment extends AppBaseFragment<ShoppingFragmentPresenter>
         mPtr.setPtrHandler(new PtrDefaultHandler() {
             @Override
             public void onRefreshBegin(PtrFrameLayout frame) {
-                refresh();
+                //判断是哪种情况的刷新:如果是404,500之类的,或者断网这种错误,导致用户手动刷新的,那么肯定就需要reload
+                //如果不是以上情况导致的用户手动下拉刷新,那么就调用refresh()刷新,具体的刷新方式,按照url的refresh=参数来做,也就是refresh()自己去判断
+                if (mIsOtherError) {
+                    mWebView.reload();
+                    mIsOtherError = false;
+                } else {
+                    refresh();
+                }
                 new Handler().postDelayed(() -> stopRefresh(""), NetHelper.GLOBAL_TIMEOUT);
             }
 
@@ -145,7 +176,11 @@ public class ShoppingFragment extends AppBaseFragment<ShoppingFragmentPresenter>
      * 此处的刷新不是调用webView的reload(),而是调用js的方法->JAVA_2_JS_REFRESH;js那边通过Ajax来刷新,所以不用单纯重新刷新界面
      */
     private void refresh() {
-        mWebView.reload();
+        if (TextUtils.isEmpty(mRefreshType)) {
+            mWebView.reload();
+        } else {
+            mWebView.loadUrl("javascript:" + mRefreshType + "()");
+        }
     }
 
     public void stopRefresh(String msg) {
@@ -153,44 +188,6 @@ public class ShoppingFragment extends AppBaseFragment<ShoppingFragmentPresenter>
             if (!TextUtils.isEmpty(msg))
                 showHint(msg);
             mPtr.refreshComplete();
-        }
-    }
-
-    /**
-     * 页面加载完毕之后的接口
-     */
-    @Override
-    public void onPageLoadFinish(WebView view, int newProgress) {
-        stopRefresh("");
-    }
-
-    /**
-     * 处理接收的Error的接口
-     */
-    @Override
-    public void onReceivedError(WebView view, int errorCode, String description, String failingUrl) {
-//        mWebView.loadUrl("http://pl.techjumper.com/neighbor/404");
-//        mWebView.loadUrl(Config.sFriendErrorPage);
-    }
-
-    /**
-     * 处理Http是不是Error的接口
-     */
-    @Override
-    public void onReceivedHttpError(WebView view, WebResourceRequest request, WebResourceResponse errorResponse) {
-//        mWebView.loadUrl("http://pl.techjumper.com/neighbor/404");
-//        mWebView.loadUrl(Config.sFriendErrorPage);
-    }
-
-    /**
-     * 判断mPtr能否滑动的监听
-     */
-    @Override
-    public void onScrollChanged(int l, int t, int oldl, int oldt) {
-        if (mWebView.getTop() == t) {
-            mCanRefresh = true;
-        } else {
-            mCanRefresh = false;
         }
     }
 
@@ -208,6 +205,48 @@ public class ShoppingFragment extends AppBaseFragment<ShoppingFragmentPresenter>
             mWebView.destroy();
         }
         super.onDetach();
+    }
+
+    /**
+     * 页面加载完毕之后的接口
+     */
+    @Override
+    public void onPageLoadFinish(WebView view, int newProgress) {
+        stopRefresh("");
+    }
+
+    /**
+     * 处理接收的Error的接口
+     */
+    @Override
+    public void onReceivedError(WebView view, int errorCode, String description, String failingUrl) {
+//        mWebView.loadUrl("http://pl.techjumper.com/neighbor/404");
+//        mWebView.loadUrl(Config.sFriendErrorPage);
+        ToastUtils.show("友邻网页错误,错误码:" + errorCode);
+        mIsOtherError = true;
+    }
+
+    /**
+     * 处理Http是不是Error的接口
+     */
+    @Override
+    public void onReceivedHttpError(WebView view, WebResourceRequest request, WebResourceResponse errorResponse) {
+//        mWebView.loadUrl("http://pl.techjumper.com/neighbor/404");
+//        mWebView.loadUrl(Config.sFriendErrorPage);
+        ToastUtils.show("在友邻中,WebView的HTTP错误了");
+        mIsOtherError = true;
+    }
+
+    /**
+     * 判断mPtr能否滑动的监听
+     */
+    @Override
+    public void onScrollChanged(int l, int t, int oldl, int oldt) {
+        if (mWebView.getTop() == t) {
+            mCanRefresh = true;
+        } else {
+            mCanRefresh = false;
+        }
     }
 
     public PtrClassicFrameLayout getPtr() {

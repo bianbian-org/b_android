@@ -18,10 +18,6 @@ import com.techjumper.polyhomeb.R;
  **/
 public class WebTitleHelper {
 
-    public static final int NATIVE_ICON_TYPE_RETURN = 0;
-    public static final int NATIVE_ICON_TYPE_HOME_MENU = 1;
-    public static final int NATIVE_ICON_TYPE_NEW_ARTICLE = 2;
-
     public static final String NATIVE_METHOD_RETURN = "NativeReturn";
     public static final String NATIVE_METHOD_MENU = "NativeMenu";
     public static final String NATIVE_METHOD_NEW_ARTICLE = "NativeNewArticle";
@@ -53,10 +49,10 @@ public class WebTitleHelper {
         private String leftSecondText;
         private String rightFirstText;
         private String rightSecondText;
-        private int leftFirstIconType;
-        private int leftSecondIconType;
-        private int rightFirstIconType;
-        private int rightSecondIconType;
+        private String leftFirstMethod;
+        private String leftSecondMethod;
+        private String rightFirstMethod;
+        private String rightSecondMethod;
 
         private Builder(Object obj) {
             this.obj = obj;
@@ -167,23 +163,23 @@ public class WebTitleHelper {
             return this;
         }
 
-        public Builder setLeftFirstIconType(int type) {
-            this.leftFirstIconType = type;
+        public Builder setLeftFirstIconType(String type) {
+            this.leftFirstMethod = type;
             return this;
         }
 
-        public Builder setLeftSecondIconType(int type) {
-            this.leftSecondIconType = type;
+        public Builder setLeftSecondIconType(String type) {
+            this.leftSecondMethod = type;
             return this;
         }
 
-        public Builder setRightFirstIconType(int type) {
-            this.rightFirstIconType = type;
+        public Builder setRightFirstIconType(String type) {
+            this.rightFirstMethod = type;
             return this;
         }
 
-        public Builder setRightSecondIconType(int type) {
-            this.rightSecondIconType = type;
+        public Builder setRightSecondIconType(String type) {
+            this.rightSecondMethod = type;
             return this;
         }
 
@@ -221,7 +217,7 @@ public class WebTitleHelper {
                     if (!TextUtils.isEmpty(leftFirstPicUrl)) {
                         PicassoHelper.getDefault().load(leftFirstPicUrl).into(leftFirstIv);
                     } else {
-                        processNativeIcon(leftFirstIv, leftFirstIconType);
+                        processNativeIcon(leftFirstIv, leftFirstMethod);
                     }
                 }
             }
@@ -236,7 +232,7 @@ public class WebTitleHelper {
                     if (!TextUtils.isEmpty(leftSecondPicUrl)) {
                         PicassoHelper.getDefault().load(leftSecondPicUrl).into(leftSecondIv);
                     } else {
-                        processNativeIcon(leftSecondIv, leftSecondIconType);
+                        processNativeIcon(leftSecondIv, leftSecondMethod);
                     }
                 }
             }
@@ -251,7 +247,7 @@ public class WebTitleHelper {
                     if (!TextUtils.isEmpty(rightFirstPicUrl)) {
                         PicassoHelper.getDefault().load(rightFirstPicUrl).into(rightFirstIv);
                     } else {
-                        processNativeIcon(rightFirstIv, rightFirstIconType);
+                        processNativeIcon(rightFirstIv, rightFirstMethod);
                     }
                 }
             }
@@ -266,7 +262,7 @@ public class WebTitleHelper {
                     if (!TextUtils.isEmpty(rightSecondPicUrl)) {
                         PicassoHelper.getDefault().load(rightSecondPicUrl).into(rightSecondIv);
                     } else {
-                        processNativeIcon(rightSecondIv, rightSecondIconType);
+                        processNativeIcon(rightSecondIv, rightSecondMethod);
                     }
                 }
             }
@@ -288,16 +284,21 @@ public class WebTitleHelper {
             }
         }
 
-        private void processNativeIcon(ImageView imageView, int type) {
-            switch (type) {
-                case NATIVE_ICON_TYPE_RETURN:   //return
+        private void processNativeIcon(ImageView imageView, String method) {
+            switch (method) {
+                case NATIVE_METHOD_RETURN:   //return
                     PicassoHelper.getDefault().load(R.mipmap.icon_back).into(imageView);
                     break;
-                case NATIVE_ICON_TYPE_HOME_MENU:   //homeMenu
+                case NATIVE_METHOD_MENU:   //homeMenu
                     PicassoHelper.getDefault().load(R.mipmap.icon_title_menu).into(imageView);
                     break;
-                case NATIVE_ICON_TYPE_NEW_ARTICLE:   //add
+                case NATIVE_METHOD_NEW_ARTICLE:   //add
                     PicassoHelper.getDefault().load(R.mipmap.icon_add).into(imageView);
+                    break;
+                case "person":
+                    PicassoHelper.getDefault().load(R.mipmap.icon_person).into(imageView);
+                    break;
+                default:  //onlineMethod,所以这里就不管了,前面处理过了已经
                     break;
             }
         }

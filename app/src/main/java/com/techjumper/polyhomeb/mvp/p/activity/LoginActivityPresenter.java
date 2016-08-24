@@ -1,18 +1,22 @@
 package com.techjumper.polyhomeb.mvp.p.activity;
 
 import android.os.Bundle;
+import android.os.Handler;
 import android.view.View;
 import android.widget.EditText;
 
 import com.techjumper.corelib.rx.tools.RxBus;
+import com.techjumper.corelib.ui.activity.BaseActivity;
 import com.techjumper.corelib.utils.basic.StringUtils;
 import com.techjumper.corelib.utils.common.AcHelper;
+import com.techjumper.corelib.utils.window.ToastUtils;
 import com.techjumper.polyhomeb.R;
 import com.techjumper.polyhomeb.entity.LoginEntity;
 import com.techjumper.polyhomeb.mvp.m.LoginActivityModel;
 import com.techjumper.polyhomeb.mvp.v.activity.FindPasswordActivity;
 import com.techjumper.polyhomeb.mvp.v.activity.LoginActivity;
 import com.techjumper.polyhomeb.mvp.v.activity.RegistActivity;
+import com.techjumper.polyhomeb.mvp.v.activity.TabHomeActivity;
 import com.techjumper.polyhomeb.user.UserManager;
 import com.techjumper.polyhomeb.user.event.LoginEvent;
 
@@ -29,6 +33,8 @@ import rx.android.schedulers.AndroidSchedulers;
 public class LoginActivityPresenter extends AppBaseActivityPresenter<LoginActivity> {
 
     public static final String KEY_PHONE_NUMBER = "key_phone_number";
+
+    private boolean mCanExit;
 
     private LoginActivityModel mModel = new LoginActivityModel(this);
 
@@ -47,6 +53,12 @@ public class LoginActivityPresenter extends AppBaseActivityPresenter<LoginActivi
                             if (o instanceof LoginEvent) {
                                 LoginEvent event = (LoginEvent) o;
                                 if (event.isLogin()) {
+                                    new AcHelper.Builder(getView())
+                                            .target(TabHomeActivity.class)
+                                            .closeCurrent(true)
+                                            .enterAnim(R.anim.fade_in)
+                                            .exitAnim(R.anim.fade_out)
+                                            .start();
                                     getView().finish();
                                 }
                             }
@@ -126,5 +138,15 @@ public class LoginActivityPresenter extends AppBaseActivityPresenter<LoginActivi
                             }
                         })
         );
+    }
+
+    public void onBackPressed() {
+        if (!mCanExit) {
+            ToastUtils.show(getView().getString(R.string.exit_app));
+            mCanExit = true;
+            new Handler().postDelayed(() -> mCanExit = false, 2000);
+            return;
+        }
+        BaseActivity.finishAll();
     }
 }

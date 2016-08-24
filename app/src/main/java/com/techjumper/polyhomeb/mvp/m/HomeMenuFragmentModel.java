@@ -69,7 +69,7 @@ public class HomeMenuFragmentModel extends BaseModel<HomeMenuFragmentPresenter> 
         displayBeen.add(propertyPlacardDividerLongBean);
 
         //item
-        HomeMenuItemData homeMenuItemData1 = new HomeMenuItemData( Utils.appContext.getString(R.string.my_orders));
+        HomeMenuItemData homeMenuItemData1 = new HomeMenuItemData( Utils.appContext.getString(R.string.my_points));
         HomeMenuItemBean homeMenuItemBean1 = new HomeMenuItemBean(homeMenuItemData1);
         displayBeen.add(homeMenuItemBean1);
 
@@ -82,30 +82,8 @@ public class HomeMenuFragmentModel extends BaseModel<HomeMenuFragmentPresenter> 
         //细的分割线
         displayBeen.add(propertyPlacardDividerLongBean);
 
-        for (int i = 0; i < 2; i++) {
-            String title = i == 0 ?  Utils.appContext.getString(R.string.my_postcard) :  Utils.appContext.getString(R.string.my_reply);
-            //item
-            HomeMenuItemData homeMenuItemData2 = new HomeMenuItemData(title);
-            HomeMenuItemBean homeMenuItemBean2 = new HomeMenuItemBean(homeMenuItemData2);
-            displayBeen.add(homeMenuItemBean2);
-
-            if (i == 1) {
-                //细长分割线
-                displayBeen.add(propertyPlacardDividerLongBean);
-            } else {
-                //短一些分割线
-                displayBeen.add(propertyPlacardDividerBean);
-            }
-        }
-
-        //大分割线
-        displayBeen.add(propertyRepairBigDividerBean);
-
-        //细长分割线
-        displayBeen.add(propertyPlacardDividerLongBean);
-
         //item
-        HomeMenuItemData homeMenuItemData3 = new HomeMenuItemData( Utils.appContext.getString(R.string.poly_coin));
+        HomeMenuItemData homeMenuItemData3 = new HomeMenuItemData( Utils.appContext.getString(R.string.settings));
         HomeMenuItemBean homeMenuItemBean3 = new HomeMenuItemBean(homeMenuItemData3);
         displayBeen.add(homeMenuItemBean3);
 

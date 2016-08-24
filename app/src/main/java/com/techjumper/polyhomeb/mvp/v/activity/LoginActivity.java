@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.text.Editable;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -35,6 +36,8 @@ public class LoginActivity extends AppBaseActivity<LoginActivityPresenter> {
     TextView mTvRegist;
     @Bind(R.id.tv_forget_psw)
     TextView mTvForgetPsw;
+    @Bind(R.id.iv_left_icon)
+    ImageView mIvBack;
 
     @Override
     protected View inflateView(Bundle savedInstanceState) {
@@ -43,7 +46,12 @@ public class LoginActivity extends AppBaseActivity<LoginActivityPresenter> {
 
     @Override
     protected void initView(Bundle savedInstanceState) {
+        mIvBack.setVisibility(View.INVISIBLE);
+    }
 
+    @Override
+    protected boolean onTitleLeftClick() {
+        return true;
     }
 
     @Override
@@ -71,6 +79,7 @@ public class LoginActivity extends AppBaseActivity<LoginActivityPresenter> {
         KeyboardUtils.showKeyboard(et);
         setSelectionToEnd(et);
         et.postDelayed(et::selectAll, 500);
+
     }
 
     private void setSelectionToEnd(EditText et) {
@@ -83,5 +92,11 @@ public class LoginActivity extends AppBaseActivity<LoginActivityPresenter> {
 
     public LinearLayout getLayoutWrong() {
         return mLayoutWrong;
+    }
+
+
+    @Override
+    public void onBackPressed() {
+        getPresenter().onBackPressed();
     }
 }

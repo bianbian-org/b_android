@@ -8,11 +8,13 @@ package com.techjumper.polyhomeb.interfaces;
  **/
 public interface IWebViewTitleClick {
 
-    void onTitleLeftFirstClick(int mLeftFirstIconType);
+    void onTitleLeftFirstClick(String leftFirstMethod);
 
-    void onTitleLeftSecondClick(int mLeftSecondIconType);
+    void onTitleLeftSecondClick(String leftSecondMethod);
 
-    void onTitleRightFirstClick(int mRightFirstIconType);
+    void onTitleRightFirstClick(String rightFirstMethod);
 
-    void onTitleRightSecondClick(int mRightSecondIconType);
+    void onTitleRightSecondClick(String rightSecondMethod);
+
+
 }

@@ -1,7 +1,5 @@
 package com.techjumper.polyhomeb.mvp.v.fragment;
 
-import android.annotation.TargetApi;
-import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.text.TextUtils;
@@ -83,57 +81,69 @@ public class FriendFragment extends AppBaseFragment<FriendFragmentPresenter>
     }
 
     @Override
-    public void onTitleLeftFirstClick(int mLeftFirstIconType) {
-        switch (mLeftFirstIconType) {
-            case WebTitleHelper.NATIVE_ICON_TYPE_RETURN:
+    public void onTitleLeftFirstClick(String mLeftFirstMethod) {
+        switch (mLeftFirstMethod) {
+            case WebTitleHelper.NATIVE_METHOD_RETURN:
                 break;
-            case WebTitleHelper.NATIVE_ICON_TYPE_HOME_MENU:
+            case WebTitleHelper.NATIVE_METHOD_MENU:
                 RxBus.INSTANCE.send(new ToggleMenuClickEvent());
                 break;
-            case WebTitleHelper.NATIVE_ICON_TYPE_NEW_ARTICLE:
+            case WebTitleHelper.NATIVE_METHOD_NEW_ARTICLE:
                 getPresenter().onTitleRightClick();
+                break;
+            default:
+                onLineMethod(mLeftFirstMethod);
                 break;
         }
     }
 
     @Override
-    public void onTitleLeftSecondClick(int mLeftSecondIconType) {
-        switch (mLeftSecondIconType) {
-            case WebTitleHelper.NATIVE_ICON_TYPE_RETURN:
+    public void onTitleLeftSecondClick(String mLeftSecondMethod) {
+        switch (mLeftSecondMethod) {
+            case WebTitleHelper.NATIVE_METHOD_RETURN:
                 break;
-            case WebTitleHelper.NATIVE_ICON_TYPE_HOME_MENU:
+            case WebTitleHelper.NATIVE_METHOD_MENU:
                 RxBus.INSTANCE.send(new ToggleMenuClickEvent());
                 break;
-            case WebTitleHelper.NATIVE_ICON_TYPE_NEW_ARTICLE:
+            case WebTitleHelper.NATIVE_METHOD_NEW_ARTICLE:
                 getPresenter().onTitleRightClick();
+                break;
+            default:
+                onLineMethod(mLeftSecondMethod);
                 break;
         }
     }
 
     @Override
-    public void onTitleRightFirstClick(int mRightFirstIconType) {
-        switch (mRightFirstIconType) {
-            case WebTitleHelper.NATIVE_ICON_TYPE_RETURN:
+    public void onTitleRightFirstClick(String mRightFirstMethod) {
+        switch (mRightFirstMethod) {
+            case WebTitleHelper.NATIVE_METHOD_RETURN:
                 break;
-            case WebTitleHelper.NATIVE_ICON_TYPE_HOME_MENU:
+            case WebTitleHelper.NATIVE_METHOD_MENU:
                 RxBus.INSTANCE.send(new ToggleMenuClickEvent());
                 break;
-            case WebTitleHelper.NATIVE_ICON_TYPE_NEW_ARTICLE:
+            case WebTitleHelper.NATIVE_METHOD_NEW_ARTICLE:
                 getPresenter().onTitleRightClick();
+                break;
+            default:
+                onLineMethod(mRightFirstMethod);
                 break;
         }
     }
 
     @Override
-    public void onTitleRightSecondClick(int mRightSecondIconType) {
-        switch (mRightSecondIconType) {
-            case WebTitleHelper.NATIVE_ICON_TYPE_RETURN:
+    public void onTitleRightSecondClick(String mRightSecondMethod) {
+        switch (mRightSecondMethod) {
+            case WebTitleHelper.NATIVE_METHOD_RETURN:
                 break;
-            case WebTitleHelper.NATIVE_ICON_TYPE_HOME_MENU:
+            case WebTitleHelper.NATIVE_METHOD_MENU:
                 RxBus.INSTANCE.send(new ToggleMenuClickEvent());
                 break;
-            case WebTitleHelper.NATIVE_ICON_TYPE_NEW_ARTICLE:
+            case WebTitleHelper.NATIVE_METHOD_NEW_ARTICLE:
                 getPresenter().onTitleRightClick();
+                break;
+            default:
+                onLineMethod(mRightSecondMethod);
                 break;
         }
     }
@@ -171,6 +181,14 @@ public class FriendFragment extends AppBaseFragment<FriendFragmentPresenter>
         } else {
             mWebView.loadUrl("javascript:" + mRefreshType + "()");
         }
+    }
+
+    /**
+     * 根据url传回来的method,调用页面的function
+     */
+    private void onLineMethod(String method) {
+        if (TextUtils.isEmpty(method)) return;
+        mWebView.loadUrl("javascript:" + method + "()");
     }
 
     public void stopRefresh(String msg) {
@@ -212,19 +230,18 @@ public class FriendFragment extends AppBaseFragment<FriendFragmentPresenter>
     public void onReceivedError(WebView view, int errorCode, String description, String failingUrl) {
 //        mWebView.loadUrl("http://pl.techjumper.com/neighbor/404");
 //        mWebView.loadUrl(Config.sFriendErrorPage);
-        ToastUtils.show("网页错误,错误码:" + errorCode);
+        ToastUtils.show("友邻网页错误,错误码:" + errorCode);
         mIsOtherError = true;
     }
 
     /**
      * 处理Http是不是Error的接口
      */
-    @TargetApi(Build.VERSION_CODES.LOLLIPOP)
     @Override
     public void onReceivedHttpError(WebView view, WebResourceRequest request, WebResourceResponse errorResponse) {
 //        mWebView.loadUrl("http://pl.techjumper.com/neighbor/404");
 //        mWebView.loadUrl(Config.sFriendErrorPage);
-        ToastUtils.show("HTTP错误,Status码:" + errorResponse.getStatusCode());
+        ToastUtils.show("在友邻中,WebView的HTTP错误了");
         mIsOtherError = true;
     }
 

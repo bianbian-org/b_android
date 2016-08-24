@@ -11,7 +11,6 @@ import android.view.View;
 import com.techjumper.corelib.utils.common.ResourceUtils;
 import com.techjumper.lightwidget.ratio.RatioFrameLayout;
 import com.techjumper.polyhomeb.R;
-import com.techjumper.polyhomeb.user.UserManager;
 
 import java.util.List;
 
@@ -114,14 +113,9 @@ public class PolyTab extends RatioFrameLayout {
     }
 
     private void changeTextColorAndIcon(int currIndex) {
-        if (UserManager.INSTANCE.isLogin()) {
-            changeIcon(currIndex);
-            changeTextColor(currIndex);
-        } else {
-            mCurrIndex = 2;
-            changeIcon(2);
-            changeTextColor(2);
-        }
+        mCurrIndex = currIndex;
+        changeIcon(currIndex);
+        changeTextColor(currIndex);
     }
 
     private void changeIcon(int currIndex) {

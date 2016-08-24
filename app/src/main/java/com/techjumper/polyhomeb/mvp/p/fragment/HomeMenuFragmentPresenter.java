@@ -88,8 +88,10 @@ public class HomeMenuFragmentPresenter extends AppBaseFragmentPresenter<HomeMenu
                     switch (which) {
                         case POSITIVE:
                             UserManager.INSTANCE.logout();
-                            if (getView().getActivity() != null && !getView().getActivity().isFinishing())
-                                getView().getActivity().onBackPressed();
+                            new AcHelper.Builder(getView().getActivity())
+                                    .target(LoginActivity.class)
+                                    .closeCurrent(true)
+                                    .start();
                             break;
                     }
                 })

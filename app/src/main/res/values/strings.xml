@@ -100,10 +100,8 @@
     <string name="my_village">我的小区</string>
     <string name="polyhome_setting">智能家居设置</string>
     <string name="message_center">消息中心</string>
-    <string name="my_orders">我的订单</string>
-    <string name="my_postcard">我的帖子</string>
-    <string name="my_reply">我的回复</string>
-    <string name="poly_coin">Poly币</string>
+    <string name="my_points">我的积分</string>
+    <string name="settings">设置</string>
     <string name="login_account">账号</string>
     <string name="login_password">密码</string>
     <string name="login_account_psw_wrong">账号或密码有误</string>

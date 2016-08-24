@@ -16,7 +16,6 @@ import com.techjumper.polyhomeb.mvp.v.fragment.FriendFragment;
 import com.techjumper.polyhomeb.mvp.v.fragment.HomeFragment;
 import com.techjumper.polyhomeb.mvp.v.fragment.HomeMenuFragment;
 import com.techjumper.polyhomeb.mvp.v.fragment.ShoppingFragment;
-import com.techjumper.polyhomeb.user.UserManager;
 import com.techjumper.polyhomeb.widget.HomeViewPager;
 import com.techjumper.polyhomeb.widget.PolyTab;
 import com.techjumper.slidingmenulib.SlidingMenu;
@@ -58,14 +57,12 @@ public class TabHomeActivity extends AppBaseActivity<TabHomeActivityPresenter> {
     protected void initView(Bundle savedInstanceState) {
         initSlidingMenu();
         initFragmentsAndPager();
-        if (savedInstanceState == null)
-            if (UserManager.INSTANCE.isLogin()) {
-                mVp.setCurrentItem(0);
-                mTab.check(0);
-            } else {
-                mVp.setCurrentItem(2);
-                mTab.check(2);
-            }
+        if (savedInstanceState == null) {
+//            if (UserManager.INSTANCE.isLogin()) {
+            mVp.setCurrentItem(0);
+            mTab.check(0);
+//        }
+        }
         switchFragment(R.id.menu_container, HomeMenuFragment.getInstance(), false, false);
     }
 
@@ -114,14 +111,14 @@ public class TabHomeActivity extends AppBaseActivity<TabHomeActivityPresenter> {
         return mVp;
     }
 
-    public void onTabChange(int index) {
-        mTab.check(index);
-        mVp.setCurrentItem(index, false);
-    }
-
-    public void onLogout() {
-        // TODO: 16/8/1
-    }
+//    public void onTabChange(int index) {
+//        mTab.check(index);
+//        mVp.setCurrentItem(index, false);
+//    }
+//
+//    public void onLogout() {
+//        // TODO: 16/8/1
+//    }
 
 
 }

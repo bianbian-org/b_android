@@ -30,7 +30,6 @@ public enum UserManager {
     public static final String KEY_TICKET = "key_ticket";
     public static final String KEY_CURRENT_FAMILY_ID = "key_current_family_id";
     public static final String KEY_DEVICE_ID = "key_device_id";
-    //    public static final String KEY_HAS_BINDING = "key_has_binding";
     public static final String KEY_USER_NAME = "key_user_name";
     public static final String KEY_AVATAR = "key_avatar";
     public static final String KEY_SEX = "key_sex";
@@ -129,9 +128,12 @@ public enum UserManager {
     private void logout(boolean notify) {
         if (!isLogin()) return;
         PreferenceUtils.save(KEY_ID, "");
+        PreferenceUtils.save(KEY_SEX, "");
+        PreferenceUtils.save(KEY_EMAIL, "");
+        PreferenceUtils.save(KEY_BIRTHDAY, "");
         PreferenceUtils.save(KEY_PHONE_NUMBER, "");
+        PreferenceUtils.save(KEY_CURRENT_VILLAGE_ID, "");
         PreferenceUtils.save(KEY_TICKET, "");
-//        PreferenceUtils.save(KEY_HAS_BINDING, "");
         PreferenceUtils.save(KEY_AVATAR, "");
         PreferenceUtils.save(KEY_USER_NAME, "");
         PreferenceUtils.save(KEY_CURRENT_FAMILY_ID, "");

@@ -42,4 +42,5 @@ public class ShoppingFragmentPresenter extends AppBaseFragmentPresenter<Shopping
                 }));
 
     }
+
 }

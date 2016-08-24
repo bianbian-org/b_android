@@ -5,8 +5,10 @@ import android.os.Handler;
 
 import com.techjumper.corelib.utils.common.AcHelper;
 import com.techjumper.polyhomeb.R;
+import com.techjumper.polyhomeb.mvp.v.activity.LoginActivity;
 import com.techjumper.polyhomeb.mvp.v.activity.SplashActivity;
 import com.techjumper.polyhomeb.mvp.v.activity.TabHomeActivity;
+import com.techjumper.polyhomeb.user.UserManager;
 import com.umeng.analytics.MobclickAgent;
 
 /**
@@ -29,12 +31,21 @@ public class SplashActivityPresenter extends AppBaseActivityPresenter<SplashActi
 
     public void jumpToMainActivity(int delay) {
         new Handler().postDelayed(() -> {
-            new AcHelper.Builder(getView())
-                    .target(TabHomeActivity.class)
-                    .closeCurrent(true)
-                    .enterAnim(R.anim.fade_in)
-                    .exitAnim(R.anim.fade_out)
-                    .start();
+            if (UserManager.INSTANCE.isLogin()) {
+                new AcHelper.Builder(getView())
+                        .target(TabHomeActivity.class)
+                        .closeCurrent(true)
+                        .enterAnim(R.anim.fade_in)
+                        .exitAnim(R.anim.fade_out)
+                        .start();
+            } else {
+                new AcHelper.Builder(getView())
+                        .target(LoginActivity.class)
+                        .closeCurrent(true)
+                        .enterAnim(R.anim.fade_in)
+                        .exitAnim(R.anim.fade_out)
+                        .start();
+            }
             getView().setCanBack(true);
         }, delay);
     }
