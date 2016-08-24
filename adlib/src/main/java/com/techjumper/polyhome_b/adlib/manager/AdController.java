@@ -16,8 +16,6 @@ import com.techjumper.corelib.utils.basic.NumberUtil;
 import com.techjumper.corelib.utils.common.JLog;
 import com.techjumper.corelib.utils.file.PreferenceUtils;
 import com.techjumper.corelib.utils.system.PowerUtil;
-import com.techjumper.corelib.utils.window.ToastUtils;
-import com.techjumper.polyhome_b.adlib.R;
 import com.techjumper.polyhome_b.adlib.db.utils.AdStatDbExecutor;
 import com.techjumper.polyhome_b.adlib.download.AdDownloadManager;
 import com.techjumper.polyhome_b.adlib.entity.AdEntity;
@@ -343,14 +341,15 @@ public class AdController {
                     @Override
                     public void onError(Throwable e) {
                         JLog.d(e);
-                        ToastUtils.show(Utils.appContext.getString(R.string.error_to_connect_server));
+                        onNext(AdListManager.getInstance().getLocalAdEntity());
+//                        ToastUtils.show(Utils.appContext.getString(R.string.error_to_connect_server));
                     }
 
                     @Override
                     public void onNext(AdEntity adEntity) {
                         if (adEntity == null) {
                             JLog.d("adEntity is null");
-                            ToastUtils.show(Utils.appContext.getString(R.string.error_to_connect_server));
+//                            ToastUtils.show(Utils.appContext.getString(R.string.error_to_connect_server));
                             return;
                         }
 

@@ -31,7 +31,6 @@ public class AdListManager {
     private static final String KEY_LAST_TIME = "key_last_time";
     private static File mAdFile = new File(Utils.appContext.getCacheDir().getAbsolutePath() + File.separator + AD_DATA_DIR);
 
-
 //    /**
 //     * 过期时间
 //     * 天  时   分   秒    毫秒
@@ -86,10 +85,6 @@ public class AdListManager {
     private Observable<AdEntity> fromNet(String familyId, String userId, String ticket) {
         JLog.d("<ad> 从网络获取广告列表");
         return RetrofitTemplate.getInstance().padAd(familyId, userId, ticket)
-                .retryWhen(observable -> observable.map(e -> {
-                    JLog.d(e);
-                    return getLocalAdEntity();
-                }))
                 .map(adEntity -> {
                     if (adEntity == null) {
                         return getLocalAdEntity();
@@ -104,7 +99,7 @@ public class AdListManager {
                 .observeOn(AndroidSchedulers.mainThread());
     }
 
-    private AdEntity getLocalAdEntity() {
+    public AdEntity getLocalAdEntity() {
         String data = getJsonFromLocal();
         JLog.d("<ad> 从本地获取广告列表 : " + data);
         if (TextUtils.isEmpty(data)) {

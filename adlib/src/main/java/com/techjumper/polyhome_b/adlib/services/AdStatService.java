@@ -46,6 +46,8 @@ public class AdStatService extends Service {
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
 
+        PollingUtils.stopPollingService(Utils.appContext
+                , AdStatService.class, "", AdController.CODE_AD_STAT);
         PollingUtils.startPollingServiceBySet(Utils.appContext
                 , AdController.getAdStatUploadNextTime()
                 , AdStatService.class, "", true, AdController.CODE_AD_STAT, true);
