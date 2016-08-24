@@ -105,21 +105,19 @@ public class WebTitleManager {
         processRight(splits[2]);
 
         //处理刷新
-        for (int i = 1; i < splits.length; i++) {
-            if (splits[i].indexOf("refresh=") > 0) {
+        for (int i = 0; i < splits.length; i++) {
+            JLog.e(splits[i]);
+//            if (splits[i].indexOf("refresh=") > 0) {
+//                JLog.e("呵呵");
+//                String refresh = splits[i];
+//                mRefreshType = refresh.replace("refresh=", "");
+//                break;
+//            }
+            if (splits[i].contains("refresh=")) {
                 String refresh = splits[i];
-                //证明后面还有其他的字段,还带有&,
-                if (refresh.indexOf("&") > 0) {
-                    String[] split1 = refresh.split("&");
-                    String s = split1[0];  //得到refresh=refresh
-                    String replace = s.replace("refresh=", "");
-                    mRefreshType = replace;
-                } else {  //证明后面没得其他字段了
-                    String replace = refresh.replace("refresh=", "");
-                    mRefreshType = replace;
-                }
+                mRefreshType = refresh.replace("refresh=", "");
+                break;
             }
-            break;
         }
     }
 
@@ -129,7 +127,8 @@ public class WebTitleManager {
         String replace = left.replace("left=", "");//先去掉前面的"left="这部分得到->呵呵::NativeReturn或者->呵呵::NativeReturn,哈哈::NativeMenu
 
         //如果包含逗号,证明有2个或者2个以上的按钮
-        if (replace.indexOf(",") > 0) {
+//        if (replace.indexOf(",") > 0) {
+        if (replace.contains(",")) {
             String[] split = replace.split(",");//得到->呵呵::NativeReturn 以及得到->哈哈::NativeMenu
             String s11 = split[0]; //左边第一个
             String s22 = split[1];  //左边第二个
@@ -233,7 +232,8 @@ public class WebTitleManager {
         String replace = right.replace("right=", "");//先去掉前面的"right="这部分
 
         //如果包含逗号,证明有2个或者2个以上的按钮
-        if (replace.indexOf(",") > 0) {
+//        if (replace.indexOf(",") > 0) {
+        if (replace.contains(",")) {
             String[] split = replace.split(",");//得到->呵呵::NativeReturn 以及得到->哈哈::NativeMenu
             String s11 = split[0]; //右边第一个
             String s22 = split[1];  //右边第二个
