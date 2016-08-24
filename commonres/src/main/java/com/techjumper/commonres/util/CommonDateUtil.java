@@ -2,6 +2,7 @@ package com.techjumper.commonres.util;
 
 import android.util.Log;
 
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
@@ -13,6 +14,7 @@ import java.util.TimeZone;
 public class CommonDateUtil {
 
     private static Calendar calendar;
+    private static long hour;
 
     public static String getTitleDate() {
         initCalendar();
@@ -107,5 +109,32 @@ public class CommonDateUtil {
         initCalendar();
         int currentSecond = calendar.get(Calendar.SECOND);
         return (60 - currentSecond) * 1000;
+    }
+
+    /**
+     * 一个时间和当前时间比较差多少小时
+     *
+     * @param time
+     * @return
+     */
+    public static long differHour(String time) {
+
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        try {
+            Date timeDate = simpleDateFormat.parse(time);
+            Date curDate = new Date(System.currentTimeMillis());//获取当前时间
+
+            long l = curDate.getTime() - timeDate.getTime();
+            long day = l / (24 * 60 * 60 * 1000);//天
+            hour = (l / (60 * 60 * 1000) - day * 24);//时
+            long min = ((l / (60 * 1000)) - day * 24 * 60 - hour * 60);//分
+            long s = (l / 1000 - day * 24 * 60 * 60 - hour * 60 * 60 - min * 60);//秒
+
+            Log.d("adclick", "day: " + day + " hour" + hour + " min" + min + " s" + s);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+
+        return hour;
     }
 }

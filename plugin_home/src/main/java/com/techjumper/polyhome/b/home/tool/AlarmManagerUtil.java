@@ -69,7 +69,8 @@ public class AlarmManagerUtil {
     public static void setAdClick(Context context) {
         int hour = CommonDateUtil.getHour();
         int minute = CommonDateUtil.getMinute();
-        int triggerAtMillis = 1000 * 60 * 60;
+//        int triggerAtMillis = 1000 * 60 * 60;
+        int triggerAtMillis = 1000 * 60 * 5;
 
         Log.d(TAG, "Notice: hour:" + hour + " minute:" + minute + "triggerAtMillis:" + triggerAtMillis);
 

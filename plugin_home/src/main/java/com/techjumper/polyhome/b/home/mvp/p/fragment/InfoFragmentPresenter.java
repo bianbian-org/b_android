@@ -199,6 +199,7 @@ public class InfoFragmentPresenter extends AppBaseFragmentPresenter<InfoFragment
                         }
 
                         entities = event.getEntities();
+                        medicalPosition = 0;
 
                         if (entities != null && entities.size() > 0) {
                             MedicalEntity.MedicalItemEntity itemEntity = entities.get(medicalPosition);
