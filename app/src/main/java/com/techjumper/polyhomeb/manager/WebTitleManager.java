@@ -79,40 +79,37 @@ public class WebTitleManager {
         String split = content[1];  //title=帖子详情&left=::NativeReturn,::&right=::,::&refresh=refresh
 
         String[] splits = split.split("&");
-        try {
-            mTitle = URLDecoder.decode(splits[0].replace("title=", ""), "UTF-8");
-        } catch (UnsupportedEncodingException e) {
-            e.printStackTrace();
+
+        //处理title
+        for (int i = 0 ; i < splits.length;i++) {
+            if (splits[i].contains("title=")) {
+                try {
+                    mTitle = URLDecoder.decode(splits[i].replace("title=", ""), "UTF-8");
+                } catch (UnsupportedEncodingException e) {
+                    e.printStackTrace();
+                }
+                break;
+            }
         }
 
-//        //处理左边
-//        for (int i = 0; i < splits.length; i++) {  //因为0是title
-//            if (splits[i].indexOf("left=") > 0) {
-//                processLeft(splits[i]); //left=呵呵::NativeReturn  或者  left=呵呵::NativeReturn,哈哈::NativeMenu
-//                break;
-//            }
-//        }
-//
-//        //处理右边
-//        for (int i = 0; i < splits.length; i++) {
-//            if (splits[i].indexOf("right=") > 0) {
-//                processRight(splits[i]); //right=呵呵::,呵呵::  或者直接是right=(此时代表右边没有东西)
-//                break;
-//            }
-//        }
+        //处理左边
+        for (int i = 0; i < splits.length; i++) {  //因为0是title
+            if (splits[i].contains("left=")) {
+                processLeft(splits[i]); //left=呵呵::NativeReturn  或者  left=呵呵::NativeReturn,哈哈::NativeMenu
+                break;
+            }
+        }
 
-        processLeft(splits[1]);
-        processRight(splits[2]);
+        //处理右边
+        for (int i = 0; i < splits.length; i++) {
+            if (splits[i].contains("right=")) {
+                processRight(splits[i]); //right=呵呵::,呵呵::  或者直接是right=(此时代表右边没有东西)
+                break;
+            }
+        }
 
         //处理刷新
         for (int i = 0; i < splits.length; i++) {
-            JLog.e(splits[i]);
-//            if (splits[i].indexOf("refresh=") > 0) {
-//                JLog.e("呵呵");
-//                String refresh = splits[i];
-//                mRefreshType = refresh.replace("refresh=", "");
-//                break;
-//            }
             if (splits[i].contains("refresh=")) {
                 String refresh = splits[i];
                 mRefreshType = refresh.replace("refresh=", "");

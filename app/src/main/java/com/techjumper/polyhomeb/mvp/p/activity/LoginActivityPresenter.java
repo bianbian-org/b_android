@@ -6,6 +6,7 @@ import android.view.View;
 import android.widget.EditText;
 
 import com.techjumper.corelib.rx.tools.RxBus;
+import com.techjumper.corelib.rx.tools.RxUtils;
 import com.techjumper.corelib.ui.activity.BaseActivity;
 import com.techjumper.corelib.utils.basic.StringUtils;
 import com.techjumper.corelib.utils.common.AcHelper;
@@ -13,15 +14,16 @@ import com.techjumper.corelib.utils.window.ToastUtils;
 import com.techjumper.polyhomeb.R;
 import com.techjumper.polyhomeb.entity.LoginEntity;
 import com.techjumper.polyhomeb.mvp.m.LoginActivityModel;
+import com.techjumper.polyhomeb.mvp.v.activity.ChooseVillageFamilyActivity;
 import com.techjumper.polyhomeb.mvp.v.activity.FindPasswordActivity;
 import com.techjumper.polyhomeb.mvp.v.activity.LoginActivity;
 import com.techjumper.polyhomeb.mvp.v.activity.RegistActivity;
-import com.techjumper.polyhomeb.mvp.v.activity.TabHomeActivity;
 import com.techjumper.polyhomeb.user.UserManager;
 import com.techjumper.polyhomeb.user.event.LoginEvent;
 
 import butterknife.OnClick;
 import rx.Subscriber;
+import rx.Subscription;
 import rx.android.schedulers.AndroidSchedulers;
 
 /**
@@ -36,6 +38,8 @@ public class LoginActivityPresenter extends AppBaseActivityPresenter<LoginActivi
 
     private boolean mCanExit;
 
+    private Subscription mSubs1;
+
     private LoginActivityModel mModel = new LoginActivityModel(this);
 
     @Override
@@ -46,18 +50,23 @@ public class LoginActivityPresenter extends AppBaseActivityPresenter<LoginActivi
     @Override
     public void onViewInited(Bundle savedInstanceState) {
         //监听注册成功的消息
+        RxUtils.unsubscribeIfNotNull(mSubs1);
         addSubscription(
-                RxBus.INSTANCE.asObservable()
+                mSubs1 = RxBus.INSTANCE.asObservable()
                         .observeOn(AndroidSchedulers.mainThread())
                         .subscribe(o -> {
                             if (o instanceof LoginEvent) {
                                 LoginEvent event = (LoginEvent) o;
                                 if (event.isLogin()) {
+//                                    new AcHelper.Builder(getView())
+//                                            .target(TabHomeActivity.class)
+//                                            .closeCurrent(true)
+//                                            .enterAnim(R.anim.fade_in)
+//                                            .exitAnim(R.anim.fade_out)
+//                                            .start();
                                     new AcHelper.Builder(getView())
-                                            .target(TabHomeActivity.class)
+                                            .target(ChooseVillageFamilyActivity.class)
                                             .closeCurrent(true)
-                                            .enterAnim(R.anim.fade_in)
-                                            .exitAnim(R.anim.fade_out)
                                             .start();
                                     getView().finish();
                                 }

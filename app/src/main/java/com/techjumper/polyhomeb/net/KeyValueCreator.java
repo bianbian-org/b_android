@@ -208,4 +208,10 @@ public class KeyValueCreator {
                 .put("origin_price", origin_price)
                 .put("discount", discount);
     }
+
+    public static KeyValuePair getVillages(String user_id, String ticket) {
+        return newPair()
+                .put("user_id", user_id)
+                .put("ticket", ticket);
+    }
 }

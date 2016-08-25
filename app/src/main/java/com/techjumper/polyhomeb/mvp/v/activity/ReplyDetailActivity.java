@@ -56,10 +56,9 @@ public class ReplyDetailActivity extends AppBaseActivity<ReplyDetailActivityPres
     public void onTitleLeftFirstClick(String mLeftFirstMethod) {
         switch (mLeftFirstMethod) {
             case WebTitleHelper.NATIVE_METHOD_RETURN:
-                RxBus.INSTANCE.send(new ReloadWebPageEvent());
+                onBackPressed();
                 break;
             case WebTitleHelper.NATIVE_METHOD_MENU:
-                RxBus.INSTANCE.send(new ToggleMenuClickEvent());
                 break;
             case WebTitleHelper.NATIVE_METHOD_NEW_ARTICLE:
                 break;
@@ -73,7 +72,7 @@ public class ReplyDetailActivity extends AppBaseActivity<ReplyDetailActivityPres
     public void onTitleLeftSecondClick(String mLeftSecondMethod) {
         switch (mLeftSecondMethod) {
             case WebTitleHelper.NATIVE_METHOD_RETURN:
-                RxBus.INSTANCE.send(new ReloadWebPageEvent());
+                onBackPressed();
                 break;
             case WebTitleHelper.NATIVE_METHOD_MENU:
                 RxBus.INSTANCE.send(new ToggleMenuClickEvent());
@@ -90,7 +89,7 @@ public class ReplyDetailActivity extends AppBaseActivity<ReplyDetailActivityPres
     public void onTitleRightFirstClick(String mRightFirstMethod) {
         switch (mRightFirstMethod) {
             case WebTitleHelper.NATIVE_METHOD_RETURN:
-                RxBus.INSTANCE.send(new ReloadWebPageEvent());
+                onBackPressed();
                 break;
             case WebTitleHelper.NATIVE_METHOD_MENU:
                 RxBus.INSTANCE.send(new ToggleMenuClickEvent());
@@ -107,6 +106,7 @@ public class ReplyDetailActivity extends AppBaseActivity<ReplyDetailActivityPres
     public void onTitleRightSecondClick(String mRightSecondMethod) {
         switch (mRightSecondMethod) {
             case WebTitleHelper.NATIVE_METHOD_RETURN:
+                onBackPressed();
                 RxBus.INSTANCE.send(new ReloadWebPageEvent());
                 break;
             case WebTitleHelper.NATIVE_METHOD_MENU:

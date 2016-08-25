@@ -44,6 +44,10 @@ public class TitleHelper {
         UI.create(view).<ImageView>findById(R.id.iv_left_icon).setImageResource(resId);
     }
 
+    public static void setTitleRightIcon(View view, int resId) {
+        UI.create(view).<ImageView>findById(R.id.iv_right_icon).setImageResource(resId);
+    }
+
     public static Builder create(Activity ac) {
         return new Builder(ac);
     }

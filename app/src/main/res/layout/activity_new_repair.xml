@@ -57,7 +57,7 @@
                         android:layout_gravity="center"
                         android:layout_marginLeft="2.8dp"
                         android:layout_marginRight="@dimen/dp_14"
-                        android:src="@mipmap/icon_triangle_green" />
+                        android:src="@mipmap/icon_triangle_right_green" />
                 </LinearLayout>
             </FrameLayout>
         </RelativeLayout>
@@ -107,7 +107,7 @@
                         android:layout_gravity="center"
                         android:layout_marginLeft="2.8dp"
                         android:layout_marginRight="@dimen/dp_14"
-                        android:src="@mipmap/icon_triangle_green" />
+                        android:src="@mipmap/icon_triangle_right_green" />
                 </LinearLayout>
             </FrameLayout>
         </RelativeLayout>

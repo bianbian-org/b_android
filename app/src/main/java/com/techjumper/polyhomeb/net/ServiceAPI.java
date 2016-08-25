@@ -5,13 +5,13 @@ import com.techjumper.polyhomeb.entity.BaseArgumentsEntity;
 import com.techjumper.polyhomeb.entity.LoginEntity;
 import com.techjumper.polyhomeb.entity.PropertyComplainDetailEntity;
 import com.techjumper.polyhomeb.entity.PropertyComplainEntity;
-import com.techjumper.polyhomeb.entity.PropertyPlacardDetailEntity;
 import com.techjumper.polyhomeb.entity.PropertyPlacardEntity;
 import com.techjumper.polyhomeb.entity.PropertyRepairDetailEntity;
 import com.techjumper.polyhomeb.entity.PropertyRepairEntity;
 import com.techjumper.polyhomeb.entity.SectionsEntity;
 import com.techjumper.polyhomeb.entity.TrueEntity;
 import com.techjumper.polyhomeb.entity.UploadPicEntity;
+import com.techjumper.polyhomeb.entity.event.VillageEntity;
 
 import java.util.Map;
 
@@ -132,25 +132,25 @@ public interface ServiceAPI {
     @GET("notices")
     Observable<PropertyPlacardEntity> propertyNotice(@QueryMap Map<String, String> args);
 
-    /**
-     * 公告详情
-     * get '/notices/show'
-     * params:
-     * user_id # 用户ID
-     * ticket # session登录验证
-     * id #公告ID
-     * return:
-     * "error_code": 0,
-     * "error_msg": null,
-     * "data": {
-     * "id": 10,  #公告ID
-     * "title": "54trerf", #公告标题
-     * "types": 1,  #公告类型 1-公告 2-资讯
-     * "content": "u003cpu003e3243erewu003c/pu003e",  #内容
-     * "time": "2016-05-06"  #时间
-     */
-    @GET("notices/show")
-    Observable<PropertyPlacardDetailEntity> propertyNoticeDetail(@QueryMap Map<String, String> stringStringMap);
+//    /**
+//     * 公告详情
+//     * get '/notices/show'
+//     * params:
+//     * user_id # 用户ID
+//     * ticket # session登录验证
+//     * id #公告ID
+//     * return:
+//     * "error_code": 0,
+//     * "error_msg": null,
+//     * "data": {
+//     * "id": 10,  #公告ID
+//     * "title": "54trerf", #公告标题
+//     * "types": 1,  #公告类型 1-公告 2-资讯
+//     * "content": "u003cpu003e3243erewu003c/pu003e",  #内容
+//     * "time": "2016-05-06"  #时间
+//     */
+//    @GET("notices/show")
+//    Observable<PropertyPlacardDetailEntity> propertyNoticeDetail(@QueryMap Map<String, String> stringStringMap);
 
     /**
      * 物业管理-投诉建议列表
@@ -369,6 +369,16 @@ public interface ServiceAPI {
      */
     @POST("article")
     Observable<TrueEntity> newArticle(@Body BaseArgumentsEntity entity);
+
+    /**
+     * 省份小区列表
+     * get '/village'
+     * user_id # 用户ID
+     * ticket # session登录验证
+     *
+     */
+    @GET("village")
+    Observable<VillageEntity> getVillages(@QueryMap Map<String, String> stringStringMap);
 
 }
 

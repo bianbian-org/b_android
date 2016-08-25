@@ -23,7 +23,8 @@ public class LoginEntity extends BaseEntity<LoginEntity.LoginDataEntity> {
         private String sex;
         private String email;
         private String birthday;
-        private List<String> families;
+        private List<FamiliesBean> families;
+        private List<VillagesBean> villages;
 
         public String getSex() {
             return sex;
@@ -89,12 +90,71 @@ public class LoginEntity extends BaseEntity<LoginEntity.LoginDataEntity> {
             this.ticket = ticket;
         }
 
-        public List<String> getFamilies() {
+        public List<FamiliesBean> getFamilies() {
             return families;
         }
 
-        public void setFamilies(List<String> families) {
+        public void setFamilies(List<FamiliesBean> families) {
             this.families = families;
+        }
+
+        public List<VillagesBean> getVillages() {
+            return villages;
+        }
+
+        public void setVillages(List<VillagesBean> villages) {
+            this.villages = villages;
+        }
+
+        public static class FamiliesBean {
+            private String family_id;
+            private String family_name;
+
+            public String getFamily_id() {
+                return family_id;
+            }
+
+            public void setFamily_id(String family_id) {
+                this.family_id = family_id;
+            }
+
+            public String getFamily_name() {
+                return family_name;
+            }
+
+            public void setFamily_name(String family_name) {
+                this.family_name = family_name;
+            }
+        }
+
+        public static class VillagesBean {
+            private int village_id;
+            private int verified;
+            private String village_name;
+
+            public int getVillage_id() {
+                return village_id;
+            }
+
+            public void setVillage_id(int village_id) {
+                this.village_id = village_id;
+            }
+
+            public int getVerified() {
+                return verified;
+            }
+
+            public void setVerified(int verified) {
+                this.verified = verified;
+            }
+
+            public String getVillage_name() {
+                return village_name;
+            }
+
+            public void setVillage_name(String village_name) {
+                this.village_name = village_name;
+            }
         }
 
         @Override
@@ -109,6 +169,7 @@ public class LoginEntity extends BaseEntity<LoginEntity.LoginDataEntity> {
                     ", email='" + email + '\'' +
                     ", birthday='" + birthday + '\'' +
                     ", families=" + families +
+                    ", villages=" + villages +
                     '}';
         }
     }

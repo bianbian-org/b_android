@@ -94,7 +94,6 @@ public class LoginActivity extends AppBaseActivity<LoginActivityPresenter> {
         return mLayoutWrong;
     }
 
-
     @Override
     public void onBackPressed() {
         getPresenter().onBackPressed();
