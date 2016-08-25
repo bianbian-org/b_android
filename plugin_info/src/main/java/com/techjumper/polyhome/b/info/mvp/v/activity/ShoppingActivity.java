@@ -1,6 +1,7 @@
 package com.techjumper.polyhome.b.info.mvp.v.activity;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.webkit.WebChromeClient;
 import android.webkit.WebSettings;
@@ -15,6 +16,7 @@ import com.techjumper.corelib.rx.tools.RxBus;
 import com.techjumper.polyhome.b.info.R;
 import com.techjumper.polyhome.b.info.js.AndroidForJs;
 import com.techjumper.polyhome.b.info.mvp.p.activity.ShoppingActivityPresenter;
+import com.techjumper.polyhome_b.adlib.Config;
 
 import java.util.Timer;
 import java.util.TimerTask;
@@ -76,7 +78,7 @@ public class ShoppingActivity extends AppBaseActivity<ShoppingActivityPresenter>
         });
 
         webView.setWebViewClient(new webViewClient());
-        webView.loadUrl("http://pl.techjumper.com/shop/pad/order/show/" + String.valueOf(id));
+        webView.loadUrl(Config.sShoppingShow + String.valueOf(id));
         webView.addJavascriptInterface(new AndroidForJs(this), "JavaScriptInterface");
         timer.schedule(new TimerTask() {
             @Override

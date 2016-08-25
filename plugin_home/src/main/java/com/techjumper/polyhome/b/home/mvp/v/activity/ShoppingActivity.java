@@ -15,6 +15,7 @@ import com.techjumper.corelib.rx.tools.RxBus;
 import com.techjumper.polyhome.b.home.R;
 import com.techjumper.polyhome.b.home.js.AndroidForJs;
 import com.techjumper.polyhome.b.home.mvp.p.activity.ShoppingActivityPresenter;
+import com.techjumper.polyhome_b.adlib.Config;
 
 import java.util.Timer;
 import java.util.TimerTask;
@@ -68,7 +69,7 @@ public class ShoppingActivity extends AppBaseActivity<ShoppingActivityPresenter>
             }
         });
         webView.setWebViewClient(new webViewClient());
-        webView.loadUrl("http://pl.techjumper.com/shop/pad/login");
+        webView.loadUrl(Config.sShoppingLogin);
         webView.addJavascriptInterface(new AndroidForJs(this), "JavaScriptInterface");
 
         timer.schedule(new TimerTask() {

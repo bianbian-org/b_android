@@ -13,11 +13,30 @@ public class Config {
     public static final boolean DEBUG = true;
 
     public static String sHost;
+    public static String sJujia;
+    public static String sShopping;
+    public static String sShoppingLogin;
+    public static String sShoppingShow;
 
     static {
         sHost = DEBUG ? "http://poly.techjumper.com" : "http://api.ourjujia.com";
     }
 
+    static {
+        sJujia = DEBUG ? "http://jujia.techjumper.com" : "http://www.ourjujia.com";
+    }
+
+    static {
+        sShopping = DEBUG ? "http://pl.techjumper.com/shop/pad" : "http://polyhome.techjumper.com/shop/pad";
+    }
+
+    static {
+        sShoppingLogin = sShopping + "/login";
+    }
+
+    static {
+        sShoppingShow = sShopping + "/order/show/";
+    }
 
     /**
      * 默认接口地址

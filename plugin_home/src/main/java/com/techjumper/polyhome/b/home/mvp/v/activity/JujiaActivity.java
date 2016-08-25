@@ -14,6 +14,7 @@ import com.techjumper.corelib.mvp.factory.Presenter;
 import com.techjumper.corelib.rx.tools.RxBus;
 import com.techjumper.polyhome.b.home.R;
 import com.techjumper.polyhome.b.home.mvp.p.activity.JujiaActivityPresenter;
+import com.techjumper.polyhome_b.adlib.Config;
 
 import java.util.Timer;
 import java.util.TimerTask;
@@ -68,7 +69,7 @@ public class JujiaActivity extends AppBaseActivity<JujiaActivityPresenter> {
             }
         });
         webView.setWebViewClient(new webViewClient());
-        webView.loadUrl("http://jujia.techjumper.com");
+        webView.loadUrl(Config.sJujia);
 
         timer.schedule(new TimerTask() {
             @Override
