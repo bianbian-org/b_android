@@ -76,9 +76,9 @@ public class AdController {
      */
     private static boolean sIsStartedUploadAd;
     /**
-     * 下一次广告上传的时间(时间戳)
+     * 下次上报广告的时间
      */
-    private static long sUploadAdTime;
+    private static final String KEY_ADSTAT_NEXT_TIME = "key_adstat_next_time";
 
     Subscription subscribe = null;
     private int count;
@@ -121,10 +121,11 @@ public class AdController {
 
     public static long getAdStatUploadNextTime(boolean justReturn) {
         if (justReturn) {
-            return sUploadAdTime;
+            return PreferenceUtils.get(KEY_ADSTAT_NEXT_TIME, 0L);
         }
-        sUploadAdTime = System.currentTimeMillis() + AdController.AD_STAT_INTERVAL;
-        return sUploadAdTime;
+        long nextTime = System.currentTimeMillis() + AdController.AD_STAT_INTERVAL;
+        PreferenceUtils.save(KEY_ADSTAT_NEXT_TIME, nextTime);
+        return nextTime;
     }
 
     public boolean wakeUpScreen() {
