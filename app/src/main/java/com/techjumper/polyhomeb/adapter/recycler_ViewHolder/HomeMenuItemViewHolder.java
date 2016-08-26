@@ -1,12 +1,17 @@
 package com.techjumper.polyhomeb.adapter.recycler_ViewHolder;
 
+import android.app.Activity;
 import android.text.TextUtils;
 import android.view.View;
 
 import com.steve.creact.annotation.DataBean;
 import com.steve.creact.library.viewholder.BaseRecyclerViewHolder;
+import com.techjumper.corelib.utils.common.AcHelper;
 import com.techjumper.polyhomeb.R;
 import com.techjumper.polyhomeb.adapter.recycler_Data.HomeMenuItemData;
+import com.techjumper.polyhomeb.mvp.v.activity.MessageCenterActivity;
+import com.techjumper.polyhomeb.mvp.v.activity.MyVillageFamilyActivity;
+import com.techjumper.polyhomeb.mvp.v.activity.SettingActivity;
 
 /**
  * * * * * * * * * * * * * * * * * * * * * * *
@@ -33,9 +38,28 @@ public class HomeMenuItemViewHolder extends BaseRecyclerViewHolder<HomeMenuItemD
         } else {
             getView(R.id.title_plus).setVisibility(View.GONE);
         }
+        int layoutPosition = getLayoutPosition();
         setOnClickListener(R.id.root, v -> {
-//            new AcHelper.Builder((Activity) getContext()).target().start();
+            startActivity(layoutPosition);
         });
+    }
 
+    private void startActivity(int position) {
+        //item中还包括了divider,所以position的值有点不一样
+        switch (position) {
+            case 1:  //我的小区
+                new AcHelper.Builder((Activity) getContext()).target(MyVillageFamilyActivity.class).start();
+                break;
+            case 3:  //智能家居设置
+                break;
+            case 5:  //信息中心
+                new AcHelper.Builder((Activity) getContext()).target(MessageCenterActivity.class).start();
+                break;
+            case 9:  //我的积分
+                break;
+            case 13:  //设置
+                new AcHelper.Builder((Activity) getContext()).target(SettingActivity.class).start();
+                break;
+        }
     }
 }

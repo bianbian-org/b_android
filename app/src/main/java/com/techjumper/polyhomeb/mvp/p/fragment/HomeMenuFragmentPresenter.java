@@ -7,7 +7,6 @@ import android.view.View;
 import com.steve.creact.library.display.DisplayBean;
 import com.techjumper.corelib.rx.tools.RxBus;
 import com.techjumper.corelib.utils.common.AcHelper;
-import com.techjumper.corelib.utils.window.DialogUtils;
 import com.techjumper.lib2.utils.PicassoHelper;
 import com.techjumper.polyhomeb.R;
 import com.techjumper.polyhomeb.mvp.m.HomeMenuFragmentModel;
@@ -53,9 +52,6 @@ public class HomeMenuFragmentPresenter extends AppBaseFragmentPresenter<HomeMenu
             case R.id.layout_head:
                 if (!UserManager.INSTANCE.isLogin()) {
                     new AcHelper.Builder(getView().getActivity()).target(LoginActivity.class).start();
-                } else {
-//                    new AcHelper.Builder(getView().getActivity()).target(LogoutActivity.class).start();
-                    logout();
                 }
                 break;
         }
@@ -77,24 +73,5 @@ public class HomeMenuFragmentPresenter extends AppBaseFragmentPresenter<HomeMenu
         } else {
             PicassoHelper.load(R.mipmap.icon_avatar_not_login).transform(new CircleTransform()).into(getView().getIvAvatar());
         }
-    }
-
-    private void logout() {
-        DialogUtils.getBuilder(getView().getActivity())
-                .content(R.string.confirm_logout)
-                .positiveText(R.string.ok)
-                .negativeText(R.string.cancel)
-                .onAny((dialog, which) -> {
-                    switch (which) {
-                        case POSITIVE:
-                            UserManager.INSTANCE.logout();
-                            new AcHelper.Builder(getView().getActivity())
-                                    .target(LoginActivity.class)
-                                    .closeCurrent(true)
-                                    .start();
-                            break;
-                    }
-                })
-                .show();
     }
 }

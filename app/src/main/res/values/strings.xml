@@ -176,6 +176,11 @@
     <string name="please_input_room_num">请输入房间号</string>
     <string name="scan_qr_code">扫描二维码</string>
     <string name="scan_notice">进入智能对讲系统室内机的设置页面，点击二维码后出现二维码，然后进行扫描</string>
+    <string name="may_village_or_family">我的小区或家庭</string>
+    <string name="clear_cache">清除缓存</string>
+    <string name="appraise">评价应用</string>
+    <string name="about">关于我们</string>
+    <string name="logout">退出登录</string>
 
 
 </resources>
