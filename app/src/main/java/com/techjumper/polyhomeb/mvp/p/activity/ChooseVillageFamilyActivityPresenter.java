@@ -9,12 +9,14 @@ import com.steve.creact.library.display.DisplayBean;
 import com.techjumper.corelib.rx.tools.RxBus;
 import com.techjumper.corelib.rx.tools.RxUtils;
 import com.techjumper.corelib.ui.activity.BaseActivity;
+import com.techjumper.corelib.utils.common.AcHelper;
 import com.techjumper.corelib.utils.window.ToastUtils;
 import com.techjumper.polyhomeb.R;
 import com.techjumper.polyhomeb.entity.event.ChooseVillageEvent;
 import com.techjumper.polyhomeb.entity.event.VillageEntity;
 import com.techjumper.polyhomeb.mvp.m.ChooseVillageFamilyActivityModel;
 import com.techjumper.polyhomeb.mvp.v.activity.ChooseVillageFamilyActivity;
+import com.techjumper.polyhomeb.mvp.v.activity.ScanHostQRCodeActivity;
 
 import java.util.List;
 
@@ -94,6 +96,7 @@ public class ChooseVillageFamilyActivityPresenter extends AppBaseActivityPresent
     }
 
     public void onTitleRightClick() {
+        new AcHelper.Builder(getView()).target(ScanHostQRCodeActivity.class).start();
     }
 
     @OnClick(R.id.layout_triangle)

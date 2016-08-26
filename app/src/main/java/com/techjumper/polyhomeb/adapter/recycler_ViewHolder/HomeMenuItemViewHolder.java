@@ -5,7 +5,6 @@ import android.view.View;
 
 import com.steve.creact.annotation.DataBean;
 import com.steve.creact.library.viewholder.BaseRecyclerViewHolder;
-import com.techjumper.corelib.utils.window.ToastUtils;
 import com.techjumper.polyhomeb.R;
 import com.techjumper.polyhomeb.adapter.recycler_Data.HomeMenuItemData;
 
@@ -34,7 +33,9 @@ public class HomeMenuItemViewHolder extends BaseRecyclerViewHolder<HomeMenuItemD
         } else {
             getView(R.id.title_plus).setVisibility(View.GONE);
         }
-        setOnClickListener(R.id.root, v -> ToastUtils.show(".."));
+        setOnClickListener(R.id.root, v -> {
+//            new AcHelper.Builder((Activity) getContext()).target().start();
+        });
 
     }
 }

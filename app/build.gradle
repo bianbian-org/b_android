@@ -88,6 +88,7 @@ dependencies {
     compile project(':slidingmenulib')
     compile project(':magicindicator')
     compile project(':PhotoPicker')
+    compile project(':zxing')
 
 
     compile "com.creact:powerful-adapter-lib-release:$rootProject.recyclerAdapter"

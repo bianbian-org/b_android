@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <com.techjumper.zxing.ZXingScannerView
+        android:id="@+id/zxing"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+
+    <LinearLayout
+        android:layout_alignParentBottom="true"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/color_ebecec"
+        android:orientation="vertical">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginTop="@dimen/dp_12"
+            android:gravity="center"
+            android:paddingLeft="@dimen/dp_50"
+            android:paddingRight="@dimen/dp_50"
+            android:text="@string/scan_notice"
+            android:textColor="@color/color_727272"
+            android:textSize="@dimen/sp_12" />
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginBottom="@dimen/dp_30"
+            android:layout_marginTop="@dimen/dp_26"
+            android:background="@mipmap/icon_host" />
+
+    </LinearLayout>
+
+    <include layout="@layout/title_back" />
+
+</RelativeLayout>
