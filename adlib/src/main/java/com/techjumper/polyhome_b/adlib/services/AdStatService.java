@@ -73,7 +73,7 @@ public class AdStatService extends Service {
 
                     long lastTime = NumberUtil.convertTolong(adStatTime.time(), -1L);
 
-                    boolean b = System.currentTimeMillis() - lastTime >= ADSTAT_TIME_INTERVAL;
+                    boolean b = System.currentTimeMillis() - lastTime >= ADSTAT_TIME_INTERVAL || System.currentTimeMillis() <= lastTime;
                     String log = b ? "<ad> 到达上报时间, 开始上报广告" : "<ad> 未到上报广告时间";
                     JLog.d(log);
                     return b;

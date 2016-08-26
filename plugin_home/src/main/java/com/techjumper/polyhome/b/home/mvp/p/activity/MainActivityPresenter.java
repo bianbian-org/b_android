@@ -187,7 +187,7 @@ public class MainActivityPresenter extends AppBaseActivityPresenter<MainActivity
 
                             String time = adStatTime.time();
                             long l = NumberUtil.convertTolong(time, -1L);
-                            if (l == -1L) {
+                            if (l == -1L || System.currentTimeMillis() <= l) {
                                 ToastUtils.show("在" + AdController.AD_STAT_INTERVAL / 1000 / 60 + "分钟之内上报");
                                 return;
                             }
