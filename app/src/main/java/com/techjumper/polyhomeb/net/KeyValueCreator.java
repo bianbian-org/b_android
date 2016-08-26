@@ -214,4 +214,14 @@ public class KeyValueCreator {
                 .put("user_id", user_id)
                 .put("ticket", ticket);
     }
+
+    public static KeyValuePair joinVillage(String user_id, String ticket, int village_id, String building, String unit, String index) {
+        return newPair()
+                .put("user_id", user_id)
+                .put("ticket", ticket)
+                .put("village_id", village_id)
+                .put("building", building)
+                .put("unit", unit)
+                .put("index", index);
+    }
 }

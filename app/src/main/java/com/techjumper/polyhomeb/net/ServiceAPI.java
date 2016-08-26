@@ -375,10 +375,36 @@ public interface ServiceAPI {
      * get '/village'
      * user_id # 用户ID
      * ticket # session登录验证
-     *
      */
     @GET("village")
     Observable<VillageEntity> getVillages(@QueryMap Map<String, String> stringStringMap);
 
+    /**
+     * 加入小区
+     * post '/village_users/join'
+     * <p>
+     * params:
+     * user_id # 用户ID
+     * ticket # session登录验证
+     * village_id # 小区ID
+     * building:1  # 楼栋号
+     * unit:1  # 单元号
+     * index:1  # 房间号
+     * return:
+     * {
+     * "error_code": 0,
+     * "error_msg": null,
+     * "data": {
+     * "result": "true"
+     * }
+     * }
+     * <p>
+     * # ERROR CODE
+     * error_code: 109,	error_msg: '此功能登录后可使用！'
+     * error_code: 311,	error_msg: '小区不存在！'
+     * error_code: 312,	error_msg: '用户已加入该小区或已提交审核！'
+     */
+    @POST("village_users/join")
+    Observable<TrueEntity> joinVillage(@Body BaseArgumentsEntity entity);
 }
 

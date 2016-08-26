@@ -84,6 +84,7 @@
     </LinearLayout>
 
     <View
+        android:id="@+id/view_divider_small"
         android:layout_width="match_parent"
         android:layout_height="0.5dp"
         android:background="@color/color_ceced2" />
@@ -108,13 +109,6 @@
         android:layout_height="wrap_content"
         android:orientation="vertical"
         android:visibility="visible">
-
-        <View
-            android:id="@+id/view_divider_small"
-            android:layout_width="match_parent"
-            android:layout_height="0.5dp"
-            android:background="@color/color_ceced2"
-            android:visibility="gone" />
 
         <cn.finalteam.loadingviewfinal.RecyclerViewFinal
             android:id="@+id/rv_villages"

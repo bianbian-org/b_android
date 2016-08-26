@@ -1,12 +1,16 @@
 package com.techjumper.polyhomeb.adapter.recycler_ViewHolder;
 
+import android.app.Activity;
+import android.os.Bundle;
 import android.view.View;
 
 import com.steve.creact.annotation.DataBean;
 import com.steve.creact.library.viewholder.BaseRecyclerViewHolder;
-import com.techjumper.corelib.utils.window.ToastUtils;
+import com.techjumper.corelib.utils.common.AcHelper;
+import com.techjumper.polyhomeb.Constant;
 import com.techjumper.polyhomeb.R;
 import com.techjumper.polyhomeb.adapter.recycler_Data.ChooseVillageData;
+import com.techjumper.polyhomeb.mvp.v.activity.JoinVillageActivity;
 
 /**
  * * * * * * * * * * * * * * * * * * * * * * *
@@ -28,11 +32,11 @@ public class ChooseVillageViewHolder extends BaseRecyclerViewHolder<ChooseVillag
         if (data == null) return;
         int id = data.getId();
         setText(R.id.tv_village, data.getName());
-        setOnClickListener(R.id.layout_village, new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                ToastUtils.show("点击了" + data.getName() + "...id:" + data.getId());
-            }
+        setOnClickListener(R.id.layout_village, v -> {
+            Bundle bundle = new Bundle();
+            bundle.putInt(Constant.CHOOSE_VILLAGE_ID, data.getId());
+            bundle.putString(Constant.CHOOSE_VILLAGE_NAME, data.getName());
+            new AcHelper.Builder((Activity) getContext()).extra(bundle).target(JoinVillageActivity.class).start();
         });
     }
 }

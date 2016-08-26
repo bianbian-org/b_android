@@ -72,6 +72,8 @@ public class VillageEntity extends BaseEntity<VillageEntity.DataBean> {
                 public void setName(String name) {
                     this.name = name;
                 }
+
+
             }
         }
     }

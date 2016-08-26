@@ -39,6 +39,9 @@ public class Constant {
     public static final int MESSAGE_SEND_FAILED = 1;  //发送失败
     public static final int MESSAGE_SEND_SUCCESS = 2;  //发送成功
 
+    public static final String CHOOSE_VILLAGE_NAME = "choose_village_name";
+    public static final String CHOOSE_VILLAGE_ID = "choose_village_id";
+
 
     /* ------------------JS -------------------*/
 

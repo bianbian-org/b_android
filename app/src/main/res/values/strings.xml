@@ -166,6 +166,14 @@
     <string name="choose_village_family">选择小区或家庭</string>
     <string name="scan_code_notice">点击右上方按钮扫描室内机的二维码即可加入</string>
     <string name="all_area">所有地区</string>
+    <string name="join_village">加入%1$s</string>
+    <string name="building">楼栋号</string>
+    <string name="unit">单元号</string>
+    <string name="room">房间号</string>
+    <string name="confirm_join">确认加入</string>
+    <string name="please_input_building_num">请输入楼栋号</string>
+    <string name="please_input_unit_num">请输入单元号</string>
+    <string name="please_input_room_num">请输入房间号</string>
 
 
 </resources>

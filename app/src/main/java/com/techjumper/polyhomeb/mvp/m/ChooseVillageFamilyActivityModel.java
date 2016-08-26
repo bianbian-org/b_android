@@ -36,6 +36,7 @@ public class ChooseVillageFamilyActivityModel extends BaseModel<ChooseVillageFam
 
     private List<String> mProvinces = new ArrayList<>();
     private List<VillageEntity.DataBean.InfosBean.VillagesBean> mNamesAndIds = new ArrayList<>();
+    private VillageEntity mVillageEntity;
 
     public ChooseVillageFamilyActivityModel(ChooseVillageFamilyActivityPresenter presenter) {
         super(presenter);
@@ -55,6 +56,7 @@ public class ChooseVillageFamilyActivityModel extends BaseModel<ChooseVillageFam
     public void processData(VillageEntity villageEntity) {
         mProvinces.clear();
         mNamesAndIds.clear();
+        this.mVillageEntity = villageEntity;
         List<VillageEntity.DataBean.InfosBean> infos = villageEntity.getData().getInfos();
         for (VillageEntity.DataBean.InfosBean bean : infos) {
             String province = bean.getProvince();
@@ -72,22 +74,6 @@ public class ChooseVillageFamilyActivityModel extends BaseModel<ChooseVillageFam
     }
 
     public List<DisplayBean> getRvProvinceDatas() {
-
-        mProvinces.clear();
-
-        /************假数据****************/
-        mProvinces.add("张三");
-        mProvinces.add("李四");
-        mProvinces.add("王麻子");
-        mProvinces.add("张");
-        mProvinces.add("dssd");
-        mProvinces.add("问v");
-        mProvinces.add("232");
-        mProvinces.add("二个如果");
-        mProvinces.add("239y82f");
-        mProvinces.add("fef");
-        /************假数据****************/
-
         if (mProvinces == null || mProvinces.size() == 0) return null;
         List<DisplayBean> displayBean = new ArrayList<>();
 
@@ -103,22 +89,16 @@ public class ChooseVillageFamilyActivityModel extends BaseModel<ChooseVillageFam
         return displayBean;
     }
 
-    public List<DisplayBean> getRvVillageDatas() {
-        mNamesAndIds.clear();
-
-        /************假数据****************/
-        for (int i = 0; i < mProvinces.size(); i++) {
-            VillageEntity.DataBean.InfosBean.VillagesBean villagesBean = new VillageEntity.DataBean.InfosBean.VillagesBean();
-            villagesBean.setId(i);
-            villagesBean.setName("优客逸家" + i);
-            mNamesAndIds.add(villagesBean);
-        }
-        /************假数据****************/
+    public List<DisplayBean> getRvVillageDatas(int currentIndex) {
         if (mNamesAndIds == null || mNamesAndIds.size() == 0) return null;
-
         List<DisplayBean> displayBean = new ArrayList<>();
 
-        for (int i = 0; i < mNamesAndIds.size(); i++) {
+        //取出当前省份下的小区
+        List<VillageEntity.DataBean.InfosBean> infos = mVillageEntity.getData().getInfos();
+        VillageEntity.DataBean.InfosBean infosBean = infos.get(currentIndex);
+        List<VillageEntity.DataBean.InfosBean.VillagesBean> villages = infosBean.getVillages();
+
+        for (int i = 0; i < villages.size(); i++) {
             if (i == 0) {
                 //长分割线
                 PropertyPlacardDividerLongData propertyPlacardDividerLongData = new PropertyPlacardDividerLongData();
@@ -132,12 +112,12 @@ public class ChooseVillageFamilyActivityModel extends BaseModel<ChooseVillageFam
                 displayBean.add(dividerBean);
             }
             ChooseVillageData chooseVillageData = new ChooseVillageData();
-            chooseVillageData.setName(mNamesAndIds.get(i).getName());
-            chooseVillageData.setId(mNamesAndIds.get(i).getId());
+            chooseVillageData.setName(villages.get(i).getName());
+            chooseVillageData.setId(villages.get(i).getId());
             ChooseVillageBean chooseVillageBean = new ChooseVillageBean(chooseVillageData);
             displayBean.add(chooseVillageBean);
 
-            if (i == mNamesAndIds.size() - 1) {
+            if (i == villages.size() - 1) {
                 //长分割线
                 PropertyPlacardDividerLongData propertyPlacardDividerLongData = new PropertyPlacardDividerLongData();
                 PropertyPlacardDividerLongBean propertyPlacardDividerLongBean = new PropertyPlacardDividerLongBean(propertyPlacardDividerLongData);

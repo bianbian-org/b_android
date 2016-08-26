@@ -64,16 +64,17 @@ public class ChooseVillageFamilyActivity extends AppBaseActivity<ChooseVillageFa
     @Bind(R.id.rv_villages)
     RecyclerViewFinal mRvVillages;//具体小区的Rv
 
-    @Bind(R.id.view_divider_small)
-    View mDividerSmall;
     @Bind(R.id.view_divider_big)
     View mDividerBig;
+    @Bind(R.id.view_divider_small)
+    View mDividerSmall;
 
     private List<String> mIndicatorTitles = new ArrayList<>();
     private List<VillageEntity.DataBean.InfosBean.VillagesBean> mVillages = new ArrayList<>();
     public static int sCurrentIndex = 0;
     private ChooseVillageFamilyActivityAdapter mAdapter;
     private VillageAdapter mVillageAdapter;
+    private VpAdapter mVpAdapter;
 
     @Override
     protected View inflateView(Bundle savedInstanceState) {
@@ -84,9 +85,6 @@ public class ChooseVillageFamilyActivity extends AppBaseActivity<ChooseVillageFa
 
     @Override
     protected void initView(Bundle savedInstanceState) {
-        initIndicator();
-        initVp();
-        initRv();
     }
 
     @Override
@@ -117,9 +115,9 @@ public class ChooseVillageFamilyActivity extends AppBaseActivity<ChooseVillageFa
 
     public void onProvinceDataReceive(List<String> provinces) {
         mIndicatorTitles.addAll(provinces);
-//        initIndicator();
-//        initVp();
-//        initRv();
+        initIndicator();
+        initVp();
+        initRv();
     }
 
     public void onNameAndIdDataReceive(List<VillageEntity.DataBean.InfosBean.VillagesBean> namesAndIds) {
@@ -127,18 +125,6 @@ public class ChooseVillageFamilyActivity extends AppBaseActivity<ChooseVillageFa
     }
 
     private void initIndicator() {
-        /************假数据****************/
-        mIndicatorTitles.add("张三");
-        mIndicatorTitles.add("李四");
-        mIndicatorTitles.add("王麻子");
-        mIndicatorTitles.add("张");
-        mIndicatorTitles.add("dssd");
-        mIndicatorTitles.add("问v");
-        mIndicatorTitles.add("232");
-        mIndicatorTitles.add("二个如果");
-        mIndicatorTitles.add("239y82f");
-        mIndicatorTitles.add("fef");
-        /************假数据****************/
         CommonNavigator commonNavigator = new CommonNavigator(this);
         commonNavigator.setFollowTouch(false);
         commonNavigator.setAdapter(new CommonNavigatorAdapter() {
@@ -156,6 +142,7 @@ public class ChooseVillageFamilyActivity extends AppBaseActivity<ChooseVillageFa
                 colorTransitionPagerTitleView.setOnClickListener(v -> {
                     mVp.setCurrentItem(index);
                     sCurrentIndex = index;
+                    getPresenter().reloadRv();
                 });
                 return colorTransitionPagerTitleView;
             }
@@ -174,37 +161,8 @@ public class ChooseVillageFamilyActivity extends AppBaseActivity<ChooseVillageFa
     }
 
     private void initVp() {
-        mVp.setAdapter(new PagerAdapter() {
-            @Override
-            public int getCount() {
-                return mIndicatorTitles.size();
-            }
-
-            @Override
-            public boolean isViewFromObject(View view, Object object) {
-                return view == object;
-            }
-
-            @Override
-            public Object instantiateItem(ViewGroup container, int position) {
-                TextView textView = new TextView(container.getContext());
-                textView.setText(mIndicatorTitles.get(position));
-                textView.setGravity(Gravity.CENTER);
-                textView.setTextColor(Color.TRANSPARENT);
-                container.addView(textView);
-                return textView;
-            }
-
-            @Override
-            public void destroyItem(ViewGroup container, int position, Object object) {
-                container.removeView((View) object);
-            }
-
-            @Override
-            public int getItemPosition(Object object) {
-                return POSITION_NONE;
-            }
-        });
+        mVpAdapter = new VpAdapter();
+        mVp.setAdapter(mVpAdapter);
         mVp.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
             public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
@@ -233,7 +191,7 @@ public class ChooseVillageFamilyActivity extends AppBaseActivity<ChooseVillageFa
         mRvVillages.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
         mVillageAdapter = new VillageAdapter();
         mRvVillages.setAdapter(mVillageAdapter);
-        mVillageAdapter.loadData(getPresenter().getRvVillageDatas());
+        mVillageAdapter.loadData(getPresenter().getRvVillageDatas(sCurrentIndex));
     }
 
     public void processIndicatorAndText(boolean state) {
@@ -245,12 +203,8 @@ public class ChooseVillageFamilyActivity extends AppBaseActivity<ChooseVillageFa
         return mRv;
     }
 
-    public TextView getTvAllArea() {
-        return mTvAllArea;
-    }
-
-    public MagicIndicator getIndicator() {
-        return mIndicator;
+    public VillageAdapter getVillageAdapter() {
+        return mVillageAdapter;
     }
 
     public ImageView getIvTriangle() {
@@ -265,12 +219,49 @@ public class ChooseVillageFamilyActivity extends AppBaseActivity<ChooseVillageFa
         return mVp;
     }
 
-    public View getDividerSmall() {
-        return mDividerSmall;
+    public PagerAdapter getVpAdapter() {
+        return mVpAdapter;
     }
 
     public View getDividerBig() {
         return mDividerBig;
     }
 
+    public View getDividerSmall() {
+        return mDividerSmall;
+    }
+
+    private class VpAdapter extends PagerAdapter {
+
+        @Override
+        public int getCount() {
+            return mIndicatorTitles.size();
+        }
+
+        @Override
+        public boolean isViewFromObject(View view, Object object) {
+            return view == object;
+        }
+
+        @Override
+        public Object instantiateItem(ViewGroup container, int position) {
+            TextView textView = new TextView(container.getContext());
+            textView.setText(mIndicatorTitles.get(position));
+            textView.setGravity(Gravity.CENTER);
+            textView.setTextColor(Color.TRANSPARENT);
+            container.addView(textView);
+            return textView;
+        }
+
+        @Override
+        public int getItemPosition(Object object) {
+            return POSITION_NONE;
+        }
+
+        @Override
+        public void destroyItem(ViewGroup container, int position, Object object) {
+            container.removeView((View) object);
+        }
+
+    }
 }
