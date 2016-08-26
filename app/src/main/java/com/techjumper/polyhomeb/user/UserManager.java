@@ -28,7 +28,6 @@ public enum UserManager {
     public static final String KEY_ID = "key_id";
     public static final String KEY_PHONE_NUMBER = "key_phone_number";
     public static final String KEY_TICKET = "key_ticket";
-    public static final String KEY_CURRENT_FAMILY_ID = "key_current_family_id";
     public static final String KEY_DEVICE_ID = "key_device_id";
     public static final String KEY_USER_NAME = "key_user_name";
     public static final String KEY_AVATAR = "key_avatar";
@@ -36,7 +35,9 @@ public enum UserManager {
     public static final String KEY_EMAIL = "key_email";
     public static final String KEY_BIRTHDAY = "key_birthday";
     public static final String KEY_ALL_FAMILIES = "key_all_families";
+    public static final String KEY_ALL_VILLAGES = "key_all_villages";
     public static final String KEY_CURRENT_VILLAGE_ID = "key_current_village_id";
+    public static final String KEY_CURRENT_FAMILY_ID = "key_current_family_id";
 
     /**
      * 通过LoginEntity将用户信息同步到本地
@@ -61,15 +62,20 @@ public enum UserManager {
         if (!TextUtils.isEmpty(dataEntity.getBirthday())) {  //登录接口多出来的
             PreferenceUtils.save(KEY_BIRTHDAY, dataEntity.getBirthday());
         }
+
+        /************************测试数据,写死的**************************/
         PreferenceUtils.save(KEY_CURRENT_FAMILY_ID, 463 + "");
         PreferenceUtils.save(KEY_CURRENT_VILLAGE_ID, 5 + "");
+        /************************测试数据,写死的**************************/
+
 //        if (entity.getData().getFamilies() != null && entity.getData().getFamilies().size() != 0) {
 //            //登录接口多出来的
 //            PreferenceUtils.save(KEY_ALL_FAMILIES, GsonUtils.toJson(entity.getData().getFamilies()));
-//            for (String currentFamilyId : entity.getData().getFamilies()) {
-//                PreferenceUtils.save(KEY_CURRENT_FAMILY_ID, currentFamilyId);
-//                break;
-//            }
+//
+//        }
+//        if (entity.getData().getVillages() != null && entity.getData().getVillages().size() != 0) {
+//            //登录接口多出来的
+//            PreferenceUtils.save(KEY_ALL_VILLAGES,GsonUtils.toJson(entity.getData().getVillages()));
 //        }
         PreferenceUtils.save(KEY_ID, dataEntity.getId());
         updateTicket(dataEntity.getTicket());
@@ -98,9 +104,17 @@ public enum UserManager {
      * @param key
      * @return
      */
-    public List<String> getUserAllFamilies(String key) {
+    public List<LoginEntity.LoginDataEntity.FamiliesBean> getUserAllFamilies(String key) {
         String allFamiliesJson = PreferenceUtils.get(KEY_ALL_FAMILIES, key);
         return GsonUtils.fromJson(allFamiliesJson, List.class);
+    }
+
+    /**
+     * 得到用户所有小区
+     */
+    public List<LoginEntity.LoginDataEntity.VillagesBean> getUserAllVillages(String key) {
+        String allVillagesJson = PreferenceUtils.get(KEY_ALL_VILLAGES, key);
+        return GsonUtils.fromJson(allVillagesJson, List.class);
     }
 
     /**

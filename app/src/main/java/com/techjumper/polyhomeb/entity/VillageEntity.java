@@ -1,6 +1,4 @@
-package com.techjumper.polyhomeb.entity.event;
-
-import com.techjumper.polyhomeb.entity.BaseEntity;
+package com.techjumper.polyhomeb.entity;
 
 import java.util.List;
 

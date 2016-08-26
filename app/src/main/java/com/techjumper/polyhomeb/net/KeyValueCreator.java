@@ -224,4 +224,10 @@ public class KeyValueCreator {
                 .put("unit", unit)
                 .put("index", index);
     }
+
+    public static KeyValuePair getFamilyAndVillage(String user_id, String ticket) {
+        return newPair()
+                .put("user_id", user_id)
+                .put("ticket", ticket);
+    }
 }

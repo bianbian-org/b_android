@@ -11,7 +11,8 @@ import com.techjumper.polyhomeb.entity.PropertyRepairEntity;
 import com.techjumper.polyhomeb.entity.SectionsEntity;
 import com.techjumper.polyhomeb.entity.TrueEntity;
 import com.techjumper.polyhomeb.entity.UploadPicEntity;
-import com.techjumper.polyhomeb.entity.event.VillageEntity;
+import com.techjumper.polyhomeb.entity.UserFamiliesAndVillagesEntity;
+import com.techjumper.polyhomeb.entity.VillageEntity;
 
 import java.util.Map;
 
@@ -406,5 +407,15 @@ public interface ServiceAPI {
      */
     @POST("village_users/join")
     Observable<TrueEntity> joinVillage(@Body BaseArgumentsEntity entity);
+
+    /**
+     * 查询用户所在家庭和小区
+     * get '/user/families_villages'
+     * params:
+     * user_id # 用户ID
+     * ticket # session登录验证
+     */
+    @GET("user/families_villages")
+    Observable<UserFamiliesAndVillagesEntity> getFamilyAndVillage(@QueryMap Map<String, String> stringStringMap);
 }
 

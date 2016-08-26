@@ -23,7 +23,7 @@ import com.techjumper.polyhomeb.Constant;
 import com.techjumper.polyhomeb.R;
 import com.techjumper.polyhomeb.adapter.ChooseVillageFamilyActivityAdapter;
 import com.techjumper.polyhomeb.adapter.VillageAdapter;
-import com.techjumper.polyhomeb.entity.event.VillageEntity;
+import com.techjumper.polyhomeb.entity.VillageEntity;
 import com.techjumper.polyhomeb.mvp.p.activity.ChooseVillageFamilyActivityPresenter;
 import com.techjumper.polyhomeb.other.SpaceItemDecoration;
 import com.techjumper.polyhomeb.utils.TitleHelper;

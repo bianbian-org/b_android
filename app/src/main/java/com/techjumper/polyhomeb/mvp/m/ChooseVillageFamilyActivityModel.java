@@ -16,7 +16,7 @@ import com.techjumper.polyhomeb.adapter.recycler_ViewHolder.databean.ChooseVilla
 import com.techjumper.polyhomeb.adapter.recycler_ViewHolder.databean.ChooseVillageFamilyBean;
 import com.techjumper.polyhomeb.adapter.recycler_ViewHolder.databean.PropertyPlacardDividerBean;
 import com.techjumper.polyhomeb.adapter.recycler_ViewHolder.databean.PropertyPlacardDividerLongBean;
-import com.techjumper.polyhomeb.entity.event.VillageEntity;
+import com.techjumper.polyhomeb.entity.VillageEntity;
 import com.techjumper.polyhomeb.mvp.p.activity.ChooseVillageFamilyActivityPresenter;
 import com.techjumper.polyhomeb.net.KeyValueCreator;
 import com.techjumper.polyhomeb.net.NetHelper;
