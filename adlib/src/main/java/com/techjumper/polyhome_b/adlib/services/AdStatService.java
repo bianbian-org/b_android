@@ -7,6 +7,7 @@ import android.support.annotation.Nullable;
 import android.text.TextUtils;
 
 import com.techjumper.corelib.utils.Utils;
+import com.techjumper.corelib.utils.basic.NumberUtil;
 import com.techjumper.corelib.utils.common.JLog;
 import com.techjumper.corelib.utils.file.PreferenceUtils;
 import com.techjumper.lib2.utils.GsonUtils;
@@ -14,6 +15,7 @@ import com.techjumper.polyhome_b.adlib.db.utils.AdStatDbExecutor;
 import com.techjumper.polyhome_b.adlib.entity.AdStatParamEntity;
 import com.techjumper.polyhome_b.adlib.entity.BaseEntity;
 import com.techjumper.polyhome_b.adlib.entity.sql.AdStat;
+import com.techjumper.polyhome_b.adlib.entity.sql.AdStatTime;
 import com.techjumper.polyhome_b.adlib.manager.AdController;
 import com.techjumper.polyhome_b.adlib.net.NetHelper;
 import com.techjumper.polyhome_b.adlib.net.RetrofitTemplate;
@@ -36,6 +38,7 @@ public class AdStatService extends Service {
 
     public static final String SP_NAME = "ad_sp";
     public static final String KEY_FAMILY_ID = "key_ad_family_id";
+    public static final long ADSTAT_TIME_INTERVAL = 60 * 60 * 1000L;
 
     @Nullable
     @Override
@@ -57,8 +60,26 @@ public class AdStatService extends Service {
             JLog.d("<ad> 没有familyId或者还没有执行过广告, 所以无法上报数据");
             return super.onStartCommand(intent, flags, startId);
         }
+
+
         AdStatDbExecutor.BriteDatabaseHelper dbHelper = AdStatDbExecutor.getHelper();
-        dbHelper.queryAll()
+
+        dbHelper.getAdStatTime()
+                .map(adStatTime -> {
+                    if (adStatTime == null) {
+                        JLog.d("<ad> 还未有任何广告时间记录");
+                        return false;
+                    }
+
+                    long lastTime = NumberUtil.convertTolong(adStatTime.time(), -1L);
+
+                    boolean b = System.currentTimeMillis() - lastTime >= ADSTAT_TIME_INTERVAL;
+                    String log = b ? "<ad> 到达上报时间, 开始上报广告" : "<ad> 未到上报广告时间";
+                    JLog.d(log);
+                    return b;
+                })
+                .filter(aBoolean -> aBoolean)
+                .flatMap(aBoolean1 -> dbHelper.queryAll())
                 .filter(adStats -> {
                     if (adStats != null && adStats.size() != 0) {
                         return true;
@@ -80,7 +101,7 @@ public class AdStatService extends Service {
 
                     @Override
                     public void onError(Throwable e) {
-                        JLog.d("<ad> 服务器上报失败: " + e);
+                        JLog.d("<ad> 上报失败: " + e);
                     }
 
                     @Override
@@ -108,6 +129,11 @@ public class AdStatService extends Service {
 
 
         return super.onStartCommand(intent, flags, startId);
+    }
+
+    public static Observable<AdStatTime> nextAdStatTime() {
+        AdStatDbExecutor.BriteDatabaseHelper dbHelper = AdStatDbExecutor.getHelper();
+        return dbHelper.getAdStatTime();
     }
 
     private String createParamJson(List<AdStat> adStats) {

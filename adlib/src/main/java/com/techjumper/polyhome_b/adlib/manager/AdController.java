@@ -54,7 +54,7 @@ public class AdController {
     public static final int CODE_ALARM_SERVICE = 100;
     public static final int CODE_AD_STAT = 101; //广告统计;
 
-    public static final long AD_STAT_INTERVAL = 60 * 60 * 1000L; //广告统计间隔时间(毫秒);
+    public static final long AD_STAT_INTERVAL = 5 * 60 * 1000L; //检查广告上报的时间;
 
     public static final String TYPE_HOME = "1001"; //'室内机 - 首页'
     public static final String TYPE_VIDEO = "1002";  //室内机 - 视频通话
@@ -75,10 +75,6 @@ public class AdController {
      * 是否开始上传广告
      */
     private static boolean sIsStartedUploadAd;
-    /**
-     * 下次上报广告的时间
-     */
-    private static final String KEY_ADSTAT_NEXT_TIME = "key_adstat_next_time";
 
     Subscription subscribe = null;
     private int count;
@@ -116,16 +112,7 @@ public class AdController {
     }
 
     public static long getAdStatUploadNextTime() {
-        return getAdStatUploadNextTime(false);
-    }
-
-    public static long getAdStatUploadNextTime(boolean justReturn) {
-        if (justReturn) {
-            return PreferenceUtils.get(KEY_ADSTAT_NEXT_TIME, 0L);
-        }
-        long nextTime = System.currentTimeMillis() + AdController.AD_STAT_INTERVAL;
-        PreferenceUtils.save(KEY_ADSTAT_NEXT_TIME, nextTime);
-        return nextTime;
+        return System.currentTimeMillis() + AdController.AD_STAT_INTERVAL;
     }
 
     public boolean wakeUpScreen() {
@@ -560,7 +547,7 @@ public class AdController {
             }
             //保存familyId到sp,用于广告统计
             JLog.d("更新familyId, 用于广告统计: " + family_id);
-            PreferenceUtils.getPreference(AdStatService.SP_NAME).edit().putString(AdStatService.KEY_FAMILY_ID, family_id).apply();
+            PreferenceUtils.getPreference(AdStatService.SP_NAME).edit().putString(AdStatService.KEY_FAMILY_ID, family_id).commit();
 
             AdController.this.fetchAd(family_id, user_id, ticket, fromCache, adData -> {
                 if (adData == null) {
@@ -645,6 +632,8 @@ public class AdController {
                             JLog.d("<ad> 查找ID为" + id + ", position为" + type + " 的广告失败");
                             return;
                         }
+                        //如果可以的话,更新广告时间
+                        dbHelper.updateTimeIfNotExist(System.currentTimeMillis());
 
                         JLog.d("<ad> 统计广告次数, id=" + id + ", position=" + type
                                 + ", count=" + adStat.count() + ", mUniqueId=" + mUniqueId);

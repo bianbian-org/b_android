@@ -28,6 +28,7 @@ import com.techjumper.commonres.util.PluginEngineUtil;
 import com.techjumper.corelib.rx.tools.RxBus;
 import com.techjumper.corelib.rx.tools.RxUtils;
 import com.techjumper.corelib.utils.Utils;
+import com.techjumper.corelib.utils.basic.NumberUtil;
 import com.techjumper.corelib.utils.common.JLog;
 import com.techjumper.corelib.utils.window.ToastUtils;
 import com.techjumper.lib2.utils.PicassoHelper;
@@ -46,6 +47,7 @@ import com.techjumper.polyhome.b.home.tool.AlarmManagerUtil;
 import com.techjumper.polyhome.b.home.widget.MyVideoView;
 import com.techjumper.polyhome_b.adlib.entity.AdEntity;
 import com.techjumper.polyhome_b.adlib.manager.AdController;
+import com.techjumper.polyhome_b.adlib.services.AdStatService;
 import com.techjumper.polyhome_b.adlib.window.AdWindowManager;
 
 import java.io.File;
@@ -174,12 +176,31 @@ public class MainActivityPresenter extends AppBaseActivityPresenter<MainActivity
             return;
         }
 
-        long adStatUploadNextTime = AdController.getAdStatUploadNextTime(true);
-        Calendar c = Calendar.getInstance();
-        c.setTimeZone(TimeZone.getTimeZone("GMT+8"));
-        c.setTimeInMillis(adStatUploadNextTime);
-        ToastUtils.show("下次上报广告时间 (播放次数统计)\n"
-                + c.get(Calendar.HOUR_OF_DAY) + "点" + c.get(Calendar.MINUTE) + "分" + c.get(Calendar.SECOND) + "秒");
+        addSubscription(
+                AdStatService.nextAdStatTime()
+                        .observeOn(AndroidSchedulers.mainThread())
+                        .subscribe(adStatTime -> {
+                            if (adStatTime == null) {
+                                ToastUtils.show("无任何播放记录, 不会上报广告");
+                                return;
+                            }
+
+                            String time = adStatTime.time();
+                            long l = NumberUtil.convertTolong(time, -1L);
+                            if (l == -1L) {
+                                ToastUtils.show("在" + AdController.AD_STAT_INTERVAL / 1000 / 60 + "分钟之内上报");
+                                return;
+                            }
+
+                            Calendar c = Calendar.getInstance();
+                            c.setTimeZone(TimeZone.getTimeZone("GMT+8"));
+                            c.setTimeInMillis(l + AdStatService.ADSTAT_TIME_INTERVAL);
+                            ToastUtils.showLong("下次最快上报 广告播放次数 的时间  (延迟" + AdController.AD_STAT_INTERVAL / 1000 / 60 + "分钟以内)\n"
+                                    + c.get(Calendar.HOUR_OF_DAY) + "点" + c.get(Calendar.MINUTE) + "分" + c.get(Calendar.SECOND) + "秒");
+
+                        })
+        );
+
     }
 
     @OnClick(R.id.title)

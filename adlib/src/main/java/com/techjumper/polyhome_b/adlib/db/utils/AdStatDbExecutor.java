@@ -8,6 +8,7 @@ import com.techjumper.corelib.utils.Utils;
 import com.techjumper.corelib.utils.basic.NumberUtil;
 import com.techjumper.polyhome_b.adlib.db.AdStatDbHelper;
 import com.techjumper.polyhome_b.adlib.entity.sql.AdStat;
+import com.techjumper.polyhome_b.adlib.entity.sql.AdStatTime;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -108,6 +109,7 @@ public class AdStatDbExecutor {
         }
 
         public boolean deleteAll() {
+            clearTime();
             return mDb.delete(AdStat.TABLE_NAME, null) == 1;
         }
 
@@ -141,6 +143,48 @@ public class AdStatDbExecutor {
                                     .count(count)
                                     .asContentValues()
                             , AdStat.ADID + "=? and " + AdStat.POSITION + " =?", adId, type);
+        }
+
+        public Observable<AdStatTime> getAdStatTime() {
+            return mDb.createQuery(AdStatTime.TABLE_NAME, AdStatTime.SELECT_ALL)
+                    .map(query -> {
+                        Cursor cursor = query.run();
+                        if (cursor == null || !cursor.moveToNext()) {
+                            return null;
+                        }
+                        AdStatTime adStatTime = null;
+                        try {
+                            adStatTime = AdStatTime.MAPPER.map(cursor);
+                        } finally {
+                            cursor.close();
+                        }
+                        return adStatTime;
+                    })
+                    .first();
+        }
+
+        public void updateTimeIfNotExist(long time) {
+            getAdStatTime()
+                    .map(adStatTime -> {
+                        if (adStatTime == null) {
+                            insertTime(time);
+                        }
+                        return null;
+                    })
+                    .subscribe();
+        }
+
+        private long insertTime(long time) {
+            return
+                    mDb.insert(AdStatTime.TABLE_NAME
+                            , AdStatTime.FACTORY.marshal()
+                                    .time(time + "")
+                                    .asContentValues()
+                    );
+        }
+
+        public void clearTime() {
+            mDb.delete(AdStatTime.TABLE_NAME, null);
         }
 
     }
