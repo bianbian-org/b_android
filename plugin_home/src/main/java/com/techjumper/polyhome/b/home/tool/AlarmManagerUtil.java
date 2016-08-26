@@ -23,14 +23,14 @@ public class AlarmManagerUtil {
     private static final int INTERVAL = 1000 * 60 * 60 * 24;// 24h
     private static final int NOTICES_TIME = (1000 * 60 * 60 * 3) / 4;// 45min
 
-    public static void setWeatherTime(Context context, int hour, int minute) {
+    public static void setWeatherTime(Context context) {
 
-        //如果minute等于0，设置为1分钟
-        if (minute <= 0) {
-            minute = 1;
-        }
+        int hour = CommonDateUtil.getHour();
+        int minute = CommonDateUtil.getMinute();
+        int triggerAtMillis = 1000 * 60 * 60 * 2;
 
         Log.d(TAG, "Weather: hour:" + hour + " minute:" + minute);
+        Log.d("tianqi", "Weather: hour:" + hour + " minute:" + minute);
 
         AlarmManager alarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
         Calendar calendar = Calendar.getInstance();
@@ -42,7 +42,7 @@ public class AlarmManagerUtil {
         intent.putExtra(AlarmReceiver.TYPE, AlarmReceiver.WEATHER);
         PendingIntent pendingIntent = PendingIntent.getBroadcast(context, AlarmReceiver.WEATHER, intent, 0);
 
-        alarmManager.setRepeating(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), INTERVAL, pendingIntent);
+        alarmManager.set(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis() + triggerAtMillis, pendingIntent);
     }
 
     public static void setNoticeTime(Context context) {

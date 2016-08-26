@@ -107,7 +107,7 @@ public class InfoFragmentPresenter extends AppBaseFragmentPresenter<InfoFragment
         getWeatherInfo();
         getCalendarInfo();
 
-        AlarmManagerUtil.setWeatherTime(Utils.appContext, 0, 30 + new Random().nextInt(30));
+        AlarmManagerUtil.setWeatherTime(Utils.appContext);
 
         addSubscription(RxView.clicks(getView().getSetting())
                 .compose(RxUtil.applySchedulers())

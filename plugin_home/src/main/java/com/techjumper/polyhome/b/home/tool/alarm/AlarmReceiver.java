@@ -33,6 +33,8 @@ public class AlarmReceiver extends BroadcastReceiver {
         if (intent.getIntExtra(TYPE, WEATHER) == WEATHER) {
             Log.d(AlarmManagerUtil.TAG, "执行天气请求......");
             if (UserInfoManager.isLogin()) {
+                Log.d("tianqi", "执行天气请求......");
+                AlarmManagerUtil.setWeatherTime(Utils.appContext);
                 RxBus.INSTANCE.send(new WeatherDateEvent());
             }
         } else if (intent.getIntExtra(TYPE, WEATHER) == NOTICES) {
