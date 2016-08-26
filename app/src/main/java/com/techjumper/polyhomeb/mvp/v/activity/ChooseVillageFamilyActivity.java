@@ -3,6 +3,7 @@ package com.techjumper.polyhomeb.mvp.v.activity;
 import android.content.Context;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.widget.GridLayoutManager;
@@ -16,6 +17,9 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.techjumper.corelib.mvp.factory.Presenter;
+import com.techjumper.corelib.ui.activity.BaseActivity;
+import com.techjumper.corelib.utils.window.ToastUtils;
+import com.techjumper.polyhomeb.Constant;
 import com.techjumper.polyhomeb.R;
 import com.techjumper.polyhomeb.adapter.ChooseVillageFamilyActivityAdapter;
 import com.techjumper.polyhomeb.adapter.VillageAdapter;
@@ -76,6 +80,8 @@ public class ChooseVillageFamilyActivity extends AppBaseActivity<ChooseVillageFa
     private VillageAdapter mVillageAdapter;
     private VpAdapter mVpAdapter;
 
+    private boolean mCanExit;
+
     @Override
     protected View inflateView(Bundle savedInstanceState) {
         View view = inflate(R.layout.activity_choose_village_family);
@@ -99,7 +105,7 @@ public class ChooseVillageFamilyActivity extends AppBaseActivity<ChooseVillageFa
 
     @Override
     protected boolean showTitleLeft() {
-        return false;
+        return getPresenter().getComeFrom() == Constant.VALUE_COME_FROM ? true : false;
     }
 
     @Override
@@ -110,7 +116,18 @@ public class ChooseVillageFamilyActivity extends AppBaseActivity<ChooseVillageFa
 
     @Override
     public void onBackPressed() {
-        getPresenter().onBackPressed();
+        //如果是从"我的小区或家庭"界面进来的,又返回键,onBackPressed不用管它
+        if (getPresenter().getComeFrom() == Constant.VALUE_COME_FROM) {
+            super.onBackPressed();
+        } else {
+            if (!mCanExit) {
+                ToastUtils.show(getString(R.string.exit_app));
+                mCanExit = true;
+                new Handler().postDelayed(() -> mCanExit = false, 2000);
+                return;
+            }
+            BaseActivity.finishAll();
+        }
     }
 
     public void onProvinceDataReceive(List<String> provinces) {

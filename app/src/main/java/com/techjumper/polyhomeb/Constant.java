@@ -42,6 +42,9 @@ public class Constant {
     public static final String CHOOSE_VILLAGE_NAME = "choose_village_name";
     public static final String CHOOSE_VILLAGE_ID = "choose_village_id";
 
+    public static final String KEY_COME_FROM = "comeFrom";
+    public static final int VALUE_COME_FROM = 1;
+
 
     /* ------------------JS -------------------*/
 
@@ -62,6 +65,5 @@ public class Constant {
      */
     public static final String JS_BIG_PIC_INDEX = "js_big_pic_index";
     public static final String JS_BIG_PIC_ARRAY = "js_big_pic_array";
-
 
 }

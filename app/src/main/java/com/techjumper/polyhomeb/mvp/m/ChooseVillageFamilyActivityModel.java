@@ -1,10 +1,13 @@
 package com.techjumper.polyhomeb.mvp.m;
 
+import android.os.Bundle;
+
 import com.steve.creact.library.display.DisplayBean;
 import com.techjumper.corelib.rx.tools.CommonWrap;
 import com.techjumper.corelib.utils.common.RuleUtils;
 import com.techjumper.lib2.others.KeyValuePair;
 import com.techjumper.lib2.utils.RetrofitHelper;
+import com.techjumper.polyhomeb.Constant;
 import com.techjumper.polyhomeb.adapter.recycler_Data.ChooseVillageData;
 import com.techjumper.polyhomeb.adapter.recycler_Data.ChooseVillageFamilyData;
 import com.techjumper.polyhomeb.adapter.recycler_Data.PropertyPlacardDividerData;
@@ -40,6 +43,18 @@ public class ChooseVillageFamilyActivityModel extends BaseModel<ChooseVillageFam
 
     public ChooseVillageFamilyActivityModel(ChooseVillageFamilyActivityPresenter presenter) {
         super(presenter);
+    }
+
+    private Bundle getExtra() {
+        return getPresenter().getView().getIntent().getExtras();
+    }
+
+    public int getComeFrom() {
+        if (getExtra() != null) {
+            return getExtra().getInt(Constant.KEY_COME_FROM, -1);
+        } else {
+            return -1;
+        }
     }
 
     public Observable<VillageEntity> getVillages() {

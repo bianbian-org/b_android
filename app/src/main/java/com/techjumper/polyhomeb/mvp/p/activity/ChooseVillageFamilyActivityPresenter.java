@@ -2,15 +2,12 @@ package com.techjumper.polyhomeb.mvp.p.activity;
 
 import android.animation.ObjectAnimator;
 import android.os.Bundle;
-import android.os.Handler;
 import android.view.View;
 
 import com.steve.creact.library.display.DisplayBean;
 import com.techjumper.corelib.rx.tools.RxBus;
 import com.techjumper.corelib.rx.tools.RxUtils;
-import com.techjumper.corelib.ui.activity.BaseActivity;
 import com.techjumper.corelib.utils.common.AcHelper;
-import com.techjumper.corelib.utils.window.ToastUtils;
 import com.techjumper.polyhomeb.R;
 import com.techjumper.polyhomeb.entity.event.ChooseVillageEvent;
 import com.techjumper.polyhomeb.entity.event.VillageEntity;
@@ -32,7 +29,6 @@ import rx.Subscription;
  **/
 public class ChooseVillageFamilyActivityPresenter extends AppBaseActivityPresenter<ChooseVillageFamilyActivity> {
 
-    private boolean mCanExit;
     private Subscription mSubs1, mSubs2;
     private boolean mIsShowRv = false;
 
@@ -126,16 +122,6 @@ public class ChooseVillageFamilyActivityPresenter extends AppBaseActivityPresent
         this.mIsShowRv = !mIsShowRv;
     }
 
-    public void onBackPressed() {
-        if (!mCanExit) {
-            ToastUtils.show(getView().getString(R.string.exit_app));
-            mCanExit = true;
-            new Handler().postDelayed(() -> mCanExit = false, 2000);
-            return;
-        }
-        BaseActivity.finishAll();
-    }
-
     private void getVillages() {
         getView().showLoading();
         RxUtils.unsubscribeIfNotNull(mSubs1);
@@ -179,5 +165,9 @@ public class ChooseVillageFamilyActivityPresenter extends AppBaseActivityPresent
 
     public List<DisplayBean> getRvVillageDatas(int currentIndex) {
         return mModel.getRvVillageDatas(currentIndex);
+    }
+
+    public int getComeFrom() {
+        return mModel.getComeFrom();
     }
 }

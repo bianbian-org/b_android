@@ -2,7 +2,9 @@ package com.techjumper.polyhomeb.mvp.p.activity;
 
 import android.os.Bundle;
 
-import com.techjumper.corelib.utils.window.ToastUtils;
+import com.techjumper.corelib.utils.common.AcHelper;
+import com.techjumper.polyhomeb.Constant;
+import com.techjumper.polyhomeb.mvp.v.activity.ChooseVillageFamilyActivity;
 import com.techjumper.polyhomeb.mvp.v.activity.MyVillageFamilyActivity;
 
 /**
@@ -25,6 +27,8 @@ public class MyVillageFamilyActivityPresenter extends AppBaseActivityPresenter<M
     }
 
     public void onTitleRightClick() {
-        ToastUtils.show("跳转到ChooseXXX界面,并且带个参数,让那个界面知道需要显示返回键");
+        Bundle bundle = new Bundle();
+        bundle.putInt(Constant.KEY_COME_FROM, Constant.VALUE_COME_FROM);
+        new AcHelper.Builder(getView()).extra(bundle).target(ChooseVillageFamilyActivity.class).start();
     }
 }
