@@ -38,6 +38,8 @@ public enum UserManager {
     public static final String KEY_ALL_VILLAGES = "key_all_villages";
     public static final String KEY_CURRENT_VILLAGE_ID = "key_current_village_id";
     public static final String KEY_CURRENT_FAMILY_ID = "key_current_family_id";
+    public static final String KEY_CURRENT_VILLAGE_NAME = "key_current_village_name";
+    public static final String KEY_CURRENT_FAMILY_NAME = "key_current_family_name";
 
     /**
      * 通过LoginEntity将用户信息同步到本地
@@ -74,7 +76,7 @@ public enum UserManager {
         }
         if (entity.getData().getVillages() != null && entity.getData().getVillages().size() != 0) {
             //登录接口多出来的
-            PreferenceUtils.save(KEY_ALL_VILLAGES,GsonUtils.toJson(entity.getData().getVillages()));
+            PreferenceUtils.save(KEY_ALL_VILLAGES, GsonUtils.toJson(entity.getData().getVillages()));
         }
         PreferenceUtils.save(KEY_ID, dataEntity.getId());
         updateTicket(dataEntity.getTicket());
@@ -148,6 +150,20 @@ public enum UserManager {
     }
 
     /**
+     * 得到当前选择的家庭名字
+     */
+    public String getCurrentChooseFamily() {
+        return getUserInfo(KEY_CURRENT_FAMILY_NAME);
+    }
+
+    /**
+     * 得到当前选择的小区名字
+     */
+    public String getCurrentChooseVillage() {
+        return getUserInfo(KEY_CURRENT_VILLAGE_NAME);
+    }
+
+    /**
      * 注销登陆
      */
     public void logout() {
@@ -167,6 +183,8 @@ public enum UserManager {
         PreferenceUtils.save(KEY_USER_NAME, "");
         PreferenceUtils.save(KEY_CURRENT_FAMILY_ID, "");
         PreferenceUtils.save(KEY_ALL_FAMILIES, "");
+        PreferenceUtils.save(KEY_CURRENT_VILLAGE_NAME, "");
+        PreferenceUtils.save(KEY_CURRENT_FAMILY_NAME, "");
         HostIpHelper.getInstance().clear();
         if (notify)
             notifyLoginOrLogoutEvent(false);

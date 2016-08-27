@@ -18,6 +18,7 @@ import com.techjumper.polyhomeb.mvp.v.activity.ChooseVillageFamilyActivity;
 import com.techjumper.polyhomeb.mvp.v.activity.FindPasswordActivity;
 import com.techjumper.polyhomeb.mvp.v.activity.LoginActivity;
 import com.techjumper.polyhomeb.mvp.v.activity.RegistActivity;
+import com.techjumper.polyhomeb.mvp.v.activity.TabHomeActivity;
 import com.techjumper.polyhomeb.user.UserManager;
 import com.techjumper.polyhomeb.user.event.LoginEvent;
 
@@ -58,17 +59,19 @@ public class LoginActivityPresenter extends AppBaseActivityPresenter<LoginActivi
                             if (o instanceof LoginEvent) {
                                 LoginEvent event = (LoginEvent) o;
                                 if (event.isLogin()) {
-//                                    new AcHelper.Builder(getView())
-//                                            .target(TabHomeActivity.class)
-//                                            .closeCurrent(true)
-//                                            .enterAnim(R.anim.fade_in)
-//                                            .exitAnim(R.anim.fade_out)
-//                                            .start();
+                                    if (UserManager.INSTANCE.hasFamily() || UserManager.INSTANCE.hasVillage()) {
                                     new AcHelper.Builder(getView())
-                                            .target(ChooseVillageFamilyActivity.class)
+                                            .target(TabHomeActivity.class)
                                             .closeCurrent(true)
+                                            .enterAnim(R.anim.fade_in)
+                                            .exitAnim(R.anim.fade_out)
                                             .start();
-                                    getView().finish();
+                                    } else {
+                                        new AcHelper.Builder(getView())
+                                                .target(ChooseVillageFamilyActivity.class)
+                                                .closeCurrent(true)
+                                                .start();
+                                    }
                                 }
                             }
                         })
