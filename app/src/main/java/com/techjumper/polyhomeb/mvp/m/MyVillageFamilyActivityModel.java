@@ -1,8 +1,18 @@
 package com.techjumper.polyhomeb.mvp.m;
 
+import com.steve.creact.library.display.DisplayBean;
 import com.techjumper.corelib.rx.tools.CommonWrap;
+import com.techjumper.corelib.utils.common.RuleUtils;
 import com.techjumper.lib2.others.KeyValuePair;
 import com.techjumper.lib2.utils.RetrofitHelper;
+import com.techjumper.polyhomeb.adapter.recycler_Data.ChooseVillageData;
+import com.techjumper.polyhomeb.adapter.recycler_Data.MyVillageFamilyTextData;
+import com.techjumper.polyhomeb.adapter.recycler_Data.PropertyPlacardDividerData;
+import com.techjumper.polyhomeb.adapter.recycler_Data.PropertyPlacardDividerLongData;
+import com.techjumper.polyhomeb.adapter.recycler_ViewHolder.databean.ChooseVillageBean;
+import com.techjumper.polyhomeb.adapter.recycler_ViewHolder.databean.MyVillageFamilyTextBean;
+import com.techjumper.polyhomeb.adapter.recycler_ViewHolder.databean.PropertyPlacardDividerBean;
+import com.techjumper.polyhomeb.adapter.recycler_ViewHolder.databean.PropertyPlacardDividerLongBean;
 import com.techjumper.polyhomeb.entity.UserFamiliesAndVillagesEntity;
 import com.techjumper.polyhomeb.mvp.p.activity.MyVillageFamilyActivityPresenter;
 import com.techjumper.polyhomeb.net.KeyValueCreator;
@@ -10,6 +20,8 @@ import com.techjumper.polyhomeb.net.NetHelper;
 import com.techjumper.polyhomeb.net.ServiceAPI;
 import com.techjumper.polyhomeb.user.UserManager;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 
 import rx.Observable;
@@ -21,6 +33,8 @@ import rx.Observable;
  * * * * * * * * * * * * * * * * * * * * * * *
  **/
 public class MyVillageFamilyActivityModel extends BaseModel<MyVillageFamilyActivityPresenter> {
+
+    private List<DisplayBean> displayBeen = new ArrayList<>();
 
     public MyVillageFamilyActivityModel(MyVillageFamilyActivityPresenter presenter) {
         super(presenter);
@@ -35,5 +49,106 @@ public class MyVillageFamilyActivityModel extends BaseModel<MyVillageFamilyActiv
                 .<ServiceAPI>createDefault()
                 .getFamilyAndVillage(baseArgumentsMap)
                 .compose(CommonWrap.wrap());
+    }
+
+    public void processData(UserFamiliesAndVillagesEntity userFamiliesAndVillagesEntity) {
+
+        List<UserFamiliesAndVillagesEntity.DataBean.FamilyInfosBean> family_infos = userFamiliesAndVillagesEntity.getData().getFamily_infos();
+        List<UserFamiliesAndVillagesEntity.DataBean.VillageInfosBean> village_infos = userFamiliesAndVillagesEntity.getData().getVillage_infos();
+
+        displayBeen.clear();
+
+        //处理家庭item
+        processFamily(displayBeen, family_infos);
+        processVillage(displayBeen, village_infos);
+
+        getPresenter().getView().showData(displayBeen);
+    }
+
+    private void processFamily(List<DisplayBean> displayBeen, List<UserFamiliesAndVillagesEntity.DataBean.FamilyInfosBean> family_infos) {
+        if (family_infos.size() == 0) return;
+        //文字
+        MyVillageFamilyTextData myVillageFamilyTextData = new MyVillageFamilyTextData();
+        myVillageFamilyTextData.setText("家庭");
+        MyVillageFamilyTextBean myVillageFamilyTextBean = new MyVillageFamilyTextBean(myVillageFamilyTextData);
+        displayBeen.add(myVillageFamilyTextBean);
+
+        for (int i = 0; i < family_infos.size(); i++) {
+            if (i == 0) {
+                //长分割线
+                PropertyPlacardDividerLongData propertyPlacardDividerLongData = new PropertyPlacardDividerLongData();
+                PropertyPlacardDividerLongBean propertyPlacardDividerLongBean = new PropertyPlacardDividerLongBean(propertyPlacardDividerLongData);
+                displayBeen.add(propertyPlacardDividerLongBean);
+            } else {
+                //短分割线
+                PropertyPlacardDividerData dividerData = new PropertyPlacardDividerData();
+                dividerData.setMarginLeft(RuleUtils.dp2Px(14));
+                PropertyPlacardDividerBean dividerBean = new PropertyPlacardDividerBean(dividerData);
+                displayBeen.add(dividerBean);
+            }
+            ChooseVillageData chooseVillageData = new ChooseVillageData();
+            chooseVillageData.setName(family_infos.get(i).getFamily_name());
+            chooseVillageData.setId(family_infos.get(i).getId());
+            ChooseVillageBean chooseVillageBean = new ChooseVillageBean(chooseVillageData);
+            displayBeen.add(chooseVillageBean);
+
+            if (i == family_infos.size() - 1) {
+                //长分割线
+                PropertyPlacardDividerLongData propertyPlacardDividerLongData = new PropertyPlacardDividerLongData();
+                PropertyPlacardDividerLongBean propertyPlacardDividerLongBean = new PropertyPlacardDividerLongBean(propertyPlacardDividerLongData);
+                displayBeen.add(propertyPlacardDividerLongBean);
+            } else {
+                //短分割线
+                PropertyPlacardDividerData dividerData = new PropertyPlacardDividerData();
+                dividerData.setMarginLeft(RuleUtils.dp2Px(14));
+                PropertyPlacardDividerBean dividerBean = new PropertyPlacardDividerBean(dividerData);
+                displayBeen.add(dividerBean);
+            }
+        }
+    }
+
+
+    private void processVillage(List<DisplayBean> displayBeen, List<UserFamiliesAndVillagesEntity.DataBean.VillageInfosBean> village_infos) {
+        if (village_infos.size() == 0) return;
+
+        //文字
+        MyVillageFamilyTextData myVillageFamilyTextData = new MyVillageFamilyTextData();
+        myVillageFamilyTextData.setText("小区");
+        MyVillageFamilyTextBean myVillageFamilyTextBean = new MyVillageFamilyTextBean(myVillageFamilyTextData);
+        displayBeen.add(myVillageFamilyTextBean);
+
+        for (int i = 0; i < village_infos.size(); i++) {
+            if (i == 0) {
+                //长分割线
+                PropertyPlacardDividerLongData propertyPlacardDividerLongData = new PropertyPlacardDividerLongData();
+                PropertyPlacardDividerLongBean propertyPlacardDividerLongBean = new PropertyPlacardDividerLongBean(propertyPlacardDividerLongData);
+                displayBeen.add(propertyPlacardDividerLongBean);
+            } else {
+                //短分割线
+                PropertyPlacardDividerData dividerData = new PropertyPlacardDividerData();
+                dividerData.setMarginLeft(RuleUtils.dp2Px(14));
+                PropertyPlacardDividerBean dividerBean = new PropertyPlacardDividerBean(dividerData);
+                displayBeen.add(dividerBean);
+            }
+            ChooseVillageData chooseVillageData = new ChooseVillageData();
+            chooseVillageData.setName(village_infos.get(i).getVillage_name());
+            chooseVillageData.setId(village_infos.get(i).getVillage_id());
+//            chooseVillageData.setVerified(village_infos.get(i).getVerified());
+            ChooseVillageBean chooseVillageBean = new ChooseVillageBean(chooseVillageData);
+            displayBeen.add(chooseVillageBean);
+
+            if (i == village_infos.size() - 1) {
+                //长分割线
+                PropertyPlacardDividerLongData propertyPlacardDividerLongData = new PropertyPlacardDividerLongData();
+                PropertyPlacardDividerLongBean propertyPlacardDividerLongBean = new PropertyPlacardDividerLongBean(propertyPlacardDividerLongData);
+                displayBeen.add(propertyPlacardDividerLongBean);
+            } else {
+                //短分割线
+                PropertyPlacardDividerData dividerData = new PropertyPlacardDividerData();
+                dividerData.setMarginLeft(RuleUtils.dp2Px(14));
+                PropertyPlacardDividerBean dividerBean = new PropertyPlacardDividerBean(dividerData);
+                displayBeen.add(dividerBean);
+            }
+        }
     }
 }

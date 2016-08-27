@@ -68,15 +68,14 @@ public enum UserManager {
         PreferenceUtils.save(KEY_CURRENT_VILLAGE_ID, 5 + "");
         /************************测试数据,写死的**************************/
 
-//        if (entity.getData().getFamilies() != null && entity.getData().getFamilies().size() != 0) {
-//            //登录接口多出来的
-//            PreferenceUtils.save(KEY_ALL_FAMILIES, GsonUtils.toJson(entity.getData().getFamilies()));
-//
-//        }
-//        if (entity.getData().getVillages() != null && entity.getData().getVillages().size() != 0) {
-//            //登录接口多出来的
-//            PreferenceUtils.save(KEY_ALL_VILLAGES,GsonUtils.toJson(entity.getData().getVillages()));
-//        }
+        if (entity.getData().getFamilies() != null && entity.getData().getFamilies().size() != 0) {
+            //登录接口多出来的
+            PreferenceUtils.save(KEY_ALL_FAMILIES, GsonUtils.toJson(entity.getData().getFamilies()));
+        }
+        if (entity.getData().getVillages() != null && entity.getData().getVillages().size() != 0) {
+            //登录接口多出来的
+            PreferenceUtils.save(KEY_ALL_VILLAGES,GsonUtils.toJson(entity.getData().getVillages()));
+        }
         PreferenceUtils.save(KEY_ID, dataEntity.getId());
         updateTicket(dataEntity.getTicket());
         PreferenceUtils.save(KEY_USER_NAME, dataEntity.getUsername());
@@ -130,6 +129,22 @@ public enum UserManager {
     public boolean isLogin() {
         String ticket = getUserInfo(KEY_TICKET);
         return !TextUtils.isEmpty(ticket);
+    }
+
+    /**
+     * 是否选择过家庭
+     */
+    public boolean hasFamily() {
+        String family = getUserInfo(KEY_CURRENT_FAMILY_ID);
+        return !TextUtils.isEmpty(family);
+    }
+
+    /**
+     * 是否选择过小区
+     */
+    public boolean hasVillage() {
+        String village = getUserInfo(KEY_CURRENT_VILLAGE_ID);
+        return !TextUtils.isEmpty(village);
     }
 
     /**

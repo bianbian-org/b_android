@@ -13,12 +13,14 @@ import com.tbruyelle.rxpermissions.RxPermissions;
 import com.techjumper.corelib.rx.tools.RxBus;
 import com.techjumper.corelib.rx.tools.RxSmsReceiver;
 import com.techjumper.corelib.utils.basic.StringUtils;
+import com.techjumper.corelib.utils.common.AcHelper;
 import com.techjumper.corelib.utils.common.JLog;
 import com.techjumper.polyhomeb.R;
 import com.techjumper.polyhomeb.entity.LoginEntity;
 import com.techjumper.polyhomeb.entity.TrueEntity;
 import com.techjumper.polyhomeb.entity.event.CountdownEvent;
 import com.techjumper.polyhomeb.mvp.m.RegistActivityModel;
+import com.techjumper.polyhomeb.mvp.v.activity.ChooseVillageFamilyActivity;
 import com.techjumper.polyhomeb.mvp.v.activity.RegistActivity;
 import com.techjumper.polyhomeb.service.CountdownService;
 import com.techjumper.polyhomeb.user.UserManager;
@@ -78,7 +80,12 @@ public class RegistActivityPresenter extends AppBaseActivityPresenter<RegistActi
                             if (o instanceof LoginEvent) {
                                 LoginEvent event = (LoginEvent) o;
                                 if (event.isLogin()) {
-                                    getView().finish();
+                                    new AcHelper.Builder(getView())
+                                            .target(ChooseVillageFamilyActivity.class)
+                                            .closeCurrent(true)
+                                            .enterAnim(R.anim.fade_in)
+                                            .exitAnim(R.anim.fade_out)
+                                            .start();
                                 }
                             }
                         })

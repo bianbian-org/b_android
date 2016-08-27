@@ -9,8 +9,8 @@ import com.techjumper.corelib.rx.tools.RxBus;
 import com.techjumper.corelib.rx.tools.RxUtils;
 import com.techjumper.corelib.utils.common.AcHelper;
 import com.techjumper.polyhomeb.R;
-import com.techjumper.polyhomeb.entity.event.ChooseVillageEvent;
 import com.techjumper.polyhomeb.entity.VillageEntity;
+import com.techjumper.polyhomeb.entity.event.ChooseVillageEvent;
 import com.techjumper.polyhomeb.mvp.m.ChooseVillageFamilyActivityModel;
 import com.techjumper.polyhomeb.mvp.v.activity.ChooseVillageFamilyActivity;
 import com.techjumper.polyhomeb.mvp.v.activity.ScanHostQRCodeActivity;
@@ -72,19 +72,36 @@ public class ChooseVillageFamilyActivityPresenter extends AppBaseActivityPresent
 
         RxUtils.unsubscribeIfNotNull(mSubs2);
         mSubs2 = RxBus.INSTANCE
-                .asObservable().subscribe(o -> {
-                    if (o instanceof ChooseVillageEvent) {
-                        ChooseVillageEvent event = (ChooseVillageEvent) o;
-                        String name = event.getName();
-                        List<String> provinces = mModel.getProvinces();
-                        for (int i = 0; i < provinces.size(); i++) {
-                            if (name.equals(provinces.get(i))) {
-                                getView().sCurrentIndex = i;
-                                getView().getVp().setCurrentItem(i);
-                                getView().getVpAdapter().notifyDataSetChanged();
-                                processClick(true);
-                                reloadRv();
-                                break;
+                .asObservable().subscribe(new Observer<Object>() {
+                    @Override
+                    public void onCompleted() {
+
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+
+                    }
+
+                    @Override
+                    public void onNext(Object o) {
+                        if (o instanceof ChooseVillageEvent) {
+                            ChooseVillageEvent event = (ChooseVillageEvent) o;
+                            String name = event.getName();
+                            List<String> provinces = mModel.getProvinces();
+                            for (int i = 0; i < provinces.size(); i++) {
+                                if (name.equals(provinces.get(i))) {
+                                    getView().sCurrentIndex = i;
+                                    if (getView().getVp() != null) {
+                                        getView().getVp().setCurrentItem(i);  //居然可能为null
+                                    }
+                                    if (getView().getVpAdapter() != null) {
+                                        getView().getVpAdapter().notifyDataSetChanged();
+                                    }
+                                    processClick(true);
+                                    reloadRv();
+                                    break;
+                                }
                             }
                         }
                     }
