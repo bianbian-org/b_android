@@ -54,7 +54,7 @@ public class MyVillageFamilyActivityViewHolder extends BaseRecyclerViewHolder<My
                     UserManager.INSTANCE.saveUserInfo(UserManager.KEY_CURRENT_VILLAGE_NAME, name);
                     UserManager.INSTANCE.saveUserInfo(UserManager.KEY_CURRENT_VILLAGE_ID, id + "");
                 }
-                RxBus.INSTANCE.send(new ChooseVillageFamilyEvent(id, name, verified, data.isFamilyData()));
+                RxBus.INSTANCE.send(new ChooseVillageFamilyEvent(id, name, verified, data.isFamilyData(),getLayoutPosition()));
             }
         });
     }

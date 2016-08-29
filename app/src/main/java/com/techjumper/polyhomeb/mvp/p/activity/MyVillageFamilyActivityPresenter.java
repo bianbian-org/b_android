@@ -7,6 +7,7 @@ import com.techjumper.corelib.rx.tools.RxBus;
 import com.techjumper.corelib.rx.tools.RxUtils;
 import com.techjumper.corelib.utils.common.AcHelper;
 import com.techjumper.polyhomeb.Constant;
+import com.techjumper.polyhomeb.adapter.recycler_Data.MyVillageFamilyData;
 import com.techjumper.polyhomeb.entity.UserFamiliesAndVillagesEntity;
 import com.techjumper.polyhomeb.entity.event.ChooseVillageFamilyEvent;
 import com.techjumper.polyhomeb.mvp.m.MyVillageFamilyActivityModel;
@@ -63,10 +64,19 @@ public class MyVillageFamilyActivityPresenter extends AppBaseActivityPresenter<M
                             public void onNext(Object o) {
                                 if (o instanceof ChooseVillageFamilyEvent) {
                                     ChooseVillageFamilyEvent event = (ChooseVillageFamilyEvent) o;
-                                    int id = event.getId();
-                                    String name = event.getName();
-                                    int verified = event.getVerified();
-                                    boolean family = event.isFamily();
+                                    int position = event.getPosition();
+                                    List<DisplayBean> data = getData();
+                                    for (int i = 0; i < data.size(); i++) {
+                                        DisplayBean displayBean = data.get(i);
+                                        if (displayBean instanceof MyVillageFamilyData) {
+                                            if (i == position) {
+                                                ((MyVillageFamilyData) displayBean).setChoosed(true);
+                                            } else {
+                                                ((MyVillageFamilyData) displayBean).setChoosed(false);
+                                            }
+                                        }
+                                    }
+                                    getView().getAdapter().loadData(getData());
                                     getView().getAdapter().notifyDataSetChanged();
                                 }
                             }
