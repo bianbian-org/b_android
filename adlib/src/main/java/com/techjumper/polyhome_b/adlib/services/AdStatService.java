@@ -38,7 +38,7 @@ public class AdStatService extends Service {
 
     public static final String SP_NAME = "ad_sp";
     public static final String KEY_FAMILY_ID = "key_ad_family_id";
-    public static final long ADSTAT_TIME_INTERVAL = 60 * 60 * 1000L;
+    public static final long ADSTAT_TIME_INTERVAL = 5 * 60 * 1000L;
 
     @Nullable
     @Override
