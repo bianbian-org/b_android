@@ -1,5 +1,7 @@
 package com.techjumper.polyhomeb.mvp.m;
 
+import android.text.TextUtils;
+
 import com.steve.creact.library.display.DisplayBean;
 import com.techjumper.corelib.utils.Utils;
 import com.techjumper.corelib.utils.common.RuleUtils;
@@ -13,6 +15,7 @@ import com.techjumper.polyhomeb.adapter.recycler_ViewHolder.databean.PropertyPla
 import com.techjumper.polyhomeb.adapter.recycler_ViewHolder.databean.PropertyPlacardDividerLongBean;
 import com.techjumper.polyhomeb.adapter.recycler_ViewHolder.databean.PropertyRepairBigDividerBean;
 import com.techjumper.polyhomeb.mvp.p.fragment.HomeMenuFragmentPresenter;
+import com.techjumper.polyhomeb.user.UserManager;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -42,11 +45,14 @@ public class HomeMenuFragmentModel extends BaseModel<HomeMenuFragmentPresenter> 
         propertyPlacardDividerData.setMarginLeft(RuleUtils.dp2Px(14));//和布局中文字的marginLeft相同
         PropertyPlacardDividerBean propertyPlacardDividerBean = new PropertyPlacardDividerBean(propertyPlacardDividerData);
 
+        String rightText = (TextUtils.isEmpty(UserManager.INSTANCE.getUserInfo(UserManager.KEY_CURRENT_FAMILY_NAME))
+                ? UserManager.INSTANCE.getUserInfo(UserManager.KEY_CURRENT_VILLAGE_NAME)
+                : UserManager.INSTANCE.getUserInfo(UserManager.KEY_CURRENT_FAMILY_NAME));
         for (int i = 0; i < 3; i++) {
-            String title = i == 0 ?  Utils.appContext.getString(R.string.my_village) : (i == 1 ?  Utils.appContext.getString(R.string.polyhome_setting) :  Utils.appContext.getString(R.string.message_center));
+            String title = i == 0 ? Utils.appContext.getString(R.string.my_village) : (i == 1 ? Utils.appContext.getString(R.string.polyhome_setting) : Utils.appContext.getString(R.string.message_center));
             //item
             HomeMenuItemData homeMenuItemData = new HomeMenuItemData(title);
-            homeMenuItemData.setRightText(i == 0 ? "优客逸家" : null);
+            homeMenuItemData.setRightText(i == 0 ? rightText : null);
             HomeMenuItemBean homeMenuItemBean = new HomeMenuItemBean(homeMenuItemData);
             displayBeen.add(homeMenuItemBean);
 
@@ -69,7 +75,7 @@ public class HomeMenuFragmentModel extends BaseModel<HomeMenuFragmentPresenter> 
         displayBeen.add(propertyPlacardDividerLongBean);
 
         //item
-        HomeMenuItemData homeMenuItemData1 = new HomeMenuItemData( Utils.appContext.getString(R.string.my_points));
+        HomeMenuItemData homeMenuItemData1 = new HomeMenuItemData(Utils.appContext.getString(R.string.my_points));
         HomeMenuItemBean homeMenuItemBean1 = new HomeMenuItemBean(homeMenuItemData1);
         displayBeen.add(homeMenuItemBean1);
 
@@ -83,7 +89,7 @@ public class HomeMenuFragmentModel extends BaseModel<HomeMenuFragmentPresenter> 
         displayBeen.add(propertyPlacardDividerLongBean);
 
         //item
-        HomeMenuItemData homeMenuItemData3 = new HomeMenuItemData( Utils.appContext.getString(R.string.settings));
+        HomeMenuItemData homeMenuItemData3 = new HomeMenuItemData(Utils.appContext.getString(R.string.settings));
         HomeMenuItemBean homeMenuItemBean3 = new HomeMenuItemBean(homeMenuItemData3);
         displayBeen.add(homeMenuItemBean3);
 

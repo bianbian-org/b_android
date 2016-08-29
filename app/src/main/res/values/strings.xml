@@ -181,6 +181,10 @@
     <string name="appraise">评价应用</string>
     <string name="about">关于我们</string>
     <string name="logout">退出登录</string>
+    <string name="family">家庭</string>
+    <string name="village">小区</string>
+    <string name="uncheck">(未审核)</string>
+    <string name="check">(已审核)</string>
 
 
 </resources>

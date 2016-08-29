@@ -6,12 +6,14 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.TextView;
 
 import com.techjumper.corelib.mvp.factory.Presenter;
 import com.techjumper.polyhomeb.R;
 import com.techjumper.polyhomeb.adapter.HomePageAdapter;
 import com.techjumper.polyhomeb.mvp.p.fragment.HomeFragmentPresenter;
 import com.techjumper.polyhomeb.other.DividerItemDecoration;
+import com.techjumper.polyhomeb.user.UserManager;
 import com.techjumper.ptr_lib.PtrClassicFrameLayout;
 import com.techjumper.ptr_lib.PtrDefaultHandler;
 import com.techjumper.ptr_lib.PtrFrameLayout;
@@ -32,6 +34,8 @@ public class HomeFragment extends AppBaseFragment<HomeFragmentPresenter> {
     RecyclerViewFinal mRv;
     @Bind(R.id.ptr)
     PtrClassicFrameLayout mPtr;
+    @Bind(R.id.tv_title)
+    TextView mTvTitle;
 
     private HomePageAdapter mAdapter;
 
@@ -67,7 +71,9 @@ public class HomeFragment extends AppBaseFragment<HomeFragmentPresenter> {
 
     @Override
     public String getTitle() {
-        return "优客逸家";
+        return (TextUtils.isEmpty(UserManager.INSTANCE.getUserInfo(UserManager.KEY_CURRENT_FAMILY_NAME))
+                ? UserManager.INSTANCE.getUserInfo(UserManager.KEY_CURRENT_VILLAGE_NAME)
+                : UserManager.INSTANCE.getUserInfo(UserManager.KEY_CURRENT_FAMILY_NAME));
     }
 
     private void stopRefresh(String msg) {
@@ -76,5 +82,9 @@ public class HomeFragment extends AppBaseFragment<HomeFragmentPresenter> {
                 showHint(msg);
             mPtr.refreshComplete();
         }
+    }
+
+    public TextView getTvTitle() {
+        return mTvTitle;
     }
 }

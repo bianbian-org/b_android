@@ -40,6 +40,10 @@ public enum UserManager {
     public static final String KEY_CURRENT_FAMILY_ID = "key_current_family_id";
     public static final String KEY_CURRENT_VILLAGE_NAME = "key_current_village_name";
     public static final String KEY_CURRENT_FAMILY_NAME = "key_current_family_name";
+    public static final String KEY_CURRENT_BUILDING = "key_current_building";
+    public static final String KEY_CURRENT_UNIT = "key_current_unit";
+    public static final String KEY_CURRENT_ROOM = "key_current_room";
+
 
     /**
      * 通过LoginEntity将用户信息同步到本地
@@ -65,9 +69,11 @@ public enum UserManager {
             PreferenceUtils.save(KEY_BIRTHDAY, dataEntity.getBirthday());
         }
 
-        /************************测试数据,写死的**************************/
-        PreferenceUtils.save(KEY_CURRENT_FAMILY_ID, 463 + "");
-        PreferenceUtils.save(KEY_CURRENT_VILLAGE_ID, 5 + "");
+//        /************************测试数据,写死的**************************/
+        PreferenceUtils.save(KEY_CURRENT_FAMILY_ID, 463 + "");  //家庭id
+        PreferenceUtils.save(KEY_CURRENT_VILLAGE_ID, 5 + "");   //小区id是5,name是怡美家园
+        PreferenceUtils.save(KEY_CURRENT_VILLAGE_NAME, "呵呵");
+        PreferenceUtils.save(KEY_CURRENT_FAMILY_NAME, "怡美家园");
         /************************测试数据,写死的**************************/
 
         if (entity.getData().getFamilies() != null && entity.getData().getFamilies().size() != 0) {
@@ -185,6 +191,9 @@ public enum UserManager {
         PreferenceUtils.save(KEY_ALL_FAMILIES, "");
         PreferenceUtils.save(KEY_CURRENT_VILLAGE_NAME, "");
         PreferenceUtils.save(KEY_CURRENT_FAMILY_NAME, "");
+        PreferenceUtils.save(KEY_CURRENT_BUILDING, "");
+        PreferenceUtils.save(KEY_CURRENT_UNIT, "");
+        PreferenceUtils.save(KEY_CURRENT_ROOM, "");
         HostIpHelper.getInstance().clear();
         if (notify)
             notifyLoginOrLogoutEvent(false);

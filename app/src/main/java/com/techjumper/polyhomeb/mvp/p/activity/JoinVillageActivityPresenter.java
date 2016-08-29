@@ -13,6 +13,7 @@ import com.techjumper.polyhomeb.entity.TrueEntity;
 import com.techjumper.polyhomeb.mvp.m.JoinVillageActivityModel;
 import com.techjumper.polyhomeb.mvp.v.activity.JoinVillageActivity;
 import com.techjumper.polyhomeb.mvp.v.activity.TabHomeActivity;
+import com.techjumper.polyhomeb.user.UserManager;
 
 import butterknife.OnClick;
 import rx.Observer;
@@ -94,7 +95,18 @@ public class JoinVillageActivityPresenter extends AppBaseActivityPresenter<JoinV
                                 if (!processNetworkResult(trueEntity)) return;
                                 if (Constant.TRUE_ENTITY_RESULT.equals(trueEntity.getData().getResult())) {
                                     getView().dismissLoading();
-                                    new AcHelper.Builder(getView()).target(TabHomeActivity.class).start();
+                                    //将楼栋号,单元号,房间号,名字,id全都存下来
+                                    UserManager.INSTANCE.saveUserInfo(UserManager.KEY_CURRENT_VILLAGE_ID, mModel.getId() + "");
+                                    UserManager.INSTANCE.saveUserInfo(UserManager.KEY_CURRENT_VILLAGE_NAME, mModel.getName());
+                                    UserManager.INSTANCE.saveUserInfo(UserManager.KEY_CURRENT_BUILDING, getView().getEtBuilding().getEditableText().toString());
+                                    UserManager.INSTANCE.saveUserInfo(UserManager.KEY_CURRENT_UNIT, getView().getEtUnit().getEditableText().toString());
+                                    UserManager.INSTANCE.saveUserInfo(UserManager.KEY_CURRENT_ROOM, getView().getEtRoom().getEditableText().toString());
+                                    new AcHelper.Builder(getView())
+                                            .closeCurrent(true)
+                                            .enterAnim(R.anim.fade_in)
+                                            .exitAnim(R.anim.fade_out)
+                                            .target(TabHomeActivity.class)
+                                            .start();
                                 }
                             }
                         }));

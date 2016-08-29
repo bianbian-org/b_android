@@ -103,5 +103,13 @@ public class ScanHostQRCodeActivityPresenter extends AppBaseActivityPresenter<Sc
         RxUtils.unsubscribeIfNotNull(mSubs2);
 //        addSubscription(
 //                mSubs2 = mModel.uploadData(result));
+
+        // TODO: 16/8/28  //将楼栋号,单元号,房间号,家庭名字,家庭id全都存下来
+        //KEY_CURRENT_FAMILY_ID
+        //KEY_CURRENT_FAMILY_NAME
+        //后面这三个字段,有的话就写入,没得就算了
+        //KEY_CURRENT_BUILDING
+        //KEY_CURRENT_UNIT
+        //KEY_CURRENT_ROOM
     }
 }

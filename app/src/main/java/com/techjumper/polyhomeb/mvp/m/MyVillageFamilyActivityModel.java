@@ -1,15 +1,18 @@
 package com.techjumper.polyhomeb.mvp.m;
 
+import android.text.TextUtils;
+
 import com.steve.creact.library.display.DisplayBean;
 import com.techjumper.corelib.rx.tools.CommonWrap;
 import com.techjumper.corelib.utils.common.RuleUtils;
 import com.techjumper.lib2.others.KeyValuePair;
 import com.techjumper.lib2.utils.RetrofitHelper;
-import com.techjumper.polyhomeb.adapter.recycler_Data.ChooseVillageData;
+import com.techjumper.polyhomeb.R;
+import com.techjumper.polyhomeb.adapter.databean.MyVillageFamilyBean;
+import com.techjumper.polyhomeb.adapter.recycler_Data.MyVillageFamilyData;
 import com.techjumper.polyhomeb.adapter.recycler_Data.MyVillageFamilyTextData;
 import com.techjumper.polyhomeb.adapter.recycler_Data.PropertyPlacardDividerData;
 import com.techjumper.polyhomeb.adapter.recycler_Data.PropertyPlacardDividerLongData;
-import com.techjumper.polyhomeb.adapter.recycler_ViewHolder.databean.ChooseVillageBean;
 import com.techjumper.polyhomeb.adapter.recycler_ViewHolder.databean.MyVillageFamilyTextBean;
 import com.techjumper.polyhomeb.adapter.recycler_ViewHolder.databean.PropertyPlacardDividerBean;
 import com.techjumper.polyhomeb.adapter.recycler_ViewHolder.databean.PropertyPlacardDividerLongBean;
@@ -62,14 +65,14 @@ public class MyVillageFamilyActivityModel extends BaseModel<MyVillageFamilyActiv
         processFamily(displayBeen, family_infos);
         processVillage(displayBeen, village_infos);
 
-        getPresenter().getView().showData(displayBeen);
     }
 
-    private void processFamily(List<DisplayBean> displayBeen, List<UserFamiliesAndVillagesEntity.DataBean.FamilyInfosBean> family_infos) {
+    public void processFamily(List<DisplayBean> displayBeen, List<UserFamiliesAndVillagesEntity.DataBean.FamilyInfosBean> family_infos) {
         if (family_infos.size() == 0) return;
+        String mFamilyId = UserManager.INSTANCE.getUserInfo(UserManager.KEY_CURRENT_FAMILY_ID);
         //文字
         MyVillageFamilyTextData myVillageFamilyTextData = new MyVillageFamilyTextData();
-        myVillageFamilyTextData.setText("家庭");
+        myVillageFamilyTextData.setText(getPresenter().getView().getString(R.string.family));
         MyVillageFamilyTextBean myVillageFamilyTextBean = new MyVillageFamilyTextBean(myVillageFamilyTextData);
         displayBeen.add(myVillageFamilyTextBean);
 
@@ -86,11 +89,19 @@ public class MyVillageFamilyActivityModel extends BaseModel<MyVillageFamilyActiv
                 PropertyPlacardDividerBean dividerBean = new PropertyPlacardDividerBean(dividerData);
                 displayBeen.add(dividerBean);
             }
-            ChooseVillageData chooseVillageData = new ChooseVillageData();
-            chooseVillageData.setName(family_infos.get(i).getFamily_name());
-            chooseVillageData.setId(family_infos.get(i).getId());
-            ChooseVillageBean chooseVillageBean = new ChooseVillageBean(chooseVillageData);
-            displayBeen.add(chooseVillageBean);
+            MyVillageFamilyData myVillageFamilyData = new MyVillageFamilyData();
+            myVillageFamilyData.setName(family_infos.get(i).getFamily_name());
+            myVillageFamilyData.setId(family_infos.get(i).getId());
+            myVillageFamilyData.setFamilyData(true);
+            if (!TextUtils.isEmpty(mFamilyId)) {
+                if (family_infos.get(i).getId() == Integer.parseInt(mFamilyId)) {
+                    myVillageFamilyData.setChoosed(true);
+                } else {
+                    myVillageFamilyData.setChoosed(false);
+                }
+            }
+            MyVillageFamilyBean myVillageFamilyBean = new MyVillageFamilyBean(myVillageFamilyData);
+            displayBeen.add(myVillageFamilyBean);
 
             if (i == family_infos.size() - 1) {
                 //长分割线
@@ -107,13 +118,12 @@ public class MyVillageFamilyActivityModel extends BaseModel<MyVillageFamilyActiv
         }
     }
 
-
-    private void processVillage(List<DisplayBean> displayBeen, List<UserFamiliesAndVillagesEntity.DataBean.VillageInfosBean> village_infos) {
+    public void processVillage(List<DisplayBean> displayBeen, List<UserFamiliesAndVillagesEntity.DataBean.VillageInfosBean> village_infos) {
         if (village_infos.size() == 0) return;
-
+        String mVillageId = UserManager.INSTANCE.getUserInfo(UserManager.KEY_CURRENT_VILLAGE_ID);
         //文字
         MyVillageFamilyTextData myVillageFamilyTextData = new MyVillageFamilyTextData();
-        myVillageFamilyTextData.setText("小区");
+        myVillageFamilyTextData.setText(getPresenter().getView().getString(R.string.village));
         MyVillageFamilyTextBean myVillageFamilyTextBean = new MyVillageFamilyTextBean(myVillageFamilyTextData);
         displayBeen.add(myVillageFamilyTextBean);
 
@@ -130,12 +140,20 @@ public class MyVillageFamilyActivityModel extends BaseModel<MyVillageFamilyActiv
                 PropertyPlacardDividerBean dividerBean = new PropertyPlacardDividerBean(dividerData);
                 displayBeen.add(dividerBean);
             }
-            ChooseVillageData chooseVillageData = new ChooseVillageData();
-            chooseVillageData.setName(village_infos.get(i).getVillage_name());
-            chooseVillageData.setId(village_infos.get(i).getVillage_id());
-//            chooseVillageData.setVerified(village_infos.get(i).getVerified());
-            ChooseVillageBean chooseVillageBean = new ChooseVillageBean(chooseVillageData);
-            displayBeen.add(chooseVillageBean);
+            MyVillageFamilyData myVillageFamilyData = new MyVillageFamilyData();
+            myVillageFamilyData.setName(village_infos.get(i).getVillage_name());
+            myVillageFamilyData.setId(village_infos.get(i).getVillage_id());
+            myVillageFamilyData.setVerified(village_infos.get(i).getVerified());
+            myVillageFamilyData.setFamilyData(false);
+            if (!TextUtils.isEmpty(mVillageId)) {
+                if (village_infos.get(i).getVillage_id() == Integer.parseInt(mVillageId)) {
+                    myVillageFamilyData.setChoosed(true);
+                } else {
+                    myVillageFamilyData.setChoosed(false);
+                }
+            }
+            MyVillageFamilyBean myVillageFamilyBean = new MyVillageFamilyBean(myVillageFamilyData);
+            displayBeen.add(myVillageFamilyBean);
 
             if (i == village_infos.size() - 1) {
                 //长分割线
@@ -150,5 +168,9 @@ public class MyVillageFamilyActivityModel extends BaseModel<MyVillageFamilyActiv
                 displayBeen.add(dividerBean);
             }
         }
+    }
+
+    public List<DisplayBean> getDisplayBeen() {
+        return displayBeen;
     }
 }

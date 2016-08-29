@@ -80,4 +80,8 @@ public class HomeMenuFragment extends AppBaseFragment<HomeMenuFragmentPresenter>
         return mIvAvatar;
     }
 
+    public HomeMenuAdapter getAdapter() {
+        return mAdapter;
+    }
+
 }
