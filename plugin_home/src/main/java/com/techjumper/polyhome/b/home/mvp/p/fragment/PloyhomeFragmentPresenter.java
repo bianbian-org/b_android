@@ -42,7 +42,6 @@ import com.techjumper.polyhome.b.home.mvp.v.activity.ShoppingActivity;
 import com.techjumper.polyhome.b.home.mvp.v.fragment.PloyhomeFragment;
 import com.techjumper.polyhome.b.home.tool.AlarmManagerUtil;
 import com.techjumper.polyhome.b.home.utils.DateUtil;
-import com.techjumper.polyhome.b.home.utils.StringUtil;
 import com.techjumper.polyhome.b.home.widget.MyTextureView;
 import com.techjumper.polyhome.b.home.widget.SquareView;
 import com.techjumper.polyhome_b.adlib.entity.AdEntity;
@@ -558,22 +557,25 @@ public class PloyhomeFragmentPresenter extends AppBaseFragmentPresenter<Ployhome
             return;
 
         adController.startWakeUpTimer(() -> {
+
+            if (adController.isScreenOn()) {
+                JLog.d("屏幕已经是点亮状态, 不再做操作");
+                return;
+            } else if (adController.isRunning(AdController.TYPE_WAKEUP)
+                    || adController.isRunning(AdController.TYPE_SLEEP)) {
+                JLog.d("已经在执行唤醒或者休眠广告,不再重复唤醒");
+                return;
+            }
             JLog.d("获取唤醒广告" + UserInfoManager.getFamilyId() + "  " + UserInfoManager.getUserId() + "  " + UserInfoManager.getTicket());
 //                adController.executeAdRule(AdController.TYPE_HOME, "434", "362", "5b279ba4e46853d86e1d109914cfebe3ca224381", new AdController.IExecuteRule() {
             adController.executeAdRule(AdController.TYPE_WAKEUP, UserInfoManager.getFamilyId()
                     , UserInfoManager.getUserId(), UserInfoManager.getTicket()
                     , fromCahce
                     , new AdController.IExecuteRule() {
-                        boolean mIsWakedUp; //是否被唤醒了
 
                         @Override
                         public void onAdReceive(AdEntity.AdsEntity adsEntity, File file) {
-                            boolean wakedUp = adController.wakeUpScreen();
-                            if (!mIsWakedUp && !wakedUp) {
-                                adController.interrupt(AdController.TYPE_WAKEUP);
-                                return;
-                            }
-                            mIsWakedUp = true;
+                            adController.wakeUpScreen();
                             RxBus.INSTANCE.send(new AdMainEvent(adsEntity, file));
                         }
 
@@ -581,7 +583,6 @@ public class PloyhomeFragmentPresenter extends AppBaseFragmentPresenter<Ployhome
                         public void onAdPlayFinished() {
                             JLog.d("广告播放完成  ");
                             adController.turnOffScreen(); //保持休眠
-                            mIsWakedUp = false;
                             RxBus.INSTANCE.send(new AdShowEvent(false));
                         }
 
@@ -616,8 +617,13 @@ public class PloyhomeFragmentPresenter extends AppBaseFragmentPresenter<Ployhome
             return;
 
         adController.receiveScreenOff(() -> {
-            JLog.d("获取休眠广告" + UserInfoManager.getFamilyId() + "  " + UserInfoManager.getUserId() + "  " + UserInfoManager.getTicket());
 //                adController.executeAdRule(AdController.TYPE_HOME, "434", "362", "5b279ba4e46853d86e1d109914cfebe3ca224381", new AdController.IExecuteRule() {
+            if (adController.isRunning(AdController.TYPE_WAKEUP)
+                    || adController.isRunning(AdController.TYPE_SLEEP)) {
+                JLog.d("已经在执行唤醒或者休眠广告,不再重复执行休眠广告");
+                return;
+            }
+            JLog.d("获取休眠广告" + UserInfoManager.getFamilyId() + "  " + UserInfoManager.getUserId() + "  " + UserInfoManager.getTicket());
             adController.executeAdRule(AdController.TYPE_SLEEP, UserInfoManager.getFamilyId()
                     , UserInfoManager.getUserId(), UserInfoManager.getTicket()
                     , fromCahce

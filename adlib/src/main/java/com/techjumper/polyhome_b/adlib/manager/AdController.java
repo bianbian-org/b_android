@@ -135,7 +135,7 @@ public class AdController {
     }
 
     @SuppressLint("NewApi")
-    private boolean isScreenOn() {
+    public boolean isScreenOn() {
         PowerManager powerManager = (PowerManager) Utils.appContext.getSystemService(Context.POWER_SERVICE);
         return Build.VERSION.SDK_INT >= 20 ? powerManager.isInteractive() : powerManager.isScreenOn();
 
@@ -393,6 +393,12 @@ public class AdController {
         }
     }
 
+    public boolean isRunning(String type) {
+        AdRuleExecutor executor = mExecutorMap.get(type);
+        return executor != null && !executor.isInterrupt();
+
+    }
+
     public interface IFetchAd {
         void onAdInfoReceive(AdEntity adData);
     }
@@ -451,7 +457,7 @@ public class AdController {
                     JLog.d("唤醒广告执行完毕, 所以关闭屏幕后不再发布休眠消息");
                     mExecutorMap.put(TYPE_WAKEUP, null);
                 }
-                mExecutorMap.put(TYPE_SLEEP, null);
+                interrupt(TYPE_SLEEP);
                 return;
             }
 
