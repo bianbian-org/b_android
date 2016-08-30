@@ -96,7 +96,7 @@ public class AdController {
     }
 
     public static void init() {
-        mLockTime = 5 * 60 * 1000;
+        mLockTime = 3 * 60 * 1000;
         setScreenOffTime(mLockTime);
         //开启广告定时统计
         PollingUtils.stopPollingService(Utils.appContext
