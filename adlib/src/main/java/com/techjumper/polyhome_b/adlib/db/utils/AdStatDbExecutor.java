@@ -61,6 +61,13 @@ public class AdStatDbExecutor {
                         }
                         return adStat;
                     })
+                    .onErrorResumeNext(throwable -> {
+                        try {
+                            deleteAll();
+                        } catch (Exception ignored) {
+                        }
+                        return null;
+                    })
                     .first();
         }
 
@@ -80,6 +87,13 @@ public class AdStatDbExecutor {
                             cursor.close();
                         }
                         return adStats;
+                    })
+                    .onErrorResumeNext(throwable -> {
+                        try {
+                            deleteAll();
+                        } catch (Exception ignored) {
+                        }
+                        return null;
                     })
                     .first();
         }
@@ -159,6 +173,13 @@ public class AdStatDbExecutor {
                             cursor.close();
                         }
                         return adStatTime;
+                    })
+                    .onErrorResumeNext(throwable -> {
+                        try {
+                            deleteAll();
+                        } catch (Exception ignored) {
+                        }
+                        return null;
                     })
                     .first();
         }
