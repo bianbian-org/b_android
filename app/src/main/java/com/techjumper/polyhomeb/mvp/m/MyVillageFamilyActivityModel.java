@@ -1,7 +1,5 @@
 package com.techjumper.polyhomeb.mvp.m;
 
-import android.text.TextUtils;
-
 import com.steve.creact.library.display.DisplayBean;
 import com.techjumper.corelib.rx.tools.CommonWrap;
 import com.techjumper.corelib.utils.common.RuleUtils;
@@ -62,14 +60,13 @@ public class MyVillageFamilyActivityModel extends BaseModel<MyVillageFamilyActiv
         displayBeen.clear();
 
         //处理家庭item
-        processFamily(displayBeen, family_infos);
-        processVillage(displayBeen, village_infos);
+        processFamily(family_infos);
+        processVillage(village_infos);
 
     }
 
-    public void processFamily(List<DisplayBean> displayBeen, List<UserFamiliesAndVillagesEntity.DataBean.FamilyInfosBean> family_infos) {
+    public void processFamily(List<UserFamiliesAndVillagesEntity.DataBean.FamilyInfosBean> family_infos) {
         if (family_infos.size() == 0) return;
-        String mFamilyId = UserManager.INSTANCE.getUserInfo(UserManager.KEY_CURRENT_FAMILY_ID);
         //文字
         MyVillageFamilyTextData myVillageFamilyTextData = new MyVillageFamilyTextData();
         myVillageFamilyTextData.setText(getPresenter().getView().getString(R.string.family));
@@ -93,13 +90,6 @@ public class MyVillageFamilyActivityModel extends BaseModel<MyVillageFamilyActiv
             myVillageFamilyData.setName(family_infos.get(i).getFamily_name());
             myVillageFamilyData.setId(family_infos.get(i).getId());
             myVillageFamilyData.setFamilyData(true);
-            if (!TextUtils.isEmpty(mFamilyId)) {
-                if (family_infos.get(i).getId() == Integer.parseInt(mFamilyId)) {
-                    myVillageFamilyData.setChoosed(true);
-                } else {
-                    myVillageFamilyData.setChoosed(false);
-                }
-            }
             MyVillageFamilyBean myVillageFamilyBean = new MyVillageFamilyBean(myVillageFamilyData);
             displayBeen.add(myVillageFamilyBean);
 
@@ -118,9 +108,8 @@ public class MyVillageFamilyActivityModel extends BaseModel<MyVillageFamilyActiv
         }
     }
 
-    public void processVillage(List<DisplayBean> displayBeen, List<UserFamiliesAndVillagesEntity.DataBean.VillageInfosBean> village_infos) {
+    public void processVillage(List<UserFamiliesAndVillagesEntity.DataBean.VillageInfosBean> village_infos) {
         if (village_infos.size() == 0) return;
-        String mVillageId = UserManager.INSTANCE.getUserInfo(UserManager.KEY_CURRENT_VILLAGE_ID);
         //文字
         MyVillageFamilyTextData myVillageFamilyTextData = new MyVillageFamilyTextData();
         myVillageFamilyTextData.setText(getPresenter().getView().getString(R.string.village));
@@ -145,13 +134,6 @@ public class MyVillageFamilyActivityModel extends BaseModel<MyVillageFamilyActiv
             myVillageFamilyData.setId(village_infos.get(i).getVillage_id());
             myVillageFamilyData.setVerified(village_infos.get(i).getVerified());
             myVillageFamilyData.setFamilyData(false);
-            if (!TextUtils.isEmpty(mVillageId)) {
-                if (village_infos.get(i).getVillage_id() == Integer.parseInt(mVillageId)) {
-                    myVillageFamilyData.setChoosed(true);
-                } else {
-                    myVillageFamilyData.setChoosed(false);
-                }
-            }
             MyVillageFamilyBean myVillageFamilyBean = new MyVillageFamilyBean(myVillageFamilyData);
             displayBeen.add(myVillageFamilyBean);
 

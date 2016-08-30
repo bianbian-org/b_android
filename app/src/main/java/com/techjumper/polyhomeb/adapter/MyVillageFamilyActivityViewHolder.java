@@ -5,12 +5,10 @@ import android.widget.ImageView;
 
 import com.steve.creact.annotation.DataBean;
 import com.steve.creact.library.viewholder.BaseRecyclerViewHolder;
-import com.techjumper.corelib.rx.tools.RxBus;
+import com.techjumper.corelib.utils.window.ToastUtils;
 import com.techjumper.lib2.utils.PicassoHelper;
 import com.techjumper.polyhomeb.R;
 import com.techjumper.polyhomeb.adapter.recycler_Data.MyVillageFamilyData;
-import com.techjumper.polyhomeb.entity.event.ChooseVillageFamilyEvent;
-import com.techjumper.polyhomeb.user.UserManager;
 
 /**
  * * * * * * * * * * * * * * * * * * * * * * *
@@ -45,17 +43,7 @@ public class MyVillageFamilyActivityViewHolder extends BaseRecyclerViewHolder<My
         }
 
         setOnClickListener(R.id.layout_village, v -> {
-            //如果已经打钩了,不作任何操作,如果没有被打钩,现在点击了整个布局,那么就应该让他打钩,并且发送RxBus,让其他的不打勾.
-            if (!data.isChoosed()) {
-                if (data.isFamilyData()) {
-                    UserManager.INSTANCE.saveUserInfo(UserManager.KEY_CURRENT_FAMILY_NAME, name);
-                    UserManager.INSTANCE.saveUserInfo(UserManager.KEY_CURRENT_FAMILY_ID, id + "");
-                } else {
-                    UserManager.INSTANCE.saveUserInfo(UserManager.KEY_CURRENT_VILLAGE_NAME, name);
-                    UserManager.INSTANCE.saveUserInfo(UserManager.KEY_CURRENT_VILLAGE_ID, id + "");
-                }
-                RxBus.INSTANCE.send(new ChooseVillageFamilyEvent(id, name, verified, data.isFamilyData(),getLayoutPosition()));
-            }
+            ToastUtils.show(name + id);
         });
     }
 }

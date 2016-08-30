@@ -69,7 +69,7 @@ public enum UserManager {
             PreferenceUtils.save(KEY_BIRTHDAY, dataEntity.getBirthday());
         }
 
-//        /************************测试数据,写死的**************************/
+        /************************测试数据,写死的**************************/
         PreferenceUtils.save(KEY_CURRENT_FAMILY_ID, 463 + "");  //家庭id
         PreferenceUtils.save(KEY_CURRENT_VILLAGE_ID, 5 + "");   //小区id是5,name是怡美家园
         PreferenceUtils.save(KEY_CURRENT_VILLAGE_NAME, "呵呵");

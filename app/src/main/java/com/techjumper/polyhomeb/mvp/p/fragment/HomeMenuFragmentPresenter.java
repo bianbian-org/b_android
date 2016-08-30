@@ -9,7 +9,6 @@ import com.techjumper.corelib.rx.tools.RxBus;
 import com.techjumper.corelib.utils.common.AcHelper;
 import com.techjumper.lib2.utils.PicassoHelper;
 import com.techjumper.polyhomeb.R;
-import com.techjumper.polyhomeb.entity.event.ChooseVillageFamilyEvent;
 import com.techjumper.polyhomeb.mvp.m.HomeMenuFragmentModel;
 import com.techjumper.polyhomeb.mvp.v.activity.LoginActivity;
 import com.techjumper.polyhomeb.mvp.v.fragment.HomeMenuFragment;
@@ -44,10 +43,6 @@ public class HomeMenuFragmentPresenter extends AppBaseFragmentPresenter<HomeMenu
                         LoginEvent loginEvent = (LoginEvent) o;
                         boolean login = loginEvent.isLogin();
                         setAvatarAndName(login);
-                    } else if (o instanceof ChooseVillageFamilyEvent) {
-                        ChooseVillageFamilyEvent event = (ChooseVillageFamilyEvent) o;
-                        getView().getAdapter().loadData(mModel.getDatas());
-                        getView().getAdapter().notifyDataSetChanged();
                     }
                 }));
     }
