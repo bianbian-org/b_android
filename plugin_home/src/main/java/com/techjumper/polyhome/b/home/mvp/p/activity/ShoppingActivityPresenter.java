@@ -18,6 +18,8 @@ import rx.android.schedulers.AndroidSchedulers;
  */
 public class ShoppingActivityPresenter extends AppBaseActivityPresenter<ShoppingActivity> {
 
+    private long time;
+
     @OnClick(R.id.bottom_back)
     void back() {
         getView().finish();
@@ -35,13 +37,24 @@ public class ShoppingActivityPresenter extends AppBaseActivityPresenter<Shopping
 
     @Override
     public void onViewInited(Bundle savedInstanceState) {
+        time = getView().getTime();
+
         addSubscription(RxBus.INSTANCE.asObservable()
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(o -> {
                     if (o instanceof TimeEvent) {
                         Log.d("time", "更新时间");
-                        if (getView().getBottomDate() != null) {
-                            getView().getBottomDate().setText(CommonDateUtil.getTitleDate());
+                        TimeEvent event = (TimeEvent) o;
+                        if (event.getType() == TimeEvent.SHOPPING) {
+                            Log.d("submitOnline", "商店系统更新" + time);
+                            if (getView().getBottomDate() != null) {
+                                if (event.getTime() == 0L) {
+                                    getView().getBottomDate().setText(CommonDateUtil.getTitleDate());
+                                } else {
+                                    time = time + 60;
+                                    getView().getBottomDate().setText(CommonDateUtil.getTitleNewDate(time));
+                                }
+                            }
                         }
                     }
                 }));

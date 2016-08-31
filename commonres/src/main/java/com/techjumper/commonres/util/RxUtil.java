@@ -31,6 +31,7 @@ public class RxUtil {
         return observable -> observable.throttleFirst(TIME, TimeUnit.MILLISECONDS)
                 .subscribeOn(AndroidSchedulers.mainThread())
                 .observeOn(AndroidSchedulers.mainThread());
+
     }
 
     //    public static Subscription limitLength(EditText editText) {

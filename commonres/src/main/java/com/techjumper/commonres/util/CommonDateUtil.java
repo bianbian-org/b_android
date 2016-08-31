@@ -15,6 +15,7 @@ public class CommonDateUtil {
 
     private static Calendar calendar;
     private static long hour;
+    private static String weekstr;
 
     public static String getTitleDate() {
         initCalendar();
@@ -50,6 +51,61 @@ public class CommonDateUtil {
         }
 
         return month + "月" + day + "日" + "   周" + week + "  " + formatHourMinute(hour) + ":" + formatHourMinute(minute);
+    }
+
+    public static String getTitleNewDate(long time) {
+        Date date = new Date(time * 1000);
+
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyyMMdd");
+        String dateString = simpleDateFormat.format(date);
+
+        simpleDateFormat = new SimpleDateFormat("HH:mm");
+        String timeString = simpleDateFormat.format(date);
+
+        String year = dateString.substring(0, 4);
+        String month = dateString.substring(4, 6);
+        String day = dateString.substring(6, 8);
+
+        String weekDay = getWeekDay(Integer.valueOf(year), Integer.valueOf(month), Integer.valueOf(day));
+
+        return month + "月" + day + "日" + "   " + weekDay + "  " + timeString;
+    }
+
+    private static String getWeekDay(int y, int m, int d) {
+        if (m == 1) {
+            m = 13;
+            y--;
+        }
+        if (m == 2) {
+            m = 14;
+            y--;
+        }
+
+        int week = (d + 2 * m + 3 * (m + 1) / 5 + y + y / 4 - y / 100 + y / 400) % 7;
+        switch (week) {
+            case 0:
+                weekstr = "周一";
+                break;
+            case 1:
+                weekstr = "周二";
+                break;
+            case 2:
+                weekstr = "周三";
+                break;
+            case 3:
+                weekstr = "周四";
+                break;
+            case 4:
+                weekstr = "周五";
+                break;
+            case 5:
+                weekstr = "周六";
+                break;
+            case 6:
+                weekstr = "周日";
+                break;
+        }
+        return weekstr;
     }
 
     private static String formatHourMinute(String content) {
@@ -109,6 +165,22 @@ public class CommonDateUtil {
         initCalendar();
         int currentSecond = calendar.get(Calendar.SECOND);
         return (60 - currentSecond) * 1000;
+    }
+
+    public static long delayToNewPoint() {
+        initCalendar();
+        int currentSecond = calendar.get(Calendar.SECOND);
+        Log.d("submitOnline", "多少秒更新" + (60 - currentSecond));
+        return (60 - currentSecond);
+    }
+
+    public static long delayToPoint(long time) {
+        Date date = new Date(time * 1000);
+
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("ss");
+        String ssString = simpleDateFormat.format(date);
+        Log.d("submitOnline", "多少秒更新" + (60 - Integer.valueOf(ssString)));
+        return 60 - Integer.valueOf(ssString);
     }
 
     /**

@@ -13,10 +13,8 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.techjumper.commonres.entity.event.TimeEvent;
 import com.techjumper.commonres.util.CommonDateUtil;
 import com.techjumper.corelib.mvp.factory.Presenter;
-import com.techjumper.corelib.rx.tools.RxBus;
 import com.techjumper.polyhome.b.home.R;
 import com.techjumper.polyhome.b.home.adapter.MyViewPagerAdapter;
 import com.techjumper.polyhome.b.home.mvp.p.activity.MainActivityPresenter;
@@ -27,8 +25,6 @@ import com.techjumper.polyhome.b.home.widget.MyViewPager;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Timer;
-import java.util.TimerTask;
 
 import butterknife.Bind;
 
@@ -61,7 +57,6 @@ public class MainActivity extends AppBaseActivity {
 
     private MyViewPagerAdapter myViewPagerAdapter;
     private List<Fragment> fragments = new ArrayList<Fragment>();
-    private Timer timer = new Timer();
     private HeartbeatReceiver mheartbeatReceiver = new HeartbeatReceiver();
 
     public MyVideoView getMainAdVideo() {
@@ -159,13 +154,6 @@ public class MainActivity extends AppBaseActivity {
             }
         });
 
-        timer.schedule(new TimerTask() {
-            @Override
-            public void run() {
-                RxBus.INSTANCE.send(new TimeEvent());
-            }
-        }, CommonDateUtil.delayToPoint(), 60000);
-
         IntentFilter intentFilter = new IntentFilter(ACTION_HOME_HEARTBEAT);
         registerReceiver(mheartbeatReceiver, intentFilter);
     }
@@ -177,10 +165,6 @@ public class MainActivity extends AppBaseActivity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        if (timer != null) {
-            timer.cancel();
-        }
-
         if (mheartbeatReceiver != null) {
             unregisterReceiver(mheartbeatReceiver);
         }

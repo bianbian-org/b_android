@@ -9,9 +9,11 @@ import android.webkit.WebViewClient;
 import android.widget.TextView;
 
 import com.techjumper.commonres.entity.event.TimeEvent;
+import com.techjumper.commonres.entity.event.TimerEvent;
 import com.techjumper.commonres.util.CommonDateUtil;
 import com.techjumper.corelib.mvp.factory.Presenter;
 import com.techjumper.corelib.rx.tools.RxBus;
+import com.techjumper.polyhome.b.home.InfoManager;
 import com.techjumper.polyhome.b.home.R;
 import com.techjumper.polyhome.b.home.mvp.p.activity.JujiaActivityPresenter;
 import com.techjumper.polyhome_b.adlib.Config;
@@ -25,6 +27,8 @@ import butterknife.ButterKnife;
 @Presenter(JujiaActivityPresenter.class)
 public class JujiaActivity extends AppBaseActivity<JujiaActivityPresenter> {
 
+    public static final String TIME = "time";
+
     @Bind(R.id.webview)
     WebView webView;
     @Bind(R.id.bottom_title)
@@ -32,6 +36,8 @@ public class JujiaActivity extends AppBaseActivity<JujiaActivityPresenter> {
     @Bind(R.id.bottom_date)
     TextView bottomDate;
     private Timer timer = new Timer();
+    private long time;
+    private TimerTask timerTask;
 
     public TextView getBottomDate() {
         return bottomDate;
@@ -42,10 +48,34 @@ public class JujiaActivity extends AppBaseActivity<JujiaActivityPresenter> {
         return inflate(R.layout.activity_jujia);
     }
 
+    public long getTime() {
+        return time;
+    }
+
     @Override
     protected void initView(Bundle savedInstanceState) {
         bottomTitle.setText(R.string.title_jujia);
-        bottomDate.setText(CommonDateUtil.getTitleDate());
+        time = getIntent().getLongExtra(TIME, 0L);
+        if (time == 0L) {
+            bottomDate.setText(CommonDateUtil.getTitleDate());
+            timer.schedule(new TimerTask() {
+                @Override
+                public void run() {
+                    RxBus.INSTANCE.send(new TimeEvent());
+                }
+            }, CommonDateUtil.delayToPoint(), 60000);
+        } else {
+            bottomDate.setText(CommonDateUtil.getTitleNewDate(time));
+            timer.schedule(new TimerTask() {
+                @Override
+                public void run() {
+                    TimeEvent event = new TimeEvent();
+                    event.setTime(time);
+                    event.setType(TimeEvent.JUJIA);
+                    RxBus.INSTANCE.send(event);
+                }
+            }, 60000, 60000);
+        }
 
         WebSettings ws = webView.getSettings();
 
@@ -71,12 +101,7 @@ public class JujiaActivity extends AppBaseActivity<JujiaActivityPresenter> {
         webView.setWebViewClient(new webViewClient());
         webView.loadUrl(Config.sJujia);
 
-        timer.schedule(new TimerTask() {
-            @Override
-            public void run() {
-                RxBus.INSTANCE.send(new TimeEvent());
-            }
-        }, CommonDateUtil.delayToPoint(), 60000);
+
     }
 
     @Override
@@ -100,6 +125,10 @@ public class JujiaActivity extends AppBaseActivity<JujiaActivityPresenter> {
         super.onDestroy();
         if (webView != null) {
             webView.destroy();
+        }
+        if (timer != null) {
+            timer.cancel();
+            timer = null;
         }
     }
 

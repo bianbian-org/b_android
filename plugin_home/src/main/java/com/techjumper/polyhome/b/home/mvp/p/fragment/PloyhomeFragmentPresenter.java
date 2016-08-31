@@ -17,6 +17,7 @@ import com.techjumper.commonres.entity.event.AdEvent;
 import com.techjumper.commonres.entity.event.AdMainEvent;
 import com.techjumper.commonres.entity.event.AdShowEvent;
 import com.techjumper.commonres.entity.event.AdTemEvent;
+import com.techjumper.commonres.entity.event.HeartbeatTimeEvent;
 import com.techjumper.commonres.entity.event.InfoMediaPlayerEvent;
 import com.techjumper.commonres.entity.event.NoticeEvent;
 import com.techjumper.commonres.entity.event.ShowMainAdEvent;
@@ -84,6 +85,7 @@ public class PloyhomeFragmentPresenter extends AppBaseFragmentPresenter<Ployhome
     private List<NoticeEntity.Message> messages = new ArrayList<>();
     private boolean isTimer = true;
     private boolean isOnResume;
+    private long heartbeatTime;
 
     @Override
     public void onDestroy() {
@@ -174,6 +176,7 @@ public class PloyhomeFragmentPresenter extends AppBaseFragmentPresenter<Ployhome
                 .compose(RxUtil.applySchedulers())
                 .subscribe(aVoid -> {
                     Intent intent = new Intent(getView().getActivity(), ShoppingActivity.class);
+                    intent.putExtra(ShoppingActivity.TIME, heartbeatTime);
                     getView().startActivity(intent);
                 }));
 
@@ -181,6 +184,7 @@ public class PloyhomeFragmentPresenter extends AppBaseFragmentPresenter<Ployhome
                 .compose(RxUtil.applySchedulers())
                 .subscribe(aVoid -> {
                     Intent intent = new Intent(getView().getActivity(), JujiaActivity.class);
+                    intent.putExtra(JujiaActivity.TIME, heartbeatTime);
                     getView().startActivity(intent);
                 }));
 
@@ -279,6 +283,9 @@ public class PloyhomeFragmentPresenter extends AppBaseFragmentPresenter<Ployhome
                         } else {
                             cancelTimer();
                         }
+                    } else if (o instanceof HeartbeatTimeEvent) {
+                        HeartbeatTimeEvent event = (HeartbeatTimeEvent) o;
+                        heartbeatTime = event.getTime();
                     }
                 }));
 

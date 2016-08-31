@@ -3,6 +3,7 @@ package com.techjumper.polyhome.b.home.mvp.m;
 import android.util.Log;
 
 import com.techjumper.commonres.entity.BaseArgumentsEntity;
+import com.techjumper.commonres.entity.HeartbeatEntity;
 import com.techjumper.commonres.entity.TrueEntity;
 import com.techjumper.corelib.mvp.model.BaseModel;
 import com.techjumper.corelib.rx.tools.CommonWrap;
@@ -27,7 +28,7 @@ public class MainActivityModel extends BaseModel<MainActivityPresenter> {
         super(presenter);
     }
 
-    public Observable<TrueEntity> submitOnline() {
+    public Observable<HeartbeatEntity> submitOnline() {
         KeyValuePair keyValuePair = KeyValueCreator.submitOnline(UserInfoManager.getFamilyId(), StringUtil.getMacAddress());
         BaseArgumentsEntity argument = NetHelper.createBaseArguments(keyValuePair);
         Log.d("submitOnline", "familyId: " + UserInfoManager.getFamilyId() + "  deviceId: " + StringUtil.getMacAddress());

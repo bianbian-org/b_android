@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.util.Log;
 
 import com.techjumper.commonres.entity.event.TimeEvent;
+import com.techjumper.commonres.entity.event.TimerEvent;
 import com.techjumper.commonres.util.CommonDateUtil;
 import com.techjumper.corelib.rx.tools.RxBus;
 import com.techjumper.polyhome.b.home.R;
@@ -16,6 +17,8 @@ import rx.android.schedulers.AndroidSchedulers;
  * Created by kevin on 16/6/7.
  */
 public class JujiaActivityPresenter extends AppBaseActivityPresenter<JujiaActivity> {
+
+    private long time;
 
     @OnClick(R.id.bottom_back)
     void back() {
@@ -34,13 +37,24 @@ public class JujiaActivityPresenter extends AppBaseActivityPresenter<JujiaActivi
 
     @Override
     public void onViewInited(Bundle savedInstanceState) {
+        time = getView().getTime();
+
         addSubscription(RxBus.INSTANCE.asObservable()
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(o -> {
                     if (o instanceof TimeEvent) {
                         Log.d("time", "更新时间");
-                        if (getView().getBottomDate() != null) {
-                            getView().getBottomDate().setText(CommonDateUtil.getTitleDate());
+                        TimeEvent event = (TimeEvent) o;
+                        if (event.getType() == TimeEvent.JUJIA) {
+                            Log.d("submitOnline", "聚家系统更新" + time);
+                            if (getView().getBottomDate() != null) {
+                                if (event.getTime() == 0L) {
+                                    getView().getBottomDate().setText(CommonDateUtil.getTitleDate());
+                                } else {
+                                    time = time + 60;
+                                    getView().getBottomDate().setText(CommonDateUtil.getTitleNewDate(time));
+                                }
+                            }
                         }
                     }
                 }));

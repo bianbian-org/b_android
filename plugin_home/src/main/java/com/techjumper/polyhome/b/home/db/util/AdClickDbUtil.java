@@ -47,7 +47,7 @@ public class AdClickDbUtil {
                         Log.d("adclick", "查询所有 有数据" + adClicks);
                         long time = CommonDateUtil.differHour(adClicks.get(0).time());
                         Log.d("adclick", "相差多少小时" + time);
-                        if (time >= 1) {
+                        if (time >= 0) {
                             return true;
                         }
                         return false;

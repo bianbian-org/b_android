@@ -2,6 +2,7 @@ package com.techjumper.polyhome.b.home.net;
 
 import com.techjumper.commonres.entity.BaseArgumentsEntity;
 import com.techjumper.commonres.entity.CalendarEntity;
+import com.techjumper.commonres.entity.HeartbeatEntity;
 import com.techjumper.commonres.entity.InfoEntity;
 import com.techjumper.commonres.entity.NoticeEntity;
 import com.techjumper.commonres.entity.TrueEntity;
@@ -36,7 +37,7 @@ public interface ServiceAPI {
     Observable<NoticeEntity> getNotices(@QueryMap Map<String, String> map);
 
     @POST("family/online")
-    Observable<TrueEntity> submitOnline(@Body BaseArgumentsEntity entity);
+    Observable<HeartbeatEntity> submitOnline(@Body BaseArgumentsEntity entity);
 
     @POST("ad/click")
     Observable<TrueEntity> submitClicks(@Body BaseArgumentsEntity entity);

@@ -13,12 +13,15 @@ import android.widget.LinearLayout;
 
 import com.techjumper.commonres.ComConstant;
 import com.techjumper.commonres.UserInfoEntity;
+import com.techjumper.commonres.entity.HeartbeatEntity;
 import com.techjumper.commonres.entity.MedicalEntity;
 import com.techjumper.commonres.entity.TrueEntity;
 import com.techjumper.commonres.entity.event.AdClickEvent;
 import com.techjumper.commonres.entity.event.AdControllerEvent;
 import com.techjumper.commonres.entity.event.AdMainEvent;
 import com.techjumper.commonres.entity.event.AdShowEvent;
+import com.techjumper.commonres.entity.event.HeartbeatEvent;
+import com.techjumper.commonres.entity.event.HeartbeatTimeEvent;
 import com.techjumper.commonres.entity.event.MedicalEvent;
 import com.techjumper.commonres.entity.event.ShowMainAdEvent;
 import com.techjumper.commonres.entity.event.TimeEvent;
@@ -37,6 +40,7 @@ import com.techjumper.plugincommunicateengine.PluginEngine;
 import com.techjumper.plugincommunicateengine.entity.core.SaveInfoEntity;
 import com.techjumper.plugincommunicateengine.utils.GsonUtils;
 import com.techjumper.polyhome.b.home.BuildConfig;
+import com.techjumper.polyhome.b.home.InfoManager;
 import com.techjumper.polyhome.b.home.R;
 import com.techjumper.polyhome.b.home.UserInfoManager;
 import com.techjumper.polyhome.b.home.db.util.AdClickDbUtil;
@@ -56,6 +60,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.TimeZone;
+import java.util.Timer;
+import java.util.TimerTask;
 import java.util.concurrent.TimeUnit;
 
 import butterknife.OnClick;
@@ -74,6 +80,8 @@ public class MainActivityPresenter extends AppBaseActivityPresenter<MainActivity
     private MyVideoView mainAdVideo;
     private ImageView mainAdImg;
     private Subscription submitOnlineSubscription;
+    private long tempTime;
+    private Timer timer;
     public static final String ACTION_START_HOST_DAEMON = "action_start_host_daemon";
 
     private IPluginMessageReceiver mIPluginMessageReceiver = (code, message, extras) -> {
@@ -283,6 +291,9 @@ public class MainActivityPresenter extends AppBaseActivityPresenter<MainActivity
 
     @Override
     public void onDestroy() {
+        if (timer != null) {
+            timer.cancel();
+        }
         PluginEngine.getInstance().quit();
         AdWindowManager.getInstance().unregisterClickListener();
         AdWindowManager.getInstance().unregisterWindowShowListener();
@@ -304,8 +315,19 @@ public class MainActivityPresenter extends AppBaseActivityPresenter<MainActivity
                 .subscribe(o -> {
                     if (o instanceof TimeEvent) {
                         Log.d("time", "更新时间");
-                        if (getView().getDate() != null) {
-                            getView().getDate().setText(CommonDateUtil.getTitleDate());
+                        TimeEvent event = (TimeEvent) o;
+                        if (event.getType() == TimeEvent.MAIN) {
+                            Log.d("submitOnline", "主页系统更新" + tempTime);
+                            if (getView().getDate() != null) {
+                                if (tempTime == 0L) {
+                                    getView().getDate().setText(CommonDateUtil.getTitleDate());
+                                    RxBus.INSTANCE.send(new HeartbeatTimeEvent(tempTime));
+                                } else {
+                                    tempTime = tempTime + 60;
+                                    getView().getDate().setText(CommonDateUtil.getTitleNewDate(tempTime));
+                                    RxBus.INSTANCE.send(new HeartbeatTimeEvent(tempTime));
+                                }
+                            }
                         }
                     } else if (o instanceof AdMainEvent) {
                         AdMainEvent event = (AdMainEvent) o;
@@ -319,12 +341,35 @@ public class MainActivityPresenter extends AppBaseActivityPresenter<MainActivity
                         }
                     } else if (o instanceof AdShowEvent) {
                         AdShowEvent event = (AdShowEvent) o;
-//                        isShowMainAd(event.isShow());
                         if (!event.isShow()) {
                             AdWindowManager.getInstance().closeWindow(false);
                         }
                     } else if (o instanceof AdClickEvent) {
                         submitClicks();
+                    } else if (o instanceof HeartbeatEvent) {
+                        HeartbeatEvent event = (HeartbeatEvent) o;
+
+                        if (timer == null) {
+                            timer = new Timer();
+                            timer.schedule(new TimerTask() {
+                                @Override
+                                public void run() {
+                                    TimeEvent eventMain = new TimeEvent();
+                                    eventMain.setType(TimeEvent.MAIN);
+                                    RxBus.INSTANCE.send(eventMain);
+                                }
+                            }, 60000, 60000);
+                        }
+
+                        if (getView().getDate() != null && event != null) {
+                            long time = event.getTime();
+                            if (tempTime == 0L) {
+                                tempTime = time;
+                            }
+
+                            RxBus.INSTANCE.send(new HeartbeatTimeEvent(time));
+                            getView().getDate().setText(CommonDateUtil.getTitleNewDate(time));
+                        }
                     }
                 }));
 
@@ -402,7 +447,7 @@ public class MainActivityPresenter extends AppBaseActivityPresenter<MainActivity
                 .repeatWhen(observable -> {
                     return observable.delay(120000, TimeUnit.MILLISECONDS);
                 })
-                .subscribe(new Subscriber<TrueEntity>() {
+                .subscribe(new Subscriber<HeartbeatEntity>() {
                     @Override
                     public void onCompleted() {
                         Log.d("submitOnline", "心跳一次完毕");
@@ -414,12 +459,14 @@ public class MainActivityPresenter extends AppBaseActivityPresenter<MainActivity
                     }
 
                     @Override
-                    public void onNext(TrueEntity trueEntity) {
-                        if (!processNetworkResult(trueEntity, false))
+                    public void onNext(HeartbeatEntity heartbeatEntity) {
+                        if (!processNetworkResult(heartbeatEntity, false))
                             return;
 
-                        if (trueEntity != null && trueEntity.getData() != null) {
+                        if (heartbeatEntity != null && heartbeatEntity.getData() != null) {
                             Log.d("submitOnline", "心跳成功");
+                            Log.d("submitOnline", "时间" + heartbeatEntity.getData().getTime());
+                            RxBus.INSTANCE.send(new HeartbeatEvent(heartbeatEntity.getData().getTime()));
                         }
                     }
                 });

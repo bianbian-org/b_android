@@ -63,6 +63,15 @@
         </receiver>
 
         <receiver
+            android:name=".receiver.NoticeReceiver"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="action_push_receive" />
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </receiver>
+
+        <receiver
             android:name=".receiver.MissReadReceiver"
             android:exported="true">
             <intent-filter>

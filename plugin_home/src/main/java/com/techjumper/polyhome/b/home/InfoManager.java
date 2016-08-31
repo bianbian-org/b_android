@@ -1,5 +1,7 @@
 package com.techjumper.polyhome.b.home;
 
+import android.util.Log;
+
 import com.techjumper.corelib.utils.file.PreferenceUtils;
 
 /**
@@ -11,6 +13,7 @@ public enum InfoManager {
 
     public static final String KEY_IS_HOME = "key_is_home";
     public static final String KEY_USERINFO_FILE = "key_userinfo_file";
+    public static final String KEY_HEARTBEAT_DATE = "key_heartbeat_date";
 
     public static void saveIsHome(boolean isHome) {
         PreferenceUtils.save(KEY_IS_HOME, isHome);
@@ -25,11 +28,21 @@ public enum InfoManager {
      *
      * @param fileName
      */
-    public static void saveUserInfoFile(String fileName) {
+    public void saveUserInfoFile(String fileName) {
         PreferenceUtils.save(KEY_USERINFO_FILE, fileName);
     }
 
-    public static String getUserInfoFile() {
+    public String getUserInfoFile() {
         return PreferenceUtils.get(KEY_USERINFO_FILE, "");
+    }
+
+    public void saveHeartbeatDate(long time) {
+        Log.d("heartBeattime", "保存time" + time);
+        PreferenceUtils.save(KEY_HEARTBEAT_DATE, time);
+    }
+
+    public long getHeartbeatDate() {
+        Log.d("heartBeattime", "获取time" + PreferenceUtils.get(KEY_HEARTBEAT_DATE, 0L));
+        return PreferenceUtils.get(KEY_HEARTBEAT_DATE, 0L);
     }
 }
