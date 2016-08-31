@@ -106,7 +106,7 @@ public class RepairFragmentPresenter extends AppBaseFragmentPresenter<RepairFrag
                                 getView().setHasMoreData(hasMoreData);
 
 //                                if (!hasMoreData && mModel.getCurrentPage() == 1) {
-//                                    getView().onRepairDataReceive(mModel.noData());
+//                                    getView().onDataReceive(mModel.noData());
 //                                }
                                 if (entity.getData().getCount() == 0) {
                                     getView().onRepairDataReceive(mModel.noData());

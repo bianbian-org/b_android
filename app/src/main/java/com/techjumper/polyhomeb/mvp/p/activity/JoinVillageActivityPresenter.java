@@ -4,12 +4,14 @@ import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.View;
 
+import com.techjumper.corelib.rx.tools.RxBus;
 import com.techjumper.corelib.rx.tools.RxUtils;
 import com.techjumper.corelib.utils.common.AcHelper;
 import com.techjumper.corelib.utils.window.ToastUtils;
 import com.techjumper.polyhomeb.Constant;
 import com.techjumper.polyhomeb.R;
 import com.techjumper.polyhomeb.entity.TrueEntity;
+import com.techjumper.polyhomeb.entity.event.ChooseFamilyVillageEvent;
 import com.techjumper.polyhomeb.mvp.m.JoinVillageActivityModel;
 import com.techjumper.polyhomeb.mvp.v.activity.JoinVillageActivity;
 import com.techjumper.polyhomeb.mvp.v.activity.TabHomeActivity;
@@ -96,6 +98,8 @@ public class JoinVillageActivityPresenter extends AppBaseActivityPresenter<JoinV
                                 if (Constant.TRUE_ENTITY_RESULT.equals(trueEntity.getData().getResult())) {
                                     ToastUtils.show(getView().getString(R.string.commit_to_verify));
                                     getView().dismissLoading();
+                                    //此处发送RxBus,目的是为了让用户加入之后,能够实时改变侧边栏和首页的title
+                                    RxBus.INSTANCE.send(new ChooseFamilyVillageEvent(mModel.getId(), mModel.getName(), 1, -1));
                                     //将楼栋号,单元号,房间号,名字,id全都存下来
 //                                    UserManager.INSTANCE.saveUserInfo(UserManager.KEY_CURRENT_SHOW_IS_FAMILY_OR_VILLAGE, UserManager.VALUE_IS_VILLAGE);
 //                                    UserManager.INSTANCE.saveUserInfo(UserManager.KEY_CURRENT_VILLAGE_ID, mModel.getId() + "");

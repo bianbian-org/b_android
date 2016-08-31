@@ -75,7 +75,7 @@ public class PlacardFragmentPresenter extends AppBaseFragmentPresenter<PlacardFr
                                     getView().onNoticeDataReceive(mModel.noData());
                                 }
 //                                if (entity.getData().getCount() == 0) {
-//                                    getView().onRepairDataReceive(mModel.noData());
+//                                    getView().onDataReceive(mModel.noData());
 //                                    return;
 //                                }
                                 mModel.updateNoticeData(entity);

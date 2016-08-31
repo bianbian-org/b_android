@@ -230,4 +230,13 @@ public class KeyValueCreator {
                 .put("user_id", user_id)
                 .put("ticket", ticket);
     }
+
+    public static KeyValuePair getMessages(String user_id, String ticket, String type, int page, int count) {
+        return newPair()
+                .put("user_id", user_id)
+                .put("ticket", ticket)
+                .put("type", type)
+                .put("page", page)
+                .put("count", count);
+    }
 }

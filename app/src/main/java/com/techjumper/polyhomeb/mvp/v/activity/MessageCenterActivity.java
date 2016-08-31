@@ -81,6 +81,7 @@ public class MessageCenterActivity extends AppBaseActivity<MessageCenterActivity
         mFragments.add(MessagePropertyFragment.getInstance());
         FragmentAdapter adapter = new FragmentAdapter(this, mFragments);
         mViewPager.setAdapter(adapter);
+        mViewPager.setOffscreenPageLimit(5);
         mViewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
             public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {

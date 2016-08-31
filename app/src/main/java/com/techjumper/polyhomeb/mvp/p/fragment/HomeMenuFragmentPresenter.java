@@ -48,6 +48,11 @@ public class HomeMenuFragmentPresenter extends AppBaseFragmentPresenter<HomeMenu
                         LoginEvent loginEvent = (LoginEvent) o;
                         boolean login = loginEvent.isLogin();
                         setAvatarAndName(login);
+                        if (login) { //主要是因为用户1直接点击退出,此时到了登录界面,用户2登陆了.如果不做这个操作,那么就会导致用户2登陆之后显示的侧边栏家庭小区依然是用户1的
+                            //这里和HomeFragmentPresenter中的处理一样
+                            getView().getAdapter().loadData(getDatas());
+                            getView().getAdapter().notifyDataSetChanged();
+                        }
                     }
                 }));
         changeRightText();

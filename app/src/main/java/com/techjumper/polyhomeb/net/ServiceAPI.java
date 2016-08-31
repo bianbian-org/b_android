@@ -3,6 +3,7 @@ package com.techjumper.polyhomeb.net;
 
 import com.techjumper.polyhomeb.entity.BaseArgumentsEntity;
 import com.techjumper.polyhomeb.entity.LoginEntity;
+import com.techjumper.polyhomeb.entity.MessageEntity;
 import com.techjumper.polyhomeb.entity.PropertyComplainDetailEntity;
 import com.techjumper.polyhomeb.entity.PropertyComplainEntity;
 import com.techjumper.polyhomeb.entity.PropertyPlacardEntity;
@@ -417,5 +418,16 @@ public interface ServiceAPI {
      */
     @GET("user/families_villages")
     Observable<UserFamiliesAndVillagesEntity> getFamilyAndVillage(@QueryMap Map<String, String> stringStringMap);
+
+    /**
+     * 获取消息
+     * *user_id #
+     * ticket #
+     * type: 1-系统信息 2-订单信息 4-物业信息 6-友邻(参数可选，没有该参数则为全部查询)
+     * page: 1  #当前页数
+     * count: 5   #每页数据条数
+     */
+    @GET("messages")
+    Observable<MessageEntity> getMessages(@QueryMap Map<String, String> stringStringMap);
 }
 

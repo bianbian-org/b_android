@@ -12,6 +12,7 @@ import com.techjumper.polyhomeb.entity.event.ToggleMenuClickEvent;
 import com.techjumper.polyhomeb.mvp.m.HomeFragmentModel;
 import com.techjumper.polyhomeb.mvp.v.fragment.HomeFragment;
 import com.techjumper.polyhomeb.user.UserManager;
+import com.techjumper.polyhomeb.user.event.LoginEvent;
 
 import java.util.List;
 
@@ -47,6 +48,13 @@ public class HomeFragmentPresenter extends AppBaseFragmentPresenter<HomeFragment
                         .asObservable().subscribe(o -> {
                             if (o instanceof ChooseFamilyVillageEvent) {
                                 getView().getTvTitle().setText(UserManager.INSTANCE.getCurrentTitle());
+                            } else if (o instanceof LoginEvent) {  //主要是因为用户1直接点击退出,此时到了登录界面,用户2登陆了.如果不做这个操作,那么就会导致用户2登陆之后显示的依然是用户1的title
+                                //这里和HomeMenuFragmentPresenter中一样的道理
+                                LoginEvent event = (LoginEvent) o;
+                                boolean login = event.isLogin();
+                                if (login) {
+                                    getView().getTvTitle().setText(UserManager.INSTANCE.getCurrentTitle());
+                                }
                             }
                         }));
     }

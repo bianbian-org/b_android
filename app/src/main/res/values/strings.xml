@@ -27,11 +27,8 @@
     <string name="error_link">链接错误</string>
     <string name="error_open_browser">无法打开外部浏览器</string>
     <string name="error_open_camera">无法获取摄像头权限</string>
-
     <string name="refresh">刷新</string>
-
     <string name="done">完成</string>
-
     <string name="property">物业</string>
     <string name="toady">今天</string>
     <string name="checkout">查看</string>
@@ -192,6 +189,11 @@
     <string name="message_title_property">物业</string>
     <string name="no_authority">当前处在小区权限下,无法进行此操作,请切换至家庭权限</string>
     <string name="commit_to_verify">已提交审核</string>
+    <string name="message_all">全部消息</string>
+    <string name="message_system">系统消息</string>
+    <string name="message_order">订单消息</string>
+    <string name="message_friend">友邻消息</string>
+    <string name="message_property">物业消息</string>
 
 
 </resources>
