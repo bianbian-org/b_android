@@ -49,16 +49,18 @@ public class MyVillageFamilyActivityViewHolder extends BaseRecyclerViewHolder<My
             // HomeFragment和HomeMenuFragment中收到消息,和MyVillageFamilyActivityPresenter中收到消息是同时的,
             // 会导致那时候SP中还没存数据,但是调用和更新title和侧边栏的方法,导致界面没更新.
             //(最开始是写在MyVillageFamilyActivityPresenter中的,肯定不得行)
-            if (0 == data.isFamilyData()) {  //家庭
-                PreferenceUtils.save(UserManager.KEY_CURRENT_SHOW_TITLE_ID, id + "");
-                PreferenceUtils.save(UserManager.KEY_CURRENT_SHOW_TITLE_NAME, name);
-                PreferenceUtils.save(UserManager.KEY_CURRENT_SHOW_IS_FAMILY_OR_VILLAGE, UserManager.VALUE_IS_FAMILY);
-            } else if (1 == data.isFamilyData()) {   //小区
-                PreferenceUtils.save(UserManager.KEY_CURRENT_SHOW_TITLE_ID, id + "");
-                PreferenceUtils.save(UserManager.KEY_CURRENT_SHOW_TITLE_NAME, name);
-                PreferenceUtils.save(UserManager.KEY_CURRENT_SHOW_IS_FAMILY_OR_VILLAGE, UserManager.VALUE_IS_VILLAGE);
+            if (!data.isChoosed()) {
+                if (0 == data.isFamilyData()) {  //家庭
+                    PreferenceUtils.save(UserManager.KEY_CURRENT_SHOW_TITLE_ID, id + "");
+                    PreferenceUtils.save(UserManager.KEY_CURRENT_SHOW_TITLE_NAME, name);
+                    PreferenceUtils.save(UserManager.KEY_CURRENT_SHOW_IS_FAMILY_OR_VILLAGE, UserManager.VALUE_IS_FAMILY);
+                } else if (1 == data.isFamilyData()) {   //小区
+                    PreferenceUtils.save(UserManager.KEY_CURRENT_SHOW_TITLE_ID, id + "");
+                    PreferenceUtils.save(UserManager.KEY_CURRENT_SHOW_TITLE_NAME, name);
+                    PreferenceUtils.save(UserManager.KEY_CURRENT_SHOW_IS_FAMILY_OR_VILLAGE, UserManager.VALUE_IS_VILLAGE);
+                }
+                RxBus.INSTANCE.send(new ChooseFamilyVillageEvent(id, name, data.isFamilyData(), getLayoutPosition()));
             }
-            RxBus.INSTANCE.send(new ChooseFamilyVillageEvent(id, name, data.isFamilyData(), getLayoutPosition()));
         });
     }
 }

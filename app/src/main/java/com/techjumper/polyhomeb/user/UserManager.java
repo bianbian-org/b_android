@@ -5,6 +5,7 @@ import android.text.TextUtils;
 import com.techjumper.corelib.rx.tools.RxBus;
 import com.techjumper.corelib.utils.file.PreferenceUtils;
 import com.techjumper.lib2.utils.GsonUtils;
+import com.techjumper.polyhomeb.Config;
 import com.techjumper.polyhomeb.entity.LoginEntity;
 import com.techjumper.polyhomeb.user.event.LoginEvent;
 import com.techjumper.polyhomeb.utils.HostIpHelper;
@@ -103,7 +104,7 @@ public enum UserManager {
         PreferenceUtils.save(KEY_ID, dataEntity.getId());
         updateTicket(dataEntity.getTicket());
         PreferenceUtils.save(KEY_USER_NAME, dataEntity.getUsername());
-        PreferenceUtils.save(KEY_AVATAR, dataEntity.getCover());
+        PreferenceUtils.save(Config.sHost + KEY_AVATAR, dataEntity.getCover());
     }
 
     public String getUserNickName() {
@@ -226,6 +227,7 @@ public enum UserManager {
         PreferenceUtils.save(KEY_USER_NAME, "");
 //        PreferenceUtils.save(KEY_CURRENT_FAMILY_ID, "");
         PreferenceUtils.save(KEY_ALL_FAMILIES, "");
+        PreferenceUtils.save(KEY_ALL_VILLAGES, "");
 //        PreferenceUtils.save(KEY_CURRENT_VILLAGE_NAME, "");
 //        PreferenceUtils.save(KEY_CURRENT_FAMILY_NAME, "");
         PreferenceUtils.save(KEY_CURRENT_BUILDING, "");
@@ -234,7 +236,6 @@ public enum UserManager {
         PreferenceUtils.save(KEY_CURRENT_SHOW_TITLE_NAME, "");
         PreferenceUtils.save(KEY_CURRENT_SHOW_TITLE_ID, "");
         PreferenceUtils.save(KEY_CURRENT_SHOW_IS_FAMILY_OR_VILLAGE, "");
-        PreferenceUtils.save(KEY_CURRENT_SHOW_TITLE_ID, "");
         HostIpHelper.getInstance().clear();
         if (notify)
             notifyLoginOrLogoutEvent(false);

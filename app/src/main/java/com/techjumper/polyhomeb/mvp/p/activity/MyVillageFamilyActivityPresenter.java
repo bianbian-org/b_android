@@ -7,7 +7,7 @@ import com.techjumper.corelib.rx.tools.RxBus;
 import com.techjumper.corelib.rx.tools.RxUtils;
 import com.techjumper.corelib.utils.common.AcHelper;
 import com.techjumper.polyhomeb.Constant;
-import com.techjumper.polyhomeb.adapter.recycler_Data.MyVillageFamilyData;
+import com.techjumper.polyhomeb.adapter.databean.MyVillageFamilyBean;
 import com.techjumper.polyhomeb.entity.UserFamiliesAndVillagesEntity;
 import com.techjumper.polyhomeb.entity.event.ChooseFamilyVillageEvent;
 import com.techjumper.polyhomeb.mvp.m.MyVillageFamilyActivityModel;
@@ -91,19 +91,17 @@ public class MyVillageFamilyActivityPresenter extends AppBaseActivityPresenter<M
 //                                String name = event.getName();  //被点击的家庭或者小区的name
                                 int position = event.getPosition();  //被点击的家庭或者小区在RV中的position
 //                                int familyData = event.isFamilyData();  //0 是家庭   1是小区
-
                                 List<DisplayBean> data = getView().getAdapter().getData();
                                 for (int i = 0; i < data.size(); i++) {
-                                    if (data.get(i) instanceof MyVillageFamilyData) {
+                                    if (data.get(i) instanceof MyVillageFamilyBean) {
                                         if (i == position) {
-                                            ((MyVillageFamilyData) data.get(i)).setChoosed(true);
+                                            ((MyVillageFamilyBean) data.get(i)).getData().setChoosed(true);
                                         } else {
-                                            ((MyVillageFamilyData) data.get(i)).setChoosed(false);
+                                            ((MyVillageFamilyBean) data.get(i)).getData().setChoosed(false);
                                         }
                                     }
                                 }
-                                getView().showData(data);
-//                                getView().getAdapter().notifyDataSetChanged();
+                                getView().getAdapter().notifyDataSetChanged();
                             }
                         }));
     }
