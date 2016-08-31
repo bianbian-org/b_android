@@ -98,7 +98,8 @@ public class NewInvitationActivityModel extends BaseModel<NewInvitationActivityP
         KeyValuePair keyValuePair = KeyValueCreator.newArticle(
                 UserManager.INSTANCE.getUserInfo(UserManager.KEY_ID)  //user_id
                 , UserManager.INSTANCE.getTicket()   //ticket
-                , UserManager.INSTANCE.getUserInfo(UserManager.KEY_CURRENT_VILLAGE_ID) //小区ID
+//                , UserManager.INSTANCE.getUserInfo(UserManager.KEY_CURRENT_VILLAGE_ID) //小区ID
+                , ""
                 , forum_section_id  //板块ID
                 , title         //标题
                 , content       //内容

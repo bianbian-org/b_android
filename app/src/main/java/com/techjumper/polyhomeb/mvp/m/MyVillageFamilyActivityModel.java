@@ -35,8 +35,6 @@ import rx.Observable;
  **/
 public class MyVillageFamilyActivityModel extends BaseModel<MyVillageFamilyActivityPresenter> {
 
-    private List<DisplayBean> displayBeen = new ArrayList<>();
-
     public MyVillageFamilyActivityModel(MyVillageFamilyActivityPresenter presenter) {
         super(presenter);
     }
@@ -52,107 +50,108 @@ public class MyVillageFamilyActivityModel extends BaseModel<MyVillageFamilyActiv
                 .compose(CommonWrap.wrap());
     }
 
-    public void processData(UserFamiliesAndVillagesEntity userFamiliesAndVillagesEntity) {
+    public List<DisplayBean> processData(UserFamiliesAndVillagesEntity userFamiliesAndVillagesEntity) {
+
+        List<DisplayBean> displayBeen = new ArrayList<>();
 
         List<UserFamiliesAndVillagesEntity.DataBean.FamilyInfosBean> family_infos = userFamiliesAndVillagesEntity.getData().getFamily_infos();
         List<UserFamiliesAndVillagesEntity.DataBean.VillageInfosBean> village_infos = userFamiliesAndVillagesEntity.getData().getVillage_infos();
 
-        displayBeen.clear();
+        if (family_infos.size() != 0) {
+            //文字
+            MyVillageFamilyTextData myVillageFamilyTextData = new MyVillageFamilyTextData();
+            myVillageFamilyTextData.setText(getPresenter().getView().getString(R.string.family));
+            MyVillageFamilyTextBean myVillageFamilyTextBean = new MyVillageFamilyTextBean(myVillageFamilyTextData);
+            displayBeen.add(myVillageFamilyTextBean);
 
-        //处理家庭item
-        processFamily(family_infos);
-        processVillage(village_infos);
-
-    }
-
-    public void processFamily(List<UserFamiliesAndVillagesEntity.DataBean.FamilyInfosBean> family_infos) {
-        if (family_infos.size() == 0) return;
-        //文字
-        MyVillageFamilyTextData myVillageFamilyTextData = new MyVillageFamilyTextData();
-        myVillageFamilyTextData.setText(getPresenter().getView().getString(R.string.family));
-        MyVillageFamilyTextBean myVillageFamilyTextBean = new MyVillageFamilyTextBean(myVillageFamilyTextData);
-        displayBeen.add(myVillageFamilyTextBean);
-
-        for (int i = 0; i < family_infos.size(); i++) {
-            if (i == 0) {
-                //长分割线
-                PropertyPlacardDividerLongData propertyPlacardDividerLongData = new PropertyPlacardDividerLongData();
-                PropertyPlacardDividerLongBean propertyPlacardDividerLongBean = new PropertyPlacardDividerLongBean(propertyPlacardDividerLongData);
-                displayBeen.add(propertyPlacardDividerLongBean);
-            } else {
-                //短分割线
-                PropertyPlacardDividerData dividerData = new PropertyPlacardDividerData();
-                dividerData.setMarginLeft(RuleUtils.dp2Px(14));
-                PropertyPlacardDividerBean dividerBean = new PropertyPlacardDividerBean(dividerData);
-                displayBeen.add(dividerBean);
-            }
-            MyVillageFamilyData myVillageFamilyData = new MyVillageFamilyData();
-            myVillageFamilyData.setName(family_infos.get(i).getFamily_name());
-            myVillageFamilyData.setId(family_infos.get(i).getId());
-            myVillageFamilyData.setFamilyData(true);
-            MyVillageFamilyBean myVillageFamilyBean = new MyVillageFamilyBean(myVillageFamilyData);
-            displayBeen.add(myVillageFamilyBean);
-
-            if (i == family_infos.size() - 1) {
-                //长分割线
-                PropertyPlacardDividerLongData propertyPlacardDividerLongData = new PropertyPlacardDividerLongData();
-                PropertyPlacardDividerLongBean propertyPlacardDividerLongBean = new PropertyPlacardDividerLongBean(propertyPlacardDividerLongData);
-                displayBeen.add(propertyPlacardDividerLongBean);
-            } else {
-                //短分割线
-                PropertyPlacardDividerData dividerData = new PropertyPlacardDividerData();
-                dividerData.setMarginLeft(RuleUtils.dp2Px(14));
-                PropertyPlacardDividerBean dividerBean = new PropertyPlacardDividerBean(dividerData);
-                displayBeen.add(dividerBean);
+            for (int i = 0; i < family_infos.size(); i++) {
+                if (i == 0) {
+                    //长分割线
+                    PropertyPlacardDividerLongData propertyPlacardDividerLongData = new PropertyPlacardDividerLongData();
+                    PropertyPlacardDividerLongBean propertyPlacardDividerLongBean = new PropertyPlacardDividerLongBean(propertyPlacardDividerLongData);
+                    displayBeen.add(propertyPlacardDividerLongBean);
+                } else {
+                    //短分割线
+                    PropertyPlacardDividerData dividerData = new PropertyPlacardDividerData();
+                    dividerData.setMarginLeft(RuleUtils.dp2Px(14));
+                    PropertyPlacardDividerBean dividerBean = new PropertyPlacardDividerBean(dividerData);
+                    displayBeen.add(dividerBean);
+                }
+                MyVillageFamilyData myVillageFamilyData = new MyVillageFamilyData();
+                myVillageFamilyData.setName(family_infos.get(i).getFamily_name());
+                myVillageFamilyData.setId(family_infos.get(i).getId());
+                myVillageFamilyData.setFamilyData(0);
+                String isFamilyOrVillage = UserManager.INSTANCE.getUserInfo(UserManager.KEY_CURRENT_SHOW_IS_FAMILY_OR_VILLAGE);
+                if (isFamilyOrVillage.equals(UserManager.VALUE_IS_FAMILY)) {
+                    if (family_infos.get(i).getId() == Integer.parseInt(UserManager.INSTANCE.getCurrentId())) {
+                        myVillageFamilyData.setChoosed(true);
+                    }
+                }
+                MyVillageFamilyBean myVillageFamilyBean = new MyVillageFamilyBean(myVillageFamilyData);
+                displayBeen.add(myVillageFamilyBean);
+                if (i == family_infos.size() - 1) {
+                    //长分割线
+                    PropertyPlacardDividerLongData propertyPlacardDividerLongData = new PropertyPlacardDividerLongData();
+                    PropertyPlacardDividerLongBean propertyPlacardDividerLongBean = new PropertyPlacardDividerLongBean(propertyPlacardDividerLongData);
+                    displayBeen.add(propertyPlacardDividerLongBean);
+                } else {
+                    //短分割线
+                    PropertyPlacardDividerData dividerData = new PropertyPlacardDividerData();
+                    dividerData.setMarginLeft(RuleUtils.dp2Px(14));
+                    PropertyPlacardDividerBean dividerBean = new PropertyPlacardDividerBean(dividerData);
+                    displayBeen.add(dividerBean);
+                }
             }
         }
-    }
 
-    public void processVillage(List<UserFamiliesAndVillagesEntity.DataBean.VillageInfosBean> village_infos) {
-        if (village_infos.size() == 0) return;
-        //文字
-        MyVillageFamilyTextData myVillageFamilyTextData = new MyVillageFamilyTextData();
-        myVillageFamilyTextData.setText(getPresenter().getView().getString(R.string.village));
-        MyVillageFamilyTextBean myVillageFamilyTextBean = new MyVillageFamilyTextBean(myVillageFamilyTextData);
-        displayBeen.add(myVillageFamilyTextBean);
+        if (village_infos.size() != 0) {
+            //文字
+            MyVillageFamilyTextData myVillageFamilyTextData = new MyVillageFamilyTextData();
+            myVillageFamilyTextData.setText(getPresenter().getView().getString(R.string.village));
+            MyVillageFamilyTextBean myVillageFamilyTextBean = new MyVillageFamilyTextBean(myVillageFamilyTextData);
+            displayBeen.add(myVillageFamilyTextBean);
 
-        for (int i = 0; i < village_infos.size(); i++) {
-            if (i == 0) {
-                //长分割线
-                PropertyPlacardDividerLongData propertyPlacardDividerLongData = new PropertyPlacardDividerLongData();
-                PropertyPlacardDividerLongBean propertyPlacardDividerLongBean = new PropertyPlacardDividerLongBean(propertyPlacardDividerLongData);
-                displayBeen.add(propertyPlacardDividerLongBean);
-            } else {
-                //短分割线
-                PropertyPlacardDividerData dividerData = new PropertyPlacardDividerData();
-                dividerData.setMarginLeft(RuleUtils.dp2Px(14));
-                PropertyPlacardDividerBean dividerBean = new PropertyPlacardDividerBean(dividerData);
-                displayBeen.add(dividerBean);
-            }
-            MyVillageFamilyData myVillageFamilyData = new MyVillageFamilyData();
-            myVillageFamilyData.setName(village_infos.get(i).getVillage_name());
-            myVillageFamilyData.setId(village_infos.get(i).getVillage_id());
-            myVillageFamilyData.setVerified(village_infos.get(i).getVerified());
-            myVillageFamilyData.setFamilyData(false);
-            MyVillageFamilyBean myVillageFamilyBean = new MyVillageFamilyBean(myVillageFamilyData);
-            displayBeen.add(myVillageFamilyBean);
+            for (int i = 0; i < village_infos.size(); i++) {
+                if (i == 0) {
+                    //长分割线
+                    PropertyPlacardDividerLongData propertyPlacardDividerLongData = new PropertyPlacardDividerLongData();
+                    PropertyPlacardDividerLongBean propertyPlacardDividerLongBean = new PropertyPlacardDividerLongBean(propertyPlacardDividerLongData);
+                    displayBeen.add(propertyPlacardDividerLongBean);
+                } else {
+                    //短分割线
+                    PropertyPlacardDividerData dividerData = new PropertyPlacardDividerData();
+                    dividerData.setMarginLeft(RuleUtils.dp2Px(14));
+                    PropertyPlacardDividerBean dividerBean = new PropertyPlacardDividerBean(dividerData);
+                    displayBeen.add(dividerBean);
+                }
+                MyVillageFamilyData myVillageFamilyData = new MyVillageFamilyData();
+                myVillageFamilyData.setName(village_infos.get(i).getVillage_name());
+                myVillageFamilyData.setId(village_infos.get(i).getVillage_id());
+                myVillageFamilyData.setVerified(village_infos.get(i).getVerified());
+                myVillageFamilyData.setFamilyData(1);
+                String isFamilyOrVillage = UserManager.INSTANCE.getUserInfo(UserManager.KEY_CURRENT_SHOW_IS_FAMILY_OR_VILLAGE);
+                if (isFamilyOrVillage.equals(UserManager.VALUE_IS_VILLAGE)) {
+                    if (village_infos.get(i).getVillage_id() == Integer.parseInt(UserManager.INSTANCE.getCurrentId())) {
+                        myVillageFamilyData.setChoosed(true);
+                    }
+                }
+                MyVillageFamilyBean myVillageFamilyBean = new MyVillageFamilyBean(myVillageFamilyData);
+                displayBeen.add(myVillageFamilyBean);
 
-            if (i == village_infos.size() - 1) {
-                //长分割线
-                PropertyPlacardDividerLongData propertyPlacardDividerLongData = new PropertyPlacardDividerLongData();
-                PropertyPlacardDividerLongBean propertyPlacardDividerLongBean = new PropertyPlacardDividerLongBean(propertyPlacardDividerLongData);
-                displayBeen.add(propertyPlacardDividerLongBean);
-            } else {
-                //短分割线
-                PropertyPlacardDividerData dividerData = new PropertyPlacardDividerData();
-                dividerData.setMarginLeft(RuleUtils.dp2Px(14));
-                PropertyPlacardDividerBean dividerBean = new PropertyPlacardDividerBean(dividerData);
-                displayBeen.add(dividerBean);
+                if (i == village_infos.size() - 1) {
+                    //长分割线
+                    PropertyPlacardDividerLongData propertyPlacardDividerLongData = new PropertyPlacardDividerLongData();
+                    PropertyPlacardDividerLongBean propertyPlacardDividerLongBean = new PropertyPlacardDividerLongBean(propertyPlacardDividerLongData);
+                    displayBeen.add(propertyPlacardDividerLongBean);
+                } else {
+                    //短分割线
+                    PropertyPlacardDividerData dividerData = new PropertyPlacardDividerData();
+                    dividerData.setMarginLeft(RuleUtils.dp2Px(14));
+                    PropertyPlacardDividerBean dividerBean = new PropertyPlacardDividerBean(dividerData);
+                    displayBeen.add(dividerBean);
+                }
             }
         }
-    }
-
-    public List<DisplayBean> getDisplayBeen() {
         return displayBeen;
     }
 }

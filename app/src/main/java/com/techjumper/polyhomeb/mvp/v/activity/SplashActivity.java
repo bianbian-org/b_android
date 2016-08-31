@@ -25,6 +25,7 @@ import butterknife.Bind;
  **/
 @Presenter(SplashActivityPresenter.class)
 public class SplashActivity extends AppBaseActivity<SplashActivityPresenter> {
+
     @Bind(R.id.iv_logo)
     ImageView mIvLogo;
 
@@ -60,7 +61,9 @@ public class SplashActivity extends AppBaseActivity<SplashActivityPresenter> {
 
                     @Override
                     public void onAnimationEnd(View view) {
-                        getPresenter().jumpToMainActivity(500);
+//                        getPresenter().jumpToMainActivity(500);
+                        getPresenter().getFamilyAndVillage();
+//                        getPresenter().sAnimStop = true;
                     }
 
                     @Override
@@ -85,4 +88,6 @@ public class SplashActivity extends AppBaseActivity<SplashActivityPresenter> {
     public void setCanBack(boolean bool) {
         mCanBack = bool;
     }
+
+
 }

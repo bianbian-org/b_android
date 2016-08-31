@@ -4,10 +4,14 @@ import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.view.View;
 
+import com.steve.creact.library.display.DisplayBean;
 import com.techjumper.corelib.mvp.factory.Presenter;
 import com.techjumper.polyhomeb.R;
 import com.techjumper.polyhomeb.adapter.MyVillageFamilyActivityAdapter;
 import com.techjumper.polyhomeb.mvp.p.activity.MyVillageFamilyActivityPresenter;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import butterknife.Bind;
 import cn.finalteam.loadingviewfinal.RecyclerViewFinal;
@@ -26,6 +30,8 @@ public class MyVillageFamilyActivity extends AppBaseActivity<MyVillageFamilyActi
 
     private MyVillageFamilyActivityAdapter mAdapter;
 
+    private List<DisplayBean> list = new ArrayList<>();
+
     @Override
     protected View inflateView(Bundle savedInstanceState) {
         return inflate(R.layout.activity_my_village_family);
@@ -33,7 +39,9 @@ public class MyVillageFamilyActivity extends AppBaseActivity<MyVillageFamilyActi
 
     @Override
     protected void initView(Bundle savedInstanceState) {
-
+        mRv.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
+        mAdapter = new MyVillageFamilyActivityAdapter();
+        mRv.setAdapter(mAdapter);
     }
 
     @Override
@@ -52,11 +60,10 @@ public class MyVillageFamilyActivity extends AppBaseActivity<MyVillageFamilyActi
         return true;
     }
 
-    public void showData() {
-        mRv.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
-        mAdapter = new MyVillageFamilyActivityAdapter();
-        mRv.setAdapter(mAdapter);
-        mAdapter.loadData(getPresenter().getData());
+    public void showData(List<DisplayBean> displayBeen) {
+        list.clear();
+        list.addAll(displayBeen);
+        mAdapter.loadData(list);
     }
 
     public MyVillageFamilyActivityAdapter getAdapter() {

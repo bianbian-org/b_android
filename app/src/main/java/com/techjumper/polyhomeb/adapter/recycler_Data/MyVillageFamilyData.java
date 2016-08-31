@@ -12,13 +12,13 @@ public class MyVillageFamilyData {
     private boolean choosed;
     private String name;
     private int verified;
-    private boolean isFamilyData;
+    private int isFamilyData;  //0是家庭  1是小区
 
-    public boolean isFamilyData() {
+    public int isFamilyData() {
         return isFamilyData;
     }
 
-    public void setFamilyData(boolean familyData) {
+    public void setFamilyData(int familyData) {
         isFamilyData = familyData;
     }
 
@@ -47,7 +47,6 @@ public class MyVillageFamilyData {
     }
 
     public int getId() {
-
         return id;
     }
 

@@ -36,13 +36,19 @@ public enum UserManager {
     public static final String KEY_BIRTHDAY = "key_birthday";
     public static final String KEY_ALL_FAMILIES = "key_all_families";
     public static final String KEY_ALL_VILLAGES = "key_all_villages";
-    public static final String KEY_CURRENT_VILLAGE_ID = "key_current_village_id";
-    public static final String KEY_CURRENT_FAMILY_ID = "key_current_family_id";
-    public static final String KEY_CURRENT_VILLAGE_NAME = "key_current_village_name";
-    public static final String KEY_CURRENT_FAMILY_NAME = "key_current_family_name";
+    //    public static final String KEY_CURRENT_VILLAGE_ID = "key_current_village_id";
+//    public static final String KEY_CURRENT_FAMILY_ID = "key_current_family_id";
+//    public static final String KEY_CURRENT_VILLAGE_NAME = "key_current_village_name";
+//    public static final String KEY_CURRENT_FAMILY_NAME = "key_current_family_name";
     public static final String KEY_CURRENT_BUILDING = "key_current_building";
     public static final String KEY_CURRENT_UNIT = "key_current_unit";
     public static final String KEY_CURRENT_ROOM = "key_current_room";
+    public static final String KEY_CURRENT_SHOW_TITLE_NAME = "key_current_show_title";
+    public static final String KEY_CURRENT_SHOW_TITLE_ID = "key_current_show_id";
+    public static final String KEY_CURRENT_SHOW_IS_FAMILY_OR_VILLAGE = "key_current_show_is+family_or_village";
+
+    public static final String VALUE_IS_FAMILY = "value_is_family";
+    public static final String VALUE_IS_VILLAGE = "value_is_village";
 
 
     /**
@@ -70,26 +76,35 @@ public enum UserManager {
         }
 
         /************************测试数据,写死的**************************/
-        PreferenceUtils.save(KEY_CURRENT_FAMILY_ID, 463 + "");  //家庭id
-        PreferenceUtils.save(KEY_CURRENT_VILLAGE_ID, 5 + "");   //小区id是5,name是怡美家园
-        PreferenceUtils.save(KEY_CURRENT_VILLAGE_NAME, "呵呵");
-        PreferenceUtils.save(KEY_CURRENT_FAMILY_NAME, "怡美家园");
+//        PreferenceUtils.save(KEY_CURRENT_FAMILY_ID, 463 + "");  //家庭id
+//        PreferenceUtils.save(KEY_CURRENT_VILLAGE_ID, 5 + "");   //小区id是5,name是怡美家园
+//        PreferenceUtils.save(KEY_CURRENT_VILLAGE_NAME, "呵呵");
+//        PreferenceUtils.save(KEY_CURRENT_FAMILY_NAME, "怡美家园");
         /************************测试数据,写死的**************************/
 
         if (entity.getData().getFamilies() != null && entity.getData().getFamilies().size() != 0) {
             //登录接口多出来的
             PreferenceUtils.save(KEY_ALL_FAMILIES, GsonUtils.toJson(entity.getData().getFamilies()));
+            PreferenceUtils.save(KEY_CURRENT_SHOW_TITLE_ID, entity.getData().getFamilies().get(0).getFamily_id() + "");
+            PreferenceUtils.save(KEY_CURRENT_SHOW_TITLE_NAME, entity.getData().getFamilies().get(0).getFamily_name());
+            PreferenceUtils.save(KEY_CURRENT_SHOW_IS_FAMILY_OR_VILLAGE, VALUE_IS_FAMILY);
         }
         if (entity.getData().getVillages() != null && entity.getData().getVillages().size() != 0) {
             //登录接口多出来的
             PreferenceUtils.save(KEY_ALL_VILLAGES, GsonUtils.toJson(entity.getData().getVillages()));
+            //如果KEY_CURRENT_SHOW_IS_FAMILY_OR_VILLAGE是空的,或者value不是家庭的话,证明刚才没有存入家庭,现在就需要存小区.
+            if (TextUtils.isEmpty(getUserInfo(KEY_CURRENT_SHOW_IS_FAMILY_OR_VILLAGE))
+                    || !VALUE_IS_FAMILY.equals(getUserInfo(KEY_CURRENT_SHOW_IS_FAMILY_OR_VILLAGE))) {
+                PreferenceUtils.save(KEY_CURRENT_SHOW_TITLE_ID, entity.getData().getVillages().get(0).getVillage_id() + "");
+                PreferenceUtils.save(KEY_CURRENT_SHOW_TITLE_NAME, entity.getData().getVillages().get(0).getVillage_name());
+                PreferenceUtils.save(KEY_CURRENT_SHOW_IS_FAMILY_OR_VILLAGE, VALUE_IS_VILLAGE);
+            }
         }
         PreferenceUtils.save(KEY_ID, dataEntity.getId());
         updateTicket(dataEntity.getTicket());
         PreferenceUtils.save(KEY_USER_NAME, dataEntity.getUsername());
         PreferenceUtils.save(KEY_AVATAR, dataEntity.getCover());
     }
-
 
     public String getUserNickName() {
         String userName = PreferenceUtils.get(KEY_USER_NAME, "");
@@ -139,35 +154,57 @@ public enum UserManager {
         return !TextUtils.isEmpty(ticket);
     }
 
+//    /**
+//     * 是否选择过家庭
+//     */
+//    public boolean hasFamily() {
+//        String family = getUserInfo(KEY_CURRENT_FAMILY_ID);
+//        return !TextUtils.isEmpty(family);
+//    }
+//
+//    /**
+//     * 是否选择过小区
+//     */
+//    public boolean hasVillage() {
+//        String village = getUserInfo(KEY_CURRENT_VILLAGE_ID);
+//        return !TextUtils.isEmpty(village);
+//    }
+
     /**
-     * 是否选择过家庭
+     * 是否选择过家庭或者小区
      */
-    public boolean hasFamily() {
-        String family = getUserInfo(KEY_CURRENT_FAMILY_ID);
-        return !TextUtils.isEmpty(family);
+    public boolean hasChoosedFamilyOrVillage() {
+        String name = getUserInfo(KEY_CURRENT_SHOW_TITLE_NAME);
+        return !TextUtils.isEmpty(name);
     }
 
     /**
-     * 是否选择过小区
+     * 当前正在使用的家庭或者小区的name
      */
-    public boolean hasVillage() {
-        String village = getUserInfo(KEY_CURRENT_VILLAGE_ID);
-        return !TextUtils.isEmpty(village);
+    public String getCurrentTitle() {
+        return getUserInfo(KEY_CURRENT_SHOW_TITLE_NAME);
     }
 
     /**
-     * 得到当前选择的家庭名字
+     * 当前正在使用的家庭或者小区的id
      */
-    public String getCurrentChooseFamily() {
-        return getUserInfo(KEY_CURRENT_FAMILY_NAME);
+    public String getCurrentId() {
+        return getUserInfo(KEY_CURRENT_SHOW_TITLE_ID);
     }
 
-    /**
-     * 得到当前选择的小区名字
-     */
-    public String getCurrentChooseVillage() {
-        return getUserInfo(KEY_CURRENT_VILLAGE_NAME);
-    }
+//    /**
+//     * 得到当前选择的家庭名字
+//     */
+//    public String getCurrentChooseFamily() {
+//        return getUserInfo(KEY_CURRENT_FAMILY_NAME);
+//    }
+//
+//    /**
+//     * 得到当前选择的小区名字
+//     */
+//    public String getCurrentChooseVillage() {
+//        return getUserInfo(KEY_CURRENT_VILLAGE_NAME);
+//    }
 
     /**
      * 注销登陆
@@ -183,17 +220,21 @@ public enum UserManager {
         PreferenceUtils.save(KEY_EMAIL, "");
         PreferenceUtils.save(KEY_BIRTHDAY, "");
         PreferenceUtils.save(KEY_PHONE_NUMBER, "");
-        PreferenceUtils.save(KEY_CURRENT_VILLAGE_ID, "");
+//        PreferenceUtils.save(KEY_CURRENT_VILLAGE_ID, "");
         PreferenceUtils.save(KEY_TICKET, "");
         PreferenceUtils.save(KEY_AVATAR, "");
         PreferenceUtils.save(KEY_USER_NAME, "");
-        PreferenceUtils.save(KEY_CURRENT_FAMILY_ID, "");
+//        PreferenceUtils.save(KEY_CURRENT_FAMILY_ID, "");
         PreferenceUtils.save(KEY_ALL_FAMILIES, "");
-        PreferenceUtils.save(KEY_CURRENT_VILLAGE_NAME, "");
-        PreferenceUtils.save(KEY_CURRENT_FAMILY_NAME, "");
+//        PreferenceUtils.save(KEY_CURRENT_VILLAGE_NAME, "");
+//        PreferenceUtils.save(KEY_CURRENT_FAMILY_NAME, "");
         PreferenceUtils.save(KEY_CURRENT_BUILDING, "");
         PreferenceUtils.save(KEY_CURRENT_UNIT, "");
         PreferenceUtils.save(KEY_CURRENT_ROOM, "");
+        PreferenceUtils.save(KEY_CURRENT_SHOW_TITLE_NAME, "");
+        PreferenceUtils.save(KEY_CURRENT_SHOW_TITLE_ID, "");
+        PreferenceUtils.save(KEY_CURRENT_SHOW_IS_FAMILY_OR_VILLAGE, "");
+        PreferenceUtils.save(KEY_CURRENT_SHOW_TITLE_ID, "");
         HostIpHelper.getInstance().clear();
         if (notify)
             notifyLoginOrLogoutEvent(false);

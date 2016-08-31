@@ -4,6 +4,7 @@ import android.Manifest;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.EditText;
@@ -278,6 +279,12 @@ public class RegistActivityPresenter extends AppBaseActivityPresenter<RegistActi
                                 UserManager.INSTANCE.saveUserInfo(loginEntity);
                                 UserManager.INSTANCE.notifyLoginOrLogoutEvent(true);
                                 getView().showHint(getView().getString(R.string.success_register));
+
+                                //注册成功后跳转选择小区或者家庭界面
+                                new Handler().postDelayed(() -> new AcHelper.Builder(getView())
+                                        .closeCurrent(true)
+                                        .target(ChooseVillageFamilyActivity.class)
+                                        .start(), 200);
                             }
                         })
         );

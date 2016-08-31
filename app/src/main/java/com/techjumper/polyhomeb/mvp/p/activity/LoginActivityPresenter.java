@@ -59,7 +59,7 @@ public class LoginActivityPresenter extends AppBaseActivityPresenter<LoginActivi
                             if (o instanceof LoginEvent) {
                                 LoginEvent event = (LoginEvent) o;
                                 if (event.isLogin()) {
-                                    if (UserManager.INSTANCE.hasFamily() || UserManager.INSTANCE.hasVillage()) {
+                                    if (UserManager.INSTANCE.hasChoosedFamilyOrVillage()) {
                                     new AcHelper.Builder(getView())
                                             .target(TabHomeActivity.class)
                                             .closeCurrent(true)
@@ -144,6 +144,7 @@ public class LoginActivityPresenter extends AppBaseActivityPresenter<LoginActivi
                                     getView().clearPassword();
                                     return;
                                 }
+
                                 UserManager.INSTANCE.saveUserInfo(entity);
                                 getView().showHint(getView().getString(R.string.success_login));
                                 UserManager.INSTANCE.notifyLoginOrLogoutEvent(true);

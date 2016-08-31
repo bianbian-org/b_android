@@ -5,7 +5,6 @@ import android.text.TextUtils;
 
 import com.techjumper.corelib.utils.file.PreferenceUtils;
 import com.techjumper.polyhomeb.BuildConfig;
-import com.techjumper.polyhomeb.user.UserManager;
 
 /**
  * * * * * * * * * * * * * * * * * * * * * * *
@@ -60,7 +59,8 @@ public class HostIpHelper {
     }
 
     private String getKeyByCurrentFamilyId() {
-        String familyId = getCurrentFamilyId();
+//        String familyId = getCurrentFamilyId();
+        String familyId = "";   //此处是为了让编译通过,特地这么写的,因为类中76行以下被注释了,注释的原因是KEY_CURRENT_FAMILY_ID没有这个字段了.
         if (TextUtils.isEmpty(familyId)) return "";
         if (BuildConfig.DEBUG) {
 
@@ -73,8 +73,8 @@ public class HostIpHelper {
         return KEY_FAMILY_PREFIX + familyId;
     }
 
-    private String getCurrentFamilyId() {
-        return UserManager.INSTANCE.getCurrentFamilyInfo(UserManager.KEY_CURRENT_FAMILY_ID);
-    }
+//    private String getCurrentFamilyId() {
+//        return UserManager.INSTANCE.getCurrentFamilyInfo(UserManager.KEY_CURRENT_FAMILY_ID);
+//    }
 
 }

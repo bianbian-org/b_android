@@ -6,8 +6,6 @@ import com.techjumper.lib2.utils.GsonUtils;
 import com.techjumper.polyhomeb.entity.BaseArgumentsEntity;
 import com.techjumper.polyhomeb.entity.BaseEntity;
 import com.techjumper.polyhomeb.entity.tcp_udp.BaseTcpArgumentsEntity;
-import com.techjumper.polyhomeb.entity.tcp_udp.CloudAuthEntity;
-import com.techjumper.polyhomeb.user.UserManager;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -64,17 +62,17 @@ public class NetHelper {
 //        return GsonUtils.toJson(pair.toMap());
 //    }
 
-    public static String createTcpCloudAuthJson() {
-        CloudAuthEntity entity = new CloudAuthEntity();
-        entity.setCode("0");
-        entity.setMsg("validate");
-        CloudAuthEntity.DataEntity dataEntity = new CloudAuthEntity.DataEntity();
-        dataEntity.setFamily_id(UserManager.INSTANCE.getCurrentFamilyInfo(UserManager.KEY_CURRENT_FAMILY_ID));
-        dataEntity.setPlatform("Android");
-        dataEntity.setUser_id(UserManager.INSTANCE.getUserInfo(UserManager.KEY_ID));
-        entity.setData(dataEntity);
-        return GsonUtils.toJson(entity);
-    }
+//    public static String createTcpCloudAuthJson() {
+//        CloudAuthEntity entity = new CloudAuthEntity();
+//        entity.setCode("0");
+//        entity.setMsg("validate");
+//        CloudAuthEntity.DataEntity dataEntity = new CloudAuthEntity.DataEntity();
+//        dataEntity.setFamily_id(UserManager.INSTANCE.getCurrentFamilyInfo(UserManager.KEY_CURRENT_FAMILY_ID));
+//        dataEntity.setPlatform("Android");
+//        dataEntity.setUser_id(UserManager.INSTANCE.getUserInfo(UserManager.KEY_ID));
+//        entity.setData(dataEntity);
+//        return GsonUtils.toJson(entity);
+//    }
 
     public static boolean isSuccess(BaseEntity entity) {
         return entity != null && entity.getError_code() == CODE_SUCCESS;

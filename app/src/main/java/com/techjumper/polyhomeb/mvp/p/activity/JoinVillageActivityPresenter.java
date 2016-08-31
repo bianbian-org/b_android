@@ -96,8 +96,10 @@ public class JoinVillageActivityPresenter extends AppBaseActivityPresenter<JoinV
                                 if (Constant.TRUE_ENTITY_RESULT.equals(trueEntity.getData().getResult())) {
                                     getView().dismissLoading();
                                     //将楼栋号,单元号,房间号,名字,id全都存下来
-                                    UserManager.INSTANCE.saveUserInfo(UserManager.KEY_CURRENT_VILLAGE_ID, mModel.getId() + "");
-                                    UserManager.INSTANCE.saveUserInfo(UserManager.KEY_CURRENT_VILLAGE_NAME, mModel.getName());
+//                                    UserManager.INSTANCE.saveUserInfo(UserManager.KEY_CURRENT_VILLAGE_ID, mModel.getId() + "");
+//                                    UserManager.INSTANCE.saveUserInfo(UserManager.KEY_CURRENT_VILLAGE_NAME, mModel.getName());
+                                    UserManager.INSTANCE.saveUserInfo(UserManager.KEY_CURRENT_SHOW_TITLE_NAME, mModel.getName());
+                                    UserManager.INSTANCE.saveUserInfo(UserManager.KEY_CURRENT_SHOW_TITLE_ID, mModel.getId() + "");
                                     UserManager.INSTANCE.saveUserInfo(UserManager.KEY_CURRENT_BUILDING, getView().getEtBuilding().getEditableText().toString());
                                     UserManager.INSTANCE.saveUserInfo(UserManager.KEY_CURRENT_UNIT, getView().getEtUnit().getEditableText().toString());
                                     UserManager.INSTANCE.saveUserInfo(UserManager.KEY_CURRENT_ROOM, getView().getEtRoom().getEditableText().toString());

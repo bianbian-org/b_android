@@ -71,9 +71,11 @@ public class HomeFragment extends AppBaseFragment<HomeFragmentPresenter> {
 
     @Override
     public String getTitle() {
-        return (TextUtils.isEmpty(UserManager.INSTANCE.getUserInfo(UserManager.KEY_CURRENT_FAMILY_NAME))
-                ? UserManager.INSTANCE.getUserInfo(UserManager.KEY_CURRENT_VILLAGE_NAME)
-                : UserManager.INSTANCE.getUserInfo(UserManager.KEY_CURRENT_FAMILY_NAME));
+//        return (TextUtils.isEmpty(UserManager.INSTANCE.getUserInfo(UserManager.KEY_CURRENT_FAMILY_NAME))
+//                ? UserManager.INSTANCE.getUserInfo(UserManager.KEY_CURRENT_VILLAGE_NAME)
+//                : UserManager.INSTANCE.getUserInfo(UserManager.KEY_CURRENT_FAMILY_NAME));
+
+        return UserManager.INSTANCE.getCurrentTitle();
     }
 
     private void stopRefresh(String msg) {

@@ -8,6 +8,7 @@ import com.techjumper.polyhomeb.R;
 import com.techjumper.polyhomeb.entity.BaseEntity;
 import com.techjumper.polyhomeb.mvp.v.activity.AppBaseActivity;
 import com.techjumper.polyhomeb.net.NetHelper;
+import com.techjumper.polyhomeb.user.UserManager;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -58,7 +59,7 @@ public abstract class AppBaseActivityPresenter<T extends AppBaseActivity> extend
                 getView().showHint(entity.getError_code() + ":" + entity.getError_msg());
             }
             if (entity.getError_code() == NetHelper.CODE_NOT_LOGIN) {
-//                UserManager.INSTANCE.logout();
+                UserManager.INSTANCE.logout();
 //                boolean shouldClose = (!(getView() instanceof TabHomeActivity));
 //                new AcHelper.Builder(getView())
 //                        .target(LoginActivity.class)

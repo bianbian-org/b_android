@@ -1,7 +1,5 @@
 package com.techjumper.polyhomeb.mvp.m;
 
-import android.text.TextUtils;
-
 import com.steve.creact.library.display.DisplayBean;
 import com.techjumper.corelib.utils.Utils;
 import com.techjumper.corelib.utils.common.RuleUtils;
@@ -45,9 +43,10 @@ public class HomeMenuFragmentModel extends BaseModel<HomeMenuFragmentPresenter> 
         propertyPlacardDividerData.setMarginLeft(RuleUtils.dp2Px(14));//和布局中文字的marginLeft相同
         PropertyPlacardDividerBean propertyPlacardDividerBean = new PropertyPlacardDividerBean(propertyPlacardDividerData);
 
-        String rightText = (TextUtils.isEmpty(UserManager.INSTANCE.getUserInfo(UserManager.KEY_CURRENT_FAMILY_NAME))
-                ? UserManager.INSTANCE.getUserInfo(UserManager.KEY_CURRENT_VILLAGE_NAME)
-                : UserManager.INSTANCE.getUserInfo(UserManager.KEY_CURRENT_FAMILY_NAME));
+//        String rightText = (TextUtils.isEmpty(UserManager.INSTANCE.getUserInfo(UserManager.KEY_CURRENT_FAMILY_NAME))
+//                ? UserManager.INSTANCE.getUserInfo(UserManager.KEY_CURRENT_VILLAGE_NAME)
+//                : UserManager.INSTANCE.getUserInfo(UserManager.KEY_CURRENT_FAMILY_NAME));
+        String rightText = UserManager.INSTANCE.getCurrentTitle();
         for (int i = 0; i < 3; i++) {
             String title = i == 0 ? Utils.appContext.getString(R.string.my_village) : (i == 1 ? Utils.appContext.getString(R.string.polyhome_setting) : Utils.appContext.getString(R.string.message_center));
             //item

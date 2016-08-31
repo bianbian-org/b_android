@@ -76,7 +76,8 @@ public class NewRepairActivityModel extends BaseModel<NewRepairActivityPresenter
         KeyValuePair keyValuePair = KeyValueCreator.newRepair(
                 UserManager.INSTANCE.getUserInfo(UserManager.KEY_ID)
                 , UserManager.INSTANCE.getTicket()
-                , UserManager.INSTANCE.getCurrentFamilyInfo(UserManager.KEY_CURRENT_FAMILY_ID)
+//                , UserManager.INSTANCE.getCurrentFamilyInfo(UserManager.KEY_CURRENT_FAMILY_ID)
+                , ""
                 , getPresenter().getEtPhone().getEditableText().toString().trim()
                 , repairType
                 , repairDevice

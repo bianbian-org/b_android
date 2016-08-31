@@ -6,9 +6,11 @@ import android.view.View;
 
 import com.steve.creact.library.display.DisplayBean;
 import com.techjumper.corelib.rx.tools.RxBus;
+import com.techjumper.corelib.rx.tools.RxUtils;
 import com.techjumper.corelib.utils.common.AcHelper;
 import com.techjumper.lib2.utils.PicassoHelper;
 import com.techjumper.polyhomeb.R;
+import com.techjumper.polyhomeb.entity.event.ChooseFamilyVillageEvent;
 import com.techjumper.polyhomeb.mvp.m.HomeMenuFragmentModel;
 import com.techjumper.polyhomeb.mvp.v.activity.LoginActivity;
 import com.techjumper.polyhomeb.mvp.v.fragment.HomeMenuFragment;
@@ -19,6 +21,7 @@ import com.techjumper.polyhomeb.user.event.LoginEvent;
 import java.util.List;
 
 import butterknife.OnClick;
+import rx.Subscription;
 
 /**
  * * * * * * * * * * * * * * * * * * * * * * *
@@ -29,6 +32,7 @@ import butterknife.OnClick;
 public class HomeMenuFragmentPresenter extends AppBaseFragmentPresenter<HomeMenuFragment> {
 
     private HomeMenuFragmentModel mModel = new HomeMenuFragmentModel(this);
+    private Subscription mSubs1, mSubs2;
 
     @Override
     public void initData(Bundle savedInstanceState) {
@@ -37,22 +41,40 @@ public class HomeMenuFragmentPresenter extends AppBaseFragmentPresenter<HomeMenu
 
     @Override
     public void onViewInited(Bundle savedInstanceState) {
+        RxUtils.unsubscribeIfNotNull(mSubs1);
         addSubscription(
-                RxBus.INSTANCE.asObservable().subscribe(o -> {
+                mSubs1 = RxBus.INSTANCE.asObservable().subscribe(o -> {
                     if (o instanceof LoginEvent) {
                         LoginEvent loginEvent = (LoginEvent) o;
                         boolean login = loginEvent.isLogin();
                         setAvatarAndName(login);
                     }
                 }));
+        changeRightText();
     }
+
+    private void changeRightText() {
+        RxUtils.unsubscribeIfNotNull(mSubs2);
+        addSubscription(
+                mSubs2 = RxBus.INSTANCE
+                        .asObservable().subscribe(o -> {
+                            if (o instanceof ChooseFamilyVillageEvent) {
+                                getView().getAdapter().loadData(getDatas());
+                                getView().getAdapter().notifyDataSetChanged();
+                            }
+                        }));
+    }
+
 
     @OnClick(R.id.layout_head)
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.layout_head:
                 if (!UserManager.INSTANCE.isLogin()) {
-                    new AcHelper.Builder(getView().getActivity()).target(LoginActivity.class).start();
+                    new AcHelper.Builder(getView()
+                            .getActivity())
+                            .target(LoginActivity.class)
+                            .start();
                 }
                 break;
         }
