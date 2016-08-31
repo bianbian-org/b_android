@@ -109,6 +109,15 @@ public class LoginEntity extends BaseEntity<LoginEntity.LoginDataEntity> {
         public static class FamiliesBean {
             private String family_id;
             private String family_name;
+            private int village_id;
+
+            public int getVillage_id() {
+                return village_id;
+            }
+
+            public void setVillage_id(int village_id) {
+                this.village_id = village_id;
+            }
 
             public String getFamily_id() {
                 return family_id;

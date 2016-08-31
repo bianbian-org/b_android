@@ -9,10 +9,12 @@ import android.view.View;
 
 import com.steve.creact.library.display.DisplayBean;
 import com.techjumper.corelib.mvp.factory.Presenter;
+import com.techjumper.corelib.utils.window.ToastUtils;
 import com.techjumper.polyhomeb.R;
 import com.techjumper.polyhomeb.adapter.PropertyPlacardAdapter;
 import com.techjumper.polyhomeb.mvp.p.fragment.PlacardFragmentPresenter;
 import com.techjumper.polyhomeb.net.NetHelper;
+import com.techjumper.polyhomeb.user.UserManager;
 import com.techjumper.ptr_lib.PtrClassicFrameLayout;
 import com.techjumper.ptr_lib.PtrDefaultHandler;
 import com.techjumper.ptr_lib.PtrFrameLayout;
@@ -56,7 +58,14 @@ public class PlacardFragment extends AppBaseFragment<PlacardFragmentPresenter> {
     }
 
     private void initListener() {
-        mRv.setOnLoadMoreListener(() -> getPresenter().getNoticeData());
+        mRv.setOnLoadMoreListener(() -> {
+            if (!UserManager.INSTANCE.isFamily()) {
+                ToastUtils.show(getActivity().getString(R.string.no_authority));
+                onNoticeDataReceive(getPresenter().noData());
+            } else {
+                getPresenter().getNoticeData();
+            }
+        });
         mPtr.setPtrHandler(new PtrDefaultHandler() {
             @Override
             public void onRefreshBegin(PtrFrameLayout frame) {

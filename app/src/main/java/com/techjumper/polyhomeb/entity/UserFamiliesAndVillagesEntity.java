@@ -44,6 +44,15 @@ public class UserFamiliesAndVillagesEntity extends BaseEntity<UserFamiliesAndVil
         public static class FamilyInfosBean {
             private int id;
             private String family_name;
+            private int village_id;
+
+            public int getVillage_id() {
+                return village_id;
+            }
+
+            public void setVillage_id(int village_id) {
+                this.village_id = village_id;
+            }
 
             public int getId() {
                 return id;

@@ -48,7 +48,7 @@ public class HomeMenuFragmentModel extends BaseModel<HomeMenuFragmentPresenter> 
 //                : UserManager.INSTANCE.getUserInfo(UserManager.KEY_CURRENT_FAMILY_NAME));
         String rightText = UserManager.INSTANCE.getCurrentTitle();
         for (int i = 0; i < 3; i++) {
-            String title = i == 0 ? Utils.appContext.getString(R.string.my_village) : (i == 1 ? Utils.appContext.getString(R.string.polyhome_setting) : Utils.appContext.getString(R.string.message_center));
+            String title = i == 0 ? Utils.appContext.getString(R.string.my_village_or_family) : (i == 1 ? Utils.appContext.getString(R.string.polyhome_setting) : Utils.appContext.getString(R.string.message_center));
             //item
             HomeMenuItemData homeMenuItemData = new HomeMenuItemData(title);
             homeMenuItemData.setRightText(i == 0 ? rightText : null);

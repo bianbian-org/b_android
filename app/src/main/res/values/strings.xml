@@ -176,7 +176,7 @@
     <string name="please_input_room_num">请输入房间号</string>
     <string name="scan_qr_code">扫描二维码</string>
     <string name="scan_notice">进入智能对讲系统室内机的设置页面，点击二维码后出现二维码，然后进行扫描</string>
-    <string name="may_village_or_family">我的小区或家庭</string>
+    <string name="my_village_or_family">我的小区或家庭</string>
     <string name="clear_cache">清除缓存</string>
     <string name="appraise">评价应用</string>
     <string name="about">关于我们</string>
@@ -185,6 +185,13 @@
     <string name="village">小区</string>
     <string name="uncheck">(未审核)</string>
     <string name="check">(已审核)</string>
+    <string name="message_title_all">全部</string>
+    <string name="message_title_system">系统</string>
+    <string name="message_title_orders">订单</string>
+    <string name="message_title_friend">友邻</string>
+    <string name="message_title_property">物业</string>
+    <string name="no_authority">当前处在小区权限下,无法进行此操作,请切换至家庭权限</string>
+    <string name="commit_to_verify">已提交审核</string>
 
 
 </resources>

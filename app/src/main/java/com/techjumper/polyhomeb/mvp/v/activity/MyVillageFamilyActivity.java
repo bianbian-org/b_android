@@ -46,7 +46,7 @@ public class MyVillageFamilyActivity extends AppBaseActivity<MyVillageFamilyActi
 
     @Override
     public String getLayoutTitle() {
-        return getString(R.string.may_village_or_family);
+        return getString(R.string.my_village_or_family);
     }
 
     @Override

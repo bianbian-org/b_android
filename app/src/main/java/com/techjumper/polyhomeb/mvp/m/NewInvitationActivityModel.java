@@ -98,8 +98,7 @@ public class NewInvitationActivityModel extends BaseModel<NewInvitationActivityP
         KeyValuePair keyValuePair = KeyValueCreator.newArticle(
                 UserManager.INSTANCE.getUserInfo(UserManager.KEY_ID)  //user_id
                 , UserManager.INSTANCE.getTicket()   //ticket
-//                , UserManager.INSTANCE.getUserInfo(UserManager.KEY_CURRENT_VILLAGE_ID) //小区ID
-                , ""
+                , getVillageId() //小区ID.小区,包含小区id,家庭,也包含小区id.所以这里直接用
                 , forum_section_id  //板块ID
                 , title         //标题
                 , content       //内容
@@ -121,6 +120,14 @@ public class NewInvitationActivityModel extends BaseModel<NewInvitationActivityP
             arrays[i] = mUrls.get(i);
         }
         return arrays;
+    }
+
+    private String getVillageId() {
+        if (UserManager.INSTANCE.isFamily()) {
+            return UserManager.INSTANCE.getUserInfo(UserManager.KEY_CURRENT_VILLAGE_ID);
+        } else {
+            return UserManager.INSTANCE.getCurrentId();
+        }
     }
 
 }

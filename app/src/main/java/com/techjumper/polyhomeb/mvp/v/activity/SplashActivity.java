@@ -61,9 +61,7 @@ public class SplashActivity extends AppBaseActivity<SplashActivityPresenter> {
 
                     @Override
                     public void onAnimationEnd(View view) {
-//                        getPresenter().jumpToMainActivity(500);
                         getPresenter().getFamilyAndVillage();
-//                        getPresenter().sAnimStop = true;
                     }
 
                     @Override

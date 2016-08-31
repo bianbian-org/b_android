@@ -96,8 +96,7 @@ public class NewUnusedActivityModel extends BaseModel<NewUnusedActivityPresenter
         KeyValuePair keyValuePair = KeyValueCreator.newArticle(
                 UserManager.INSTANCE.getUserInfo(UserManager.KEY_ID)  //user_id
                 , UserManager.INSTANCE.getTicket()   //ticket
-//                , UserManager.INSTANCE.getUserInfo(UserManager.KEY_CURRENT_VILLAGE_ID) //小区ID
-                ,""
+                , getVillageId()   //小区ID
                 , title         //标题
                 , content       //内容
                 , list2Array(urls)//图片数组
@@ -118,5 +117,13 @@ public class NewUnusedActivityModel extends BaseModel<NewUnusedActivityPresenter
             arrays[i] = mUrls.get(i);
         }
         return arrays;
+    }
+
+    private String getVillageId() {
+        if (UserManager.INSTANCE.isFamily()) {
+            return UserManager.INSTANCE.getUserInfo(UserManager.KEY_CURRENT_VILLAGE_ID);
+        } else {
+            return UserManager.INSTANCE.getCurrentId();
+        }
     }
 }

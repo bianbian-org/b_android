@@ -11,6 +11,7 @@ import com.techjumper.polyhomeb.mvp.v.activity.MessageCenterActivity;
  * * * * * * * * * * * * * * * * * * * * * * *
  **/
 public class MessageCenterActivityPresenter extends AppBaseActivityPresenter<MessageCenterActivity> {
+
     @Override
     public void initData(Bundle savedInstanceState) {
 

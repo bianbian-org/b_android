@@ -2,10 +2,16 @@ package com.techjumper.polyhomeb.mvp.p.fragment;
 
 import android.os.Bundle;
 
+import com.steve.creact.library.display.DisplayBean;
 import com.techjumper.corelib.rx.tools.RxUtils;
+import com.techjumper.corelib.utils.window.ToastUtils;
+import com.techjumper.polyhomeb.R;
 import com.techjumper.polyhomeb.entity.PropertyPlacardEntity;
 import com.techjumper.polyhomeb.mvp.m.PlacardFragmentModel;
 import com.techjumper.polyhomeb.mvp.v.fragment.PlacardFragment;
+import com.techjumper.polyhomeb.user.UserManager;
+
+import java.util.List;
 
 import rx.Subscriber;
 import rx.Subscription;
@@ -28,7 +34,12 @@ public class PlacardFragmentPresenter extends AppBaseFragmentPresenter<PlacardFr
 
     @Override
     public void onViewInited(Bundle savedInstanceState) {
-        refreshData();
+        if (!UserManager.INSTANCE.isFamily()) {
+            ToastUtils.show(getView().getString(R.string.no_authority));
+            getView().onNoticeDataReceive(mModel.noData());
+        } else {
+            refreshData();
+        }
     }
 
     public void getNoticeData() {
@@ -60,7 +71,7 @@ public class PlacardFragmentPresenter extends AppBaseFragmentPresenter<PlacardFr
                                 boolean hasMoreData = mModel.hasMoreData(entity);
                                 getView().setHasMoreData(hasMoreData);
 
-                                if(!hasMoreData && mModel.getCurrentPage() == 1) {
+                                if (!hasMoreData && mModel.getCurrentPage() == 1) {
                                     getView().onNoticeDataReceive(mModel.noData());
                                 }
 //                                if (entity.getData().getCount() == 0) {
@@ -85,6 +96,10 @@ public class PlacardFragmentPresenter extends AppBaseFragmentPresenter<PlacardFr
     public void refreshData() {
         mModel.setCurrentPage(1);
         getNoticeData();
+    }
+
+    public List<DisplayBean> noData() {
+        return mModel.noData();
     }
 
 }

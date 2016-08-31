@@ -28,7 +28,6 @@ import rx.Subscription;
 public class SplashActivityPresenter extends AppBaseActivityPresenter<SplashActivity> {
 
     private SplashActivityModel mModel = new SplashActivityModel(this);
-    public static boolean sAnimStop = false;
 
     private Subscription mSubs1;
 
@@ -39,24 +38,7 @@ public class SplashActivityPresenter extends AppBaseActivityPresenter<SplashActi
 
     @Override
     public void onViewInited(Bundle savedInstanceState) {
-//        getFamilyAndVillage();
     }
-
-//    public void jumpToMainActivity(int delay) {
-//        new Handler().postDelayed(() -> {
-//            if (UserManager.INSTANCE.isLogin()) {
-//                //判断是不是有家庭或者小区,有的话直接进首页,没有的话,就进ChooseFamilyVillageActivity
-//                if (UserManager.INSTANCE.hasFamily() || UserManager.INSTANCE.hasVillage()) {
-//                    jumpToTabHomeActivity();
-//                } else {
-//                    jumpToChooseFamilyAndVillageActivity();
-//                }
-//            } else {
-//                jumpToLoginActivity();
-//            }
-//            getView().setCanBack(true);
-//        }, delay);
-//    }
 
     //首先请求用户所有家庭和小区
     //如果用户是未登录状态,那么直接去登录界面(意思是说此用户都没登录)  已做处理
@@ -77,7 +59,7 @@ public class SplashActivityPresenter extends AppBaseActivityPresenter<SplashActi
 
                             @Override
                             public void onError(Throwable e) {
-                                jumpToLoginActivity();
+                                jumpToTabHomeActivity();
                             }
 
                             @Override

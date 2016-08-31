@@ -37,15 +37,12 @@ public enum UserManager {
     public static final String KEY_BIRTHDAY = "key_birthday";
     public static final String KEY_ALL_FAMILIES = "key_all_families";
     public static final String KEY_ALL_VILLAGES = "key_all_villages";
-    //    public static final String KEY_CURRENT_VILLAGE_ID = "key_current_village_id";
-//    public static final String KEY_CURRENT_FAMILY_ID = "key_current_family_id";
-//    public static final String KEY_CURRENT_VILLAGE_NAME = "key_current_village_name";
-//    public static final String KEY_CURRENT_FAMILY_NAME = "key_current_family_name";
     public static final String KEY_CURRENT_BUILDING = "key_current_building";
     public static final String KEY_CURRENT_UNIT = "key_current_unit";
     public static final String KEY_CURRENT_ROOM = "key_current_room";
     public static final String KEY_CURRENT_SHOW_TITLE_NAME = "key_current_show_title";
     public static final String KEY_CURRENT_SHOW_TITLE_ID = "key_current_show_id";
+    public static final String KEY_CURRENT_VILLAGE_ID = "key_current_village_id";
     public static final String KEY_CURRENT_SHOW_IS_FAMILY_OR_VILLAGE = "key_current_show_is+family_or_village";
 
     public static final String VALUE_IS_FAMILY = "value_is_family";
@@ -86,9 +83,14 @@ public enum UserManager {
         if (entity.getData().getFamilies() != null && entity.getData().getFamilies().size() != 0) {
             //登录接口多出来的
             PreferenceUtils.save(KEY_ALL_FAMILIES, GsonUtils.toJson(entity.getData().getFamilies()));
-            PreferenceUtils.save(KEY_CURRENT_SHOW_TITLE_ID, entity.getData().getFamilies().get(0).getFamily_id() + "");
-            PreferenceUtils.save(KEY_CURRENT_SHOW_TITLE_NAME, entity.getData().getFamilies().get(0).getFamily_name());
-            PreferenceUtils.save(KEY_CURRENT_SHOW_IS_FAMILY_OR_VILLAGE, VALUE_IS_FAMILY);
+//            PreferenceUtils.save(KEY_CURRENT_SHOW_TITLE_ID, entity.getData().getFamilies().get(0).getFamily_id() + "");
+//            PreferenceUtils.save(KEY_CURRENT_SHOW_TITLE_NAME, entity.getData().getFamilies().get(0).getFamily_name());
+//            PreferenceUtils.save(KEY_CURRENT_VILLAGE_ID, entity.getData().getFamilies().get(0).getVillage_id() + "");
+//            PreferenceUtils.save(KEY_CURRENT_SHOW_IS_FAMILY_OR_VILLAGE, VALUE_IS_FAMILY);
+            String family_id = entity.getData().getFamilies().get(0).getFamily_id();
+            String family_name = entity.getData().getFamilies().get(0).getFamily_name();
+            int village_id = entity.getData().getFamilies().get(0).getVillage_id();
+            updateFamilyOrVillageInfo(true, family_id, family_name, village_id);
         }
         if (entity.getData().getVillages() != null && entity.getData().getVillages().size() != 0) {
             //登录接口多出来的
@@ -96,9 +98,13 @@ public enum UserManager {
             //如果KEY_CURRENT_SHOW_IS_FAMILY_OR_VILLAGE是空的,或者value不是家庭的话,证明刚才没有存入家庭,现在就需要存小区.
             if (TextUtils.isEmpty(getUserInfo(KEY_CURRENT_SHOW_IS_FAMILY_OR_VILLAGE))
                     || !VALUE_IS_FAMILY.equals(getUserInfo(KEY_CURRENT_SHOW_IS_FAMILY_OR_VILLAGE))) {
-                PreferenceUtils.save(KEY_CURRENT_SHOW_TITLE_ID, entity.getData().getVillages().get(0).getVillage_id() + "");
-                PreferenceUtils.save(KEY_CURRENT_SHOW_TITLE_NAME, entity.getData().getVillages().get(0).getVillage_name());
-                PreferenceUtils.save(KEY_CURRENT_SHOW_IS_FAMILY_OR_VILLAGE, VALUE_IS_VILLAGE);
+//                PreferenceUtils.save(KEY_CURRENT_SHOW_TITLE_ID, entity.getData().getVillages().get(0).getVillage_id() + "");
+//                PreferenceUtils.save(KEY_CURRENT_SHOW_TITLE_NAME, entity.getData().getVillages().get(0).getVillage_name());
+//                PreferenceUtils.save(KEY_CURRENT_VILLAGE_ID, entity.getData().getVillages().get(0).getVillage_id());
+//                PreferenceUtils.save(KEY_CURRENT_SHOW_IS_FAMILY_OR_VILLAGE, VALUE_IS_VILLAGE);
+                int village_id = entity.getData().getVillages().get(0).getVillage_id();
+                String village_name = entity.getData().getVillages().get(0).getVillage_name();
+                updateFamilyOrVillageInfo(false, village_id + "", village_name, village_id);
             }
         }
         PreferenceUtils.save(KEY_ID, dataEntity.getId());
@@ -122,10 +128,24 @@ public enum UserManager {
     }
 
     /**
+     * 更新当前家庭和小区的信息
+     */
+    public void updateFamilyOrVillageInfo(boolean isFamily, String id, String name, int village_id) {
+        if (isFamily) {
+            PreferenceUtils.save(UserManager.KEY_CURRENT_SHOW_TITLE_ID, id);
+            PreferenceUtils.save(UserManager.KEY_CURRENT_SHOW_TITLE_NAME, name);
+            PreferenceUtils.save(UserManager.KEY_CURRENT_VILLAGE_ID, village_id + "");
+            PreferenceUtils.save(UserManager.KEY_CURRENT_SHOW_IS_FAMILY_OR_VILLAGE, UserManager.VALUE_IS_FAMILY);
+        } else {
+            PreferenceUtils.save(UserManager.KEY_CURRENT_SHOW_TITLE_ID, id);
+            PreferenceUtils.save(UserManager.KEY_CURRENT_SHOW_TITLE_NAME, name);
+            PreferenceUtils.save(UserManager.KEY_CURRENT_VILLAGE_ID, village_id + "");
+            PreferenceUtils.save(UserManager.KEY_CURRENT_SHOW_IS_FAMILY_OR_VILLAGE, UserManager.VALUE_IS_VILLAGE);
+        }
+    }
+
+    /**
      * 得到用户所有家庭
-     *
-     * @param key
-     * @return
      */
     public List<LoginEntity.LoginDataEntity.FamiliesBean> getUserAllFamilies(String key) {
         String allFamiliesJson = PreferenceUtils.get(KEY_ALL_FAMILIES, key);
@@ -155,22 +175,6 @@ public enum UserManager {
         return !TextUtils.isEmpty(ticket);
     }
 
-//    /**
-//     * 是否选择过家庭
-//     */
-//    public boolean hasFamily() {
-//        String family = getUserInfo(KEY_CURRENT_FAMILY_ID);
-//        return !TextUtils.isEmpty(family);
-//    }
-//
-//    /**
-//     * 是否选择过小区
-//     */
-//    public boolean hasVillage() {
-//        String village = getUserInfo(KEY_CURRENT_VILLAGE_ID);
-//        return !TextUtils.isEmpty(village);
-//    }
-
     /**
      * 是否选择过家庭或者小区
      */
@@ -193,19 +197,24 @@ public enum UserManager {
         return getUserInfo(KEY_CURRENT_SHOW_TITLE_ID);
     }
 
-//    /**
-//     * 得到当前选择的家庭名字
-//     */
-//    public String getCurrentChooseFamily() {
-//        return getUserInfo(KEY_CURRENT_FAMILY_NAME);
-//    }
-//
-//    /**
-//     * 得到当前选择的小区名字
-//     */
-//    public String getCurrentChooseVillage() {
-//        return getUserInfo(KEY_CURRENT_VILLAGE_NAME);
-//    }
+    /**
+     * 得到用户信息
+     */
+    public String getUserInfo(String key) {
+        return PreferenceUtils.get(key, "");
+    }
+
+    /**
+     * 当前是不是家庭 true为家庭,false为小区
+     */
+    public boolean isFamily() {
+        String userInfo = getUserInfo(KEY_CURRENT_SHOW_IS_FAMILY_OR_VILLAGE);
+        if (VALUE_IS_FAMILY.equals(userInfo)) {
+            return true;
+        } else {
+            return false;
+        }
+    }
 
     /**
      * 注销登陆
@@ -221,21 +230,18 @@ public enum UserManager {
         PreferenceUtils.save(KEY_EMAIL, "");
         PreferenceUtils.save(KEY_BIRTHDAY, "");
         PreferenceUtils.save(KEY_PHONE_NUMBER, "");
-//        PreferenceUtils.save(KEY_CURRENT_VILLAGE_ID, "");
         PreferenceUtils.save(KEY_TICKET, "");
         PreferenceUtils.save(KEY_AVATAR, "");
         PreferenceUtils.save(KEY_USER_NAME, "");
-//        PreferenceUtils.save(KEY_CURRENT_FAMILY_ID, "");
         PreferenceUtils.save(KEY_ALL_FAMILIES, "");
         PreferenceUtils.save(KEY_ALL_VILLAGES, "");
-//        PreferenceUtils.save(KEY_CURRENT_VILLAGE_NAME, "");
-//        PreferenceUtils.save(KEY_CURRENT_FAMILY_NAME, "");
         PreferenceUtils.save(KEY_CURRENT_BUILDING, "");
         PreferenceUtils.save(KEY_CURRENT_UNIT, "");
         PreferenceUtils.save(KEY_CURRENT_ROOM, "");
         PreferenceUtils.save(KEY_CURRENT_SHOW_TITLE_NAME, "");
         PreferenceUtils.save(KEY_CURRENT_SHOW_TITLE_ID, "");
         PreferenceUtils.save(KEY_CURRENT_SHOW_IS_FAMILY_OR_VILLAGE, "");
+        PreferenceUtils.save(KEY_CURRENT_VILLAGE_ID, "");
         HostIpHelper.getInstance().clear();
         if (notify)
             notifyLoginOrLogoutEvent(false);
@@ -255,13 +261,6 @@ public enum UserManager {
      */
     public void notifyLoginOrLogoutEvent(boolean isLogin) {
         RxBus.INSTANCE.send(new LoginEvent(isLogin));
-    }
-
-    /**
-     * 得到用户信息
-     */
-    public String getUserInfo(String key) {
-        return PreferenceUtils.get(key, "");
     }
 
     /**

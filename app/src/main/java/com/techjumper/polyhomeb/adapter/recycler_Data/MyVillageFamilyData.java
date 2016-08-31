@@ -13,6 +13,15 @@ public class MyVillageFamilyData {
     private String name;
     private int verified;
     private int isFamilyData;  //0是家庭  1是小区
+    private int villageId;
+
+    public int getVillageId() {
+        return villageId;
+    }
+
+    public void setVillageId(int villageId) {
+        this.villageId = villageId;
+    }
 
     public int isFamilyData() {
         return isFamilyData;
