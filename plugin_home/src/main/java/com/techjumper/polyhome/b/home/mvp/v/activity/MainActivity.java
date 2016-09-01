@@ -13,8 +13,10 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.techjumper.commonres.entity.event.TimeEvent;
 import com.techjumper.commonres.util.CommonDateUtil;
 import com.techjumper.corelib.mvp.factory.Presenter;
+import com.techjumper.corelib.rx.tools.RxBus;
 import com.techjumper.polyhome.b.home.R;
 import com.techjumper.polyhome.b.home.adapter.MyViewPagerAdapter;
 import com.techjumper.polyhome.b.home.mvp.p.activity.MainActivityPresenter;
@@ -25,6 +27,8 @@ import com.techjumper.polyhome.b.home.widget.MyViewPager;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Timer;
+import java.util.TimerTask;
 
 import butterknife.Bind;
 
@@ -54,6 +58,8 @@ public class MainActivity extends AppBaseActivity {
     FrameLayout mainAdLayout;
     @Bind(R.id.main_content_layout)
     LinearLayout mainContentLayout;
+
+    private Timer timer;
 
     private MyViewPagerAdapter myViewPagerAdapter;
     private List<Fragment> fragments = new ArrayList<Fragment>();
@@ -154,6 +160,18 @@ public class MainActivity extends AppBaseActivity {
             }
         });
 
+        if (timer == null) {
+            timer = new Timer();
+            timer.schedule(new TimerTask() {
+                @Override
+                public void run() {
+                    TimeEvent eventMain = new TimeEvent();
+                    eventMain.setType(TimeEvent.MAIN);
+                    RxBus.INSTANCE.send(eventMain);
+                }
+            }, 0, 1000);
+        }
+
         IntentFilter intentFilter = new IntentFilter(ACTION_HOME_HEARTBEAT);
         registerReceiver(mheartbeatReceiver, intentFilter);
     }
@@ -167,6 +185,11 @@ public class MainActivity extends AppBaseActivity {
         super.onDestroy();
         if (mheartbeatReceiver != null) {
             unregisterReceiver(mheartbeatReceiver);
+        }
+
+        if (timer != null) {
+            timer.cancel();
+            timer = null;
         }
 
         System.exit(0);

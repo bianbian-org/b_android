@@ -56,26 +56,6 @@ public class JujiaActivity extends AppBaseActivity<JujiaActivityPresenter> {
     protected void initView(Bundle savedInstanceState) {
         bottomTitle.setText(R.string.title_jujia);
         time = getIntent().getLongExtra(TIME, 0L);
-        if (time == 0L) {
-            bottomDate.setText(CommonDateUtil.getTitleDate());
-            timer.schedule(new TimerTask() {
-                @Override
-                public void run() {
-                    RxBus.INSTANCE.send(new TimeEvent());
-                }
-            }, CommonDateUtil.delayToPoint(), 60000);
-        } else {
-            bottomDate.setText(CommonDateUtil.getTitleNewDate(time));
-            timer.schedule(new TimerTask() {
-                @Override
-                public void run() {
-                    TimeEvent event = new TimeEvent();
-                    event.setTime(time);
-                    event.setType(TimeEvent.JUJIA);
-                    RxBus.INSTANCE.send(event);
-                }
-            }, 60000, 60000);
-        }
 
         WebSettings ws = webView.getSettings();
 
@@ -101,7 +81,14 @@ public class JujiaActivity extends AppBaseActivity<JujiaActivityPresenter> {
         webView.setWebViewClient(new webViewClient());
         webView.loadUrl(Config.sJujia);
 
-
+        timer.schedule(new TimerTask() {
+            @Override
+            public void run() {
+                TimeEvent event = new TimeEvent();
+                event.setType(TimeEvent.JUJIA);
+                RxBus.INSTANCE.send(event);
+            }
+        }, 0, 1000);
     }
 
     @Override

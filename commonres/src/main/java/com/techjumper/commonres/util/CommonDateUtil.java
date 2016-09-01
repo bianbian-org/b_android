@@ -68,7 +68,7 @@ public class CommonDateUtil {
 
         String weekDay = getWeekDay(Integer.valueOf(year), Integer.valueOf(month), Integer.valueOf(day));
 
-        return month + "月" + day + "日" + "   " + weekDay + "  " + timeString;
+        return formatHourMinute(month) + "月" + formatHourMinute(day) + "日" + "   " + weekDay + "  " + timeString;
     }
 
     private static String getWeekDay(int y, int m, int d) {
@@ -153,8 +153,24 @@ public class CommonDateUtil {
         return calendar.get(Calendar.MINUTE);
     }
 
+    public static String getSecond(long time) {
+        Date date = new Date(time * 1000);
+
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("ss");
+        String ssString = simpleDateFormat.format(date);
+        return ssString;
+    }
+
     public static String getCurrentTime() {
         Date date = new Date(System.currentTimeMillis());
+
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        String dateString = simpleDateFormat.format(date);
+        return dateString;
+    }
+
+    public static String getCurrentTime(long time) {
+        Date date = new Date(time * 1000);
 
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         String dateString = simpleDateFormat.format(date);

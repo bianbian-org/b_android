@@ -80,8 +80,7 @@ public class MainActivityPresenter extends AppBaseActivityPresenter<MainActivity
     private MyVideoView mainAdVideo;
     private ImageView mainAdImg;
     private Subscription submitOnlineSubscription;
-    private long tempTime;
-    private Timer timer;
+    private long totalTime = 0L;
     public static final String ACTION_START_HOST_DAEMON = "action_start_host_daemon";
 
     private IPluginMessageReceiver mIPluginMessageReceiver = (code, message, extras) -> {
@@ -291,9 +290,6 @@ public class MainActivityPresenter extends AppBaseActivityPresenter<MainActivity
 
     @Override
     public void onDestroy() {
-        if (timer != null) {
-            timer.cancel();
-        }
         PluginEngine.getInstance().quit();
         AdWindowManager.getInstance().unregisterClickListener();
         AdWindowManager.getInstance().unregisterWindowShowListener();
@@ -303,6 +299,10 @@ public class MainActivityPresenter extends AppBaseActivityPresenter<MainActivity
     @Override
     public void onViewInited(Bundle savedInstanceState) {
         submitOnline();
+
+        totalTime = System.currentTimeMillis() / 1000;
+        Log.d("submitOnline", "当前时间" + totalTime);
+
         getView().sendBroadcast(new Intent(ACTION_START_HOST_DAEMON));
         JLog.d("通知bhost启动守护进程");
         mainAdLayout = getView().getMainAdLayout();
@@ -313,65 +313,49 @@ public class MainActivityPresenter extends AppBaseActivityPresenter<MainActivity
         addSubscription(RxBus.INSTANCE.asObservable()
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(o -> {
-                    if (o instanceof TimeEvent) {
-                        Log.d("time", "更新时间");
-                        TimeEvent event = (TimeEvent) o;
-                        if (event.getType() == TimeEvent.MAIN) {
-                            Log.d("submitOnline", "主页系统更新" + tempTime);
-                            if (getView().getDate() != null) {
-                                if (tempTime == 0L) {
-                                    getView().getDate().setText(CommonDateUtil.getTitleDate());
-                                    RxBus.INSTANCE.send(new HeartbeatTimeEvent(tempTime));
-                                } else {
-                                    tempTime = tempTime + 60;
-                                    getView().getDate().setText(CommonDateUtil.getTitleNewDate(tempTime));
-                                    RxBus.INSTANCE.send(new HeartbeatTimeEvent(tempTime));
+                            if (o instanceof TimeEvent) {
+                                Log.d("time", "更新时间");
+                                TimeEvent event = (TimeEvent) o;
+                                if (event.getType() == TimeEvent.MAIN) {
+                                    if (getView().getDate() != null) {
+                                        if (totalTime != 0L) {
+                                            totalTime = totalTime + 1;
+                                            Log.d("submitOnline", "主页系统更新" + totalTime);
+                                            String second = CommonDateUtil.getSecond(totalTime);
+                                            Log.d("submitOnline", "second: " + second);
+                                            if (second.equals("00")) {
+                                                getView().getDate().setText(CommonDateUtil.getTitleNewDate(totalTime));
+                                            }
+                                            RxBus.INSTANCE.send(new HeartbeatTimeEvent(totalTime));
+                                        }
+                                    }
+                                }
+                            } else if (o instanceof AdMainEvent) {
+                                AdMainEvent event = (AdMainEvent) o;
+                                if (event.getAdsEntity() != null && event.getFile() != null) {
+                                    String addType = event.getAdsEntity().getMedia_type();
+                                    if (addType.equals(PloyhomeFragmentPresenter.IMAGE_AD_TYPE)) {
+                                        AdWindowManager.getInstance().showImage(event.getAdsEntity(), event.getFile());
+                                    } else {
+                                        AdWindowManager.getInstance().showVideo(event.getAdsEntity(), event.getFile());
+                                    }
+                                }
+                            } else if (o instanceof AdShowEvent) {
+                                AdShowEvent event = (AdShowEvent) o;
+                                if (!event.isShow()) {
+                                    AdWindowManager.getInstance().closeWindow(false);
+                                }
+                            } else if (o instanceof AdClickEvent) {
+                                submitClicks();
+                            } else if (o instanceof HeartbeatEvent) {
+                                HeartbeatEvent event = (HeartbeatEvent) o;
+                                if (event != null) {
+                                    long time = event.getTime();
+                                    totalTime = time;
                                 }
                             }
                         }
-                    } else if (o instanceof AdMainEvent) {
-                        AdMainEvent event = (AdMainEvent) o;
-                        if (event.getAdsEntity() != null && event.getFile() != null) {
-                            String addType = event.getAdsEntity().getMedia_type();
-                            if (addType.equals(PloyhomeFragmentPresenter.IMAGE_AD_TYPE)) {
-                                AdWindowManager.getInstance().showImage(event.getAdsEntity(), event.getFile());
-                            } else {
-                                AdWindowManager.getInstance().showVideo(event.getAdsEntity(), event.getFile());
-                            }
-                        }
-                    } else if (o instanceof AdShowEvent) {
-                        AdShowEvent event = (AdShowEvent) o;
-                        if (!event.isShow()) {
-                            AdWindowManager.getInstance().closeWindow(false);
-                        }
-                    } else if (o instanceof AdClickEvent) {
-                        submitClicks();
-                    } else if (o instanceof HeartbeatEvent) {
-                        HeartbeatEvent event = (HeartbeatEvent) o;
-
-                        if (timer == null) {
-                            timer = new Timer();
-                            timer.schedule(new TimerTask() {
-                                @Override
-                                public void run() {
-                                    TimeEvent eventMain = new TimeEvent();
-                                    eventMain.setType(TimeEvent.MAIN);
-                                    RxBus.INSTANCE.send(eventMain);
-                                }
-                            }, 60000, 60000);
-                        }
-
-                        if (getView().getDate() != null && event != null) {
-                            long time = event.getTime();
-                            if (tempTime == 0L) {
-                                tempTime = time;
-                            }
-
-                            RxBus.INSTANCE.send(new HeartbeatTimeEvent(time));
-                            getView().getDate().setText(CommonDateUtil.getTitleNewDate(time));
-                        }
-                    }
-                }));
+                ));
 
 //        PluginEngineUtil.getMedical();
 //        UserInfoEntity userInfoEntity2 = new UserInfoEntity();
@@ -385,7 +369,10 @@ public class MainActivityPresenter extends AppBaseActivityPresenter<MainActivity
 //            PluginEngineUtil.initUserInfo(InfoManager.getUserInfoFile());
 //        }
 
-        PluginEngine.getInstance().registerReceiver(mIPluginMessageReceiver);
+        PluginEngine.getInstance().
+
+                registerReceiver(mIPluginMessageReceiver);
+
         AlarmManagerUtil.setAdClick(Utils.appContext);
     }
 

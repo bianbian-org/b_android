@@ -39,6 +39,12 @@ public class ShoppingActivityPresenter extends AppBaseActivityPresenter<Shopping
     public void onViewInited(Bundle savedInstanceState) {
         time = getView().getTime();
 
+        if (time == 0L) {
+            time = System.currentTimeMillis() / 1000;
+        }
+
+        getView().getBottomDate().setText(CommonDateUtil.getTitleNewDate(time));
+
         addSubscription(RxBus.INSTANCE.asObservable()
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(o -> {
@@ -48,10 +54,13 @@ public class ShoppingActivityPresenter extends AppBaseActivityPresenter<Shopping
                         if (event.getType() == TimeEvent.SHOPPING) {
                             Log.d("submitOnline", "商店系统更新" + time);
                             if (getView().getBottomDate() != null) {
-                                if (event.getTime() == 0L) {
-                                    getView().getBottomDate().setText(CommonDateUtil.getTitleDate());
-                                } else {
-                                    time = time + 60;
+                                if (time != 0L) {
+                                    time = time + 1;
+                                    String second = CommonDateUtil.getSecond(time);
+                                    Log.d("submitOnline", "商店second: " + second);
+                                    if (second.equals("00")) {
+                                        getView().getBottomDate().setText(CommonDateUtil.getTitleNewDate(time));
+                                    }
                                     getView().getBottomDate().setText(CommonDateUtil.getTitleNewDate(time));
                                 }
                             }

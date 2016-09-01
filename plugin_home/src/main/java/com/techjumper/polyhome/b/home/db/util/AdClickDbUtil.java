@@ -20,10 +20,18 @@ import rx.Observable;
 
 public class AdClickDbUtil {
     private static AdClickDbExecutor.BriteDatabaseHelper helper;
+    private static String timeString;
 
-    public static void insert(long adId, String position) {
+    public static void insert(long adId, String position, long time) {
         helper = AdClickDbExecutor.getHelper();
-        helper.insert(adId, UserInfoManager.getLongFamilyId(), CommonDateUtil.getCurrentTime(), position)
+        if (time == 0L) {
+            timeString = CommonDateUtil.getCurrentTime();
+            Log.d("submitOnline", "获取系统时间");
+        } else {
+            timeString = CommonDateUtil.getCurrentTime(time);
+            Log.d("submitOnline", "获取心跳时间" + timeString);
+        }
+        helper.insert(adId, UserInfoManager.getLongFamilyId(), timeString, position)
                 .flatMap(aLong -> helper.query(String.valueOf(aLong)))
                 .subscribe(adClick -> {
                     if (adClick == null) {

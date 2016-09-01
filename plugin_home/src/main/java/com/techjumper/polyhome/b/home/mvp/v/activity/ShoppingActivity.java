@@ -52,28 +52,7 @@ public class ShoppingActivity extends AppBaseActivity<ShoppingActivityPresenter>
     @Override
     protected void initView(Bundle savedInstanceState) {
         bottomTitle.setText(R.string.title_shopping);
-
         time = getIntent().getLongExtra(TIME, 0L);
-        if (time == 0L) {
-            bottomDate.setText(CommonDateUtil.getTitleDate());
-            timer.schedule(new TimerTask() {
-                @Override
-                public void run() {
-                    RxBus.INSTANCE.send(new TimeEvent());
-                }
-            }, CommonDateUtil.delayToPoint(), 60000);
-        } else {
-            bottomDate.setText(CommonDateUtil.getTitleNewDate(time));
-            timer.schedule(new TimerTask() {
-                @Override
-                public void run() {
-                    TimeEvent event = new TimeEvent();
-                    event.setTime(time);
-                    event.setType(TimeEvent.SHOPPING);
-                    RxBus.INSTANCE.send(event);
-                }
-            }, 60000, 60000);
-        }
 
         WebSettings ws = webView.getSettings();
         ws.setJavaScriptEnabled(true);
@@ -98,6 +77,15 @@ public class ShoppingActivity extends AppBaseActivity<ShoppingActivityPresenter>
         webView.setWebViewClient(new webViewClient());
         webView.loadUrl(Config.sShoppingLogin);
         webView.addJavascriptInterface(new AndroidForJs(this), "JavaScriptInterface");
+
+        timer.schedule(new TimerTask() {
+            @Override
+            public void run() {
+                TimeEvent event = new TimeEvent();
+                event.setType(TimeEvent.SHOPPING);
+                RxBus.INSTANCE.send(event);
+            }
+        }, 0, 1000);
     }
 
     @Override

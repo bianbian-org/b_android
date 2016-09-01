@@ -13,6 +13,7 @@ import com.techjumper.commonres.entity.CalendarEntity;
 import com.techjumper.commonres.entity.MedicalEntity;
 import com.techjumper.commonres.entity.WeatherEntity;
 import com.techjumper.commonres.entity.event.AdTemEvent;
+import com.techjumper.commonres.entity.event.HeartbeatTimeEvent;
 import com.techjumper.commonres.entity.event.InfoMediaPlayerEvent;
 import com.techjumper.commonres.entity.event.MedicalEvent;
 import com.techjumper.commonres.entity.event.MissReadEvent;
@@ -69,6 +70,7 @@ public class InfoFragmentPresenter extends AppBaseFragmentPresenter<InfoFragment
     private boolean mIsVisibleToUser;
     private boolean mIsGetAd;
     private boolean mIsGetNewAd;
+    private long heartbeatTime;
 
     @OnClick(R.id.info_arrow_layout)
     void changeMedicalInfo() {
@@ -157,7 +159,7 @@ public class InfoFragmentPresenter extends AppBaseFragmentPresenter<InfoFragment
                 })
                 .compose(RxUtil.applySchedulers())
                 .subscribe(aVoid -> {
-                    AdClickDbUtil.insert(Long.valueOf(mAdsEntity.getId()), AdController.TYPE_HOME);
+                    AdClickDbUtil.insert(Long.valueOf(mAdsEntity.getId()), AdController.TYPE_HOME, heartbeatTime);
                     Intent intent = new Intent(getView().getActivity(), AdActivity.class);
                     intent.putExtra(AdActivity.ADITEM, mAdsEntity);
                     getView().getActivity().startActivity(intent);
@@ -232,6 +234,9 @@ public class InfoFragmentPresenter extends AppBaseFragmentPresenter<InfoFragment
                                 textureView.initMediaPlayer();
                             }
                         }
+                    } else if (o instanceof HeartbeatTimeEvent) {
+                        HeartbeatTimeEvent event = (HeartbeatTimeEvent) o;
+                        heartbeatTime = event.getTime();
                     }
                 }));
 
