@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.webkit.WebChromeClient;
@@ -19,18 +20,24 @@ import com.techjumper.commonres.ComConstant;
 import com.techjumper.commonres.PluginConstant;
 import com.techjumper.commonres.UserInfoEntity;
 import com.techjumper.commonres.entity.AnnouncementEntity;
+import com.techjumper.commonres.entity.HeartbeatTimeEntity;
 import com.techjumper.commonres.entity.InfoEntity;
 import com.techjumper.commonres.entity.NoticeEntity;
 import com.techjumper.commonres.entity.event.BackEvent;
+import com.techjumper.commonres.entity.event.HeartbeatEvent;
 import com.techjumper.commonres.entity.event.InfoDetailEvent;
 import com.techjumper.commonres.entity.event.InfoTypeEvent;
 import com.techjumper.commonres.entity.event.PropertyNormalDetailEvent;
 import com.techjumper.commonres.entity.event.TimeEvent;
 import com.techjumper.commonres.entity.event.loadmoreevent.LoadmoreInfoEvent;
 import com.techjumper.commonres.util.CommonDateUtil;
+import com.techjumper.commonres.util.PluginEngineUtil;
 import com.techjumper.corelib.mvp.factory.Presenter;
 import com.techjumper.corelib.rx.tools.RxBus;
 import com.techjumper.lib2.utils.GsonUtils;
+import com.techjumper.plugincommunicateengine.IPluginMessageReceiver;
+import com.techjumper.plugincommunicateengine.PluginEngine;
+import com.techjumper.plugincommunicateengine.entity.core.SaveInfoEntity;
 import com.techjumper.polyhome.b.info.R;
 import com.techjumper.polyhome.b.info.UserInfoManager;
 import com.techjumper.polyhome.b.info.mvp.p.activity.InfoMainActivityPresenter;
@@ -39,6 +46,7 @@ import com.techjumper.polyhome.b.info.viewholder.databean.InfoEntityBean;
 import com.techjumper.polyhome.b.info.widget.AdapterUtil;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
@@ -108,6 +116,41 @@ public class InfoMainActivity extends AppBaseActivity {
     private LinearLayoutManager manager = new LinearLayoutManager(this);
     private List<NoticeEntity.Unread> unreads = new ArrayList<>();
     private int systemNum = 0;
+    private long time = 0L;
+
+    public long getTime() {
+        return time;
+    }
+
+    private IPluginMessageReceiver mIPluginMessageReceiver = (code, message, extras) -> {
+        if (code == PluginEngine.CODE_GET_SAVE_INFO) {
+            SaveInfoEntity saveInfoEntity = com.techjumper.plugincommunicateengine.utils.GsonUtils.fromJson(message, SaveInfoEntity.class);
+            if (saveInfoEntity == null || saveInfoEntity.getData() == null)
+                return;
+
+            HashMap<String, String> hashMap = saveInfoEntity.getData().getValues();
+            if (hashMap == null)
+                return;
+
+            if (hashMap == null || hashMap.size() == 0)
+                return;
+
+            String name = saveInfoEntity.getData().getName();
+
+            if (name.equals(ComConstant.FILE_HEARTBEATTIME)) {
+                Log.d("infosubmitOnline", "获取本地心跳时间为: " + (TextUtils.isEmpty(message) ? "没有文件" : message));
+
+                HeartbeatTimeEntity entity = GsonUtils.fromJson(message, HeartbeatTimeEntity.class);
+                if (entity != null &&
+                        entity.getData() != null &&
+                        entity.getData().getValues() != null &&
+                        entity.getData().getValues().getTime() != null) {
+                    time = Long.valueOf(entity.getData().getValues().getTime());
+                    RxBus.INSTANCE.send(new HeartbeatEvent(time));
+                }
+            }
+        }
+    };
 
     @OnClick(R.id.bottom_back)
     void back() {
@@ -140,7 +183,9 @@ public class InfoMainActivity extends AppBaseActivity {
     @Override
     protected void initView(Bundle savedInstanceState) {
         bottomTitle.setText(R.string.info_title);
-        bottomDate.setText(CommonDateUtil.getTitleDate());
+
+        PluginEngine.getInstance().
+                registerReceiver(mIPluginMessageReceiver);
 
         infoList.setLayoutManager(manager);
         adapter = new CommonRecyclerAdapter();
@@ -305,7 +350,9 @@ public class InfoMainActivity extends AppBaseActivity {
             public void run() {
                 RxBus.INSTANCE.send(new TimeEvent());
             }
-        }, CommonDateUtil.delayToPoint(), 60000);
+        }, 0, 1000);
+
+        PluginEngineUtil.getHeartbeatTime();
     }
 
     public void getList(InfoEntity.InfoResultEntity infoResultEntity, int page) {

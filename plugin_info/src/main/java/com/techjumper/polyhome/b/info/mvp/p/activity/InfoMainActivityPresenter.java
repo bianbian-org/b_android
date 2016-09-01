@@ -1,38 +1,25 @@
 package com.techjumper.polyhome.b.info.mvp.p.activity;
 
-import android.content.Intent;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.util.Log;
-import android.widget.RadioButton;
 
-import com.techjumper.commonres.UserInfoEntity;
 import com.techjumper.commonres.entity.AnnouncementEntity;
 import com.techjumper.commonres.entity.InfoEntity;
 import com.techjumper.commonres.entity.NoticeEntity;
 import com.techjumper.commonres.entity.TrueEntity;
+import com.techjumper.commonres.entity.event.HeartbeatEvent;
 import com.techjumper.commonres.entity.event.InfoTypeEvent;
 import com.techjumper.commonres.entity.event.PropertyNormalDetailEvent;
 import com.techjumper.commonres.entity.event.ReadMessageEvent;
 import com.techjumper.commonres.entity.event.TimeEvent;
-import com.techjumper.commonres.entity.event.UserInfoEvent;
 import com.techjumper.commonres.entity.event.loadmoreevent.LoadmoreInfoEvent;
 import com.techjumper.commonres.util.CommonDateUtil;
-import com.techjumper.commonres.util.PluginEngineUtil;
 import com.techjumper.corelib.rx.tools.RxBus;
-import com.techjumper.corelib.utils.window.ToastUtils;
-import com.techjumper.plugincommunicateengine.PluginEngine;
-import com.techjumper.plugincommunicateengine.entity.core.SaveInfoEntity;
-import com.techjumper.plugincommunicateengine.utils.GsonUtils;
 import com.techjumper.polyhome.b.info.R;
-import com.techjumper.polyhome.b.info.UserInfoManager;
 import com.techjumper.polyhome.b.info.mvp.m.InfoMainActivityModel;
 import com.techjumper.polyhome.b.info.mvp.v.activity.InfoMainActivity;
 
-import java.util.HashMap;
-import java.util.Map;
-
-import butterknife.Bind;
-import butterknife.OnCheckedChanged;
 import butterknife.OnClick;
 import rx.Subscriber;
 import rx.android.schedulers.AndroidSchedulers;
@@ -43,34 +30,7 @@ import rx.android.schedulers.AndroidSchedulers;
 public class InfoMainActivityPresenter extends AppBaseActivityPresenter<InfoMainActivity> {
 
     private int intentType;
-
-//    @OnCheckedChanged(R.id.title_announcement)
-//    void announcement(boolean check) {
-//        if (check) {
-//            getAnnouncements();
-//        }
-//    }
-//
-//    @OnCheckedChanged(R.id.title_system)
-//    void titleSystem(boolean check) {
-//        if (check) {
-//            getList(intentType);
-//        }
-//    }
-//
-//    @OnCheckedChanged(R.id.title_order)
-//    void titleOrder(boolean check) {
-//        if (check) {
-//            getList(intentType);
-//        }
-//    }
-//
-//    @OnCheckedChanged(R.id.title_medical)
-//    void titleMedical(boolean check) {
-//        if (check) {
-//            getList(intentType);
-//        }
-//    }
+    private long time;
 
     InfoMainActivityModel infoMainActivityModel = new InfoMainActivityModel(this);
     private int pageNo = 1;
@@ -82,6 +42,14 @@ public class InfoMainActivityPresenter extends AppBaseActivityPresenter<InfoMain
 
     @Override
     public void onViewInited(Bundle savedInstanceState) {
+        time = getView().getTime();
+
+        if (time == 0L) {
+            time = System.currentTimeMillis() / 1000;
+        }
+        getView().getBottomDate().setText(CommonDateUtil.getTitleNewDate(time));
+
+
         intentType = getView().getType();
         if (intentType == NoticeEntity.PROPERTY) {
             getAnnouncements();
@@ -119,7 +87,19 @@ public class InfoMainActivityPresenter extends AppBaseActivityPresenter<InfoMain
                             } else if (o instanceof TimeEvent) {
                                 Log.d("time", "更新时间");
                                 if (getView().getBottomDate() != null) {
-                                    getView().getBottomDate().setText(CommonDateUtil.getTitleDate());
+                                    time++;
+                                    String second = CommonDateUtil.getSecond(time);
+                                    Log.d("infosubmitOnline", "second: " + second);
+                                    if (second.equals("00")) {
+                                        getView().getBottomDate().setText(CommonDateUtil.getTitleNewDate(time));
+                                    }
+                                }
+                            } else if (o instanceof HeartbeatEvent) {
+                                HeartbeatEvent event = (HeartbeatEvent) o;
+                                if (event != null) {
+                                    time = event.getTime();
+                                    Log.d("infosubmitOnline", "心跳时间:" + time);
+                                    getView().getBottomDate().setText(CommonDateUtil.getTitleNewDate(time));
                                 }
                             }
                         })

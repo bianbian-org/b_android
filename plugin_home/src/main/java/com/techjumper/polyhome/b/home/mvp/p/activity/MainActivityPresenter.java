@@ -145,6 +145,8 @@ public class MainActivityPresenter extends AppBaseActivityPresenter<MainActivity
                     Log.d("pluginUserInfo", "medicalItemEntities: " + medicalItemEntities.size());
                     RxBus.INSTANCE.send(new MedicalEvent(medicalItemEntities));
                 }
+            } else if (name.equals(ComConstant.FILE_HEARTBEATTIME)) {
+                Log.d("submitOnline", "获取本地心跳时间为: " + (TextUtils.isEmpty(message) ? "没有文件" : message));
             }
             Log.d("pluginUserInfo", "更新完毕用户信息...");
         } else if (code == PluginEngine.CODE_SAVE_INFO) {
@@ -153,9 +155,11 @@ public class MainActivityPresenter extends AppBaseActivityPresenter<MainActivity
             if (TextUtils.isEmpty(message))
                 return;
 
-//                InfoManager.saveUserInfoFile(message);
-
-            PluginEngineUtil.initUserInfo(message);
+            if (message.equals(ComConstant.FILE_HEARTBEATTIME)) {
+                Log.d("submitOnline", "保存心跳时间文件成功为: " + (TextUtils.isEmpty(message) ? "没有文件" : message));
+            } else {
+                PluginEngineUtil.initUserInfo(message);
+            }
         } else if (code == PluginEngine.CODE_CUSTOM) {
             Log.d("pluginUserInfo", "CODE_CUSTOM...");
             Log.d("pluginUserInfo", "message: " + (TextUtils.isEmpty(message) ? "" : message) + "  extras: " + extras == null ? "" : extras.getBoolean("key_ismedical") + "");
@@ -319,11 +323,12 @@ public class MainActivityPresenter extends AppBaseActivityPresenter<MainActivity
                                 if (event.getType() == TimeEvent.MAIN) {
                                     if (getView().getDate() != null) {
                                         if (totalTime != 0L) {
-                                            totalTime = totalTime + 1;
+                                            totalTime++;
                                             Log.d("submitOnline", "主页系统更新" + totalTime);
                                             String second = CommonDateUtil.getSecond(totalTime);
                                             Log.d("submitOnline", "second: " + second);
                                             if (second.equals("00")) {
+                                                PluginEngineUtil.saveHeartbeatTime(totalTime);
                                                 getView().getDate().setText(CommonDateUtil.getTitleNewDate(totalTime));
                                             }
                                             RxBus.INSTANCE.send(new HeartbeatTimeEvent(totalTime));
@@ -352,6 +357,7 @@ public class MainActivityPresenter extends AppBaseActivityPresenter<MainActivity
                                 if (event != null) {
                                     long time = event.getTime();
                                     totalTime = time;
+                                    PluginEngineUtil.saveHeartbeatTime(totalTime);
                                 }
                             }
                         }

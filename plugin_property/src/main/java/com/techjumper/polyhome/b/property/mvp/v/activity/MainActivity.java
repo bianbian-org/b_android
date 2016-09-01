@@ -2,6 +2,7 @@ package com.techjumper.polyhome.b.property.mvp.v.activity;
 
 import android.os.Bundle;
 import android.provider.Settings;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
@@ -13,20 +14,28 @@ import android.widget.TextView;
 import com.techjumper.commonres.ComConstant;
 import com.techjumper.commonres.PluginConstant;
 import com.techjumper.commonres.UserInfoEntity;
+import com.techjumper.commonres.entity.HeartbeatTimeEntity;
+import com.techjumper.commonres.entity.event.HeartbeatEvent;
 import com.techjumper.commonres.entity.event.LoginEvent;
 import com.techjumper.commonres.entity.event.PropertyActionEvent;
 import com.techjumper.commonres.entity.event.PropertyMessageDetailEvent;
 import com.techjumper.commonres.entity.event.TimeEvent;
 import com.techjumper.commonres.util.CommonDateUtil;
+import com.techjumper.commonres.util.PluginEngineUtil;
 import com.techjumper.corelib.mvp.factory.Presenter;
 import com.techjumper.corelib.rx.tools.RxBus;
 import com.techjumper.corelib.utils.window.ToastUtils;
+import com.techjumper.lib2.utils.GsonUtils;
+import com.techjumper.plugincommunicateengine.IPluginMessageReceiver;
+import com.techjumper.plugincommunicateengine.PluginEngine;
+import com.techjumper.plugincommunicateengine.entity.core.SaveInfoEntity;
 import com.techjumper.polyhome.b.property.R;
 import com.techjumper.polyhome.b.property.UserInfoManager;
 import com.techjumper.polyhome.b.property.mvp.p.activity.MainActivityPresenter;
 import com.techjumper.polyhome.b.property.mvp.v.fragment.ActionFragment;
 import com.techjumper.polyhome.b.property.mvp.v.fragment.ListFragment;
 
+import java.util.HashMap;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -50,10 +59,45 @@ public class MainActivity extends AppBaseActivity<MainActivityPresenter> {
     private Timer timer = new Timer();
     private int showType = -1;
     private long infoId;
+    private long time = 0L;
+
+    public long getTime() {
+        return time;
+    }
 
     public TextView getBottomDate() {
         return bottomDate;
     }
+
+    private IPluginMessageReceiver mIPluginMessageReceiver = (code, message, extras) -> {
+        if (code == PluginEngine.CODE_GET_SAVE_INFO) {
+            SaveInfoEntity saveInfoEntity = com.techjumper.plugincommunicateengine.utils.GsonUtils.fromJson(message, SaveInfoEntity.class);
+            if (saveInfoEntity == null || saveInfoEntity.getData() == null)
+                return;
+
+            HashMap<String, String> hashMap = saveInfoEntity.getData().getValues();
+            if (hashMap == null)
+                return;
+
+            if (hashMap == null || hashMap.size() == 0)
+                return;
+
+            String name = saveInfoEntity.getData().getName();
+
+            if (name.equals(ComConstant.FILE_HEARTBEATTIME)) {
+                Log.d("prosubmitOnline", "获取本地心跳时间为: " + (TextUtils.isEmpty(message) ? "没有文件" : message));
+
+                HeartbeatTimeEntity entity = GsonUtils.fromJson(message, HeartbeatTimeEntity.class);
+                if (entity != null &&
+                        entity.getData() != null &&
+                        entity.getData().getValues() != null &&
+                        entity.getData().getValues().getTime() != null) {
+                    time = Long.valueOf(entity.getData().getValues().getTime());
+                    RxBus.INSTANCE.send(new HeartbeatEvent(time));
+                }
+            }
+        }
+    };
 
     @Override
     protected View inflateView(Bundle savedInstanceState) {
@@ -63,7 +107,9 @@ public class MainActivity extends AppBaseActivity<MainActivityPresenter> {
     @Override
     protected void initView(Bundle savedInstanceState) {
         bottomTitle.setText(R.string.property);
-        bottomDate.setText(CommonDateUtil.getTitleDate());
+
+        PluginEngine.getInstance().
+                registerReceiver(mIPluginMessageReceiver);
 
         if (getIntent() != null && getIntent().getExtras() != null) {
             Bundle bundle = getIntent().getExtras();
@@ -102,7 +148,9 @@ public class MainActivity extends AppBaseActivity<MainActivityPresenter> {
             public void run() {
                 RxBus.INSTANCE.send(new TimeEvent());
             }
-        }, CommonDateUtil.delayToPoint(), 60000);
+        }, 0, 1000);
+
+        PluginEngineUtil.getHeartbeatTime();
 
         addSubscription(RxBus.INSTANCE.asObservable()
                 .observeOn(AndroidSchedulers.mainThread())

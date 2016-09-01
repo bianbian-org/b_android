@@ -61,7 +61,6 @@ public class ShoppingActivityPresenter extends AppBaseActivityPresenter<Shopping
                                     if (second.equals("00")) {
                                         getView().getBottomDate().setText(CommonDateUtil.getTitleNewDate(time));
                                     }
-                                    getView().getBottomDate().setText(CommonDateUtil.getTitleNewDate(time));
                                 }
                             }
                         }

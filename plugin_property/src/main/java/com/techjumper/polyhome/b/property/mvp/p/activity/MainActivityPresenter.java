@@ -5,6 +5,7 @@ import android.util.Log;
 
 import com.techjumper.commonres.UserInfoEntity;
 import com.techjumper.commonres.entity.event.BackEvent;
+import com.techjumper.commonres.entity.event.HeartbeatEvent;
 import com.techjumper.commonres.entity.event.PropertyActionEvent;
 import com.techjumper.commonres.entity.event.PropertyListEvent;
 import com.techjumper.commonres.entity.event.TimeEvent;
@@ -33,6 +34,7 @@ import rx.android.schedulers.AndroidSchedulers;
 public class MainActivityPresenter extends AppBaseActivityPresenter<MainActivity> {
 
     private int backType = BackEvent.PROPERTY_ACTION;
+    private long time;
 
     @OnClick(R.id.bottom_back)
     void back() {
@@ -57,6 +59,13 @@ public class MainActivityPresenter extends AppBaseActivityPresenter<MainActivity
 
     @Override
     public void onViewInited(Bundle savedInstanceState) {
+        time = getView().getTime();
+
+        if (time == 0L) {
+            time = System.currentTimeMillis() / 1000;
+        }
+        getView().getBottomDate().setText(CommonDateUtil.getTitleNewDate(time));
+
         addSubscription(RxBus.INSTANCE.asObservable()
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(o -> {
@@ -65,8 +74,20 @@ public class MainActivityPresenter extends AppBaseActivityPresenter<MainActivity
                         backType = backEvent.getType();
                     } else if (o instanceof TimeEvent) {
                         Log.d("time", "更新时间");
+                        time++;
                         if (getView().getBottomDate() != null) {
-                            getView().getBottomDate().setText(CommonDateUtil.getTitleDate());
+                            String second = CommonDateUtil.getSecond(time);
+                            Log.d("prosubmitOnline", "second: " + second);
+                            if (second.equals("00")) {
+                                getView().getBottomDate().setText(CommonDateUtil.getTitleNewDate(time));
+                            }
+                        }
+                    }else if (o instanceof HeartbeatEvent) {
+                        HeartbeatEvent event = (HeartbeatEvent) o;
+                        if (event != null) {
+                            time = event.getTime();
+                            Log.d("prosubmitOnline", "心跳时间:" + time);
+                            getView().getBottomDate().setText(CommonDateUtil.getTitleNewDate(time));
                         }
                     }
                 }));

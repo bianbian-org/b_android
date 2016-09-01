@@ -62,7 +62,6 @@ public class JujiaActivityPresenter extends AppBaseActivityPresenter<JujiaActivi
                                         Log.d("submitOnline", "聚家进去了么");
                                         getView().getBottomDate().setText(CommonDateUtil.getTitleNewDate(time));
                                     }
-                                    getView().getBottomDate().setText(CommonDateUtil.getTitleNewDate(time));
                                 }
                             }
                         }

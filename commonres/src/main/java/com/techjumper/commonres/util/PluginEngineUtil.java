@@ -2,6 +2,7 @@ package com.techjumper.commonres.util;
 
 import android.os.Bundle;
 
+import com.techjumper.commonres.ComConstant;
 import com.techjumper.commonres.PluginConstant;
 import com.techjumper.commonres.entity.NoticeEntity;
 import com.techjumper.plugincommunicateengine.HostDataBuilder;
@@ -10,6 +11,7 @@ import com.techjumper.plugincommunicateengine.PluginEngine;
 import java.util.ArrayList;
 import java.util.List;
 
+import static com.techjumper.commonres.ComConstant.FILE_HEARTBEATTIME;
 import static com.techjumper.commonres.ComConstant.FILE_MEDICAL;
 
 /**
@@ -259,6 +261,55 @@ public class PluginEngineUtil {
                 try {
                     String data = HostDataBuilder.saveInfoBuilder()
                             .name(FILE_MEDICAL)
+                            .build();
+                    pluginExecutor.send(PluginEngine.CODE_GET_SAVE_INFO, data);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+
+            @Override
+            public void onEngineDisconnected() {
+
+            }
+        });
+    }
+
+    /**
+     * 保存心跳时间到本地
+     */
+    public static void saveHeartbeatTime(long time){
+        PluginEngine.getInstance().start(new PluginEngine.IPluginConnection() {
+            @Override
+            public void onEngineConnected(PluginEngine.PluginExecutor pluginExecutor) {
+                try {
+                    String data = HostDataBuilder.saveInfoBuilder()
+                            .name(ComConstant.FILE_HEARTBEATTIME)
+                            .put(ComConstant.FILE_HEARTBEATTIME_TIME, String.valueOf(time))
+                            .build();
+                    pluginExecutor.send(PluginEngine.CODE_SAVE_INFO, data);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+
+            @Override
+            public void onEngineDisconnected() {
+
+            }
+        });
+    }
+
+    /**
+     * 获取本地的心跳时间
+     */
+    public static void getHeartbeatTime(){
+        PluginEngine.getInstance().start(new PluginEngine.IPluginConnection() {
+            @Override
+            public void onEngineConnected(PluginEngine.PluginExecutor pluginExecutor) {
+                try {
+                    String data = HostDataBuilder.saveInfoBuilder()
+                            .name(ComConstant.FILE_HEARTBEATTIME)
                             .build();
                     pluginExecutor.send(PluginEngine.CODE_GET_SAVE_INFO, data);
                 } catch (Exception e) {

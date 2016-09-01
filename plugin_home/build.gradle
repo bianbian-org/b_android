@@ -11,8 +11,8 @@ android {
         applicationId "com.techjumper.polyhome.b.home"
         minSdkVersion rootProject.minSdkVersion
         targetSdkVersion rootProject.targetSdkVersion
-        versionCode 122
-        versionName "0.1.22"
+        versionCode 123
+        versionName "0.1.23"
     }
     buildTypes {
         debug {
