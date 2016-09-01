@@ -142,7 +142,6 @@ public class MessageAllFragmentModel extends BaseModel<MessageAllFragmentPresent
             MessageAllContentBean messageAllContentBean = new MessageAllContentBean(messageAllContentData);
             mDataList.add(messageAllContentBean);
 
-            mDataList.add(propertyRepairBigDividerBean);
             //如果物业回复不是空的话,那么在短点的分割线以及物业回复之后再加大的分割线
             //如果当前的listBean是总数据的最后一个,那么就不能加大的分割线了
             if (i != messages.size() - 1) {
