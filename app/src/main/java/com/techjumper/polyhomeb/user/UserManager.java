@@ -61,10 +61,10 @@ public enum UserManager {
     public void saveUserInfo(LoginEntity entity) {
         LoginEntity.LoginDataEntity dataEntity = entity.getData();
         if (!TextUtils.isEmpty(dataEntity.getMobile())) {  //登录接口没有返回mobile,注册接口才有
-            PreferenceUtils.save(KEY_PHONE_NUMBER, dataEntity.getMobile());
+            PreferenceUtils.save(KEY_PHONE_NUMBER, dataEntity.getMobile() + "");
         }
         if (!TextUtils.isEmpty(dataEntity.getSex())) {  //登录接口多出来的
-            PreferenceUtils.save(KEY_SEX, dataEntity.getSex());
+            PreferenceUtils.save(KEY_SEX, dataEntity.getSex() + "");
         }
         if (!TextUtils.isEmpty(dataEntity.getEmail())) {  //登录接口多出来的
             PreferenceUtils.save(KEY_EMAIL, dataEntity.getEmail());
@@ -110,13 +110,7 @@ public enum UserManager {
         PreferenceUtils.save(KEY_ID, dataEntity.getId());
         updateTicket(dataEntity.getTicket());
         PreferenceUtils.save(KEY_USER_NAME, dataEntity.getUsername());
-        PreferenceUtils.save(Config.sHost + KEY_AVATAR, dataEntity.getCover());
-    }
-
-    public String getUserNickName() {
-        String userName = PreferenceUtils.get(KEY_USER_NAME, "");
-        return TextUtils.isEmpty(userName)
-                ? PreferenceUtils.get(KEY_PHONE_NUMBER, "") : userName;
+        PreferenceUtils.save(KEY_AVATAR, Config.sHost + dataEntity.getCover());
     }
 
     /**

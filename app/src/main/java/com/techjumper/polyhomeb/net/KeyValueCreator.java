@@ -239,4 +239,21 @@ public class KeyValueCreator {
                 .put("page", page)
                 .put("count", count);
     }
+
+    public static KeyValuePair setUserInfo(String user_id, String ticket, String username, String sex, String birthday, String email) {
+        return newPair()
+                .put("user_id", user_id)
+                .put("ticket", ticket)
+                .put("username", username)
+                .put("sex", sex)
+                .put("birthday", birthday)
+                .put("email", email);
+    }
+
+    public static KeyValuePair updateAvatar(String user_id, String ticket, String cover) {
+        return newPair()
+                .put("user_id", user_id)
+                .put("ticket", ticket)
+                .put("cover", cover);
+    }
 }

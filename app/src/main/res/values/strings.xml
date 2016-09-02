@@ -93,7 +93,7 @@
     <string name="input_limit_800">当前字数: %1$s /800</string>
     <string name="no_camera_permission">无法获取摄像头权限</string>
     <string name="show_big_pic">查看大图</string>
-    <string name="click_to_login_in">点击登录</string>
+    <!--<string name="click_to_login_in">点击登录</string>-->
     <string name="my_village">我的小区</string>
     <string name="polyhome_setting">智能家居设置</string>
     <string name="message_center">消息中心</string>
@@ -194,6 +194,23 @@
     <string name="message_order">订单消息</string>
     <string name="message_friend">友邻消息</string>
     <string name="message_property">物业消息</string>
+    <string name="user_info">个人信息</string>
+    <string name="save">保存</string>
+    <string name="edit_avatar">编辑头像</string>
+    <string name="nickname">昵称</string>
+    <string name="email">邮箱</string>
+    <string name="birthday">生日</string>
+    <string name="sex">性别</string>
+    <string name="change_nick_name">修改昵称</string>
+    <string name="change_email">更改邮箱</string>
+    <string name="male">男</string>
+    <string name="female">女</string>
+    <string name="change_sex">选择性别</string>
+    <string name="change_user_info_success">修改信息成功</string>
+    <string name="camera">相机</string>
+    <string name="photo_libary">照片库</string>
+    <string name="choose_avatar">请选择图片来源</string>
+    <string name="change_avatar_success">头像更改成功</string>
 
 
 </resources>

@@ -20,6 +20,14 @@ public class Config {
     public static String sShopping = "http://pl.techjumper.com/shop/mobile?title=商城&left=::NativeMenu&right=::person&refresh=refresh";
     public static String sFriendErrorPage = "file:///android_asset/404.html";
 
+    /**
+     * 在SD空间的文件夹名字,以及文件夹内部的头像文件夹名称以及log文件夹名称
+     */
+    public static final String sParentDirName = "polyhomeb";
+    public static final String sAvatarsDirName = "avatars";
+    public static final String sLogDirName = "log";
+
+
 //    static {
 //        sHost = DEBUG ? "http://poly.techjumper.com" : "http://api.ourjujia.com";
 //    }

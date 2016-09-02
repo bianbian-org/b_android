@@ -11,22 +11,42 @@
         android:layout_height="@dimen/dp_218"
         android:orientation="vertical">
 
-        <ImageView
-            android:id="@+id/iv_avatar"
-            android:layout_width="@dimen/dp_110"
-            android:layout_height="@dimen/dp_110"
-            android:layout_gravity="center_horizontal" />
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
 
-        <TextView
-            android:id="@+id/tv_user_name"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal"
-            android:layout_marginTop="@dimen/dp_10"
-            android:gravity="center"
-            android:text="@string/click_to_login_in"
-            android:textColor="@color/color_727272"
-            android:textSize="@dimen/sp_16" />
+            <ImageView
+                android:id="@+id/iv_bg"
+                android:layout_width="@dimen/dp_110"
+                android:layout_height="@dimen/dp_110"
+                android:layout_centerHorizontal="true" />
+
+            <FrameLayout
+                android:id="@+id/layout_avatar"
+                android:layout_width="@dimen/dp_110"
+                android:layout_height="@dimen/dp_110"
+                android:layout_centerHorizontal="true">
+
+                <ImageView
+                    android:id="@+id/iv_avatar"
+                    android:layout_width="@dimen/dp_100"
+                    android:layout_height="@dimen/dp_100"
+                    android:layout_gravity="center" />
+            </FrameLayout>
+
+            <TextView
+                android:id="@+id/tv_user_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/iv_bg"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="@dimen/dp_10"
+                android:gravity="center"
+                android:text="哈哈哈"
+                android:textColor="@color/color_727272"
+                android:textSize="@dimen/sp_16" />
+
+        </RelativeLayout>
 
     </LinearLayout>
 

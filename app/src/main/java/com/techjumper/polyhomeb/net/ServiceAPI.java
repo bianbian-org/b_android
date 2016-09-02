@@ -1,6 +1,7 @@
 package com.techjumper.polyhomeb.net;
 
 
+import com.techjumper.polyhomeb.entity.AvatarEntity;
 import com.techjumper.polyhomeb.entity.BaseArgumentsEntity;
 import com.techjumper.polyhomeb.entity.LoginEntity;
 import com.techjumper.polyhomeb.entity.MessageEntity;
@@ -429,5 +430,43 @@ public interface ServiceAPI {
      */
     @GET("messages")
     Observable<MessageEntity> getMessages(@QueryMap Map<String, String> stringStringMap);
+
+    /**
+     * 更改用户信息
+     * post '/user/profile'
+     * params:
+     * user_id # 用户ID
+     * ticket # session登录验证
+     * username # 用户昵称
+     * sex # 1-男 2-女
+     * birthday #生日 2010-12-21
+     * email #邮箱
+     * return:
+     * 同登录接口
+     * <p>
+     * # ERROR CODE
+     * error_code: 109,	error_msg: '此功能登录后可使用！'
+     */
+    @POST("user/profile")
+    Observable<LoginEntity> setUserInfo(@Body BaseArgumentsEntity entity);
+
+    /**
+     * 修改用户头像
+     * post '/user/update_cover'
+     * params:
+     * user_id # 用户ID
+     * ticket # session登录验证
+     * cover # 图像上传接口返回的图片地址
+     * return:
+     * {
+     * "error_code": 0,
+     * "error_msg": null,
+     * "data": {
+     * "cover": "/upload/images/11f0d2a32b3085b05160a2943d1aec13.jpg"
+     * }
+     * }
+     */
+    @POST("user/update_cover")
+    Observable<AvatarEntity> updateAvatar(@Body BaseArgumentsEntity entity);
 }
 

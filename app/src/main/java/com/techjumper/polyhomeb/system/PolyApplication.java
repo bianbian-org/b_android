@@ -41,7 +41,7 @@ public class PolyApplication extends Lib2Application {
 
     @Override
     public String[] fetchCrashFolderName() {
-        return new String[]{"polyhomeb", "log"};
+        return new String[]{Config.sParentDirName, Config.sLogDirName};
     }
 
     @Override

@@ -10,11 +10,13 @@ import com.techjumper.corelib.rx.tools.RxUtils;
 import com.techjumper.corelib.utils.common.AcHelper;
 import com.techjumper.lib2.utils.PicassoHelper;
 import com.techjumper.polyhomeb.R;
+import com.techjumper.polyhomeb.entity.event.AvatarEvent;
+import com.techjumper.polyhomeb.entity.event.ChangeEvent;
 import com.techjumper.polyhomeb.entity.event.ChooseFamilyVillageEvent;
 import com.techjumper.polyhomeb.mvp.m.HomeMenuFragmentModel;
-import com.techjumper.polyhomeb.mvp.v.activity.LoginActivity;
+import com.techjumper.polyhomeb.mvp.v.activity.UserInfoActivity;
 import com.techjumper.polyhomeb.mvp.v.fragment.HomeMenuFragment;
-import com.techjumper.polyhomeb.other.CircleTransform;
+import com.techjumper.polyhomeb.other.PicassoCircleTransform;
 import com.techjumper.polyhomeb.user.UserManager;
 import com.techjumper.polyhomeb.user.event.LoginEvent;
 
@@ -32,7 +34,7 @@ import rx.Subscription;
 public class HomeMenuFragmentPresenter extends AppBaseFragmentPresenter<HomeMenuFragment> {
 
     private HomeMenuFragmentModel mModel = new HomeMenuFragmentModel(this);
-    private Subscription mSubs1, mSubs2;
+    private Subscription mSubs1, mSubs2, mSubs3;
 
     @Override
     public void initData(Bundle savedInstanceState) {
@@ -47,15 +49,24 @@ public class HomeMenuFragmentPresenter extends AppBaseFragmentPresenter<HomeMenu
                     if (o instanceof LoginEvent) {
                         LoginEvent loginEvent = (LoginEvent) o;
                         boolean login = loginEvent.isLogin();
-                        setAvatarAndName(login);
+                        setAvatarAndName();
                         if (login) { //主要是因为用户1直接点击退出,此时到了登录界面,用户2登陆了.如果不做这个操作,那么就会导致用户2登陆之后显示的侧边栏家庭小区依然是用户1的
                             //这里和HomeFragmentPresenter中的处理一样
                             getView().getAdapter().loadData(getDatas());
                             getView().getAdapter().notifyDataSetChanged();
                         }
+                    } else if (o instanceof ChangeEvent) {
+                        ChangeEvent event = (ChangeEvent) o;
+                        int type = event.getType();
+                        if (1 == type) {
+                            getView().getTvUserName().setText(UserManager.INSTANCE.getUserInfo(UserManager.KEY_USER_NAME));
+                        } else if (2 == type) {
+
+                        }
                     }
                 }));
         changeRightText();
+        changeAvatar();
     }
 
     private void changeRightText() {
@@ -71,16 +82,19 @@ public class HomeMenuFragmentPresenter extends AppBaseFragmentPresenter<HomeMenu
     }
 
 
-    @OnClick(R.id.layout_head)
+    @OnClick(R.id.iv_avatar)
     public void onClick(View view) {
         switch (view.getId()) {
-            case R.id.layout_head:
-                if (!UserManager.INSTANCE.isLogin()) {
-                    new AcHelper.Builder(getView()
-                            .getActivity())
-                            .target(LoginActivity.class)
-                            .start();
-                }
+            case R.id.iv_avatar:
+//                if (!UserManager.INSTANCE.isLogin()) {
+//                    new AcHelper.Builder(getView()
+//                            .getActivity())
+//                            .target(LoginActivity.class)
+//                            .start();
+//                }
+                new AcHelper.Builder(getView().getActivity())
+                        .target(UserInfoActivity.class)
+                        .start();
                 break;
         }
     }
@@ -89,17 +103,33 @@ public class HomeMenuFragmentPresenter extends AppBaseFragmentPresenter<HomeMenu
         return mModel.getDatas();
     }
 
-    public void setAvatarAndName(boolean isLogin) {
-        getView().getTvUserName().setText(isLogin ? (UserManager.INSTANCE.getUserNickName()) : getView().getActivity().getString(R.string.click_to_login_in));
-        String avatarUrl = UserManager.INSTANCE.getUserInfo(UserManager.KEY_AVATAR);
-        if (isLogin) {
-            if (!TextUtils.isEmpty(avatarUrl)) {
-                PicassoHelper.load(avatarUrl).transform(new CircleTransform()).into(getView().getIvAvatar());
-            } else {
-                PicassoHelper.load(R.mipmap.icon_avatar_too_handsome).transform(new CircleTransform()).into(getView().getIvAvatar());
-            }
+    public void setAvatarAndName() {
+        String userNickName = UserManager.INSTANCE.getUserInfo(UserManager.KEY_USER_NAME);
+        String userPhone = UserManager.INSTANCE.getUserInfo(UserManager.KEY_PHONE_NUMBER);
+        if (!TextUtils.isEmpty(userNickName)) {
+            getView().getTvUserName().setText(userNickName);
         } else {
-            PicassoHelper.load(R.mipmap.icon_avatar_not_login).transform(new CircleTransform()).into(getView().getIvAvatar());
+            getView().getTvUserName().setText(userPhone);
         }
+        String avatarUrl = UserManager.INSTANCE.getUserInfo(UserManager.KEY_AVATAR);
+        if (!TextUtils.isEmpty(avatarUrl)) {
+            PicassoHelper.load(avatarUrl).transform(new PicassoCircleTransform()).into(getView().getIvAvatar());
+            PicassoHelper.load(R.mipmap.icon_avatar_bg).transform(new PicassoCircleTransform()).into(getView().getIvBg());
+        } else {
+            PicassoHelper.load(R.mipmap.icon_avatar_too_handsome).transform(new PicassoCircleTransform()).into(getView().getIvAvatar());
+            PicassoHelper.load(R.mipmap.icon_avatar_bg).transform(new PicassoCircleTransform()).into(getView().getIvBg());
+        }
+    }
+
+    private void changeAvatar() {
+        RxUtils.unsubscribeIfNotNull(mSubs3);
+        addSubscription(
+                mSubs3 = RxBus.INSTANCE.asObservable().subscribe(o -> {
+                    if (o instanceof AvatarEvent) {
+                        String avatarUrl = UserManager.INSTANCE.getUserInfo(UserManager.KEY_AVATAR);
+                        setAvatarAndName();
+                    }
+                })
+        );
     }
 }

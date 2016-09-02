@@ -13,7 +13,7 @@ import com.squareup.picasso.Transformation;
  * Date: 16/8/1
  * * * * * * * * * * * * * * * * * * * * * * *
  **/
-public class CircleTransform implements Transformation {
+public class PicassoCircleTransform implements Transformation {
 
     @Override
     public Bitmap transform(Bitmap source) {

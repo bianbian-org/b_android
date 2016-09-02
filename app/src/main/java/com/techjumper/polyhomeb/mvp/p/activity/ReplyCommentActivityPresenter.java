@@ -7,6 +7,7 @@ import com.jakewharton.rxbinding.widget.RxTextView;
 import com.steve.creact.library.display.DisplayBean;
 import com.techjumper.corelib.rx.tools.RxBus;
 import com.techjumper.corelib.rx.tools.RxUtils;
+import com.techjumper.corelib.utils.common.JLog;
 import com.techjumper.corelib.utils.window.DialogUtils;
 import com.techjumper.polyhomeb.Constant;
 import com.techjumper.polyhomeb.R;
@@ -73,6 +74,7 @@ public class ReplyCommentActivityPresenter extends AppBaseActivityPresenter<Repl
         if (!TextUtils.isEmpty(getView().getEtContent().getEditableText().toString().trim())
                 || getView().getPhotos().size() != 0) {
             showDialog();
+            JLog.e(mUrls.get(0));
         } else {
             getView().finish();
         }

@@ -38,5 +38,7 @@ public abstract class JumperApplication extends Application
         CrashExceptionHandler.getInstance(folderName, crashFolderName)
                 .setDefaultHandler()
                 .configRemoteReport(this);
+
     }
+
 }
