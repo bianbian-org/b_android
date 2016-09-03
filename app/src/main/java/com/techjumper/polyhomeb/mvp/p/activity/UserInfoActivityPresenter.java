@@ -91,16 +91,18 @@ public class UserInfoActivityPresenter extends AppBaseActivityPresenter<UserInfo
                                 String nickName = event.getNickName();
                                 getView().getTvNickName().setText(nickName);
                                 mNickName = nickName;
+                                canRightClick();
                             } else if (o instanceof EmailEvent) {
                                 EmailEvent event = (EmailEvent) o;
                                 String email = event.getEmail();
                                 getView().getTvEmail().setText(email);
                                 mEmail = email;
+                                canRightClick();
                             } else if (o instanceof SexEvent) {
                                 SexEvent event = (SexEvent) o;
                                 String sex = event.getSex();
                                 getView().getTvSex().setText(sex);
-                                mSex = sex;  //收到的sex,是字符串的男和女,不是1和2
+                                //收到的sex,是字符串的男和女,不是1和2;SP和服务器返回的是1和2
                                 if (getView().getString(R.string.male).equals(sex)) {
                                     mSex = "1";
                                 } else if (getView().getString(R.string.female).equals(sex)) {
@@ -108,9 +110,20 @@ public class UserInfoActivityPresenter extends AppBaseActivityPresenter<UserInfo
                                 } else {
                                     mSex = "";
                                 }
+                                canRightClick();
                             }
                         }));
-        accessPermissions();  //Rx需要订阅了才会收到事件,所以这里先要开始订阅.接下来的点击事件的第一次点击才会起作用,否则会导致第一次点击之后没有反应,需要第一次之后才能响应后续操作.
+        accessPermissions();  //Rx需要订阅了才会收到事件,所以这里先要开始订阅.接下来的点击事件的第一次点击才会起作用,否则会导致第一次点击之后没有反应,需要点击第一次之后才能响应后续操作.
+    }
+
+    //这里来判断能否点击
+    private void canRightClick() {
+        boolean birthday = mBirthday.equals(UserManager.INSTANCE.getUserInfo(UserManager.KEY_BIRTHDAY));
+        boolean nickname = mNickName.equals(UserManager.INSTANCE.getUserInfo(UserManager.KEY_USER_NAME));
+        boolean email = mEmail.equals(UserManager.INSTANCE.getUserInfo(UserManager.KEY_EMAIL));
+        boolean sex = mSex.equals(UserManager.INSTANCE.getUserInfo(UserManager.KEY_SEX));
+        boolean canClick = !birthday || !nickname || !email || !sex;
+        getView().canRightClick(canClick);
     }
 
     public void onTitleRightClick() {
@@ -153,6 +166,7 @@ public class UserInfoActivityPresenter extends AppBaseActivityPresenter<UserInfo
                                 UserManager.INSTANCE.updateTicket(ticket);
                                 ToastUtils.show(getView().getString(R.string.change_user_info_success));
                                 RxBus.INSTANCE.send(new ChangeEvent(1)); //发送给侧边栏,更新昵称
+                                getView().canRightClick(false);
                             }
                         }));
     }
@@ -193,8 +207,11 @@ public class UserInfoActivityPresenter extends AppBaseActivityPresenter<UserInfo
     private void showDatePicker() {
         Calendar calendar = Calendar.getInstance();
         new DatePickerDialog(getView(), (view, year, monthOfYear, dayOfMonth) -> {
-            mBirthday = year + "-" + (monthOfYear + 1) + "-" + dayOfMonth;
+            String month = monthOfYear > 10 ? (monthOfYear + 1) + "" : "0" + (monthOfYear + 1);
+            String day = dayOfMonth > 10 ? day = dayOfMonth + "" : "0" + dayOfMonth;
+            mBirthday = year + "-" + month + "-" + day;
             getView().getTvBirthday().setText(mBirthday);
+            canRightClick();
         }, calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH), calendar.get(Calendar.DAY_OF_MONTH))
                 .show();
     }
@@ -222,7 +239,7 @@ public class UserInfoActivityPresenter extends AppBaseActivityPresenter<UserInfo
     private void showDialog2ChooseAvatar() {
         ArrayAdapter<String> arrayAdapter = new ArrayAdapter<>(getView(), android.R.layout.simple_list_item_1);
         arrayAdapter.add(getView().getString(R.string.camera));
-        arrayAdapter.add(getView().getString(R.string.photo_libary));
+        arrayAdapter.add(getView().getString(R.string.photo_library));
         DialogUtils.getBuilder(getView())
                 .title(R.string.choose_avatar)
                 .adapter(arrayAdapter, (dialog, itemView, which, text) -> {
@@ -237,7 +254,7 @@ public class UserInfoActivityPresenter extends AppBaseActivityPresenter<UserInfo
                 Intent openCameraIntent = new Intent(
                         MediaStore.ACTION_IMAGE_CAPTURE);
                 tempUri = Uri.fromFile(new File(Environment
-                        .getExternalStorageDirectory(), "image.jpg"));
+                        .getExternalStorageDirectory().getAbsolutePath() + File.separator + Config.sParentDirName + File.separator + Config.sAvatarsDirName, "image.jpg"));
                 // 指定照片保存路径（SD卡），image.jpg为一个临时文件，每次拍照后这个图片都会被替换
                 openCameraIntent.putExtra(MediaStore.EXTRA_OUTPUT, tempUri);
                 getView().startActivityForResult(openCameraIntent, TAKE_PICTURE);

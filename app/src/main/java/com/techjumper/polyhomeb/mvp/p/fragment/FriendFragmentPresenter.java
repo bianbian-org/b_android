@@ -7,6 +7,7 @@ import com.techjumper.corelib.rx.tools.RxUtils;
 import com.techjumper.corelib.utils.common.AcHelper;
 import com.techjumper.corelib.utils.common.ResourceUtils;
 import com.techjumper.polyhomeb.R;
+import com.techjumper.polyhomeb.entity.event.ChooseFamilyVillageEvent;
 import com.techjumper.polyhomeb.entity.event.RefreshStopEvent;
 import com.techjumper.polyhomeb.entity.event.ReloadWebPageEvent;
 import com.techjumper.polyhomeb.mvp.v.activity.NewInvitationActivity;
@@ -28,7 +29,7 @@ import rx.Subscription;
 public class FriendFragmentPresenter extends AppBaseFragmentPresenter<FriendFragment> {
 
     private PolyPopupWindow mPopDevice;
-    private Subscription mSub1;
+    private Subscription mSubs1, mSubs2;
 
     @Override
     public void initData(Bundle savedInstanceState) {
@@ -39,12 +40,27 @@ public class FriendFragmentPresenter extends AppBaseFragmentPresenter<FriendFrag
     public void onViewInited(Bundle savedInstanceState) {
         initPop();
         reloadPage();
+        reloadUrlAndRefreshWebPage();
+    }
+
+    //收到此消息,说明在侧边栏切换了家庭,那么此处就应该重新按照SP中存储的小区或者家庭的id来重载页面
+    private void reloadUrlAndRefreshWebPage() {
+        RxUtils.unsubscribeIfNotNull(mSubs2);
+        addSubscription(
+                mSubs2 = RxBus.INSTANCE
+                        .asObservable()
+                        .subscribe(o -> {
+                            if (o instanceof ChooseFamilyVillageEvent) {
+                                getView().getWebView().reload();
+                            }
+                        })
+        );
     }
 
     private void reloadPage() {
-        RxUtils.unsubscribeIfNotNull(mSub1);
+        RxUtils.unsubscribeIfNotNull(mSubs1);
         addSubscription(
-                mSub1 = RxBus.INSTANCE.asObservable().subscribe(o -> {
+                mSubs1 = RxBus.INSTANCE.asObservable().subscribe(o -> {
                     if (o instanceof ReloadWebPageEvent) {
                         getView().getWebView().reload();
                     } else if (o instanceof RefreshStopEvent) {

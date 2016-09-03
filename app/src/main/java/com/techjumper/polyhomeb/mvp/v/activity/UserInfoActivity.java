@@ -8,6 +8,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.techjumper.corelib.mvp.factory.Presenter;
+import com.techjumper.corelib.utils.common.ResourceUtils;
 import com.techjumper.lib2.utils.PicassoHelper;
 import com.techjumper.polyhomeb.R;
 import com.techjumper.polyhomeb.mvp.p.activity.UserInfoActivityPresenter;
@@ -93,6 +94,15 @@ public class UserInfoActivity extends AppBaseActivity<UserInfoActivityPresenter>
             PicassoHelper.load(R.mipmap.icon_avatar_too_handsome).transform(new PicassoCircleTransform()).into(mIvAvatar);
             PicassoHelper.load(R.mipmap.icon_avatar_bg).transform(new PicassoCircleTransform()).into(mIvBg);
         }
+
+        //最开始的时候,右上角的按钮是灰色且不可点击
+        canRightClick(false);
+    }
+
+    //这里来控制View
+    public void canRightClick(boolean canRightClick) {
+        mTvRight.setTextColor(ResourceUtils.getColorResource(canRightClick ? R.color.color_ffffff : R.color.color_70ffffff));
+        mLayoutRight.setEnabled(canRightClick);
     }
 
     public TextView getTvNickName() {

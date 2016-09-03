@@ -1,14 +1,5 @@
 package com.techjumper.corelib.utils.file;
 
-import java.io.BufferedInputStream;
-import java.io.BufferedOutputStream;
-import java.io.ByteArrayOutputStream;
-import java.io.Closeable;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.util.Map;
-
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Build;
@@ -18,6 +9,17 @@ import android.text.TextUtils;
 
 import com.techjumper.corelib.utils.Utils;
 import com.techjumper.corelib.utils.system.AppUtils;
+
+import java.io.BufferedInputStream;
+import java.io.BufferedOutputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.Closeable;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.text.DecimalFormat;
+import java.util.Map;
 
 public class FileUtils {
 
@@ -362,4 +364,79 @@ public class FileUtils {
         }
         return null;
     }
+
+    /**
+     * 获取文件夹大小
+     *
+     * @param file File实例
+     * @return long 单位为M
+     * @throws Exception
+     */
+    public static long getFolderSize(File file) throws Exception {
+        long size = 0;
+        File[] fileList = file.listFiles();
+        for (int i = 0; i < fileList.length; i++) {
+            if (fileList[i].isDirectory()) {
+                size = size + getFolderSize(fileList[i]);
+            } else {
+                size = size + fileList[i].length();
+            }
+        }
+        return size;
+    }
+
+    /**
+     * 删除指定目录下文件及目录
+     *
+     * @param filePath       文件路径
+     * @param isDeleteFolder 是否删除目录
+     * @throws IOException
+     */
+    public static void deleteFolderFile(String filePath, boolean isDeleteFolder)
+            throws IOException {
+        if (!TextUtils.isEmpty(filePath)) {
+            File file = new File(filePath);
+
+            if (file.isDirectory()) {// 处理目录
+                File files[] = file.listFiles();
+                for (int i = 0; i < files.length; i++) {
+                    deleteFolderFile(files[i].getAbsolutePath(), isDeleteFolder);
+                }
+                if (isDeleteFolder && file.listFiles().length == 0) {// 目录下没有文件或者目录，删除
+                    file.delete();
+                }
+            } else {
+                file.delete();
+            }
+        }
+    }
+
+    /**
+     * 格式化文件大小，以B、K、M、G的格式显示
+     */
+    public static String formatFileSize(long size) {
+        StringBuilder sb = new StringBuilder();
+
+        //将数字格式化，""里面填写规则。 #代表小数点前。小数点后面几个0就代表保留几个小数
+        DecimalFormat df = new DecimalFormat("#.00");
+
+        if (size < 1) {  //如果是空的,显示0M
+            sb.append(0);
+            sb.append("M");
+        } else if (size < 1024) {//显示B
+            sb.append(size);
+            sb.append("B");
+        } else if (size < 1024 * 1024) {  //显示KB
+            sb.append(df.format(size / 1024.0));
+            sb.append("K");
+        } else if (size < 1024.0 * 1024 * 1024) {  //显示MB
+            sb.append(df.format(size / 1024.0 / 1024));
+            sb.append("M");
+        } else {  //显示G
+            sb.append(df.format(size / 1024 / 1024.0 / 1024));
+            sb.append("G");
+        }
+        return sb.toString();
+    }
+
 }
