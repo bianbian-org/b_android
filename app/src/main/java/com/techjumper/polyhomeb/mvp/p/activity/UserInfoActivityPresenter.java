@@ -8,6 +8,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.ArrayAdapter;
 
@@ -20,6 +21,7 @@ import com.techjumper.corelib.rx.tools.RxUtils;
 import com.techjumper.corelib.utils.common.AcHelper;
 import com.techjumper.corelib.utils.window.DialogUtils;
 import com.techjumper.corelib.utils.window.ToastUtils;
+import com.techjumper.lib2.utils.PicassoHelper;
 import com.techjumper.polyhomeb.Config;
 import com.techjumper.polyhomeb.R;
 import com.techjumper.polyhomeb.entity.AvatarEntity;
@@ -40,6 +42,7 @@ import com.techjumper.polyhomeb.utils.PicUtils;
 import com.techjumper.polyhomeb.utils.UploadPicUtil;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.Calendar;
 
 import butterknife.OnClick;
@@ -66,6 +69,8 @@ public class UserInfoActivityPresenter extends AppBaseActivityPresenter<UserInfo
     public static final String KEY_NICK_NAME = "key_nick_name";
     public static final String KEY_EMAIL = "key_email";
     public static final String KEY_SEX = "key_sex";
+
+    private String mLocalAvatarPath = "";
 
     /**
      * 选择和裁剪图片时候的各种code
@@ -320,6 +325,7 @@ public class UserInfoActivityPresenter extends AppBaseActivityPresenter<UserInfo
                     photo
                     , Environment.getExternalStorageDirectory().getAbsolutePath() + File.separator + Config.sParentDirName + File.separator + Config.sAvatarsDirName
                     , String.valueOf(System.currentTimeMillis()));
+            mLocalAvatarPath = imagePath;
             uploadPicToServer(imagePath);
         }
     }
@@ -371,12 +377,37 @@ public class UserInfoActivityPresenter extends AppBaseActivityPresenter<UserInfo
                                 if (!processNetworkResult(entity)) return;
                                 String cover = entity.getData().getCover();
                                 UserManager.INSTANCE.saveUserInfo(UserManager.KEY_AVATAR, Config.sHost + cover);
+                                UserManager.INSTANCE.saveUserInfo(UserManager.KEY_LOCAL_AVATAR, mLocalAvatarPath);
                                 ToastUtils.show(getView().getString(R.string.change_avatar_success));
                                 RxBus.INSTANCE.send(new AvatarEvent(entity.getData().getCover()));
+
+                                saveAvatarToDisk();
                             }
                         }));
+    }
 
+    /**
+     * 缓存头像到本地
+     */
+    private void saveAvatarToDisk() {
+        String avatarUrl = UserManager.INSTANCE.getUserInfo(UserManager.KEY_AVATAR);
+        if (!TextUtils.isEmpty(avatarUrl)) {
+            new Thread(() -> {
+                try {
+                    Bitmap bitmap = PicassoHelper.load(avatarUrl).get();
+                    String path = PicUtils.savePhoto(
+                            bitmap
+                            , Environment.getExternalStorageDirectory().getAbsolutePath() + File.separator + Config.sParentDirName + File.separator + Config.sAvatarsDirName
+                            , String.valueOf(System.currentTimeMillis()) + "avatar");
+                    if (!TextUtils.isEmpty(path)) {
+                        UserManager.INSTANCE.saveUserInfo(UserManager.KEY_LOCAL_AVATAR, path);
+                    }
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }).start();
 
+        }
     }
 
 }

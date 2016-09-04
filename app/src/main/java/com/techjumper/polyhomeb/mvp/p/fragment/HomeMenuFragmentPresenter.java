@@ -1,14 +1,18 @@
 package com.techjumper.polyhomeb.mvp.p.fragment;
 
+import android.graphics.Bitmap;
 import android.os.Bundle;
+import android.os.Environment;
 import android.text.TextUtils;
 import android.view.View;
 
+import com.bumptech.glide.Glide;
 import com.steve.creact.library.display.DisplayBean;
 import com.techjumper.corelib.rx.tools.RxBus;
 import com.techjumper.corelib.rx.tools.RxUtils;
 import com.techjumper.corelib.utils.common.AcHelper;
 import com.techjumper.lib2.utils.PicassoHelper;
+import com.techjumper.polyhomeb.Config;
 import com.techjumper.polyhomeb.R;
 import com.techjumper.polyhomeb.entity.event.AvatarEvent;
 import com.techjumper.polyhomeb.entity.event.ChangeEvent;
@@ -16,10 +20,13 @@ import com.techjumper.polyhomeb.entity.event.ChooseFamilyVillageEvent;
 import com.techjumper.polyhomeb.mvp.m.HomeMenuFragmentModel;
 import com.techjumper.polyhomeb.mvp.v.activity.UserInfoActivity;
 import com.techjumper.polyhomeb.mvp.v.fragment.HomeMenuFragment;
-import com.techjumper.polyhomeb.other.PicassoCircleTransform;
+import com.techjumper.polyhomeb.other.GlideBitmapTransformation;
 import com.techjumper.polyhomeb.user.UserManager;
 import com.techjumper.polyhomeb.user.event.LoginEvent;
+import com.techjumper.polyhomeb.utils.PicUtils;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.List;
 
 import butterknife.OnClick;
@@ -106,18 +113,41 @@ public class HomeMenuFragmentPresenter extends AppBaseFragmentPresenter<HomeMenu
     public void setAvatarAndName() {
         String userNickName = UserManager.INSTANCE.getUserInfo(UserManager.KEY_USER_NAME);
         String userPhone = UserManager.INSTANCE.getUserInfo(UserManager.KEY_PHONE_NUMBER);
+        String avatarUrl = UserManager.INSTANCE.getUserInfo(UserManager.KEY_AVATAR);
+        String localAvatarUrl = UserManager.INSTANCE.getUserInfo(UserManager.KEY_LOCAL_AVATAR);
+
         if (!TextUtils.isEmpty(userNickName)) {
             getView().getTvUserName().setText(userNickName);
         } else {
             getView().getTvUserName().setText(userPhone);
         }
-        String avatarUrl = UserManager.INSTANCE.getUserInfo(UserManager.KEY_AVATAR);
-        if (!TextUtils.isEmpty(avatarUrl)) {
-            PicassoHelper.load(avatarUrl).transform(new PicassoCircleTransform()).into(getView().getIvAvatar());
-            PicassoHelper.load(R.mipmap.icon_avatar_bg).transform(new PicassoCircleTransform()).into(getView().getIvBg());
-        } else {
-            PicassoHelper.load(R.mipmap.icon_avatar_too_handsome).transform(new PicassoCircleTransform()).into(getView().getIvAvatar());
-            PicassoHelper.load(R.mipmap.icon_avatar_bg).transform(new PicassoCircleTransform()).into(getView().getIvBg());
+
+        //优先加载本地的图片,如果不存在才去网络请求
+        if (!TextUtils.isEmpty(localAvatarUrl)) {
+//            PicassoHelper.load(localAvatarUrl).transform(new PicassoCircleTransform()).into(getView().getIvAvatar());
+//            PicassoHelper.load(R.mipmap.icon_avatar_bg).transform(new PicassoCircleTransform()).into(getView().getIvBg());
+            Glide.with(getView()).load(localAvatarUrl).transform(new GlideBitmapTransformation(getView().getActivity())).into(getView().getIvAvatar());
+            Glide.with(getView()).load(R.mipmap.icon_avatar_bg).transform(new GlideBitmapTransformation(getView().getActivity())).into(getView().getIvBg());
+        } else if (!TextUtils.isEmpty(avatarUrl)) {
+//            PicassoHelper.load(avatarUrl).transform(new PicassoCircleTransform()).into(getView().getIvAvatar());
+//            PicassoHelper.load(R.mipmap.icon_avatar_bg).transform(new PicassoCircleTransform()).into(getView().getIvBg());
+            Glide.with(getView()).load(avatarUrl).transform(new GlideBitmapTransformation(getView().getActivity())).into(getView().getIvAvatar());
+            Glide.with(getView()).load(R.mipmap.icon_avatar_bg).transform(new GlideBitmapTransformation(getView().getActivity())).into(getView().getIvBg());
+            //缓存图片到本地
+            new Thread(() -> {
+                try {
+                    Bitmap bitmap = PicassoHelper.load(avatarUrl).get();
+                    String path = PicUtils.savePhoto(
+                            bitmap
+                            , Environment.getExternalStorageDirectory().getAbsolutePath() + File.separator + Config.sParentDirName + File.separator + Config.sAvatarsDirName
+                            , String.valueOf(System.currentTimeMillis()) + "avatar");
+                    if (!TextUtils.isEmpty(path)) {
+                        UserManager.INSTANCE.saveUserInfo(UserManager.KEY_LOCAL_AVATAR, path);
+                    }
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }).start();
         }
     }
 
