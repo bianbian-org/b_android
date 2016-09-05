@@ -271,6 +271,7 @@ public class NewUnusedActivityPresenter extends AppBaseActivityPresenter<NewUnus
 
                             @Override
                             public void onNext(UploadPicEntity uploadPicEntity) {
+                                if (!processNetworkResult(uploadPicEntity)) return;
                             }
                         }));
 

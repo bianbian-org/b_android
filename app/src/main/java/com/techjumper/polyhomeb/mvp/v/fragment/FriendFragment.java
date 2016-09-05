@@ -68,7 +68,7 @@ public class FriendFragment extends AppBaseFragment<FriendFragmentPresenter>
     protected void initView(Bundle savedInstanceState) {
         String url = Config.sFriend;
         WebTitleManager webTitleManager = new WebTitleManager(url, mViewRoot, this);
-        mRefreshType = webTitleManager.getRefreshType();
+//        mRefreshType = webTitleManager.getRefreshType();
         mWebView.addJsInterface(getActivity(), Constant.JS_NATIVE_BRIDGE);
         mWebView.processBack();
         mWebView.loadUrl(url);
@@ -156,12 +156,13 @@ public class FriendFragment extends AppBaseFragment<FriendFragmentPresenter>
             public void onRefreshBegin(PtrFrameLayout frame) {
                 //判断是哪种情况的刷新:如果是404,500之类的,或者断网这种错误,导致用户手动刷新的,那么肯定就需要reload
                 //如果不是以上情况导致的用户手动下拉刷新,那么就调用refresh()刷新,具体的刷新方式,按照url的refresh=参数来做,也就是refresh()自己去判断
-                if (mIsOtherError) {
-                    mWebView.reload();
-                    mIsOtherError = false;
-                } else {
-                    refresh();
-                }
+                //9月5日更改刷新逻辑客户端直接调用reload
+//                if (mIsOtherError) {
+                mWebView.reload();
+//                    mIsOtherError = false;
+//                } else {
+//                refresh();
+//                }
                 new Handler().postDelayed(() -> stopRefresh(""), NetHelper.GLOBAL_TIMEOUT);
             }
 
@@ -172,16 +173,16 @@ public class FriendFragment extends AppBaseFragment<FriendFragmentPresenter>
         });
     }
 
-    /**
-     * 此处的刷新不是调用webView的reload(),而是调用js的方法->JAVA_2_JS_REFRESH;js那边通过Ajax来刷新,所以不用单纯重新刷新界面
-     */
-    private void refresh() {
-        if (TextUtils.isEmpty(mRefreshType)) {
-            mWebView.reload();
-        } else {
-            mWebView.loadUrl("javascript:" + mRefreshType + "()");
-        }
-    }
+//    /**
+//     * 此处的刷新不是调用webView的reload(),而是调用js的方法->JAVA_2_JS_REFRESH;js那边通过Ajax来刷新,所以不用单纯重新刷新界面
+//     */
+//    private void refresh() {
+//        if (TextUtils.isEmpty(mRefreshType)) {
+//            mWebView.reload();
+//        } else {
+//            mWebView.loadUrl("javascript:" + mRefreshType + "()");
+//        }
+//    }
 
     /**
      * 根据url传回来的method,调用页面的function

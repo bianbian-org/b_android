@@ -9,13 +9,10 @@ import com.techjumper.corelib.utils.Utils;
 import com.techjumper.polyhomeb.R;
 import com.techjumper.polyhomeb.adapter.FragmentAdapter;
 import com.techjumper.polyhomeb.adapter.IndicatorAdapter;
-import com.techjumper.polyhomeb.mvp.p.activity.MessageCenterActivityPresenter;
+import com.techjumper.polyhomeb.mvp.p.activity.PaymentActivityPresenter;
+import com.techjumper.polyhomeb.mvp.v.fragment.AllpaidFragment;
 import com.techjumper.polyhomeb.mvp.v.fragment.AppBaseFragment;
-import com.techjumper.polyhomeb.mvp.v.fragment.MessageAllFragment;
-import com.techjumper.polyhomeb.mvp.v.fragment.MessageFriendFragment;
-import com.techjumper.polyhomeb.mvp.v.fragment.MessageOrdersFragment;
-import com.techjumper.polyhomeb.mvp.v.fragment.MessagePropertyFragment;
-import com.techjumper.polyhomeb.mvp.v.fragment.MessageSystemFragment;
+import com.techjumper.polyhomeb.mvp.v.fragment.UnpaidFragment;
 
 import net.lucode.hackware.magicindicator.MagicIndicator;
 import net.lucode.hackware.magicindicator.buildins.commonnavigator.CommonNavigator;
@@ -28,11 +25,11 @@ import butterknife.Bind;
 /**
  * * * * * * * * * * * * * * * * * * * * * * *
  * Created by lixin
- * Date: 16/8/26
+ * Date: 16/9/4
  * * * * * * * * * * * * * * * * * * * * * * *
  **/
-@Presenter(MessageCenterActivityPresenter.class)
-public class MessageCenterActivity extends AppBaseActivity<MessageCenterActivityPresenter> {
+@Presenter(PaymentActivityPresenter.class)
+public class PaymentActivity extends AppBaseActivity<PaymentActivityPresenter> {
 
     @Bind(R.id.indicator)
     MagicIndicator mIndicator;
@@ -44,7 +41,7 @@ public class MessageCenterActivity extends AppBaseActivity<MessageCenterActivity
 
     @Override
     protected View inflateView(Bundle savedInstanceState) {
-        return inflate(R.layout.activity_message_center);
+        return inflate(R.layout.activity_payment);
     }
 
     @Override
@@ -55,15 +52,12 @@ public class MessageCenterActivity extends AppBaseActivity<MessageCenterActivity
 
     @Override
     public String getLayoutTitle() {
-        return getString(R.string.message_center);
+        return getString(R.string.property_payment);
     }
 
     private void initIndicator() {
-        mIndicatorTitles.add(Utils.appContext.getResources().getString(R.string.message_title_all));
-        mIndicatorTitles.add(Utils.appContext.getResources().getString(R.string.message_title_system));
-        mIndicatorTitles.add(Utils.appContext.getResources().getString(R.string.message_title_orders));
-        mIndicatorTitles.add(Utils.appContext.getResources().getString(R.string.message_title_friend));
-        mIndicatorTitles.add(Utils.appContext.getResources().getString(R.string.message_title_property));
+        mIndicatorTitles.add(Utils.appContext.getResources().getString(R.string.un_payment));
+        mIndicatorTitles.add(Utils.appContext.getResources().getString(R.string.paymented));
         CommonNavigator navigator = new CommonNavigator(this);
         navigator.setAdjustMode(true);
         IndicatorAdapter indicatorAdapter = new IndicatorAdapter(mIndicatorTitles, mViewPager);
@@ -74,14 +68,10 @@ public class MessageCenterActivity extends AppBaseActivity<MessageCenterActivity
     }
 
     private void initViewPager() {
-        mFragments.add(MessageAllFragment.getInstance());
-        mFragments.add(MessageSystemFragment.getInstance());
-        mFragments.add(MessageOrdersFragment.getInstance());
-        mFragments.add(MessageFriendFragment.getInstance());
-        mFragments.add(MessagePropertyFragment.getInstance());
+        mFragments.add(UnpaidFragment.getInstance());
+        mFragments.add(AllpaidFragment.getInstance());
         FragmentAdapter adapter = new FragmentAdapter(this, mFragments);
         mViewPager.setAdapter(adapter);
-        mViewPager.setOffscreenPageLimit(5);
         mViewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
             public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
@@ -99,5 +89,9 @@ public class MessageCenterActivity extends AppBaseActivity<MessageCenterActivity
             }
         });
         mViewPager.setCurrentItem(0);
+    }
+
+    public ViewPager getViewPager() {
+        return mViewPager;
     }
 }

@@ -89,16 +89,9 @@ dependencies {
     compile project(':magicindicator')
     compile project(':PhotoPicker')
     compile project(':zxing')
-
-
     compile "com.creact:powerful-adapter-lib-release:$rootProject.recyclerAdapter"
     provided "com.creact:powerful-adapter-annotations-release:$rootProject.recyclerAdapter"
     apt "com.creact:powerful-adapter-complier-release:$rootProject.recyclerAdapter"
-
     compile 'com.umeng.analytics:analytics:latest.integration'
-
-
-
     compile "com.github.anrwatchdog:anrwatchdog:$rootProject.anr_whatchDog"
-
 }

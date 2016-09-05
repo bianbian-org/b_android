@@ -5,6 +5,7 @@ import android.annotation.TargetApi;
 import android.app.Activity;
 import android.content.Context;
 import android.graphics.Bitmap;
+import android.os.Build;
 import android.util.AttributeSet;
 import android.view.KeyEvent;
 import android.webkit.WebChromeClient;
@@ -18,6 +19,12 @@ import android.webkit.WebViewClient;
 import com.techjumper.polyhomeb.interfaces.IWebView;
 import com.techjumper.polyhomeb.interfaces.IWebViewChromeClient;
 import com.techjumper.polyhomeb.other.JavascriptObject;
+import com.techjumper.polyhomeb.user.UserManager;
+
+import java.io.IOException;
+
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
 
 /**
  * * * * * * * * * * * * * * * * * * * * * * *
@@ -61,8 +68,8 @@ public class PolyWebView extends WebView {
         getSettings().setCacheMode(WebSettings.LOAD_NO_CACHE);
         setWebViewClient(new PolyWebViewClient());
         setWebChromeClient(new PolyWebChromeClient());
+        setOnLongClickListener(v -> true);//屏蔽掉长按事件 因为webview长按时将会调用系统的复制控件:
     }
-
 
     public void addJsInterface(Activity activity, String clazzName) {
         addJavascriptInterface(new JavascriptObject(activity), clazzName);
@@ -92,12 +99,83 @@ public class PolyWebView extends WebView {
         this.iWebViewChromeClient = iWebViewChromeClient;
     }
 
-
     public void setOnWebViewReceiveErrorListener(IWebView iWebView) {
         this.iWebView = iWebView;
     }
 
+    private WebResourceResponse method(String url) {
+
+        try {
+            OkHttpClient httpClient = new OkHttpClient();
+            Request request = new Request.Builder()
+                    .url(url.trim())
+//                    .cacheControl(new CacheControl.Builder().noCache().build())
+//                    .cacheControl(CacheControl.FORCE_NETWORK)
+//                    .header("User-Agent", "OkHttp Headers.java")
+                    .addHeader("huserid", UserManager.INSTANCE.getUserInfo(UserManager.KEY_ID))
+                    .addHeader("hticket", UserManager.INSTANCE.getTicket())
+                    .build();
+            return new WebResourceResponse("text/html", "utf-8"
+                    , httpClient.newCall(request).execute().body().byteStream());
+        } catch (IOException e) {
+            return null;
+        }
+    }
+
+
     private class PolyWebViewClient extends WebViewClient {
+
+
+        @TargetApi(Build.VERSION_CODES.LOLLIPOP)
+        @Override
+        public WebResourceResponse shouldInterceptRequest(WebView view, WebResourceRequest request) {
+//            JLog.e(request.getUrl().toString());
+//            return method(request.getUrl().toString());
+
+//            URL url = null;
+//            URLConnection connection = null;
+//            try {
+//                url = new URL(request.getUrl().toString());
+//                connection = url.openConnection();
+//                connection.setRequestProperty("huserid", UserManager.INSTANCE.getUserInfo(UserManager.KEY_ID));
+//                connection.setRequestProperty("hticket", UserManager.INSTANCE.getTicket());
+//                return new WebResourceResponse("text/html", "utf-8"
+//                        , connection.getInputStream());
+//            } catch (MalformedURLException e) {
+//                e.printStackTrace();
+//                return null;
+//            } catch (IOException e) {
+//                e.printStackTrace();
+//                return null;
+//            }
+
+            return super.shouldInterceptRequest(view,request);
+
+
+        }
+
+        @SuppressWarnings("deprecation")
+        @Override
+        public WebResourceResponse shouldInterceptRequest(WebView view, String url) {
+//            return method(url);
+//            URL url1 = null;
+//            URLConnection connection = null;
+//            try {
+//                url1 = new URL(url);
+//                connection = url1.openConnection();
+//                connection.setRequestProperty("huserid", UserManager.INSTANCE.getUserInfo(UserManager.KEY_ID));
+//                connection.setRequestProperty("hticket", UserManager.INSTANCE.getTicket());
+//                return new WebResourceResponse("text/html", "utf-8"
+//                        , connection.getInputStream());
+//            } catch (MalformedURLException e) {
+//                e.printStackTrace();
+//                return null;
+//            } catch (IOException e) {
+//                e.printStackTrace();
+//                return null;
+//            }
+            return super.shouldInterceptRequest(view,url);
+        }
 
         @Override
         public boolean shouldOverrideUrlLoading(WebView view, String url) {

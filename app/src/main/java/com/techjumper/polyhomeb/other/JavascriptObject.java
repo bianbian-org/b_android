@@ -143,4 +143,14 @@ public class JavascriptObject {
 
     }
 
+//    @JavascriptInterface
+//    public String getUserId() {
+//        return UserManager.INSTANCE.getUserInfo(UserManager.KEY_ID);
+//    }
+//
+//    @JavascriptInterface
+//    public String getTicket() {
+//        return UserManager.INSTANCE.getTicket();
+//    }
+
 }

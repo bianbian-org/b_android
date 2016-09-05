@@ -7,10 +7,10 @@ import android.view.View;
 import com.steve.creact.annotation.DataBean;
 import com.steve.creact.library.viewholder.BaseRecyclerViewHolder;
 import com.techjumper.corelib.utils.common.AcHelper;
-import com.techjumper.corelib.utils.window.ToastUtils;
 import com.techjumper.polyhomeb.Constant;
 import com.techjumper.polyhomeb.R;
 import com.techjumper.polyhomeb.adapter.recycler_Data.PropertyData;
+import com.techjumper.polyhomeb.mvp.v.activity.PaymentActivity;
 import com.techjumper.polyhomeb.mvp.v.activity.PropertyDetailActivity;
 
 /**
@@ -34,7 +34,7 @@ public class PropertyViewHolder extends BaseRecyclerViewHolder<PropertyData> {
             return;
         setText(R.id.tv_notice, data.getNotice());
         setOnClickListener(R.id.btn_checkout_property, v -> {
-            ToastUtils.show("点击了物业的查看");
+//            ToastUtils.show("点击了物业的查看");
         });
         //维修
         setOnClickListener(R.id.repair, v -> {
@@ -60,6 +60,15 @@ public class PropertyViewHolder extends BaseRecyclerViewHolder<PropertyData> {
             bundle.putInt(Constant.KEY_CURRENT_BUTTON, Constant.VALUE_PLACARD);
             new AcHelper.Builder((Activity) getContext())
                     .target(PropertyDetailActivity.class)
+                    .extra(bundle)
+                    .start();
+        });
+        //缴费
+        setOnClickListener(R.id.payment, v -> {
+            Bundle bundle = new Bundle();
+            bundle.putInt(Constant.KEY_CURRENT_BUTTON, Constant.VALUE_PAYMENT);
+            new AcHelper.Builder((Activity) getContext())
+                    .target(PaymentActivity.class)
                     .extra(bundle)
                     .start();
         });
