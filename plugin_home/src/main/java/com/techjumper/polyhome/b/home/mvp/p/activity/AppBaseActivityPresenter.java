@@ -20,9 +20,14 @@ import rx.Subscription;
  **/
 public abstract class AppBaseActivityPresenter<T extends AppBaseActivity> extends BaseActivityPresenterImp<T> {
     private List<Subscription> mSubList = new ArrayList<>();
+    private boolean mIsDestory;
 
     public List<Subscription> addSubscription(Subscription subscription) {
-        mSubList.add(subscription);
+        if (mIsDestory) {
+            RxUtils.unsubscribeIfNotNull(subscription);
+        } else {
+            mSubList.add(subscription);
+        }
         return mSubList;
     }
 
@@ -35,6 +40,7 @@ public abstract class AppBaseActivityPresenter<T extends AppBaseActivity> extend
 
     @Override
     public void onDestroy() {
+        mIsDestory = true;
         unsubscribeAll();
         super.onDestroy();
     }

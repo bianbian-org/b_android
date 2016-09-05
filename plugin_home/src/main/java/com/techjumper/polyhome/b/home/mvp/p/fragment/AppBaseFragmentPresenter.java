@@ -20,9 +20,14 @@ import rx.Subscription;
  **/
 public abstract class AppBaseFragmentPresenter<T extends AppBaseFragment> extends BaseFragmentPresenterImp<T> {
     private List<Subscription> mSubList = new ArrayList<>();
+    private boolean mIsDestoryView;
 
     public List<Subscription> addSubscription(Subscription subscription) {
-        mSubList.add(subscription);
+        if (mIsDestoryView) {
+            RxUtils.unsubscribeIfNotNull(subscription);
+        } else {
+            mSubList.add(subscription);
+        }
         return mSubList;
     }
 
@@ -34,6 +39,7 @@ public abstract class AppBaseFragmentPresenter<T extends AppBaseFragment> extend
 
     @Override
     public void onDestroyView() {
+        mIsDestoryView = true;
         unsubscribeAll();
         super.onDestroyView();
     }
