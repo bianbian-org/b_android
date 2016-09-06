@@ -233,6 +233,7 @@ public class FriendFragment extends AppBaseFragment<FriendFragmentPresenter>
 //        mWebView.loadUrl(Config.sFriendErrorPage);
         ToastUtils.show("友邻网页错误,错误码:" + errorCode);
         mIsOtherError = true;
+//        JLog.e("errorCode" + errorCode);
     }
 
     /**
@@ -244,6 +245,7 @@ public class FriendFragment extends AppBaseFragment<FriendFragmentPresenter>
 //        mWebView.loadUrl(Config.sFriendErrorPage);
         ToastUtils.show("在友邻中,WebView的HTTP错误了");
         mIsOtherError = true;
+//        JLog.e("errorResponse.getStatusCode" + errorResponse.getStatusCode());
     }
 
     /**

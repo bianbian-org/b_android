@@ -9,7 +9,6 @@ import com.techjumper.corelib.mvp.factory.Presenter;
 import com.techjumper.corelib.rx.tools.RxBus;
 import com.techjumper.polyhomeb.Constant;
 import com.techjumper.polyhomeb.R;
-import com.techjumper.polyhomeb.entity.event.ReloadWebPageEvent;
 import com.techjumper.polyhomeb.entity.event.ToggleMenuClickEvent;
 import com.techjumper.polyhomeb.interfaces.IWebViewTitleClick;
 import com.techjumper.polyhomeb.manager.WebTitleManager;
@@ -107,7 +106,7 @@ public class ReplyDetailActivity extends AppBaseActivity<ReplyDetailActivityPres
         switch (mRightSecondMethod) {
             case WebTitleHelper.NATIVE_METHOD_RETURN:
                 onBackPressed();
-                RxBus.INSTANCE.send(new ReloadWebPageEvent());
+//                RxBus.INSTANCE.send(new ReloadWebPageEvent());
                 break;
             case WebTitleHelper.NATIVE_METHOD_MENU:
                 RxBus.INSTANCE.send(new ToggleMenuClickEvent());
@@ -130,7 +129,7 @@ public class ReplyDetailActivity extends AppBaseActivity<ReplyDetailActivityPres
 
     @Override
     public void onBackPressed() {
-        RxBus.INSTANCE.send(new ReloadWebPageEvent());
+//        RxBus.INSTANCE.send(new ReloadWebPageEvent());
         super.onBackPressed();
     }
 
