@@ -121,4 +121,8 @@ public class TabHomeActivity extends AppBaseActivity<TabHomeActivityPresenter> {
 //    }
 
 
+    @Override
+    protected boolean canSlide2Close() {
+        return false;
+    }
 }

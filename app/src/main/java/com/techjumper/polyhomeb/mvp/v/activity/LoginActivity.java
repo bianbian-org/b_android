@@ -98,4 +98,9 @@ public class LoginActivity extends AppBaseActivity<LoginActivityPresenter> {
     public void onBackPressed() {
         getPresenter().onBackPressed();
     }
+
+    @Override
+    protected boolean canSlide2Close() {
+        return false;
+    }
 }

@@ -1,9 +1,13 @@
 package com.techjumper.polyhomeb.mvp.v.activity;
 
 
+import android.graphics.Color;
 import android.os.Bundle;
 import android.view.View;
 
+import com.r0adkll.slidr.Slidr;
+import com.r0adkll.slidr.model.SlidrConfig;
+import com.r0adkll.slidr.model.SlidrPosition;
 import com.techjumper.corelib.mvp.factory.Presenter;
 import com.techjumper.corelib.rx.tools.RxUtils;
 import com.techjumper.corelib.ui.activity.BaseFragmentActivity;
@@ -47,6 +51,25 @@ public abstract class AppBaseActivity<T extends AppBaseActivityPresenter> extend
         if (!isWebViewActivity()) {
             initGeneralTitle();
         }
+
+        if (canSlide2Close()) {
+            SlidrConfig config = new SlidrConfig.Builder()
+                    .position(SlidrPosition.LEFT)
+                    .sensitivity(1f)
+                    .scrimColor(Color.BLACK)
+                    .scrimStartAlpha(0.8f)
+                    .scrimEndAlpha(0f)
+                    .velocityThreshold(2400)
+                    .distanceThreshold(0.25f)
+                    .edge(true)
+                    .edgeSize(0.18f)
+                    .build();
+            Slidr.attach(this, config);
+        }
+    }
+
+    protected boolean canSlide2Close() {
+        return true;
     }
 
     public String getLayoutTitle() {

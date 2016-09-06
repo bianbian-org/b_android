@@ -29,23 +29,19 @@ public class PolyWebView extends WebView {
 
     private IWebViewChromeClient iWebViewChromeClient;
     private IWebView iWebView;
-    private Context mContext;
 
     public PolyWebView(Context context) {
         super(context);
-        mContext = context;
         init();
     }
 
     public PolyWebView(Context context, AttributeSet attrs) {
         super(context, attrs);
-        mContext = context;
         init();
     }
 
     public PolyWebView(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
-        mContext = context;
         init();
     }
 
@@ -83,6 +79,21 @@ public class PolyWebView extends WebView {
             return false;
         });
     }
+//
+//    @Override
+//    public void loadUrl(String url) {
+//        super.loadUrl(url, new HashMap<>());
+//    }
+//
+//    @Override
+//    public void loadUrl(String url, Map<String, String> additionalHttpHeaders) {
+//        if (additionalHttpHeaders == null) {
+//            additionalHttpHeaders = new HashMap<>();
+//        }
+//        additionalHttpHeaders.put("x-huserid", UserManager.INSTANCE.getUserInfo(UserManager.KEY_ID));
+//        additionalHttpHeaders.put("x-hticket", UserManager.INSTANCE.getTicket());
+//        super.loadUrl(url, additionalHttpHeaders);
+//    }
 
     @Override
     protected void onScrollChanged(int l, int t, int oldl, int oldt) {
@@ -125,25 +136,36 @@ public class PolyWebView extends WebView {
 //        @TargetApi(Build.VERSION_CODES.LOLLIPOP)
 //        @Override
 //        public WebResourceResponse shouldInterceptRequest(WebView view, WebResourceRequest request) {
-//            if (request.getUrl().toString().contains(".css")) {
-//                return super.shouldInterceptRequest(view, request);
-//            } else {
-//                return method(request.getUrl().toString());
-//            }
+////            if (request.getUrl().toString().contains(".css")) {
+////                return super.shouldInterceptRequest(view, request);
+////            } else {
+////                return method(request.getUrl().toString());
+////            }
+//            JLog.e(request.getUrl().toString());
+//            return super.shouldInterceptRequest(view, request);
 //        }
-
+//
 //        @SuppressWarnings("deprecation")
 //        @Override
 //        public WebResourceResponse shouldInterceptRequest(WebView view, String url) {
-//            if (url.contains(".css")) {
-//                return super.shouldInterceptRequest(view, url);
-//            } else {
-//                return method(url);
-//            }
+////            if (url.contains(".css")) {
+////                return super.shouldInterceptRequest(view, url);
+////            } else {
+////                return method(url);
+////            }
+//            JLog.e(url);
+//            return super.shouldInterceptRequest(view, url);
 //        }
+
 
         @Override
         public boolean shouldOverrideUrlLoading(WebView view, String url) {
+
+//            Map<String, String> additionalHttpHeaders = new HashMap<>();
+//            additionalHttpHeaders.put("x-huserid", UserManager.INSTANCE.getUserInfo(UserManager.KEY_ID));
+//            additionalHttpHeaders.put("x-hticket", UserManager.INSTANCE.getTicket());
+//            view.loadUrl(url, additionalHttpHeaders);
+
             view.loadUrl(url);
             return true;
         }

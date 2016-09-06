@@ -163,6 +163,11 @@ public class ReplyCommentActivity extends AppBaseActivity<ReplyCommentActivityPr
         });
     }
 
+    @Override
+    protected boolean canSlide2Close() {
+        return false;
+    }
+
     public ArrayList<String> getPhotos() {
         return mChoosedPhoto;
     }

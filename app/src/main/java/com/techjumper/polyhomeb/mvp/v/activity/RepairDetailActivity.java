@@ -13,6 +13,7 @@ import android.widget.TextView;
 
 import com.jakewharton.rxbinding.widget.RxTextView;
 import com.techjumper.corelib.mvp.factory.Presenter;
+import com.techjumper.corelib.utils.common.JLog;
 import com.techjumper.corelib.utils.common.ResourceUtils;
 import com.techjumper.corelib.utils.common.RuleUtils;
 import com.techjumper.polyhomeb.R;
@@ -103,6 +104,9 @@ public class RepairDetailActivity extends AppBaseActivity<RepairDetailActivityPr
             mStaticHead.setVisibility(View.VISIBLE);
             mAdapter.notifyDataSetChanged();
         }
+
+        JLog.e("ot" + oldTop + " ....newtp" + top);
+        JLog.e("old" + oldBottom + ".....new" + bottom);
     }
 
     private void processScreenHeightAndIME() {

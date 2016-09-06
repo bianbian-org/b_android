@@ -115,6 +115,11 @@ public class ChooseVillageFamilyActivity extends AppBaseActivity<ChooseVillageFa
     }
 
     @Override
+    protected boolean canSlide2Close() {
+        return getPresenter().getComeFrom() == Constant.VALUE_COME_FROM ? true : false;
+    }
+
+    @Override
     public void onBackPressed() {
         //如果是从"我的小区或家庭"界面进来的,又返回键,onBackPressed不用管它
         if (getPresenter().getComeFrom() == Constant.VALUE_COME_FROM) {

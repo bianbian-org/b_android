@@ -38,4 +38,5 @@ dependencies {
     compile "com.jakewharton:butterknife:$rootProject.butterKnife"
     compile "com.f2prateek.rx.receivers:rx-receivers:$rootProject.rxReceivers"
     compile "com.tbruyelle.rxpermissions:rxpermissions:$rootProject.rxPermissions"
+    compile 'com.r0adkll:slidableactivity:2.0.5'
 }

@@ -88,4 +88,8 @@ public class SplashActivity extends AppBaseActivity<SplashActivityPresenter> {
     }
 
 
+    @Override
+    protected boolean canSlide2Close() {
+        return false;
+    }
 }

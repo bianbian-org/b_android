@@ -16,7 +16,6 @@ import android.widget.TextView;
 import com.jakewharton.rxbinding.widget.RxTextView;
 import com.techjumper.corelib.mvp.factory.Presenter;
 import com.techjumper.corelib.utils.common.RuleUtils;
-import com.techjumper.corelib.utils.window.StatusbarHelper;
 import com.techjumper.polyhomeb.R;
 import com.techjumper.polyhomeb.adapter.NewRepairActivityPhotoAdapter;
 import com.techjumper.polyhomeb.mvp.p.activity.NewComplainActivityPresenter;
@@ -135,10 +134,11 @@ public class NewComplainActivity extends AppBaseActivity<NewComplainActivityPres
         }
     }
 
-    @Override
-    protected boolean useStatusBarTransform_() {
-        return false;
-    }
+    //这里被注释了,和下面layoutParams.height被注释道理一样,如果这里返回false,意思是说上面状态栏是假的,是padding,所以这里需要多减去一个高度
+//    @Override
+//    protected boolean useStatusBarTransform_() {
+//        return false;
+//    }
 
     private void processScreenHeightAndIME() {
         //获取屏幕高度
@@ -160,7 +160,8 @@ public class NewComplainActivity extends AppBaseActivity<NewComplainActivityPres
                 if (visible && !mIsIMEVisible) {
                     mStaticHead.setVisibility(View.GONE);
                     ViewGroup.LayoutParams layoutParams = mEtContent.getLayoutParams();
-                    layoutParams.height = mScreenHeight - mIMEHeight - mTitle.getHeight() - mRv.getHeight() - mTvInput.getHeight() - RuleUtils.dp2Px(14) - StatusbarHelper.getStatusBarHeightPx(this);
+//                    layoutParams.height = mScreenHeight - mIMEHeight - mTitle.getHeight() - mRv.getHeight() - mTvInput.getHeight() - RuleUtils.dp2Px(14) - StatusbarHelper.getStatusBarHeightPx(this);
+                    layoutParams.height = mScreenHeight - mIMEHeight - mTitle.getHeight() - mRv.getHeight() - mTvInput.getHeight() - RuleUtils.dp2Px(14);
                     mEtContent.requestLayout();
                     mSv.smoothScrollTo(0, 0);
                     mIsIMEVisible = true;

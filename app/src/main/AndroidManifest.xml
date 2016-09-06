@@ -30,6 +30,7 @@
             android:value="test" />
 
         <activity
+            android:theme="@style/notrans"
             android:name=".mvp.v.activity.SplashActivity"
             android:configChanges="keyboardHidden|orientation|screenSize"
             android:screenOrientation="portrait"
@@ -81,7 +82,8 @@
             android:name=".mvp.v.activity.ComplainDetailActivity"
             android:configChanges="keyboardHidden|orientation|screenSize"
             android:launchMode="singleTask"
-            android:screenOrientation="portrait" />
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="adjustResize|stateHidden" />
         <activity
             android:name=".mvp.v.activity.PicViewActivity"
             android:configChanges="keyboardHidden|orientation|screenSize"
@@ -101,6 +103,7 @@
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden|stateUnchanged" />
         <activity
+            android:theme="@style/notrans"
             android:name=".mvp.v.activity.TabHomeActivity"
             android:configChanges="keyboardHidden|orientation|screenSize"
             android:launchMode="singleTask"

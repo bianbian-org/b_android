@@ -16,7 +16,6 @@ import android.widget.TextView;
 import com.jakewharton.rxbinding.widget.RxTextView;
 import com.techjumper.corelib.mvp.factory.Presenter;
 import com.techjumper.corelib.utils.common.RuleUtils;
-import com.techjumper.corelib.utils.window.StatusbarHelper;
 import com.techjumper.polyhomeb.R;
 import com.techjumper.polyhomeb.adapter.NewRepairActivityPhotoAdapter;
 import com.techjumper.polyhomeb.mvp.p.activity.NewRepairActivityPresenter;
@@ -104,10 +103,10 @@ public class NewRepairActivity extends AppBaseActivity<NewRepairActivityPresente
         });
     }
 
-    @Override
-    protected boolean useStatusBarTransform_() {
-        return false;
-    }
+//    @Override
+//    protected boolean useStatusBarTransform_() {
+//        return true;
+//    }
 
     @Override
     protected boolean showTitleRight() {
@@ -165,7 +164,8 @@ public class NewRepairActivity extends AppBaseActivity<NewRepairActivityPresente
                     mStaticHead.setVisibility(View.GONE);
 //                JLog.e("mScreenHeight..." + mScreenHeight + "mIMEHeight..." + mIMEHeight + "mTitle.getHeight()..." + mTitle.getHeight() + " mTvInput.getHeight()..." + mTvInput.getHeight());
                     ViewGroup.LayoutParams layoutParams = mEtContent.getLayoutParams();
-                    layoutParams.height = mScreenHeight - mIMEHeight - mTitle.getHeight() - mRv.getHeight() - mTvInput.getHeight() - RuleUtils.dp2Px(14) - StatusbarHelper.getStatusBarHeightPx(this);
+//                    layoutParams.height = mScreenHeight - mIMEHeight - mTitle.getHeight() - mRv.getHeight() - mTvInput.getHeight() - RuleUtils.dp2Px(14) - StatusbarHelper.getStatusBarHeightPx(this);
+                    layoutParams.height = mScreenHeight - mIMEHeight - mTitle.getHeight() - mRv.getHeight() - mTvInput.getHeight() - RuleUtils.dp2Px(14);
                     mEtContent.setLayoutParams(layoutParams);
                     mEtContent.requestLayout();
                     mSv.smoothScrollTo(0, 0);
