@@ -1,22 +1,10 @@
 package com.techjumper.polyhomeb.widget;
 
-import android.annotation.SuppressLint;
-import android.annotation.TargetApi;
 import android.app.Activity;
 import android.content.Context;
-import android.graphics.Bitmap;
 import android.util.AttributeSet;
-import android.view.KeyEvent;
-import android.webkit.WebChromeClient;
-import android.webkit.WebResourceError;
-import android.webkit.WebResourceRequest;
-import android.webkit.WebResourceResponse;
-import android.webkit.WebSettings;
-import android.webkit.WebView;
-import android.webkit.WebViewClient;
 
 import com.techjumper.polyhomeb.interfaces.IWebView;
-import com.techjumper.polyhomeb.interfaces.IWebViewChromeClient;
 import com.techjumper.polyhomeb.other.JavascriptObject;
 
 /**
@@ -25,75 +13,30 @@ import com.techjumper.polyhomeb.other.JavascriptObject;
  * Date: 16/8/17
  * * * * * * * * * * * * * * * * * * * * * * *
  **/
-public class PolyWebView extends WebView {
+public class PolyWebView extends AdvancedWebView {
 
-    private IWebViewChromeClient iWebViewChromeClient;
     private IWebView iWebView;
 
     public PolyWebView(Context context) {
         super(context);
-        init();
     }
 
     public PolyWebView(Context context, AttributeSet attrs) {
         super(context, attrs);
-        init();
     }
 
     public PolyWebView(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
-        init();
     }
 
-    @SuppressLint("SetJavaScriptEnabled")
-    private void init() {
-        WebSettings mWebSettings = getSettings();
-        mWebSettings.setBuiltInZoomControls(false);
-        mWebSettings.setDisplayZoomControls(false);
-        mWebSettings.setSupportZoom(true);
-        mWebSettings.setLoadsImagesAutomatically(true);
-        mWebSettings.setBlockNetworkImage(false);
-        mWebSettings.setUseWideViewPort(true);
-        mWebSettings.setLoadWithOverviewMode(true);
-        mWebSettings.setJavaScriptEnabled(true);
-        mWebSettings.setJavaScriptCanOpenWindowsAutomatically(true);
-        mWebSettings.setPluginState(WebSettings.PluginState.ON);
-        getSettings().setCacheMode(WebSettings.LOAD_NO_CACHE);
-        setWebViewClient(new PolyWebViewClient());
-        setWebChromeClient(new PolyWebChromeClient());
-        setOnLongClickListener(v -> true);//屏蔽掉长按事件 因为webview长按时将会调用系统的复制控件:
-    }
 
     public void addJsInterface(Activity activity, String clazzName) {
         addJavascriptInterface(new JavascriptObject(activity), clazzName);
     }
 
-    public void processBack() {
-        setOnKeyListener((v, keyCode, event) -> {
-            if (event.getAction() == KeyEvent.ACTION_DOWN) {
-                if (keyCode == KeyEvent.KEYCODE_BACK && canGoBack()) {  //表示按返回键 时的操作
-                    goBack();   //后退
-                    return true;    //已处理
-                }
-            }
-            return false;
-        });
+    public void setPolyWebViewListener(IWebView iWebView) {
+        this.iWebView = iWebView;
     }
-
-//    @Override
-//    public void loadUrl(String url) {
-//        super.loadUrl(url, new HashMap<>());
-//    }
-//
-//    @Override
-//    public void loadUrl(String url, Map<String, String> additionalHttpHeaders) {
-//        if (additionalHttpHeaders == null) {
-//            additionalHttpHeaders = new HashMap<>();
-//        }
-//        additionalHttpHeaders.put("x-huserid", UserManager.INSTANCE.getUserInfo(UserManager.KEY_ID));
-//        additionalHttpHeaders.put("x-hticket", UserManager.INSTANCE.getTicket());
-//        super.loadUrl(url, additionalHttpHeaders);
-//    }
 
     @Override
     protected void onScrollChanged(int l, int t, int oldl, int oldt) {
@@ -102,6 +45,7 @@ public class PolyWebView extends WebView {
         }
         super.onScrollChanged(l, t, oldl, oldt);
     }
+
 
     public void setOnWebViewChromeClientListener(IWebViewChromeClient iWebViewChromeClient) {
         this.iWebViewChromeClient = iWebViewChromeClient;
@@ -208,4 +152,5 @@ public class PolyWebView extends WebView {
             }
         }
     }
+
 }

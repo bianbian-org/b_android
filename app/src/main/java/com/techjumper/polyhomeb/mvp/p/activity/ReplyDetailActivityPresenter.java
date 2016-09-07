@@ -33,7 +33,9 @@ public class ReplyDetailActivityPresenter extends AppBaseActivityPresenter<Reply
         addSubscription(mSubs1 = RxBus.INSTANCE.asObservable().subscribe(o -> {
             if (o instanceof ReloadWebPageEvent) {
                 ReloadWebPageEvent event = (ReloadWebPageEvent) o;
-                getView().getWebView().reload();
+                if (getView().webViewIsInit()) {
+                    getView().getWebView().reload();
+                }
             }
         }));
     }

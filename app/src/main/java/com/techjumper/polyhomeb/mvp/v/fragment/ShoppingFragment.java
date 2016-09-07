@@ -23,6 +23,7 @@ import com.techjumper.polyhomeb.manager.WebTitleManager;
 import com.techjumper.polyhomeb.mvp.p.fragment.ShoppingFragmentPresenter;
 import com.techjumper.polyhomeb.net.NetHelper;
 import com.techjumper.polyhomeb.utils.WebTitleHelper;
+import com.techjumper.polyhomeb.widget.AdvancedWebView;
 import com.techjumper.polyhomeb.widget.PolyWebView;
 import com.techjumper.ptr_lib.PtrClassicFrameLayout;
 import com.techjumper.ptr_lib.PtrDefaultHandler;
@@ -37,13 +38,11 @@ import butterknife.Bind;
  * * * * * * * * * * * * * * * * * * * * * * *
  **/
 @Presenter(ShoppingFragmentPresenter.class)
-public class ShoppingFragment extends AppBaseFragment<ShoppingFragmentPresenter>
+public class ShoppingFragment extends AppBaseWebViewFragment<ShoppingFragmentPresenter>
         implements IWebViewTitleClick
         , IWebViewChromeClient
         , IWebView {
 
-    @Bind(R.id.wb)
-    PolyWebView mWebView;
     @Bind(R.id.ptr)
     PtrClassicFrameLayout mPtr;
 
@@ -59,7 +58,9 @@ public class ShoppingFragment extends AppBaseFragment<ShoppingFragmentPresenter>
 
     @Override
     protected View inflateView(LayoutInflater inflater, Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.fragment_shopping, null);
+        View view = inflater.inflate(R.layout.fragment_shopping, null);
+        initWebView((AdvancedWebView) view.findViewById(R.id.wb));
+        return view;
     }
 
     @Override
@@ -136,17 +137,17 @@ public class ShoppingFragment extends AppBaseFragment<ShoppingFragmentPresenter>
         }
     }
 
+
     /**
      * 根据url传回来的method,调用页面的function
      */
     private void onLineMethod(String method) {
         if (TextUtils.isEmpty(method)) return;
-        mWebView.loadUrl("javascript:" + method + "()");
+        getWebView().loadUrl("javascript:" + method + "()");
     }
 
     private void initListener() {
-        mWebView.setOnWebViewChromeClientListener(this);
-        mWebView.setOnWebViewReceiveErrorListener(this);
+        getWebView().setPolyWebViewListener(this);
         mPtr.setPtrHandler(new PtrDefaultHandler() {
             @Override
             public void onRefreshBegin(PtrFrameLayout frame) {
@@ -155,7 +156,7 @@ public class ShoppingFragment extends AppBaseFragment<ShoppingFragmentPresenter>
 
                 //9月5日更改刷新逻辑,客户端直接调用reload.
 //                if (mIsOtherError) {
-                mWebView.reload();
+                getWebView().reload();
 //                    mIsOtherError = false;
 //                } else {
 //                    refresh();
@@ -189,22 +190,6 @@ public class ShoppingFragment extends AppBaseFragment<ShoppingFragmentPresenter>
         }
     }
 
-    @Override
-    public void onDestroy() {
-        if (mWebView != null)
-            mWebView.destroy();
-        super.onDestroy();
-    }
-
-    @Override
-    public void onDetach() {
-        if (mWebView != null) {
-            mWebView.loadUrl("");
-            mWebView.destroy();
-        }
-        super.onDetach();
-    }
-
     /**
      * 页面加载完毕之后的接口
      */
@@ -213,12 +198,13 @@ public class ShoppingFragment extends AppBaseFragment<ShoppingFragmentPresenter>
         stopRefresh("");
     }
 
+
     /**
      * 处理接收的Error的接口
      */
     @Override
-    public void onReceivedError(WebView view, int errorCode, String description, String failingUrl) {
-//        mWebView.loadUrl("http://pl.techjumper.com/neighbor/404");
+    public void onPageError(int errorCode, String description, String failingUrl) {
+        //        mWebView.loadUrl("http://pl.techjumper.com/neighbor/404");
 //        mWebView.loadUrl(Config.sFriendErrorPage);
         ToastUtils.show("友邻网页错误,错误码:" + errorCode);
         mIsOtherError = true;
@@ -228,8 +214,8 @@ public class ShoppingFragment extends AppBaseFragment<ShoppingFragmentPresenter>
      * 处理Http是不是Error的接口
      */
     @Override
-    public void onReceivedHttpError(WebView view, WebResourceRequest request, WebResourceResponse errorResponse) {
-//        mWebView.loadUrl("http://pl.techjumper.com/neighbor/404");
+    public void onPageHttpError(WebView view, WebResourceRequest request, WebResourceResponse errorResponse) {
+        //        mWebView.loadUrl("http://pl.techjumper.com/neighbor/404");
 //        mWebView.loadUrl(Config.sFriendErrorPage);
         ToastUtils.show("在友邻中,WebView的HTTP错误了");
         mIsOtherError = true;
@@ -240,7 +226,7 @@ public class ShoppingFragment extends AppBaseFragment<ShoppingFragmentPresenter>
      */
     @Override
     public void onScrollChanged(int l, int t, int oldl, int oldt) {
-        if (mWebView.getTop() == t) {
+        if (getWebView().getTop() == t) {
             mCanRefresh = true;
         } else {
             mCanRefresh = false;
@@ -253,7 +239,7 @@ public class ShoppingFragment extends AppBaseFragment<ShoppingFragmentPresenter>
 
 
     public PolyWebView getWebView() {
-        return mWebView;
+        return (PolyWebView) super.getWebView();
     }
 
     @Override
@@ -270,9 +256,8 @@ public class ShoppingFragment extends AppBaseFragment<ShoppingFragmentPresenter>
         String url = Config.sShopping;
         WebTitleManager webTitleManager = new WebTitleManager(url, mViewRoot, this);
 //        mRefreshType = webTitleManager.getRefreshType();
-        mWebView.addJsInterface(getActivity(), Constant.JS_NATIVE_BRIDGE);
-        mWebView.processBack();
-        mWebView.loadUrl(url);
+        getWebView().addJsInterface(getActivity(), Constant.JS_NATIVE_BRIDGE);
+        getWebView().loadUrl(url);
         initListener();
     }
 }

@@ -24,6 +24,7 @@ import com.techjumper.polyhomeb.manager.WebTitleManager;
 import com.techjumper.polyhomeb.mvp.p.fragment.FriendFragmentPresenter;
 import com.techjumper.polyhomeb.net.NetHelper;
 import com.techjumper.polyhomeb.utils.WebTitleHelper;
+import com.techjumper.polyhomeb.widget.AdvancedWebView;
 import com.techjumper.polyhomeb.widget.PolyWebView;
 import com.techjumper.ptr_lib.PtrClassicFrameLayout;
 import com.techjumper.ptr_lib.PtrDefaultHandler;
@@ -38,15 +39,13 @@ import butterknife.Bind;
  * * * * * * * * * * * * * * * * * * * * * * *
  **/
 @Presenter(FriendFragmentPresenter.class)
-public class FriendFragment extends AppBaseFragment<FriendFragmentPresenter>
+public class FriendFragment extends AppBaseWebViewFragment<FriendFragmentPresenter>
         implements IWebViewTitleClick
         , IWebViewChromeClient
         , IWebView {
 
     @Bind(R.id.right_first_iv)
     ImageView mIvRightFirst;
-    @Bind(R.id.wb)
-    PolyWebView mWebView;
     @Bind(R.id.ptr)
     PtrClassicFrameLayout mPtr;
 
@@ -63,6 +62,7 @@ public class FriendFragment extends AppBaseFragment<FriendFragmentPresenter>
     @Override
     protected View inflateView(LayoutInflater inflater, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_friend, null);
+        initWebView((AdvancedWebView) view.findViewById(R.id.wb));
         return view;
     }
 
@@ -145,8 +145,7 @@ public class FriendFragment extends AppBaseFragment<FriendFragmentPresenter>
     }
 
     private void initListener() {
-        mWebView.setOnWebViewChromeClientListener(this);
-        mWebView.setOnWebViewReceiveErrorListener(this);
+        getWebView().setPolyWebViewListener(this);
         mPtr.setPtrHandler(new PtrDefaultHandler() {
             @Override
             public void onRefreshBegin(PtrFrameLayout frame) {
@@ -154,7 +153,7 @@ public class FriendFragment extends AppBaseFragment<FriendFragmentPresenter>
                 //如果不是以上情况导致的用户手动下拉刷新,那么就调用refresh()刷新,具体的刷新方式,按照url的refresh=参数来做,也就是refresh()自己去判断
                 //9月5日更改刷新逻辑客户端直接调用reload
 //                if (mIsOtherError) {
-                mWebView.reload();
+                getWebView().reload();
 //                    mIsOtherError = false;
 //                } else {
 //                refresh();
@@ -185,7 +184,7 @@ public class FriendFragment extends AppBaseFragment<FriendFragmentPresenter>
      */
     private void onLineMethod(String method) {
         if (TextUtils.isEmpty(method)) return;
-        mWebView.loadUrl("javascript:" + method + "()");
+        getWebView().loadUrl("javascript:" + method + "()");
     }
 
     public void stopRefresh(String msg) {
@@ -196,21 +195,6 @@ public class FriendFragment extends AppBaseFragment<FriendFragmentPresenter>
         }
     }
 
-    @Override
-    public void onDestroy() {
-        if (mWebView != null)
-            mWebView.destroy();
-        super.onDestroy();
-    }
-
-    @Override
-    public void onDetach() {
-        if (mWebView != null) {
-            mWebView.loadUrl("");
-            mWebView.destroy();
-        }
-        super.onDetach();
-    }
 
     /**
      * 页面加载完毕之后的接口
@@ -220,24 +204,28 @@ public class FriendFragment extends AppBaseFragment<FriendFragmentPresenter>
         stopRefresh("");
     }
 
+
     /**
      * 处理接收的Error的接口
      */
+
     @Override
-    public void onReceivedError(WebView view, int errorCode, String description, String failingUrl) {
+    public void onPageError(int errorCode, String description, String failingUrl) {
 //        mWebView.loadUrl("http://pl.techjumper.com/neighbor/404");
 //        mWebView.loadUrl(Config.sFriendErrorPage);
+//        JLog.e("errorCode" + errorCode);
         ToastUtils.show("友邻网页错误,错误码:" + errorCode);
         mIsOtherError = true;
-//        JLog.e("errorCode" + errorCode);
     }
+
+//    }
 
     /**
      * 处理Http是不是Error的接口
      */
     @Override
-    public void onReceivedHttpError(WebView view, WebResourceRequest request, WebResourceResponse errorResponse) {
-//        mWebView.loadUrl("http://pl.techjumper.com/neighbor/404");
+    public void onPageHttpError(WebView view, WebResourceRequest request, WebResourceResponse errorResponse) {
+        //        mWebView.loadUrl("http://pl.techjumper.com/neighbor/404");
 //        mWebView.loadUrl(Config.sFriendErrorPage);
         ToastUtils.show("在友邻中,WebView的HTTP错误了");
         mIsOtherError = true;
@@ -249,15 +237,11 @@ public class FriendFragment extends AppBaseFragment<FriendFragmentPresenter>
      */
     @Override
     public void onScrollChanged(int l, int t, int oldl, int oldt) {
-        if (mWebView.getTop() == t) {
-            mCanRefresh = true;
-        } else {
-            mCanRefresh = false;
-        }
+        mCanRefresh = getWebView().getTop() == t;
     }
 
     public PolyWebView getWebView() {
-        return mWebView;
+        return (PolyWebView) super.getWebView();
     }
 
     public ImageView getIvRightFirst() {
@@ -281,9 +265,8 @@ public class FriendFragment extends AppBaseFragment<FriendFragmentPresenter>
         String url = Config.sFriend;
         WebTitleManager webTitleManager = new WebTitleManager(url, mViewRoot, this);
 //        mRefreshType = webTitleManager.getRefreshType();
-        mWebView.addJsInterface(getActivity(), Constant.JS_NATIVE_BRIDGE);
-        mWebView.processBack();
-        mWebView.loadUrl(url);
+        getWebView().addJsInterface(getActivity(), Constant.JS_NATIVE_BRIDGE);
+        getWebView().loadUrl(url);
         initListener();
     }
 }

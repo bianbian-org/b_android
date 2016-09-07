@@ -1,8 +1,5 @@
 package com.techjumper.slidingmenulib;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Rect;
@@ -13,7 +10,6 @@ import android.support.v4.view.VelocityTrackerCompat;
 import android.support.v4.view.ViewCompat;
 import android.support.v4.view.ViewConfigurationCompat;
 import android.util.AttributeSet;
-import android.util.FloatMath;
 import android.util.Log;
 import android.view.FocusFinder;
 import android.view.KeyEvent;
@@ -28,6 +24,9 @@ import android.widget.Scroller;
 
 import com.techjumper.slidingmenulib.SlidingMenu.OnClosedListener;
 import com.techjumper.slidingmenulib.SlidingMenu.OnOpenedListener;
+
+import java.util.ArrayList;
+import java.util.List;
 //import com.techjumper.slidingmenulib.SlidingMenu.OnCloseListener;
 //import com.techjumper.slidingmenulib.SlidingMenu.OnOpenListener;
 
@@ -687,7 +686,7 @@ public class CustomViewAbove extends ViewGroup {
         switch (action & MotionEventCompat.ACTION_MASK) {
             case MotionEvent.ACTION_DOWN:
             /*
-			 * If being flinged and user touches, stop the fling. isFinished
+             * If being flinged and user touches, stop the fling. isFinished
 			 * will be false if being flinged.
 			 */
                 completeScroll();

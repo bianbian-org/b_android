@@ -14,6 +14,7 @@ import com.techjumper.polyhomeb.interfaces.IWebViewTitleClick;
 import com.techjumper.polyhomeb.manager.WebTitleManager;
 import com.techjumper.polyhomeb.mvp.p.activity.ReplyDetailActivityPresenter;
 import com.techjumper.polyhomeb.utils.WebTitleHelper;
+import com.techjumper.polyhomeb.widget.AdvancedWebView;
 import com.techjumper.polyhomeb.widget.PolyWebView;
 
 import butterknife.Bind;
@@ -25,10 +26,8 @@ import butterknife.Bind;
  * * * * * * * * * * * * * * * * * * * * * * *
  **/
 @Presenter(ReplyDetailActivityPresenter.class)
-public class ReplyDetailActivity extends AppBaseActivity<ReplyDetailActivityPresenter> implements IWebViewTitleClick {
+public class ReplyDetailActivity extends AppBaseWebViewActivity<ReplyDetailActivityPresenter> implements IWebViewTitleClick {
 
-    @Bind(R.id.wb)
-    PolyWebView mWebView;
     @Bind(R.id.left_first_iv)
     ImageView iv;
 
@@ -41,9 +40,14 @@ public class ReplyDetailActivity extends AppBaseActivity<ReplyDetailActivityPres
     protected void initView(Bundle savedInstanceState) {
         String url = getPresenter().getUrl();
         new WebTitleManager(url, mViewRoot, this);
-        mWebView.addJsInterface(this, Constant.JS_NATIVE_BRIDGE);
-        mWebView.processBack();
-        mWebView.loadUrl(url);
+        initWebView((AdvancedWebView) findViewById(R.id.wb));
+        getWebView().addJsInterface(this, Constant.JS_NATIVE_BRIDGE);
+        getWebView().loadUrl(url);
+    }
+
+    @Override
+    public PolyWebView getWebView() {
+        return (PolyWebView) super.getWebView();
     }
 
     @Override
@@ -124,22 +128,8 @@ public class ReplyDetailActivity extends AppBaseActivity<ReplyDetailActivityPres
      */
     private void onLineMethod(String method) {
         if (TextUtils.isEmpty(method)) return;
-        mWebView.loadUrl("javascript:" + method + "()");
+        getWebView().loadUrl("javascript:" + method + "()");
     }
 
-    @Override
-    public void onBackPressed() {
-//        RxBus.INSTANCE.send(new ReloadWebPageEvent());
-        super.onBackPressed();
-    }
 
-    @Override
-    protected void onDestroy() {
-        if (mWebView != null) mWebView.destroy();
-        super.onDestroy();
-    }
-
-    public PolyWebView getWebView() {
-        return mWebView;
-    }
 }
