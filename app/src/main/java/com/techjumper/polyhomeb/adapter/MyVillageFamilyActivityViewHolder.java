@@ -50,13 +50,13 @@ public class MyVillageFamilyActivityViewHolder extends BaseRecyclerViewHolder<My
             //(最开始是写在MyVillageFamilyActivityPresenter中的,肯定不得行)
             if (!data.isChoosed()) {
                 if (0 == data.isFamilyData()) {  //家庭
-//                    PreferenceUtils.save(UserManager.KEY_CURRENT_SHOW_TITLE_ID, id + "");
+//                    PreferenceUtils.save(UserManager.KEY_CURRENT_FAMILY_ID, id + "");
 //                    PreferenceUtils.save(UserManager.KEY_CURRENT_SHOW_TITLE_NAME, name);
 //                    PreferenceUtils.save(UserManager.KEY_CURRENT_VILLAGE_ID, data.getVillageId() + "");
 //                    PreferenceUtils.save(UserManager.KEY_CURRENT_SHOW_IS_FAMILY_OR_VILLAGE, UserManager.VALUE_IS_FAMILY);
                     UserManager.INSTANCE.updateFamilyOrVillageInfo(true, id + "", name, data.getVillageId());
                 } else if (1 == data.isFamilyData()) {   //小区
-//                    PreferenceUtils.save(UserManager.KEY_CURRENT_SHOW_TITLE_ID, id + "");
+//                    PreferenceUtils.save(UserManager.KEY_CURRENT_FAMILY_ID, id + "");
 //                    PreferenceUtils.save(UserManager.KEY_CURRENT_SHOW_TITLE_NAME, name);
 //                    PreferenceUtils.save(UserManager.KEY_CURRENT_VILLAGE_ID, data.getVillageId() + "");
 //                    PreferenceUtils.save(UserManager.KEY_CURRENT_SHOW_IS_FAMILY_OR_VILLAGE, UserManager.VALUE_IS_VILLAGE);

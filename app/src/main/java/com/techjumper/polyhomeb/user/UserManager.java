@@ -42,7 +42,7 @@ public enum UserManager {
     public static final String KEY_CURRENT_UNIT = "key_current_unit";
     public static final String KEY_CURRENT_ROOM = "key_current_room";
     public static final String KEY_CURRENT_SHOW_TITLE_NAME = "key_current_show_title";
-    public static final String KEY_CURRENT_SHOW_TITLE_ID = "key_current_show_id";
+    public static final String KEY_CURRENT_FAMILY_ID = "key_current_show_id";
     public static final String KEY_CURRENT_VILLAGE_ID = "key_current_village_id";
     public static final String KEY_CURRENT_SHOW_IS_FAMILY_OR_VILLAGE = "key_current_show_is+family_or_village";
 
@@ -109,15 +109,16 @@ public enum UserManager {
 
     /**
      * 更新当前家庭和小区的信息
+     * 如果不是家庭的话,KEY_CURRENT_FAMILY_ID存入的就是小区id.
      */
     public void updateFamilyOrVillageInfo(boolean isFamily, String id, String name, int village_id) {
         if (isFamily) {
-            PreferenceUtils.save(UserManager.KEY_CURRENT_SHOW_TITLE_ID, id);
+            PreferenceUtils.save(UserManager.KEY_CURRENT_FAMILY_ID, id);
             PreferenceUtils.save(UserManager.KEY_CURRENT_SHOW_TITLE_NAME, name);
             PreferenceUtils.save(UserManager.KEY_CURRENT_VILLAGE_ID, village_id + "");
             PreferenceUtils.save(UserManager.KEY_CURRENT_SHOW_IS_FAMILY_OR_VILLAGE, UserManager.VALUE_IS_FAMILY);
         } else {
-            PreferenceUtils.save(UserManager.KEY_CURRENT_SHOW_TITLE_ID, id);
+            PreferenceUtils.save(UserManager.KEY_CURRENT_FAMILY_ID, id);
             PreferenceUtils.save(UserManager.KEY_CURRENT_SHOW_TITLE_NAME, name);
             PreferenceUtils.save(UserManager.KEY_CURRENT_VILLAGE_ID, village_id + "");
             PreferenceUtils.save(UserManager.KEY_CURRENT_SHOW_IS_FAMILY_OR_VILLAGE, UserManager.VALUE_IS_VILLAGE);
@@ -174,7 +175,7 @@ public enum UserManager {
      * 当前正在使用的家庭或者小区的id
      */
     public String getCurrentId() {
-        return getUserInfo(KEY_CURRENT_SHOW_TITLE_ID);
+        return getUserInfo(KEY_CURRENT_FAMILY_ID);
     }
 
     /**
@@ -220,7 +221,7 @@ public enum UserManager {
         PreferenceUtils.save(KEY_CURRENT_UNIT, "");
         PreferenceUtils.save(KEY_CURRENT_ROOM, "");
         PreferenceUtils.save(KEY_CURRENT_SHOW_TITLE_NAME, "");
-        PreferenceUtils.save(KEY_CURRENT_SHOW_TITLE_ID, "");
+        PreferenceUtils.save(KEY_CURRENT_FAMILY_ID, "");
         PreferenceUtils.save(KEY_CURRENT_SHOW_IS_FAMILY_OR_VILLAGE, "");
         PreferenceUtils.save(KEY_CURRENT_VILLAGE_ID, "");
 

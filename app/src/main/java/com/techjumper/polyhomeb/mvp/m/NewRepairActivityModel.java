@@ -76,7 +76,7 @@ public class NewRepairActivityModel extends BaseModel<NewRepairActivityPresenter
         KeyValuePair keyValuePair = KeyValueCreator.newRepair(
                 UserManager.INSTANCE.getUserInfo(UserManager.KEY_ID)
                 , UserManager.INSTANCE.getTicket()
-                , UserManager.INSTANCE.getCurrentFamilyInfo(UserManager.KEY_CURRENT_SHOW_TITLE_ID)  //家庭id,能调用接口,说毛肯定是家庭权限了
+                , UserManager.INSTANCE.getCurrentFamilyInfo(UserManager.KEY_CURRENT_FAMILY_ID)  //家庭id,能调用接口,说明肯定是家庭权限了
                 , getPresenter().getEtPhone().getEditableText().toString().trim()
                 , repairType
                 , repairDevice

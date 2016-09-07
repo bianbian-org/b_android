@@ -50,7 +50,7 @@ public class PlacardFragmentModel extends BaseModel<PlacardFragmentPresenter> {
     public Observable<PropertyPlacardEntity> getNotice() {
         KeyValuePair keyValuePair = KeyValueCreator.propertyNotice(
                 UserManager.INSTANCE.getUserInfo(UserManager.KEY_ID)
-                , UserManager.INSTANCE.getUserInfo(UserManager.KEY_CURRENT_SHOW_TITLE_ID)  //家庭id
+                , UserManager.INSTANCE.getUserInfo(UserManager.KEY_CURRENT_FAMILY_ID)  //家庭id
                 , UserManager.INSTANCE.getTicket()
                 , mCurrentPage + ""
                 , mOnePageCount + "");

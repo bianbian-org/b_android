@@ -102,7 +102,7 @@ public class UnpaidFragmentModel extends BaseModel<UnpaidFragmentPresenter> {
 
             int expiry = ordersBean.getExpiry();                //#逾期时间（天）  +24意味着还有24天缴费,-24意味着已经逾期24天
             String expiry_date = ordersBean.getExpiry_date();   //#缴费日期  "2016-09-22"
-            double expiry_price = ordersBean.getExpiry_price();    //#滞纳金   15.19
+            double expiry_price = ordersBean.getExpiry_price(); //#滞纳金   15.19
             String object = ordersBean.getObject();             //#缴费对象    "1栋3单元21-111"
             String order_number = ordersBean.getOrder_number(); //#订单号   "2014731502779997"
             String pay_name = ordersBean.getPay_name();         //#费用名称   "8月份电费"
