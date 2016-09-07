@@ -49,10 +49,6 @@ public class SplashActivityModel extends BaseModel<SplashActivityPresenter> {
                 int id = bean.getId();
                 String family_name = bean.getFamily_name();
                 int village_id = bean.getVillage_id();
-//                UserManager.INSTANCE.saveUserInfo(UserManager.KEY_CURRENT_SHOW_TITLE_NAME, family_name);
-//                UserManager.INSTANCE.saveUserInfo(UserManager.KEY_CURRENT_SHOW_TITLE_ID, id + "");
-//                UserManager.INSTANCE.saveUserInfo(UserManager.KEY_CURRENT_SHOW_IS_FAMILY_OR_VILLAGE, UserManager.VALUE_IS_FAMILY);
-//                UserManager.INSTANCE.saveUserInfo(UserManager.KEY_CURRENT_VILLAGE_ID, village_id + "");
                 UserManager.INSTANCE.updateFamilyOrVillageInfo(true, id + "", family_name, village_id);
                 break;
             }
@@ -62,10 +58,6 @@ public class SplashActivityModel extends BaseModel<SplashActivityPresenter> {
             for (UserFamiliesAndVillagesEntity.DataBean.VillageInfosBean bean : village_infos) {
                 int village_id = bean.getVillage_id();
                 String village_name = bean.getVillage_name();
-//                UserManager.INSTANCE.saveUserInfo(UserManager.KEY_CURRENT_SHOW_TITLE_NAME, village_name);
-//                UserManager.INSTANCE.saveUserInfo(UserManager.KEY_CURRENT_SHOW_TITLE_ID, village_id + "");
-//                UserManager.INSTANCE.saveUserInfo(UserManager.KEY_CURRENT_SHOW_IS_FAMILY_OR_VILLAGE, UserManager.VALUE_IS_VILLAGE);
-//                UserManager.INSTANCE.saveUserInfo(UserManager.KEY_CURRENT_VILLAGE_ID, village_id + "");
                 UserManager.INSTANCE.updateFamilyOrVillageInfo(false, village_id + "", village_name, village_id);
                 break;
             }

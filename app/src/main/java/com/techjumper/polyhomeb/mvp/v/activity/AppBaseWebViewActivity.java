@@ -40,6 +40,7 @@ public abstract class AppBaseWebViewActivity<T extends AppBaseActivityPresenter>
         });
         mWebView.addHttpHeader("HUSERID", UserManager.INSTANCE.getUserInfo(UserManager.KEY_ID));
         mWebView.addHttpHeader("HTICKET", UserManager.INSTANCE.getTicket());
+        mWebView.addHttpHeader("HVILLAGEID", UserManager.INSTANCE.getUserInfo(UserManager.KEY_CURRENT_VILLAGE_ID));
         mIsInit = true;
     }
 

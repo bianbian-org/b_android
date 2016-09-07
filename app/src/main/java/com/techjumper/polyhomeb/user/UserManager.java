@@ -74,20 +74,9 @@ public enum UserManager {
             PreferenceUtils.save(KEY_BIRTHDAY, dataEntity.getBirthday());
         }
 
-        /************************测试数据,写死的**************************/
-//        PreferenceUtils.save(KEY_CURRENT_FAMILY_ID, 463 + "");  //家庭id
-//        PreferenceUtils.save(KEY_CURRENT_VILLAGE_ID, 5 + "");   //小区id是5,name是怡美家园
-//        PreferenceUtils.save(KEY_CURRENT_VILLAGE_NAME, "呵呵");
-//        PreferenceUtils.save(KEY_CURRENT_FAMILY_NAME, "怡美家园");
-        /************************测试数据,写死的**************************/
-
         if (entity.getData().getFamilies() != null && entity.getData().getFamilies().size() != 0) {
             //登录接口多出来的
             PreferenceUtils.save(KEY_ALL_FAMILIES, GsonUtils.toJson(entity.getData().getFamilies()));
-//            PreferenceUtils.save(KEY_CURRENT_SHOW_TITLE_ID, entity.getData().getFamilies().get(0).getFamily_id() + "");
-//            PreferenceUtils.save(KEY_CURRENT_SHOW_TITLE_NAME, entity.getData().getFamilies().get(0).getFamily_name());
-//            PreferenceUtils.save(KEY_CURRENT_VILLAGE_ID, entity.getData().getFamilies().get(0).getVillage_id() + "");
-//            PreferenceUtils.save(KEY_CURRENT_SHOW_IS_FAMILY_OR_VILLAGE, VALUE_IS_FAMILY);
             String family_id = entity.getData().getFamilies().get(0).getFamily_id();
             String family_name = entity.getData().getFamilies().get(0).getFamily_name();
             int village_id = entity.getData().getFamilies().get(0).getVillage_id();
@@ -99,10 +88,6 @@ public enum UserManager {
             //如果KEY_CURRENT_SHOW_IS_FAMILY_OR_VILLAGE是空的,或者value不是家庭的话,证明刚才没有存入家庭,现在就需要存小区.
             if (TextUtils.isEmpty(getUserInfo(KEY_CURRENT_SHOW_IS_FAMILY_OR_VILLAGE))
                     || !VALUE_IS_FAMILY.equals(getUserInfo(KEY_CURRENT_SHOW_IS_FAMILY_OR_VILLAGE))) {
-//                PreferenceUtils.save(KEY_CURRENT_SHOW_TITLE_ID, entity.getData().getVillages().get(0).getVillage_id() + "");
-//                PreferenceUtils.save(KEY_CURRENT_SHOW_TITLE_NAME, entity.getData().getVillages().get(0).getVillage_name());
-//                PreferenceUtils.save(KEY_CURRENT_VILLAGE_ID, entity.getData().getVillages().get(0).getVillage_id());
-//                PreferenceUtils.save(KEY_CURRENT_SHOW_IS_FAMILY_OR_VILLAGE, VALUE_IS_VILLAGE);
                 int village_id = entity.getData().getVillages().get(0).getVillage_id();
                 String village_name = entity.getData().getVillages().get(0).getVillage_name();
                 updateFamilyOrVillageInfo(false, village_id + "", village_name, village_id);
