@@ -141,6 +141,8 @@ public class PolyWebView extends WebView {
 ////            } else {
 ////                return method(request.getUrl().toString());
 ////            }
+//            request.getMethod();
+//            Map<String, String> requestHeaders = request.getRequestHeaders();
 //            JLog.e(request.getUrl().toString());
 //            return super.shouldInterceptRequest(view, request);
 //        }
@@ -156,7 +158,6 @@ public class PolyWebView extends WebView {
 //            JLog.e(url);
 //            return super.shouldInterceptRequest(view, url);
 //        }
-
 
         @Override
         public boolean shouldOverrideUrlLoading(WebView view, String url) {

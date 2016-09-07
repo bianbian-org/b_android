@@ -5,6 +5,7 @@ import com.techjumper.polyhomeb.entity.AvatarEntity;
 import com.techjumper.polyhomeb.entity.BaseArgumentsEntity;
 import com.techjumper.polyhomeb.entity.LoginEntity;
 import com.techjumper.polyhomeb.entity.MessageEntity;
+import com.techjumper.polyhomeb.entity.OrdersEntity;
 import com.techjumper.polyhomeb.entity.PropertyComplainDetailEntity;
 import com.techjumper.polyhomeb.entity.PropertyComplainEntity;
 import com.techjumper.polyhomeb.entity.PropertyPlacardEntity;
@@ -468,5 +469,20 @@ public interface ServiceAPI {
      */
     @POST("user/update_cover")
     Observable<AvatarEntity> updateAvatar(@Body BaseArgumentsEntity entity);
+
+    /**
+     * 获取订单数据
+     * get '/estate_orders'
+     * params:
+     * user_id # 用户ID
+     * ticket # session登录验证
+     * family_id #家庭ID
+     * status #缴费状态 1-未缴费 2-已缴费
+     * pay_type #缴费类型 1-物业费 2-水费 3-电费 4-燃气费 5-其他（查询所有此字段为空）
+     * page: 1  #当前页数
+     * count: 5   #每页数据条数
+     */
+    @GET("estate_orders")
+    Observable<OrdersEntity> getOrdersInfo(@QueryMap Map<String, String> map);
 }
 

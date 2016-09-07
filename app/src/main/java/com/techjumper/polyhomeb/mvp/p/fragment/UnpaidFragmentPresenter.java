@@ -2,9 +2,20 @@ package com.techjumper.polyhomeb.mvp.p.fragment;
 
 import android.os.Bundle;
 
+import com.steve.creact.library.display.DisplayBean;
+import com.techjumper.corelib.rx.tools.RxBus;
+import com.techjumper.corelib.rx.tools.RxUtils;
+import com.techjumper.corelib.utils.window.ToastUtils;
+import com.techjumper.polyhomeb.R;
+import com.techjumper.polyhomeb.entity.OrdersEntity;
+import com.techjumper.polyhomeb.entity.event.PaymentQueryEvent;
 import com.techjumper.polyhomeb.mvp.m.UnpaidFragmentModel;
 import com.techjumper.polyhomeb.mvp.v.fragment.UnpaidFragment;
+import com.techjumper.polyhomeb.user.UserManager;
 
+import java.util.List;
+
+import rx.Subscriber;
 import rx.Subscription;
 
 /**
@@ -16,8 +27,8 @@ import rx.Subscription;
 public class UnpaidFragmentPresenter extends AppBaseFragmentPresenter<UnpaidFragment> {
 
     private UnpaidFragmentModel mModel = new UnpaidFragmentModel(this);
-    private Subscription mSubs1, mSubs2, mSubs3;
-    private String mStatus = "";
+    private Subscription mSubs1, mSubs2;
+    private String mPayType = "";
 
     @Override
     public void initData(Bundle savedInstanceState) {
@@ -26,104 +37,102 @@ public class UnpaidFragmentPresenter extends AppBaseFragmentPresenter<UnpaidFrag
 
     @Override
     public void onViewInited(Bundle savedInstanceState) {
-//        getStatus();
-//        refreshData();
-//        newRepairFinish();
+        getPayType();
+        if (!UserManager.INSTANCE.isFamily()) {
+            ToastUtils.show(getView().getString(R.string.no_authority));
+            getView().onOrdersDataReceive(mModel.noData());
+        } else {
+            refreshData();
+        }
     }
 
-//    private void newRepairFinish() {
-//        RxUtils.unsubscribeIfNotNull(mSubs3);
-//        addSubscription(
-//                mSubs3 = RxBus.INSTANCE
-//                        .asObservable()
-//                        .subscribe(o -> {
-//                            if (o instanceof RefreshRepairListDataEvent) {
-//                                //增加下面这个判断可以节约流量,
-//                                //因为当前提交的内容肯定是在全部和未处理里面的,
-//                                //当处在这两个标签(status)下时,提交之后肯定希望看到界面的变化,自己提交的东西能即时实时显示出来,所以需要刷新
-//                                //如果当前不在这两个标签下,那么就没有刷新的必要了,
-//                                //因为切换标签的时候又会去重新请求一次那个标签的数据,刚提交的数据自然而然地会从服务器拿到
-//                                RefreshRepairListDataEvent event = (RefreshRepairListDataEvent) o;
-//                                int repairStatus = event.getRepairStatus();
-//                                if (Constant.STATUS_ALL == repairStatus || Constant.STATUS_NOT_PROCESS == repairStatus) {
-//                                    getView().getPtr().autoRefresh();
-//                                }
-//                            }
-//                        }));
-//    }
-//
-//    private void getStatus() {
-//        RxUtils.unsubscribeIfNotNull(mSubs2);
-//        addSubscription(
-//                mSubs2 = RxBus.INSTANCE.asObservable().subscribe(o -> {
-//                    if (o instanceof RepairStatusEvent) {
-//                        RepairStatusEvent event = (RepairStatusEvent) o;
-//                        if (event.getStatus() == 4) {
-//                            mStatus = "";
-//                        } else {
-//                            mStatus = event.getStatus() + "";
-//                        }
-//                        mModel.mIsFirst = true;
-//                        refreshData();
-//                    }
-//                }));
-//    }
-//
-//    public void getRepairData() {
-//        RxUtils.unsubscribeIfNotNull(mSubs1);
-//        addSubscription(
-//                mSubs1 = mModel.getRepair(mStatus)
-//                        .subscribe(new Subscriber<PropertyRepairEntity>() {
-//                            @Override
-//                            public void onCompleted() {
-//                                getView().stopRefresh("");
-//                            }
-//
-//                            @Override
-//                            public void onError(Throwable e) {
-//                                getView().showError(e);
-//                                loadMoreError();
-//                                getView().onRepairDataReceive(mModel.noData());
-//                                getView().stopRefresh("");
-//                            }
-//
-//                            @Override
-//                            public void onNext(PropertyRepairEntity entity) {
+    private void getPayType() {
+        RxUtils.unsubscribeIfNotNull(mSubs2);
+        addSubscription(
+                mSubs2 = RxBus.INSTANCE.asObservable().subscribe(o -> {
+                    if (o instanceof PaymentQueryEvent) {
+                        PaymentQueryEvent event = (PaymentQueryEvent) o;
+                        if (event.getPosition() == 5) {
+                            mPayType = "";
+                        } else {
+                            mPayType = (event.getPosition() + 1) + "";
+                        }
+                        mModel.mIsFirst = true;
+                        refreshData();
+                    }
+                }));
+    }
+
+    public void getOrdersInfo() {
+        RxUtils.unsubscribeIfNotNull(mSubs1);
+        addSubscription(
+                mSubs1 = mModel.getOrdersInfo(mPayType)
+                        .subscribe(new Subscriber<OrdersEntity>() {
+                            @Override
+                            public void onCompleted() {
+                                getView().stopRefresh("");
+                            }
+
+                            @Override
+                            public void onError(Throwable e) {
+                                getView().showError(e);
+                                loadMoreError();
+                                getView().onOrdersDataReceive(mModel.noData());
+                                getView().stopRefresh("");
+                            }
+
+                            @Override
+                            public void onNext(OrdersEntity entity) {
 //                                if (!processNetworkResult(entity)) {
 //                                    return;
 //                                }
-//                                if (mModel.getCurrentPage() == 1 && entity.getData().getRepairs().size() != 0) {
+//                                if (mModel.getCurrentPage() == 1 && entity.getData().getOrders().size() != 0) {
 //                                    getView().setHasMoreData(true);
 //                                }
 //                                boolean hasMoreData = mModel.hasMoreData(entity);
 //                                getView().setHasMoreData(hasMoreData);
 //
-////                                if (!hasMoreData && mModel.getCurrentPage() == 1) {
-////                                    getView().onDataReceive(mModel.noData());
-////                                }
-//                                if (entity.getData().getCount() == 0) {
-//                                    getView().onRepairDataReceive(mModel.noData());
-//                                    return;
+//                                if (!hasMoreData && mModel.getCurrentPage() == 1) {
+//                                    getView().onOrdersDataReceive(mModel.noData());
 //                                }
-//                                mModel.updateRepairData(entity);
-//                                getView().onRepairDataReceive(mModel.getRepairData());
-//                            }
-//                        })
-//        );
-//    }
-//
-//    private void loadMoreError() {
-//        if (mModel.getCurrentPage() != 1) {
-//            getView().showLoadMoreFail();
-//        } else {
-//            getView().loadMoreComplete();
-//        }
-//    }
-//
-//    public void refreshData() {
-//        mModel.setCurrentPage(1);
-//        getRepairData();
-//        mModel.mIsFirst = true;
-//    }
+//                                mModel.updateOrdersData(entity);
+//                                getView().onOrdersDataReceive(mModel.getOrdersData());
+                                if (!processNetworkResult(entity)) {
+                                    return;
+                                }
+                                if (mModel.getCurrentPage() == 1 && entity.getData().getOrders().size() != 0) {
+                                    getView().setHasMoreData(true);
+                                }
+                                boolean hasMoreData = mModel.hasMoreData(entity);
+                                getView().setHasMoreData(hasMoreData);
+
+                                if (entity.getData().getOrders().size() == 0) {
+                                    getView().onOrdersDataReceive(mModel.noData());
+                                    return;
+                                }
+                                mModel.updateOrdersData(entity);
+                                getView().onOrdersDataReceive(mModel.getOrdersData());
+                            }
+                        })
+        );
+    }
+
+    private void loadMoreError() {
+        if (mModel.getCurrentPage() != 1) {
+            getView().showLoadMoreFail();
+        } else {
+            getView().loadMoreComplete();
+        }
+    }
+
+    public void refreshData() {
+        mModel.setCurrentPage(1);
+        getOrdersInfo();
+        mModel.mIsFirst = true;
+    }
+
+    public List<DisplayBean> noData() {
+        return mModel.noData();
+    }
 
 }
