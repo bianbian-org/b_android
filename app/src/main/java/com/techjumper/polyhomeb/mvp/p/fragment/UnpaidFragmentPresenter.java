@@ -6,6 +6,7 @@ import com.steve.creact.library.display.DisplayBean;
 import com.techjumper.corelib.rx.tools.RxBus;
 import com.techjumper.corelib.rx.tools.RxUtils;
 import com.techjumper.corelib.utils.window.ToastUtils;
+import com.techjumper.polyhomeb.Constant;
 import com.techjumper.polyhomeb.R;
 import com.techjumper.polyhomeb.entity.OrdersEntity;
 import com.techjumper.polyhomeb.entity.event.PaymentQueryEvent;
@@ -52,13 +53,16 @@ public class UnpaidFragmentPresenter extends AppBaseFragmentPresenter<UnpaidFrag
                 mSubs2 = RxBus.INSTANCE.asObservable().subscribe(o -> {
                     if (o instanceof PaymentQueryEvent) {
                         PaymentQueryEvent event = (PaymentQueryEvent) o;
-                        if (event.getPosition() == 5) {
-                            mPayType = "";
-                        } else {
-                            mPayType = (event.getPosition() + 1) + "";
+                        if (Constant.UNPAID_FRAGMENT_TITLE == event.getWhere()) {
+                            //由于未付款和已付款用的是同一个title,所以需要根据这个字段来判断,Rx是从哪个title发出来的
+                            if (event.getPosition() == 5) {
+                                mPayType = "";
+                            } else {
+                                mPayType = (event.getPosition() + 1) + "";
+                            }
+                            mModel.mIsFirst = true;
+                            refreshData();
                         }
-                        mModel.mIsFirst = true;
-                        refreshData();
                     }
                 }));
     }

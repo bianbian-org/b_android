@@ -49,6 +49,10 @@ public class Constant {
     public static final String KEY_COME_FROM = "comeFrom";
     public static final int VALUE_COME_FROM = 1;
 
+    public static final int UNPAID_FRAGMENT_TITLE = 1;
+    public static final int PAID_FRAGMENT_TITLE = 2;
+
+
 
     /* ------------------JS -------------------*/
 

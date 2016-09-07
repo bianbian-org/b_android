@@ -12,7 +12,6 @@ import android.widget.ImageView;
 
 import com.techjumper.corelib.mvp.factory.Presenter;
 import com.techjumper.corelib.rx.tools.RxBus;
-import com.techjumper.corelib.utils.window.ToastUtils;
 import com.techjumper.polyhomeb.Config;
 import com.techjumper.polyhomeb.Constant;
 import com.techjumper.polyhomeb.R;
@@ -195,7 +194,6 @@ public class FriendFragment extends AppBaseWebViewFragment<FriendFragmentPresent
         }
     }
 
-
     /**
      * 页面加载完毕之后的接口
      */
@@ -204,32 +202,20 @@ public class FriendFragment extends AppBaseWebViewFragment<FriendFragmentPresent
         stopRefresh("");
     }
 
-
     /**
      * 处理接收的Error的接口
      */
-
     @Override
     public void onPageError(int errorCode, String description, String failingUrl) {
-//        mWebView.loadUrl("http://pl.techjumper.com/neighbor/404");
-//        mWebView.loadUrl(Config.sFriendErrorPage);
-//        JLog.e("errorCode" + errorCode);
-        ToastUtils.show("友邻网页错误,错误码:" + errorCode);
         mIsOtherError = true;
     }
-
-//    }
 
     /**
      * 处理Http是不是Error的接口
      */
     @Override
     public void onPageHttpError(WebView view, WebResourceRequest request, WebResourceResponse errorResponse) {
-        //        mWebView.loadUrl("http://pl.techjumper.com/neighbor/404");
-//        mWebView.loadUrl(Config.sFriendErrorPage);
-        ToastUtils.show("在友邻中,WebView的HTTP错误了");
         mIsOtherError = true;
-//        JLog.e("errorResponse.getStatusCode" + errorResponse.getStatusCode());
     }
 
     /**
@@ -255,9 +241,11 @@ public class FriendFragment extends AppBaseWebViewFragment<FriendFragmentPresent
     @Override
     public void setUserVisibleHint(boolean isVisibleToUser) {
         super.setUserVisibleHint(isVisibleToUser);
-        if (isVisibleToUser && isFirst) {
-            isFirst = false;
-            init();
+        if (isPrepare && isVisibleToUser) {
+            if (isFirst) {
+                isFirst = false;
+                init();
+            }
         }
     }
 

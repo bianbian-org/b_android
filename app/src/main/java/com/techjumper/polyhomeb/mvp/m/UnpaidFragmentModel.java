@@ -4,6 +4,7 @@ import com.steve.creact.library.display.DisplayBean;
 import com.techjumper.corelib.rx.tools.CommonWrap;
 import com.techjumper.lib2.others.KeyValuePair;
 import com.techjumper.lib2.utils.RetrofitHelper;
+import com.techjumper.polyhomeb.Constant;
 import com.techjumper.polyhomeb.R;
 import com.techjumper.polyhomeb.adapter.recycler_Data.NoDataData;
 import com.techjumper.polyhomeb.adapter.recycler_Data.PaymentFragmentContentData;
@@ -41,6 +42,8 @@ public class UnpaidFragmentModel extends BaseModel<UnpaidFragmentPresenter> {
     public boolean mIsFirst = true;
     private List<DisplayBean> mDataList = new ArrayList<>();
 
+    private static final String sStatus = "1";
+
     public UnpaidFragmentModel(UnpaidFragmentPresenter presenter) {
         super(presenter);
     }
@@ -50,7 +53,7 @@ public class UnpaidFragmentModel extends BaseModel<UnpaidFragmentPresenter> {
                 UserManager.INSTANCE.getUserInfo(UserManager.KEY_ID)
                 , UserManager.INSTANCE.getTicket()
                 , UserManager.INSTANCE.getCurrentId()
-                , 1 + ""
+                , sStatus
                 , payType
                 , mCurrentPage
                 , mOnePageCount);
@@ -83,8 +86,9 @@ public class UnpaidFragmentModel extends BaseModel<UnpaidFragmentPresenter> {
         if (mIsFirst) {
             //第一个item,带总数量什么的
             PaymentTitleData paymentTitleData = new PaymentTitleData();
-            paymentTitleData.setTitle(getPresenter().getView().getString(R.string.un_payment) + ":");
+            paymentTitleData.setTitle(getPresenter().getView().getString(R.string.un_payment_total) + ":");
             paymentTitleData.setTotal(total_price);
+            paymentTitleData.setWhere(Constant.UNPAID_FRAGMENT_TITLE);
             PaymentTitleBean paymentTitleBean = new PaymentTitleBean(paymentTitleData);
             mDataList.add(paymentTitleBean);
 
@@ -121,6 +125,8 @@ public class UnpaidFragmentModel extends BaseModel<UnpaidFragmentPresenter> {
             paymentFragmentContentData.setPrice(price);
             paymentFragmentContentData.setExpiry_price(expiry_price);
             paymentFragmentContentData.setOrder_num(order_number);
+            paymentFragmentContentData.setStatus(status);
+            paymentFragmentContentData.setIs_late(is_late);
             PaymentFragmentContentBean paymentFragmentContentBean = new PaymentFragmentContentBean(paymentFragmentContentData);
             mDataList.add(paymentFragmentContentBean);
 
@@ -142,8 +148,9 @@ public class UnpaidFragmentModel extends BaseModel<UnpaidFragmentPresenter> {
         displayBeen.add(propertyRepairBigDividerBean);
 
         PaymentTitleData paymentTitleData = new PaymentTitleData();
-        paymentTitleData.setTitle(getPresenter().getView().getString(R.string.un_payment) + ":");
+        paymentTitleData.setTitle(getPresenter().getView().getString(R.string.un_payment_total) + ":");
         paymentTitleData.setTotal(0);
+        paymentTitleData.setWhere(Constant.UNPAID_FRAGMENT_TITLE);
         PaymentTitleBean paymentTitleBean = new PaymentTitleBean(paymentTitleData);
         displayBeen.add(paymentTitleBean);
 

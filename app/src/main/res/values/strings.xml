@@ -215,6 +215,8 @@
     <string name="property_payment">物业缴费</string>
     <string name="un_payment">未缴费</string>
     <string name="paymented">已缴费</string>
+    <string name="paymented_total">已缴合计</string>
+    <string name="un_payment_total">未缴合计</string>
     <string name="pop_property_pay">物业费</string>
     <string name="pop_water_pay">水费</string>
     <string name="pop_elec_pay">电费</string>
@@ -223,10 +225,16 @@
     <string name="payment_yuan">%1$s元</string>
     <string name="pay_now">立即缴费</string>
     <string name="pay_death_line">截止:%1$s</string>
+    <string name="pay_day">缴费日期:%1$s</string>
     <string name="already_overrun_day">已超过%1$d天</string>
     <string name="surplus_day">剩余%1$d天</string>
     <string name="surplus_0_day">截止今日</string>
     <string name="charge_object">收费对象:</string>
+    <string name="pay_normal">正常缴费</string>
+    <string name="late_x_day">超过%1$s天,</string>
+    <string name="x_exceed">产生</string>
+    <string name="yuan">元</string>
+    <string name="expiry_price">滞纳金</string>
 
 
 </resources>

@@ -9,9 +9,19 @@ package com.techjumper.polyhomeb.entity.event;
 public class PaymentQueryEvent {
 
     private int position;
+    private int where;
 
-    public PaymentQueryEvent(int position) {
+    public int getWhere() {
+        return where;
+    }
+
+    public void setWhere(int where) {
+        this.where = where;
+    }
+
+    public PaymentQueryEvent(int position,int where) {
         this.position = position;
+        this.where = where;
     }
 
     public int getPosition() {

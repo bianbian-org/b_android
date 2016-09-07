@@ -11,6 +11,16 @@ public class PaymentTitleData {
     private String title;
     private double total;
 
+    private int where;
+
+    public int getWhere() {
+        return where;
+    }
+
+    public void setWhere(int where) {
+        this.where = where;
+    }
+
     public String getTitle() {
         return title;
     }

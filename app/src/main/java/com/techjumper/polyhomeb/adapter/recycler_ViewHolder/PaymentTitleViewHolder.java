@@ -31,6 +31,8 @@ public class PaymentTitleViewHolder extends BaseRecyclerViewHolder<PaymentTitleD
     private View mRootView;
     private ImageView mIvTriangle;
 
+    private int mWhere = 0;
+
     public PaymentTitleViewHolder(View itemView) {
         super(itemView);
         mRootView = getView(R.id.tv_type);
@@ -40,6 +42,7 @@ public class PaymentTitleViewHolder extends BaseRecyclerViewHolder<PaymentTitleD
     @Override
     public void setData(PaymentTitleData data) {
         if (data == null) return;
+        mWhere = data.getWhere();
         initPopup();
         setText(R.id.tv_title, data.getTitle());
         setText(R.id.tv_total, String.format(getContext().getString(R.string.payment_yuan), data.getTotal()));
@@ -57,7 +60,7 @@ public class PaymentTitleViewHolder extends BaseRecyclerViewHolder<PaymentTitleD
     private void initPopup() {
 
         //1-物业费 2-水费 3-电费 4-燃气费 5-其他   全部
-        mPop = new PolyPopupWindow((Activity) getContext(), R.style.popup_anim, new PopListItemClick(),mRootView, new PopDismiss());
+        mPop = new PolyPopupWindow((Activity) getContext(), R.style.popup_anim, new PopListItemClick(), mRootView, new PopDismiss());
         mPop.setAnchorView(getView(R.id.tv_type));
         mPop.setXoff(110);
         List<String> datas = new ArrayList<>();
@@ -101,7 +104,7 @@ public class PaymentTitleViewHolder extends BaseRecyclerViewHolder<PaymentTitleD
                     setText(R.id.tv_type, getContext().getResources().getString(R.string.pop_all));
                     break;
             }
-            RxBus.INSTANCE.send(new PaymentQueryEvent(position)); //点击之后发送消息,然后刷新重新调用接口
+            RxBus.INSTANCE.send(new PaymentQueryEvent(position, mWhere)); //点击之后发送消息,然后刷新重新调用接口
         }
     }
 

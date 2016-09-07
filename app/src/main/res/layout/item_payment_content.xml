@@ -113,7 +113,6 @@
 
     </LinearLayout>
 
-
     <include layout="@layout/item_property_placard_divider" />
 
     <RelativeLayout
@@ -154,6 +153,15 @@
             android:text="@string/pay_now"
             android:textColor="@color/color_ffffff"
             android:textSize="@dimen/sp_14" />
+
+        <TextView
+            android:id="@+id/tv_pay_detail"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="@dimen/dp_14"
+            android:textSize="@dimen/sp_15" />
 
     </RelativeLayout>
 

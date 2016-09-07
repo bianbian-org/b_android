@@ -32,6 +32,8 @@ public abstract class AppBaseFragment<T extends AppBaseFragmentPresenter> extend
     private TitleHelper.Builder mTitleBuilder;
     private KProgressHUD mProgress;
 
+    public boolean isPrepare = false;
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -72,7 +74,7 @@ public abstract class AppBaseFragment<T extends AppBaseFragmentPresenter> extend
                     });
             mTitleBuilder.process();
         }
-
+        isPrepare = true;
         return view;
     }
 

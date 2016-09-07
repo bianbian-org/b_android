@@ -105,17 +105,14 @@ public abstract class AppBaseWebViewFragment<T extends AppBaseFragmentPresenter>
 
     @Override
     public void onPageFinished(String url) {
-
     }
 
     @Override
     public void onPageError(int errorCode, String description, String failingUrl) {
-
     }
 
     @Override
     public void onPageHttpError(WebView view, WebResourceRequest request, WebResourceResponse errorResponse) {
-
     }
 
     @Override
@@ -131,4 +128,5 @@ public abstract class AppBaseWebViewFragment<T extends AppBaseFragmentPresenter>
     protected void onReceivedTitle(WebView view, String title) {
 
     }
+
 }

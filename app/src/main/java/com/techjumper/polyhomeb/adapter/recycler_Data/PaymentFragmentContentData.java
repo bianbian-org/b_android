@@ -16,6 +16,24 @@ public class PaymentFragmentContentData {
     private int day;
     private double expiry_price;
     private String order_num;
+    private int status;
+    private int is_late;
+
+    public int getIs_late() {
+        return is_late;
+    }
+
+    public void setIs_late(int is_late) {
+        this.is_late = is_late;
+    }
+
+    public int getStatus() {
+        return status;
+    }
+
+    public void setStatus(int status) {
+        this.status = status;
+    }
 
     public String getOrder_num() {
         return order_num;
