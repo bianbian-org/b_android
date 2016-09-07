@@ -79,7 +79,7 @@ public class PolyWebView extends WebView {
             return false;
         });
     }
-//
+
 //    @Override
 //    public void loadUrl(String url) {
 //        super.loadUrl(url, new HashMap<>());
@@ -160,12 +160,6 @@ public class PolyWebView extends WebView {
 
         @Override
         public boolean shouldOverrideUrlLoading(WebView view, String url) {
-
-//            Map<String, String> additionalHttpHeaders = new HashMap<>();
-//            additionalHttpHeaders.put("x-huserid", UserManager.INSTANCE.getUserInfo(UserManager.KEY_ID));
-//            additionalHttpHeaders.put("x-hticket", UserManager.INSTANCE.getTicket());
-//            view.loadUrl(url, additionalHttpHeaders);
-
             view.loadUrl(url);
             return true;
         }

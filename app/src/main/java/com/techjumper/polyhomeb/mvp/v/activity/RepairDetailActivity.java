@@ -13,7 +13,6 @@ import android.widget.TextView;
 
 import com.jakewharton.rxbinding.widget.RxTextView;
 import com.techjumper.corelib.mvp.factory.Presenter;
-import com.techjumper.corelib.utils.common.JLog;
 import com.techjumper.corelib.utils.common.ResourceUtils;
 import com.techjumper.corelib.utils.common.RuleUtils;
 import com.techjumper.polyhomeb.R;
@@ -93,6 +92,11 @@ public class RepairDetailActivity extends AppBaseActivity<RepairDetailActivityPr
     }
 
     @Override
+    protected boolean canSlide2Close() {
+        return false;
+    }
+
+    @Override
     public void onLayoutChange(View v, int left, int top, int right, int bottom, int oldLeft, int oldTop, int oldRight, int oldBottom) {
         //old是改变前的左上右下坐标点值，没有old的是改变后的左上右下坐标点值
         //现在认为只要控件将Activity向上推的高度超过了1/3屏幕高，就认为软键盘弹起
@@ -105,8 +109,6 @@ public class RepairDetailActivity extends AppBaseActivity<RepairDetailActivityPr
             mAdapter.notifyDataSetChanged();
         }
 
-        JLog.e("ot" + oldTop + " ....newtp" + top);
-        JLog.e("old" + oldBottom + ".....new" + bottom);
     }
 
     private void processScreenHeightAndIME() {

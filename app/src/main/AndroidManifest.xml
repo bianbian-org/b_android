@@ -83,7 +83,7 @@
             android:configChanges="keyboardHidden|orientation|screenSize"
             android:launchMode="singleTask"
             android:screenOrientation="portrait"
-            android:windowSoftInputMode="adjustResize|stateHidden" />
+            android:windowSoftInputMode="stateHidden|stateUnchanged"  />
         <activity
             android:name=".mvp.v.activity.PicViewActivity"
             android:configChanges="keyboardHidden|orientation|screenSize"

@@ -15,7 +15,7 @@ import android.view.ViewTreeObserver;
 /**
  * 获取键盘高度
  */
-public class SoftKeyboardUtil {
+public final class SoftKeyboardUtil {
 
     public static void observeSoftKeyboard(Activity activity, final OnSoftKeyboardChangeListener listener) {
         final View decorView = activity.getWindow().getDecorView();
@@ -41,4 +41,6 @@ public class SoftKeyboardUtil {
     public interface OnSoftKeyboardChangeListener {
         void onSoftKeyBoardChange(int softKeyboardHeight, boolean visible);
     }
+
+
 }

@@ -47,8 +47,10 @@ public class ShoppingFragment extends AppBaseFragment<ShoppingFragmentPresenter>
     @Bind(R.id.ptr)
     PtrClassicFrameLayout mPtr;
 
+    private boolean isFirst = true;
+
     private boolean mCanRefresh = true;   //可否下拉刷新
-//    private String mRefreshType = "";     //下拉刷新的类型:根据url带的refresh=这个参数来判断
+    //    private String mRefreshType = "";     //下拉刷新的类型:根据url带的refresh=这个参数来判断
     private boolean mIsOtherError = false;//是不是其他类型的错误(其他类型错误包括:404.500,等等,以及断网这种错误)
 
     public static ShoppingFragment getInstance() {
@@ -62,13 +64,7 @@ public class ShoppingFragment extends AppBaseFragment<ShoppingFragmentPresenter>
 
     @Override
     protected void initView(Bundle savedInstanceState) {
-        String url = Config.sShopping;
-        WebTitleManager webTitleManager = new WebTitleManager(url, mViewRoot, this);
-//        mRefreshType = webTitleManager.getRefreshType();
-        mWebView.addJsInterface(getActivity(), Constant.JS_NATIVE_BRIDGE);
-        mWebView.processBack();
-        mWebView.loadUrl(url);
-        initListener();
+//        init();
     }
 
     @Override
@@ -159,7 +155,7 @@ public class ShoppingFragment extends AppBaseFragment<ShoppingFragmentPresenter>
 
                 //9月5日更改刷新逻辑,客户端直接调用reload.
 //                if (mIsOtherError) {
-                    mWebView.reload();
+                mWebView.reload();
 //                    mIsOtherError = false;
 //                } else {
 //                    refresh();
@@ -258,5 +254,25 @@ public class ShoppingFragment extends AppBaseFragment<ShoppingFragmentPresenter>
 
     public PolyWebView getWebView() {
         return mWebView;
+    }
+
+    @Override
+    public void setUserVisibleHint(boolean isVisibleToUser) {
+        super.setUserVisibleHint(isVisibleToUser);
+
+        if (isVisibleToUser && isFirst) {
+            isFirst = false;
+            init();
+        }
+    }
+
+    private void init() {
+        String url = Config.sShopping;
+        WebTitleManager webTitleManager = new WebTitleManager(url, mViewRoot, this);
+//        mRefreshType = webTitleManager.getRefreshType();
+        mWebView.addJsInterface(getActivity(), Constant.JS_NATIVE_BRIDGE);
+        mWebView.processBack();
+        mWebView.loadUrl(url);
+        initListener();
     }
 }

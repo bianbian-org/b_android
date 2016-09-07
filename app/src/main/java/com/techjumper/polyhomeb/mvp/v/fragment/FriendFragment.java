@@ -50,6 +50,8 @@ public class FriendFragment extends AppBaseFragment<FriendFragmentPresenter>
     @Bind(R.id.ptr)
     PtrClassicFrameLayout mPtr;
 
+    private boolean isFirst = true;
+
     private boolean mCanRefresh = true;   //可否下拉刷新
     private String mRefreshType = "";     //下拉刷新的类型:根据url带的refresh=这个参数来判断
     private boolean mIsOtherError = false;//是不是其他类型的错误(其他类型错误包括:404.500,等等,以及断网这种错误)
@@ -66,13 +68,7 @@ public class FriendFragment extends AppBaseFragment<FriendFragmentPresenter>
 
     @Override
     protected void initView(Bundle savedInstanceState) {
-        String url = Config.sFriend;
-        WebTitleManager webTitleManager = new WebTitleManager(url, mViewRoot, this);
-//        mRefreshType = webTitleManager.getRefreshType();
-        mWebView.addJsInterface(getActivity(), Constant.JS_NATIVE_BRIDGE);
-        mWebView.processBack();
-        mWebView.loadUrl(url);
-        initListener();
+//        init();
     }
 
     @Override
@@ -270,5 +266,24 @@ public class FriendFragment extends AppBaseFragment<FriendFragmentPresenter>
 
     public PtrClassicFrameLayout getPtr() {
         return mPtr;
+    }
+
+    @Override
+    public void setUserVisibleHint(boolean isVisibleToUser) {
+        super.setUserVisibleHint(isVisibleToUser);
+        if (isVisibleToUser && isFirst) {
+            isFirst = false;
+            init();
+        }
+    }
+
+    private void init() {
+        String url = Config.sFriend;
+        WebTitleManager webTitleManager = new WebTitleManager(url, mViewRoot, this);
+//        mRefreshType = webTitleManager.getRefreshType();
+        mWebView.addJsInterface(getActivity(), Constant.JS_NATIVE_BRIDGE);
+        mWebView.processBack();
+        mWebView.loadUrl(url);
+        initListener();
     }
 }
