@@ -34,7 +34,7 @@ public class PaymentSuccessActivity extends AppBaseActivity<PaymentSuccessActivi
     @Override
     protected void initView(Bundle savedInstanceState) {
         mTvPayName.setText(getPresenter().getPayName());
-        mTvCost.setText(getPresenter().getTotal() + "");
+        mTvCost.setText(getString(R.string.￥) + getPresenter().getTotal());
         mTvPayWay.setText(getPresenter().getPayWay());
     }
 
