@@ -11,6 +11,7 @@ import com.techjumper.polyhomeb.mvp.v.activity.PaymentActivity;
  * * * * * * * * * * * * * * * * * * * * * * *
  **/
 public class PaymentActivityPresenter extends AppBaseActivityPresenter<PaymentActivity> {
+
     @Override
     public void initData(Bundle savedInstanceState) {
 

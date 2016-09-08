@@ -9,7 +9,8 @@
 
     <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
         android:scrollbars="none">
 
         <LinearLayout
@@ -317,45 +318,47 @@
                 android:layout_height="@dimen/dp_20"
                 android:background="@color/color_ededed" />
 
-            <include layout="@layout/item_property_repair_divider_long" />
-
-            <RelativeLayout
-                android:layout_width="match_parent"
-                android:layout_height="@dimen/dp_60">
-
-                <TextView
-                    android:id="@+id/tv_total_"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_centerVertical="true"
-                    android:layout_marginLeft="@dimen/dp_14"
-                    android:text="@string/total"
-                    android:textColor="@color/color_3e3e3e"
-                    android:textSize="@dimen/sp_16" />
-
-                <TextView
-                    android:id="@+id/tv_total_with_all"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_centerVertical="true"
-                    android:layout_toRightOf="@+id/tv_total_"
-                    android:textColor="@color/color_ff7f00"
-                    android:textSize="@dimen/sp_16" />
-
-                <TextView
-                    android:id="@+id/tv_pay"
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:layout_alignParentRight="true"
-                    android:background="@color/color_24c88a"
-                    android:gravity="center"
-                    android:paddingLeft="@dimen/dp_30"
-                    android:paddingRight="@dimen/dp_30"
-                    android:text="@string/pay_order"
-                    android:textColor="@color/color_ffffff"
-                    android:textSize="@dimen/sp_18" />
-
-            </RelativeLayout>
         </LinearLayout>
     </ScrollView>
+
+    <include layout="@layout/item_property_repair_divider_long" />
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:id="@+id/tv_total_"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="@dimen/dp_14"
+            android:text="@string/total"
+            android:textColor="@color/color_3e3e3e"
+            android:textSize="@dimen/sp_16" />
+
+        <TextView
+            android:id="@+id/tv_total_with_all"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_toRightOf="@+id/tv_total_"
+            android:textColor="@color/color_ff7f00"
+            android:textSize="@dimen/sp_16" />
+
+        <TextView
+            android:id="@+id/tv_pay"
+            android:layout_width="wrap_content"
+            android:layout_height="@dimen/dp_60"
+            android:layout_alignParentRight="true"
+            android:background="@color/color_24c88a"
+            android:gravity="center"
+            android:paddingLeft="@dimen/dp_30"
+            android:paddingRight="@dimen/dp_30"
+            android:text="@string/pay_order"
+            android:textColor="@color/color_ffffff"
+            android:textSize="@dimen/sp_18" />
+
+    </RelativeLayout>
+
 </LinearLayout>

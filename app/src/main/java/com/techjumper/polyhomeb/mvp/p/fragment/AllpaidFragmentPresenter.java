@@ -10,6 +10,7 @@ import com.techjumper.polyhomeb.Constant;
 import com.techjumper.polyhomeb.R;
 import com.techjumper.polyhomeb.entity.OrdersEntity;
 import com.techjumper.polyhomeb.entity.event.PaymentQueryEvent;
+import com.techjumper.polyhomeb.entity.event.RefreshPaymentEvent;
 import com.techjumper.polyhomeb.mvp.m.AllpaidFragmentModel;
 import com.techjumper.polyhomeb.mvp.v.fragment.AllpaidFragment;
 import com.techjumper.polyhomeb.user.UserManager;
@@ -29,7 +30,7 @@ public class AllpaidFragmentPresenter extends AppBaseFragmentPresenter<AllpaidFr
 
     public AllpaidFragmentModel mModel = new AllpaidFragmentModel(this);
 
-    private Subscription mSubs1, mSubs2;
+    private Subscription mSubs1, mSubs2, mSubs3;
     private String mPayType = "";
 
     @Override
@@ -40,12 +41,25 @@ public class AllpaidFragmentPresenter extends AppBaseFragmentPresenter<AllpaidFr
     @Override
     public void onViewInited(Bundle savedInstanceState) {
         getPayType();
+        refreshPaymentData();
         if (!UserManager.INSTANCE.isFamily()) {
             ToastUtils.show(getView().getString(R.string.no_authority));
             getView().onOrdersDataReceive(mModel.noData());
         } else {
             refreshData();
         }
+    }
+
+    //在付款成功界面,点击大的绿色返回按钮的时候,收到消息,刷新数据
+    private void refreshPaymentData() {
+        RxUtils.unsubscribeIfNotNull(mSubs3);
+        addSubscription(
+                mSubs3 = RxBus.INSTANCE
+                        .asObservable().subscribe(o -> {
+                            if (o instanceof RefreshPaymentEvent) {
+                                refreshData();
+                            }
+                        }));
     }
 
     private void getPayType() {
