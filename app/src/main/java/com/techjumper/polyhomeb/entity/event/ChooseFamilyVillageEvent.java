@@ -8,20 +8,14 @@ package com.techjumper.polyhomeb.entity.event;
  **/
 public class ChooseFamilyVillageEvent {
 
-    private int id;
     private String name;
     private int isFamilyData;
     private int position;
 
-    public ChooseFamilyVillageEvent(int id, String name, int isFamilyData, int position) {
-        this.id = id;
+    public ChooseFamilyVillageEvent(String name, int isFamilyData, int position) {
         this.name = name;
         this.isFamilyData = isFamilyData;
         this.position = position;
-    }
-
-    public int getId() {
-        return id;
     }
 
     public String getName() {

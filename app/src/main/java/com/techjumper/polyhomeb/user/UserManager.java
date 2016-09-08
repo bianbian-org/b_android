@@ -110,15 +110,22 @@ public enum UserManager {
     /**
      * 更新当前家庭和小区的信息
      * 如果不是家庭的话,KEY_CURRENT_FAMILY_ID存入的就是小区id.
+     * <p>
+     * <p>
+     * 如果是家庭那么KEY_CURRENT_FAMILY_ID就是家庭id,KEY_CURRENT_VILLAGE_ID就是小区id
+     * 如果是小区,那么KEY_CURRENT_FAMILY_ID和KEY_CURRENT_VILLAGE_ID就是小区id都是小区id
+     * <p>
+     * <p>
+     * 所以使用之前要判断 isFamily()
      */
-    public void updateFamilyOrVillageInfo(boolean isFamily, String id, String name, int village_id) {
+    public void updateFamilyOrVillageInfo(boolean isFamily, String family_id, String name, int village_id) {
         if (isFamily) {
-            PreferenceUtils.save(UserManager.KEY_CURRENT_FAMILY_ID, id);
+            PreferenceUtils.save(UserManager.KEY_CURRENT_FAMILY_ID, family_id);
             PreferenceUtils.save(UserManager.KEY_CURRENT_SHOW_TITLE_NAME, name);
             PreferenceUtils.save(UserManager.KEY_CURRENT_VILLAGE_ID, village_id + "");
             PreferenceUtils.save(UserManager.KEY_CURRENT_SHOW_IS_FAMILY_OR_VILLAGE, UserManager.VALUE_IS_FAMILY);
         } else {
-            PreferenceUtils.save(UserManager.KEY_CURRENT_FAMILY_ID, id);
+            PreferenceUtils.save(UserManager.KEY_CURRENT_FAMILY_ID, village_id);
             PreferenceUtils.save(UserManager.KEY_CURRENT_SHOW_TITLE_NAME, name);
             PreferenceUtils.save(UserManager.KEY_CURRENT_VILLAGE_ID, village_id + "");
             PreferenceUtils.save(UserManager.KEY_CURRENT_SHOW_IS_FAMILY_OR_VILLAGE, UserManager.VALUE_IS_VILLAGE);

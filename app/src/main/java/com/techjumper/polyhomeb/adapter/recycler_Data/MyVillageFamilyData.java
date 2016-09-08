@@ -8,7 +8,7 @@ package com.techjumper.polyhomeb.adapter.recycler_Data;
  **/
 public class MyVillageFamilyData {
 
-    private int id;
+    private int family_id;
     private boolean choosed;
     private String name;
     private int verified;
@@ -55,11 +55,11 @@ public class MyVillageFamilyData {
         this.verified = verified;
     }
 
-    public int getId() {
-        return id;
+    public int getFamily_id() {
+        return family_id;
     }
 
-    public void setId(int id) {
-        this.id = id;
+    public void setFamily_id(int family_id) {
+        this.family_id = family_id;
     }
 }

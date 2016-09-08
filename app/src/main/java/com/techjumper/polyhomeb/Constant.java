@@ -52,6 +52,16 @@ public class Constant {
     public static final int UNPAID_FRAGMENT_TITLE = 1;
     public static final int PAID_FRAGMENT_TITLE = 2;
 
+    public static final String KEY_ORDER_NUMBER = "key_order_number";  //订单号  512841286429178
+    public static final String KEY_PAY_NAME = "key_pay_name";    //费用名称  二月份燃气费
+    public static final String KEY_PAY_TYPE = "key_pay_type";    //费用类型  水电,物业之类
+    public static final String KEY_PAY_OBJECT = "key_pay_object";  //收费对象 4-2-4-1
+    public static final String KEY_PAY_DEATH_LINE = "key_pay_death_line";   //截止日期  2016-6-6
+    public static final String KEY_PAY_TOTAL = "key_pay_total";   //费用总计   $99
+    public static final String KEY_PAY_IS_LATE = "key_pay_is_late";   //是否逾期
+    public static final String KEY_PAY_DAY = "key_pay_day";   //超过X天,  还剩下10天,是+10天,逾期超过了10天则是-10天
+    public static final String KEY_PAY_EXPIRY = "key_pay_expiry";  //滞纳金
+
 
 
     /* ------------------JS -------------------*/

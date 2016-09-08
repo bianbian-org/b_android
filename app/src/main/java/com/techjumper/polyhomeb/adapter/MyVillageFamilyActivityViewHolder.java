@@ -30,7 +30,8 @@ public class MyVillageFamilyActivityViewHolder extends BaseRecyclerViewHolder<My
     @Override
     public void setData(MyVillageFamilyData data) {
         if (data == null) return;
-        int id = data.getId();   //家庭or小区id
+        int villageId = data.getVillageId();
+        int family_id = data.getFamily_id();   //家庭or小区id
         String name = data.getName();  //家庭or小区名字
         int verified = data.getVerified();  //0是未审核,1是已审核
         if (data.isFamilyData() == 0) { //家庭
@@ -50,19 +51,11 @@ public class MyVillageFamilyActivityViewHolder extends BaseRecyclerViewHolder<My
             //(最开始是写在MyVillageFamilyActivityPresenter中的,肯定不得行)
             if (!data.isChoosed()) {
                 if (0 == data.isFamilyData()) {  //家庭
-//                    PreferenceUtils.save(UserManager.KEY_CURRENT_FAMILY_ID, id + "");
-//                    PreferenceUtils.save(UserManager.KEY_CURRENT_SHOW_TITLE_NAME, name);
-//                    PreferenceUtils.save(UserManager.KEY_CURRENT_VILLAGE_ID, data.getVillageId() + "");
-//                    PreferenceUtils.save(UserManager.KEY_CURRENT_SHOW_IS_FAMILY_OR_VILLAGE, UserManager.VALUE_IS_FAMILY);
-                    UserManager.INSTANCE.updateFamilyOrVillageInfo(true, id + "", name, data.getVillageId());
+                    UserManager.INSTANCE.updateFamilyOrVillageInfo(true, family_id + "", name, villageId);
                 } else if (1 == data.isFamilyData()) {   //小区
-//                    PreferenceUtils.save(UserManager.KEY_CURRENT_FAMILY_ID, id + "");
-//                    PreferenceUtils.save(UserManager.KEY_CURRENT_SHOW_TITLE_NAME, name);
-//                    PreferenceUtils.save(UserManager.KEY_CURRENT_VILLAGE_ID, data.getVillageId() + "");
-//                    PreferenceUtils.save(UserManager.KEY_CURRENT_SHOW_IS_FAMILY_OR_VILLAGE, UserManager.VALUE_IS_VILLAGE);
-                    UserManager.INSTANCE.updateFamilyOrVillageInfo(false, id + "", name, data.getVillageId());
+                    UserManager.INSTANCE.updateFamilyOrVillageInfo(false, villageId + "", name, villageId);
                 }
-                RxBus.INSTANCE.send(new ChooseFamilyVillageEvent(id, name, data.isFamilyData(), getLayoutPosition()));
+                RxBus.INSTANCE.send(new ChooseFamilyVillageEvent(name, data.isFamilyData(), getLayoutPosition()));
             }
         });
     }

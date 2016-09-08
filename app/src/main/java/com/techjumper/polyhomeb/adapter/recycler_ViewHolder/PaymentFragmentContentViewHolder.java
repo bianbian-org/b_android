@@ -1,15 +1,20 @@
 package com.techjumper.polyhomeb.adapter.recycler_ViewHolder;
 
+import android.app.Activity;
+import android.os.Bundle;
 import android.text.Html;
 import android.view.View;
 import android.widget.TextView;
 
 import com.steve.creact.annotation.DataBean;
 import com.steve.creact.library.viewholder.BaseRecyclerViewHolder;
+import com.techjumper.corelib.utils.common.AcHelper;
 import com.techjumper.corelib.utils.window.ToastUtils;
 import com.techjumper.lightwidget.textview.MarqueeTextView;
+import com.techjumper.polyhomeb.Constant;
 import com.techjumper.polyhomeb.R;
 import com.techjumper.polyhomeb.adapter.recycler_Data.PaymentFragmentContentData;
+import com.techjumper.polyhomeb.mvp.v.activity.AdjustAccountsActivity;
 
 /**
  * * * * * * * * * * * * * * * * * * * * * * *
@@ -91,7 +96,22 @@ public class PaymentFragmentContentViewHolder extends BaseRecyclerViewHolder<Pay
         }
         setOnClickListener(R.id.tv_pay_now, v -> {
             String order_num = data.getOrder_num();
-            ToastUtils.show("立即付款~~" + "订单号:" + order_num);
+            Bundle bundle = new Bundle();
+            bundle.putString(Constant.KEY_ORDER_NUMBER, order_num);  //订单号  512841286429178
+            bundle.putString(Constant.KEY_PAY_NAME, data.getTitle()); //费用名称  二月份燃气费
+            bundle.putString(Constant.KEY_PAY_OBJECT, data.getContent()); //收费对象 4-2-4-1
+            bundle.putString(Constant.KEY_PAY_DEATH_LINE, data.getTime()); //截止日期  2016-6-6
+
+            bundle.putDouble(Constant.KEY_PAY_TOTAL, data.getPrice()); //费用总计   $99
+            bundle.putDouble(Constant.KEY_PAY_EXPIRY, data.getExpiry_price()); //滞纳金
+
+            bundle.putInt(Constant.KEY_PAY_TYPE, data.getBtnName()); //费用类型  水电,物业之类
+            bundle.putInt(Constant.KEY_PAY_IS_LATE, data.getIs_late()); //是否逾期
+            bundle.putInt(Constant.KEY_PAY_DAY, data.getDay()); //超过X天,  还剩下10天,是+10天,逾期超过了10天则是-10天
+            new AcHelper.Builder((Activity) getContext())
+                    .target(AdjustAccountsActivity.class)
+                    .extra(bundle)
+                    .start();
         });
     }
 

@@ -79,7 +79,7 @@ public class MyVillageFamilyActivityModel extends BaseModel<MyVillageFamilyActiv
                 }
                 MyVillageFamilyData myVillageFamilyData = new MyVillageFamilyData();
                 myVillageFamilyData.setName(family_infos.get(i).getFamily_name());
-                myVillageFamilyData.setId(family_infos.get(i).getId());
+                myVillageFamilyData.setFamily_id(family_infos.get(i).getId());
                 myVillageFamilyData.setVillageId(family_infos.get(i).getId());
                 myVillageFamilyData.setFamilyData(0);
                 String isFamilyOrVillage = UserManager.INSTANCE.getUserInfo(UserManager.KEY_CURRENT_SHOW_IS_FAMILY_OR_VILLAGE);
@@ -127,7 +127,7 @@ public class MyVillageFamilyActivityModel extends BaseModel<MyVillageFamilyActiv
                 }
                 MyVillageFamilyData myVillageFamilyData = new MyVillageFamilyData();
                 myVillageFamilyData.setName(village_infos.get(i).getVillage_name());
-                myVillageFamilyData.setId(village_infos.get(i).getVillage_id());
+                myVillageFamilyData.setFamily_id(village_infos.get(i).getVillage_id());
                 myVillageFamilyData.setVillageId(village_infos.get(i).getVillage_id());
                 myVillageFamilyData.setVerified(village_infos.get(i).getVerified());
                 myVillageFamilyData.setFamilyData(1);

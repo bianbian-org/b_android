@@ -7,6 +7,7 @@ import android.webkit.WebResourceRequest;
 import android.webkit.WebResourceResponse;
 import android.webkit.WebView;
 
+import com.techjumper.corelib.utils.window.ToastUtils;
 import com.techjumper.polyhomeb.mvp.p.activity.AppBaseActivityPresenter;
 import com.techjumper.polyhomeb.user.UserManager;
 import com.techjumper.polyhomeb.widget.AdvancedWebView;
@@ -41,6 +42,9 @@ public abstract class AppBaseWebViewActivity<T extends AppBaseActivityPresenter>
         mWebView.addHttpHeader("HUSERID", UserManager.INSTANCE.getUserInfo(UserManager.KEY_ID));
         mWebView.addHttpHeader("HTICKET", UserManager.INSTANCE.getTicket());
         mWebView.addHttpHeader("HVILLAGEID", UserManager.INSTANCE.getUserInfo(UserManager.KEY_CURRENT_VILLAGE_ID));
+
+        ToastUtils.show(UserManager.INSTANCE.getUserInfo(UserManager.KEY_CURRENT_VILLAGE_ID));
+
         mIsInit = true;
     }
 
