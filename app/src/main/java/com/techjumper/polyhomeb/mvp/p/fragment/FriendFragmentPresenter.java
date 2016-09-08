@@ -62,7 +62,7 @@ public class FriendFragmentPresenter extends AppBaseFragmentPresenter<FriendFrag
         addSubscription(
                 mSubs1 = RxBus.INSTANCE.asObservable().subscribe(o -> {
                     if (o instanceof ReloadWebPageEvent) {
-                        getView().getWebView().reload();
+//                        getView().getWebView().reload();
                     } else if (o instanceof RefreshStopEvent) {
                         getView().stopRefresh("");
                     }

@@ -61,6 +61,14 @@ public class Constant {
     public static final String KEY_PAY_IS_LATE = "key_pay_is_late";   //是否逾期
     public static final String KEY_PAY_DAY = "key_pay_day";   //超过X天,  还剩下10天,是+10天,逾期超过了10天则是-10天
     public static final String KEY_PAY_EXPIRY = "key_pay_expiry";  //滞纳金
+    public static final String KEY_PAY_ALL_COST = "key_pay_all_cast";  //总金额,加上滞纳金的
+
+    //支付方式
+    public static final String PAYMENT_WAY = "payment_way";
+    public static final int TENCENT_PAY = 0;
+    public static final int ALIPAY = 1;
+    public static final int UNION_PAY = 2;
+    public static final int YI_PAY = 3;
 
 
 

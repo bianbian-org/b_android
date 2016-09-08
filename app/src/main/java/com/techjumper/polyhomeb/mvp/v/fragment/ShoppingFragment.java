@@ -137,13 +137,13 @@ public class ShoppingFragment extends AppBaseWebViewFragment<ShoppingFragmentPre
         }
     }
 
-
     /**
      * 根据url传回来的method,调用页面的function
      */
     private void onLineMethod(String method) {
         if (TextUtils.isEmpty(method)) return;
         getWebView().loadUrl("javascript:" + method + "()");
+
     }
 
     private void initListener() {
@@ -190,6 +190,12 @@ public class ShoppingFragment extends AppBaseWebViewFragment<ShoppingFragmentPre
         }
     }
 
+    @Override
+    public void onPageFinished(String url) {
+        super.onPageFinished(url);
+        stopRefresh("");
+    }
+
     /**
      * 页面加载完毕之后的接口
      */
@@ -215,8 +221,6 @@ public class ShoppingFragment extends AppBaseWebViewFragment<ShoppingFragmentPre
      */
     @Override
     public void onPageHttpError(WebView view, WebResourceRequest request, WebResourceResponse errorResponse) {
-        //        mWebView.loadUrl("http://pl.techjumper.com/neighbor/404");
-//        mWebView.loadUrl(Config.sFriendErrorPage);
         ToastUtils.show("在友邻中,WebView的HTTP错误了");
         mIsOtherError = true;
     }

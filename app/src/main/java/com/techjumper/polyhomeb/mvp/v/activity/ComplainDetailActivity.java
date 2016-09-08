@@ -33,7 +33,7 @@ import cn.finalteam.loadingviewfinal.RecyclerViewFinal;
  * * * * * * * * * * * * * * * * * * * * * * *
  **/
 @Presenter(ComplainDetailActivityPresenter.class)
-public class ComplainDetailActivity extends AppBaseActivity<ComplainDetailActivityPresenter> {
+public class ComplainDetailActivity extends AppBaseActivity<ComplainDetailActivityPresenter> implements View.OnLayoutChangeListener {
 
     @Bind(R.id.rv)
     RecyclerViewFinal mRv;
@@ -103,7 +103,21 @@ public class ComplainDetailActivity extends AppBaseActivity<ComplainDetailActivi
         mScreenHeight = this.getWindowManager().getDefaultDisplay().getHeight();
         //阀值设置为屏幕高度的1/3
         mKeyHeight = mScreenHeight / 3;
-//        mRootView.addOnLayoutChangeListener(this);
+        mRootView.addOnLayoutChangeListener(this);
+    }
+
+    @Override
+    public void onLayoutChange(View v, int left, int top, int right, int bottom, int oldLeft, int oldTop, int oldRight, int oldBottom) {
+        //old是改变前的左上右下坐标点值，没有old的是改变后的左上右下坐标点值
+        //现在认为只要控件将Activity向上推的高度超过了1/3屏幕高，就认为软键盘弹起
+        if (oldBottom != 0 && bottom != 0 && (oldBottom - bottom > mKeyHeight)) {
+            mStaticHead.setVisibility(View.GONE);
+            mAdapter.notifyDataSetChanged();
+            mRv.smoothScrollToPosition(mAdapter.getItemCount() + 1);  //mRv跳至最后一个item
+        } else if (oldBottom != 0 && bottom != 0 && (bottom - oldBottom > mKeyHeight)) {
+            mStaticHead.setVisibility(View.VISIBLE);
+            mAdapter.notifyDataSetChanged();
+        }
     }
 
     private void processEditTextLines() {

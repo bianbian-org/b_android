@@ -194,6 +194,12 @@ public class FriendFragment extends AppBaseWebViewFragment<FriendFragmentPresent
         }
     }
 
+    @Override
+    public void onPageFinished(String url) {
+        super.onPageFinished(url);
+        stopRefresh("");
+    }
+
     /**
      * 页面加载完毕之后的接口
      */

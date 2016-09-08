@@ -30,10 +30,10 @@
             android:value="test" />
 
         <activity
-            android:theme="@style/notrans"
             android:name=".mvp.v.activity.SplashActivity"
             android:configChanges="keyboardHidden|orientation|screenSize"
             android:screenOrientation="portrait"
+            android:theme="@style/notrans"
             android:windowSoftInputMode="stateHidden|adjustPan|">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -83,7 +83,7 @@
             android:configChanges="keyboardHidden|orientation|screenSize"
             android:launchMode="singleTask"
             android:screenOrientation="portrait"
-            android:windowSoftInputMode="stateHidden|stateUnchanged"  />
+            android:windowSoftInputMode="stateHidden|stateUnchanged" />
         <activity
             android:name=".mvp.v.activity.PicViewActivity"
             android:configChanges="keyboardHidden|orientation|screenSize"
@@ -103,11 +103,11 @@
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden|stateUnchanged" />
         <activity
-            android:theme="@style/notrans"
             android:name=".mvp.v.activity.TabHomeActivity"
             android:configChanges="keyboardHidden|orientation|screenSize"
             android:launchMode="singleTask"
             android:screenOrientation="portrait"
+            android:theme="@style/notrans"
             android:windowSoftInputMode="stateHidden|adjustPan|" />
         <activity
             android:name=".mvp.v.activity.FindPasswordActivity"
@@ -142,7 +142,7 @@
         <activity
             android:name=".mvp.v.activity.ReplyDetailActivity"
             android:configChanges="keyboardHidden|orientation|screenSize"
-            android:launchMode="singleTask"
+            android:launchMode="standard"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden|stateUnchanged" />
         <activity
@@ -219,6 +219,12 @@
             android:windowSoftInputMode="stateHidden|stateUnchanged" />
         <activity
             android:name=".mvp.v.activity.AdjustAccountsActivity"
+            android:configChanges="keyboardHidden|orientation|screenSize"
+            android:launchMode="singleTask"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateHidden|adjustPan" />
+        <activity
+            android:name=".mvp.v.activity.PaymentSuccessActivity"
             android:configChanges="keyboardHidden|orientation|screenSize"
             android:launchMode="singleTask"
             android:screenOrientation="portrait"

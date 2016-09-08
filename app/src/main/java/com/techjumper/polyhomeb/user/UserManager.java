@@ -116,7 +116,7 @@ public enum UserManager {
      * 如果是小区,那么KEY_CURRENT_FAMILY_ID和KEY_CURRENT_VILLAGE_ID就是小区id都是小区id
      * <p>
      * <p>
-     * 所以使用之前要判断 isFamily()
+     * 所以使用之前,如果要取家庭的话,就必须要判断isFamily(),如果只是拿小区id的话,则直接拿就行,因为只要你能登陆app,那就说明至少都有小区id,不一定有家庭id
      */
     public void updateFamilyOrVillageInfo(boolean isFamily, String family_id, String name, int village_id) {
         if (isFamily) {

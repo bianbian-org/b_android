@@ -3,7 +3,6 @@ package com.techjumper.polyhomeb.manager;
 import android.text.TextUtils;
 import android.view.View;
 
-import com.techjumper.corelib.utils.common.JLog;
 import com.techjumper.polyhomeb.interfaces.IWebViewTitleClick;
 import com.techjumper.polyhomeb.utils.WebTitleHelper;
 
@@ -64,7 +63,7 @@ public class WebTitleManager {
     private String mLeftFirstMethod = "", mLeftSecondMethod = "", mRightFirstMethod = "", mRightSecondMethod = "";
 
     public WebTitleManager(String url, View mViewRoot, IWebViewTitleClick mIWebViewTitleClick) {
-        JLog.e(url);
+//        JLog.e(url);
         this.mUrl = url;
         this.mViewRoot = mViewRoot;
         this.mIWebViewTitleClick = mIWebViewTitleClick;

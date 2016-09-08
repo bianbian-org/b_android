@@ -7,7 +7,7 @@ import android.webkit.WebResourceRequest;
 import android.webkit.WebResourceResponse;
 import android.webkit.WebView;
 
-import com.techjumper.corelib.utils.window.ToastUtils;
+import com.techjumper.corelib.utils.common.JLog;
 import com.techjumper.polyhomeb.mvp.p.fragment.AppBaseFragmentPresenter;
 import com.techjumper.polyhomeb.user.UserManager;
 import com.techjumper.polyhomeb.widget.AdvancedWebView;
@@ -43,8 +43,6 @@ public abstract class AppBaseWebViewFragment<T extends AppBaseFragmentPresenter>
         mWebView.addHttpHeader("HUSERID", UserManager.INSTANCE.getUserInfo(UserManager.KEY_ID));
         mWebView.addHttpHeader("HTICKET", UserManager.INSTANCE.getTicket());
         mWebView.addHttpHeader("HVILLAGEID", UserManager.INSTANCE.getUserInfo(UserManager.KEY_CURRENT_VILLAGE_ID));
-
-        ToastUtils.show(UserManager.INSTANCE.getUserInfo(UserManager.KEY_CURRENT_VILLAGE_ID));
 
         mIsInit = true;
     }
@@ -109,14 +107,17 @@ public abstract class AppBaseWebViewFragment<T extends AppBaseFragmentPresenter>
 
     @Override
     public void onPageFinished(String url) {
+
     }
 
     @Override
     public void onPageError(int errorCode, String description, String failingUrl) {
+        JLog.e("" + errorCode);
     }
 
     @Override
     public void onPageHttpError(WebView view, WebResourceRequest request, WebResourceResponse errorResponse) {
+        JLog.e("status" + errorResponse.getStatusCode());
     }
 
     @Override

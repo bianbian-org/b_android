@@ -13,6 +13,7 @@ import com.techjumper.polyhomeb.R;
 import com.techjumper.polyhomeb.entity.TrueEntity;
 import com.techjumper.polyhomeb.entity.UploadPicEntity;
 import com.techjumper.polyhomeb.entity.event.DeletePicNotifyEvent;
+import com.techjumper.polyhomeb.entity.event.ReloadWebPageEvent;
 import com.techjumper.polyhomeb.mvp.m.ReplyCommentActivityModel;
 import com.techjumper.polyhomeb.mvp.v.activity.ReplyCommentActivity;
 import com.techjumper.polyhomeb.utils.UploadPicUtil;
@@ -169,7 +170,7 @@ public class ReplyCommentActivityPresenter extends AppBaseActivityPresenter<Repl
                                     getView().showHint(getView().getString(R.string.commit_success));
                                     getView().dismissLoading();
                                     //发出消息,让网页reload当前页面
-//                                    RxBus.INSTANCE.send(new ReloadWebPageEvent());
+                                    RxBus.INSTANCE.send(new ReloadWebPageEvent());
                                     getView().finish();
                                 } else {
                                     getView().showHint(getView().getString(R.string.commit_failed));

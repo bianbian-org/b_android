@@ -9,7 +9,6 @@ import android.widget.TextView;
 import com.steve.creact.annotation.DataBean;
 import com.steve.creact.library.viewholder.BaseRecyclerViewHolder;
 import com.techjumper.corelib.utils.common.AcHelper;
-import com.techjumper.corelib.utils.window.ToastUtils;
 import com.techjumper.lightwidget.textview.MarqueeTextView;
 import com.techjumper.polyhomeb.Constant;
 import com.techjumper.polyhomeb.R;
@@ -31,7 +30,7 @@ public class PaymentFragmentContentViewHolder extends BaseRecyclerViewHolder<Pay
     private static final int sAllPaid = 2;
 
     private static final int sLate = 1; //已经逾期
-    private static final int sNotLate = 2;  //未逾期
+    private static final int sNotLate = 0;  //未逾期
 
     public PaymentFragmentContentViewHolder(View itemView) {
         super(itemView);
@@ -76,13 +75,12 @@ public class PaymentFragmentContentViewHolder extends BaseRecyclerViewHolder<Pay
         }
         setText(R.id.btn, btnName);
         setText(R.id.tv_content, getContext().getString(R.string.charge_object) + data.getContent());
-
-        setOnClickListener(R.id.layout_content, new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                ToastUtils.show("查看费用详情");
-            }
-        });
+//        setOnClickListener(R.id.layout_content, new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                ToastUtils.show("查看费用详情");
+//            }
+//        });
     }
 
     private void unPaid(PaymentFragmentContentData data) {
@@ -106,7 +104,7 @@ public class PaymentFragmentContentViewHolder extends BaseRecyclerViewHolder<Pay
             bundle.putDouble(Constant.KEY_PAY_EXPIRY, data.getExpiry_price()); //滞纳金
 
             bundle.putInt(Constant.KEY_PAY_TYPE, data.getBtnName()); //费用类型  水电,物业之类
-            bundle.putInt(Constant.KEY_PAY_IS_LATE, data.getIs_late()); //是否逾期
+            bundle.putInt(Constant.KEY_PAY_IS_LATE, data.getIs_late()); //是否逾期 0-没逾期, 1-逾期
             bundle.putInt(Constant.KEY_PAY_DAY, data.getDay()); //超过X天,  还剩下10天,是+10天,逾期超过了10天则是-10天
             new AcHelper.Builder((Activity) getContext())
                     .target(AdjustAccountsActivity.class)
@@ -124,7 +122,7 @@ public class PaymentFragmentContentViewHolder extends BaseRecyclerViewHolder<Pay
             String text4 = getContext().getString(R.string.expiry_price);  //滞纳金
             TextView tv = getView(R.id.tv_pay_detail);
             tv.setText(Html.fromHtml(text1 + text2 + "<font color='#ff7f00'>"
-                    + data.getExpiry_price() + text3 + "</font>") + text4);
+                    + data.getExpiry_price() + text3 + "</font>" + text4));
         } else if (sNotLate == data.getIs_late()) {  //未逾期
             setText(R.id.tv_pay_detail, getContext().getString(R.string.pay_normal));
         }

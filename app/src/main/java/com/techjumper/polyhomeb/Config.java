@@ -18,7 +18,6 @@ public class Config {
 
     public static String sFriend = "http://pl.techjumper.com/neighbor?title=友邻&left=::NativeMenu&right=::NativeNewArticle&refresh=refresh";
     public static String sShopping = "http://pl.techjumper.com/shop/mobile?title=商城&left=::NativeMenu&right=::person&refresh=refresh";
-    public static String sFriendErrorPage = "file:///android_asset/404.html";
 
     /**
      * 在SD空间的文件夹名字,以及文件夹内部的头像文件夹名称以及log文件夹名称

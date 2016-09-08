@@ -235,6 +235,23 @@
     <string name="x_exceed">产生</string>
     <string name="yuan">元</string>
     <string name="expiry_price">滞纳金</string>
+    <string name="adjust_accounts">结算</string>
+    <string name="pay_name">费用名称</string>
+    <string name="pay_type">费用类型</string>
+    <string name="pay_object">收费对象</string>
+    <string name="pay_death_line_">截止日期</string>
+    <string name="total">合计:</string>
+    <string name="pay_order">支付费用</string>
+    <string name="choose_payment">选择支付方式</string>
+    <string name="tencent_pay">微信支付</string>
+    <string name="alipay_pay">支付宝</string>
+    <string name="unionpay_pay">银联支付</string>
+    <string name="yi_pay">翼支付</string>
+    <string name="back">返回</string>
+    <string name="payment_success">支付成功</string>
+    <string name="payment_name">费用名称:</string>
+    <string name="payment_cost">金额:</string>
+    <string name="payment_way">支付方式:</string>
 
 
 </resources>
