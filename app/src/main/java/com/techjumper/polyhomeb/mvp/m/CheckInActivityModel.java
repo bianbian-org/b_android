@@ -248,18 +248,18 @@ public class CheckInActivityModel extends BaseModel<CheckInActivityPresenter> {
 
                 Calendar calendar1 = Calendar.getInstance();
                 int currentDay = calendar1.get(Calendar.DATE);  //今天是几号
-                //今天是周几week
-                int day = currentDay;
+                //今天是周几  int week
+                int tempDay = currentDay - week;
                 for (int i = 0; i < 7; i++) {
                     if (i <= week) { //今天之前的那几天,从周日开始,包括今天(理论上来讲,今天和今天之前的这几天,圈圈都是要显示的)
                         Map<String, Integer> map = new HashMap<>();
-                        map.put(day + "", isChecked(currentDay, day, checkInEntity));
-                        day++;
+                        map.put(tempDay + "", isChecked(currentDay, tempDay, checkInEntity));
+                        tempDay++;
                         list.add(map);
                     } else { //今天之后的那几天,一直到周六(理论上来讲,else里面的数据,圈圈都是不显示的)
                         Map<String, Integer> map = new HashMap<>();
-                        map.put(day + "", isChecked(currentDay, day, checkInEntity));
-                        day++;
+                        map.put(tempDay + "", isChecked(currentDay, tempDay, checkInEntity));
+                        tempDay++;
                         list.add(map);
                     }
                 }
