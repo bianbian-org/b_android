@@ -72,6 +72,7 @@ public class CheckInActivityPresenter extends AppBaseActivityPresenter<CheckInAc
                         }));
     }
 
+    //签到的动作
     private void checkIn() {
         getView().showLoading();
         RxUtils.unsubscribeIfNotNull(mSubs2);

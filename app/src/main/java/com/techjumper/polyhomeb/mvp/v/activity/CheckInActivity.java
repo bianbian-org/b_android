@@ -7,6 +7,7 @@ import android.widget.ImageView;
 
 import com.techjumper.corelib.mvp.factory.Presenter;
 import com.techjumper.lib2.utils.PicassoHelper;
+import com.techjumper.polyhomeb.Constant;
 import com.techjumper.polyhomeb.R;
 import com.techjumper.polyhomeb.adapter.CheckInActivityAdapter;
 import com.techjumper.polyhomeb.entity.CheckInEntity;
@@ -72,8 +73,10 @@ public class CheckInActivity extends AppBaseActivity<CheckInActivityPresenter> {
         //当前是几号
         Calendar instance = Calendar.getInstance();
         int date = instance.get(Calendar.DATE);
-
         boolean temp = false;
+        if (Constant.TRUE_ENTITY_RESULT.equals(checkInEntity.getData().getResult())) {
+            temp = true;
+        }
         for (Integer i : signDays) {
             if (i == date) {
                 temp = true;

@@ -5,11 +5,14 @@ import com.techjumper.corelib.rx.tools.CommonWrap;
 import com.techjumper.corelib.utils.window.ToastUtils;
 import com.techjumper.lib2.others.KeyValuePair;
 import com.techjumper.lib2.utils.RetrofitHelper;
+import com.techjumper.polyhomeb.Constant;
 import com.techjumper.polyhomeb.adapter.recycler_Data.CheckInDayData;
+import com.techjumper.polyhomeb.adapter.recycler_Data.CheckInDayDataSingle;
 import com.techjumper.polyhomeb.adapter.recycler_Data.CheckInTitleData;
 import com.techjumper.polyhomeb.adapter.recycler_Data.CheckInWeekData;
 import com.techjumper.polyhomeb.adapter.recycler_Data.PropertyPlacardDividerLongData;
 import com.techjumper.polyhomeb.adapter.recycler_ViewHolder.databean.CheckInDayBean;
+import com.techjumper.polyhomeb.adapter.recycler_ViewHolder.databean.CheckInDayDataSingleBean;
 import com.techjumper.polyhomeb.adapter.recycler_ViewHolder.databean.CheckInTitleBean;
 import com.techjumper.polyhomeb.adapter.recycler_ViewHolder.databean.CheckInWeekBean;
 import com.techjumper.polyhomeb.adapter.recycler_ViewHolder.databean.PropertyPlacardDividerLongBean;
@@ -94,6 +97,9 @@ public class CheckInActivityModel extends BaseModel<CheckInActivityPresenter> {
         int firstDayWeek = getMonthFirstDayWeek(year, month);   //当月1号是周几,1是周一,2是周二,0是周日
         int lastDayWeek = getMonthLastDayWeek();                //当月最后一天是星期几,1是周一,2是周二,0是周日
         boolean isCheck = false;  //当日是否签到了
+        if (Constant.TRUE_ENTITY_RESULT.equals(checkInEntity.getData().getResult())) {
+            isCheck = true;
+        }
         for (Integer i : signDays) {
             if (i == date) {
                 isCheck = true;
@@ -196,7 +202,7 @@ public class CheckInActivityModel extends BaseModel<CheckInActivityPresenter> {
 
             if (day_of_week_in_month == 1) {  //当天在本月的第一周里面
 
-                CheckInDayData checkInDayData = new CheckInDayData();
+                CheckInDayDataSingle checkInDataSingle = new CheckInDayDataSingle();
                 List<Map<String, Integer>> list = new ArrayList<>();
 
                 int day = 1;
@@ -211,12 +217,12 @@ public class CheckInActivityModel extends BaseModel<CheckInActivityPresenter> {
                     }
                 }
 
-                checkInDayData.setDayList(list);
-                CheckInDayBean checkInDayBean = new CheckInDayBean(checkInDayData);
-                displayBeen.add(checkInDayBean);
+                checkInDataSingle.setDayList(list);
+                CheckInDayDataSingleBean checkInDayDataSingleBean = new CheckInDayDataSingleBean(checkInDataSingle);
+                displayBeen.add(checkInDayDataSingleBean);
             } else if (day_of_week_in_month == actualMaximum) { // 当天在本月的最后一周内
 
-                CheckInDayData checkInDayData = new CheckInDayData();
+                CheckInDayDataSingle checkInDataSingle = new CheckInDayDataSingle();
                 List<Map<String, Integer>> list = new ArrayList<>();
 
                 int lastWeekDay = getCurrentMonthDay() - lastDayWeek;//当月总共N天,N-lastDayWeek = 最后一周的周日的号数.所以号数++,直到本月最后一天即可
@@ -232,12 +238,12 @@ public class CheckInActivityModel extends BaseModel<CheckInActivityPresenter> {
                     }
                 }
 
-                checkInDayData.setDayList(list);
-                CheckInDayBean checkInDayBean = new CheckInDayBean(checkInDayData);
-                displayBeen.add(checkInDayBean);
+                checkInDataSingle.setDayList(list);
+                CheckInDayDataSingleBean checkInDayDataSingleBean = new CheckInDayDataSingleBean(checkInDataSingle);
+                displayBeen.add(checkInDayDataSingleBean);
             } else {  //是当月的中间部分
 
-                CheckInDayData checkInDayData = new CheckInDayData();
+                CheckInDayDataSingle checkInDataSingle = new CheckInDayDataSingle();
                 List<Map<String, Integer>> list = new ArrayList<>();
 
                 Calendar calendar1 = Calendar.getInstance();
@@ -258,11 +264,10 @@ public class CheckInActivityModel extends BaseModel<CheckInActivityPresenter> {
                     }
                 }
 
-                checkInDayData.setDayList(list);
-                CheckInDayBean checkInDayBean = new CheckInDayBean(checkInDayData);
-                displayBeen.add(checkInDayBean);
+                checkInDataSingle.setDayList(list);
+                CheckInDayDataSingleBean checkInDayDataSingleBean = new CheckInDayDataSingleBean(checkInDataSingle);
+                displayBeen.add(checkInDayDataSingleBean);
             }
-
         }
         return displayBeen;
     }
