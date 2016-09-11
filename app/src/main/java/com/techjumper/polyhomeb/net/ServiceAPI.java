@@ -3,6 +3,7 @@ package com.techjumper.polyhomeb.net;
 
 import com.techjumper.polyhomeb.entity.AvatarEntity;
 import com.techjumper.polyhomeb.entity.BaseArgumentsEntity;
+import com.techjumper.polyhomeb.entity.CheckInEntity;
 import com.techjumper.polyhomeb.entity.LoginEntity;
 import com.techjumper.polyhomeb.entity.MessageEntity;
 import com.techjumper.polyhomeb.entity.OrdersEntity;
@@ -484,5 +485,46 @@ public interface ServiceAPI {
      */
     @GET("estate_orders")
     Observable<OrdersEntity> getOrdersInfo(@QueryMap Map<String, String> map);
+
+    /**
+     * 用户签到
+     * <p>
+     * post '/sign'
+     * params:
+     * user_id # 用户ID
+     * ticket # session登录验证
+     * return:
+     * {
+     * "error_code": 0,
+     * "error_msg": null,
+     * "data": {
+     * "result": "true",
+     * "sign_days": [8,9]      #本月签到日
+     * }
+     * }
+     * error_code: 109,	error_msg: '此功能登录后可使用！'
+     */
+    @POST("sign")
+    Observable<CheckInEntity> checkIn(@Body BaseArgumentsEntity entity);
+
+    /**
+     * 获取签到数据
+     * <p>
+     * post '/sign'
+     * params:
+     * user_id # 用户ID
+     * ticket # session登录验证
+     * return:
+     * {
+     * "error_code": 0,
+     * "error_msg": null,
+     * "data": {
+     * "sign_days": [8,9]      #本月签到日
+     * }
+     * }
+     * error_code: 109,	error_msg: '此功能登录后可使用！'
+     */
+    @GET("sign")
+    Observable<CheckInEntity> getCheckInData(@QueryMap Map<String, String> stringStringMap);
 }
 

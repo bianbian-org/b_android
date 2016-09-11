@@ -108,4 +108,8 @@ public class AllpaidFragment extends AppBaseFragment<AllpaidFragmentPresenter> {
         if (mRv == null) return;
         mAdapter.loadData(noticeData);
     }
+
+    public PtrClassicFrameLayout getPtr() {
+        return mPtr;
+    }
 }

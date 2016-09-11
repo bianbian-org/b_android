@@ -252,6 +252,15 @@
     <string name="payment_name">费用名称:</string>
     <string name="payment_cost">金额:</string>
     <string name="payment_way">支付方式:</string>
+    <string name="check_in">签到</string>
+    <string name="total_check_in">本月已签到%1$s次</string>
+    <string name="sunday">日</string>
+    <string name="monday">一</string>
+    <string name="tuesday">二</string>
+    <string name="wednesday">三</string>
+    <string name="thursday">四</string>
+    <string name="friday">五</string>
+    <string name="saturday">六</string>
 
 
 </resources>

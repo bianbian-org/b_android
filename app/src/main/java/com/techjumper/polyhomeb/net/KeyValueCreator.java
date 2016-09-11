@@ -267,4 +267,16 @@ public class KeyValueCreator {
                 .put("page", page)
                 .put("count", count);
     }
+
+    public static KeyValuePair checkIn(String user_id, String ticket) {
+        return newPair()
+                .put("user_id", user_id)
+                .put("ticket", ticket);
+    }
+
+    public static KeyValuePair getCheckInData(String user_id, String ticket) {
+        return newPair()
+                .put("user_id", user_id)
+                .put("ticket", ticket);
+    }
 }

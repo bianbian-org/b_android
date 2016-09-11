@@ -5,7 +5,10 @@ import android.view.View;
 import android.widget.TextView;
 
 import com.techjumper.corelib.mvp.factory.Presenter;
+import com.techjumper.corelib.rx.tools.RxBus;
+import com.techjumper.corelib.utils.common.AcHelper;
 import com.techjumper.polyhomeb.R;
+import com.techjumper.polyhomeb.entity.event.RefreshPaymentEvent;
 import com.techjumper.polyhomeb.mvp.p.activity.PaymentSuccessActivityPresenter;
 
 import butterknife.Bind;
@@ -41,5 +44,12 @@ public class PaymentSuccessActivity extends AppBaseActivity<PaymentSuccessActivi
     @Override
     public String getLayoutTitle() {
         return getString(R.string.payment_success);
+    }
+
+    @Override
+    protected boolean onTitleLeftClick() {
+        RxBus.INSTANCE.send(new RefreshPaymentEvent());
+        new AcHelper.Builder(this).closeCurrent(true).target(PaymentActivity.class).start();
+        return true;
     }
 }

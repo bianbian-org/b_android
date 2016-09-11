@@ -109,4 +109,9 @@ public class UnpaidFragment extends AppBaseFragment<UnpaidFragmentPresenter> {
         mAdapter.loadData(noticeData);
     }
 
+    public PtrClassicFrameLayout getPtr() {
+        return mPtr;
+    }
+
+
 }
