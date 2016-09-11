@@ -2,7 +2,6 @@ package com.techjumper.polyhomeb.mvp.m;
 
 import com.steve.creact.library.display.DisplayBean;
 import com.techjumper.corelib.rx.tools.CommonWrap;
-import com.techjumper.corelib.utils.window.ToastUtils;
 import com.techjumper.lib2.others.KeyValuePair;
 import com.techjumper.lib2.utils.RetrofitHelper;
 import com.techjumper.polyhomeb.Constant;
@@ -226,7 +225,6 @@ public class CheckInActivityModel extends BaseModel<CheckInActivityPresenter> {
                 List<Map<String, Integer>> list = new ArrayList<>();
 
                 int lastWeekDay = getCurrentMonthDay() - lastDayWeek;//当月总共N天,N-lastDayWeek = 最后一周的周日的号数.所以号数++,直到本月最后一天即可
-                ToastUtils.show(lastWeekDay + "");
                 for (int i = 0; i < 7; i++) {
                     Map<String, Integer> map = new HashMap<>();
                     if (i <= lastDayWeek) {
@@ -251,19 +249,11 @@ public class CheckInActivityModel extends BaseModel<CheckInActivityPresenter> {
                 //今天是周几  int week
                 int tempDay = currentDay - week;
                 for (int i = 0; i < 7; i++) {
-                    if (i <= week) { //今天之前的那几天,从周日开始,包括今天(理论上来讲,今天和今天之前的这几天,圈圈都是要显示的)
-                        Map<String, Integer> map = new HashMap<>();
-                        map.put(tempDay + "", isChecked(currentDay, tempDay, checkInEntity));
-                        tempDay++;
-                        list.add(map);
-                    } else { //今天之后的那几天,一直到周六(理论上来讲,else里面的数据,圈圈都是不显示的)
-                        Map<String, Integer> map = new HashMap<>();
-                        map.put(tempDay + "", isChecked(currentDay, tempDay, checkInEntity));
-                        tempDay++;
-                        list.add(map);
-                    }
+                    Map<String, Integer> map = new HashMap<>();
+                    map.put(tempDay + "", isChecked(currentDay, tempDay, checkInEntity));
+                    tempDay++;
+                    list.add(map);
                 }
-
                 checkInDataSingle.setDayList(list);
                 CheckInDayDataSingleBean checkInDayDataSingleBean = new CheckInDayDataSingleBean(checkInDataSingle);
                 displayBeen.add(checkInDayDataSingleBean);
