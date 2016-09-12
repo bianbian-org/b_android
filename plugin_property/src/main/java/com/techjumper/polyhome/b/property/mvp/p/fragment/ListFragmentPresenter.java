@@ -29,6 +29,7 @@ import com.techjumper.polyhome.b.property.UserInfoManager;
 import com.techjumper.polyhome.b.property.mvp.m.ListFragmentModel;
 import com.techjumper.polyhome.b.property.mvp.v.activity.MainActivity;
 import com.techjumper.polyhome.b.property.mvp.v.fragment.ListFragment;
+import com.techjumper.polyhome.b.property.net.NetHelper;
 
 import butterknife.Bind;
 import butterknife.OnCheckedChanged;
@@ -154,7 +155,7 @@ public class ListFragmentPresenter extends AppBaseFragmentPresenter<ListFragment
         Log.d("hehe", "type是 :" + type);
         if (type == MainActivity.REPAIR) {
             getView().showActionRepair();
-        } else if (type == MainActivity.COMPLAINT){
+        } else if (type == MainActivity.COMPLAINT) {
             getView().showActionComplaint();
         }
 
@@ -290,6 +291,14 @@ public class ListFragmentPresenter extends AppBaseFragmentPresenter<ListFragment
 
             @Override
             public void onNext(AnnouncementEntity announcementEntity) {
+                if (announcementEntity.getError_code() == NetHelper.CODE_NOT_LOGIN) {
+                    getAgainAnnouncements();
+                    return;
+                }
+
+                if (!processNetworkResult(announcementEntity, false))
+                    return;
+
                 if (announcementEntity == null ||
                         announcementEntity.getData() == null ||
                         announcementEntity.getData().getNotices() == null)
@@ -300,9 +309,86 @@ public class ListFragmentPresenter extends AppBaseFragmentPresenter<ListFragment
         }));
     }
 
+    private void getAgainAnnouncements() {
+        addSubscription(model.submitOnline()
+                .flatMap(heartbeatEntity -> {
+                    if (heartbeatEntity != null
+                            && heartbeatEntity.getData() != null
+                            && !TextUtils.isEmpty(heartbeatEntity.getData().getTicket())) {
+                        UserInfoManager.saveTicket(heartbeatEntity.getData().getTicket());
+                    }
+                    return model.getAnnouncements(pageNo);
+                }).subscribe(new Subscriber<AnnouncementEntity>() {
+                    @Override
+                    public void onCompleted() {
+                        showType = -1;
+                        getView().setShowType(showType);
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        getView().showError(e);
+                    }
+
+                    @Override
+                    public void onNext(AnnouncementEntity announcementEntity) {
+                        if (!processNetworkResult(announcementEntity, false))
+                            return;
+
+                        if (announcementEntity == null ||
+                                announcementEntity.getData() == null ||
+                                announcementEntity.getData().getNotices() == null)
+                            return;
+
+                        getView().getAnnouncements(announcementEntity.getData().getNotices(), pageNo);
+                    }
+                }));
+    }
+
     public void getComplaints() {
         addSubscription(model.getComplaints(pageNo)
                 .subscribe(new Subscriber<ComplaintEntity>() {
+                    @Override
+                    public void onCompleted() {
+                        showType = -1;
+                        getView().setShowType(showType);
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        getView().showError(e);
+                    }
+
+                    @Override
+                    public void onNext(ComplaintEntity complaintEntity) {
+                        if (complaintEntity.getError_code() == NetHelper.CODE_NOT_LOGIN) {
+                            getAgainComplaints();
+                            return;
+                        }
+
+                        if (!processNetworkResult(complaintEntity, false))
+                            return;
+
+                        if (complaintEntity == null ||
+                                complaintEntity.getData() == null ||
+                                complaintEntity.getData().getSuggestions() == null)
+                            return;
+
+                        getView().getComplaints(complaintEntity.getData().getSuggestions(), pageNo);
+                    }
+                }));
+    }
+
+    public void getAgainComplaints() {
+        addSubscription(model.submitOnline()
+                .flatMap(heartbeatEntity -> {
+                    if (heartbeatEntity != null
+                            && heartbeatEntity.getData() != null
+                            && !TextUtils.isEmpty(heartbeatEntity.getData().getTicket())) {
+                        UserInfoManager.saveTicket(heartbeatEntity.getData().getTicket());
+                    }
+                    return model.getComplaints(pageNo);
+                }).subscribe(new Subscriber<ComplaintEntity>() {
                     @Override
                     public void onCompleted() {
                         showType = -1;
@@ -329,9 +415,51 @@ public class ListFragmentPresenter extends AppBaseFragmentPresenter<ListFragment
                 }));
     }
 
+
     public void getRepairs() {
         addSubscription(model.getRepairs(pageNo)
                 .subscribe(new Subscriber<RepairEntity>() {
+                    @Override
+                    public void onCompleted() {
+                        showType = -1;
+                        getView().setShowType(showType);
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        getView().showError(e);
+                    }
+
+                    @Override
+                    public void onNext(RepairEntity repairEntity) {
+                        if (repairEntity.getError_code() == NetHelper.CODE_NOT_LOGIN) {
+                            getAgainRepairs();
+                            return;
+                        }
+
+                        if (!processNetworkResult(repairEntity, false))
+                            return;
+
+                        if (repairEntity == null ||
+                                repairEntity.getData() == null ||
+                                repairEntity.getData().getRepairs() == null)
+                            return;
+
+                        getView().getRepairs(repairEntity.getData().getRepairs(), pageNo);
+                    }
+                }));
+    }
+
+    public void getAgainRepairs() {
+        addSubscription(model.submitOnline()
+                .flatMap(heartbeatEntity -> {
+                    if (heartbeatEntity != null
+                            && heartbeatEntity.getData() != null
+                            && !TextUtils.isEmpty(heartbeatEntity.getData().getTicket())) {
+                        UserInfoManager.saveTicket(heartbeatEntity.getData().getTicket());
+                    }
+                    return model.getRepairs(pageNo);
+                }).subscribe(new Subscriber<RepairEntity>() {
                     @Override
                     public void onCompleted() {
                         showType = -1;
@@ -373,6 +501,11 @@ public class ListFragmentPresenter extends AppBaseFragmentPresenter<ListFragment
 
                         @Override
                         public void onNext(ComplaintDetailEntity complaintDetailEntity) {
+                            if (complaintDetailEntity.getError_code() == NetHelper.CODE_NOT_LOGIN) {
+                                getAgainComplaintDetailDetail(id);
+                                return;
+                            }
+
                             if (!processNetworkResult(complaintDetailEntity, false))
                                 return;
 
@@ -400,6 +533,11 @@ public class ListFragmentPresenter extends AppBaseFragmentPresenter<ListFragment
 
                         @Override
                         public void onNext(RepairDetailEntity repairDetailEntity) {
+                            if (repairDetailEntity.getError_code() == NetHelper.CODE_NOT_LOGIN) {
+                                getAgainRepairDetailDetailDetail(id);
+                                return;
+                            }
+
                             if (!processNetworkResult(repairDetailEntity, false))
                                 return;
 
@@ -416,9 +554,124 @@ public class ListFragmentPresenter extends AppBaseFragmentPresenter<ListFragment
         }
     }
 
+    private void getAgainComplaintDetailDetail(long id) {
+        addSubscription(model.submitOnline()
+                .flatMap(heartbeatEntity -> {
+                    if (heartbeatEntity != null
+                            && heartbeatEntity.getData() != null
+                            && !TextUtils.isEmpty(heartbeatEntity.getData().getTicket())) {
+                        UserInfoManager.saveTicket(heartbeatEntity.getData().getTicket());
+                    }
+                    return model.getComplaintDetail(id);
+                }).subscribe(new Subscriber<ComplaintDetailEntity>() {
+                    @Override
+                    public void onCompleted() {
+
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        getView().showError(e);
+                    }
+
+                    @Override
+                    public void onNext(ComplaintDetailEntity complaintDetailEntity) {
+                        if (!processNetworkResult(complaintDetailEntity, false))
+                            return;
+
+                        if (complaintDetailEntity == null ||
+                                complaintDetailEntity.getData() == null)
+                            return;
+
+                        getView().showComplaintDetailLmdLayout(complaintDetailEntity.getData());
+                        RxBus.INSTANCE.send(new BackEvent(BackEvent.PROPERTY_LIST));
+                    }
+                }));
+    }
+
+    private void getAgainRepairDetailDetailDetail(long id) {
+        addSubscription(model.submitOnline()
+                .flatMap(heartbeatEntity -> {
+                    if (heartbeatEntity != null
+                            && heartbeatEntity.getData() != null
+                            && !TextUtils.isEmpty(heartbeatEntity.getData().getTicket())) {
+                        UserInfoManager.saveTicket(heartbeatEntity.getData().getTicket());
+                    }
+                    return model.getRepairDetail(id);
+                }).subscribe(new Subscriber<RepairDetailEntity>() {
+                    @Override
+                    public void onCompleted() {
+
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        getView().showError(e);
+                    }
+
+                    @Override
+                    public void onNext(RepairDetailEntity repairDetailEntity) {
+                        if (!processNetworkResult(repairDetailEntity, false))
+                            return;
+
+                        if (repairDetailEntity == null ||
+                                repairDetailEntity.getData() == null)
+                            return;
+
+                        getView().showRepairDetailLmdLayout(repairDetailEntity.getData());
+                        getView().showRepairDetailLmdLayout(repairDetailEntity.getData());
+                        RxBus.INSTANCE.send(new BackEvent(BackEvent.PROPERTY_LIST));
+                    }
+                }));
+    }
+
+
     public void sendMessage(long id, String content, int type) {
         addSubscription(model.replyMessage(id, content, type)
                 .subscribe(new Subscriber<TrueEntity>() {
+                    @Override
+                    public void onCompleted() {
+
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        getView().showError(e);
+                    }
+
+                    @Override
+                    public void onNext(TrueEntity trueEntity) {
+                        if (trueEntity.getError_code() == NetHelper.CODE_NOT_LOGIN) {
+                            sendAgainMessage(id, content, type);
+                            return;
+                        }
+
+                        if (!processNetworkResult(trueEntity, false))
+                            return;
+
+                        if (trueEntity == null ||
+                                trueEntity.getData() == null ||
+                                TextUtils.isEmpty(trueEntity.getData().getResult()))
+                            return;
+
+                        if (trueEntity.getData().getResult().equals("true")) {
+                            ToastUtils.show(getView().getContext().getString(R.string.property_send_success));
+                            getView().sendSuccess();
+                        }
+                    }
+                }));
+    }
+
+    private void sendAgainMessage(long id, String content, int type) {
+        addSubscription(model.submitOnline()
+                .flatMap(heartbeatEntity -> {
+                    if (heartbeatEntity != null
+                            && heartbeatEntity.getData() != null
+                            && !TextUtils.isEmpty(heartbeatEntity.getData().getTicket())) {
+                        UserInfoManager.saveTicket(heartbeatEntity.getData().getTicket());
+                    }
+                    return model.replyMessage(id, content, type);
+                }).subscribe(new Subscriber<TrueEntity>() {
                     @Override
                     public void onCompleted() {
 
@@ -465,6 +718,52 @@ public class ListFragmentPresenter extends AppBaseFragmentPresenter<ListFragment
 
                     @Override
                     public void onNext(TrueEntity trueEntity) {
+                        if (trueEntity.getError_code() == NetHelper.CODE_NOT_LOGIN) {
+                            submitAgainComplaint(type, content, mobile);
+                            return;
+                        }
+
+                        if (!processNetworkResult(trueEntity, false))
+                            return;
+
+                        if (trueEntity == null ||
+                                trueEntity.getData() == null)
+                            return;
+
+                        getView().dismissLoading();
+                        if (trueEntity.getData().getResult().equals("true")) {
+                            ToastUtils.show(getView().getResources().getString(R.string.property_submit_success));
+                            PropertyActionEvent propertyActionEvent = new PropertyActionEvent(false);
+                            propertyActionEvent.setListType(MainActivity.COMPLAINT);
+                            RxBus.INSTANCE.send(propertyActionEvent);
+                        }
+                    }
+                }));
+    }
+
+    private void submitAgainComplaint(int type, String content, String mobile) {
+        addSubscription(model.submitOnline()
+                .flatMap(heartbeatEntity -> {
+                    if (heartbeatEntity != null
+                            && heartbeatEntity.getData() != null
+                            && !TextUtils.isEmpty(heartbeatEntity.getData().getTicket())) {
+                        UserInfoManager.saveTicket(heartbeatEntity.getData().getTicket());
+                    }
+                    return model.submitComplaint(type, content, mobile);
+                }).subscribe(new Subscriber<TrueEntity>() {
+                    @Override
+                    public void onCompleted() {
+                        getView().dismissLoading();
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        getView().showError(e);
+                        getView().dismissLoading();
+                    }
+
+                    @Override
+                    public void onNext(TrueEntity trueEntity) {
                         if (!processNetworkResult(trueEntity, false))
                             return;
 
@@ -488,6 +787,52 @@ public class ListFragmentPresenter extends AppBaseFragmentPresenter<ListFragment
 
         addSubscription(model.submitRepair(repair_type, repair_device, note, mobile)
                 .subscribe(new Subscriber<TrueEntity>() {
+                    @Override
+                    public void onCompleted() {
+                        getView().dismissLoading();
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        getView().showError(e);
+                        getView().dismissLoading();
+                    }
+
+                    @Override
+                    public void onNext(TrueEntity trueEntity) {
+                        if (trueEntity.getError_code() == NetHelper.CODE_NOT_LOGIN) {
+                            submitAgainRepair(repair_type, repair_device, note, mobile);
+                            return;
+                        }
+
+                        if (!processNetworkResult(trueEntity, false))
+                            return;
+
+                        if (trueEntity == null ||
+                                trueEntity.getData() == null)
+                            return;
+
+                        getView().dismissLoading();
+                        if (trueEntity.getData().getResult().equals("true")) {
+                            ToastUtils.show(getView().getResources().getString(R.string.property_submit_success));
+                            PropertyActionEvent propertyActionEvent = new PropertyActionEvent(false);
+                            propertyActionEvent.setListType(MainActivity.REPAIR);
+                            RxBus.INSTANCE.send(propertyActionEvent);
+                        }
+                    }
+                }));
+    }
+
+    private void submitAgainRepair(int repair_type, int repair_device, String note, String mobile) {
+        addSubscription(model.submitOnline()
+                .flatMap(heartbeatEntity -> {
+                    if (heartbeatEntity != null
+                            && heartbeatEntity.getData() != null
+                            && !TextUtils.isEmpty(heartbeatEntity.getData().getTicket())) {
+                        UserInfoManager.saveTicket(heartbeatEntity.getData().getTicket());
+                    }
+                    return model.submitRepair(repair_type, repair_device, note, mobile);
+                }).subscribe(new Subscriber<TrueEntity>() {
                     @Override
                     public void onCompleted() {
                         getView().dismissLoading();

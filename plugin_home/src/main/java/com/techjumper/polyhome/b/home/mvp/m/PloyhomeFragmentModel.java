@@ -1,10 +1,12 @@
 package com.techjumper.polyhome.b.home.mvp.m;
 
-import com.techjumper.commonres.ComConstant;
+import android.util.Log;
+
 import com.techjumper.commonres.entity.BaseArgumentsEntity;
+import com.techjumper.commonres.entity.HeartbeatEntity;
 import com.techjumper.commonres.entity.InfoEntity;
 import com.techjumper.commonres.entity.NoticeEntity;
-import com.techjumper.commonres.entity.TrueEntity;
+import com.techjumper.commonres.util.StringUtil;
 import com.techjumper.corelib.mvp.model.BaseModel;
 import com.techjumper.corelib.rx.tools.CommonWrap;
 import com.techjumper.lib2.others.KeyValuePair;
@@ -35,6 +37,15 @@ public class PloyhomeFragmentModel extends BaseModel<PloyhomeFragmentPresenter> 
     public Observable<NoticeEntity> getNotices() {
         return RetrofitHelper.<ServiceAPI>createDefault()
                 .getNotices(NetHelper.createBaseArgumentsMap(KeyValueCreator.getNotices(UserInfoManager.getUserId(), UserInfoManager.getFamilyId(), UserInfoManager.getTicket())))
+                .compose(CommonWrap.wrap());
+    }
+
+    public Observable<HeartbeatEntity> submitOnline() {
+        KeyValuePair keyValuePair = KeyValueCreator.submitOnline(UserInfoManager.getFamilyId(), StringUtil.getMacAddress());
+        BaseArgumentsEntity argument = NetHelper.createBaseArguments(keyValuePair);
+        Log.d("submitOnline", "familyId: " + UserInfoManager.getFamilyId() + "  deviceId: " + StringUtil.getMacAddress());
+        return RetrofitHelper.<ServiceAPI>createDefault()
+                .submitOnline(argument)
                 .compose(CommonWrap.wrap());
     }
 }

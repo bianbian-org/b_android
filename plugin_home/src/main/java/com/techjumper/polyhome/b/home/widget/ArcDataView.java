@@ -76,4 +76,11 @@ public class ArcDataView extends FrameLayout {
     public void setContentText(String text) {
         contentText.setText(text);
     }
+    /**
+     * 数据的变化
+     *
+     */
+    public String getContentText() {
+        return contentText.getText().toString();
+    }
 }

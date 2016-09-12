@@ -26,4 +26,11 @@ public class PluginConstant {
     public static final String KEY_PRO_TICKET = "key_pro_ticket";
     public static final String KEY_PRO_TYPE = "key_pro_type";
     public static final String KEY_PRO_ID = "key_pro_id";
+
+    //保存用户信息
+    public static final String KEY_FAMILYINFO_ID = "id";
+    public static final String KEY_FAMILYINFO_NAME = "family_name";
+    public static final String KEY_FAMILYINFO_USER_ID = "user_id";
+    public static final String KEY_FAMILYINFO_TICKET = "ticket";
+    public static final String KEY_FAMILYINFO_HAS_BINDING = "has_binding";
 }

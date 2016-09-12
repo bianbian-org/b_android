@@ -13,6 +13,7 @@ import com.techjumper.polyhome.b.property.UserInfoManager;
 import com.techjumper.polyhome.b.property.mvp.m.ActionFragmentModel;
 import com.techjumper.polyhome.b.property.mvp.v.activity.MainActivity;
 import com.techjumper.polyhome.b.property.mvp.v.fragment.ActionFragment;
+import com.techjumper.polyhome.b.property.net.NetHelper;
 
 import butterknife.OnClick;
 import rx.Subscriber;
@@ -79,6 +80,52 @@ public class ActionFragmentPresenter extends AppBaseFragmentPresenter<ActionFrag
 
                     @Override
                     public void onNext(TrueEntity trueEntity) {
+                        if (trueEntity.getError_code() == NetHelper.CODE_NOT_LOGIN) {
+                            submitAgainComplaint(type, content, mobile);
+                            return;
+                        }
+
+                        if (!processNetworkResult(trueEntity, false))
+                            return;
+
+                        if (trueEntity == null ||
+                                trueEntity.getData() == null)
+                            return;
+
+                        getView().dismissLoading();
+                        if (trueEntity.getData().getResult().equals("true")) {
+                            ToastUtils.show(getView().getResources().getString(R.string.property_submit_success));
+                            PropertyActionEvent propertyActionEvent = new PropertyActionEvent(false);
+                            propertyActionEvent.setListType(MainActivity.COMPLAINT);
+                            RxBus.INSTANCE.send(propertyActionEvent);
+                        }
+                    }
+                }));
+    }
+
+    private void submitAgainComplaint(int type, String content, String mobile) {
+        addSubscription(model.submitOnline()
+                .flatMap(heartbeatEntity -> {
+                    if (heartbeatEntity != null
+                            && heartbeatEntity.getData() != null
+                            && !TextUtils.isEmpty(heartbeatEntity.getData().getTicket())) {
+                        UserInfoManager.saveTicket(heartbeatEntity.getData().getTicket());
+                    }
+                    return model.submitComplaint(type, content, mobile);
+                }).subscribe(new Subscriber<TrueEntity>() {
+                    @Override
+                    public void onCompleted() {
+                        getView().dismissLoading();
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        getView().showError(e);
+                        getView().dismissLoading();
+                    }
+
+                    @Override
+                    public void onNext(TrueEntity trueEntity) {
                         if (!processNetworkResult(trueEntity, false))
                             return;
 
@@ -115,6 +162,11 @@ public class ActionFragmentPresenter extends AppBaseFragmentPresenter<ActionFrag
 
                     @Override
                     public void onNext(TrueEntity trueEntity) {
+                        if (trueEntity.getError_code() == NetHelper.CODE_NOT_LOGIN) {
+                            submitAgainRepair(repair_type, repair_device, note, mobile);
+                            return;
+                        }
+
                         if (!processNetworkResult(trueEntity, false))
                             return;
 
@@ -129,6 +181,34 @@ public class ActionFragmentPresenter extends AppBaseFragmentPresenter<ActionFrag
                             propertyActionEvent.setListType(MainActivity.REPAIR);
                             RxBus.INSTANCE.send(propertyActionEvent);
                         }
+                    }
+                }));
+    }
+
+    public void submitAgainRepair(int repair_type, int repair_device, String note, String mobile) {
+        addSubscription(model.submitOnline()
+                .flatMap(heartbeatEntity -> {
+                    if (heartbeatEntity != null
+                            && heartbeatEntity.getData() != null
+                            && !TextUtils.isEmpty(heartbeatEntity.getData().getTicket())) {
+                        UserInfoManager.saveTicket(heartbeatEntity.getData().getTicket());
+                    }
+                    return model.submitRepair(repair_type, repair_device, note, mobile);
+                }).subscribe(new Subscriber<TrueEntity>() {
+                    @Override
+                    public void onCompleted() {
+                        getView().dismissLoading();
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        getView().showError(e);
+                        getView().dismissLoading();
+                    }
+
+                    @Override
+                    public void onNext(TrueEntity trueEntity) {
+
                     }
                 }));
     }

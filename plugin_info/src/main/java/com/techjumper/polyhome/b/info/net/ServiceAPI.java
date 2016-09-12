@@ -2,6 +2,7 @@ package com.techjumper.polyhome.b.info.net;
 
 import com.techjumper.commonres.entity.AnnouncementEntity;
 import com.techjumper.commonres.entity.BaseArgumentsEntity;
+import com.techjumper.commonres.entity.HeartbeatEntity;
 import com.techjumper.commonres.entity.InfoEntity;
 import com.techjumper.commonres.entity.TrueEntity;
 
@@ -26,4 +27,7 @@ public interface ServiceAPI {
 
     @GET("notices")
     Observable<AnnouncementEntity> getAnnouncements(@QueryMap Map<String, String> map);
+
+    @POST("family/online")
+    Observable<HeartbeatEntity> submitOnline(@Body BaseArgumentsEntity entity);
 }

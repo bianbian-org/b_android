@@ -1,10 +1,14 @@
 package com.techjumper.polyhome.b.info.mvp.m;
 
+import android.util.Log;
+
 import com.techjumper.commonres.ComConstant;
 import com.techjumper.commonres.entity.AnnouncementEntity;
 import com.techjumper.commonres.entity.BaseArgumentsEntity;
+import com.techjumper.commonres.entity.HeartbeatEntity;
 import com.techjumper.commonres.entity.InfoEntity;
 import com.techjumper.commonres.entity.TrueEntity;
+import com.techjumper.commonres.util.StringUtil;
 import com.techjumper.corelib.mvp.model.BaseModel;
 import com.techjumper.corelib.rx.tools.CommonWrap;
 import com.techjumper.polyhome.b.info.Config;
@@ -45,6 +49,16 @@ public class InfoMainActivityModel extends BaseModel<InfoMainActivityPresenter> 
 
         return RetrofitHelper.<ServiceAPI>createDefault()
                 .readMessage(argument)
+                .compose(CommonWrap.wrap());
+    }
+
+    public Observable<HeartbeatEntity> submitOnline() {
+        KeyValuePair keyValuePair = KeyValueCreator.submitOnline(UserInfoManager.getFamilyIdString(), StringUtil.getMacAddress());
+        BaseArgumentsEntity argument = NetHelper.createBaseArguments(keyValuePair);
+        Log.d("submitOnline", "familyId: " + UserInfoManager.getFamilyId() + "  deviceId: " + StringUtil.getMacAddress());
+        Log.d("gonggao", "familyId: " + UserInfoManager.getFamilyId() + "  deviceId: " + StringUtil.getMacAddress());
+        return RetrofitHelper.<ServiceAPI>create(Config.sBaseBUrl, ServiceAPI.class)
+                .submitOnline(argument)
                 .compose(CommonWrap.wrap());
     }
 }

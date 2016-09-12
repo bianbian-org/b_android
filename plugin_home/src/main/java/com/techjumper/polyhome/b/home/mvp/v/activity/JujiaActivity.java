@@ -35,7 +35,7 @@ public class JujiaActivity extends AppBaseActivity<JujiaActivityPresenter> {
     TextView bottomTitle;
     @Bind(R.id.bottom_date)
     TextView bottomDate;
-    private Timer timer = new Timer();
+
     private long time;
     private TimerTask timerTask;
 
@@ -81,14 +81,7 @@ public class JujiaActivity extends AppBaseActivity<JujiaActivityPresenter> {
         webView.setWebViewClient(new webViewClient());
         webView.loadUrl(Config.sJujia);
 
-        timer.schedule(new TimerTask() {
-            @Override
-            public void run() {
-                TimeEvent event = new TimeEvent();
-                event.setType(TimeEvent.JUJIA);
-                RxBus.INSTANCE.send(event);
-            }
-        }, 0, 1000);
+
     }
 
     @Override
@@ -112,10 +105,6 @@ public class JujiaActivity extends AppBaseActivity<JujiaActivityPresenter> {
         super.onDestroy();
         if (webView != null) {
             webView.destroy();
-        }
-        if (timer != null) {
-            timer.cancel();
-            timer = null;
         }
     }
 

@@ -112,7 +112,6 @@ public class InfoMainActivity extends AppBaseActivity {
     TextView medicalUnreadNum;
 
     private int type = NoticeEntity.PROPERTY;
-    private Timer timer = new Timer();
     private LinearLayoutManager manager = new LinearLayoutManager(this);
     private List<NoticeEntity.Unread> unreads = new ArrayList<>();
     private int systemNum = 0;
@@ -344,13 +343,6 @@ public class InfoMainActivity extends AppBaseActivity {
                 super.onScrolled(recyclerView, dx, dy);
             }
         });
-
-        timer.schedule(new TimerTask() {
-            @Override
-            public void run() {
-                RxBus.INSTANCE.send(new TimeEvent());
-            }
-        }, 0, 1000);
 
         PluginEngineUtil.getHeartbeatTime();
     }

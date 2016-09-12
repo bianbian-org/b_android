@@ -193,6 +193,7 @@ public class InfoFragmentPresenter extends AppBaseFragmentPresenter<InfoFragment
                         }
                     } else if (o instanceof MedicalEvent) {
                         MedicalEvent event = (MedicalEvent) o;
+                        Log.d("pluginUserInfo", "收到的MedicalEvent: " + event);
 
                         if (entities == null) {
                             entities = new ArrayList<MedicalEntity.MedicalItemEntity>();
@@ -203,17 +204,25 @@ public class InfoFragmentPresenter extends AppBaseFragmentPresenter<InfoFragment
                         entities = event.getEntities();
                         medicalPosition = 0;
 
+                        Log.d("pluginUserInfo", "收到的entities: " + entities);
+
                         if (entities != null && entities.size() > 0) {
                             MedicalEntity.MedicalItemEntity itemEntity = entities.get(medicalPosition);
-
+                            Log.d("pluginUserInfo", "显示的第一个人名字为" + itemEntity.getName());
                             advHeartrate.setContentText(itemEntity.getHeartRate());
+                            Log.d("pluginUserInfo", "advHeartrate 显示内容为" + advHeartrate.getContentText());
                             advBloodsugar.setContentText(itemEntity.getBgValue());
+                            Log.d("pluginUserInfo", "advBloodsugar 显示内容为" + advBloodsugar.getContentText());
                             advBloodpressure.setContentText(itemEntity.getBpValue());
+                            Log.d("pluginUserInfo", "advBloodpressure 显示内容为" + advBloodpressure.getContentText());
                             advDetect.setContentText(itemEntity.getName());
+                            Log.d("pluginUserInfo", "advDetect 显示内容为" + advDetect.getContentText());
+                            Log.d("pluginUserInfo", "有数据并且执行完毕" + itemEntity.getName());
                         } else {
                             if (entities != null) {
                                 entities.clear();
                             }
+                            Log.d("pluginUserInfo", "未登录");
                             advHeartrate.setContentText(getView().getString(R.string.info_medical_default));
                             advBloodsugar.setContentText(getView().getString(R.string.info_medical_default));
                             advBloodpressure.setContentText(getView().getString(R.string.info_medical_default));

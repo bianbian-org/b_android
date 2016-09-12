@@ -4,6 +4,7 @@ import android.os.Bundle;
 
 import com.techjumper.commonres.ComConstant;
 import com.techjumper.commonres.PluginConstant;
+import com.techjumper.commonres.UserInfoEntity;
 import com.techjumper.commonres.entity.NoticeEntity;
 import com.techjumper.plugincommunicateengine.HostDataBuilder;
 import com.techjumper.plugincommunicateengine.PluginEngine;
@@ -230,6 +231,11 @@ public class PluginEngineUtil {
         });
     }
 
+    /**
+     * 获取用户信息
+     *
+     * @param fileName
+     */
     public static void initUserInfo(final String fileName) {
         PluginEngine.getInstance().start(new PluginEngine.IPluginConnection() {
             @Override
@@ -239,6 +245,35 @@ public class PluginEngineUtil {
                             .name(fileName)
                             .build();
                     pluginExecutor.send(PluginEngine.CODE_GET_SAVE_INFO, data);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+
+            @Override
+            public void onEngineDisconnected() {
+
+            }
+        });
+    }
+
+    public static void saveUserInfo(UserInfoEntity userInfoEntity) {
+        if (userInfoEntity == null)
+            return;
+
+        PluginEngine.getInstance().start(new PluginEngine.IPluginConnection() {
+            @Override
+            public void onEngineConnected(PluginEngine.PluginExecutor pluginExecutor) {
+                try {
+                    String data = HostDataBuilder.saveInfoBuilder()
+                            .name(ComConstant.FILE_FAMILY_REGISTER)
+                            .put(PluginConstant.KEY_FAMILYINFO_ID, String.valueOf(userInfoEntity.getId()))
+                            .put(PluginConstant.KEY_FAMILYINFO_NAME, userInfoEntity.getFamily_name())
+                            .put(PluginConstant.KEY_FAMILYINFO_USER_ID, String.valueOf(userInfoEntity.getUser_id()))
+                            .put(PluginConstant.KEY_FAMILYINFO_TICKET, userInfoEntity.getTicket())
+                            .put(PluginConstant.KEY_FAMILYINFO_HAS_BINDING, String.valueOf(userInfoEntity.getHas_binding()))
+                            .build();
+                    pluginExecutor.send(PluginEngine.CODE_SAVE_INFO, data);
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
@@ -278,7 +313,7 @@ public class PluginEngineUtil {
     /**
      * 保存心跳时间到本地
      */
-    public static void saveHeartbeatTime(long time){
+    public static void saveHeartbeatTime(long time) {
         PluginEngine.getInstance().start(new PluginEngine.IPluginConnection() {
             @Override
             public void onEngineConnected(PluginEngine.PluginExecutor pluginExecutor) {
@@ -303,7 +338,7 @@ public class PluginEngineUtil {
     /**
      * 获取本地的心跳时间
      */
-    public static void getHeartbeatTime(){
+    public static void getHeartbeatTime() {
         PluginEngine.getInstance().start(new PluginEngine.IPluginConnection() {
             @Override
             public void onEngineConnected(PluginEngine.PluginExecutor pluginExecutor) {

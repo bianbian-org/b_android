@@ -31,9 +31,10 @@ public enum UserInfoManager {
         PreferenceUtils.save(KEY_TICKET, entity.getTicket());
         PreferenceUtils.save(KEY_HAS_BINDING, entity.getHas_binding());
     }
+
     /**
      * 获取userId
-
+     *
      * @return
      */
     public static String getUserId() {
@@ -49,6 +50,13 @@ public enum UserInfoManager {
         return PreferenceUtils.get(KEY_USER_ID, -1L);
     }
 
+    /**
+     * 保存新的ticket
+     * @param ticket
+     */
+    public static void saveTicket(String ticket) {
+        PreferenceUtils.save(KEY_TICKET, ticket);
+    }
 
     /**
      * 获取家庭id

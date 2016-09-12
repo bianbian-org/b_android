@@ -5,6 +5,7 @@ import android.util.Log;
 import com.techjumper.commonres.entity.BaseArgumentsEntity;
 import com.techjumper.commonres.entity.HeartbeatEntity;
 import com.techjumper.commonres.entity.TrueEntity;
+import com.techjumper.commonres.util.StringUtil;
 import com.techjumper.corelib.mvp.model.BaseModel;
 import com.techjumper.corelib.rx.tools.CommonWrap;
 import com.techjumper.lib2.others.KeyValuePair;
@@ -14,7 +15,6 @@ import com.techjumper.polyhome.b.home.mvp.p.activity.MainActivityPresenter;
 import com.techjumper.polyhome.b.home.net.KeyValueCreator;
 import com.techjumper.polyhome.b.home.net.NetHelper;
 import com.techjumper.polyhome.b.home.net.ServiceAPI;
-import com.techjumper.polyhome.b.home.utils.StringUtil;
 
 import rx.Observable;
 

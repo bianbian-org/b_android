@@ -59,8 +59,6 @@ public class MainActivity extends AppBaseActivity {
     @Bind(R.id.main_content_layout)
     LinearLayout mainContentLayout;
 
-    private Timer timer;
-
     private MyViewPagerAdapter myViewPagerAdapter;
     private List<Fragment> fragments = new ArrayList<Fragment>();
     private HeartbeatReceiver mheartbeatReceiver = new HeartbeatReceiver();
@@ -160,18 +158,6 @@ public class MainActivity extends AppBaseActivity {
             }
         });
 
-        if (timer == null) {
-            timer = new Timer();
-            timer.schedule(new TimerTask() {
-                @Override
-                public void run() {
-                    TimeEvent eventMain = new TimeEvent();
-                    eventMain.setType(TimeEvent.MAIN);
-                    RxBus.INSTANCE.send(eventMain);
-                }
-            }, 0, 1000);
-        }
-
         IntentFilter intentFilter = new IntentFilter(ACTION_HOME_HEARTBEAT);
         registerReceiver(mheartbeatReceiver, intentFilter);
     }
@@ -186,12 +172,6 @@ public class MainActivity extends AppBaseActivity {
         if (mheartbeatReceiver != null) {
             unregisterReceiver(mheartbeatReceiver);
         }
-
-        if (timer != null) {
-            timer.cancel();
-            timer = null;
-        }
-
         System.exit(0);
     }
 }

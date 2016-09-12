@@ -4,6 +4,7 @@ import com.techjumper.commonres.entity.AnnouncementEntity;
 import com.techjumper.commonres.entity.BaseArgumentsEntity;
 import com.techjumper.commonres.entity.ComplaintDetailEntity;
 import com.techjumper.commonres.entity.ComplaintEntity;
+import com.techjumper.commonres.entity.HeartbeatEntity;
 import com.techjumper.commonres.entity.InfoEntity;
 import com.techjumper.commonres.entity.RepairDetailEntity;
 import com.techjumper.commonres.entity.RepairEntity;
@@ -49,4 +50,6 @@ public interface ServiceAPI {
     @POST("repairs/reply")
     Observable<TrueEntity> replyRepair(@Body BaseArgumentsEntity entity);
 
+    @POST("family/online")
+    Observable<HeartbeatEntity> submitOnline(@Body BaseArgumentsEntity entity);
 }

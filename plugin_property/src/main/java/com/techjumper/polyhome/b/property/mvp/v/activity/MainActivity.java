@@ -56,7 +56,6 @@ public class MainActivity extends AppBaseActivity<MainActivityPresenter> {
     @Bind(R.id.title_date)
     TextView titleDate;
 
-    private Timer timer = new Timer();
     private int showType = -1;
     private long infoId;
     private long time = 0L;
@@ -142,13 +141,6 @@ public class MainActivity extends AppBaseActivity<MainActivityPresenter> {
         } else {
             switchFragment(R.id.container, ListFragment.getInstance(MainActivity.ANNOUNCEMENT, showType, infoId), false, false);
         }
-
-        timer.schedule(new TimerTask() {
-            @Override
-            public void run() {
-                RxBus.INSTANCE.send(new TimeEvent());
-            }
-        }, 0, 1000);
 
         PluginEngineUtil.getHeartbeatTime();
 

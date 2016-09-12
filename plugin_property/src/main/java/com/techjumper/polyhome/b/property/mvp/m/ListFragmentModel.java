@@ -1,13 +1,17 @@
 package com.techjumper.polyhome.b.property.mvp.m;
 
+import android.util.Log;
+
 import com.techjumper.commonres.ComConstant;
 import com.techjumper.commonres.entity.AnnouncementEntity;
 import com.techjumper.commonres.entity.BaseArgumentsEntity;
 import com.techjumper.commonres.entity.ComplaintDetailEntity;
 import com.techjumper.commonres.entity.ComplaintEntity;
+import com.techjumper.commonres.entity.HeartbeatEntity;
 import com.techjumper.commonres.entity.RepairDetailEntity;
 import com.techjumper.commonres.entity.RepairEntity;
 import com.techjumper.commonres.entity.TrueEntity;
+import com.techjumper.commonres.util.StringUtil;
 import com.techjumper.corelib.mvp.model.BaseModel;
 import com.techjumper.corelib.rx.tools.CommonWrap;
 import com.techjumper.lib2.others.KeyValuePair;
@@ -99,6 +103,15 @@ public class ListFragmentModel extends BaseModel<ListFragmentPresenter> {
 
         return RetrofitHelper.<ServiceAPI>createDefault()
                 .submitRepair(argument)
+                .compose(CommonWrap.wrap());
+    }
+
+    public Observable<HeartbeatEntity> submitOnline() {
+        KeyValuePair keyValuePair = KeyValueCreator.submitOnline(UserInfoManager.getTicket(), StringUtil.getMacAddress());
+        BaseArgumentsEntity argument = NetHelper.createBaseArguments(keyValuePair);
+        Log.d("submitOnline", "familyId: " + UserInfoManager.getFamilyId() + "  deviceId: " + StringUtil.getMacAddress());
+        return RetrofitHelper.<ServiceAPI>createDefault()
+                .submitOnline(argument)
                 .compose(CommonWrap.wrap());
     }
 }

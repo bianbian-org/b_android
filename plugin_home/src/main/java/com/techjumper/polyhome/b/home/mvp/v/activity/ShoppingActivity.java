@@ -33,7 +33,6 @@ public class ShoppingActivity extends AppBaseActivity<ShoppingActivityPresenter>
     TextView bottomTitle;
     @Bind(R.id.bottom_date)
     TextView bottomDate;
-    private Timer timer = new Timer();
     private long time;
 
     @Override
@@ -77,15 +76,6 @@ public class ShoppingActivity extends AppBaseActivity<ShoppingActivityPresenter>
         webView.setWebViewClient(new webViewClient());
         webView.loadUrl(Config.sShoppingLogin);
         webView.addJavascriptInterface(new AndroidForJs(this), "JavaScriptInterface");
-
-        timer.schedule(new TimerTask() {
-            @Override
-            public void run() {
-                TimeEvent event = new TimeEvent();
-                event.setType(TimeEvent.SHOPPING);
-                RxBus.INSTANCE.send(event);
-            }
-        }, 0, 1000);
     }
 
     @Override
@@ -109,10 +99,6 @@ public class ShoppingActivity extends AppBaseActivity<ShoppingActivityPresenter>
         super.onDestroy();
         if (webView != null) {
             webView.destroy();
-        }
-        if (timer != null) {
-            timer.cancel();
-            timer = null;
         }
     }
 

@@ -81,6 +81,7 @@ public class MainActivityPresenter extends AppBaseActivityPresenter<MainActivity
     private ImageView mainAdImg;
     private Subscription submitOnlineSubscription;
     private long totalTime = 0L;
+    private Timer timer;
     public static final String ACTION_START_HOST_DAEMON = "action_start_host_daemon";
 
     private IPluginMessageReceiver mIPluginMessageReceiver = (code, message, extras) -> {
@@ -297,6 +298,12 @@ public class MainActivityPresenter extends AppBaseActivityPresenter<MainActivity
         PluginEngine.getInstance().quit();
         AdWindowManager.getInstance().unregisterClickListener();
         AdWindowManager.getInstance().unregisterWindowShowListener();
+
+        if (timer != null) {
+            timer.cancel();
+            timer = null;
+        }
+
         super.onDestroy();
     }
 
@@ -322,17 +329,8 @@ public class MainActivityPresenter extends AppBaseActivityPresenter<MainActivity
                                 TimeEvent event = (TimeEvent) o;
                                 if (event.getType() == TimeEvent.MAIN) {
                                     if (getView().getDate() != null) {
-                                        if (totalTime != 0L) {
-                                            totalTime++;
-                                            Log.d("submitOnline", "主页系统更新" + totalTime);
-                                            String second = CommonDateUtil.getSecond(totalTime);
-                                            Log.d("submitOnline", "second: " + second);
-                                            if (second.equals("00")) {
-                                                PluginEngineUtil.saveHeartbeatTime(totalTime);
-                                                getView().getDate().setText(CommonDateUtil.getTitleNewDate(totalTime));
-                                            }
-                                            RxBus.INSTANCE.send(new HeartbeatTimeEvent(totalTime));
-                                        }
+                                        PluginEngineUtil.saveHeartbeatTime(totalTime);
+                                        getView().getDate().setText(CommonDateUtil.getTitleNewDate(totalTime));
                                     }
                                 }
                             } else if (o instanceof AdMainEvent) {
@@ -380,6 +378,29 @@ public class MainActivityPresenter extends AppBaseActivityPresenter<MainActivity
                 registerReceiver(mIPluginMessageReceiver);
 
         AlarmManagerUtil.setAdClick(Utils.appContext);
+
+        if (timer == null) {
+            timer = new Timer();
+            timer.schedule(new TimerTask() {
+                @Override
+                public void run() {
+                    if (getView().getDate() != null) {
+                        if (totalTime != 0L) {
+                            totalTime++;
+                            Log.d("submitOnline", "主页系统更新" + totalTime);
+                            String second = CommonDateUtil.getSecond(totalTime);
+                            Log.d("submitOnline", "second: " + second);
+                            if (second.equals("00")) {
+                                TimeEvent eventMain = new TimeEvent();
+                                eventMain.setType(TimeEvent.MAIN);
+                                RxBus.INSTANCE.send(eventMain);
+                            }
+                            RxBus.INSTANCE.send(new HeartbeatTimeEvent(totalTime));
+                        }
+                    }
+                }
+            }, 0, 1000);
+        }
     }
 
     private void isShowMainAd(boolean isShow) {
@@ -459,6 +480,8 @@ public class MainActivityPresenter extends AppBaseActivityPresenter<MainActivity
                         if (heartbeatEntity != null && heartbeatEntity.getData() != null) {
                             Log.d("submitOnline", "心跳成功");
                             Log.d("submitOnline", "时间" + heartbeatEntity.getData().getTime());
+                            Log.d("submitOnline", "ticket" + heartbeatEntity.getData().getTicket());
+                            UserInfoManager.saveTicket(heartbeatEntity.getData().getTicket());
                             RxBus.INSTANCE.send(new HeartbeatEvent(heartbeatEntity.getData().getTime()));
                         }
                     }

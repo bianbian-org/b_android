@@ -23,6 +23,8 @@ import com.techjumper.polyhome.b.property.mvp.v.activity.MainActivity;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Timer;
+import java.util.TimerTask;
 
 import butterknife.OnClick;
 import rx.Scheduler;
@@ -35,6 +37,7 @@ public class MainActivityPresenter extends AppBaseActivityPresenter<MainActivity
 
     private int backType = BackEvent.PROPERTY_ACTION;
     private long time;
+    private Timer timer = new Timer();
 
     @OnClick(R.id.bottom_back)
     void back() {
@@ -50,6 +53,14 @@ public class MainActivityPresenter extends AppBaseActivityPresenter<MainActivity
     @OnClick(R.id.bottom_home)
     void home() {
         getView().finish();
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        if (timer != null) {
+            timer.cancel();
+        }
     }
 
     @Override
@@ -76,13 +87,9 @@ public class MainActivityPresenter extends AppBaseActivityPresenter<MainActivity
                         Log.d("time", "更新时间");
                         time++;
                         if (getView().getBottomDate() != null) {
-                            String second = CommonDateUtil.getSecond(time);
-                            Log.d("prosubmitOnline", "second: " + second);
-                            if (second.equals("00")) {
-                                getView().getBottomDate().setText(CommonDateUtil.getTitleNewDate(time));
-                            }
+                            getView().getBottomDate().setText(CommonDateUtil.getTitleNewDate(time));
                         }
-                    }else if (o instanceof HeartbeatEvent) {
+                    } else if (o instanceof HeartbeatEvent) {
                         HeartbeatEvent event = (HeartbeatEvent) o;
                         if (event != null) {
                             time = event.getTime();
@@ -91,5 +98,18 @@ public class MainActivityPresenter extends AppBaseActivityPresenter<MainActivity
                         }
                     }
                 }));
+
+        timer.schedule(new TimerTask() {
+            @Override
+            public void run() {
+                Log.d("time", "更新时间");
+                time++;
+                String second = CommonDateUtil.getSecond(time);
+                Log.d("prosubmitOnline", "second: " + second);
+                if (second.equals("00")) {
+                    RxBus.INSTANCE.send(new TimeEvent());
+                }
+            }
+        }, 0, 1000);
     }
 }

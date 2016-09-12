@@ -9,6 +9,7 @@ public class HeartbeatEntity extends BaseEntity<HeartbeatEntity.HeartbeatDataEnt
     public static class HeartbeatDataEntity {
         private String result;
         private long time;
+        private String ticket;
 
         public String getResult() {
             return result;
@@ -24,6 +25,14 @@ public class HeartbeatEntity extends BaseEntity<HeartbeatEntity.HeartbeatDataEnt
 
         public void setTime(long time) {
             this.time = time;
+        }
+
+        public String getTicket() {
+            return ticket;
+        }
+
+        public void setTicket(String ticket) {
+            this.ticket = ticket;
         }
     }
 }

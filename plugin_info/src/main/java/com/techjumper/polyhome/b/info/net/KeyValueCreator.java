@@ -54,4 +54,10 @@ public class KeyValueCreator {
                 .put("page", page)
                 .put("count", count);
     }
+
+    public static KeyValuePair submitOnline(String family_id, String device_id) {
+        return newPair()
+                .put("family_id", family_id)
+                .put("device_id", device_id);
+    }
 }

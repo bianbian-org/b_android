@@ -48,6 +48,14 @@ public enum UserInfoManager {
     }
 
     /**
+     * 保存新的ticket
+     * @param ticket
+     */
+    public static void saveTicket(String ticket) {
+        PreferenceUtils.save(KEY_TICKET, ticket);
+    }
+
+    /**
      * 获取家庭id
      *
      * @return

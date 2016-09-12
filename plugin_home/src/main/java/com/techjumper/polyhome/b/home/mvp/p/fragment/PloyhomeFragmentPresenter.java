@@ -41,6 +41,7 @@ import com.techjumper.polyhome.b.home.mvp.v.activity.AdActivity;
 import com.techjumper.polyhome.b.home.mvp.v.activity.JujiaActivity;
 import com.techjumper.polyhome.b.home.mvp.v.activity.ShoppingActivity;
 import com.techjumper.polyhome.b.home.mvp.v.fragment.PloyhomeFragment;
+import com.techjumper.polyhome.b.home.net.NetHelper;
 import com.techjumper.polyhome.b.home.tool.AlarmManagerUtil;
 import com.techjumper.polyhome.b.home.utils.DateUtil;
 import com.techjumper.polyhome.b.home.widget.MyTextureView;
@@ -55,6 +56,7 @@ import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
 
+import rx.Observable;
 import rx.Subscriber;
 import rx.android.schedulers.AndroidSchedulers;
 
@@ -298,6 +300,48 @@ public class PloyhomeFragmentPresenter extends AppBaseFragmentPresenter<Ployhome
 
         addSubscription(model.getNotices()
                 .subscribe(new Subscriber<NoticeEntity>() {
+                    @Override
+                    public void onCompleted() {
+
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        getView().showError(e);
+                    }
+
+                    @Override
+                    public void onNext(NoticeEntity noticeEntity) {
+                        if (noticeEntity.getError_code() == NetHelper.CODE_NOT_LOGIN) {
+                            getAgainNotices();
+                            return;
+                        }
+
+                        if (!processNetworkResult(noticeEntity, false))
+                            return;
+
+                        if (noticeEntity == null ||
+                                noticeEntity.getData() == null)
+                            return;
+
+                        initNotices(noticeEntity.getData());
+                    }
+                }));
+    }
+
+    public void getAgainNotices() {
+        if (!UserInfoManager.isLogin())
+            return;
+
+        addSubscription(model.submitOnline()
+                .flatMap(heartbeatEntity -> {
+                    if (heartbeatEntity != null
+                            && heartbeatEntity.getData() != null
+                            && !TextUtils.isEmpty(heartbeatEntity.getData().getTicket())) {
+                        UserInfoManager.saveTicket(heartbeatEntity.getData().getTicket());
+                    }
+                    return model.getNotices();
+                }).subscribe(new Subscriber<NoticeEntity>() {
                     @Override
                     public void onCompleted() {
 

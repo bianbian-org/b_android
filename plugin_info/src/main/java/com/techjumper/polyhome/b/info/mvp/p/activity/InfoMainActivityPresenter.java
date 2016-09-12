@@ -17,8 +17,13 @@ import com.techjumper.commonres.entity.event.loadmoreevent.LoadmoreInfoEvent;
 import com.techjumper.commonres.util.CommonDateUtil;
 import com.techjumper.corelib.rx.tools.RxBus;
 import com.techjumper.polyhome.b.info.R;
+import com.techjumper.polyhome.b.info.UserInfoManager;
 import com.techjumper.polyhome.b.info.mvp.m.InfoMainActivityModel;
 import com.techjumper.polyhome.b.info.mvp.v.activity.InfoMainActivity;
+import com.techjumper.polyhome.b.info.net.NetHelper;
+
+import java.util.Timer;
+import java.util.TimerTask;
 
 import butterknife.OnClick;
 import rx.Subscriber;
@@ -31,6 +36,7 @@ public class InfoMainActivityPresenter extends AppBaseActivityPresenter<InfoMain
 
     private int intentType;
     private long time;
+    private Timer timer = new Timer();
 
     InfoMainActivityModel infoMainActivityModel = new InfoMainActivityModel(this);
     private int pageNo = 1;
@@ -38,6 +44,15 @@ public class InfoMainActivityPresenter extends AppBaseActivityPresenter<InfoMain
     @Override
     public void initData(Bundle savedInstanceState) {
 
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        if (timer != null) {
+            timer.cancel();
+            timer = null;
+        }
     }
 
     @Override
@@ -87,12 +102,7 @@ public class InfoMainActivityPresenter extends AppBaseActivityPresenter<InfoMain
                             } else if (o instanceof TimeEvent) {
                                 Log.d("time", "更新时间");
                                 if (getView().getBottomDate() != null) {
-                                    time++;
-                                    String second = CommonDateUtil.getSecond(time);
-                                    Log.d("infosubmitOnline", "second: " + second);
-                                    if (second.equals("00")) {
-                                        getView().getBottomDate().setText(CommonDateUtil.getTitleNewDate(time));
-                                    }
+                                    getView().getBottomDate().setText(CommonDateUtil.getTitleNewDate(time));
                                 }
                             } else if (o instanceof HeartbeatEvent) {
                                 HeartbeatEvent event = (HeartbeatEvent) o;
@@ -104,6 +114,18 @@ public class InfoMainActivityPresenter extends AppBaseActivityPresenter<InfoMain
                             }
                         })
         );
+
+        timer.schedule(new TimerTask() {
+            @Override
+            public void run() {
+                time++;
+                String second = CommonDateUtil.getSecond(time);
+                Log.d("infosubmitOnline", "second: " + second);
+                if (second.equals("00")) {
+                    RxBus.INSTANCE.send(new TimeEvent());
+                }
+            }
+        }, 0, 1000);
     }
 
     @OnClick(R.id.bottom_home)
@@ -115,7 +137,6 @@ public class InfoMainActivityPresenter extends AppBaseActivityPresenter<InfoMain
         addSubscription(infoMainActivityModel.getInfo(type, pageNo).subscribe(new Subscriber<InfoEntity>() {
             @Override
             public void onCompleted() {
-
             }
 
             @Override
@@ -125,6 +146,11 @@ public class InfoMainActivityPresenter extends AppBaseActivityPresenter<InfoMain
 
             @Override
             public void onNext(InfoEntity infoEntity) {
+                if (infoEntity.getError_code() == NetHelper.CODE_NOT_LOGIN) {
+                    getAgainList(type);
+                    return;
+                }
+
                 if (!processNetworkResult(infoEntity, false))
                     return;
 
@@ -136,6 +162,41 @@ public class InfoMainActivityPresenter extends AppBaseActivityPresenter<InfoMain
                 }
             }
         }));
+    }
+
+    private void getAgainList(int type) {
+        addSubscription(infoMainActivityModel.submitOnline()
+                .flatMap(heartbeatEntity -> {
+                    if (heartbeatEntity != null
+                            && heartbeatEntity.getData() != null
+                            && !TextUtils.isEmpty(heartbeatEntity.getData().getTicket())) {
+                        UserInfoManager.saveTicket(heartbeatEntity.getData().getTicket());
+                    }
+                    return infoMainActivityModel.getInfo(type, pageNo);
+                }).subscribe(new Subscriber<InfoEntity>() {
+                    @Override
+                    public void onCompleted() {
+
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        getView().showError(e);
+                    }
+
+                    @Override
+                    public void onNext(InfoEntity infoEntity) {
+                        if (!processNetworkResult(infoEntity, false))
+                            return;
+
+                        if (infoEntity != null &&
+                                infoEntity.getData() != null &&
+                                infoEntity.getData().getResult() != null &&
+                                infoEntity.getData().getResult().getMessages() != null) {
+                            getView().getList(infoEntity.getData().getResult(), pageNo);
+                        }
+                    }
+                }));
     }
 
     public void getAnnouncements() {
@@ -152,6 +213,12 @@ public class InfoMainActivityPresenter extends AppBaseActivityPresenter<InfoMain
 
             @Override
             public void onNext(AnnouncementEntity announcementEntity) {
+                if (announcementEntity.getError_code() == NetHelper.CODE_NOT_LOGIN) {
+                    Log.d("gonggao", "ticket失效 之前的ticket是:" + UserInfoManager.getTicket());
+                    getAgainAnnouncements();
+                    return;
+                }
+
                 if (!processNetworkResult(announcementEntity, false))
                     return;
 
@@ -165,6 +232,46 @@ public class InfoMainActivityPresenter extends AppBaseActivityPresenter<InfoMain
         }));
     }
 
+    private void getAgainAnnouncements() {
+        Log.d("gonggao", "开始执行getAgainAnnouncements");
+        addSubscription(infoMainActivityModel.submitOnline()
+                .flatMap(heartbeatEntity -> {
+                    Log.d("gonggao", "heartbeatEntity:" + heartbeatEntity);
+                    if (heartbeatEntity != null
+                            && heartbeatEntity.getData() != null
+                            && !TextUtils.isEmpty(heartbeatEntity.getData().getTicket())) {
+                        UserInfoManager.saveTicket(heartbeatEntity.getData().getTicket());
+                    }
+                    Log.d("gonggao", "现在的ticket 1是:" + UserInfoManager.getTicket());
+                    return infoMainActivityModel.getAnnouncements(pageNo);
+                }).subscribe(new Subscriber<AnnouncementEntity>() {
+                    @Override
+                    public void onCompleted() {
+
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        getView().showError(e);
+                    }
+
+                    @Override
+                    public void onNext(AnnouncementEntity announcementEntity) {
+                        Log.d("gonggao", "现在的ticket 2是:" + UserInfoManager.getTicket());
+
+                        if (!processNetworkResult(announcementEntity, false))
+                            return;
+
+                        if (announcementEntity == null ||
+                                announcementEntity.getData() == null ||
+                                announcementEntity.getData().getNotices() == null)
+                            return;
+
+                        getView().getAnnouncements(announcementEntity.getData().getNotices(), pageNo);
+                    }
+                }));
+    }
+
     public void readMessage(long message_id, int type) {
         addSubscription(infoMainActivityModel.readMessage(message_id).subscribe(new Subscriber<TrueEntity>() {
             @Override
@@ -174,11 +281,15 @@ public class InfoMainActivityPresenter extends AppBaseActivityPresenter<InfoMain
 
             @Override
             public void onError(Throwable e) {
-
+                getView().showError(e);
             }
 
             @Override
             public void onNext(TrueEntity trueEntity) {
+                if (trueEntity.getError_code() == NetHelper.CODE_NOT_LOGIN) {
+                    readAgainMessage(message_id, type);
+                    return;
+                }
                 if (!processNetworkResult(trueEntity, false))
                     return;
 
@@ -188,5 +299,38 @@ public class InfoMainActivityPresenter extends AppBaseActivityPresenter<InfoMain
                 }
             }
         }));
+    }
+
+    private void readAgainMessage(long message_id, int type) {
+        addSubscription(infoMainActivityModel.submitOnline()
+                .flatMap(heartbeatEntity -> {
+                    if (heartbeatEntity != null
+                            && heartbeatEntity.getData() != null
+                            && !TextUtils.isEmpty(heartbeatEntity.getData().getTicket())) {
+                        UserInfoManager.saveTicket(heartbeatEntity.getData().getTicket());
+                    }
+                    return infoMainActivityModel.readMessage(message_id);
+                }).subscribe(new Subscriber<TrueEntity>() {
+                    @Override
+                    public void onCompleted() {
+
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        getView().showError(e);
+                    }
+
+                    @Override
+                    public void onNext(TrueEntity trueEntity) {
+                        if (!processNetworkResult(trueEntity, false))
+                            return;
+
+                        if (trueEntity != null &&
+                                trueEntity.getData() != null) {
+                            getView().readMessage(trueEntity.getData().getResult(), type);
+                        }
+                    }
+                }));
     }
 }
