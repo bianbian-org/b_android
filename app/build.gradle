@@ -94,5 +94,6 @@ dependencies {
     apt "com.creact:powerful-adapter-complier-release:$rootProject.recyclerAdapter"
     compile 'com.umeng.analytics:analytics:latest.integration'
     compile "com.github.anrwatchdog:anrwatchdog:$rootProject.anr_whatchDog"
-    compile 'com.r0adkll:slidableactivity:2.0.5'
+//    compile 'com.r0adkll:slidableactivity:2.0.5'
+    compile 'me.imid.swipebacklayout.lib:library:1.0.0'
 }

@@ -1,13 +1,9 @@
 package com.techjumper.polyhomeb.mvp.v.activity;
 
 
-import android.graphics.Color;
 import android.os.Bundle;
 import android.view.View;
 
-import com.r0adkll.slidr.Slidr;
-import com.r0adkll.slidr.model.SlidrConfig;
-import com.r0adkll.slidr.model.SlidrPosition;
 import com.techjumper.corelib.mvp.factory.Presenter;
 import com.techjumper.corelib.rx.tools.RxUtils;
 import com.techjumper.corelib.ui.activity.BaseFragmentActivity;
@@ -24,6 +20,9 @@ import com.umeng.analytics.MobclickAgent;
 import java.util.ArrayList;
 import java.util.List;
 
+import me.imid.swipebacklayout.lib.SwipeBackLayout;
+import me.imid.swipebacklayout.lib.app.SwipeBackActivityBase;
+import me.imid.swipebacklayout.lib.app.SwipeBackActivityHelper;
 import rx.Subscription;
 
 /**
@@ -33,12 +32,52 @@ import rx.Subscription;
  * * * * * * * * * * * * * * * * * * * * * * *
  **/
 @Presenter(AppBaseActivityPresenter.class)
-public abstract class AppBaseActivity<T extends AppBaseActivityPresenter> extends BaseFragmentActivity<T> {
+public abstract class AppBaseActivity<T extends AppBaseActivityPresenter> extends BaseFragmentActivity<T> implements SwipeBackActivityBase {
 
     private List<Subscription> mSubList = new ArrayList<>();
     private KProgressHUD mProgress;
     private TitleHelper.Builder mTitleBuilder;
 
+
+    /***************compile 'me.imid.swipebacklayout.lib:library:1.0.0'侧滑库**************/
+    //包括implements SwipeBackActivityBase
+    //不需要设置透明
+    private SwipeBackActivityHelper mHelper;
+    private SwipeBackLayout mSwipeBackLayout;
+
+    @Override
+    protected void onPostCreate(Bundle savedInstanceState) {
+        super.onPostCreate(savedInstanceState);
+        if (canSlide2Close()) {
+            mHelper.onPostCreate();
+        }
+    }
+
+    @Override
+    public View findViewById(int id) {
+        View v = super.findViewById(id);
+        if (v == null && mHelper != null)
+            return mHelper.findViewById(id);
+        return v;
+    }
+
+    @Override
+    public SwipeBackLayout getSwipeBackLayout() {
+        return mHelper.getSwipeBackLayout();
+    }
+
+    @Override
+    public void setSwipeBackEnable(boolean enable) {
+        getSwipeBackLayout().setEnableGesture(enable);
+    }
+
+    @Override
+    public void scrollToFinishActivity() {
+        me.imid.swipebacklayout.lib.Utils.convertActivityToTranslucent(this);
+        getSwipeBackLayout().scrollToFinishActivity();
+    }
+
+    /**********************compile 'me.imid.swipebacklayout.lib:library:1.0.0'侧滑库*********************/
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -53,19 +92,29 @@ public abstract class AppBaseActivity<T extends AppBaseActivityPresenter> extend
         }
 
         if (canSlide2Close()) {
-            SlidrConfig config = new SlidrConfig.Builder()
-                    .position(SlidrPosition.LEFT)
-                    .sensitivity(1f)
-                    .scrimColor(Color.BLACK)
-                    .scrimStartAlpha(0.8f)
-                    .scrimEndAlpha(0f)
-                    .velocityThreshold(2400)
-                    .distanceThreshold(0.25f)
-                    .edge(true)
-                    .edgeSize(0.18f)
-                    .build();
-            Slidr.attach(this, config);
+            mHelper = new SwipeBackActivityHelper(this);
+            mHelper.onActivityCreate();
+            mSwipeBackLayout = getSwipeBackLayout();
+            mSwipeBackLayout.setEdgeTrackingEnabled(SwipeBackLayout.EDGE_LEFT);
         }
+
+        /**************************compile 'com.r0adkll:slidableactivity:2.0.5'侧滑库***********************/
+        //需要在主题中设置两个透明
+//        if (canSlide2Close()) {
+//            SlidrConfig config = new SlidrConfig.Builder()
+//                    .position(SlidrPosition.LEFT)
+//                    .sensitivity(1f)
+//                    .scrimColor(Color.BLACK)
+//                    .scrimStartAlpha(0.8f)
+//                    .scrimEndAlpha(0f)
+//                    .velocityThreshold(2400)
+//                    .distanceThreshold(0.25f)
+//                    .edge(true)
+//                    .edgeSize(0.18f)
+//                    .build();
+//            Slidr.attach(this, config);
+//        }
+        /**************************compile 'com.r0adkll:slidableactivity:2.0.5'侧滑库***********************/
     }
 
     protected boolean canSlide2Close() {
@@ -113,7 +162,6 @@ public abstract class AppBaseActivity<T extends AppBaseActivityPresenter> extend
                 .rightIconClick(v1 -> {
                     if (!onTitleRightClick()) {
                         KeyboardUtils.closeKeyboard(mViewRoot);
-
                     }
                 });
         mTitleBuilder.process();
