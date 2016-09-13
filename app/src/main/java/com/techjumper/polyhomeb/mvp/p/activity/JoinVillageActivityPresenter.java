@@ -104,7 +104,7 @@ public class JoinVillageActivityPresenter extends AppBaseActivityPresenter<JoinV
                                     UserManager.INSTANCE.saveUserInfo(UserManager.KEY_CURRENT_BUILDING, getView().getEtBuilding().getEditableText().toString());
                                     UserManager.INSTANCE.saveUserInfo(UserManager.KEY_CURRENT_UNIT, getView().getEtUnit().getEditableText().toString());
                                     UserManager.INSTANCE.saveUserInfo(UserManager.KEY_CURRENT_ROOM, getView().getEtRoom().getEditableText().toString());
-                                    UserManager.INSTANCE.updateFamilyOrVillageInfo(false, mModel.getId() + "", mModel.getName(), mModel.getId());
+                                    UserManager.INSTANCE.updateFamilyOrVillageInfo(false, mModel.getId() + "", mModel.getName(), mModel.getId()+"");
                                     new AcHelper.Builder(getView())
                                             .closeCurrent(true)
                                             .enterAnim(R.anim.fade_in)

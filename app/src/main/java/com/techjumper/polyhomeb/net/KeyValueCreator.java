@@ -279,4 +279,10 @@ public class KeyValueCreator {
                 .put("user_id", user_id)
                 .put("ticket", ticket);
     }
+
+    public static KeyValuePair getMedicalUserInfo(String user_id, String ticket) {
+        return newPair()
+                .put("user_id", user_id)
+                .put("ticket", ticket);
+    }
 }

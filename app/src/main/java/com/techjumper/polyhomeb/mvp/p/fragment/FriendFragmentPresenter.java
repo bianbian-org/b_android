@@ -7,6 +7,7 @@ import com.techjumper.corelib.rx.tools.RxUtils;
 import com.techjumper.corelib.utils.common.AcHelper;
 import com.techjumper.corelib.utils.common.ResourceUtils;
 import com.techjumper.polyhomeb.R;
+import com.techjumper.polyhomeb.entity.event.ChangeVillageIdRefreshEvent;
 import com.techjumper.polyhomeb.entity.event.ChooseFamilyVillageEvent;
 import com.techjumper.polyhomeb.entity.event.RefreshStopEvent;
 import com.techjumper.polyhomeb.entity.event.ReloadWebPageEvent;
@@ -29,7 +30,7 @@ import rx.Subscription;
 public class FriendFragmentPresenter extends AppBaseFragmentPresenter<FriendFragment> {
 
     private PolyPopupWindow mPopDevice;
-    private Subscription mSubs1, mSubs2;
+    private Subscription mSubs1, mSubs2, mSubs3;
 
     @Override
     public void initData(Bundle savedInstanceState) {
@@ -61,10 +62,12 @@ public class FriendFragmentPresenter extends AppBaseFragmentPresenter<FriendFrag
         RxUtils.unsubscribeIfNotNull(mSubs1);
         addSubscription(
                 mSubs1 = RxBus.INSTANCE.asObservable().subscribe(o -> {
-                    if (o instanceof ReloadWebPageEvent) {
+                    if (o instanceof ReloadWebPageEvent) {  //此方法没什么用了,只是在回复帖子之后使用
 //                        getView().getWebView().reload();
-                    } else if (o instanceof RefreshStopEvent) {
+                    } else if (o instanceof RefreshStopEvent) {  //此方法没有任何用了.之前是在JS中通知停止刷新
                         getView().stopRefresh("");
+                    } else if (o instanceof ChangeVillageIdRefreshEvent) {
+                        getView().reload();
                     }
                 }));
 

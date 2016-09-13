@@ -9,6 +9,7 @@ import com.techjumper.corelib.utils.common.AcHelper;
 import com.techjumper.polyhomeb.R;
 import com.techjumper.polyhomeb.adapter.recycler_Data.PolyHomeData;
 import com.techjumper.polyhomeb.mvp.v.activity.CheckInActivity;
+import com.techjumper.polyhomeb.mvp.v.activity.MedicalLoginActivity;
 import com.techjumper.polyhomeb.widget.PolyModeView;
 
 /**
@@ -36,6 +37,7 @@ public class PolyHomeViewHolder extends BaseRecyclerViewHolder<PolyHomeData> {
         ((PolyModeView) getView(R.id.test4)).setText(data.getSceneName4());
 
         setOnClickListener(R.id.layout_check_in, v -> new AcHelper.Builder((Activity) getContext()).target(CheckInActivity.class).start());
+        setOnClickListener(R.id.layout_medical, v -> new AcHelper.Builder((Activity) getContext()).target(MedicalLoginActivity.class).start());
     }
 
 }

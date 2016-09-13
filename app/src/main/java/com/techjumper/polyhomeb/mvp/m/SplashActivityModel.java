@@ -49,7 +49,7 @@ public class SplashActivityModel extends BaseModel<SplashActivityPresenter> {
                 int id = bean.getId();
                 String family_name = bean.getFamily_name();
                 int village_id = bean.getVillage_id();
-                UserManager.INSTANCE.updateFamilyOrVillageInfo(true, id + "", family_name, village_id);
+                UserManager.INSTANCE.updateFamilyOrVillageInfo(true, id + "", family_name, village_id+"");
                 break;
             }
             return;
@@ -58,7 +58,7 @@ public class SplashActivityModel extends BaseModel<SplashActivityPresenter> {
             for (UserFamiliesAndVillagesEntity.DataBean.VillageInfosBean bean : village_infos) {
                 int village_id = bean.getVillage_id();
                 String village_name = bean.getVillage_name();
-                UserManager.INSTANCE.updateFamilyOrVillageInfo(false, village_id + "", village_name, village_id);
+                UserManager.INSTANCE.updateFamilyOrVillageInfo(false, village_id + "", village_name, village_id+"");
                 break;
             }
         }

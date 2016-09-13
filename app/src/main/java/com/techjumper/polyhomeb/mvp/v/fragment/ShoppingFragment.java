@@ -156,7 +156,10 @@ public class ShoppingFragment extends AppBaseWebViewFragment<ShoppingFragmentPre
 
                 //9月5日更改刷新逻辑,客户端直接调用reload.
 //                if (mIsOtherError) {
-                getWebView().reload();
+//                getWebView().reload();
+
+                reload();
+
 //                    mIsOtherError = false;
 //                } else {
 //                    refresh();
@@ -181,6 +184,11 @@ public class ShoppingFragment extends AppBaseWebViewFragment<ShoppingFragmentPre
 //            mWebView.loadUrl("javascript:" + mRefreshType + "()");
 //        }
 //    }
+
+    public void reload() {
+        initWebView((AdvancedWebView) mViewRoot.findViewById(R.id.wb));
+        getWebView().loadUrl(Config.sFriend);
+    }
 
     public void stopRefresh(String msg) {
         if (mPtr != null && mPtr.isRefreshing()) {

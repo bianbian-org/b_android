@@ -6,9 +6,11 @@ import com.steve.creact.library.display.DisplayBean;
 import com.techjumper.corelib.rx.tools.RxBus;
 import com.techjumper.corelib.rx.tools.RxUtils;
 import com.techjumper.corelib.utils.common.AcHelper;
+import com.techjumper.corelib.utils.common.JLog;
 import com.techjumper.polyhomeb.Constant;
 import com.techjumper.polyhomeb.adapter.databean.MyVillageFamilyBean;
 import com.techjumper.polyhomeb.entity.UserFamiliesAndVillagesEntity;
+import com.techjumper.polyhomeb.entity.event.ChangeVillageIdRefreshEvent;
 import com.techjumper.polyhomeb.entity.event.ChooseFamilyVillageEvent;
 import com.techjumper.polyhomeb.mvp.m.MyVillageFamilyActivityModel;
 import com.techjumper.polyhomeb.mvp.v.activity.ChooseVillageFamilyActivity;
@@ -67,6 +69,7 @@ public class MyVillageFamilyActivityPresenter extends AppBaseActivityPresenter<M
                             public void onError(Throwable e) {
                                 getView().dismissLoading();
                                 getView().showError(e);
+                                JLog.e(e);
                             }
 
                             @Override
@@ -102,6 +105,7 @@ public class MyVillageFamilyActivityPresenter extends AppBaseActivityPresenter<M
                                     }
                                 }
                                 getView().getAdapter().notifyDataSetChanged();
+                                RxBus.INSTANCE.send(new ChangeVillageIdRefreshEvent());
                             }
                         }));
     }

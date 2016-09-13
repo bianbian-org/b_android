@@ -80,7 +80,7 @@ public enum UserManager {
             String family_id = entity.getData().getFamilies().get(0).getFamily_id();
             String family_name = entity.getData().getFamilies().get(0).getFamily_name();
             int village_id = entity.getData().getFamilies().get(0).getVillage_id();
-            updateFamilyOrVillageInfo(true, family_id, family_name, village_id);
+            updateFamilyOrVillageInfo(true, family_id + "", family_name, village_id + "");
         }
         if (entity.getData().getVillages() != null && entity.getData().getVillages().size() != 0) {
             //登录接口多出来的
@@ -90,7 +90,7 @@ public enum UserManager {
                     || !VALUE_IS_FAMILY.equals(getUserInfo(KEY_CURRENT_SHOW_IS_FAMILY_OR_VILLAGE))) {
                 int village_id = entity.getData().getVillages().get(0).getVillage_id();
                 String village_name = entity.getData().getVillages().get(0).getVillage_name();
-                updateFamilyOrVillageInfo(false, village_id + "", village_name, village_id);
+                updateFamilyOrVillageInfo(false, village_id + "", village_name, village_id+"");
             }
         }
         PreferenceUtils.save(KEY_ID, dataEntity.getId());
@@ -118,16 +118,16 @@ public enum UserManager {
      * <p>
      * 所以使用之前,如果要取家庭的话,就必须要判断isFamily(),如果只是拿小区id的话,则直接拿就行,因为只要你能登陆app,那就说明至少都有小区id,不一定有家庭id
      */
-    public void updateFamilyOrVillageInfo(boolean isFamily, String family_id, String name, int village_id) {
+    public void updateFamilyOrVillageInfo(boolean isFamily, String family_id, String name, String village_id) {
         if (isFamily) {
             PreferenceUtils.save(UserManager.KEY_CURRENT_FAMILY_ID, family_id);
             PreferenceUtils.save(UserManager.KEY_CURRENT_SHOW_TITLE_NAME, name);
-            PreferenceUtils.save(UserManager.KEY_CURRENT_VILLAGE_ID, village_id + "");
+            PreferenceUtils.save(UserManager.KEY_CURRENT_VILLAGE_ID, village_id);
             PreferenceUtils.save(UserManager.KEY_CURRENT_SHOW_IS_FAMILY_OR_VILLAGE, UserManager.VALUE_IS_FAMILY);
         } else {
             PreferenceUtils.save(UserManager.KEY_CURRENT_FAMILY_ID, village_id);
             PreferenceUtils.save(UserManager.KEY_CURRENT_SHOW_TITLE_NAME, name);
-            PreferenceUtils.save(UserManager.KEY_CURRENT_VILLAGE_ID, village_id + "");
+            PreferenceUtils.save(UserManager.KEY_CURRENT_VILLAGE_ID, village_id);
             PreferenceUtils.save(UserManager.KEY_CURRENT_SHOW_IS_FAMILY_OR_VILLAGE, UserManager.VALUE_IS_VILLAGE);
         }
     }
