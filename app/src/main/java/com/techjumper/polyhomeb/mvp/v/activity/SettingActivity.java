@@ -3,9 +3,11 @@ package com.techjumper.polyhomeb.mvp.v.activity;
 import android.os.Bundle;
 import android.os.Environment;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.techjumper.corelib.mvp.factory.Presenter;
+import com.techjumper.corelib.utils.common.AcHelper;
 import com.techjumper.corelib.utils.file.FileUtils;
 import com.techjumper.polyhomeb.Config;
 import com.techjumper.polyhomeb.R;
@@ -32,6 +34,12 @@ public class SettingActivity extends AppBaseActivity<SettingActivityPresenter> {
     TextView mTvAbout;       //关于
     @Bind(R.id.tv_cache_size)
     TextView mTvCache;       //缓存大小
+    @Bind(R.id.tv_uninstall_smarthome)
+    TextView mTvUninstallSmarthome;
+    @Bind(R.id.smart_home_divider)
+    View mSmartHomeDivider;
+    @Bind(R.id.tv_logout)
+    TextView mTvLogout;
 
     @Override
     protected View inflateView(Bundle savedInstanceState) {
@@ -41,6 +49,33 @@ public class SettingActivity extends AppBaseActivity<SettingActivityPresenter> {
     @Override
     protected void initView(Bundle savedInstanceState) {
         showCacheSize();
+        mTvAbout.setOnLongClickListener(v -> {
+            new AcHelper.Builder(this)
+                    .target(DebugActivity.class)
+                    .start();
+            return true;
+        });
+
+        initPluginLayout();
+
+    }
+
+    private void initPluginLayout() {
+        boolean installCPlugin = getPresenter().getPluginManager().isInstallCPlugin();
+        int visibility = installCPlugin ? View.VISIBLE : View.GONE;
+        mTvUninstallSmarthome.setVisibility(visibility);
+        mSmartHomeDivider.setVisibility(visibility);
+
+        int margin = installCPlugin ? 0 : getResources().getDimensionPixelSize(R.dimen.dp_54);
+        ViewGroup.MarginLayoutParams layoutParams = (ViewGroup.MarginLayoutParams) mTvLogout.getLayoutParams();
+        layoutParams.topMargin = margin;
+        mTvLogout.setLayoutParams(layoutParams);
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        initPluginLayout();
     }
 
     @Override
@@ -63,4 +98,5 @@ public class SettingActivity extends AppBaseActivity<SettingActivityPresenter> {
     public TextView getTvCache() {
         return mTvCache;
     }
+
 }

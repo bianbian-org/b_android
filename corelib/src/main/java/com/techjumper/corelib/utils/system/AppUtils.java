@@ -9,6 +9,7 @@ import android.net.NetworkInfo;
 import android.net.wifi.WifiInfo;
 import android.net.wifi.WifiManager;
 import android.os.Build;
+import android.os.RemoteException;
 import android.provider.Settings;
 import android.telephony.TelephonyManager;
 import android.text.TextUtils;
@@ -192,5 +193,30 @@ public class AppUtils {
                 || Build.BRAND.contains("Meizu");
     }
 
+    /**
+     * 得到指定路径apk的package info
+     */
+    public static PackageInfo getPackageInfo(String path) throws RemoteException {
+        return Utils.appContext.getPackageManager().getPackageArchiveInfo(path, 0);
+    }
+
+    /**
+     * 路径下的apk是否比系统已安装的版本新
+     */
+    public static boolean hasUpdate(String sourcePath)  {
+        PackageInfo info = null;
+        try {
+            info = getPackageInfo(sourcePath);
+        } catch (RemoteException ignored) {
+        }
+        if (info == null)
+            return false;
+        PackageInfo installedInfo = null;
+        try {
+            installedInfo = Utils.appContext.getPackageManager().getPackageInfo(info.packageName, 0);
+        } catch (PackageManager.NameNotFoundException ignored) {
+        }
+        return installedInfo == null || info.versionCode > installedInfo.versionCode;
+    }
 
 }

@@ -261,6 +261,10 @@
     <string name="thursday">四</string>
     <string name="friday">五</string>
     <string name="saturday">六</string>
+    <string name="cannot_access_sd_card">无法访问SD卡</string>
+    <string name="error_to_open_smart_home_activity">打开\"智能家居\"页面失败</string>
+    <string name="do_not_have_smart_home_moudle">没有安装\"智能家居模块\"</string>
+    <string name="uninstall_smart_home">卸载 \"智能家居模块\"</string>
 
 
 </resources>
