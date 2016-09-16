@@ -152,7 +152,11 @@ public class FriendFragment extends AppBaseWebViewFragment<FriendFragmentPresent
                 //如果不是以上情况导致的用户手动下拉刷新,那么就调用refresh()刷新,具体的刷新方式,按照url的refresh=参数来做,也就是refresh()自己去判断
                 //9月5日更改刷新逻辑客户端直接调用reload
 //                if (mIsOtherError) {
-                getWebView().reload();
+
+//                getWebView().reload();
+
+                reload();
+
 //                    mIsOtherError = false;
 //                } else {
 //                refresh();
@@ -165,6 +169,11 @@ public class FriendFragment extends AppBaseWebViewFragment<FriendFragmentPresent
                 return mCanRefresh;
             }
         });
+    }
+
+    public void reload() {
+        initWebView((AdvancedWebView) mViewRoot.findViewById(R.id.wb));
+        getWebView().loadUrl(Config.sFriend);
     }
 
 //    /**

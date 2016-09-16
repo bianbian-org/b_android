@@ -149,6 +149,7 @@
         </LinearLayout>
 
         <LinearLayout
+            android:id="@+id/layout_medical"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginLeft="@dimen/dp_4"

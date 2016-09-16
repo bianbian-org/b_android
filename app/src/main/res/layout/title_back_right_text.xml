@@ -39,7 +39,7 @@
         android:paddingBottom="@dimen/dp_10"
         android:paddingLeft="@dimen/dp_15"
         android:paddingRight="12.4dp"
-        android:paddingTop="@dimen/dp_13"
+        android:paddingTop="@dimen/dp_12"
         android:visibility="gone">
 
         <TextView

@@ -37,7 +37,6 @@ public abstract class AppBaseWebViewFragment<T extends AppBaseFragmentPresenter>
                 super.onReceivedTitle(view, title);
                 AppBaseWebViewFragment.this.onReceivedTitle(view, title);
             }
-
         });
 
         mWebView.addHttpHeader("HUSERID", UserManager.INSTANCE.getUserInfo(UserManager.KEY_ID));

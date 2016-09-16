@@ -48,6 +48,10 @@ public class TitleHelper {
         UI.create(view).<ImageView>findById(R.id.iv_right_icon).setImageResource(resId);
     }
 
+    public static void setTitleRightText(View view, String text) {
+        UI.create(view).<TextView>findById(R.id.tv_right).setText(text);
+    }
+
     public static void setTitleRightText(View view, String text, int colorRes) {
         UI.create(view).<TextView>findById(R.id.tv_right).setText(text);
         UI.create(view).<TextView>findById(R.id.tv_right).setTextColor(colorRes);

@@ -51,9 +51,9 @@ public class MyVillageFamilyActivityViewHolder extends BaseRecyclerViewHolder<My
             //(最开始是写在MyVillageFamilyActivityPresenter中的,肯定不得行)
             if (!data.isChoosed()) {
                 if (0 == data.isFamilyData()) {  //家庭
-                    UserManager.INSTANCE.updateFamilyOrVillageInfo(true, family_id + "", name, villageId);
+                    UserManager.INSTANCE.updateFamilyOrVillageInfo(true, family_id + "", name, villageId+"");
                 } else if (1 == data.isFamilyData()) {   //小区
-                    UserManager.INSTANCE.updateFamilyOrVillageInfo(false, villageId + "", name, villageId);
+                    UserManager.INSTANCE.updateFamilyOrVillageInfo(false, villageId + "", name, villageId+"");
                 }
                 RxBus.INSTANCE.send(new ChooseFamilyVillageEvent(name, data.isFamilyData(), getLayoutPosition()));
             }
