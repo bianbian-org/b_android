@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="@color/color_ebecec"
-    android:orientation="vertical">
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:background="@color/color_ebecec"
+              android:orientation="vertical">
 
-    <include layout="@layout/title_back" />
+    <include layout="@layout/title_back"/>
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -17,7 +17,7 @@
         <View
             android:layout_width="match_parent"
             android:layout_height="0.5dp"
-            android:background="@color/color_ceced2" />
+            android:background="@color/color_ceced2"/>
 
         <RelativeLayout
             android:id="@+id/layout_cache"
@@ -35,7 +35,7 @@
                 android:singleLine="true"
                 android:text="@string/clear_cache"
                 android:textColor="@color/color_a8a8a8"
-                android:textSize="@dimen/sp_14" />
+                android:textSize="@dimen/sp_14"/>
 
             <TextView
                 android:id="@+id/tv_cache_size"
@@ -45,7 +45,7 @@
                 android:paddingRight="@dimen/dp_28"
                 android:singleLine="true"
                 android:textColor="@color/color_a8a8a8"
-                android:textSize="@dimen/sp_14" />
+                android:textSize="@dimen/sp_14"/>
 
         </RelativeLayout>
 
@@ -53,7 +53,7 @@
             android:layout_width="match_parent"
             android:layout_height="0.5dp"
             android:layout_marginLeft="@dimen/dp_14"
-            android:background="@color/color_ceced2" />
+            android:background="@color/color_ceced2"/>
 
         <TextView
             android:id="@+id/tv_appraise"
@@ -66,13 +66,13 @@
             android:singleLine="true"
             android:text="@string/appraise"
             android:textColor="@color/color_a8a8a8"
-            android:textSize="@dimen/sp_14" />
+            android:textSize="@dimen/sp_14"/>
 
         <View
             android:layout_width="match_parent"
             android:layout_height="0.5dp"
             android:layout_marginLeft="@dimen/dp_14"
-            android:background="@color/color_ceced2" />
+            android:background="@color/color_ceced2"/>
 
         <TextView
             android:id="@+id/tv_about"
@@ -85,24 +85,40 @@
             android:singleLine="true"
             android:text="@string/about"
             android:textColor="@color/color_a8a8a8"
-            android:textSize="@dimen/sp_14" />
+            android:textSize="@dimen/sp_14"/>
 
         <View
             android:layout_width="match_parent"
             android:layout_height="0.5dp"
-            android:background="@color/color_ceced2" />
+            android:background="@color/color_ceced2"/>
 
     </LinearLayout>
 
     <TextView
-        android:id="@+id/tv_logout"
+        android:id="@+id/tv_uninstall_smarthome"
         android:layout_width="match_parent"
         android:layout_height="@dimen/dp_47"
         android:layout_marginTop="@dimen/dp_54"
         android:background="@color/color_ffffff"
         android:gravity="center"
+        android:text="@string/uninstall_smart_home"
+        android:textColor="@color/color_FD412B"
+        android:textSize="@dimen/sp_14"/>
+
+    <View
+        android:id="@+id/smart_home_divider"
+        android:layout_width="match_parent"
+        android:layout_height="0.5dp"
+        android:background="@color/color_ceced2"/>
+
+    <TextView
+        android:id="@+id/tv_logout"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dp_47"
+        android:background="@color/color_ffffff"
+        android:gravity="center"
         android:text="@string/logout"
         android:textColor="@color/color_FD412B"
-        android:textSize="@dimen/sp_14" />
+        android:textSize="@dimen/sp_14"/>
 
 </LinearLayout>

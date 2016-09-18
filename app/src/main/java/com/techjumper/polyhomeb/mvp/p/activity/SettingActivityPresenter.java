@@ -9,6 +9,7 @@ import com.techjumper.corelib.utils.file.FileUtils;
 import com.techjumper.corelib.utils.window.DialogUtils;
 import com.techjumper.polyhomeb.Config;
 import com.techjumper.polyhomeb.R;
+import com.techjumper.polyhomeb.manager.PolyPluginManager;
 import com.techjumper.polyhomeb.mvp.v.activity.LoginActivity;
 import com.techjumper.polyhomeb.mvp.v.activity.SettingActivity;
 import com.techjumper.polyhomeb.user.UserManager;
@@ -25,9 +26,12 @@ import butterknife.OnClick;
  * * * * * * * * * * * * * * * * * * * * * * *
  **/
 public class SettingActivityPresenter extends AppBaseActivityPresenter<SettingActivity> {
+
+    private PolyPluginManager mPluginManager;
+
     @Override
     public void initData(Bundle savedInstanceState) {
-
+        mPluginManager = PolyPluginManager.with(getView());
     }
 
     @Override
@@ -35,7 +39,7 @@ public class SettingActivityPresenter extends AppBaseActivityPresenter<SettingAc
 
     }
 
-    @OnClick({R.id.tv_logout, R.id.layout_cache})
+    @OnClick({R.id.tv_logout, R.id.layout_cache, R.id.tv_uninstall_smarthome})
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.tv_logout:
@@ -43,6 +47,9 @@ public class SettingActivityPresenter extends AppBaseActivityPresenter<SettingAc
                 break;
             case R.id.layout_cache:
                 clearCache();
+                break;
+            case R.id.tv_uninstall_smarthome:
+                mPluginManager.uninstallCPlugin();
                 break;
         }
     }
@@ -85,5 +92,9 @@ public class SettingActivityPresenter extends AppBaseActivityPresenter<SettingAc
                     }
                 })
                 .show();
+    }
+
+    public PolyPluginManager getPluginManager() {
+        return mPluginManager;
     }
 }

@@ -261,6 +261,12 @@
     <string name="thursday">四</string>
     <string name="friday">五</string>
     <string name="saturday">六</string>
+
+    <string name="cannot_access_sd_card">无法访问SD卡</string>
+    <string name="error_to_open_smart_home_activity">打开\"智能家居\"页面失败</string>
+    <string name="do_not_have_smart_home_moudle">没有安装\"智能家居模块\"</string>
+    <string name="uninstall_smart_home">卸载 \"智能家居模块\"</string>
+
     <string name="medical_login_in">登录新账号</string>
     <string name="login_medical_account">平台账号</string>
     <string name="login_medical_password">平台密码</string>
@@ -280,6 +286,7 @@
     <string name="medical_email">邮箱</string>
     <string name="medical_height">身高</string>
     <string name="medical_weight">体重</string>
+
 
 
 </resources>
