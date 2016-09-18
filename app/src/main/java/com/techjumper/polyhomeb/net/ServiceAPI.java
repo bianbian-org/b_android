@@ -5,6 +5,8 @@ import com.techjumper.polyhomeb.entity.AvatarEntity;
 import com.techjumper.polyhomeb.entity.BaseArgumentsEntity;
 import com.techjumper.polyhomeb.entity.CheckInEntity;
 import com.techjumper.polyhomeb.entity.LoginEntity;
+import com.techjumper.polyhomeb.entity.MedicalChangeAccountEntity;
+import com.techjumper.polyhomeb.entity.MedicalMainEntity;
 import com.techjumper.polyhomeb.entity.MedicalUserInfoEntity;
 import com.techjumper.polyhomeb.entity.MessageEntity;
 import com.techjumper.polyhomeb.entity.OrdersEntity;
@@ -529,6 +531,12 @@ public interface ServiceAPI {
     Observable<CheckInEntity> getCheckInData(@QueryMap Map<String, String> stringStringMap);
 
     @POST("signs")
-    Observable<MedicalUserInfoEntity> getMedicalUserInfo(@Body BaseArgumentsEntity entity);
+    Observable<MedicalUserInfoEntity> getMedicalCurrentUserInfo(@Body BaseArgumentsEntity entity);
+
+    @POST("signs")
+    Observable<MedicalMainEntity> getMedicalMainData(@Body BaseArgumentsEntity entity);
+
+    @POST("signs")
+    Observable<MedicalChangeAccountEntity> getMedicalUserData(@Body BaseArgumentsEntity entity);
 }
 

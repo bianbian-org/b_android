@@ -45,14 +45,13 @@ public class MedicalUserInfoActivityModel extends BaseModel<MedicalUserInfoActiv
     }
 
     public Observable<MedicalUserInfoEntity> getInfo() {
-        KeyValuePair keyValuePair = KeyValueCreator.getMedicalUserInfo(
+        KeyValuePair keyValuePair = KeyValueCreator.getMedicalCurrentUserInfo(
                 UserManager.INSTANCE.getUserInfo(UserManager.KEY_ID)
                 , UserManager.INSTANCE.getTicket());
-
         BaseArgumentsEntity entity = NetHelper.createBaseArguments(keyValuePair);
         return RetrofitHelper
                 .<ServiceAPI>createDefault()
-                .getMedicalUserInfo(entity)
+                .getMedicalCurrentUserInfo(entity)
                 .compose(CommonWrap.wrap());
     }
 
@@ -69,11 +68,10 @@ public class MedicalUserInfoActivityModel extends BaseModel<MedicalUserInfoActiv
         PropertyPlacardDividerLongBean propertyPlacardDividerLongBean = new PropertyPlacardDividerLongBean(propertyPlacardDividerLongData);
         displayBeen.add(propertyPlacardDividerLongBean);
 
-        //短分割线
+        //短分割线 先初始化出来,不用
         PropertyPlacardDividerData propertyPlacardDividerData = new PropertyPlacardDividerData();
         propertyPlacardDividerData.setMarginLeft(RuleUtils.dp2Px(30));//和布局中文字的marginLeft相同
         PropertyPlacardDividerBean propertyPlacardDividerBean = new PropertyPlacardDividerBean(propertyPlacardDividerData);
-        displayBeen.add(propertyPlacardDividerBean);
 
         //前面的五个布局
         for (int i = 1; i <= 5; i++) {

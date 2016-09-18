@@ -1,5 +1,6 @@
 package com.techjumper.polyhomeb.adapter.recycler_ViewHolder;
 
+import android.os.Bundle;
 import android.view.View;
 
 import com.steve.creact.annotation.DataBean;
@@ -30,7 +31,8 @@ public class MedicalUserInfoViewHolder extends BaseRecyclerViewHolder<MedicalUse
         setText(R.id.tv_content, data.getContent());
 
         setOnClickListener(R.id.layout_root, v -> {
-            
+            Bundle bundle = new Bundle();
+//            new AcHelper.Builder((Activity) getContext()).target().extra().start();
         });
 
     }
