@@ -11,8 +11,9 @@ import com.techjumper.lib2.utils.GsonUtils;
 import com.techjumper.polyhomeb.Constant;
 import com.techjumper.polyhomeb.entity.JS2JavaBaseEntity;
 import com.techjumper.polyhomeb.entity.JS2JavaImageViewEntity;
+import com.techjumper.polyhomeb.entity.JS2JavaNotificationEntity;
 import com.techjumper.polyhomeb.entity.JS2JavaPageJumpEntity;
-import com.techjumper.polyhomeb.entity.event.RefreshStopEvent;
+import com.techjumper.polyhomeb.entity.event.WebViewNotificationEvent;
 import com.techjumper.polyhomeb.mvp.v.activity.ReplyCommentActivity;
 import com.techjumper.polyhomeb.mvp.v.activity.ReplyDetailActivity;
 import com.techjumper.polyhomeb.mvp.v.activity.WebViewShowBigPicActivity;
@@ -102,7 +103,7 @@ public class JavascriptObject {
      * 刷新
      */
     private void response() {
-        RxBus.INSTANCE.send(new RefreshStopEvent());
+//        RxBus.INSTANCE.send(new RefreshStopEvent());
     }
 
     /**
@@ -138,19 +139,14 @@ public class JavascriptObject {
             case "RefreshLoaded":
                 response();
                 break;
-
+            case "RefreshNotice":
+                JS2JavaNotificationEntity js2JavaNotificationEntity = GsonUtils.fromJson(json, JS2JavaNotificationEntity.class);
+                JS2JavaNotificationEntity.ParamsBean paramsBean = js2JavaNotificationEntity.getParams();
+                String result = paramsBean.getResult();
+                RxBus.INSTANCE.send(new WebViewNotificationEvent(result));
+                break;
         }
 
     }
-
-//    @JavascriptInterface
-//    public String getUserId() {
-//        return UserManager.INSTANCE.getUserInfo(UserManager.KEY_ID);
-//    }
-//
-//    @JavascriptInterface
-//    public String getTicket() {
-//        return UserManager.INSTANCE.getTicket();
-//    }
 
 }

@@ -110,7 +110,6 @@ public class ReplyDetailActivity extends AppBaseWebViewActivity<ReplyDetailActiv
         switch (mRightSecondMethod) {
             case WebTitleHelper.NATIVE_METHOD_RETURN:
                 onBackPressed();
-//                RxBus.INSTANCE.send(new ReloadWebPageEvent());
                 break;
             case WebTitleHelper.NATIVE_METHOD_MENU:
                 RxBus.INSTANCE.send(new ToggleMenuClickEvent());

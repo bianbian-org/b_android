@@ -21,6 +21,12 @@ public class WebTitleHelper {
     public static final String NATIVE_METHOD_RETURN = "NativeReturn";
     public static final String NATIVE_METHOD_MENU = "NativeMenu";
     public static final String NATIVE_METHOD_NEW_ARTICLE = "NativeNewArticle";
+    public static final String NATIVE_METHOD_PERSON = "person";
+    public static final String NATIVE_METHOD_NOTIFICATION = "NativeNotification";
+
+    public static void setTitleNotificationIcon(View view, int icon) {
+        UI.create(view).<ImageView>findById(R.id.right_second_iv).setImageResource(icon);
+    }
 
     public static Builder create(View view) {
         return new Builder(view);
@@ -295,8 +301,11 @@ public class WebTitleHelper {
                 case NATIVE_METHOD_NEW_ARTICLE:   //add
                     PicassoHelper.getDefault().load(R.mipmap.icon_add).into(imageView);
                     break;
-                case "person":
+                case NATIVE_METHOD_PERSON:   //person
                     PicassoHelper.getDefault().load(R.mipmap.icon_person).into(imageView);
+                    break;
+                case NATIVE_METHOD_NOTIFICATION: //通知
+                    PicassoHelper.getDefault().load(R.mipmap.icon_notification_none_).into(imageView);
                     break;
                 default:  //onlineMethod,所以这里就不管了,前面处理过了已经
                     break;

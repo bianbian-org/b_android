@@ -6,14 +6,17 @@ import com.techjumper.corelib.rx.tools.RxBus;
 import com.techjumper.corelib.rx.tools.RxUtils;
 import com.techjumper.corelib.utils.common.AcHelper;
 import com.techjumper.corelib.utils.common.ResourceUtils;
+import com.techjumper.polyhomeb.Constant;
 import com.techjumper.polyhomeb.R;
 import com.techjumper.polyhomeb.entity.event.ChangeVillageIdRefreshEvent;
 import com.techjumper.polyhomeb.entity.event.ChooseFamilyVillageEvent;
 import com.techjumper.polyhomeb.entity.event.RefreshStopEvent;
 import com.techjumper.polyhomeb.entity.event.ReloadWebPageEvent;
+import com.techjumper.polyhomeb.entity.event.WebViewNotificationEvent;
 import com.techjumper.polyhomeb.mvp.v.activity.NewInvitationActivity;
 import com.techjumper.polyhomeb.mvp.v.activity.NewUnusedActivity;
 import com.techjumper.polyhomeb.mvp.v.fragment.FriendFragment;
+import com.techjumper.polyhomeb.utils.WebTitleHelper;
 import com.techjumper.polyhomeb.widget.PolyPopupWindow;
 
 import java.util.ArrayList;
@@ -42,6 +45,7 @@ public class FriendFragmentPresenter extends AppBaseFragmentPresenter<FriendFrag
         initPop();
         reloadPage();
         reloadUrlAndRefreshWebPage();
+        changeNotification();
     }
 
     //收到此消息,说明在侧边栏切换了家庭,那么此处就应该重新按照SP中存储的小区或者家庭的id来重载页面
@@ -71,6 +75,22 @@ public class FriendFragmentPresenter extends AppBaseFragmentPresenter<FriendFrag
                     }
                 }));
 
+    }
+
+    private void changeNotification() {
+        RxUtils.unsubscribeIfNotNull(mSubs3);
+        addSubscription(
+                mSubs3 = RxBus.INSTANCE.asObservable().subscribe(o -> {
+                    if (o instanceof WebViewNotificationEvent) {
+                        WebViewNotificationEvent event = (WebViewNotificationEvent) o;
+                        String result = event.getResult();
+                        if (Constant.TRUE_ENTITY_RESULT.equals(result)) {
+                            WebTitleHelper.setTitleNotificationIcon(getView().getRootView(), R.mipmap.icon_notification_);
+                        } else if (Constant.FALSE_ENTITY_RESULT.equals(result)) {
+                            WebTitleHelper.setTitleNotificationIcon(getView().getRootView(), R.mipmap.icon_notification_none_);
+                        }
+                    }
+                }));
     }
 
     public void onTitleRightClick() {

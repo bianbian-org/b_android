@@ -12,6 +12,7 @@ import android.widget.ImageView;
 
 import com.techjumper.corelib.mvp.factory.Presenter;
 import com.techjumper.corelib.rx.tools.RxBus;
+import com.techjumper.corelib.utils.common.AcHelper;
 import com.techjumper.polyhomeb.Config;
 import com.techjumper.polyhomeb.Constant;
 import com.techjumper.polyhomeb.R;
@@ -21,6 +22,7 @@ import com.techjumper.polyhomeb.interfaces.IWebViewChromeClient;
 import com.techjumper.polyhomeb.interfaces.IWebViewTitleClick;
 import com.techjumper.polyhomeb.manager.WebTitleManager;
 import com.techjumper.polyhomeb.mvp.p.fragment.FriendFragmentPresenter;
+import com.techjumper.polyhomeb.mvp.v.activity.ReplyDetailActivity;
 import com.techjumper.polyhomeb.net.NetHelper;
 import com.techjumper.polyhomeb.utils.WebTitleHelper;
 import com.techjumper.polyhomeb.widget.AdvancedWebView;
@@ -136,6 +138,11 @@ public class FriendFragment extends AppBaseWebViewFragment<FriendFragmentPresent
                 break;
             case WebTitleHelper.NATIVE_METHOD_NEW_ARTICLE:
                 getPresenter().onTitleRightClick();
+                break;
+            case WebTitleHelper.NATIVE_METHOD_NOTIFICATION:
+                Bundle bundle = new Bundle();
+                bundle.putString(Constant.JS_PAGE_JUMP_URL, Config.sFriendNotification);
+                new AcHelper.Builder(getActivity()).extra(bundle).target(ReplyDetailActivity.class).start();
                 break;
             default:
                 onLineMethod(mRightSecondMethod);
@@ -271,5 +278,9 @@ public class FriendFragment extends AppBaseWebViewFragment<FriendFragmentPresent
         getWebView().addJsInterface(getActivity(), Constant.JS_NATIVE_BRIDGE);
         getWebView().loadUrl(url);
         initListener();
+    }
+
+    public View getRootView() {
+        return mViewRoot;
     }
 }
