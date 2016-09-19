@@ -53,6 +53,14 @@ public abstract class AppBaseActivityPresenter<T extends AppBaseActivity> extend
         return processNetworkResult(entity, true);
     }
 
+//    protected boolean processNetworkResult(BaseMedicalUserEntity entity) {
+//        return processNetworkResult(entity, true);
+//    }
+//
+//    protected boolean processNetworkResult(BaseMedicalUserEntity entity, boolean shouldShowMessage) {
+//
+//    }
+
     protected boolean processNetworkResult(BaseEntity entity, boolean shouldShowMessage) {
         if (NetHelper.isSuccess(entity))
             return true;

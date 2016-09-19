@@ -6,6 +6,7 @@ import com.techjumper.corelib.utils.system.AppUtils;
 import com.techjumper.lib2.Config;
 
 import java.io.File;
+import java.io.InputStream;
 import java.util.concurrent.TimeUnit;
 
 import okhttp3.Cache;
@@ -14,6 +15,7 @@ import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
 import okhttp3.logging.HttpLoggingInterceptor;
+import okio.Buffer;
 
 /**
  * * * * * * * * * * * * * * * * * * * * * * *
@@ -42,7 +44,8 @@ public class OkHttpHelper {
         }
 
         Response response = chain.proceed(request);
-
+//        Headers headers = response.headers();
+//        JLog.e(headers.get("nztoken"));
         // Re-write response CC header to force use of cache
 
 //        JLog.d("HTTP返回: " + response.body().string());
@@ -85,7 +88,13 @@ public class OkHttpHelper {
         } else {
             cacheSize = 20 * 1024 * 1024;//20mb
         }
+
+        InputStream inputStream = new Buffer().writeUtf8(CER_MEDICAL).inputStream();
+        InputStream[] inputStreams = new InputStream[]{inputStream};
+        HTTPSUtils.SSLParams sslParams = HTTPSUtils.getSslSocketFactory(inputStreams, null, null);
         OkHttpClient.Builder builder = new OkHttpClient.Builder()
+                .hostnameVerifier((hostname, session) -> true)
+                .sslSocketFactory(sslParams.sSLSocketFactory, sslParams.trustManager)
                 .cache(new Cache(new File(cachePath), cacheSize))
                 .connectTimeout(10, TimeUnit.SECONDS)
                 .readTimeout(10, TimeUnit.SECONDS)
@@ -99,6 +108,24 @@ public class OkHttpHelper {
         builder.networkInterceptors().add(REWRITE_CACHE_CONTROL_INTERCEPTOR);
         return builder.build();
     }
+
+    /**
+     * 医疗网页证书
+     */
+    public static final String CER_MEDICAL = "PEM encoded chain: -----BEGIN CERTIFICATE-----\n" +
+            "MIICGzCCAYQCCQDCWPUrzNwBFDANBgkqhkiG9w0BAQUFADBSMQswCQYDVQQGEwJD\n" +
+            "TjEQMA4GA1UECAwHQmVpamluZzEQMA4GA1UEBwwHQmVpamluZzESMBAGA1UECgwJ\n" +
+            "TmV3IFJlYWNoMQswCQYDVQQLDAJJVDAeFw0xNDA1MjEwNzU1NDdaFw0yNDA1MTgw\n" +
+            "NzU1NDdaMFIxCzAJBgNVBAYTAkNOMRAwDgYDVQQIDAdCZWlqaW5nMRAwDgYDVQQH\n" +
+            "DAdCZWlqaW5nMRIwEAYDVQQKDAlOZXcgUmVhY2gxCzAJBgNVBAsMAklUMIGfMA0G\n" +
+            "CSqGSIb3DQEBAQUAA4GNADCBiQKBgQDGHM75uAj4KkvXPt6P9vnJeBq8NGvvQA1F\n" +
+            "FI89SM1RhJEr4Qf4KF3ufeoJ2HBURFlcbfePca6f2LdCDkgZb2KA6x6SKvWiBjXM\n" +
+            "WqVViTXl8XP0VnCfp4y+EU6OeucwBwEmJ7CJQBCZdWAUbj0OIOmnZ3yxAnIXuB/s\n" +
+            "ZWJO6BFZlQIDAQABMA0GCSqGSIb3DQEBBQUAA4GBAB7dA7eiU4/hNYQ+qGKEYi/f\n" +
+            "2PE4O7wCsvXeVYiRg5XXISld26r6dAD5rHgukI/rFzRCBEWqCKN5UIZL4Vizu7lR\n" +
+            "bNCBSo9+NPYLyq91D4xEQ4XFuzHrzkFJiv2iyKxlRSguZaxkEjbSJruExygjLdx5\n" +
+            "dX1Ziyc7cr9nKftZ6AY+\n" +
+            "-----END CERTIFICATE-----";
 
 
 }

@@ -20,11 +20,14 @@ import com.techjumper.polyhomeb.entity.TrueEntity;
 import com.techjumper.polyhomeb.entity.UploadPicEntity;
 import com.techjumper.polyhomeb.entity.UserFamiliesAndVillagesEntity;
 import com.techjumper.polyhomeb.entity.VillageEntity;
+import com.techjumper.polyhomeb.entity.medicalEntity.BaseArgumentsMedicalEntity;
+import com.techjumper.polyhomeb.entity.medicalEntity.MedicalUserLoginEntity;
 
 import java.util.Map;
 
 import retrofit2.http.Body;
 import retrofit2.http.GET;
+import retrofit2.http.Header;
 import retrofit2.http.POST;
 import retrofit2.http.QueryMap;
 import rx.Observable;
@@ -530,7 +533,15 @@ public interface ServiceAPI {
     @GET("sign")
     Observable<CheckInEntity> getCheckInData(@QueryMap Map<String, String> stringStringMap);
 
-    @POST("signs")
+/*********************************************************医疗接口*********************************************************/
+    /**
+     * 医疗登录接口,devicetype=1代表安卓,logintype=1代表用户名登录
+     */
+    @POST("nruaservice/user/login?devicetype=1&logintype=1")
+    Observable<MedicalUserLoginEntity> medicalUserLogin(@Header("Authorization") String value, @Body BaseArgumentsMedicalEntity entity);
+
+
+    @POST("login...")
     Observable<MedicalUserInfoEntity> getMedicalCurrentUserInfo(@Body BaseArgumentsEntity entity);
 
     @POST("signs")

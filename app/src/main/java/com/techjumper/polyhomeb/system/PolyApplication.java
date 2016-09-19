@@ -55,6 +55,11 @@ public class PolyApplication extends Lib2Application {
     }
 
     @Override
+    protected String getMedicalBaseUrl() {
+        return Config.sMedicalUrl;
+    }
+
+    @Override
     protected Class getDefaultInterfaceClass() {
         return ServiceAPI.class;
     }

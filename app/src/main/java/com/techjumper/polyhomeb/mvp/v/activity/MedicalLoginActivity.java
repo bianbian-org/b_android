@@ -38,4 +38,12 @@ public class MedicalLoginActivity extends AppBaseActivity<MedicalLoginActivityPr
     public String getLayoutTitle() {
         return getString(R.string.medical_login);
     }
+
+    public EditText getEtAccount() {
+        return mEtAccount;
+    }
+
+    public EditText getEtPsw() {
+        return mEtPsw;
+    }
 }

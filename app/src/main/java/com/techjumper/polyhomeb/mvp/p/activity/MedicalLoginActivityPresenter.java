@@ -3,13 +3,16 @@ package com.techjumper.polyhomeb.mvp.p.activity;
 import android.os.Bundle;
 import android.view.View;
 
-import com.techjumper.corelib.utils.common.AcHelper;
+import com.techjumper.corelib.rx.tools.RxUtils;
+import com.techjumper.corelib.utils.common.JLog;
 import com.techjumper.polyhomeb.R;
+import com.techjumper.polyhomeb.entity.medicalEntity.MedicalUserLoginEntity;
 import com.techjumper.polyhomeb.mvp.m.MedicalLoginActivityModel;
 import com.techjumper.polyhomeb.mvp.v.activity.MedicalLoginActivity;
-import com.techjumper.polyhomeb.mvp.v.activity.MedicalMainActivity;
 
 import butterknife.OnClick;
+import rx.Observer;
+import rx.Subscription;
 
 /**
  * * * * * * * * * * * * * * * * * * * * * * *
@@ -20,6 +23,8 @@ import butterknife.OnClick;
 public class MedicalLoginActivityPresenter extends AppBaseActivityPresenter<MedicalLoginActivity> {
 
     private MedicalLoginActivityModel mModel = new MedicalLoginActivityModel(this);
+
+    private Subscription mSubs1;
 
     @Override
     public void initData(Bundle savedInstanceState) {
@@ -32,6 +37,34 @@ public class MedicalLoginActivityPresenter extends AppBaseActivityPresenter<Medi
 
     @OnClick(R.id.tv_login)
     public void onClick(View view) {
-        new AcHelper.Builder(getView()).target(MedicalMainActivity.class).start();
+        medicalLogin();
+//        new AcHelper.Builder(getView()).target(MedicalMainActivity.class).start();
+    }
+
+    private void medicalLogin() {
+        RxUtils.unsubscribeIfNotNull(mSubs1);
+        addSubscription(
+                mSubs1 = mModel.medicalUserLogin(getView().getEtAccount().getEditableText().toString()
+                        , getView().getEtPsw().getEditableText().toString())
+                        .subscribe(new Observer<MedicalUserLoginEntity>() {
+                            @Override
+                            public void onCompleted() {
+
+                            }
+
+                            @Override
+                            public void onError(Throwable e) {
+
+                            }
+
+                            @Override
+                            public void onNext(MedicalUserLoginEntity medicalUserLoginEntity) {
+//                                if (processNetworkResult(medicalUserLoginEntity))
+                                String s = medicalUserLoginEntity.toString();
+                                JLog.e(s);
+                            }
+                        })
+        );
+
     }
 }

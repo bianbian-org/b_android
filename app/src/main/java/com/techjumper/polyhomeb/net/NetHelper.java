@@ -5,6 +5,7 @@ import com.techjumper.lib2.others.KeyValuePair;
 import com.techjumper.lib2.utils.GsonUtils;
 import com.techjumper.polyhomeb.entity.BaseArgumentsEntity;
 import com.techjumper.polyhomeb.entity.BaseEntity;
+import com.techjumper.polyhomeb.entity.medicalEntity.BaseArgumentsMedicalEntity;
 import com.techjumper.polyhomeb.entity.tcp_udp.BaseTcpArgumentsEntity;
 
 import java.util.HashMap;
@@ -48,6 +49,10 @@ public class NetHelper {
         map.put(BaseArgumentsEntity.FILED_SIGN, encrypt);
         map.put(BaseArgumentsEntity.FILED_DATA, json);
         return map;
+    }
+
+    public static BaseArgumentsMedicalEntity createMedicalUserLoginArguments(KeyValuePair<String, Integer> argMap) {
+        return new BaseArgumentsMedicalEntity(argMap.get("devicetype"), argMap.get("logintype"));
     }
 
 

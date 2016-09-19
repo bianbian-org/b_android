@@ -1,7 +1,6 @@
 package com.techjumper.lib2.others;
 
 import com.techjumper.corelib.others.JumperApplication;
-import com.techjumper.corelib.utils.file.FileUtils;
 import com.techjumper.lib2.utils.RetrofitHelper;
 import com.techjumper.lib2.utils.RxORM;
 
@@ -18,6 +17,7 @@ public abstract class Lib2Application extends JumperApplication {
         super.onCreate();
         RxORM.setDefaultDbVersion(getDbVersion());
         Config.sDefaultBaseUrl = getDefaultBaseUrl();
+        Config.sMedicalBaseUrl = getMedicalBaseUrl();
         RetrofitHelper.sDefaultInterface = getDefaultInterfaceClass();
 
     }
@@ -25,6 +25,8 @@ public abstract class Lib2Application extends JumperApplication {
     protected abstract int getDbVersion();
 
     protected abstract String getDefaultBaseUrl();
+
+    protected abstract String getMedicalBaseUrl();
 
     protected abstract Class getDefaultInterfaceClass();
 }
