@@ -60,6 +60,7 @@ public class AdController {
     public static final String TYPE_VIDEO = "1002";  //室内机 - 视频通话
     public static final String TYPE_SLEEP = "1003"; //室内机 - 休眠
     public static final String TYPE_WAKEUP = "1004"; //室内机 - 唤醒
+    public static final String TYPE_HOME_TWO = "1005"; //室内机 - 首页二屏
 
     //    public static final String DOWNLOAD_SUB_PATH = "mediacache";
     private Subscription mPadAdSubs;
@@ -280,6 +281,7 @@ public class AdController {
         synchronized (this) {
             cancel(adType);
             cancel(TYPE_HOME);
+            cancel(TYPE_HOME_TWO);
             cancel(TYPE_VIDEO);
             executor = new AdRuleExecutor(adType);
             mExecutorMap.put(adType, executor);
@@ -403,17 +405,20 @@ public class AdController {
         void onAdInfoReceive(AdEntity adData);
     }
 
-    public interface IExecuteRule {
+    public static abstract class IExecuteRule {
 
-        void onAdReceive(AdEntity.AdsEntity adsEntity, File file);
+        public void onAllAdsReceive(List<AdEntity.AdsEntity> allAds) {
+        }
 
-        void onAdPlayFinished();
+        public abstract void onAdReceive(AdEntity.AdsEntity adsEntity, File file);
 
-        void onAdDownloadError(AdEntity.AdsEntity adsEntity);
+        public abstract void onAdPlayFinished();
 
-        void onAdExecuteFailed(String reason);
+        public abstract void onAdDownloadError(AdEntity.AdsEntity adsEntity);
 
-        void onAdNoExist(String adType, String hour);
+        public abstract void onAdExecuteFailed(String reason);
+
+        public abstract void onAdNoExist(String adType, String hour);
     }
 
     public interface ITimer {
@@ -447,6 +452,7 @@ public class AdController {
             JLog.d("屏幕关闭了");
             //只要是休眠就停首页广告
             cancel(TYPE_HOME);
+            cancel(TYPE_HOME_TWO);
             cancel(TYPE_VIDEO);
 
             AdRuleExecutor wakeUpExecutor = mExecutorMap.get(AdController.TYPE_WAKEUP);
@@ -521,10 +527,13 @@ public class AdController {
         private int mCurrentTimerIndex;
         private long mAlreadyExecuteTime;
         private boolean mInterrupt;
+        private Subscription mTimerSubs;
         /**
          * 是否是休眠播放完成
          */
         private boolean mIsSleepFinished;
+        private long mTotalTime;
+        private List<AdEntity.AdsEntity> mAdEntities;
 
         public AdRuleExecutor(String ruleType) {
 
@@ -539,6 +548,18 @@ public class AdController {
 
         private AdStatDbExecutor.BriteDatabaseHelper getDbHelper() {
             return AdStatDbExecutor.getHelper();
+        }
+
+        public void stopTimer() {
+            RxUtils.unsubscribeIfNotNull(mTimerSubs);
+        }
+
+        public void startTimerWithIndex(int index) {
+            stopTimer();
+            setCurrentTimerIndex(index);
+            if (mAdEntities == null || mAdEntities.size() == 0 || mTotalTime == 0L)
+                return;
+            timer(mTotalTime, mAdEntities);
         }
 
         public void fetchAd(String family_id, String user_id, String ticket, boolean fromCache, IExecuteRule iExecuteRule) {
@@ -621,12 +642,18 @@ public class AdController {
             String adId = rule.getId();
 
             //因为首页需要不停的播放, 所以把时间强制设置为一小时以上,这样就可以不间断获取
-            if (TYPE_HOME.equalsIgnoreCase(mRuleType)) {
+            if (isHomeAdType(mRuleType)) {
                 totalTime = 60 * 70L;
             }
 //            totalTime = 5;  //测试用
-            timer(totalTime, adEntities, adId);
 
+            notifyAllAdsReceive(adEntities);
+            timer(totalTime, adEntities);
+
+        }
+
+        private boolean isHomeAdType(String ruleType) {
+            return TYPE_HOME.equalsIgnoreCase(mRuleType)||TYPE_HOME_TWO.equalsIgnoreCase(mRuleType);
         }
 
         private void saveAdStatToDb(String id, String type) {
@@ -646,11 +673,14 @@ public class AdController {
                     });
         }
 
-        private void timer(long totalTime, List<AdEntity.AdsEntity> adEntities, String adId) {
+        private void timer(long totalTime, List<AdEntity.AdsEntity> adEntities) {
             if (adEntities == null || adEntities.size() == 0)
                 return;
 //            int executeTime = NumberUtil.convertToint(currentTimeToRuleKey(), 0);
             mAlreadyExecuteTime = 0L;
+
+            mTotalTime = totalTime;
+            mAdEntities = adEntities;
 
             AdEntity.AdsEntity adsEntity = adEntities.get(getCurrentTimerIndex(adEntities));
 
@@ -659,7 +689,7 @@ public class AdController {
                 if (mCurrentTimerIndex == adEntities.size()) {
                     return;
                 }
-                timer(totalTime, adEntities, adId);
+                timer(totalTime, adEntities);
                 return;
             }
             long delay = NumberUtil.convertTolong(adsEntity.getRunning_time(), 0);
@@ -696,7 +726,7 @@ public class AdController {
                     AdEntity.AdsEntity next = adEntities.get(getCurrentTimerIndex(adEntities));
                     if (next == null) {
                         mCurrentTimerIndex++;
-                        timer(totalTime, adEntities, adId);
+                        timer(totalTime, adEntities);
                         return;
                     }
                     long nextDelay = NumberUtil.convertTolong(next.getRunning_time(), 0);
@@ -741,7 +771,7 @@ public class AdController {
             AdDownloadManager.getInstance().download(adsEntity.getMd5(), adsEntity.getMedia_url(), file -> {
                 if (file == null) {
                     notifyAdDownloadError(adsEntity);
-                    Observable.timer(1, TimeUnit.SECONDS)
+                    mTimerSubs = Observable.timer(1, TimeUnit.SECONDS)
                             .observeOn(AndroidSchedulers.mainThread())
                             .subscribe(aLong -> {
                                 if (iTimer != null)
@@ -753,7 +783,7 @@ public class AdController {
                 notifyAdReceive(adsEntity, file);
                 //保存广告ID到数据库
                 saveAdStatToDb(adsEntity.getId(), mRuleType);
-                Observable.timer(delay, TimeUnit.SECONDS)
+                mTimerSubs = Observable.timer(delay, TimeUnit.SECONDS)
                         .observeOn(AndroidSchedulers.mainThread())
                         .subscribe(aLong -> {
                             if (iTimer != null)
@@ -768,6 +798,10 @@ public class AdController {
             if (mCurrentTimerIndex >= entities.size())
                 mCurrentTimerIndex = 0;
             return mCurrentTimerIndex;
+        }
+
+        private void setCurrentTimerIndex(int index) {
+            mCurrentTimerIndex = index;
         }
 
         private AdEntity.RulesEntity getCurrentRule(HashMap<String, AdEntity.RulesEntity> rulesMap) {
@@ -822,6 +856,11 @@ public class AdController {
             }
         }
 
+        private void notifyAllAdsReceive(List<AdEntity.AdsEntity> allAds) {
+            if (iExecuteRule != null) {
+                iExecuteRule.onAllAdsReceive(allAds);
+            }
+        }
 
     }
 
