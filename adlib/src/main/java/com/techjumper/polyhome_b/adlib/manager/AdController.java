@@ -142,6 +142,22 @@ public class AdController {
 
     }
 
+    public void stopAdTimer(String adType) {
+        if (adType == null) return;
+        AdRuleExecutor executor = mExecutorMap.get(adType);
+        if (executor != null) {
+            executor.stopTimer();
+        }
+    }
+
+    public void startAdTimer(String adType, int index) {
+        if (adType == null) return;
+        AdRuleExecutor executor = mExecutorMap.get(adType);
+        if (executor != null) {
+            executor.startTimerWithIndex(index);
+        }
+    }
+
     public synchronized void startWakeUpTimer(IWakeUp iWakeUp) {
         stopWakeUpTimer();
         this.iWakeUP = iWakeUp;
@@ -653,7 +669,7 @@ public class AdController {
         }
 
         private boolean isHomeAdType(String ruleType) {
-            return TYPE_HOME.equalsIgnoreCase(mRuleType)||TYPE_HOME_TWO.equalsIgnoreCase(mRuleType);
+            return TYPE_HOME.equalsIgnoreCase(mRuleType) || TYPE_HOME_TWO.equalsIgnoreCase(mRuleType);
         }
 
         private void saveAdStatToDb(String id, String type) {
