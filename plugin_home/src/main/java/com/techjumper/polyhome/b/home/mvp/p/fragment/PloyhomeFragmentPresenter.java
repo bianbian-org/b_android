@@ -2,6 +2,7 @@ package com.techjumper.polyhome.b.home.mvp.p.fragment;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v4.view.ViewPager;
 import android.text.Html;
 import android.text.TextUtils;
 import android.util.Log;
@@ -35,6 +36,7 @@ import com.techjumper.lib2.utils.GsonUtils;
 import com.techjumper.lib2.utils.PicassoHelper;
 import com.techjumper.polyhome.b.home.R;
 import com.techjumper.polyhome.b.home.UserInfoManager;
+import com.techjumper.polyhome.b.home.adapter.AdViewPagerAdapter;
 import com.techjumper.polyhome.b.home.db.util.AdClickDbUtil;
 import com.techjumper.polyhome.b.home.mvp.m.PloyhomeFragmentModel;
 import com.techjumper.polyhome.b.home.mvp.v.activity.AdActivity;
@@ -44,6 +46,7 @@ import com.techjumper.polyhome.b.home.mvp.v.fragment.PloyhomeFragment;
 import com.techjumper.polyhome.b.home.net.NetHelper;
 import com.techjumper.polyhome.b.home.tool.AlarmManagerUtil;
 import com.techjumper.polyhome.b.home.utils.DateUtil;
+import com.techjumper.polyhome.b.home.widget.AdViewPager;
 import com.techjumper.polyhome.b.home.widget.MyTextureView;
 import com.techjumper.polyhome.b.home.widget.SquareView;
 import com.techjumper.polyhome_b.adlib.entity.AdEntity;
@@ -56,14 +59,13 @@ import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
 
-import rx.Observable;
 import rx.Subscriber;
 import rx.android.schedulers.AndroidSchedulers;
 
 /**
  * Created by kevin on 16/4/28.
  */
-public class PloyhomeFragmentPresenter extends AppBaseFragmentPresenter<PloyhomeFragment> implements AdController.IAlarm {
+public class PloyhomeFragmentPresenter extends AppBaseFragmentPresenter<PloyhomeFragment> implements AdController.IAlarm, ViewPager.OnPageChangeListener {
     public static final String IMAGE_AD_TYPE = "1";
     public static final String VIDEO_AD_TYPE = "2";
 
@@ -88,6 +90,11 @@ public class PloyhomeFragmentPresenter extends AppBaseFragmentPresenter<Ployhome
     private boolean isTimer = true;
     private boolean isOnResume;
     private long heartbeatTime;
+    private AdViewPager adViewPager;
+    private AdViewPagerAdapter adapter;
+    private List<View> views = new ArrayList<>();
+    private List<Integer> resIds = new ArrayList<>();
+    private int currentPage = 0;
 
     @Override
     public void onDestroy() {
@@ -98,6 +105,7 @@ public class PloyhomeFragmentPresenter extends AppBaseFragmentPresenter<Ployhome
             adController.cancelAll();
         }
         cancelTimer();
+        adViewPager.setLifeCycle(AdViewPager.DESTROY);
         super.onDestroy();
     }
 
@@ -110,6 +118,30 @@ public class PloyhomeFragmentPresenter extends AppBaseFragmentPresenter<Ployhome
     public void onViewInited(Bundle savedInstanceState) {
         adImageView = getView().getAd();
         textureView = getView().getTextureView();
+        adViewPager = getView().getAdvp();
+
+        adViewPager.setLifeCycle(AdViewPager.RESUME);
+
+        resIds.add(R.mipmap.bg_call_service);
+        resIds.add(R.mipmap.icon_home_focused);
+        resIds.add(R.mipmap.icon_cloud);
+        resIds.add(R.mipmap.bg_video);
+        resIds.add(R.mipmap.bg_alarm_new);
+        resIds.add(R.mipmap.bg_call_service);
+        resIds.add(R.mipmap.icon_home_focused);
+
+
+        for (int i = 0; i < resIds.size(); i++) {
+            ImageView imageView = new ImageView(getView().getActivity());
+            imageView.setBackgroundResource(resIds.get(i));
+            views.add(imageView);
+        }
+
+        adapter = new AdViewPagerAdapter(views);
+        adViewPager.setAdapter(adapter);
+        adViewPager.setOffscreenPageLimit(3);
+        adViewPager.addOnPageChangeListener(this);
+        adViewPager.setCurrentItem(1);
 
         getAd(true);
         getNotices();
@@ -195,7 +227,6 @@ public class PloyhomeFragmentPresenter extends AppBaseFragmentPresenter<Ployhome
                 .subscribe(aVoid -> {
                     PluginEngineUtil.startSmartHome();
                 }));
-
 
         addSubscription(RxBus.INSTANCE.asObservable()
                 .observeOn(AndroidSchedulers.mainThread())
@@ -435,6 +466,7 @@ public class PloyhomeFragmentPresenter extends AppBaseFragmentPresenter<Ployhome
     @Override
     public void onPause() {
         super.onPause();
+        adViewPager.setLifeCycle(AdViewPager.PAUSE);
         isOnResume = false;
         if (mIsVisibleToUser) {
             if (adController != null) {
@@ -444,6 +476,13 @@ public class PloyhomeFragmentPresenter extends AppBaseFragmentPresenter<Ployhome
             mIsGetAd = false;
             RxBus.INSTANCE.send(new TimerEvent(false));
         }
+    }
+
+    @Override
+    public void onCreate(Bundle saveInstanceState) {
+        super.onCreate(saveInstanceState);
+
+        adViewPager = getView().getAdvp();
     }
 
     @Override
@@ -759,5 +798,27 @@ public class PloyhomeFragmentPresenter extends AppBaseFragmentPresenter<Ployhome
                         initAd();
                     }
                 });
+    }
+
+    @Override
+    public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+
+    }
+
+    @Override
+    public void onPageSelected(int position) {
+        if (views.size() > 1) {
+            if (position < 1) {
+                position = views.size() - 2;
+            } else if (position > views.size() - 2) {
+                position = 1;
+            }
+            adViewPager.setCurrentItem(position, false);
+        }
+    }
+
+    @Override
+    public void onPageScrollStateChanged(int state) {
+
     }
 }

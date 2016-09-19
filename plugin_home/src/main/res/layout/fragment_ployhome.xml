@@ -42,12 +42,20 @@
 
         </LinearLayout>
 
+        <com.techjumper.polyhome.b.home.widget.AdViewPager
+            android:id="@+id/advp"
+            android:layout_width="@dimen/dp_500"
+            android:layout_height="@dimen/dp_330"
+            android:layout_marginTop="@dimen/dp_10"
+            android:background="@mipmap/bg_ad" />
+
         <FrameLayout
             android:id="@+id/ad"
             android:layout_width="@dimen/dp_500"
             android:layout_height="@dimen/dp_330"
             android:layout_marginTop="@dimen/dp_10"
-            android:background="@color/color_4Dffffff">
+            android:background="@color/color_4Dffffff"
+            android:visibility="gone">
 
             <com.techjumper.polyhome.b.home.widget.MyTextureView
                 android:id="@+id/video_ad"

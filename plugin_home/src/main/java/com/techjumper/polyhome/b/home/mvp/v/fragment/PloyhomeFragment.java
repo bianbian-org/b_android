@@ -11,20 +11,14 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import com.techjumper.commonres.entity.NoticeEntity;
-import com.techjumper.commonres.entity.event.NoticeEvent;
 import com.techjumper.corelib.mvp.factory.Presenter;
-import com.techjumper.corelib.rx.tools.RxBus;
 import com.techjumper.polyhome.b.home.R;
 import com.techjumper.polyhome.b.home.mvp.p.fragment.PloyhomeFragmentPresenter;
+import com.techjumper.polyhome.b.home.widget.AdViewPager;
 import com.techjumper.polyhome.b.home.widget.MyTextureView;
+import com.techjumper.polyhome.b.home.widget.MyViewPager;
 import com.techjumper.polyhome.b.home.widget.SquareView;
 import com.techjumper.polyhome.b.home.widget.TextAutoView;
-
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Timer;
-import java.util.TimerTask;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -61,6 +55,8 @@ public class PloyhomeFragment extends AppBaseFragment<PloyhomeFragmentPresenter>
     SquareView shopping;
     @Bind(R.id.ad)
     FrameLayout ad_layout;
+    @Bind(R.id.advp)
+    AdViewPager advp;
 
     public TextView getNoticeTitle() {
         return noticeTitle;
@@ -116,6 +112,10 @@ public class PloyhomeFragment extends AppBaseFragment<PloyhomeFragmentPresenter>
 
     public TextView getNoticeNum() {
         return noticeNum;
+    }
+
+    public AdViewPager getAdvp() {
+        return advp;
     }
 
     @Override
