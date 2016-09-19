@@ -873,6 +873,20 @@ public class AdController {
         }
 
         private void notifyAllAdsReceive(List<AdEntity.AdsEntity> allAds) {
+            if (allAds == null || allAds.size() == 0) return;
+            for (AdEntity.AdsEntity entity : allAds) {
+                AdDownloadManager.getInstance().download(entity.getMd5(), entity.getMedia_url(), file -> {
+                    if (file == null) {
+                        return;
+                    }
+                    entity.setFile(file);
+                    if (iExecuteRule != null) {
+                        iExecuteRule.onAllAdsReceive(allAds);
+                    }
+                });
+            }
+
+
             if (iExecuteRule != null) {
                 iExecuteRule.onAllAdsReceive(allAds);
             }

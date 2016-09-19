@@ -1,5 +1,6 @@
 package com.techjumper.polyhome_b.adlib.entity;
 
+import java.io.File;
 import java.io.Serializable;
 import java.util.HashMap;
 import java.util.List;
@@ -75,6 +76,18 @@ public class AdEntity {
         private String url;
         private String media_url;
         private String id;
+        private File mFile;
+
+        public File getFile() {
+            if (mFile == null) {
+                mFile = new File("");
+            }
+            return mFile;
+        }
+
+        public void setFile(File file) {
+            mFile = file;
+        }
 
         public String getId() {
             return id;

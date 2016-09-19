@@ -93,106 +93,108 @@ public class AdDownloadManager {
 
         if (mIsDownloading)
             return;
-
-        while (!mQueue.isEmpty()) {
-            mIsDownloading = true;
-            DownloadFileEntity entity = null;
-            try {
-                entity = mQueue.take();
-            } catch (InterruptedException e) {
+        try {
+            while (!mQueue.isEmpty()) {
+                mIsDownloading = true;
+                DownloadFileEntity entity = null;
                 try {
                     entity = mQueue.take();
-                } catch (InterruptedException e1) {
-                    e1.printStackTrace();
+                } catch (InterruptedException e) {
+                    try {
+                        entity = mQueue.take();
+                    } catch (InterruptedException e1) {
+                        e1.printStackTrace();
+                    }
                 }
-            }
 
-            if (entity == null || TextUtils.isEmpty(entity.url) || TextUtils.isEmpty(entity.key)) {
-                notifyDownloadFinish(iRetrofitDownload, null);
-                continue;
-            }
+                if (entity == null || TextUtils.isEmpty(entity.url) || TextUtils.isEmpty(entity.key)) {
+                    notifyDownloadFinish(iRetrofitDownload, null);
+                    continue;
+                }
 
 
-            //检查本地是否存在
-            DiskLruCache.Snapshot local = null;
-            try {
-                local = mDiskLruCache.get(entity.key);
-            } catch (Exception ignored) {
-            }
+                //检查本地是否存在
+                DiskLruCache.Snapshot local = null;
+                try {
+                    local = mDiskLruCache.get(entity.key);
+                } catch (Exception ignored) {
+                }
 
-            if (local != null) {
+                if (local != null) {
 //                JLog.d("<Lru> 本地已经存在,不再重复下载: " + local.getFile(0));
-                notifyDownloadFinish(iRetrofitDownload, local.getFile(0));
-                continue;
-            }
+                    notifyDownloadFinish(iRetrofitDownload, local.getFile(0));
+                    continue;
+                }
 
-            final DownloadFileEntity finalEntity = entity;
+                final DownloadFileEntity finalEntity = entity;
 
-            RetrofitTemplate.getInstance().donwloadFile(entity.url)
-                    .observeOn(Schedulers.io())
-                    .map(responseBody -> {
+                RetrofitTemplate.getInstance().donwloadFile(entity.url)
+                        .observeOn(Schedulers.io())
+                        .map(responseBody -> {
 //                        FileUtils.saveInputstreamToPath(responseBody.byteStream(), finalEntity.path, finalEntity.name);
-                        DiskLruCache.Editor edit = null;
+                            DiskLruCache.Editor edit = null;
 
-                        try {
-                            edit = mDiskLruCache.edit(finalEntity.key);
-                            OutputStream out = edit.newOutputStream(0);
-                            FileUtils.saveInputToOutput(responseBody.byteStream(), out);
-                            edit.commit();
+                            try {
+                                edit = mDiskLruCache.edit(finalEntity.key);
+                                OutputStream out = edit.newOutputStream(0);
+                                FileUtils.saveInputToOutput(responseBody.byteStream(), out);
+                                edit.commit();
 
-                        } catch (Exception e) {
-                            e.printStackTrace();
-                            if (edit != null) {
-                                try {
-                                    edit.abort();
-                                } catch (IOException e1) {
-                                    e1.printStackTrace();
+                            } catch (Exception e) {
+                                e.printStackTrace();
+                                if (edit != null) {
+                                    try {
+                                        edit.abort();
+                                    } catch (IOException e1) {
+                                        e1.printStackTrace();
+                                    }
                                 }
                             }
-                        }
-                        return finalEntity;
-                    })
-                    .map(downloadFileEntity -> {
+                            return finalEntity;
+                        })
+                        .map(downloadFileEntity -> {
 
-                        DiskLruCache.Snapshot snapshot = null;
-                        try {
-                            snapshot = mDiskLruCache.get(downloadFileEntity.key);
-                        } catch (Exception e) {
-                            throw new RuntimeException("Download " + extraNameFromUrl(downloadFileEntity.url) + " Failed");
-                        }
-                        if (snapshot == null) {
-                            throw new RuntimeException("Download " + extraNameFromUrl(downloadFileEntity.url) + " Failed");
-                        }
+                            DiskLruCache.Snapshot snapshot = null;
+                            try {
+                                snapshot = mDiskLruCache.get(downloadFileEntity.key);
+                            } catch (Exception e) {
+                                throw new RuntimeException("Download " + extraNameFromUrl(downloadFileEntity.url) + " Failed");
+                            }
+                            if (snapshot == null) {
+                                throw new RuntimeException("Download " + extraNameFromUrl(downloadFileEntity.url) + " Failed");
+                            }
 
-                        return snapshot.getFile(0);
-                    })
-                    .observeOn(AndroidSchedulers.mainThread())
-                    .subscribe(new Subscriber<File>() {
-                        @Override
-                        public void onCompleted() {
+                            return snapshot.getFile(0);
+                        })
+                        .observeOn(AndroidSchedulers.mainThread())
+                        .subscribe(new Subscriber<File>() {
+                            @Override
+                            public void onCompleted() {
 
-                        }
+                            }
 
-                        @Override
-                        public void onError(Throwable e) {
-                            JLog.e("<Lru> 下载失败: " + e);
+                            @Override
+                            public void onError(Throwable e) {
+                                JLog.e("<Lru> 下载失败: " + e);
 //                            if (BuildConfig.DEBUG) {
 //                            }
-                            notifyDownloadFinish(iRetrofitDownload, null);
-                        }
+                                notifyDownloadFinish(iRetrofitDownload, null);
+                            }
 
-                        @Override
-                        public void onNext(File file) {
-                            JLog.d("<Lru> 从网络下载到本地: " + file + " 成功");
+                            @Override
+                            public void onNext(File file) {
+                                JLog.d("<Lru> 从网络下载到本地: " + file + " 成功");
 //                            if (BuildConfig.DEBUG) {
 //                            }
-                            notifyDownloadFinish(iRetrofitDownload, file);
-                        }
-                    });
+                                notifyDownloadFinish(iRetrofitDownload, file);
+                            }
+                        });
 
+            }
+        } finally {
+            mIsDownloading = false;
         }
 
-        mIsDownloading = false;
     }
 
     private DownloadFileEntity createDownloadEntity(String key, String url) {
