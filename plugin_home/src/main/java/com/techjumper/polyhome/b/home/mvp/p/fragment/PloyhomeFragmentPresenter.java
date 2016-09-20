@@ -1,5 +1,6 @@
 package com.techjumper.polyhome.b.home.mvp.p.fragment;
 
+import android.content.ComponentName;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.view.ViewPager;
@@ -105,7 +106,6 @@ public class PloyhomeFragmentPresenter extends AppBaseFragmentPresenter<Ployhome
             adController.cancelAll();
         }
         cancelTimer();
-        adViewPager.setLifeCycle(AdViewPager.DESTROY);
         super.onDestroy();
     }
 
@@ -118,34 +118,43 @@ public class PloyhomeFragmentPresenter extends AppBaseFragmentPresenter<Ployhome
     public void onViewInited(Bundle savedInstanceState) {
         adImageView = getView().getAd();
         textureView = getView().getTextureView();
-        adViewPager = getView().getAdvp();
-
-        adViewPager.setLifeCycle(AdViewPager.RESUME);
-
-        resIds.add(R.mipmap.bg_call_service);
-        resIds.add(R.mipmap.icon_home_focused);
-        resIds.add(R.mipmap.icon_cloud);
-        resIds.add(R.mipmap.bg_video);
-        resIds.add(R.mipmap.bg_alarm_new);
-        resIds.add(R.mipmap.bg_call_service);
-        resIds.add(R.mipmap.icon_home_focused);
-
-
-        for (int i = 0; i < resIds.size(); i++) {
-            ImageView imageView = new ImageView(getView().getActivity());
-            imageView.setBackgroundResource(resIds.get(i));
-            views.add(imageView);
-        }
-
-        adapter = new AdViewPagerAdapter(views);
-        adViewPager.setAdapter(adapter);
-        adViewPager.setOffscreenPageLimit(3);
-        adViewPager.addOnPageChangeListener(this);
-        adViewPager.setCurrentItem(1);
+//        adViewPager = getView().getAdvp();
+//
+//        adViewPager.setLifeCycle(AdViewPager.RESUME);
+//
+//        resIds.add(R.mipmap.bg_call_service);
+//        resIds.add(R.mipmap.icon_home_focused);
+//        resIds.add(R.mipmap.icon_cloud);
+//        resIds.add(R.mipmap.bg_video);
+//        resIds.add(R.mipmap.bg_alarm_new);
+//        resIds.add(R.mipmap.bg_call_service);
+//        resIds.add(R.mipmap.icon_home_focused);
+//
+//
+//        for (int i = 0; i < resIds.size(); i++) {
+//            ImageView imageView = new ImageView(getView().getActivity());
+//            imageView.setBackgroundResource(resIds.get(i));
+//            views.add(imageView);
+//        }
+//
+//        adapter = new AdViewPagerAdapter(views);
+//        adViewPager.setAdapter(adapter);
+//        adViewPager.setOffscreenPageLimit(3);
+//        adViewPager.addOnPageChangeListener(this);
+//        adViewPager.setCurrentItem(1);
 
         getAd(true);
         getNotices();
 
+        addSubscription(RxView.clicks(getView().getProperty())
+                .compose(RxUtil.applySchedulers())
+                .subscribe(aVoid -> {
+                    Intent it = new Intent();
+                    ComponentName componentName = new ComponentName("com.dnake.talk", "com.dnake.activity.CallingActivity");
+                    it.setComponent(componentName);
+                    it.putExtra("com.dnake.talk", "CallingActivity");
+                    getView().startActivity(it);
+                }));
 //        addSubscription(RxView.clicks(getView().getProperty())
 //                .filter(aVoid -> {
 //                    if (UserInfoManager.isLogin())
@@ -466,7 +475,6 @@ public class PloyhomeFragmentPresenter extends AppBaseFragmentPresenter<Ployhome
     @Override
     public void onPause() {
         super.onPause();
-        adViewPager.setLifeCycle(AdViewPager.PAUSE);
         isOnResume = false;
         if (mIsVisibleToUser) {
             if (adController != null) {
@@ -767,6 +775,12 @@ public class PloyhomeFragmentPresenter extends AppBaseFragmentPresenter<Ployhome
                 , UserInfoManager.getUserId(), UserInfoManager.getTicket()
                 , fromCache
                 , new AdController.IExecuteRule() {
+
+                    @Override
+                    public void onAllAdsReceive(List<AdEntity.AdsEntity> allAds) {
+                        super.onAllAdsReceive(allAds);
+                    }
+
                     @Override
                     public void onAdReceive(AdEntity.AdsEntity adsEntity, File file) {
                         Log.d("adsEntity", "adsEntity: " + adsEntity);

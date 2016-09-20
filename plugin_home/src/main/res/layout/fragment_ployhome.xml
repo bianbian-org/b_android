@@ -38,7 +38,8 @@
                 android:layout_width="@dimen/dp_160"
                 android:layout_height="@dimen/dp_160"
                 android:layout_marginLeft="@dimen/dp_10"
-                app:bg="@color/color_0ca9e4" />
+                app:bg="@color/color_0ca9e4"
+                app:title_text="@string/title_call"/>
 
         </LinearLayout>
 
@@ -47,15 +48,15 @@
             android:layout_width="@dimen/dp_500"
             android:layout_height="@dimen/dp_330"
             android:layout_marginTop="@dimen/dp_10"
-            android:background="@mipmap/bg_ad" />
+            android:background="@mipmap/bg_ad"
+            android:visibility="gone" />
 
         <FrameLayout
             android:id="@+id/ad"
             android:layout_width="@dimen/dp_500"
             android:layout_height="@dimen/dp_330"
             android:layout_marginTop="@dimen/dp_10"
-            android:background="@color/color_4Dffffff"
-            android:visibility="gone">
+            android:background="@color/color_4Dffffff">
 
             <com.techjumper.polyhome.b.home.widget.MyTextureView
                 android:id="@+id/video_ad"

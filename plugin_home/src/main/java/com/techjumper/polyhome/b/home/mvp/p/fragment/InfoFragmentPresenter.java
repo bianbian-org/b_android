@@ -159,7 +159,7 @@ public class InfoFragmentPresenter extends AppBaseFragmentPresenter<InfoFragment
                 })
                 .compose(RxUtil.applySchedulers())
                 .subscribe(aVoid -> {
-                    AdClickDbUtil.insert(Long.valueOf(mAdsEntity.getId()), AdController.TYPE_HOME, heartbeatTime);
+                    AdClickDbUtil.insert(Long.valueOf(mAdsEntity.getId()), AdController.TYPE_HOME_TWO, heartbeatTime);
                     Intent intent = new Intent(getView().getActivity(), AdActivity.class);
                     intent.putExtra(AdActivity.ADITEM, mAdsEntity);
                     getView().getActivity().startActivity(intent);
@@ -256,7 +256,7 @@ public class InfoFragmentPresenter extends AppBaseFragmentPresenter<InfoFragment
         super.onPause();
         if (mIsVisibleToUser) {
             if (adController != null) {
-                adController.cancel(AdController.TYPE_HOME);
+                adController.cancel(AdController.TYPE_HOME_TWO);
             }
             initAd();
             mIsGetAd = false;
@@ -276,7 +276,7 @@ public class InfoFragmentPresenter extends AppBaseFragmentPresenter<InfoFragment
         } else {
             Log.d("hehe", "info消失");
             if (adController != null) {
-                adController.cancel(AdController.TYPE_HOME);
+                adController.cancel(AdController.TYPE_HOME_TWO);
             }
             initAd();
             mIsGetAd = false;
@@ -430,7 +430,7 @@ public class InfoFragmentPresenter extends AppBaseFragmentPresenter<InfoFragment
         JLog.d("普通获取广告" + UserInfoManager.getFamilyId() + "  "
                 + UserInfoManager.getUserId() + "  " + UserInfoManager.getTicket() + " fromCache=" + fromCache);
 //                adController.executeAdRule(AdController.TYPE_HOME, "434", "362", "5b279ba4e46853d86e1d109914cfebe3ca224381", new AdController.IExecuteRule() {
-        adController.executeAdRule(AdController.TYPE_HOME, UserInfoManager.getFamilyId()
+        adController.executeAdRule(AdController.TYPE_HOME_TWO, UserInfoManager.getFamilyId()
                 , UserInfoManager.getUserId(), UserInfoManager.getTicket()
                 , fromCache
                 , new AdController.IExecuteRule() {
