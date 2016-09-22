@@ -13,6 +13,7 @@ import android.os.StatFs;
 import android.text.TextUtils;
 
 import com.techjumper.corelib.utils.Utils;
+import com.techjumper.corelib.utils.common.JLog;
 import com.techjumper.corelib.utils.system.AppUtils;
 
 import java.io.BufferedInputStream;
@@ -29,6 +30,7 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Method;
+import java.nio.charset.Charset;
 import java.util.Map;
 
 public class FileUtils {
@@ -251,13 +253,6 @@ public class FileUtils {
         return result;
     }
 
-    public static boolean copyFileToOtherPath(String oldPath, String name, String targetPath) throws FileNotFoundException {
-        File file = new File(oldPath + File.separator + name);
-        if (!file.exists()) return false;
-        file = new File(targetPath + File.separator + name);
-        if (file.exists()) file.delete();
-        return saveInputstreamToPath(new FileInputStream(oldPath + File.separator + name), targetPath, name);
-    }
 
     public static boolean saveInputstreamToPath(InputStream is, String sdPath, String name) {
         boolean result = true;
@@ -282,6 +277,38 @@ public class FileUtils {
             result = false;
         }
         return result;
+    }
+
+    public static String loadInputStreamToString(InputStream is) {
+        BufferedInputStream bis = new BufferedInputStream(is);
+        ByteArrayOutputStream bos = new ByteArrayOutputStream();
+
+        byte[] buffer = new byte[8000];
+        try {
+            for (int count; (count = bis.read(buffer)) != -1; ) {
+                bos.write(buffer, 0, count);
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+            JLog.e(e);
+        } finally {
+            try {
+                bis.close();
+                bos.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+                JLog.e(e);
+            }
+        }
+        return new String(bos.toByteArray(), Charset.forName("UTF-8"));
+    }
+
+    public static boolean copyFileToOtherPath(String oldPath, String name, String targetPath) throws FileNotFoundException {
+        File file = new File(oldPath + File.separator + name);
+        if (!file.exists()) return false;
+        file = new File(targetPath + File.separator + name);
+        if (file.exists()) file.delete();
+        return saveInputstreamToPath(new FileInputStream(oldPath + File.separator + name), targetPath, name);
     }
 
     // 从sdcard中删除文件

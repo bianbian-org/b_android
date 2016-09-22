@@ -17,6 +17,24 @@ public class HomeApplication extends Lib2Application {
         super.onCreate();
         PluginEngine.getInstance().init(this);
         Utils.appContext = this;
+
+        /**
+         * 将插件列表保存到BHost
+         */
+//        Observable
+//                .create(subscriber -> {
+//                    try {
+//                        String data = FileUtils.loadInputStreamToString(getAssets().open(Config.PLUGIN_LIST_ASSET_PATH));
+//                        HashMap<String, String> dataMap = new HashMap<>();
+//                        dataMap.put(Config.PLUGIN_LIST_ASSET_NAME, data);
+//                        PluginEngineUtil.saveData(Config.PLUGIN_LIST_ASSET_NAME, dataMap);
+//                    } catch (IOException e) {
+//                        e.printStackTrace();
+//                        JLog.e(e);
+//                    }
+//                })
+//                .subscribeOn(Schedulers.io())
+//                .subscribe();
     }
 
     @Override

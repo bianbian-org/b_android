@@ -5,14 +5,11 @@ import android.os.Bundle;
 import com.techjumper.commonres.ComConstant;
 import com.techjumper.commonres.PluginConstant;
 import com.techjumper.commonres.UserInfoEntity;
-import com.techjumper.commonres.entity.NoticeEntity;
 import com.techjumper.plugincommunicateengine.HostDataBuilder;
 import com.techjumper.plugincommunicateengine.PluginEngine;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.Map;
 
-import static com.techjumper.commonres.ComConstant.FILE_HEARTBEATTIME;
 import static com.techjumper.commonres.ComConstant.FILE_MEDICAL;
 
 /**
@@ -358,4 +355,32 @@ public class PluginEngineUtil {
             }
         });
     }
+
+    public static void saveData(String name, Map<String, String> data) {
+        PluginEngine.getInstance().start(new PluginEngine.IPluginConnection() {
+            @Override
+            public void onEngineConnected(PluginEngine.PluginExecutor pluginExecutor) {
+                try {
+                    HostDataBuilder.SaveInfoBuilder builder = HostDataBuilder.saveInfoBuilder()
+                            .name(name);
+
+                    for (Map.Entry<String, String> entry : data.entrySet()) {
+                        builder.put(entry.getKey(), entry.getValue());
+                    }
+
+                    String data = builder.build();
+                    pluginExecutor.send(PluginEngine.CODE_SAVE_INFO, data);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+
+            @Override
+            public void onEngineDisconnected() {
+
+            }
+        });
+    }
+
+
 }

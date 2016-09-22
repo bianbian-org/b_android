@@ -40,7 +40,6 @@ import com.techjumper.plugincommunicateengine.PluginEngine;
 import com.techjumper.plugincommunicateengine.entity.core.SaveInfoEntity;
 import com.techjumper.plugincommunicateengine.utils.GsonUtils;
 import com.techjumper.polyhome.b.home.BuildConfig;
-import com.techjumper.polyhome.b.home.InfoManager;
 import com.techjumper.polyhome.b.home.R;
 import com.techjumper.polyhome.b.home.UserInfoManager;
 import com.techjumper.polyhome.b.home.db.util.AdClickDbUtil;
@@ -218,21 +217,7 @@ public class MainActivityPresenter extends AppBaseActivityPresenter<MainActivity
     @OnClick(R.id.title)
     void title() {
         if (ComConstant.titleUpdate) {
-            PluginEngine.getInstance().start(new PluginEngine.IPluginConnection() {
-                @Override
-                public void onEngineConnected(PluginEngine.PluginExecutor pluginExecutor) {
-                    try {
-                        pluginExecutor.send(PluginEngine.CODE_UPDATE_PLUGIN);
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
-                }
-
-                @Override
-                public void onEngineDisconnected() {
-
-                }
-            });
+            PluginEngineUtil.update();
         }
     }
 
