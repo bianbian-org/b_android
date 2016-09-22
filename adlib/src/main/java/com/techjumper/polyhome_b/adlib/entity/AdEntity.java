@@ -146,8 +146,8 @@ public class AdEntity {
                     ", url='" + url + '\'' +
                     ", media_url='" + media_url + '\'' +
                     ", id='" + id + '\'' +
+                    ", mFile=" + mFile +
                     '}';
         }
     }
-
 }

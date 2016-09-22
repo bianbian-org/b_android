@@ -29,7 +29,6 @@ public class AdViewPager extends ViewPager {
 
     private int lifeCycle = RESUME;
     private boolean isTouching = false;
-    private ScheduledExecutorService scheduledExecutorService;
 
     public AdViewPager(Context context) {
         super(context);
@@ -50,54 +49,16 @@ public class AdViewPager extends ViewPager {
 
     @Override
     public boolean onTouchEvent(MotionEvent ev) {
-        switch (ev.getAction()) {
-            case MotionEvent.ACTION_DOWN:
-            case MotionEvent.ACTION_MOVE:
-                isTouching = true;
-                break;
-            case MotionEvent.ACTION_CANCEL:
-            case MotionEvent.ACTION_UP:
-                isTouching = false;
-                break;
-        }
+//        switch (ev.getAction()) {
+//            case MotionEvent.ACTION_DOWN:
+//            case MotionEvent.ACTION_MOVE:
+//                isTouching = true;
+//                break;
+//            case MotionEvent.ACTION_CANCEL:
+//            case MotionEvent.ACTION_UP:
+//                isTouching = false;
+//                break;
+//        }
         return super.onTouchEvent(ev);
-    }
-
-    @Override
-    protected void onAttachedToWindow() {
-        super.onAttachedToWindow();
-        closeTimer();
-        scheduledExecutorService = Executors.newSingleThreadScheduledExecutor();
-        scheduledExecutorService.scheduleAtFixedRate(new Runnable() {
-            @Override
-            public void run() {
-                switch (lifeCycle) {
-                    case RESUME:
-                        if (!isTouching
-                                && getAdapter() != null
-                                && getAdapter().getCount() > 1) {
-                            post(new Runnable() {
-                                @Override
-                                public void run() {
-                                    setCurrentItem(getCurrentItem() + 1);
-                                }
-                            });
-                        }
-                        break;
-                    case PAUSE:
-                        break;
-                    case DESTROY:
-                        closeTimer();
-                        break;
-                }
-            }
-        }, 1000 * 2, 1000 * 2, TimeUnit.MILLISECONDS);
-    }
-
-    private void closeTimer() {
-        if (scheduledExecutorService != null && scheduledExecutorService.isShutdown() == false) {
-            scheduledExecutorService.shutdown();
-        }
-        scheduledExecutorService = null;
     }
 }

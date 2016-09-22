@@ -7,7 +7,10 @@ import android.support.v4.view.ViewPager;
 import android.text.Html;
 import android.text.TextUtils;
 import android.util.Log;
+import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.ImageView;
 
 import com.jakewharton.rxbinding.view.RxView;
@@ -96,6 +99,10 @@ public class PloyhomeFragmentPresenter extends AppBaseFragmentPresenter<Ployhome
     private List<View> views = new ArrayList<>();
     private List<Integer> resIds = new ArrayList<>();
     private int currentPage = 0;
+    private LayoutInflater inflater;
+    private View currentView;
+
+    private List<AdEntity.AdsEntity> adsEntities = new ArrayList<>();
 
     @Override
     public void onDestroy() {
@@ -116,32 +123,15 @@ public class PloyhomeFragmentPresenter extends AppBaseFragmentPresenter<Ployhome
 
     @Override
     public void onViewInited(Bundle savedInstanceState) {
+//        inflater = LayoutInflater.from(getView().getContext());
+//
         adImageView = getView().getAd();
         textureView = getView().getTextureView();
 //        adViewPager = getView().getAdvp();
-//
-//        adViewPager.setLifeCycle(AdViewPager.RESUME);
-//
-//        resIds.add(R.mipmap.bg_call_service);
-//        resIds.add(R.mipmap.icon_home_focused);
-//        resIds.add(R.mipmap.icon_cloud);
-//        resIds.add(R.mipmap.bg_video);
-//        resIds.add(R.mipmap.bg_alarm_new);
-//        resIds.add(R.mipmap.bg_call_service);
-//        resIds.add(R.mipmap.icon_home_focused);
-//
-//
-//        for (int i = 0; i < resIds.size(); i++) {
-//            ImageView imageView = new ImageView(getView().getActivity());
-//            imageView.setBackgroundResource(resIds.get(i));
-//            views.add(imageView);
-//        }
-//
-//        adapter = new AdViewPagerAdapter(views);
-//        adViewPager.setAdapter(adapter);
+//        adViewPager.setAdapter(adapter = new AdViewPagerAdapter());
 //        adViewPager.setOffscreenPageLimit(3);
 //        adViewPager.addOnPageChangeListener(this);
-//        adViewPager.setCurrentItem(1);
+//        adViewPager.setCurrentItem(0);
 
         getAd(true);
         getNotices();
@@ -332,6 +322,23 @@ public class PloyhomeFragmentPresenter extends AppBaseFragmentPresenter<Ployhome
                 }));
 
         AlarmManagerUtil.setNoticeTime(Utils.appContext);
+
+//        adViewPager.setOnTouchListener(new View.OnTouchListener() {
+//            @Override
+//            public boolean onTouch(View v, MotionEvent event) {
+//                switch (event.getAction()) {
+//                    case MotionEvent.ACTION_DOWN:
+//                    case MotionEvent.ACTION_MOVE:
+//                        adController.stopAdTimer(AdController.TYPE_HOME);
+//                        break;
+//                    case MotionEvent.ACTION_CANCEL:
+//                    case MotionEvent.ACTION_UP:
+//                        adController.startAdTimer(AdController.TYPE_HOME, currentPage);
+//                        break;
+//                }
+//                return false;
+//            }
+//        });
     }
 
     private void getNotices() {
@@ -576,6 +583,14 @@ public class PloyhomeFragmentPresenter extends AppBaseFragmentPresenter<Ployhome
         if (adImageView == null || textureView == null)
             return;
 
+//        if (adViewPager != null) {
+//            adViewPager.removeAllViews();
+//        }
+//
+//        if (adapter != null) {
+//            adapter.clear();
+//        }
+
         textureView.stop();
         adImageView.setVisibility(View.VISIBLE);
         textureView.setVisibility(View.INVISIBLE);
@@ -776,10 +791,48 @@ public class PloyhomeFragmentPresenter extends AppBaseFragmentPresenter<Ployhome
                 , fromCache
                 , new AdController.IExecuteRule() {
 
-                    @Override
-                    public void onAllAdsReceive(List<AdEntity.AdsEntity> allAds) {
-                        super.onAllAdsReceive(allAds);
-                    }
+//                    @Override
+//                    public void onAllAdsReceive(List<AdEntity.AdsEntity> allAds) {
+//                        if (allAds == null || allAds.size() == 0)
+//                            return;
+//
+//                        if (views != null && views.size() > 0) {
+//                            views.clear();
+//                        }
+//
+//                        if (adsEntities != null && adsEntities.size() > 0) {
+//                            adsEntities.clear();
+//                        }
+//
+//                        Log.d("ad11", "所有" + allAds);
+//
+//                        for (int i = 0; i < allAds.size(); i++) {
+//                            AdEntity.AdsEntity entity = allAds.get(i);
+//                            File file = entity.getFile();
+//                            if (file.exists()) {
+//                                adsEntities.add(entity);
+//                                Log.d("ad12", file + ", 详细信息: " + entity);
+//                                addType = entity.getMedia_type();
+//
+//                                if (adImageView == null || textureView == null)
+//                                    return;
+//                                if (IMAGE_AD_TYPE.equals(addType)) {
+//                                    ImageView imageView = (ImageView) inflater.inflate(R.layout.layout_ad_image, null);
+//
+//                                    views.add(imageView);
+//                                    entity.setMedia_url(file.getAbsolutePath());
+//                                } else if (VIDEO_AD_TYPE.equals(addType)) {
+//
+//                                    MyTextureView textureView = (MyTextureView) inflater.inflate(R.layout.layout_ad_video, null);
+//
+//                                    views.add(textureView);
+//                                    entity.setMedia_url(file.getAbsolutePath());
+//                                }
+//                            }
+//                        }
+//                        adapter.setViews(views, adsEntities);
+//                        adapter.notifyDataSetChanged();
+//                    }
 
                     @Override
                     public void onAdReceive(AdEntity.AdsEntity adsEntity, File file) {
@@ -787,6 +840,14 @@ public class PloyhomeFragmentPresenter extends AppBaseFragmentPresenter<Ployhome
                         Log.d("adsEntity", "file: " + file);
                         Log.d("adsEntity", "file.getAbsolutePath(): " + file.getAbsolutePath());
                         HandleAd(adsEntity, file);
+//                        Log.d("ad12", "跳下一页, 当前页" + currentPage);
+//                        if (currentPage == views.size() - 1) {
+//                            currentPage = -1;
+//                        }
+//                        currentPage++;
+//                        adViewPager.setCurrentItem(currentPage, false);
+//                        mIsGetNewAd = true;
+//                        mAdsEntity = adsEntity;
                     }
 
                     @Override
@@ -821,13 +882,28 @@ public class PloyhomeFragmentPresenter extends AppBaseFragmentPresenter<Ployhome
 
     @Override
     public void onPageSelected(int position) {
-        if (views.size() > 1) {
-            if (position < 1) {
-                position = views.size() - 2;
-            } else if (position > views.size() - 2) {
-                position = 1;
+        Log.d("ad12", "滑动到当前页" + position);
+        if (views.size() != 0
+                && adsEntities.size() != 0
+                && views.size() == adsEntities.size()) {
+            AdEntity.AdsEntity adsEntity = adsEntities.get(position);
+            if (adsEntity.getMedia_type().equals(VIDEO_AD_TYPE)) {
+                if (currentView != null) {
+                    ((MyTextureView) currentView).stop();
+                    currentView = null;
+                }
+                currentView = adViewPager.findViewWithTag(position);
+
+                if (currentView == null)
+                    return;
+
+                adapter.playVideo(currentView, adsEntity.getFile());
+            } else {
+                if (currentView != null) {
+                    ((MyTextureView) currentView).stop();
+                    currentView = null;
+                }
             }
-            adViewPager.setCurrentItem(position, false);
         }
     }
 

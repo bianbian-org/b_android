@@ -39,7 +39,8 @@
                 android:layout_height="@dimen/dp_160"
                 android:layout_marginLeft="@dimen/dp_10"
                 app:bg="@color/color_0ca9e4"
-                app:title_text="@string/title_call"/>
+                app:content_img="@mipmap/bg_property"
+                app:title_text="@string/title_jujia_call" />
 
         </LinearLayout>
 
@@ -49,14 +50,15 @@
             android:layout_height="@dimen/dp_330"
             android:layout_marginTop="@dimen/dp_10"
             android:background="@mipmap/bg_ad"
-            android:visibility="gone" />
+            android:visibility="gone"/>
 
         <FrameLayout
             android:id="@+id/ad"
             android:layout_width="@dimen/dp_500"
             android:layout_height="@dimen/dp_330"
             android:layout_marginTop="@dimen/dp_10"
-            android:background="@color/color_4Dffffff">
+            android:background="@color/color_4Dffffff"
+            android:visibility="visible">
 
             <com.techjumper.polyhome.b.home.widget.MyTextureView
                 android:id="@+id/video_ad"

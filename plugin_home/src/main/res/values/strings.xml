@@ -12,6 +12,7 @@
     <string name="title_speak">对讲</string>
     <string name="title_setting">设置</string>
     <string name="title_call">一键呼叫</string>
+    <string name="title_jujia_call">聚家一键呼叫</string>
 
     <string name="info_heartrate">心率</string>
     <string name="info_bloodpressure">血压</string>

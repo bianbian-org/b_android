@@ -243,6 +243,9 @@ public class InfoMainActivity extends AppBaseActivity {
                 }
             }
 
+            Log.d("cf", "id" + bundle.getLong(PluginConstant.KEY_INFO_USER_ID));
+            Log.d("UserInfoEntity", "ticket" + bundle.getString(PluginConstant.KEY_INFO_TICKET));
+            Log.d("UserInfoEntity", "family_id" + bundle.getLong(PluginConstant.KEY_INFO_FAMILY_ID));
             UserInfoEntity userInfoEntity = new UserInfoEntity();
             userInfoEntity.setUser_id(bundle.getLong(PluginConstant.KEY_INFO_USER_ID));
             userInfoEntity.setTicket(bundle.getString(PluginConstant.KEY_INFO_TICKET));
