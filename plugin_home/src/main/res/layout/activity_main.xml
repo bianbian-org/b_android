@@ -59,7 +59,7 @@
                     android:id="@+id/title_img"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:src="@mipmap/bg_title_new" />
+                    android:src="@mipmap/bg_yijiaren" />
             </FrameLayout>
 
             <TextView
@@ -94,7 +94,7 @@
                 android:drawableLeft="@mipmap/bg_alarm_new"
                 android:drawablePadding="@dimen/dp_5"
                 android:gravity="center_vertical"
-                android:text="@string/title_call"
+                android:text="@string/title_call_service"
                 android:textStyle="bold"
                 android:textColor="@color/color_37a991"
                 android:textSize="@dimen/sp_18" />
