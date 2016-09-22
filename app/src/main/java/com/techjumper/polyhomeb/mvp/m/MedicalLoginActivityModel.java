@@ -12,6 +12,7 @@ import com.techjumper.polyhomeb.net.KeyValueCreator;
 import com.techjumper.polyhomeb.net.NetHelper;
 import com.techjumper.polyhomeb.net.ServiceAPI;
 
+import retrofit2.adapter.rxjava.Result;
 import rx.Observable;
 
 /**
@@ -26,7 +27,7 @@ public class MedicalLoginActivityModel extends BaseModel<MedicalLoginActivityPre
         super(presenter);
     }
 
-    public Observable<MedicalUserLoginEntity> medicalUserLogin(String username, String password) {
+    public Observable<Result<MedicalUserLoginEntity>> medicalUserLogin(String username, String password) {
         KeyValuePair keyValuePair = KeyValueCreator.medicalUserLogin(1, 1);
         BaseArgumentsMedicalEntity medicalUserLoginArguments
                 = NetHelper.createMedicalUserLoginArguments(keyValuePair);

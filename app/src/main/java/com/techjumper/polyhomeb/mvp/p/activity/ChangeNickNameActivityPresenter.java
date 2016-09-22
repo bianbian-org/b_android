@@ -35,7 +35,7 @@ public class ChangeNickNameActivityPresenter extends AppBaseActivityPresenter<Ch
         return mModel.getNickName();
     }
 
-    @OnClick(R.id.iv_clear_input)
+    @OnClick(R.id.layout_clear_input)
     public void onClick(View view) {
         getView().getEtNickName().setText("");
     }

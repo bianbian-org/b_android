@@ -286,7 +286,37 @@
     <string name="medical_email">邮箱</string>
     <string name="medical_height">身高</string>
     <string name="medical_weight">体重</string>
-
+    <string name="medical_change_nick_name">修改昵称</string>
+    <string name="medical_change_p_name">修改姓名</string>
+    <string name="medical_change_id_card">修改身份证</string>
+    <string name="medical_change_home_phone">修改家庭号码</string>
+    <string name="medical_change_mobile_phone">修改手机号码</string>
+    <string name="medical_change_email">修改邮箱</string>
+    <string name="medical_change_success">更新成功</string>
+    <string name="medical_user_name_exist">用户名已经存在</string>
+    <string name="medical_email_exist">邮件地址已经存在</string>
+    <string name="medical_phone_number_exist">手机号已经存在</string>
+    <string name="medical_id_card_exist">身份证号已经存在</string>
+    <string name="medical_user_name_partten_wrong">用户名格式不正确</string>
+    <string name="medical_email_wrong">邮件地址不正确</string>
+    <string name="medical_phone_wrong">手机号码格式不正确</string>
+    <string name="medical_id_card_wrong">身份证号格式不正确</string>
+    <string name="medical_email_code_wrong">邮件验证码不正确</string>
+    <string name="medical_phone_code_wrong">手机验证码不正确</string>
+    <string name="medical_email_wrong__">注册邮件地址与下发验证码的邮件地址不一致</string>
+    <string name="medical_phone_wrong__">注册手机号与下发短信的手机号不一致</string>
+    <string name="medical_email_wrong___">邮件非法</string>
+    <string name="medical_phone_wrong___">手机号非法</string>
+    <string name="medical_unknow_error">未知错误</string>
+    <string name="medical_userid_pasw_wrong">用户名或密码错误</string>
+    <string name="medical_token_overdue">用户信息过期,请重新登录</string>
+    <string name="medical_dialog_choose_height">选择身高</string>
+    <string name="medical_dialog_choose_weight">选择体重</string>
+    <string name="medical_email_address_exist">邮箱地址已经被注册</string>
+    <string name="medical_code_not_send">下发失败</string>
+    <string name="medical_change_email_send_code_to">验证码已下发至 %1$s</string>
+    <string name="medical_input_email_is_null">请输入邮箱地址</string>
+    <string name="medical_change_email_note">1:先输入新的邮箱地址 \n2:获取验证码 \n3:填入验证码 \n4:提交</string>
 
 
 </resources>

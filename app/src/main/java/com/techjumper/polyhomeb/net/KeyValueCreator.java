@@ -286,13 +286,6 @@ public class KeyValueCreator {
                 .put("logintype", logintype);
     }
 
-
-    public static KeyValuePair getMedicalCurrentUserInfo(String user_id, String ticket) {
-        return newPair()
-                .put("user_id", user_id)
-                .put("ticket", ticket);
-    }
-
     public static KeyValuePair getMedicalMainData(String user_id, String ticket) {
         return newPair()
                 .put("user_id", user_id)

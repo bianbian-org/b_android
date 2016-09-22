@@ -2,6 +2,7 @@ package com.techjumper.polyhomeb.mvp.v.activity;
 
 import android.os.Bundle;
 import android.support.v7.widget.GridLayoutManager;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.TextView;
 
@@ -11,6 +12,7 @@ import com.techjumper.polyhomeb.R;
 import com.techjumper.polyhomeb.adapter.MedicalMainActivityAdapter;
 import com.techjumper.polyhomeb.mvp.p.activity.MedicalMainActivityPresenter;
 import com.techjumper.polyhomeb.other.MedicalDividerDecoration;
+import com.techjumper.polyhomeb.user.UserManager;
 import com.techjumper.polyhomeb.utils.TitleHelper;
 
 import java.util.List;
@@ -48,6 +50,11 @@ public class MedicalMainActivity extends AppBaseActivity<MedicalMainActivityPres
         mAdapter = new MedicalMainActivityAdapter();
         mRv.setAdapter(mAdapter);
         mAdapter.loadData(getPresenter().getData(null));
+
+        String nickName = UserManager.INSTANCE.getUserInfo(UserManager.KEY_MEDICAL_CURRENT_USER_NICK_NAME);
+        String pName = UserManager.INSTANCE.getUserInfo(UserManager.KEY_MEDICAL_CURRENT_USER_P_NAME);
+
+        mTvName.setText(TextUtils.isEmpty(nickName) ? pName : nickName);
     }
 
     @Override

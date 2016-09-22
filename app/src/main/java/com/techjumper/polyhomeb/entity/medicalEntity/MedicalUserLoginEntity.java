@@ -6,31 +6,58 @@ package com.techjumper.polyhomeb.entity.medicalEntity;
  * Date: 16/9/19
  * * * * * * * * * * * * * * * * * * * * * * *
  **/
-public class MedicalUserLoginEntity extends BaseMedicalUserEntity<MedicalUserLoginEntity.MemberBean> {
+public class MedicalUserLoginEntity {
 
     /**
-     * id : 200000000003
-     * username : user1
+     * id : 100000001617
+     * username : polyvip
      * password :
-     * email :
-     * mobilePhone :
-     * homePhone :
-     * idcard :
+     * email : 79907475@qq.com
+     * mobilePhone : 15010916860
+     * homePhone : 123
+     * idcard : 430102198002290510
      * idType : 1
-     * pname :
-     * sex : 1
-     * birthday : 1978-05-02
+     * pname : 陆浩
+     * sex : 0
+     * birthday : 1980-02-29
      * enabled : 1
      * memberType : 0
-     * nickname : user1
-     * height : 172.0
-     * weight : 76.0
+     * nickname : 陆昌博
+     * height : 175.0
+     * weight : 58.6
      * intro :
-     * weixinUid : null
-     * company :
-     * remark :
-     * displayName : user1
+     * company : 北京紫薇宾馆
+     * remark : 厨师
+     * doctorStatus : 0
+     * memberOrgan : null
+     * doctorDeatil : null
+     * doctorOrganization : null
+     * displayName : 陆昌博
      */
+
+    private MemberBean member;
+    /**
+     * member : {"id":"100000001617","username":"polyvip","password":"","email":"79907475@qq.com","mobilePhone":"15010916860","homePhone":"123","idcard":"430102198002290510","idType":1,"pname":"陆浩","sex":0,"birthday":"1980-02-29","enabled":1,"memberType":0,"nickname":"陆昌博","height":"175.0","weight":"58.6","intro":"","company":"北京紫薇宾馆","remark":"厨师","doctorStatus":0,"memberOrgan":null,"doctorDeatil":null,"doctorOrganization":null,"displayName":"陆昌博"}
+     * status : 1
+     */
+
+    private int status;
+
+    public MemberBean getMember() {
+        return member;
+    }
+
+    public void setMember(MemberBean member) {
+        this.member = member;
+    }
+
+    public int getStatus() {
+        return status;
+    }
+
+    public void setStatus(int status) {
+        this.status = status;
+    }
 
     public static class MemberBean {
         private String id;
@@ -50,9 +77,12 @@ public class MedicalUserLoginEntity extends BaseMedicalUserEntity<MedicalUserLog
         private String height;
         private String weight;
         private String intro;
-        private Object weixinUid;
         private String company;
         private String remark;
+        private int doctorStatus;
+        private Object memberOrgan;
+        private Object doctorDeatil;
+        private Object doctorOrganization;
         private String displayName;
 
         public String getId() {
@@ -191,14 +221,6 @@ public class MedicalUserLoginEntity extends BaseMedicalUserEntity<MedicalUserLog
             this.intro = intro;
         }
 
-        public Object getWeixinUid() {
-            return weixinUid;
-        }
-
-        public void setWeixinUid(Object weixinUid) {
-            this.weixinUid = weixinUid;
-        }
-
         public String getCompany() {
             return company;
         }
@@ -215,6 +237,38 @@ public class MedicalUserLoginEntity extends BaseMedicalUserEntity<MedicalUserLog
             this.remark = remark;
         }
 
+        public int getDoctorStatus() {
+            return doctorStatus;
+        }
+
+        public void setDoctorStatus(int doctorStatus) {
+            this.doctorStatus = doctorStatus;
+        }
+
+        public Object getMemberOrgan() {
+            return memberOrgan;
+        }
+
+        public void setMemberOrgan(Object memberOrgan) {
+            this.memberOrgan = memberOrgan;
+        }
+
+        public Object getDoctorDeatil() {
+            return doctorDeatil;
+        }
+
+        public void setDoctorDeatil(Object doctorDeatil) {
+            this.doctorDeatil = doctorDeatil;
+        }
+
+        public Object getDoctorOrganization() {
+            return doctorOrganization;
+        }
+
+        public void setDoctorOrganization(Object doctorOrganization) {
+            this.doctorOrganization = doctorOrganization;
+        }
+
         public String getDisplayName() {
             return displayName;
         }
@@ -222,7 +276,6 @@ public class MedicalUserLoginEntity extends BaseMedicalUserEntity<MedicalUserLog
         public void setDisplayName(String displayName) {
             this.displayName = displayName;
         }
-
 
         @Override
         public String toString() {
@@ -244,9 +297,12 @@ public class MedicalUserLoginEntity extends BaseMedicalUserEntity<MedicalUserLog
                     ", height='" + height + '\'' +
                     ", weight='" + weight + '\'' +
                     ", intro='" + intro + '\'' +
-                    ", weixinUid=" + weixinUid +
                     ", company='" + company + '\'' +
                     ", remark='" + remark + '\'' +
+                    ", doctorStatus=" + doctorStatus +
+                    ", memberOrgan=" + memberOrgan +
+                    ", doctorDeatil=" + doctorDeatil +
+                    ", doctorOrganization=" + doctorOrganization +
                     ", displayName='" + displayName + '\'' +
                     '}';
         }

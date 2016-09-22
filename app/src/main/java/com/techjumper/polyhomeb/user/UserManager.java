@@ -7,6 +7,7 @@ import com.techjumper.corelib.utils.file.PreferenceUtils;
 import com.techjumper.lib2.utils.GsonUtils;
 import com.techjumper.polyhomeb.Config;
 import com.techjumper.polyhomeb.entity.LoginEntity;
+import com.techjumper.polyhomeb.entity.medicalEntity.MedicalUserLoginEntity;
 import com.techjumper.polyhomeb.user.event.LoginEvent;
 import com.techjumper.polyhomeb.utils.HostIpHelper;
 
@@ -90,7 +91,7 @@ public enum UserManager {
                     || !VALUE_IS_FAMILY.equals(getUserInfo(KEY_CURRENT_SHOW_IS_FAMILY_OR_VILLAGE))) {
                 int village_id = entity.getData().getVillages().get(0).getVillage_id();
                 String village_name = entity.getData().getVillages().get(0).getVillage_name();
-                updateFamilyOrVillageInfo(false, village_id + "", village_name, village_id+"");
+                updateFamilyOrVillageInfo(false, village_id + "", village_name, village_id + "");
             }
         }
         PreferenceUtils.save(KEY_ID, dataEntity.getId());
@@ -266,5 +267,65 @@ public enum UserManager {
     public String getCurrentFamilyInfo(String key) {
         return getUserInfo(key);
     }
+
+
+    /*************************************
+     * 医疗的用户信息
+     **********************************/
+    public static final String KEY_MEDICAL_CURRENT_USER_ID = "key_medical_current_user_id";
+    public static final String KEY_MEDICAL_CURRENT_USER_TOKEN = "key_medical_current_user_token";
+    public static final String KEY_MEDICAL_CURRENT_USER_EMAIL = "key_medical_current_user_email";
+    public static final String KEY_MEDICAL_CURRENT_USER_MOBILE_PHONE = "key_medical_current_user_mobile_phone";
+    public static final String KEY_MEDICAL_CURRENT_USER_ID_CARD = "key_medical_current_user_id_card";
+    public static final String KEY_MEDICAL_CURRENT_USER_HOME_PHONE = "key_medical_current_user_home_phone";
+    public static final String KEY_MEDICAL_CURRENT_USER_P_NAME = "key_medical_current_user_p_name";
+    public static final String KEY_MEDICAL_CURRENT_USER_SEX = "key_medical_current_user_sex";
+    public static final String KEY_MEDICAL_CURRENT_USER_NICK_NAME = "key_medical_current_user_nick_name";
+    public static final String KEY_MEDICAL_CURRENT_USER_BIRTHDAY = "key_medical_current_user_birthday";
+    public static final String KEY_MEDICAL_CURRENT_USER_WEIGHT = "key_medical_current_user_weight";
+    public static final String KEY_MEDICAL_CURRENT_USER_HEIGHT = "key_medical_current_user_height";
+
+
+    public void saveMedicalUserInfo(MedicalUserLoginEntity entity) {
+        MedicalUserLoginEntity.MemberBean data = entity.getMember();
+        String email = data.getEmail();  //邮箱
+        String mobilePhone = data.getMobilePhone(); //手机号
+        String idcard = data.getIdcard();  //身份证
+        String homePhone = data.getHomePhone();  //座机
+        String pname = data.getPname();  //姓名
+        int sex = data.getSex();  //性别 : 1:男;2:女
+        String nickname = data.getNickname();  //昵称
+        String birthday = data.getBirthday();  //生日(格式yyyy-MM-dd)
+        String weight = data.getWeight();  //体重(浮点数,公斤)
+        String height = data.getHeight();   //身高(整数,厘米)
+
+        PreferenceUtils.save(KEY_MEDICAL_CURRENT_USER_EMAIL, email);
+        PreferenceUtils.save(KEY_MEDICAL_CURRENT_USER_MOBILE_PHONE, mobilePhone);
+        PreferenceUtils.save(KEY_MEDICAL_CURRENT_USER_ID_CARD, idcard);
+        PreferenceUtils.save(KEY_MEDICAL_CURRENT_USER_HOME_PHONE, homePhone);
+        PreferenceUtils.save(KEY_MEDICAL_CURRENT_USER_P_NAME, pname);
+        PreferenceUtils.save(KEY_MEDICAL_CURRENT_USER_SEX, sex + "");
+        PreferenceUtils.save(KEY_MEDICAL_CURRENT_USER_NICK_NAME, nickname);
+        PreferenceUtils.save(KEY_MEDICAL_CURRENT_USER_BIRTHDAY, birthday);
+        PreferenceUtils.save(KEY_MEDICAL_CURRENT_USER_WEIGHT, weight);
+        PreferenceUtils.save(KEY_MEDICAL_CURRENT_USER_HEIGHT, height);
+
+    }
+
+    public void medicalLogout() {
+        PreferenceUtils.save(KEY_MEDICAL_CURRENT_USER_ID, "");
+        PreferenceUtils.save(KEY_MEDICAL_CURRENT_USER_TOKEN, "");
+        PreferenceUtils.save(KEY_MEDICAL_CURRENT_USER_P_NAME, "");
+        PreferenceUtils.save(KEY_MEDICAL_CURRENT_USER_EMAIL, "");
+        PreferenceUtils.save(KEY_MEDICAL_CURRENT_USER_MOBILE_PHONE, "");
+        PreferenceUtils.save(KEY_MEDICAL_CURRENT_USER_ID_CARD, "");
+        PreferenceUtils.save(KEY_MEDICAL_CURRENT_USER_HOME_PHONE, "");
+        PreferenceUtils.save(KEY_MEDICAL_CURRENT_USER_SEX, "");
+        PreferenceUtils.save(KEY_MEDICAL_CURRENT_USER_NICK_NAME, "");
+        PreferenceUtils.save(KEY_MEDICAL_CURRENT_USER_BIRTHDAY, "");
+        PreferenceUtils.save(KEY_MEDICAL_CURRENT_USER_WEIGHT, "");
+        PreferenceUtils.save(KEY_MEDICAL_CURRENT_USER_HEIGHT, "");
+    }
+
 
 }

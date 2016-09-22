@@ -5,7 +5,6 @@ import android.text.TextUtils;
 import com.steve.creact.library.display.DisplayBean;
 import com.techjumper.corelib.rx.tools.CommonWrap;
 import com.techjumper.corelib.utils.common.RuleUtils;
-import com.techjumper.lib2.others.KeyValuePair;
 import com.techjumper.lib2.utils.RetrofitHelper;
 import com.techjumper.polyhomeb.R;
 import com.techjumper.polyhomeb.adapter.recycler_Data.MedicalUserInfoBlackData;
@@ -16,18 +15,19 @@ import com.techjumper.polyhomeb.adapter.recycler_ViewHolder.databean.MedicalUser
 import com.techjumper.polyhomeb.adapter.recycler_ViewHolder.databean.MedicalUserInfoBlackBean;
 import com.techjumper.polyhomeb.adapter.recycler_ViewHolder.databean.PropertyPlacardDividerBean;
 import com.techjumper.polyhomeb.adapter.recycler_ViewHolder.databean.PropertyPlacardDividerLongBean;
-import com.techjumper.polyhomeb.entity.BaseArgumentsEntity;
 import com.techjumper.polyhomeb.entity.MedicalUserInfoEntity;
+import com.techjumper.polyhomeb.entity.medicalEntity.MedicalStatusEntity;
 import com.techjumper.polyhomeb.mvp.p.activity.MedicalUserInfoActivityPresenter;
-import com.techjumper.polyhomeb.net.KeyValueCreator;
-import com.techjumper.polyhomeb.net.NetHelper;
 import com.techjumper.polyhomeb.net.ServiceAPI;
 import com.techjumper.polyhomeb.user.UserManager;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
+import retrofit2.adapter.rxjava.Result;
 import rx.Observable;
+import rx.Subscriber;
 
 /**
  * * * * * * * * * * * * * * * * * * * * * * *
@@ -37,21 +37,32 @@ import rx.Observable;
  **/
 public class MedicalUserInfoActivityModel extends BaseModel<MedicalUserInfoActivityPresenter> {
 
-    public static final int CANCLICK = 1;
-    public static final int CANNOTCLICK = 2;
-
     public MedicalUserInfoActivityModel(MedicalUserInfoActivityPresenter presenter) {
         super(presenter);
     }
 
-    public Observable<MedicalUserInfoEntity> getInfo() {
-        KeyValuePair keyValuePair = KeyValueCreator.getMedicalCurrentUserInfo(
-                UserManager.INSTANCE.getUserInfo(UserManager.KEY_ID)
-                , UserManager.INSTANCE.getTicket());
-        BaseArgumentsEntity entity = NetHelper.createBaseArguments(keyValuePair);
-        return RetrofitHelper
-                .<ServiceAPI>createDefault()
-                .getMedicalCurrentUserInfo(entity)
+    public Observable<List<DisplayBean>> getInfo() {
+        return Observable
+                .create(new Observable.OnSubscribe<List<DisplayBean>>() {
+                    @Override
+                    public void call(Subscriber<? super List<DisplayBean>> subscriber) {
+                        MedicalUserInfoEntity entity = new MedicalUserInfoEntity();
+                        MedicalUserInfoEntity.DataBean data = new MedicalUserInfoEntity.DataBean();
+                        data.setBirthday(UserManager.INSTANCE.getUserInfo(UserManager.KEY_MEDICAL_CURRENT_USER_BIRTHDAY));
+                        data.setEmail(UserManager.INSTANCE.getUserInfo(UserManager.KEY_MEDICAL_CURRENT_USER_EMAIL));
+                        data.setHeight(UserManager.INSTANCE.getUserInfo(UserManager.KEY_MEDICAL_CURRENT_USER_HEIGHT));
+                        data.setHomenumber(UserManager.INSTANCE.getUserInfo(UserManager.KEY_MEDICAL_CURRENT_USER_HOME_PHONE));
+                        data.setIdcard(UserManager.INSTANCE.getUserInfo(UserManager.KEY_MEDICAL_CURRENT_USER_ID_CARD));
+                        data.setName(UserManager.INSTANCE.getUserInfo(UserManager.KEY_MEDICAL_CURRENT_USER_P_NAME));
+                        data.setNickName(UserManager.INSTANCE.getUserInfo(UserManager.KEY_MEDICAL_CURRENT_USER_NICK_NAME));
+                        data.setPhone(UserManager.INSTANCE.getUserInfo(UserManager.KEY_MEDICAL_CURRENT_USER_MOBILE_PHONE));
+                        data.setSex(UserManager.INSTANCE.getUserInfo(UserManager.KEY_MEDICAL_CURRENT_USER_SEX));
+                        data.setWeight(UserManager.INSTANCE.getUserInfo(UserManager.KEY_MEDICAL_CURRENT_USER_WEIGHT));
+                        entity.setData(data);
+                        subscriber.onNext(getData(entity));
+                        subscriber.onCompleted();
+                    }
+                })
                 .compose(CommonWrap.wrap());
     }
 
@@ -78,7 +89,6 @@ public class MedicalUserInfoActivityModel extends BaseModel<MedicalUserInfoActiv
             MedicalUserInfoData medicalUserInfoData = new MedicalUserInfoData();
             medicalUserInfoData.setLabel(getLabelByPosition(i));
             medicalUserInfoData.setContent(getContentByPosition(i, entity));
-            medicalUserInfoData.setType(CANCLICK);
             MedicalUserInfoBean medicalUserInfoBean = new MedicalUserInfoBean(medicalUserInfoData);
             displayBeen.add(medicalUserInfoBean);
             if (i == 5) {
@@ -99,7 +109,6 @@ public class MedicalUserInfoActivityModel extends BaseModel<MedicalUserInfoActiv
             MedicalUserInfoData medicalUserInfoData = new MedicalUserInfoData();
             medicalUserInfoData.setLabel(getLabelByPosition(i));
             medicalUserInfoData.setContent(getContentByPosition(i, entity));
-            medicalUserInfoData.setType(CANCLICK);
             MedicalUserInfoBean medicalUserInfoBean = new MedicalUserInfoBean(medicalUserInfoData);
             displayBeen.add(medicalUserInfoBean);
             if (i == 8) {
@@ -120,7 +129,6 @@ public class MedicalUserInfoActivityModel extends BaseModel<MedicalUserInfoActiv
             MedicalUserInfoData medicalUserInfoData = new MedicalUserInfoData();
             medicalUserInfoData.setLabel(getLabelByPosition(i));
             medicalUserInfoData.setContent(getContentByPosition(i, entity));
-            medicalUserInfoData.setType(CANCLICK);
             MedicalUserInfoBean medicalUserInfoBean = new MedicalUserInfoBean(medicalUserInfoData);
             displayBeen.add(medicalUserInfoBean);
             if (i == 10) {
@@ -151,7 +159,7 @@ public class MedicalUserInfoActivityModel extends BaseModel<MedicalUserInfoActiv
                 case 4:
                     return TextUtils.isEmpty(entity.getData().getBirthday()) ? "" : entity.getData().getBirthday();
                 case 5:
-                    return TextUtils.isEmpty(entity.getData().getSex()) ? "" : entity.getData().getSex();
+                    return TextUtils.isEmpty(entity.getData().getSex() + "") ? "" : entity.getData().getSex() + "";
                 case 6:
                     return TextUtils.isEmpty(entity.getData().getHomenumber()) ? "" : entity.getData().getHomenumber();
                 case 7:
@@ -194,6 +202,13 @@ public class MedicalUserInfoActivityModel extends BaseModel<MedicalUserInfoActiv
             default:
                 return "";
         }
+    }
+
+    public Observable<Result<MedicalStatusEntity>> changeUserInfo(Map<String, String> map) {
+        return RetrofitHelper.<ServiceAPI>createMedicalConnection()
+                .changeUserInfo(UserManager.INSTANCE.getUserInfo(UserManager.KEY_MEDICAL_CURRENT_USER_TOKEN)
+                        , map)
+                .compose(CommonWrap.wrap());
     }
 
 }

@@ -55,7 +55,6 @@ public class NetHelper {
         return new BaseArgumentsMedicalEntity(argMap.get("devicetype"), argMap.get("logintype"));
     }
 
-
     public static BaseTcpArgumentsEntity createTcpBaseArguments(KeyValuePair argMap) {
         String json = GsonUtils.toJson(argMap.toMap());
         String encrypt = encrypt(json);

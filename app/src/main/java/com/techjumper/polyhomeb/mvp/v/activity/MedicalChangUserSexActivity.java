@@ -8,18 +8,19 @@ import android.widget.ImageView;
 
 import com.techjumper.corelib.mvp.factory.Presenter;
 import com.techjumper.polyhomeb.R;
-import com.techjumper.polyhomeb.mvp.p.activity.ChangeSexActivityPresenter;
+import com.techjumper.polyhomeb.mvp.p.activity.MedicalChangUserSexActivityPresenter;
 
 import butterknife.Bind;
 
 /**
  * * * * * * * * * * * * * * * * * * * * * * *
  * Created by lixin
- * Date: 16/9/1
+ * Date: 16/9/20
  * * * * * * * * * * * * * * * * * * * * * * *
  **/
-@Presenter(ChangeSexActivityPresenter.class)
-public class ChangeSexActivity extends AppBaseActivity<ChangeSexActivityPresenter> {
+
+@Presenter(MedicalChangUserSexActivityPresenter.class)
+public class MedicalChangUserSexActivity extends AppBaseActivity<MedicalChangUserSexActivityPresenter> {
 
     @Bind(R.id.layout_male)
     ViewGroup mLayoutMale;
@@ -33,24 +34,22 @@ public class ChangeSexActivity extends AppBaseActivity<ChangeSexActivityPresente
 
     @Override
     protected View inflateView(Bundle savedInstanceState) {
-        return inflate(R.layout.activity_change_sex);
+        return inflate(R.layout.activity_medical_change_user_sex);
     }
 
     @Override
     protected void initView(Bundle savedInstanceState) {
-        String sex = getPresenter().getSex();
-
-
-
-
-        getPresenter().mSex = sex;
+        String sex = getPresenter().getSex();  //1  2的字符串,或者空
         if (!TextUtils.isEmpty(sex)) {
-            if (getString(R.string.male).equals(sex)) {
+            int i = Integer.parseInt(sex);
+            if (1 == i) {
                 mIvMale.setVisibility(View.VISIBLE);
                 mIvFemale.setVisibility(View.GONE);
-            } else if (getString(R.string.female).equals(sex)) {
+                getPresenter().mSex_ = 1;
+            } else if (2 == i) {
                 mIvMale.setVisibility(View.GONE);
                 mIvFemale.setVisibility(View.VISIBLE);
+                getPresenter().mSex_ = 2;
             } else {
                 mIvMale.setVisibility(View.GONE);
                 mIvFemale.setVisibility(View.GONE);
@@ -59,19 +58,22 @@ public class ChangeSexActivity extends AppBaseActivity<ChangeSexActivityPresente
             mIvMale.setVisibility(View.GONE);
             mIvFemale.setVisibility(View.GONE);
         }
+    }
 
+    @Override
+    protected boolean showTitleRight() {
+        return true;
+    }
 
+    @Override
+    protected boolean onTitleRightClick() {
+        getPresenter().onTitleRightClick();
+        return true;
     }
 
     @Override
     public String getLayoutTitle() {
         return getString(R.string.change_sex);
-    }
-
-    @Override
-    public void onBackPressed() {
-        getPresenter().sendSex();
-        super.onBackPressed();
     }
 
     public ImageView getIvMale() {
@@ -81,4 +83,5 @@ public class ChangeSexActivity extends AppBaseActivity<ChangeSexActivityPresente
     public ImageView getIvFemale() {
         return mIvFemale;
     }
+
 }

@@ -7,6 +7,7 @@ package com.techjumper.polyhomeb.entity.event;
  * * * * * * * * * * * * * * * * * * * * * * *
  **/
 public class SexEvent {
+
     private String sex;
 
     public SexEvent(String sex) {

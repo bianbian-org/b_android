@@ -212,8 +212,8 @@ public class UserInfoActivityPresenter extends AppBaseActivityPresenter<UserInfo
     private void showDatePicker() {
         Calendar calendar = Calendar.getInstance();
         new DatePickerDialog(getView(), (view, year, monthOfYear, dayOfMonth) -> {
-            String month = monthOfYear > 10 ? (monthOfYear + 1) + "" : "0" + (monthOfYear + 1);
-            String day = dayOfMonth > 10 ? day = dayOfMonth + "" : "0" + dayOfMonth;
+            String month = monthOfYear + 1 >= 10 ? (monthOfYear + 1) + "" : "0" + (monthOfYear + 1);
+            String day = dayOfMonth >= 10 ? day = dayOfMonth + "" : "0" + dayOfMonth;
             mBirthday = year + "-" + month + "-" + day;
             getView().getTvBirthday().setText(mBirthday);
             canRightClick();

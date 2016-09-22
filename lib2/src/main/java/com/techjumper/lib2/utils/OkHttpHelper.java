@@ -44,8 +44,6 @@ public class OkHttpHelper {
         }
 
         Response response = chain.proceed(request);
-//        Headers headers = response.headers();
-//        JLog.e(headers.get("nztoken"));
         // Re-write response CC header to force use of cache
 
 //        JLog.d("HTTP返回: " + response.body().string());

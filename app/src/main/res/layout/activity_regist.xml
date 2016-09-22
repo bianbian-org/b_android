@@ -79,7 +79,7 @@
 
             <TextView
                 android:id="@+id/tv_get_verification_code"
-                android:layout_width="wrap_content"
+                android:layout_width="100dp"
                 android:layout_height="match_parent"
                 android:layout_marginBottom="@dimen/dp_5"
                 android:layout_marginLeft="@dimen/dp_5"

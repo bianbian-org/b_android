@@ -75,9 +75,11 @@ public class RegistActivity extends AppBaseActivity<RegistActivityPresenter> {
 
     public void onCountDownChange(int count) {
         String text = count == 0 ? getString(R.string.regist_get_verification_code) : count + getString(R.string.regist_get_verification_later);
+        boolean isChangeSize = count == 0 ? false : true;
         boolean isEnable = count == 0;
         mTvGetVerification.setText(text);
         mTvGetVerification.setEnabled(isEnable);
+        mTvGetVerification.setTextSize(isChangeSize ? 12 : 16);
     }
 
     public EditText getEtVerification() {

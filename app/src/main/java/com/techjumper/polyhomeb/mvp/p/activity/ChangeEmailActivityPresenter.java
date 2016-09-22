@@ -31,7 +31,7 @@ public class ChangeEmailActivityPresenter extends AppBaseActivityPresenter<Chang
 
     }
 
-    @OnClick(R.id.iv_clear_input)
+    @OnClick(R.id.layout_clear_input)
     public void onClick(View view) {
         getView().getEtEmail().setText("");
     }

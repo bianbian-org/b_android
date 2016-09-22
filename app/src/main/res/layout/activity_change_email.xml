@@ -32,14 +32,21 @@
             android:textColor="@color/color_3e3e3e"
             android:textSize="@dimen/sp_16" />
 
-        <ImageView
-            android:id="@+id/iv_clear_input"
+        <FrameLayout
+            android:id="@+id/layout_clear_input"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_vertical"
-            android:layout_marginLeft="@dimen/dp_20"
-            android:layout_marginRight="@dimen/dp_20"
-            android:background="@mipmap/icon_clear_input" />
+            android:layout_height="match_parent">
+
+            <ImageView
+                android:id="@+id/iv_clear_input"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_marginLeft="@dimen/dp_20"
+                android:layout_marginRight="@dimen/dp_20"
+                android:background="@mipmap/icon_clear_input" />
+        </FrameLayout>
+
 
     </LinearLayout>
 

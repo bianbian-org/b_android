@@ -7,7 +7,6 @@ import com.techjumper.polyhomeb.entity.CheckInEntity;
 import com.techjumper.polyhomeb.entity.LoginEntity;
 import com.techjumper.polyhomeb.entity.MedicalChangeAccountEntity;
 import com.techjumper.polyhomeb.entity.MedicalMainEntity;
-import com.techjumper.polyhomeb.entity.MedicalUserInfoEntity;
 import com.techjumper.polyhomeb.entity.MessageEntity;
 import com.techjumper.polyhomeb.entity.OrdersEntity;
 import com.techjumper.polyhomeb.entity.PropertyComplainDetailEntity;
@@ -21,10 +20,13 @@ import com.techjumper.polyhomeb.entity.UploadPicEntity;
 import com.techjumper.polyhomeb.entity.UserFamiliesAndVillagesEntity;
 import com.techjumper.polyhomeb.entity.VillageEntity;
 import com.techjumper.polyhomeb.entity.medicalEntity.BaseArgumentsMedicalEntity;
+import com.techjumper.polyhomeb.entity.medicalEntity.MedicalStatusEntity;
 import com.techjumper.polyhomeb.entity.medicalEntity.MedicalUserLoginEntity;
+import com.techjumper.polyhomeb.entity.medicalEntity.MedicalVerificationCodeEntity;
 
 import java.util.Map;
 
+import retrofit2.adapter.rxjava.Result;
 import retrofit2.http.Body;
 import retrofit2.http.GET;
 import retrofit2.http.Header;
@@ -533,16 +535,40 @@ public interface ServiceAPI {
     @GET("sign")
     Observable<CheckInEntity> getCheckInData(@QueryMap Map<String, String> stringStringMap);
 
+
 /*********************************************************医疗接口*********************************************************/
+
     /**
      * 医疗登录接口,devicetype=1代表安卓,logintype=1代表用户名登录
      */
     @POST("nruaservice/user/login?devicetype=1&logintype=1")
-    Observable<MedicalUserLoginEntity> medicalUserLogin(@Header("Authorization") String value, @Body BaseArgumentsMedicalEntity entity);
+    Observable<Result<MedicalUserLoginEntity>> medicalUserLogin(@Header("Authorization") String value
+            , @Body BaseArgumentsMedicalEntity entity);
 
+    /**
+     * 医疗修改用户信息接口
+     */
+    @POST("nruaservice/user/updateuser")
+    Observable<Result<MedicalStatusEntity>> changeUserInfo(@Header("nztoken") String token, @QueryMap Map<String, String> params);
 
-    @POST("login...")
-    Observable<MedicalUserInfoEntity> getMedicalCurrentUserInfo(@Body BaseArgumentsEntity entity);
+    /**
+     * 医疗修改用户性别接口
+     */
+    @POST("nruaservice/user/updateuser")
+    Observable<Result<MedicalStatusEntity>> changeUserSexInfo(@Header("nztoken") String token, @QueryMap Map<String, Integer> params);
+
+    /**
+     * 医疗修改用户邮箱接口
+     */
+    @POST("nruaservice/user/updateuser")
+    Observable<Result<MedicalStatusEntity>> changeUserEmailInfo(@Header("Cookie") String cookie, @Header("nztoken") String token, @QueryMap Map<String, String> params);
+
+    /**
+     * 医疗下发验证码接口
+     */
+    @GET("nruaservice/user/getcode")
+    Observable<Result<MedicalVerificationCodeEntity>> getVerificationCode(@Header("nztoken") String token, @QueryMap Map<String, String> params);
+
 
     @POST("signs")
     Observable<MedicalMainEntity> getMedicalMainData(@Body BaseArgumentsEntity entity);
