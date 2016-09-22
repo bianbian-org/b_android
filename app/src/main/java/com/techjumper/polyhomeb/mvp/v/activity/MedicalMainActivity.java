@@ -49,12 +49,12 @@ public class MedicalMainActivity extends AppBaseActivity<MedicalMainActivityPres
         mRv.addItemDecoration(new MedicalDividerDecoration(this));
         mAdapter = new MedicalMainActivityAdapter();
         mRv.setAdapter(mAdapter);
-        mAdapter.loadData(getPresenter().getData(null));
 
         String nickName = UserManager.INSTANCE.getUserInfo(UserManager.KEY_MEDICAL_CURRENT_USER_NICK_NAME);
         String pName = UserManager.INSTANCE.getUserInfo(UserManager.KEY_MEDICAL_CURRENT_USER_P_NAME);
 
         mTvName.setText(TextUtils.isEmpty(nickName) ? pName : nickName);
+
     }
 
     @Override

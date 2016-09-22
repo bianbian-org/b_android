@@ -5,7 +5,7 @@ import com.techjumper.corelib.rx.tools.CommonWrap;
 import com.techjumper.lib2.others.KeyValuePair;
 import com.techjumper.lib2.utils.RetrofitHelper;
 import com.techjumper.polyhomeb.entity.BaseArgumentsEntity;
-import com.techjumper.polyhomeb.entity.MedicalChangeAccountEntity;
+import com.techjumper.polyhomeb.entity.medicalEntity.MedicalChangeAccountEntity;
 import com.techjumper.polyhomeb.mvp.p.activity.MedicalChangeAccountActivityPresenter;
 import com.techjumper.polyhomeb.net.KeyValueCreator;
 import com.techjumper.polyhomeb.net.NetHelper;

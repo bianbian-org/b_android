@@ -15,7 +15,7 @@ import com.techjumper.polyhomeb.adapter.recycler_ViewHolder.databean.MedicalUser
 import com.techjumper.polyhomeb.adapter.recycler_ViewHolder.databean.MedicalUserInfoBlackBean;
 import com.techjumper.polyhomeb.adapter.recycler_ViewHolder.databean.PropertyPlacardDividerBean;
 import com.techjumper.polyhomeb.adapter.recycler_ViewHolder.databean.PropertyPlacardDividerLongBean;
-import com.techjumper.polyhomeb.entity.MedicalUserInfoEntity;
+import com.techjumper.polyhomeb.entity.medicalEntity.MedicalUserInfoEntity;
 import com.techjumper.polyhomeb.entity.medicalEntity.MedicalStatusEntity;
 import com.techjumper.polyhomeb.mvp.p.activity.MedicalUserInfoActivityPresenter;
 import com.techjumper.polyhomeb.net.ServiceAPI;

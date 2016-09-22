@@ -11,13 +11,14 @@
         android:orientation="horizontal">
 
         <FrameLayout
-            android:layout_marginLeft="@dimen/dp_15"
-            android:layout_marginRight="@dimen/dp_20"
             android:layout_width="0dp"
             android:layout_height="match_parent"
+            android:layout_marginLeft="@dimen/dp_15"
+            android:layout_marginRight="@dimen/dp_20"
             android:layout_weight="0.8">
 
             <ImageView
+                android:id="@+id/iv_icon"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center" />
@@ -35,23 +36,26 @@
                 android:orientation="vertical">
 
                 <TextView
-                    android:fontFamily="sans-serif-thin"
+                    android:id="@+id/tv_label"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:fontFamily="sans-serif-thin"
                     android:textColor="@color/color_3e3e3e"
                     android:textSize="@dimen/sp_16" />
 
                 <TextView
-                    android:textStyle="bold"
+                    android:id="@+id/tv_data"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textColor="@color/color_3e3e3e"
-                    android:textSize="@dimen/sp_20" />
+                    android:textSize="@dimen/sp_20"
+                    android:textStyle="bold" />
 
                 <TextView
-                    android:fontFamily="sans-serif-thin"
+                    android:id="@+id/tv_unit"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:fontFamily="sans-serif-thin"
                     android:textColor="@color/color_3e3e3e"
                     android:textSize="@dimen/sp_12" />
 

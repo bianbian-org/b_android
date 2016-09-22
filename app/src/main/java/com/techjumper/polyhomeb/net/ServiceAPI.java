@@ -5,8 +5,6 @@ import com.techjumper.polyhomeb.entity.AvatarEntity;
 import com.techjumper.polyhomeb.entity.BaseArgumentsEntity;
 import com.techjumper.polyhomeb.entity.CheckInEntity;
 import com.techjumper.polyhomeb.entity.LoginEntity;
-import com.techjumper.polyhomeb.entity.MedicalChangeAccountEntity;
-import com.techjumper.polyhomeb.entity.MedicalMainEntity;
 import com.techjumper.polyhomeb.entity.MessageEntity;
 import com.techjumper.polyhomeb.entity.OrdersEntity;
 import com.techjumper.polyhomeb.entity.PropertyComplainDetailEntity;
@@ -20,6 +18,8 @@ import com.techjumper.polyhomeb.entity.UploadPicEntity;
 import com.techjumper.polyhomeb.entity.UserFamiliesAndVillagesEntity;
 import com.techjumper.polyhomeb.entity.VillageEntity;
 import com.techjumper.polyhomeb.entity.medicalEntity.BaseArgumentsMedicalEntity;
+import com.techjumper.polyhomeb.entity.medicalEntity.MedicalChangeAccountEntity;
+import com.techjumper.polyhomeb.entity.medicalEntity.MedicalMainEntity;
 import com.techjumper.polyhomeb.entity.medicalEntity.MedicalStatusEntity;
 import com.techjumper.polyhomeb.entity.medicalEntity.MedicalUserLoginEntity;
 import com.techjumper.polyhomeb.entity.medicalEntity.MedicalVerificationCodeEntity;
@@ -31,6 +31,7 @@ import retrofit2.http.Body;
 import retrofit2.http.GET;
 import retrofit2.http.Header;
 import retrofit2.http.POST;
+import retrofit2.http.Path;
 import retrofit2.http.QueryMap;
 import rx.Observable;
 
@@ -569,9 +570,13 @@ public interface ServiceAPI {
     @GET("nruaservice/user/getcode")
     Observable<Result<MedicalVerificationCodeEntity>> getVerificationCode(@Header("nztoken") String token, @QueryMap Map<String, String> params);
 
-
-    @POST("signs")
-    Observable<MedicalMainEntity> getMedicalMainData(@Body BaseArgumentsEntity entity);
+    /**
+     * 医疗请求健康数据
+     */
+    @GET("bizservice2/rest/health/data/{type}")
+    Observable<Result<MedicalMainEntity>> getMedicalMainData(@Header("nztoken") String token
+            , @Path("type") String measure_type
+            , @QueryMap Map<String, String> stringMap);
 
     @POST("signs")
     Observable<MedicalChangeAccountEntity> getMedicalUserData(@Body BaseArgumentsEntity entity);

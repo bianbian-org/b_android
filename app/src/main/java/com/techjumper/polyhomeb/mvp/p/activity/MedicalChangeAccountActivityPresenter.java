@@ -3,7 +3,7 @@ package com.techjumper.polyhomeb.mvp.p.activity;
 import android.os.Bundle;
 
 import com.techjumper.corelib.rx.tools.RxUtils;
-import com.techjumper.polyhomeb.entity.MedicalChangeAccountEntity;
+import com.techjumper.polyhomeb.entity.medicalEntity.MedicalChangeAccountEntity;
 import com.techjumper.polyhomeb.mvp.m.MedicalChangeAccountActivityModel;
 import com.techjumper.polyhomeb.mvp.v.activity.MedicalChangeAccountActivity;
 

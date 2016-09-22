@@ -15,7 +15,7 @@ import com.techjumper.corelib.utils.window.DialogUtils;
 import com.techjumper.corelib.utils.window.ToastUtils;
 import com.techjumper.polyhomeb.R;
 import com.techjumper.polyhomeb.adapter.recycler_Data.MedicalUserInfoData;
-import com.techjumper.polyhomeb.entity.MedicalUserInfoEntity;
+import com.techjumper.polyhomeb.entity.medicalEntity.MedicalUserInfoEntity;
 import com.techjumper.polyhomeb.entity.event.MedicalChangeUserInfoEvent;
 import com.techjumper.polyhomeb.entity.medicalEntity.MedicalStatusEntity;
 import com.techjumper.polyhomeb.mvp.m.MedicalUserInfoActivityModel;

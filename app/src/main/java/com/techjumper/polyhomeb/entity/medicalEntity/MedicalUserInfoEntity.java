@@ -1,4 +1,6 @@
-package com.techjumper.polyhomeb.entity;
+package com.techjumper.polyhomeb.entity.medicalEntity;
+
+import com.techjumper.polyhomeb.entity.BaseEntity;
 
 /**
  * * * * * * * * * * * * * * * * * * * * * * *

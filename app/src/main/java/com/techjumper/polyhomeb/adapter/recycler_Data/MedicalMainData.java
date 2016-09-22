@@ -8,26 +8,10 @@ package com.techjumper.polyhomeb.adapter.recycler_Data;
  **/
 public class MedicalMainData {
 
-    private int icon;
-    private String label;
     private String data;
-    private String unit;
 
-    public int getIcon() {
-        return icon;
-    }
-
-    public void setIcon(int icon) {
-        this.icon = icon;
-    }
-
-    public String getLabel() {
-        return label;
-    }
-
-    public void setLabel(String label) {
-        this.label = label;
-    }
+    private int position;
+    private boolean isNoData;
 
     public String getData() {
         return data;
@@ -37,11 +21,20 @@ public class MedicalMainData {
         this.data = data;
     }
 
-    public String getUnit() {
-        return unit;
+    public boolean isNoData() {
+        return isNoData;
     }
 
-    public void setUnit(String unit) {
-        this.unit = unit;
+    public void setNoData(boolean noData) {
+        isNoData = noData;
     }
+
+    public int getPosition() {
+        return position;
+    }
+
+    public void setPosition(int position) {
+        this.position = position;
+    }
+
 }
