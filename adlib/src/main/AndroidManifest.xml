@@ -13,10 +13,13 @@
         >
 
         <service android:name=".services.WakeupAdService"
+                 android:process=":remote"
             />
         <service android:name=".services.AlarmService"
+                 android:process=":remote"
             />
         <service android:name=".services.AdStatService"
+                 android:process=":remote"
             />
 
         <receiver
