@@ -1,5 +1,7 @@
 package com.techjumper.polyhome.b.home.mvp.v.activity;
 
+import android.content.ComponentName;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.webkit.WebChromeClient;
@@ -23,6 +25,7 @@ import java.util.TimerTask;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 
 @Presenter(JujiaActivityPresenter.class)
 public class JujiaActivity extends AppBaseActivity<JujiaActivityPresenter> {
@@ -35,6 +38,15 @@ public class JujiaActivity extends AppBaseActivity<JujiaActivityPresenter> {
     TextView bottomTitle;
     @Bind(R.id.bottom_date)
     TextView bottomDate;
+
+    @OnClick(R.id.call)
+    void call() {
+        Intent it = new Intent();
+        ComponentName componentName = new ComponentName("com.dnake.talk", "com.dnake.activity.CallingActivity");
+        it.setComponent(componentName);
+        it.putExtra("com.dnake.talk", "CallingActivity");
+        startActivity(it);
+    }
 
     private long time;
     private TimerTask timerTask;

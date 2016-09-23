@@ -36,6 +36,7 @@
             </intent-filter>
         </activity>
         <activity android:name=".mvp.v.activity.AdActivity" />
+        <activity android:name=".mvp.v.activity.AdNewActivity" />
         <activity android:name=".mvp.v.activity.ShoppingActivity" />
         <activity android:name=".mvp.v.activity.JujiaActivity"></activity>
 

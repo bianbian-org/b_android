@@ -19,6 +19,7 @@ import com.techjumper.polyhome.b.home.mvp.p.fragment.InfoFragmentPresenter;
 import com.techjumper.polyhome.b.home.utils.DateUtil;
 import com.techjumper.polyhome.b.home.utils.StringUtil;
 import com.techjumper.polyhome.b.home.utils.WeatherUtil;
+import com.techjumper.polyhome.b.home.widget.AdViewPager;
 import com.techjumper.polyhome.b.home.widget.AlmanacView;
 import com.techjumper.polyhome.b.home.widget.ArcDataView;
 import com.techjumper.polyhome.b.home.widget.MyTextureView;
@@ -90,6 +91,8 @@ public class InfoFragment extends AppBaseFragment<InfoFragmentPresenter> {
     FrameLayout infoArrowLayout;
     @Bind(R.id.ad_tem)
     FrameLayout adTem;
+    @Bind(R.id.advp)
+    AdViewPager advp;
 
     public static InfoFragment getInstance() {
         return new InfoFragment();
@@ -143,6 +146,10 @@ public class InfoFragment extends AppBaseFragment<InfoFragmentPresenter> {
 
     public SquareView getSpeak() {
         return speak;
+    }
+
+    public AdViewPager getAdvp() {
+        return advp;
     }
 
     public void getWeatherInfo(WeatherEntity.WeatherDataEntity weatherDataEntity) {

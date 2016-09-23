@@ -16,7 +16,6 @@ import com.techjumper.polyhome.b.home.R;
 import com.techjumper.polyhome.b.home.mvp.p.fragment.PloyhomeFragmentPresenter;
 import com.techjumper.polyhome.b.home.widget.AdViewPager;
 import com.techjumper.polyhome.b.home.widget.MyTextureView;
-import com.techjumper.polyhome.b.home.widget.MyViewPager;
 import com.techjumper.polyhome.b.home.widget.SquareView;
 import com.techjumper.polyhome.b.home.widget.TextAutoView;
 

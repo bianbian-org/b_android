@@ -152,7 +152,7 @@ public class MyTextureView extends TextureView implements TextureView.SurfaceTex
                     }
                 } catch (Exception e) {
                     if (mediaPlayer != null) {
-                        mediaPlayer.reset();
+//                        mediaPlayer.reset();
                     }
                     mediaState = MediaState.INIT;
                 } finally {

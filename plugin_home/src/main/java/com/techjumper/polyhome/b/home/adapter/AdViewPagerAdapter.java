@@ -73,6 +73,7 @@ public class AdViewPagerAdapter extends PagerAdapter {
 
     @Override
     public Object instantiateItem(ViewGroup container, int position) {
+        Log.d("ad12", "instantiateItem");
         View view = views.get(position);
         view.setTag(position);
 

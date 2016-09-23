@@ -3,8 +3,11 @@ package com.techjumper.polyhome.b.home.mvp.p.fragment;
 import android.content.ComponentName;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v4.view.ViewPager;
 import android.text.TextUtils;
 import android.util.Log;
+import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.ImageView;
 
@@ -30,11 +33,14 @@ import com.techjumper.corelib.utils.window.ToastUtils;
 import com.techjumper.lib2.utils.PicassoHelper;
 import com.techjumper.polyhome.b.home.R;
 import com.techjumper.polyhome.b.home.UserInfoManager;
+import com.techjumper.polyhome.b.home.adapter.AdViewPagerAdapter;
 import com.techjumper.polyhome.b.home.db.util.AdClickDbUtil;
 import com.techjumper.polyhome.b.home.mvp.m.InfoFragmentModel;
 import com.techjumper.polyhome.b.home.mvp.v.activity.AdActivity;
+import com.techjumper.polyhome.b.home.mvp.v.activity.AdNewActivity;
 import com.techjumper.polyhome.b.home.mvp.v.fragment.InfoFragment;
 import com.techjumper.polyhome.b.home.tool.AlarmManagerUtil;
+import com.techjumper.polyhome.b.home.widget.AdViewPager;
 import com.techjumper.polyhome.b.home.widget.ArcDataView;
 import com.techjumper.polyhome.b.home.widget.MyTextureView;
 import com.techjumper.polyhome_b.adlib.entity.AdEntity;
@@ -53,7 +59,7 @@ import rx.android.schedulers.AndroidSchedulers;
 /**
  * Created by kevin on 16/4/27.
  */
-public class InfoFragmentPresenter extends AppBaseFragmentPresenter<InfoFragment> implements AdController.IAlarm {
+public class InfoFragmentPresenter extends AppBaseFragmentPresenter<InfoFragment> implements AdController.IAlarm, ViewPager.OnPageChangeListener {
     private InfoFragmentModel infoFragmentModel = new InfoFragmentModel(this);
     private AdController adController;
     private MyTextureView textureView;
@@ -71,6 +77,17 @@ public class InfoFragmentPresenter extends AppBaseFragmentPresenter<InfoFragment
     private boolean mIsGetAd;
     private boolean mIsGetNewAd;
     private long heartbeatTime;
+    private AdViewPager adViewPager;
+
+    private AdViewPagerAdapter adapter;
+    private List<View> views = new ArrayList<>();
+    private List<Integer> resIds = new ArrayList<>();
+    private int currentPage = 0;
+    private LayoutInflater inflater;
+    private View currentView;
+    private float x1, x2, y1, y2;
+
+    private List<AdEntity.AdsEntity> adsEntities = new ArrayList<>();
 
     @OnClick(R.id.info_arrow_layout)
     void changeMedicalInfo() {
@@ -93,6 +110,8 @@ public class InfoFragmentPresenter extends AppBaseFragmentPresenter<InfoFragment
 
     @Override
     public void initData(Bundle savedInstanceState) {
+        inflater = LayoutInflater.from(getView().getContext());
+
         adController = AdController.getInstance();
 
         advHeartrate = getView().getAdvHeartrate();
@@ -105,6 +124,12 @@ public class InfoFragmentPresenter extends AppBaseFragmentPresenter<InfoFragment
     public void onViewInited(Bundle savedInstanceState) {
         adImageView = getView().getImageAdTem();
         textureView = getView().getTextureViewTem();
+        adViewPager = getView().getAdvp();
+
+        adViewPager.setAdapter(adapter = new AdViewPagerAdapter());
+        adViewPager.setOffscreenPageLimit(3);
+        adViewPager.addOnPageChangeListener(this);
+        adViewPager.setCurrentItem(0);
 
         getWeatherInfo();
         getCalendarInfo();
@@ -249,6 +274,38 @@ public class InfoFragmentPresenter extends AppBaseFragmentPresenter<InfoFragment
                     }
                 }));
 
+        adViewPager.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+
+                switch (event.getAction()) {
+                    case MotionEvent.ACTION_DOWN:
+                        x1 = event.getX();
+                        y1 = event.getY();
+                        break;
+                    case MotionEvent.ACTION_MOVE:
+                        Log.d("ad12", "关掉");
+                        adController.stopAdTimer(AdController.TYPE_HOME);
+                        break;
+                    case MotionEvent.ACTION_UP:
+                        Log.d("ad12", "开启");
+                        Log.d("ad12", x1 + " " + x2);
+                        x2 = event.getX();
+                        y2 = event.getY();
+                        if (Math.abs(x1 - x2) < 6 && Math.abs(y1 - y2) < 6) {
+                            AdClickDbUtil.insert(Long.valueOf(mAdsEntity.getId()), AdController.TYPE_HOME, heartbeatTime);
+                            Intent intent = new Intent(getView().getActivity(), AdNewActivity.class);
+                            intent.putExtra(AdNewActivity.POSITION, currentPage);
+                            intent.putExtra(AdNewActivity.TYPE, AdNewActivity.TYPE_TWO);
+                            getView().getActivity().startActivity(intent);
+                        }
+                        adController.startAdTimer(AdController.TYPE_HOME, currentPage);
+                        break;
+                }
+                return false;
+            }
+        });
+
     }
 
     @Override
@@ -376,6 +433,12 @@ public class InfoFragmentPresenter extends AppBaseFragmentPresenter<InfoFragment
         if (adImageView == null || textureView == null)
             return;
 
+        if (adapter != null && adViewPager != null) {
+            Log.d("ad12", "清除");
+            adViewPager.removeAllViews();
+            adViewPager.setAdapter(adapter = new AdViewPagerAdapter());
+        }
+
         textureView.stop();
         adImageView.setVisibility(View.VISIBLE);
         textureView.setVisibility(View.INVISIBLE);
@@ -435,8 +498,58 @@ public class InfoFragmentPresenter extends AppBaseFragmentPresenter<InfoFragment
                 , fromCache
                 , new AdController.IExecuteRule() {
                     @Override
+                    public void onAllAdsReceive(List<AdEntity.AdsEntity> allAds) {
+                        if (allAds == null || allAds.size() == 0)
+                            return;
+
+                        if (views != null && views.size() > 0) {
+                            views.clear();
+                        }
+
+                        if (adsEntities != null && adsEntities.size() > 0) {
+                            adsEntities.clear();
+                        }
+
+                        Log.d("ad11", "所有" + allAds);
+
+                        for (int i = 0; i < allAds.size(); i++) {
+                            AdEntity.AdsEntity entity = allAds.get(i);
+                            File file = entity.getFile();
+                            if (file.exists()) {
+                                adsEntities.add(entity);
+                                Log.d("ad12", file + ", 详细信息: " + entity);
+                                addType = entity.getMedia_type();
+
+                                if (adImageView == null || textureView == null)
+                                    return;
+                                if (PloyhomeFragmentPresenter.IMAGE_AD_TYPE.equals(addType)) {
+                                    ImageView imageView = (ImageView) inflater.inflate(R.layout.layout_ad_image, null);
+
+                                    views.add(imageView);
+                                    entity.setMedia_url(file.getAbsolutePath());
+                                } else if (PloyhomeFragmentPresenter.VIDEO_AD_TYPE.equals(addType)) {
+
+                                    MyTextureView textureView = (MyTextureView) inflater.inflate(R.layout.layout_ad_video, null);
+
+                                    views.add(textureView);
+                                    entity.setMedia_url(file.getAbsolutePath());
+                                }
+                            }
+                        }
+                        adapter.setViews(views, adsEntities);
+                        adapter.notifyDataSetChanged();
+                    }
+
+                    @Override
                     public void onAdReceive(AdEntity.AdsEntity adsEntity, File file) {
-                        HandleAd(adsEntity, file);
+//                        HandleAd(adsEntity, file);
+                        if (currentPage == views.size() - 1) {
+                            currentPage = -1;
+                        }
+                        currentPage++;
+                        adViewPager.setCurrentItem(currentPage, false);
+                        mIsGetNewAd = true;
+                        mAdsEntity = adsEntity;
                     }
 
                     @Override
@@ -462,5 +575,42 @@ public class InfoFragmentPresenter extends AppBaseFragmentPresenter<InfoFragment
                         initAd();
                     }
                 });
+    }
+
+    @Override
+    public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+
+    }
+
+    @Override
+    public void onPageSelected(int position) {
+        Log.d("ad12", "滑动到当前页" + position);
+        if (views.size() != 0
+                && adsEntities.size() != 0
+                && views.size() == adsEntities.size()) {
+            AdEntity.AdsEntity adsEntity = adsEntities.get(position);
+            if (adsEntity.getMedia_type().equals(PloyhomeFragmentPresenter.VIDEO_AD_TYPE)) {
+                if (currentView != null) {
+                    ((MyTextureView) currentView).stop();
+                    currentView = null;
+                }
+                currentView = adViewPager.findViewWithTag(position);
+
+                if (currentView == null)
+                    return;
+
+                adapter.playVideo(currentView, adsEntity.getFile());
+            } else {
+                if (currentView != null) {
+                    ((MyTextureView) currentView).stop();
+                    currentView = null;
+                }
+            }
+        }
+    }
+
+    @Override
+    public void onPageScrollStateChanged(int state) {
+
     }
 }

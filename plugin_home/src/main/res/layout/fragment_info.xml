@@ -56,13 +56,23 @@
                 app:content_img="@mipmap/bg_setting"
                 app:title_text="@string/title_setting" />
 
+            <com.techjumper.polyhome.b.home.widget.AdViewPager
+                android:id="@+id/advp"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/dp_330"
+                android:layout_marginLeft="@dimen/dp_10"
+                android:layout_toRightOf="@id/speak"
+                android:background="@mipmap/bg_ad"
+                android:visibility="visible" />
+
             <FrameLayout
                 android:id="@+id/ad_tem"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/dp_330"
                 android:layout_marginLeft="@dimen/dp_10"
                 android:layout_toRightOf="@id/speak"
-                android:background="@mipmap/bg_ad">
+                android:background="@mipmap/bg_ad"
+                android:visibility="gone">
 
                 <com.techjumper.polyhome.b.home.widget.MyTextureView
                     android:id="@+id/video_ad_tem"

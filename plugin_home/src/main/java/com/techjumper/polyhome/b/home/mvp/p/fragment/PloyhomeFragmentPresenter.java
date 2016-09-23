@@ -11,6 +11,7 @@ import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 
 import com.jakewharton.rxbinding.view.RxView;
@@ -25,6 +26,7 @@ import com.techjumper.commonres.entity.event.AdTemEvent;
 import com.techjumper.commonres.entity.event.HeartbeatTimeEvent;
 import com.techjumper.commonres.entity.event.InfoMediaPlayerEvent;
 import com.techjumper.commonres.entity.event.NoticeEvent;
+import com.techjumper.commonres.entity.event.PropertyActionEvent;
 import com.techjumper.commonres.entity.event.ShowMainAdEvent;
 import com.techjumper.commonres.entity.event.TimerEvent;
 import com.techjumper.commonres.entity.event.UserInfoEvent;
@@ -44,6 +46,7 @@ import com.techjumper.polyhome.b.home.adapter.AdViewPagerAdapter;
 import com.techjumper.polyhome.b.home.db.util.AdClickDbUtil;
 import com.techjumper.polyhome.b.home.mvp.m.PloyhomeFragmentModel;
 import com.techjumper.polyhome.b.home.mvp.v.activity.AdActivity;
+import com.techjumper.polyhome.b.home.mvp.v.activity.AdNewActivity;
 import com.techjumper.polyhome.b.home.mvp.v.activity.JujiaActivity;
 import com.techjumper.polyhome.b.home.mvp.v.activity.ShoppingActivity;
 import com.techjumper.polyhome.b.home.mvp.v.fragment.PloyhomeFragment;
@@ -86,6 +89,7 @@ public class PloyhomeFragmentPresenter extends AppBaseFragmentPresenter<Ployhome
     private boolean mIsVisibleToUser;
     private boolean mIsGetAd;
     private boolean mIsGetNewAd;
+    private float x1, x2, y1, y2;
 
     private Timer timer = new Timer();
     private int position = 0;
@@ -123,15 +127,16 @@ public class PloyhomeFragmentPresenter extends AppBaseFragmentPresenter<Ployhome
 
     @Override
     public void onViewInited(Bundle savedInstanceState) {
-//        inflater = LayoutInflater.from(getView().getContext());
+        inflater = LayoutInflater.from(getView().getContext());
 //
         adImageView = getView().getAd();
         textureView = getView().getTextureView();
-//        adViewPager = getView().getAdvp();
-//        adViewPager.setAdapter(adapter = new AdViewPagerAdapter());
-//        adViewPager.setOffscreenPageLimit(3);
-//        adViewPager.addOnPageChangeListener(this);
-//        adViewPager.setCurrentItem(0);
+        adViewPager = getView().getAdvp();
+
+        adViewPager.setAdapter(adapter = new AdViewPagerAdapter());
+        adViewPager.setOffscreenPageLimit(3);
+        adViewPager.addOnPageChangeListener(this);
+        adViewPager.setCurrentItem(0);
 
         getAd(true);
         getNotices();
@@ -183,20 +188,29 @@ public class PloyhomeFragmentPresenter extends AppBaseFragmentPresenter<Ployhome
                     PluginEngineUtil.startInfo(userId, familyId, ticket, type, unreadString);
                 }));
 
-        addSubscription(RxView.clicks(getView().getAd_layout())
-                .filter(aVoid -> {
-                    if (mAdsEntity != null && !TextUtils.isEmpty(mAdsEntity.getMedia_type()))
-                        return true;
+//        addSubscription(RxView.clicks(getView().getAd_layout())
+//                .filter(aVoid -> {
+//                    if (mAdsEntity != null && !TextUtils.isEmpty(mAdsEntity.getMedia_type()))
+//                        return true;
+//
+//                    return false;
+//                })
+//                .compose(RxUtil.applySchedulers())
+//                .subscribe(aVoid -> {
+//                    AdClickDbUtil.insert(Long.valueOf(mAdsEntity.getId()), AdController.TYPE_HOME, heartbeatTime);
+//                    Intent intent = new Intent(getView().getActivity(), AdActivity.class);
+//                    intent.putExtra(AdActivity.ADITEM, mAdsEntity);
+//                    getView().getActivity().startActivity(intent);
+//                }));
 
-                    return false;
-                })
-                .compose(RxUtil.applySchedulers())
-                .subscribe(aVoid -> {
-                    AdClickDbUtil.insert(Long.valueOf(mAdsEntity.getId()), AdController.TYPE_HOME, heartbeatTime);
-                    Intent intent = new Intent(getView().getActivity(), AdActivity.class);
-                    intent.putExtra(AdActivity.ADITEM, mAdsEntity);
-                    getView().getActivity().startActivity(intent);
-                }));
+//        addSubscription(RxView.clicks(adViewPager)
+//                .compose(RxUtil.applySchedulers())
+//                .subscribe(aVoid -> {
+//                    AdClickDbUtil.insert(Long.valueOf(mAdsEntity.getId()), AdController.TYPE_HOME, heartbeatTime);
+//                    Intent intent = new Intent(getView().getActivity(), AdNewActivity.class);
+//                    intent.putExtra(AdActivity.ADITEM, mAdsEntity);
+//                    getView().getActivity().startActivity(intent);
+//                }));
 
         addSubscription(RxView.clicks(getView().getShopping())
                 .filter(aVoid -> {
@@ -213,15 +227,15 @@ public class PloyhomeFragmentPresenter extends AppBaseFragmentPresenter<Ployhome
                     getView().startActivity(intent);
                 }));
 
-//        addSubscription(RxView.clicks(getView().getJujia())
-//                .compose(RxUtil.applySchedulers())
-//                .subscribe(aVoid -> {
-//                    Intent intent = new Intent(getView().getActivity(), JujiaActivity.class);
-//                    intent.putExtra(JujiaActivity.TIME, heartbeatTime);
-//                    getView().startActivity(intent);
-//                }));
+        addSubscription(RxView.clicks(getView().getJujia())
+                .compose(RxUtil.applySchedulers())
+                .subscribe(aVoid -> {
+                    Intent intent = new Intent(getView().getActivity(), JujiaActivity.class);
+                    intent.putExtra(JujiaActivity.TIME, heartbeatTime);
+                    getView().startActivity(intent);
+                }));
 
-        getView().getJujia().setClickable(false);
+//        getView().getJujia().setClickable(false);
 
         addSubscription(RxView.clicks(getView().getSmarthome())
                 .compose(RxUtil.applySchedulers())
@@ -325,22 +339,38 @@ public class PloyhomeFragmentPresenter extends AppBaseFragmentPresenter<Ployhome
 
         AlarmManagerUtil.setNoticeTime(Utils.appContext);
 
-//        adViewPager.setOnTouchListener(new View.OnTouchListener() {
-//            @Override
-//            public boolean onTouch(View v, MotionEvent event) {
-//                switch (event.getAction()) {
-//                    case MotionEvent.ACTION_DOWN:
-//                    case MotionEvent.ACTION_MOVE:
-//                        adController.stopAdTimer(AdController.TYPE_HOME);
-//                        break;
-//                    case MotionEvent.ACTION_CANCEL:
-//                    case MotionEvent.ACTION_UP:
-//                        adController.startAdTimer(AdController.TYPE_HOME, currentPage);
-//                        break;
-//                }
-//                return false;
-//            }
-//        });
+        adViewPager.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+
+                switch (event.getAction()) {
+                    case MotionEvent.ACTION_DOWN:
+                        x1 = event.getX();
+                        y1 = event.getY();
+                        break;
+                    case MotionEvent.ACTION_MOVE:
+                        Log.d("ad12", "关掉");
+                        adController.stopAdTimer(AdController.TYPE_HOME);
+                        break;
+                    case MotionEvent.ACTION_UP:
+                        Log.d("ad12", "开启");
+                        Log.d("ad12", x1 + " " + x2);
+                        x2 = event.getX();
+                        y2 = event.getY();
+                        if (Math.abs(x1 - x2) < 6 && Math.abs(y1 - y2) < 6) {
+                            AdClickDbUtil.insert(Long.valueOf(mAdsEntity.getId()), AdController.TYPE_HOME, heartbeatTime);
+                            Intent intent = new Intent(getView().getActivity(), AdNewActivity.class);
+                            intent.putExtra(AdNewActivity.POSITION, currentPage);
+                            intent.putExtra(AdNewActivity.TYPE, AdNewActivity.TYPE_ONE);
+                            getView().getActivity().startActivity(intent);
+                        }
+                        adController.startAdTimer(AdController.TYPE_HOME, currentPage);
+                        break;
+                }
+                return false;
+            }
+        });
+
     }
 
     private void getNotices() {
@@ -585,13 +615,11 @@ public class PloyhomeFragmentPresenter extends AppBaseFragmentPresenter<Ployhome
         if (adImageView == null || textureView == null)
             return;
 
-//        if (adViewPager != null) {
-//            adViewPager.removeAllViews();
-//        }
-//
-//        if (adapter != null) {
-//            adapter.clear();
-//        }
+        if (adapter != null && adViewPager != null) {
+            Log.d("ad12", "清除");
+            adViewPager.removeAllViews();
+            adViewPager.setAdapter(adapter = new AdViewPagerAdapter());
+        }
 
         textureView.stop();
         adImageView.setVisibility(View.VISIBLE);
@@ -793,63 +821,63 @@ public class PloyhomeFragmentPresenter extends AppBaseFragmentPresenter<Ployhome
                 , fromCache
                 , new AdController.IExecuteRule() {
 
-//                    @Override
-//                    public void onAllAdsReceive(List<AdEntity.AdsEntity> allAds) {
-//                        if (allAds == null || allAds.size() == 0)
-//                            return;
-//
-//                        if (views != null && views.size() > 0) {
-//                            views.clear();
-//                        }
-//
-//                        if (adsEntities != null && adsEntities.size() > 0) {
-//                            adsEntities.clear();
-//                        }
-//
-//                        Log.d("ad11", "所有" + allAds);
-//
-//                        for (int i = 0; i < allAds.size(); i++) {
-//                            AdEntity.AdsEntity entity = allAds.get(i);
-//                            File file = entity.getFile();
-//                            if (file.exists()) {
-//                                adsEntities.add(entity);
-//                                Log.d("ad12", file + ", 详细信息: " + entity);
-//                                addType = entity.getMedia_type();
-//
-//                                if (adImageView == null || textureView == null)
-//                                    return;
-//                                if (IMAGE_AD_TYPE.equals(addType)) {
-//                                    ImageView imageView = (ImageView) inflater.inflate(R.layout.layout_ad_image, null);
-//
-//                                    views.add(imageView);
-//                                    entity.setMedia_url(file.getAbsolutePath());
-//                                } else if (VIDEO_AD_TYPE.equals(addType)) {
-//
-//                                    MyTextureView textureView = (MyTextureView) inflater.inflate(R.layout.layout_ad_video, null);
-//
-//                                    views.add(textureView);
-//                                    entity.setMedia_url(file.getAbsolutePath());
-//                                }
-//                            }
-//                        }
-//                        adapter.setViews(views, adsEntities);
-//                        adapter.notifyDataSetChanged();
-//                    }
+                    @Override
+                    public void onAllAdsReceive(List<AdEntity.AdsEntity> allAds) {
+                        if (allAds == null || allAds.size() == 0)
+                            return;
+
+                        if (views != null && views.size() > 0) {
+                            views.clear();
+                        }
+
+                        if (adsEntities != null && adsEntities.size() > 0) {
+                            adsEntities.clear();
+                        }
+
+                        Log.d("ad11", "所有" + allAds);
+
+                        for (int i = 0; i < allAds.size(); i++) {
+                            AdEntity.AdsEntity entity = allAds.get(i);
+                            File file = entity.getFile();
+                            if (file.exists()) {
+                                adsEntities.add(entity);
+                                Log.d("ad12", file + ", 详细信息: " + entity);
+                                addType = entity.getMedia_type();
+
+                                if (adImageView == null || textureView == null)
+                                    return;
+                                if (IMAGE_AD_TYPE.equals(addType)) {
+                                    ImageView imageView = (ImageView) inflater.inflate(R.layout.layout_ad_image, null);
+
+                                    views.add(imageView);
+                                    entity.setMedia_url(file.getAbsolutePath());
+                                } else if (VIDEO_AD_TYPE.equals(addType)) {
+
+                                    MyTextureView textureView = (MyTextureView) inflater.inflate(R.layout.layout_ad_video, null);
+
+                                    views.add(textureView);
+                                    entity.setMedia_url(file.getAbsolutePath());
+                                }
+                            }
+                        }
+                        adapter.setViews(views, adsEntities);
+                        adapter.notifyDataSetChanged();
+                    }
 
                     @Override
                     public void onAdReceive(AdEntity.AdsEntity adsEntity, File file) {
                         Log.d("adsEntity", "adsEntity: " + adsEntity);
                         Log.d("adsEntity", "file: " + file);
                         Log.d("adsEntity", "file.getAbsolutePath(): " + file.getAbsolutePath());
-                        HandleAd(adsEntity, file);
-//                        Log.d("ad12", "跳下一页, 当前页" + currentPage);
-//                        if (currentPage == views.size() - 1) {
-//                            currentPage = -1;
-//                        }
-//                        currentPage++;
-//                        adViewPager.setCurrentItem(currentPage, false);
-//                        mIsGetNewAd = true;
-//                        mAdsEntity = adsEntity;
+//                        HandleAd(adsEntity, file);
+                        Log.d("ad12", "跳下一页, 当前页" + currentPage);
+                        if (currentPage == views.size() - 1) {
+                            currentPage = -1;
+                        }
+                        currentPage++;
+                        adViewPager.setCurrentItem(currentPage, false);
+                        mIsGetNewAd = true;
+                        mAdsEntity = adsEntity;
                     }
 
                     @Override

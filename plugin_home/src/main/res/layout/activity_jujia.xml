@@ -8,11 +8,25 @@
 
     <include layout="@layout/layout_bottom" />
 
-    <WebView
-        android:id="@+id/webview"
+    <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_weight="1" />
+        android:layout_weight="1">
+
+        <WebView
+            android:id="@+id/webview"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+
+        <ImageView
+            android:id="@+id/call"
+            android:layout_width="140dp"
+            android:layout_height="140dp"
+            android:layout_gravity="right"
+            android:layout_marginRight="@dimen/dp_20"
+            android:layout_marginTop="@dimen/dp_20"
+            android:src="@mipmap/yijian_call" />
+    </FrameLayout>
 
 
 </LinearLayout>
