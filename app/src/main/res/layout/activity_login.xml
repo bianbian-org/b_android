@@ -28,6 +28,8 @@
                 android:textSize="@dimen/sp_16" />
 
             <EditText
+                android:imeOptions="actionNext"
+                android:singleLine="true"
                 android:id="@+id/et_account"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
@@ -61,6 +63,7 @@
                 android:textSize="@dimen/sp_16" />
 
             <EditText
+                android:imeOptions="actionDone"
                 android:id="@+id/et_password"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
