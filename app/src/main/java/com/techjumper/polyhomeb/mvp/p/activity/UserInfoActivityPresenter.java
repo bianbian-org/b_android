@@ -106,14 +106,13 @@ public class UserInfoActivityPresenter extends AppBaseActivityPresenter<UserInfo
                             } else if (o instanceof SexEvent) {
                                 SexEvent event = (SexEvent) o;
                                 String sex = event.getSex();
-                                getView().getTvSex().setText(sex);
-                                //收到的sex,是字符串的男和女,不是1和2;SP和服务器返回的是1和2
-                                if (getView().getString(R.string.male).equals(sex)) {
-                                    mSex = "1";
-                                } else if (getView().getString(R.string.female).equals(sex)) {
-                                    mSex = "2";
+                                mSex = sex;
+                                if ("1".equals(sex)) {
+                                    getView().getTvSex().setText(getView().getString(R.string.male));
+                                } else if ("2".equals(sex)) {
+                                    getView().getTvSex().setText(getView().getString(R.string.female));
                                 } else {
-                                    mSex = "";
+                                    getView().getTvSex().setText("");
                                 }
                                 canRightClick();
                             }
@@ -223,7 +222,7 @@ public class UserInfoActivityPresenter extends AppBaseActivityPresenter<UserInfo
 
     private void changeSex() {
         Bundle bundle = new Bundle();
-        bundle.putString(KEY_SEX, getView().getTvSex().getText().toString());
+        bundle.putString(KEY_SEX, mSex);
         new AcHelper.Builder(getView()).extra(bundle).target(ChangeSexActivity.class).start();
     }
 

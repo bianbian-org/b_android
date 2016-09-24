@@ -38,17 +38,15 @@ public class ChangeSexActivity extends AppBaseActivity<ChangeSexActivityPresente
 
     @Override
     protected void initView(Bundle savedInstanceState) {
-        String sex = getPresenter().getSex();
-
-
-
-
-        getPresenter().mSex = sex;
+        String sex = getPresenter().getSex();  //1  2
+        String sex_ = "";  //男  女
         if (!TextUtils.isEmpty(sex)) {
-            if (getString(R.string.male).equals(sex)) {
+            if ("1".equals(sex)) {
+                sex_ = getString(R.string.male);
                 mIvMale.setVisibility(View.VISIBLE);
                 mIvFemale.setVisibility(View.GONE);
-            } else if (getString(R.string.female).equals(sex)) {
+            } else if ("2".equals(sex)) {
+                sex_ = getString(R.string.female);
                 mIvMale.setVisibility(View.GONE);
                 mIvFemale.setVisibility(View.VISIBLE);
             } else {
@@ -59,8 +57,8 @@ public class ChangeSexActivity extends AppBaseActivity<ChangeSexActivityPresente
             mIvMale.setVisibility(View.GONE);
             mIvFemale.setVisibility(View.GONE);
         }
-
-
+        getPresenter().mSex = sex_;
+        getPresenter().mSex_ = sex;
     }
 
     @Override

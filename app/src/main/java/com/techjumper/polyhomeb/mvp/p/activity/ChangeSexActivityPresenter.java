@@ -22,6 +22,7 @@ public class ChangeSexActivityPresenter extends AppBaseActivityPresenter<ChangeS
     private ChangeSexActivityModel mModel = new ChangeSexActivityModel(this);
 
     public String mSex = "";
+    public String mSex_ = "";
 
     @Override
     public void initData(Bundle savedInstanceState) {
@@ -38,11 +39,13 @@ public class ChangeSexActivityPresenter extends AppBaseActivityPresenter<ChangeS
         switch (view.getId()) {
             case R.id.layout_male:
                 mSex = getView().getString(R.string.male);
+                mSex_ = "1";
                 getView().getIvMale().setVisibility(View.VISIBLE);
                 getView().getIvFemale().setVisibility(View.GONE);
                 break;
             case R.id.layout_female:
                 mSex = getView().getString(R.string.female);
+                mSex_ = "2";
                 getView().getIvMale().setVisibility(View.GONE);
                 getView().getIvFemale().setVisibility(View.VISIBLE);
                 break;
@@ -50,10 +53,10 @@ public class ChangeSexActivityPresenter extends AppBaseActivityPresenter<ChangeS
     }
 
     public void sendSex() {
-        RxBus.INSTANCE.send(new SexEvent(mSex));
+        RxBus.INSTANCE.send(new SexEvent(mSex_));
     }
 
-    public String getSex() {  //从UserInfoActivity传过来的数据,只可能是  "男"或者"女",,不会是1或者2
+    public String getSex() {  //从UserInfoActivity传过来的数据,只可能是1或者2或者"",不会是男或者女或者"".
         return mModel.getSex();
     }
 }
