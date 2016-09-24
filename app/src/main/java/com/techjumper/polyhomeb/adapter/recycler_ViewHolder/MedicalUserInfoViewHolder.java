@@ -55,18 +55,18 @@ public class MedicalUserInfoViewHolder extends BaseRecyclerViewHolder<MedicalUse
                     sex_ = "";
                 }
             }
-//            setText(R.id.tv_content, sex_);
             tv_content.setText(sex_);
         } else {
-//            setText(R.id.tv_content, data.getContent());
             tv_content.setText(data.getContent());
         }
-//        setText(R.id.tv_label, data.getLabel());
         tv_label.setText(data.getLabel());
 
         if (getLayoutPosition() == 16) {  //手机  手机由于接口不下发短信,只下发json验证码,所以就不能修改手机号
             tv_content.setTextColor(ResourceUtils.getColorResource(R.color.color_e2e2e2));
             tv_label.setTextColor(ResourceUtils.getColorResource(R.color.color_e2e2e2));
+        } else {
+            tv_content.setTextColor(ResourceUtils.getColorResource(R.color.color_a8a8a8));
+            tv_label.setTextColor(ResourceUtils.getColorResource(R.color.color_3e3e3e));
         }
 
         setOnClickListener(R.id.layout_root, v -> {

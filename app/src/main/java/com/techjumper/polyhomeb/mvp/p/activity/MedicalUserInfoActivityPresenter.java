@@ -165,8 +165,6 @@ public class MedicalUserInfoActivityPresenter extends AppBaseActivityPresenter<M
                 }
             }
         }
-//        getView().getAdapter().notifyDataSetChanged();  //不起作用了,所以只好调用下面这个方法
-//        所以上面那个循环和if都可以不要了,因为反正都是调用下面这个方法,不存在刷新RV的item
         getUserInfo();
     }
 
