@@ -1,5 +1,7 @@
 package com.techjumper.polyhomeb.adapter.recycler_Data;
 
+import com.techjumper.polyhomeb.entity.medicalEntity.MedicalMainEntity;
+
 /**
  * * * * * * * * * * * * * * * * * * * * * * *
  * Created by lixin
@@ -9,9 +11,16 @@ package com.techjumper.polyhomeb.adapter.recycler_Data;
 public class MedicalMainData {
 
     private String data;
-
     private int position;
-    private boolean isNoData;
+    private MedicalMainEntity.DataBean dataBean;
+
+    public MedicalMainEntity.DataBean getDataBean() {
+        return dataBean;
+    }
+
+    public void setDataBean(MedicalMainEntity.DataBean dataBean) {
+        this.dataBean = dataBean;
+    }
 
     public String getData() {
         return data;
@@ -19,14 +28,6 @@ public class MedicalMainData {
 
     public void setData(String data) {
         this.data = data;
-    }
-
-    public boolean isNoData() {
-        return isNoData;
-    }
-
-    public void setNoData(boolean noData) {
-        isNoData = noData;
     }
 
     public int getPosition() {

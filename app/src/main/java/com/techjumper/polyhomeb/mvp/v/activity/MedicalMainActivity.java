@@ -6,7 +6,6 @@ import android.text.TextUtils;
 import android.view.View;
 import android.widget.TextView;
 
-import com.steve.creact.library.display.DisplayBean;
 import com.techjumper.corelib.mvp.factory.Presenter;
 import com.techjumper.polyhomeb.R;
 import com.techjumper.polyhomeb.adapter.MedicalMainActivityAdapter;
@@ -14,8 +13,6 @@ import com.techjumper.polyhomeb.mvp.p.activity.MedicalMainActivityPresenter;
 import com.techjumper.polyhomeb.other.MedicalDividerDecoration;
 import com.techjumper.polyhomeb.user.UserManager;
 import com.techjumper.polyhomeb.utils.TitleHelper;
-
-import java.util.List;
 
 import butterknife.Bind;
 import cn.finalteam.loadingviewfinal.RecyclerViewFinal;
@@ -49,7 +46,7 @@ public class MedicalMainActivity extends AppBaseActivity<MedicalMainActivityPres
         mRv.addItemDecoration(new MedicalDividerDecoration(this));
         mAdapter = new MedicalMainActivityAdapter();
         mRv.setAdapter(mAdapter);
-
+        mAdapter.loadData(getPresenter().getViewData());
         String nickName = UserManager.INSTANCE.getUserInfo(UserManager.KEY_MEDICAL_CURRENT_USER_NICK_NAME);
         String pName = UserManager.INSTANCE.getUserInfo(UserManager.KEY_MEDICAL_CURRENT_USER_P_NAME);
 
@@ -73,7 +70,7 @@ public class MedicalMainActivity extends AppBaseActivity<MedicalMainActivityPres
         return true;
     }
 
-    public void onDataReceived(List<DisplayBean> displayBeen) {
-        mAdapter.loadData(displayBeen);
+    public MedicalMainActivityAdapter getAdapter() {
+        return mAdapter;
     }
 }

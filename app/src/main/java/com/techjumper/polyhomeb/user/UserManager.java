@@ -7,6 +7,7 @@ import com.techjumper.corelib.utils.file.PreferenceUtils;
 import com.techjumper.lib2.utils.GsonUtils;
 import com.techjumper.polyhomeb.Config;
 import com.techjumper.polyhomeb.entity.LoginEntity;
+import com.techjumper.polyhomeb.entity.medicalEntity.MedicalAllUserEntity;
 import com.techjumper.polyhomeb.entity.medicalEntity.MedicalUserLoginEntity;
 import com.techjumper.polyhomeb.user.event.LoginEvent;
 import com.techjumper.polyhomeb.utils.HostIpHelper;
@@ -285,6 +286,8 @@ public enum UserManager {
     public static final String KEY_MEDICAL_CURRENT_USER_WEIGHT = "key_medical_current_user_weight";
     public static final String KEY_MEDICAL_CURRENT_USER_HEIGHT = "key_medical_current_user_height";
 
+    public static final String KEY_MEDICAL_ALL_USER_INFO_LIST = "key_medical_all_user_info_list";
+
 
     public void saveMedicalUserInfo(MedicalUserLoginEntity entity) {
         MedicalUserLoginEntity.MemberBean data = entity.getMember();
@@ -325,6 +328,15 @@ public enum UserManager {
         PreferenceUtils.save(KEY_MEDICAL_CURRENT_USER_BIRTHDAY, "");
         PreferenceUtils.save(KEY_MEDICAL_CURRENT_USER_WEIGHT, "");
         PreferenceUtils.save(KEY_MEDICAL_CURRENT_USER_HEIGHT, "");
+    }
+
+    public void saveMedicalAllUserInfo(List<MedicalAllUserEntity> entities) {
+        PreferenceUtils.save(KEY_MEDICAL_ALL_USER_INFO_LIST, GsonUtils.toJson(entities));
+    }
+
+    public List<MedicalAllUserEntity> getMedicalAllUserInfo() {
+        String userInfo = PreferenceUtils.get(KEY_MEDICAL_ALL_USER_INFO_LIST, "");
+        return GsonUtils.fromJson(userInfo, List.class);
     }
 
 

@@ -41,69 +41,7 @@ public class MedicalMainActivityModel extends BaseModel<MedicalMainActivityPrese
                 .compose(CommonWrap.wrap());
     }
 
-    public List<DisplayBean> processData(Map<String, Result<MedicalMainEntity>> map) {
-        List<DisplayBean> displayBeen = new ArrayList<>();
-        for (Map.Entry<String, Result<MedicalMainEntity>> m : map.entrySet()) {
-            sortData(m.getKey(), m.getValue(), displayBeen);
-        }
-        return displayBeen;
-    }
-
-    private void sortData(String key, Result<MedicalMainEntity> result, List<DisplayBean> displayBeen) {
-
-        switch (key) {
-            case "bp"://血压
-                process(key, result, displayBeen);
-                break;
-            case "bg"://血糖
-                process(key, result, displayBeen);
-                break;
-            case "po"://血氧
-                process(key, result, displayBeen);
-                break;
-            case "ecg"://心电图
-                process(key, result, displayBeen);
-                break;
-            case "wt"://体重成分
-                process(key, result, displayBeen);
-                break;
-            case "pdr"://运动量
-                process(key, result, displayBeen);
-                break;
-            case "bt"://体温
-                process(key, result, displayBeen);
-                break;
-            case "1"://心率
-                process(key, result, displayBeen);
-                break;
-            case "2"://睡眠
-                process(key, result, displayBeen);
-                break;
-            case "3"://血脂
-                process(key, result, displayBeen);
-                break;
-        }
-    }
-
-    private void process(String key, Result<MedicalMainEntity> result, List<DisplayBean> displayBeen) {
-        MedicalMainData medicalMainData = new MedicalMainData();
-        if (result != null
-                || result.response() != null
-                || result.response().body() != null
-                || result.response().body().getData() != null
-                || result.response().body().getData().size() != 0) {
-            medicalMainData.setNoData(false);
-            medicalMainData.setPosition(getPositionByKey(key));
-            medicalMainData.setData(getDataByKey(key, result));
-        } else {
-            medicalMainData.setNoData(true);
-            medicalMainData.setPosition(getPositionByKey(key));
-        }
-        MedicalMainBean medicalMainBean = new MedicalMainBean(medicalMainData);
-        displayBeen.add(medicalMainBean);
-    }
-
-    private int getPositionByKey(String key) {
+    public int getPositionByKey(String key) {
         switch (key) {
             case "bp"://血压
                 return 0;
@@ -130,58 +68,78 @@ public class MedicalMainActivityModel extends BaseModel<MedicalMainActivityPrese
         }
     }
 
-    private String getDataByKey(String key, Result<MedicalMainEntity> result) {
+    public String getDataByKey(String key, MedicalMainEntity.DataBean dataBean) {
         switch (key) {
             case "bp"://血压
-                MedicalMainEntity.DataBean dataBean1 = result.response().body().getData().get(0);
-                int systolic = dataBean1.getSystolic();  //高压
-                int diastolic = dataBean1.getDiastolic();  //低压
+                int systolic = dataBean.getSystolic();  //高压
+                int diastolic = dataBean.getDiastolic();  //低压
                 return diastolic + "/" + systolic;
             case "bg"://血糖
-                MedicalMainEntity.DataBean dataBean2 = result.response().body().getData().get(0);
-                double bgValue = dataBean2.getBgValue();
+                double bgValue = dataBean.getBgValue();
                 return bgValue + "";
             case "po"://血氧
-                MedicalMainEntity.DataBean dataBean3 = result.response().body().getData().get(0);
-                double spo2 = dataBean3.getSpo2();
+                double spo2 = dataBean.getSpo2();
                 return spo2 + "";
             case "ecg"://心电图
-                MedicalMainEntity.DataBean dataBean4 = result.response().body().getData().get(0);
-                String measureTime = dataBean4.getMeasureTime();  //需要时间格式化
+                String measureTime = dataBean.getMeasureTime();  //需要时间格式化
                 return formatTime(measureTime);
             case "wt"://体重成分
-                MedicalMainEntity.DataBean dataBean5 = result.response().body().getData().get(0);
-                double weight = dataBean5.getWeight();
+                double weight = dataBean.getWeight();
                 return weight + "";
             case "pdr"://运动量
-                MedicalMainEntity.DataBean dataBean6 = result.response().body().getData().get(0);
-                int stepCount = dataBean6.getStepCount();
+                int stepCount = dataBean.getStepCount();
                 return stepCount + "";
             case "bt"://体温
-                MedicalMainEntity.DataBean dataBean7 = result.response().body().getData().get(0);
-                double btValue = dataBean7.getBtValue();
+                double btValue = dataBean.getBtValue();
                 return btValue + "";
             case "1"://心率
-                MedicalMainEntity.DataBean dataBean8 = result.response().body().getData().get(0);
-                int heartRate = dataBean8.getHeartRate();
+                int heartRate = dataBean.getHeartRate();
                 return heartRate + "";
             case "2"://睡眠
                 return "";
             case "3"://血脂
                 return "";
             default:
-                return "———";
+                return "";
         }
     }
 
-    //无数据时显示的视图
-    public List<DisplayBean> noData() {
+    public String getPathByCount(int count) {
+        //2016-9-22,此时接口没有提供心率,睡眠,血脂,但是设计图有这三项,所以先1,2,3,这三个的接口会报404.
+        switch (count) {
+            case 0:
+                return "bp";//血压
+            case 1:
+                return "bg";//血糖
+            case 2:
+                return "po";//血氧
+            case 3:
+                return "ecg";//心电图
+            case 4:
+                return "wt";//体重成分
+            case 5:
+                return "pdr";//运动量
+            case 6:
+                return "bt";//体温
+            case 7:
+                return "1";//心率
+            case 8:
+                return "2";//睡眠
+            case 9:
+                return "3";//血脂
+            default:
+                return "";
 
+        }
+    }
+
+    //先把View显示出来,之后访问网络之时,再把取到的数据分别设置上去
+    public List<DisplayBean> getViewData() {
         List<DisplayBean> displayBeen = new ArrayList<>();
         for (int i = 0; i < 10; i++) {
             MedicalMainData medicalMainData = new MedicalMainData();
-            medicalMainData.setNoData(true);
-            medicalMainData.setPosition(i); //-1代表无数据,所以其他东西都不用设置,留给item自己处理
+            medicalMainData.setPosition(i);
+            medicalMainData.setData("");
             MedicalMainBean medicalMainBean = new MedicalMainBean(medicalMainData);
             displayBeen.add(medicalMainBean);
         }
@@ -189,13 +147,13 @@ public class MedicalMainActivityModel extends BaseModel<MedicalMainActivityPrese
     }
 
     private String formatTime(String time) {
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm");
         Date date = null;
         try {
             date = sdf.parse(time);
         } catch (ParseException e) {
             e.printStackTrace();
         }
-        return new SimpleDateFormat("MM-dd").format(date);
+        return new SimpleDateFormat("MM月dd日").format(date);
     }
 }

@@ -27,5 +27,7 @@ public class JuJiaViewHolder extends BaseRecyclerViewHolder<JuJiaData> {
         if (data == null) return;
 
         setText(R.id.tv_notice, data.getNotice());
+
+
     }
 }

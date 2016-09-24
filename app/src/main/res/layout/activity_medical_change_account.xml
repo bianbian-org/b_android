@@ -6,7 +6,6 @@
 
     <include layout="@layout/title_back" />
 
-
     <cn.finalteam.loadingviewfinal.RecyclerViewFinal
         android:id="@+id/rv"
         android:layout_width="match_parent"

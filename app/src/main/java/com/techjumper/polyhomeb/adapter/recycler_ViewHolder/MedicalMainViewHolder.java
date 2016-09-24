@@ -1,5 +1,6 @@
 package com.techjumper.polyhomeb.adapter.recycler_ViewHolder;
 
+import android.text.TextUtils;
 import android.view.View;
 
 import com.steve.creact.annotation.DataBean;
@@ -25,17 +26,10 @@ public class MedicalMainViewHolder extends BaseRecyclerViewHolder<MedicalMainDat
     @Override
     public void setData(MedicalMainData data) {
         if (data == null) return;
-        if (data.isNoData()) {  //无数据
-            setText(R.id.tv_label, getLabelByPosition(data.getPosition()));
-            setText(R.id.tv_data, "———");
-            setText(R.id.tv_unit, getUnitByPosition(data.getPosition()));
-            setImageSrc(R.id.iv_icon, getIconByPosition(data.getPosition()));
-        } else {  //有数据
-            setText(R.id.tv_label, getLabelByPosition(data.getPosition()));
-            setText(R.id.tv_data, data.getData());
-            setText(R.id.tv_unit, getUnitByPosition(data.getPosition()));
-            setImageSrc(R.id.iv_icon, getIconByPosition(data.getPosition()));
-        }
+        setText(R.id.tv_label, getLabelByPosition(data.getPosition()));
+        setText(R.id.tv_data, TextUtils.isEmpty(data.getData()) ? "———" : data.getData());
+        setText(R.id.tv_unit, getUnitByPosition(data.getPosition()));
+        setImageSrc(R.id.iv_icon, getIconByPosition(data.getPosition()));
     }
 
     private String getLabelByPosition(int position) {
