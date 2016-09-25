@@ -6,14 +6,22 @@ package com.techjumper.polyhomeb.entity.medicalEntity;
  * Date: 2016/9/23
  * * * * * * * * * * * * * * * * * * * * * * *
  **/
-
 public class MedicalAllUserEntity {
 
-    private String id;
-    private String token;
-    private String pName;
-    private String nickName;
-    private String password;
+    private String id;   //110000024923523
+    private String token;     //397ewfwHK32I3KB4
+    private String pName;     //周杰伦
+    private String nickName;  //神盾局
+    private String password;   //88888888
+    private String username;  //polyvip
+
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
+    }
 
     public String getPassword() {
         return password;

@@ -338,6 +338,7 @@
     <string name="medical_pm">pm</string>
     <string name="medical_mins">分钟</string>
     <string name="medical_mgdl">mg/dl</string>
+    <string name="medical_change_account_success">切换账号成功</string>
 
 
 </resources>

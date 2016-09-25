@@ -2,9 +2,10 @@ package com.techjumper.polyhomeb.user;
 
 import android.text.TextUtils;
 
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 import com.techjumper.corelib.rx.tools.RxBus;
 import com.techjumper.corelib.utils.file.PreferenceUtils;
-import com.techjumper.lib2.utils.GsonUtils;
 import com.techjumper.polyhomeb.Config;
 import com.techjumper.polyhomeb.entity.LoginEntity;
 import com.techjumper.polyhomeb.entity.medicalEntity.MedicalAllUserEntity;
@@ -78,7 +79,11 @@ public enum UserManager {
 
         if (entity.getData().getFamilies() != null && entity.getData().getFamilies().size() != 0) {
             //登录接口多出来的
-            PreferenceUtils.save(KEY_ALL_FAMILIES, GsonUtils.toJson(entity.getData().getFamilies()));
+//            PreferenceUtils.save(KEY_ALL_FAMILIES, GsonUtils.toJson(entity.getData().getFamilies()));
+            Gson gson = new Gson();
+            String json = gson.toJson(entity.getData().getFamilies(), List.class);
+            PreferenceUtils.save(KEY_ALL_FAMILIES, json);
+
             String family_id = entity.getData().getFamilies().get(0).getFamily_id();
             String family_name = entity.getData().getFamilies().get(0).getFamily_name();
             int village_id = entity.getData().getFamilies().get(0).getVillage_id();
@@ -86,7 +91,10 @@ public enum UserManager {
         }
         if (entity.getData().getVillages() != null && entity.getData().getVillages().size() != 0) {
             //登录接口多出来的
-            PreferenceUtils.save(KEY_ALL_VILLAGES, GsonUtils.toJson(entity.getData().getVillages()));
+//            PreferenceUtils.save(KEY_ALL_VILLAGES, GsonUtils.toJson(entity.getData().getVillages()));
+            Gson gson = new Gson();
+            String json = gson.toJson(entity.getData().getVillages(), List.class);
+            PreferenceUtils.save(KEY_ALL_VILLAGES, json);
             //如果KEY_CURRENT_SHOW_IS_FAMILY_OR_VILLAGE是空的,或者value不是家庭的话,证明刚才没有存入家庭,现在就需要存小区.
             if (TextUtils.isEmpty(getUserInfo(KEY_CURRENT_SHOW_IS_FAMILY_OR_VILLAGE))
                     || !VALUE_IS_FAMILY.equals(getUserInfo(KEY_CURRENT_SHOW_IS_FAMILY_OR_VILLAGE))) {
@@ -138,16 +146,26 @@ public enum UserManager {
      * 得到用户所有家庭
      */
     public List<LoginEntity.LoginDataEntity.FamiliesBean> getUserAllFamilies(String key) {
-        String allFamiliesJson = PreferenceUtils.get(KEY_ALL_FAMILIES, key);
-        return GsonUtils.fromJson(allFamiliesJson, List.class);
+//        String allFamiliesJson = PreferenceUtils.get(KEY_ALL_FAMILIES, key);
+//        return GsonUtils.fromJson(allFamiliesJson, List.class);
+        Gson gson = new Gson();
+        String userInfo = PreferenceUtils.get(KEY_ALL_FAMILIES, "");
+        List<LoginEntity.LoginDataEntity.FamiliesBean> options = gson.fromJson(userInfo, new TypeToken<List<LoginEntity.LoginDataEntity.FamiliesBean>>() {
+        }.getType());
+        return options;
     }
 
     /**
      * 得到用户所有小区
      */
     public List<LoginEntity.LoginDataEntity.VillagesBean> getUserAllVillages(String key) {
-        String allVillagesJson = PreferenceUtils.get(KEY_ALL_VILLAGES, key);
-        return GsonUtils.fromJson(allVillagesJson, List.class);
+//        String allVillagesJson = PreferenceUtils.get(KEY_ALL_VILLAGES, key);
+//        return GsonUtils.fromJson(allVillagesJson, List.class);
+        Gson gson = new Gson();
+        String userInfo = PreferenceUtils.get(KEY_ALL_VILLAGES, "");
+        List<LoginEntity.LoginDataEntity.VillagesBean> options = gson.fromJson(userInfo, new TypeToken<List<LoginEntity.LoginDataEntity.VillagesBean>>() {
+        }.getType());
+        return options;
     }
 
     /**
@@ -199,11 +217,7 @@ public enum UserManager {
      */
     public boolean isFamily() {
         String userInfo = getUserInfo(KEY_CURRENT_SHOW_IS_FAMILY_OR_VILLAGE);
-        if (VALUE_IS_FAMILY.equals(userInfo)) {
-            return true;
-        } else {
-            return false;
-        }
+        return VALUE_IS_FAMILY.equals(userInfo);
     }
 
     /**
@@ -270,7 +284,7 @@ public enum UserManager {
     }
 
 
-    /*************************************
+    /**************************************
      * 医疗的用户信息
      **********************************/
     public static final String KEY_MEDICAL_CURRENT_USER_ID = "key_medical_current_user_id";
@@ -331,12 +345,20 @@ public enum UserManager {
     }
 
     public void saveMedicalAllUserInfo(List<MedicalAllUserEntity> entities) {
-        PreferenceUtils.save(KEY_MEDICAL_ALL_USER_INFO_LIST, GsonUtils.toJson(entities));
+        Gson gson = new Gson();
+        String json = gson.toJson(entities, List.class);
+        PreferenceUtils.save(KEY_MEDICAL_ALL_USER_INFO_LIST, json);
+//        PreferenceUtils.save(KEY_MEDICAL_ALL_USER_INFO_LIST, GsonUtils.toJson(entities));
     }
 
     public List<MedicalAllUserEntity> getMedicalAllUserInfo() {
+        Gson gson = new Gson();
         String userInfo = PreferenceUtils.get(KEY_MEDICAL_ALL_USER_INFO_LIST, "");
-        return GsonUtils.fromJson(userInfo, List.class);
+        List<MedicalAllUserEntity> options = gson.fromJson(userInfo, new TypeToken<List<MedicalAllUserEntity>>() {
+        }.getType());
+        return options;
+//        String userInfo = PreferenceUtils.get(KEY_MEDICAL_ALL_USER_INFO_LIST, "");
+//        return GsonUtils.fromJson(userInfo, List.class);
     }
 
 

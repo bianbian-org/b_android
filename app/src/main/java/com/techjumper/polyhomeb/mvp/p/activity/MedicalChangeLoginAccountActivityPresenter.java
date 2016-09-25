@@ -82,8 +82,10 @@ public class MedicalChangeLoginAccountActivityPresenter extends AppBaseActivityP
                             public void onNext(Result<MedicalUserLoginEntity> result) {
                                 if (result == null
                                         || result.response().body() == null
-                                        || result.response().body().getStatus() != 1)
+                                        || result.response().body().getStatus() != 1) {
+                                    ToastUtils.show(getView().getString(R.string.medical_unknow_error));
                                     return;
+                                }
                                 if (401 == result.response().code()) {
                                     ToastUtils.show(getView().getString(R.string.medical_userid_pasw_wrong));
                                     return;
@@ -113,24 +115,20 @@ public class MedicalChangeLoginAccountActivityPresenter extends AppBaseActivityP
 
         boolean hasUserInfo = false;
 
-        if (userInfo == null || userInfo.size() == 0) {
+        //如果不存在集合,就新建一个
+        if (userInfo == null) {
             userInfo = new ArrayList<>();
-            MedicalAllUserEntity medicalAllUserEntity = new MedicalAllUserEntity();
-            medicalAllUserEntity.setPassword(getView().getEtPsw().getEditableText().toString());
-            medicalAllUserEntity.setId(medicalUserLoginEntity.getMember().getId());
-            medicalAllUserEntity.setNickName(medicalUserLoginEntity.getMember().getNickname());
-            medicalAllUserEntity.setpName(medicalUserLoginEntity.getMember().getPname());
-            medicalAllUserEntity.setToken(token);
-            userInfo.add(medicalAllUserEntity);
-        } else {
-            for (MedicalAllUserEntity entity : userInfo) {
-                if (entity.getId().equals(medicalUserLoginEntity.getMember().getId())) {
-                    hasUserInfo = true;
-                    break;
-                }
+        }
+
+        //遍历集合,如果集合中已经有当前登录的信息了,就true,否则false
+        for (MedicalAllUserEntity entity : userInfo) {
+            if (entity.getId().equals(medicalUserLoginEntity.getMember().getId())) {
+                hasUserInfo = true;
+                break;
             }
         }
-        //如果已经存在,那就更新信息
+
+        //如果集合中有当前登录的信息了,就修改这些信息为最新的
         if (hasUserInfo) {
             for (MedicalAllUserEntity entity : userInfo) {
                 if (entity.getId().equals(medicalUserLoginEntity.getMember().getId())) {
@@ -138,18 +136,22 @@ public class MedicalChangeLoginAccountActivityPresenter extends AppBaseActivityP
                     entity.setPassword(getView().getEtPsw().getEditableText().toString());
                     entity.setToken(token);
                     entity.setNickName(medicalUserLoginEntity.getMember().getNickname());
+                    entity.setUsername(getView().getEtAccount().getEditableText().toString());
                     break;
                 }
             }
-        } else { //不存在就存入集合
+            //如果没有,就将这些信息add进集合
+        } else {
             MedicalAllUserEntity medicalAllUserEntity = new MedicalAllUserEntity();
             medicalAllUserEntity.setPassword(getView().getEtPsw().getEditableText().toString());
             medicalAllUserEntity.setId(medicalUserLoginEntity.getMember().getId());
             medicalAllUserEntity.setNickName(medicalUserLoginEntity.getMember().getNickname());
             medicalAllUserEntity.setpName(medicalUserLoginEntity.getMember().getPname());
             medicalAllUserEntity.setToken(token);
+            medicalAllUserEntity.setUsername(getView().getEtAccount().getEditableText().toString());
             userInfo.add(medicalAllUserEntity);
         }
+        //最后将集合存入SP
         UserManager.INSTANCE.saveMedicalAllUserInfo(userInfo);
     }
 }

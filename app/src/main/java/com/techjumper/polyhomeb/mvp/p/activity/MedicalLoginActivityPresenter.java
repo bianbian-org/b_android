@@ -7,7 +7,6 @@ import android.view.View;
 import com.techjumper.corelib.rx.tools.RxBus;
 import com.techjumper.corelib.rx.tools.RxUtils;
 import com.techjumper.corelib.utils.common.AcHelper;
-import com.techjumper.corelib.utils.common.JLog;
 import com.techjumper.corelib.utils.window.ToastUtils;
 import com.techjumper.polyhomeb.R;
 import com.techjumper.polyhomeb.entity.event.ReloadMedicalMainEvent;
@@ -68,15 +67,16 @@ public class MedicalLoginActivityPresenter extends AppBaseActivityPresenter<Medi
                             public void onError(Throwable e) {
                                 getView().dismissLoading();
                                 getView().showError(e);
-                                JLog.e(e.getMessage());
                             }
 
                             @Override
                             public void onNext(Result<MedicalUserLoginEntity> result) {
                                 if (result == null
                                         || result.response().body() == null
-                                        || result.response().body().getStatus() != 1)
+                                        || result.response().body().getStatus() != 1) {
+                                    ToastUtils.show(getView().getString(R.string.medical_unknow_error));
                                     return;
+                                }
                                 if (401 == result.response().code()) {
                                     ToastUtils.show(getView().getString(R.string.medical_userid_pasw_wrong));
                                     return;
@@ -98,18 +98,6 @@ public class MedicalLoginActivityPresenter extends AppBaseActivityPresenter<Medi
         );
     }
 
-    // TODO: 2016/9/23  当修改了用户信息的时候,需要同步修改List中的用户信息
-
-    // TODO: 2016/9/23  点了用户切换的话,帮他登录然后存下来,当前用户和List都要存,然后发消息到各个地方,刷新数据。另外退出当前这个账号。
-
-    // TODO: 2016/9/23  日期格式化有问题
-
-    // TODO: 2016/9/23  登录有时候会失败,,我再修改用户信息的时候,提示登录,然后网络连接失败
-
-    // TODO: 2016/9/24  写个Demo页面看看RV的notifyItem(position)到底起不起作用,起作用的话,首页那10个就好说了,getView().getAdapter().notifyItemChanged(position).
-    //如果第三方的RV不起作用,那就换成V7包的RV试下
-
-
     //将用户信息存入SP的List.
     private void saveAllInfo2Sp(String token, MedicalUserLoginEntity medicalUserLoginEntity) {
 
@@ -117,24 +105,20 @@ public class MedicalLoginActivityPresenter extends AppBaseActivityPresenter<Medi
 
         boolean hasUserInfo = false;
 
-        if (userInfo == null || userInfo.size() == 0) {
+        //如果不存在集合,就新建一个
+        if (userInfo == null) {
             userInfo = new ArrayList<>();
-            MedicalAllUserEntity medicalAllUserEntity = new MedicalAllUserEntity();
-            medicalAllUserEntity.setPassword(getView().getEtPsw().getEditableText().toString());
-            medicalAllUserEntity.setId(medicalUserLoginEntity.getMember().getId());
-            medicalAllUserEntity.setNickName(medicalUserLoginEntity.getMember().getNickname());
-            medicalAllUserEntity.setpName(medicalUserLoginEntity.getMember().getPname());
-            medicalAllUserEntity.setToken(token);
-            userInfo.add(medicalAllUserEntity);
-        } else {
-            for (MedicalAllUserEntity entity : userInfo) {
-                if (entity.getId().equals(medicalUserLoginEntity.getMember().getId())) {
-                    hasUserInfo = true;
-                    break;
-                }
+        }
+
+        //遍历集合,如果集合中已经有当前登录的信息了,就true,否则false
+        for (MedicalAllUserEntity entity : userInfo) {
+            if (entity.getId().equals(medicalUserLoginEntity.getMember().getId())) {
+                hasUserInfo = true;
+                break;
             }
         }
-        //如果已经存在,那就更新信息
+
+        //如果集合中有当前登录的信息了,就修改这些信息为最新的
         if (hasUserInfo) {
             for (MedicalAllUserEntity entity : userInfo) {
                 if (entity.getId().equals(medicalUserLoginEntity.getMember().getId())) {
@@ -142,19 +126,23 @@ public class MedicalLoginActivityPresenter extends AppBaseActivityPresenter<Medi
                     entity.setPassword(getView().getEtPsw().getEditableText().toString());
                     entity.setToken(token);
                     entity.setNickName(medicalUserLoginEntity.getMember().getNickname());
+                    entity.setUsername(getView().getEtAccount().getEditableText().toString());
                     break;
                 }
             }
-        } else { //不存在就存入集合
+            //如果没有,就将这些信息add进集合
+        } else {
             MedicalAllUserEntity medicalAllUserEntity = new MedicalAllUserEntity();
             medicalAllUserEntity.setPassword(getView().getEtPsw().getEditableText().toString());
             medicalAllUserEntity.setId(medicalUserLoginEntity.getMember().getId());
             medicalAllUserEntity.setNickName(medicalUserLoginEntity.getMember().getNickname());
             medicalAllUserEntity.setpName(medicalUserLoginEntity.getMember().getPname());
             medicalAllUserEntity.setToken(token);
+            medicalAllUserEntity.setUsername(getView().getEtAccount().getEditableText().toString());
             userInfo.add(medicalAllUserEntity);
         }
-
+        //最后将集合存入SP
         UserManager.INSTANCE.saveMedicalAllUserInfo(userInfo);
     }
+
 }
