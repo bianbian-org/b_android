@@ -29,7 +29,6 @@ public class MedicalChangeUserInfoEvent {
     }
 
     public int getType() {
-
         return type;
     }
 

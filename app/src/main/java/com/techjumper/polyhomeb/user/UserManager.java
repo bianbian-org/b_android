@@ -299,6 +299,7 @@ public enum UserManager {
     public static final String KEY_MEDICAL_CURRENT_USER_BIRTHDAY = "key_medical_current_user_birthday";
     public static final String KEY_MEDICAL_CURRENT_USER_WEIGHT = "key_medical_current_user_weight";
     public static final String KEY_MEDICAL_CURRENT_USER_HEIGHT = "key_medical_current_user_height";
+    public static final String KEY_MEDICAL_CURRENT_USER_ACCOUNT_ID = "key_medical_current_account_id";
 
     public static final String KEY_MEDICAL_ALL_USER_INFO_LIST = "key_medical_all_user_info_list";
 
@@ -315,6 +316,8 @@ public enum UserManager {
         String birthday = data.getBirthday();  //生日(格式yyyy-MM-dd)
         String weight = data.getWeight();  //体重(浮点数,公斤)
         String height = data.getHeight();   //身高(整数,厘米)
+        String username = data.getUsername();  //账号 polyvip
+        String id = data.getId();  //用户唯一标识id  1000000843764
 
         PreferenceUtils.save(KEY_MEDICAL_CURRENT_USER_EMAIL, email);
         PreferenceUtils.save(KEY_MEDICAL_CURRENT_USER_MOBILE_PHONE, mobilePhone);
@@ -326,7 +329,7 @@ public enum UserManager {
         PreferenceUtils.save(KEY_MEDICAL_CURRENT_USER_BIRTHDAY, birthday);
         PreferenceUtils.save(KEY_MEDICAL_CURRENT_USER_WEIGHT, weight);
         PreferenceUtils.save(KEY_MEDICAL_CURRENT_USER_HEIGHT, height);
-
+        PreferenceUtils.save(KEY_MEDICAL_CURRENT_USER_ACCOUNT_ID, id);
     }
 
     public void medicalLogout() {
@@ -342,6 +345,7 @@ public enum UserManager {
         PreferenceUtils.save(KEY_MEDICAL_CURRENT_USER_BIRTHDAY, "");
         PreferenceUtils.save(KEY_MEDICAL_CURRENT_USER_WEIGHT, "");
         PreferenceUtils.save(KEY_MEDICAL_CURRENT_USER_HEIGHT, "");
+        PreferenceUtils.save(KEY_MEDICAL_CURRENT_USER_ACCOUNT_ID, "");
     }
 
     public void saveMedicalAllUserInfo(List<MedicalAllUserEntity> entities) {

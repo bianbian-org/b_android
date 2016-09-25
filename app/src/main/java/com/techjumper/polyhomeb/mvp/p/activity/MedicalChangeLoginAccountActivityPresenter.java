@@ -45,7 +45,18 @@ public class MedicalChangeLoginAccountActivityPresenter extends AppBaseActivityP
 
     @Override
     public void onViewInited(Bundle savedInstanceState) {
+        refreshCurrentAccountTextInfo();
+    }
 
+    private void refreshCurrentAccountTextInfo() {
+        addSubscription(
+                RxBus.INSTANCE
+                        .asObservable()
+                        .subscribe(o -> {
+                            if (o instanceof ReloadMedicalMainEvent) {
+                                getView().showCurrentUserInfo();
+                            }
+                        }));
     }
 
     @OnClick({R.id.layout_current_account, R.id.tv_login})
@@ -61,6 +72,14 @@ public class MedicalChangeLoginAccountActivityPresenter extends AppBaseActivityP
     }
 
     private void medicalLogin() {
+        if (TextUtils.isEmpty(getView().getEtAccount().getEditableText().toString())) {
+            ToastUtils.show(getView().getString(R.string.medical_please_input_account));
+            return;
+        }
+        if (TextUtils.isEmpty(getView().getEtPsw().getEditableText().toString())) {
+            ToastUtils.show(getView().getString(R.string.medical_please_input_psw));
+            return;
+        }
         getView().showLoading();
         RxUtils.unsubscribeIfNotNull(mSubs1);
         addSubscription(

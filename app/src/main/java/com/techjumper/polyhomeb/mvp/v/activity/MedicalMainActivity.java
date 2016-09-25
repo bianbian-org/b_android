@@ -47,11 +47,8 @@ public class MedicalMainActivity extends AppBaseActivity<MedicalMainActivityPres
         mAdapter = new MedicalMainActivityAdapter();
         mRv.setAdapter(mAdapter);
         mAdapter.loadData(getPresenter().getViewData());
-        String nickName = UserManager.INSTANCE.getUserInfo(UserManager.KEY_MEDICAL_CURRENT_USER_NICK_NAME);
-        String pName = UserManager.INSTANCE.getUserInfo(UserManager.KEY_MEDICAL_CURRENT_USER_P_NAME);
 
-        mTvName.setText(TextUtils.isEmpty(nickName) ? pName : nickName);
-
+        showCurrentUserInfo();
     }
 
     @Override
@@ -70,7 +67,14 @@ public class MedicalMainActivity extends AppBaseActivity<MedicalMainActivityPres
         return true;
     }
 
+    public void showCurrentUserInfo() {
+        String nickName = UserManager.INSTANCE.getUserInfo(UserManager.KEY_MEDICAL_CURRENT_USER_NICK_NAME);
+        String pName = UserManager.INSTANCE.getUserInfo(UserManager.KEY_MEDICAL_CURRENT_USER_P_NAME);
+        mTvName.setText(TextUtils.isEmpty(pName) ? nickName : pName);
+    }
+
     public MedicalMainActivityAdapter getAdapter() {
         return mAdapter;
     }
+
 }

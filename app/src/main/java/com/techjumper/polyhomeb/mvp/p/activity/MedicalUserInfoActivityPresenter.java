@@ -15,9 +15,11 @@ import com.techjumper.corelib.utils.window.DialogUtils;
 import com.techjumper.corelib.utils.window.ToastUtils;
 import com.techjumper.polyhomeb.R;
 import com.techjumper.polyhomeb.adapter.recycler_Data.MedicalUserInfoData;
-import com.techjumper.polyhomeb.entity.medicalEntity.MedicalUserInfoEntity;
 import com.techjumper.polyhomeb.entity.event.MedicalChangeUserInfoEvent;
+import com.techjumper.polyhomeb.entity.event.ReloadMedicalMainEvent;
+import com.techjumper.polyhomeb.entity.medicalEntity.MedicalAllUserEntity;
 import com.techjumper.polyhomeb.entity.medicalEntity.MedicalStatusEntity;
+import com.techjumper.polyhomeb.entity.medicalEntity.MedicalUserInfoEntity;
 import com.techjumper.polyhomeb.mvp.m.MedicalUserInfoActivityModel;
 import com.techjumper.polyhomeb.mvp.v.activity.MedicalLoginActivity;
 import com.techjumper.polyhomeb.mvp.v.activity.MedicalUserInfoActivity;
@@ -134,7 +136,7 @@ public class MedicalUserInfoActivityPresenter extends AppBaseActivityPresenter<M
             case IDCARD:
             case HOMEPHONE:
             case SEX:
-                updateData(data, position, content);
+                updateData(data, position, content, type);
                 break;
             case BIRTHDAY:
                 showDatePicker();
@@ -156,7 +158,7 @@ public class MedicalUserInfoActivityPresenter extends AppBaseActivityPresenter<M
     }
 
     //点击事件通用更新item方法
-    private void updateData(List<DisplayBean> data, int position, String content) {
+    private void updateData(List<DisplayBean> data, int position, String content, int type) {
         for (int i = 0; i < data.size(); i++) {
             if (data.get(i) instanceof MedicalUserInfoData) {
                 if (i == position) {
@@ -166,6 +168,7 @@ public class MedicalUserInfoActivityPresenter extends AppBaseActivityPresenter<M
             }
         }
         getUserInfo();
+        notifyMainPageFirstViewChange(type, content);
     }
 
     private void showDatePicker() {
@@ -311,5 +314,40 @@ public class MedicalUserInfoActivityPresenter extends AppBaseActivityPresenter<M
                 break;
         }
         return tmpStr;
+    }
+
+    //通知医疗首页,第一行的显示当前用户名字的那个TextView改变文字.
+    //并且当修改了用户信息之后(只包含修改昵称,姓名),SP中list存储的相应字段也要修改.
+    private void notifyMainPageFirstViewChange(int type, String content) {
+        switch (type) {
+            case NICKNAME:
+            case NAME:
+                RxBus.INSTANCE.send(new ReloadMedicalMainEvent());
+                changeSPMedicalUserDataList(type, content);
+                break;
+        }
+    }
+
+    //接上面的方法.....
+    //修改SP中医疗账户集合中,对应账号的字段
+    private void changeSPMedicalUserDataList(int type, String content) {
+        List<MedicalAllUserEntity> info = UserManager.INSTANCE.getMedicalAllUserInfo();
+        String accountId = UserManager.INSTANCE.getUserInfo(UserManager.KEY_MEDICAL_CURRENT_USER_ACCOUNT_ID);
+        for (int i = 0; i < info.size(); i++) {
+            MedicalAllUserEntity entity = info.get(i);
+            if (accountId.equals(entity.getId())) {
+                switch (type) {
+                    case NICKNAME:
+                        entity.setNickName(content);
+                        UserManager.INSTANCE.saveMedicalAllUserInfo(info);
+                        break;
+                    case NAME:
+                        entity.setpName(content);
+                        UserManager.INSTANCE.saveMedicalAllUserInfo(info);
+                        break;
+                }
+                break;
+            }
+        }
     }
 }

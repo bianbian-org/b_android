@@ -55,6 +55,7 @@ public class MedicalMainActivityPresenter extends AppBaseActivityPresenter<Medic
                         .subscribe(o -> {
                             if (o instanceof ReloadMedicalMainEvent) {
                                 getMainData(0);
+                                getView().showCurrentUserInfo();
                             }
                         }));
     }
