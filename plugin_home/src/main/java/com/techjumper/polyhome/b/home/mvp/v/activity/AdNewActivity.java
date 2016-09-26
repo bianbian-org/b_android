@@ -1,11 +1,11 @@
 package com.techjumper.polyhome.b.home.mvp.v.activity;
 
-import android.content.ComponentName;
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.view.ViewPager;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.webkit.WebChromeClient;
 import android.webkit.WebSettings;
@@ -14,13 +14,11 @@ import android.webkit.WebViewClient;
 import android.widget.ImageView;
 
 import com.techjumper.corelib.mvp.factory.Presenter;
-import com.techjumper.lib2.utils.PicassoHelper;
 import com.techjumper.polyhome.b.home.R;
 import com.techjumper.polyhome.b.home.UserInfoManager;
 import com.techjumper.polyhome.b.home.adapter.AdViewPagerAdapter;
 import com.techjumper.polyhome.b.home.mvp.p.activity.AdActivityPresenter;
 import com.techjumper.polyhome.b.home.mvp.p.activity.AdNewActivityPresenter;
-import com.techjumper.polyhome.b.home.mvp.p.fragment.PloyhomeFragmentPresenter;
 import com.techjumper.polyhome.b.home.widget.AdViewPager;
 import com.techjumper.polyhome.b.home.widget.MyTextureView;
 import com.techjumper.polyhome_b.adlib.entity.AdEntity;
@@ -55,6 +53,7 @@ public class AdNewActivity extends AppBaseActivity<AdActivityPresenter> implemen
     private boolean isFirst = true;
     private int type = TYPE_ONE;
     private String typeString = AdController.TYPE_HOME;
+    private float x1, x2, y1, y2;
 
     private AdController adController;
     private AdViewPagerAdapter adapter;
@@ -67,6 +66,23 @@ public class AdNewActivity extends AppBaseActivity<AdActivityPresenter> implemen
 
     @Bind(R.id.pager)
     AdViewPager adViewPager;
+
+    @Bind(R.id.webview)
+    WebView webView;
+
+    @Bind(R.id.call)
+    ImageView call;
+
+    @OnClick(R.id.bottom_back)
+    void back() {
+        if (webView.getVisibility() == View.VISIBLE) {
+            adViewPager.setVisibility(View.VISIBLE);
+            call.setVisibility(View.VISIBLE);
+            webView.setVisibility(View.GONE);
+        } else {
+            finish();
+        }
+    }
 
     public long getTime() {
         return time;
@@ -91,6 +107,44 @@ public class AdNewActivity extends AppBaseActivity<AdActivityPresenter> implemen
         adViewPager.setAdapter(adapter = new AdViewPagerAdapter());
         adViewPager.setOffscreenPageLimit(3);
         adViewPager.addOnPageChangeListener(this);
+
+        adViewPager.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+
+                switch (event.getAction()) {
+                    case MotionEvent.ACTION_DOWN:
+                        x1 = event.getX();
+                        y1 = event.getY();
+                        break;
+                    case MotionEvent.ACTION_MOVE:
+                        Log.d("ad12", "关掉");
+                        adController.stopAdTimer(AdController.TYPE_HOME);
+                        break;
+                    case MotionEvent.ACTION_UP:
+                        Log.d("ad12", "开启");
+                        Log.d("ad12", x1 + " " + x2);
+                        x2 = event.getX();
+                        y2 = event.getY();
+                        if (Math.abs(x1 - x2) < 6 && Math.abs(y1 - y2) < 6) {
+                            if (adsEntities != null && adsEntities.size() > 0) {
+                                AdEntity.AdsEntity entity = adsEntities.get(adViewPager.getCurrentItem());
+                                if (entity != null || !TextUtils.isEmpty(entity.getUrl())) {
+
+                                    adViewPager.setVisibility(View.GONE);
+                                    call.setVisibility(View.GONE);
+                                    webView.setVisibility(View.VISIBLE);
+
+                                    Log.d("ad15", entity.getUrl());
+                                    webView.loadUrl(entity.getUrl());
+                                }
+                            }
+                        }
+                        break;
+                }
+                return false;
+            }
+        });
     }
 
     @Override
@@ -118,9 +172,9 @@ public class AdNewActivity extends AppBaseActivity<AdActivityPresenter> implemen
 
     @Override
     public void onAlarmReceive(boolean fromCache) {
-        if (type == TYPE_ONE){
+        if (type == TYPE_ONE) {
             typeString = AdController.TYPE_HOME;
-        }else {
+        } else {
             typeString = AdController.TYPE_HOME_TWO;
         }
 
@@ -153,13 +207,13 @@ public class AdNewActivity extends AppBaseActivity<AdActivityPresenter> implemen
                                 addType = entity.getMedia_type();
 
                                 if (IMAGE_AD_TYPE.equals(addType)) {
-                                    ImageView imageView = (ImageView) inflater.inflate(R.layout.layout_ad_image, null);
+                                    ImageView imageView = (ImageView) inflater.inflate(R.layout.layout_ad_new_image, null);
 
                                     views.add(imageView);
                                     entity.setMedia_url(file.getAbsolutePath());
                                 } else if (VIDEO_AD_TYPE.equals(addType)) {
 
-                                    MyTextureView textureView = (MyTextureView) inflater.inflate(R.layout.layout_ad_video, null);
+                                    MyTextureView textureView = (MyTextureView) inflater.inflate(R.layout.layout_ad_new_video, null);
 
                                     views.add(textureView);
                                     entity.setMedia_url(file.getAbsolutePath());
@@ -208,6 +262,29 @@ public class AdNewActivity extends AppBaseActivity<AdActivityPresenter> implemen
 
                     }
                 });
+
+        WebSettings ws = webView.getSettings();
+
+        ws.setJavaScriptEnabled(true);
+        ws.setLoadWithOverviewMode(true);
+        ws.setAppCacheEnabled(true);
+        ws.setLayoutAlgorithm(WebSettings.LayoutAlgorithm.NORMAL);
+        ws.setSupportZoom(true);
+        webView.setWebChromeClient(new WebChromeClient() {
+            @Override
+            public void onProgressChanged(WebView view, int newProgress) {
+                // TODO Auto-generated method stub
+                if (newProgress == 100) {
+                    // 网页加载完成
+
+                } else {
+                    // 加载中
+
+                }
+
+            }
+        });
+        webView.setWebViewClient(new webViewClient());
     }
 
     @Override
@@ -244,5 +321,20 @@ public class AdNewActivity extends AppBaseActivity<AdActivityPresenter> implemen
     @Override
     public void onPageScrollStateChanged(int state) {
 
+    }
+
+    private class webViewClient extends WebViewClient {
+        @Override
+        public boolean shouldOverrideUrlLoading(WebView view, String url) {
+            showLoading();
+            view.loadUrl(url);
+            return false;
+        }
+
+        @Override
+        public void onPageFinished(WebView view, String url) {
+            dismissLoading();
+            super.onPageFinished(view, url);
+        }
     }
 }

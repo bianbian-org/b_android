@@ -42,11 +42,6 @@ public class AdNewActivityPresenter extends AppBaseActivityPresenter<AdNewActivi
     private Timer timer = new Timer();
     private AdNewActivityModel model = new AdNewActivityModel(this);
 
-    @OnClick(R.id.bottom_back)
-    void back() {
-        getView().finish();
-    }
-
     @OnClick(R.id.call)
     void call() {
         Intent it = new Intent();
