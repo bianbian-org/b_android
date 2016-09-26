@@ -65,6 +65,7 @@ public abstract class AppBaseActivityPresenter<T extends AppBaseActivity> extend
                 //那么做了这部分逻辑,就能避免上述情况.当弹出"此功能登陆后可用"的时候,会跳转到登录界面
                 // ,然后关闭当前界面.登陆成功后在登录界面的逻辑里面,跳转ChooseFamilyVillageActivity或者TabHomeActivity
                 UserManager.INSTANCE.logout();
+                UserManager.INSTANCE.logoutDontNotify(); //目的只是为了清空SP,否则会导致:账号在其他设备2登陆之后,修改了用户信息,然后回到设备1,发现被强制下线,需要登录.这时候需要清空SP,不然用户信息就不是最新的
 //                boolean shouldClose = (!(getView() instanceof TabHomeActivity));
                 new AcHelper.Builder(getView())
                         .target(LoginActivity.class)

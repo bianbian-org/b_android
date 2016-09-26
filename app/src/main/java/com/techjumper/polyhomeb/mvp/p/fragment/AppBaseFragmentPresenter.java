@@ -52,6 +52,7 @@ public abstract class AppBaseFragmentPresenter<T extends AppBaseFragment> extend
         if (entity != null) {
             if (entity.getError_code() == NetHelper.CODE_NOT_LOGIN) {
                 UserManager.INSTANCE.logout();
+                UserManager.INSTANCE.logoutDontNotify(); //目的只是为了清空SP,否则会导致:账号在其他设备2登陆之后,修改了用户信息,然后回到设备1,发现被强制下线,需要登录.这时候需要清空SP,不然用户信息就不是最新的
 //                boolean shouldClose = (!(getView().getActivity() instanceof TabHomeActivity));
                 new AcHelper.Builder(getView().getActivity())
                         .target(LoginActivity.class)
