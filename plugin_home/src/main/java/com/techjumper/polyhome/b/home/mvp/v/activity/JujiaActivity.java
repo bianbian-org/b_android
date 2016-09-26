@@ -39,15 +39,6 @@ public class JujiaActivity extends AppBaseActivity<JujiaActivityPresenter> {
     @Bind(R.id.bottom_date)
     TextView bottomDate;
 
-    @OnClick(R.id.call)
-    void call() {
-        Intent it = new Intent();
-        ComponentName componentName = new ComponentName("com.dnake.talk", "com.dnake.activity.CallingActivity");
-        it.setComponent(componentName);
-        it.putExtra("com.dnake.talk", "CallingActivity");
-        startActivity(it);
-    }
-
     private long time;
     private TimerTask timerTask;
 

@@ -297,6 +297,7 @@ public class InfoFragmentPresenter extends AppBaseFragmentPresenter<InfoFragment
                             Intent intent = new Intent(getView().getActivity(), AdNewActivity.class);
                             intent.putExtra(AdNewActivity.POSITION, currentPage);
                             intent.putExtra(AdNewActivity.TYPE, AdNewActivity.TYPE_TWO);
+                            intent.putExtra(AdNewActivity.TIME, heartbeatTime);
                             getView().getActivity().startActivity(intent);
                         }
                         adController.startAdTimer(AdController.TYPE_HOME, currentPage);

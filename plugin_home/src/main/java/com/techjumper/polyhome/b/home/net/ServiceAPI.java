@@ -41,4 +41,7 @@ public interface ServiceAPI {
 
     @POST("ad/click")
     Observable<TrueEntity> submitClicks(@Body BaseArgumentsEntity entity);
+
+    @POST("module_statistics")
+    Observable<TrueEntity> submitTimer(@Body BaseArgumentsEntity entity);
 }

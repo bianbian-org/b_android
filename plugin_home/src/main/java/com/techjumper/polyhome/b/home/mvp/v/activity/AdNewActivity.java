@@ -41,6 +41,7 @@ import butterknife.OnClick;
 public class AdNewActivity extends AppBaseActivity<AdActivityPresenter> implements AdController.IAlarm, ViewPager.OnPageChangeListener {
     public static final String IMAGE_AD_TYPE = "1";
     public static final String VIDEO_AD_TYPE = "2";
+    public static final String TIME = "time";
 
     public static final String POSITION = "position";
 
@@ -49,6 +50,7 @@ public class AdNewActivity extends AppBaseActivity<AdActivityPresenter> implemen
 
     public static String TYPE = "type";
 
+    private long time;
     private int position;
     private boolean isFirst = true;
     private int type = TYPE_ONE;
@@ -66,13 +68,8 @@ public class AdNewActivity extends AppBaseActivity<AdActivityPresenter> implemen
     @Bind(R.id.pager)
     AdViewPager adViewPager;
 
-    @OnClick(R.id.call)
-    void call() {
-        Intent it = new Intent();
-        ComponentName componentName = new ComponentName("com.dnake.talk", "com.dnake.activity.CallingActivity");
-        it.setComponent(componentName);
-        it.putExtra("com.dnake.talk", "CallingActivity");
-        startActivity(it);
+    public long getTime() {
+        return time;
     }
 
     @Override
@@ -84,6 +81,8 @@ public class AdNewActivity extends AppBaseActivity<AdActivityPresenter> implemen
     protected void initView(Bundle savedInstanceState) {
         position = getIntent().getIntExtra(POSITION, 0);
         type = getIntent().getIntExtra(TYPE, TYPE_ONE);
+        time = getIntent().getLongExtra(TIME, 0L);
+
         inflater = LayoutInflater.from(this);
 
         adController = AdController.getInstance();

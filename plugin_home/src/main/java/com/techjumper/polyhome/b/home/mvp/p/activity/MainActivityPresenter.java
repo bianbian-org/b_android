@@ -15,6 +15,7 @@ import com.techjumper.commonres.ComConstant;
 import com.techjumper.commonres.UserInfoEntity;
 import com.techjumper.commonres.entity.HeartbeatEntity;
 import com.techjumper.commonres.entity.MedicalEntity;
+import com.techjumper.commonres.entity.TimerClickEntity;
 import com.techjumper.commonres.entity.TrueEntity;
 import com.techjumper.commonres.entity.event.AdClickEvent;
 import com.techjumper.commonres.entity.event.AdControllerEvent;
@@ -54,6 +55,7 @@ import com.techjumper.polyhome_b.adlib.services.AdStatService;
 import com.techjumper.polyhome_b.adlib.window.AdWindowManager;
 
 import java.io.File;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
@@ -233,6 +235,7 @@ public class MainActivityPresenter extends AppBaseActivityPresenter<MainActivity
         it.setComponent(componentName);
         it.putExtra("com.dnake.talk", "CallingActivity");
         getView().startActivity(it);
+        submitTimer();
     }
 
     @OnClick(R.id.vedio)
@@ -506,5 +509,49 @@ public class MainActivityPresenter extends AppBaseActivityPresenter<MainActivity
                         AdClickDbUtil.clear();
                     }
                 });
+    }
+
+    private void submitTimer() {
+        if (!UserInfoManager.isLogin())
+            return;
+
+        TimerClickEntity entity = new TimerClickEntity();
+        TimerClickEntity.TimerClickItemEntity itemEntity = new TimerClickEntity.TimerClickItemEntity();
+
+        itemEntity.setEvent_id(TimerClickEntity.YIJIAN_HOME);
+        itemEntity.setStart_time(String.valueOf(totalTime));
+        itemEntity.setEnd_time(String.valueOf(totalTime));
+
+        List<TimerClickEntity.TimerClickItemEntity> entities = new ArrayList<>();
+        entities.add(itemEntity);
+        entity.setDatas(entities);
+
+        String timer = com.techjumper.lib2.utils.GsonUtils.toJson(entity);
+        Log.d("timerClick", timer);
+
+        addSubscription(mainActivityModel.submitTimer(timer)
+                .subscribe(new Subscriber<TrueEntity>() {
+                    @Override
+                    public void onCompleted() {
+
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        getView().showError(e);
+                    }
+
+                    @Override
+                    public void onNext(TrueEntity trueEntity) {
+                        if (!processNetworkResult(trueEntity, false))
+                            return;
+
+                        if (trueEntity == null ||
+                                trueEntity.getData() == null)
+                            return;
+
+                        Log.d("timerClick", "上传成功了");
+                    }
+                }));
     }
 }

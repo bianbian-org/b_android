@@ -6,6 +6,7 @@ import com.techjumper.commonres.entity.BaseArgumentsEntity;
 import com.techjumper.commonres.entity.HeartbeatEntity;
 import com.techjumper.commonres.entity.InfoEntity;
 import com.techjumper.commonres.entity.NoticeEntity;
+import com.techjumper.commonres.entity.TrueEntity;
 import com.techjumper.commonres.util.StringUtil;
 import com.techjumper.corelib.mvp.model.BaseModel;
 import com.techjumper.corelib.rx.tools.CommonWrap;
@@ -46,6 +47,14 @@ public class PloyhomeFragmentModel extends BaseModel<PloyhomeFragmentPresenter> 
         Log.d("submitOnline", "familyId: " + UserInfoManager.getFamilyId() + "  deviceId: " + StringUtil.getMacAddress());
         return RetrofitHelper.<ServiceAPI>createDefault()
                 .submitOnline(argument)
+                .compose(CommonWrap.wrap());
+    }
+
+    public Observable<TrueEntity> submitTimer(String timer) {
+        KeyValuePair keyValuePair = KeyValueCreator.submitTimer(UserInfoManager.getFamilyId(), timer);
+        BaseArgumentsEntity argument = NetHelper.createBaseArguments(keyValuePair);
+        return RetrofitHelper.<ServiceAPI>createDefault()
+                .submitClicks(argument)
                 .compose(CommonWrap.wrap());
     }
 }

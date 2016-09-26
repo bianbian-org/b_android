@@ -44,4 +44,12 @@ public class MainActivityModel extends BaseModel<MainActivityPresenter> {
                 .submitClicks(argument)
                 .compose(CommonWrap.wrap());
     }
+
+    public Observable<TrueEntity> submitTimer(String timer) {
+        KeyValuePair keyValuePair = KeyValueCreator.submitTimer(UserInfoManager.getFamilyId(), timer);
+        BaseArgumentsEntity argument = NetHelper.createBaseArguments(keyValuePair);
+        return RetrofitHelper.<ServiceAPI>createDefault()
+                .submitTimer(argument)
+                .compose(CommonWrap.wrap());
+    }
 }

@@ -1,25 +1,38 @@
 package com.techjumper.polyhome.b.home.mvp.p.activity;
 
+import android.content.ComponentName;
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 
+import com.techjumper.commonres.entity.TimerClickEntity;
+import com.techjumper.commonres.entity.TrueEntity;
 import com.techjumper.commonres.entity.event.TimeEvent;
 import com.techjumper.commonres.entity.event.TimerEvent;
 import com.techjumper.commonres.util.CommonDateUtil;
 import com.techjumper.corelib.rx.tools.RxBus;
+import com.techjumper.lib2.utils.GsonUtils;
 import com.techjumper.polyhome.b.home.R;
+import com.techjumper.polyhome.b.home.UserInfoManager;
+import com.techjumper.polyhome.b.home.db.util.AdClickDbUtil;
+import com.techjumper.polyhome.b.home.mvp.m.JujiaActivityModel;
 import com.techjumper.polyhome.b.home.mvp.v.activity.JujiaActivity;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
 
 import butterknife.OnClick;
+import rx.Subscriber;
 import rx.android.schedulers.AndroidSchedulers;
 
 /**
  * Created by kevin on 16/6/7.
  */
 public class JujiaActivityPresenter extends AppBaseActivityPresenter<JujiaActivity> {
+
+    private JujiaActivityModel model = new JujiaActivityModel(this);
 
     private long time;
     private Timer timer = new Timer();
@@ -32,6 +45,17 @@ public class JujiaActivityPresenter extends AppBaseActivityPresenter<JujiaActivi
     @OnClick(R.id.bottom_home)
     void home() {
         getView().finish();
+    }
+
+    @OnClick(R.id.call)
+    void call() {
+        Intent it = new Intent();
+        ComponentName componentName = new ComponentName("com.dnake.talk", "com.dnake.activity.CallingActivity");
+        it.setComponent(componentName);
+        it.putExtra("com.dnake.talk", "CallingActivity");
+        getView().startActivity(it);
+
+        submitTimer();
     }
 
     @Override
@@ -90,5 +114,49 @@ public class JujiaActivityPresenter extends AppBaseActivityPresenter<JujiaActivi
                 }
             }
         }, 0, 1000);
+    }
+
+    private void submitTimer() {
+        if (!UserInfoManager.isLogin())
+            return;
+
+        TimerClickEntity entity = new TimerClickEntity();
+        TimerClickEntity.TimerClickItemEntity itemEntity = new TimerClickEntity.TimerClickItemEntity();
+
+        itemEntity.setEvent_id(TimerClickEntity.YIJIAN_JUJIA);
+        itemEntity.setStart_time(String.valueOf(time));
+        itemEntity.setEnd_time(String.valueOf(time));
+
+        List<TimerClickEntity.TimerClickItemEntity> entities = new ArrayList<>();
+        entities.add(itemEntity);
+        entity.setDatas(entities);
+
+        String timer = GsonUtils.toJson(entity);
+        Log.d("timerClick", timer);
+
+        addSubscription(model.submitTimer(timer)
+                .subscribe(new Subscriber<TrueEntity>() {
+                    @Override
+                    public void onCompleted() {
+
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        getView().showError(e);
+                    }
+
+                    @Override
+                    public void onNext(TrueEntity trueEntity) {
+                        if (!processNetworkResult(trueEntity, false))
+                            return;
+
+                        if (trueEntity == null ||
+                                trueEntity.getData() == null)
+                            return;
+
+                        Log.d("timerClick", "上传成功了");
+                    }
+                }));
     }
 }

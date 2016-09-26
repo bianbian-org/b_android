@@ -57,4 +57,10 @@ public class KeyValueCreator {
         return newPair()
                 .put("json", clicks);
     }
+
+    public static KeyValuePair submitTimer(String family_id, String timer) {
+        return newPair()
+                .put("family_id", family_id)
+                .put("json", timer);
+    }
 }

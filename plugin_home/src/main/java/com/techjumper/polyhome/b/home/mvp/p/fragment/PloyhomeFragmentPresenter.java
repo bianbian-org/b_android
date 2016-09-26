@@ -363,6 +363,7 @@ public class PloyhomeFragmentPresenter extends AppBaseFragmentPresenter<Ployhome
                             Intent intent = new Intent(getView().getActivity(), AdNewActivity.class);
                             intent.putExtra(AdNewActivity.POSITION, currentPage);
                             intent.putExtra(AdNewActivity.TYPE, AdNewActivity.TYPE_ONE);
+                            intent.putExtra(AdNewActivity.TIME, heartbeatTime);
                             getView().getActivity().startActivity(intent);
                         }
                         adController.startAdTimer(AdController.TYPE_HOME, currentPage);
