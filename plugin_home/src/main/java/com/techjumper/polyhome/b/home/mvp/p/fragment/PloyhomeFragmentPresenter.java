@@ -150,6 +150,7 @@ public class PloyhomeFragmentPresenter extends AppBaseFragmentPresenter<Ployhome
 //                    it.putExtra("com.dnake.talk", "CallingActivity");
 //                    getView().startActivity(it);
 //                }));
+
         addSubscription(RxView.clicks(getView().getProperty())
                 .filter(aVoid -> {
                     if (UserInfoManager.isLogin())

@@ -95,9 +95,9 @@
                 android:drawablePadding="@dimen/dp_5"
                 android:gravity="center_vertical"
                 android:text="@string/title_call_service"
-                android:textStyle="bold"
                 android:textColor="@color/color_37a991"
-                android:textSize="@dimen/sp_18" />
+                android:textSize="@dimen/sp_18"
+                android:textStyle="bold" />
 
             <TextView
                 android:id="@+id/vedio"
@@ -108,9 +108,9 @@
                 android:drawablePadding="@dimen/dp_5"
                 android:gravity="center_vertical"
                 android:text="@string/title_vedio"
-                android:textStyle="bold"
                 android:textColor="@color/color_37a991"
-                android:textSize="@dimen/sp_18" />
+                android:textSize="@dimen/sp_18"
+                android:textStyle="bold" />
         </LinearLayout>
 
         <com.techjumper.polyhome.b.home.widget.MyViewPager
