@@ -361,12 +361,12 @@ public class PloyhomeFragmentPresenter extends AppBaseFragmentPresenter<Ployhome
                         if (Math.abs(x1 - x2) < 6 && Math.abs(y1 - y2) < 6) {
                             AdClickDbUtil.insert(Long.valueOf(mAdsEntity.getId()), AdController.TYPE_HOME, heartbeatTime);
                             Intent intent = new Intent(getView().getActivity(), AdNewActivity.class);
-                            intent.putExtra(AdNewActivity.POSITION, currentPage);
+                            intent.putExtra(AdNewActivity.POSITION, adViewPager.getCurrentItem());
                             intent.putExtra(AdNewActivity.TYPE, AdNewActivity.TYPE_ONE);
                             intent.putExtra(AdNewActivity.TIME, heartbeatTime);
                             getView().getActivity().startActivity(intent);
                         }
-                        adController.startAdTimer(AdController.TYPE_HOME, currentPage);
+                        adController.startAdTimer(AdController.TYPE_HOME, adViewPager.getCurrentItem());
                         break;
                 }
                 return false;

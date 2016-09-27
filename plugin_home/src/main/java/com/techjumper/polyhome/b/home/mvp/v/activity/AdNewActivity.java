@@ -136,6 +136,7 @@ public class AdNewActivity extends AppBaseActivity<AdActivityPresenter> implemen
                                 }
                             }
                         }
+                        adController.startAdTimer(AdController.TYPE_HOME, adViewPager.getCurrentItem());
                         break;
                 }
                 return false;
@@ -232,6 +233,7 @@ public class AdNewActivity extends AppBaseActivity<AdActivityPresenter> implemen
                             Log.d("ad15", "第一次page:" + currentPage);
                             isFirst = false;
                         } else {
+                            Log.d("ad15", "currentPage: " + currentPage);
                             adViewPager.setCurrentItem(currentPage, false);
 
                             if (currentPage == views.size() - 1) {
