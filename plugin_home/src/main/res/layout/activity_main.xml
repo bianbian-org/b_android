@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context=".mvp.v.activity.MainActivity">
+             xmlns:tools="http://schemas.android.com/tools"
+             android:layout_width="match_parent"
+             android:layout_height="match_parent"
+             tools:context=".mvp.v.activity.MainActivity">
 
     <FrameLayout
         android:id="@+id/main_ad_layout"
@@ -17,14 +17,15 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_weight="1"
-            android:visibility="invisible" />
+            android:visibility="invisible"/>
 
         <ImageView
             android:id="@+id/main_ad_img"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:src="@mipmap/bg_ad" />
+            android:src="@mipmap/bg_ad"/>
     </FrameLayout>
+
 
     <LinearLayout
         android:id="@+id/main_content_layout"
@@ -53,13 +54,10 @@
                     android:text="@string/title_info"
                     android:textColor="@color/color_ffffff"
                     android:textSize="@dimen/sp_30"
-                    android:visibility="gone" />
+                    android:visibility="gone"/>
 
-                <ImageView
-                    android:id="@+id/title_img"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:src="@mipmap/bg_title_new" />
+
+                <!--android:src="@mipmap/bg_title_new" -->
             </FrameLayout>
 
             <TextView
@@ -71,7 +69,7 @@
                 android:paddingRight="@dimen/dp_141"
                 android:text="3月19日    周六   21:30"
                 android:textColor="@color/color_ffffff"
-                android:textSize="@dimen/sp_18" />
+                android:textSize="@dimen/sp_18"/>
 
             <TextView
                 android:id="@+id/alarm"
@@ -84,7 +82,7 @@
                 android:text="@string/title_alarm"
                 android:textColor="@color/color_37a991"
                 android:textSize="@dimen/sp_18"
-                android:visibility="gone" />
+                android:visibility="gone"/>
 
             <TextView
                 android:id="@+id/call_service"
@@ -97,7 +95,7 @@
                 android:text="@string/title_call_service"
                 android:textColor="@color/color_37a991"
                 android:textSize="@dimen/sp_18"
-                android:textStyle="bold" />
+                android:textStyle="bold"/>
 
             <TextView
                 android:id="@+id/vedio"
@@ -110,14 +108,14 @@
                 android:text="@string/title_vedio"
                 android:textColor="@color/color_37a991"
                 android:textSize="@dimen/sp_18"
-                android:textStyle="bold" />
+                android:textStyle="bold"/>
         </LinearLayout>
 
         <com.techjumper.polyhome.b.home.widget.MyViewPager
             android:id="@+id/viewpager"
             android:layout_width="match_parent"
             android:layout_height="@dimen/dp_500"
-            android:layout_marginTop="@dimen/dp_20" />
+            android:layout_marginTop="@dimen/dp_20"/>
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -129,14 +127,29 @@
                 android:id="@+id/dot_home"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:src="@drawable/selector_home" />
+                android:src="@drawable/selector_home"/>
 
             <ImageView
                 android:id="@+id/dot_point"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="@dimen/dp_13"
-                android:src="@drawable/selector_point" />
+                android:src="@drawable/selector_point"/>
         </LinearLayout>
     </LinearLayout>
+
+    <FrameLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="15dp"
+        android:layout_marginTop="5dp">
+
+        <ImageView
+            android:id="@+id/title_img"
+            android:layout_width="300dp"
+            android:layout_height="68dp"
+            android:scaleType="centerCrop"
+            android:src="@mipmap/bg_yijiaren"
+            />
+    </FrameLayout>
 </FrameLayout>
