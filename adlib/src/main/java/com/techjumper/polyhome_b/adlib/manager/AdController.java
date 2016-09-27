@@ -805,7 +805,6 @@ public class AdController {
                             if (iTimer != null)
                                 iTimer.onTimerFinished(true);
                         });
-
             });
 
         }

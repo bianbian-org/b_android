@@ -142,12 +142,12 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginLeft="15dp"
-        android:layout_marginTop="5dp">
+        android:layout_marginTop="15dp">
 
         <ImageView
             android:id="@+id/title_img"
-            android:layout_width="300dp"
-            android:layout_height="68dp"
+            android:layout_width="250dp"
+            android:layout_height="56dp"
             android:scaleType="centerCrop"
             android:src="@mipmap/bg_yijiaren"
             />
