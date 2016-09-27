@@ -438,6 +438,7 @@ public class InfoFragmentPresenter extends AppBaseFragmentPresenter<InfoFragment
             Log.d("ad12", "清除");
             adViewPager.removeAllViews();
             adViewPager.setAdapter(adapter = new AdViewPagerAdapter());
+            currentPage = 0;
         }
 
         textureView.stop();
@@ -544,13 +545,14 @@ public class InfoFragmentPresenter extends AppBaseFragmentPresenter<InfoFragment
                     @Override
                     public void onAdReceive(AdEntity.AdsEntity adsEntity, File file) {
 //                        HandleAd(adsEntity, file);
+                        adViewPager.setCurrentItem(currentPage, false);
+                        mIsGetNewAd = true;
+                        mAdsEntity = adsEntity;
+
                         if (currentPage == views.size() - 1) {
                             currentPage = -1;
                         }
                         currentPage++;
-                        adViewPager.setCurrentItem(currentPage, false);
-                        mIsGetNewAd = true;
-                        mAdsEntity = adsEntity;
                     }
 
                     @Override

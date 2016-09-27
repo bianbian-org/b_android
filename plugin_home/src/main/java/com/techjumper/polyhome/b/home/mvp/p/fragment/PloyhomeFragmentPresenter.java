@@ -621,6 +621,7 @@ public class PloyhomeFragmentPresenter extends AppBaseFragmentPresenter<Ployhome
             Log.d("ad12", "清除");
             adViewPager.removeAllViews();
             adViewPager.setAdapter(adapter = new AdViewPagerAdapter());
+            currentPage = 0;
         }
 
         textureView.stop();
@@ -873,13 +874,15 @@ public class PloyhomeFragmentPresenter extends AppBaseFragmentPresenter<Ployhome
                         Log.d("adsEntity", "file.getAbsolutePath(): " + file.getAbsolutePath());
 //                        HandleAd(adsEntity, file);
                         Log.d("ad12", "跳下一页, 当前页" + currentPage);
+
+                        adViewPager.setCurrentItem(currentPage, false);
+                        mIsGetNewAd = true;
+                        mAdsEntity = adsEntity;
+
                         if (currentPage == views.size() - 1) {
                             currentPage = -1;
                         }
                         currentPage++;
-                        adViewPager.setCurrentItem(currentPage, false);
-                        mIsGetNewAd = true;
-                        mAdsEntity = adsEntity;
                     }
 
                     @Override
