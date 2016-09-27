@@ -6,6 +6,7 @@
     <string name="title_info">信息</string>
 
     <string name="title_jujia">聚家</string>
+    <string name="title_jujia_call_service">呼叫服务</string>
     <string name="title_smarthome">智能家居</string>
     <string name="title_property">物业</string>
     <string name="title_shopping">周边商店</string>

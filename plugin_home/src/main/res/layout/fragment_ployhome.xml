@@ -22,7 +22,7 @@
                 android:layout_height="@dimen/dp_160"
                 app:bg="@drawable/selector_button_0ca9e4"
                 app:content_img="@mipmap/bg_jujia"
-                app:title_text="@string/title_jujia" />
+                app:title_text="@string/title_jujia_call_service" />
 
             <com.techjumper.polyhome.b.home.widget.SquareView
                 android:id="@+id/smarthome"

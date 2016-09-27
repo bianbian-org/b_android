@@ -228,15 +228,15 @@ public class PloyhomeFragmentPresenter extends AppBaseFragmentPresenter<Ployhome
                     getView().startActivity(intent);
                 }));
 
-        addSubscription(RxView.clicks(getView().getJujia())
-                .compose(RxUtil.applySchedulers())
-                .subscribe(aVoid -> {
-                    Intent intent = new Intent(getView().getActivity(), JujiaActivity.class);
-                    intent.putExtra(JujiaActivity.TIME, heartbeatTime);
-                    getView().startActivity(intent);
-                }));
+//        addSubscription(RxView.clicks(getView().getJujia())
+//                .compose(RxUtil.applySchedulers())
+//                .subscribe(aVoid -> {
+//                    Intent intent = new Intent(getView().getActivity(), JujiaActivity.class);
+//                    intent.putExtra(JujiaActivity.TIME, heartbeatTime);
+//                    getView().startActivity(intent);
+//                }));
 
-//        getView().getJujia().setClickable(false);
+        getView().getJujia().setClickable(false);
 
         addSubscription(RxView.clicks(getView().getSmarthome())
                 .compose(RxUtil.applySchedulers())
