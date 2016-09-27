@@ -321,7 +321,6 @@ public class InfoFragmentPresenter extends AppBaseFragmentPresenter<InfoFragment
         }
     }
 
-
     @Override
     public void setUserVisibleHint(boolean isVisibleToUser) {
         super.setUserVisibleHint(isVisibleToUser);
@@ -483,7 +482,6 @@ public class InfoFragmentPresenter extends AppBaseFragmentPresenter<InfoFragment
             } else {
                 textureView.play(adsEntity.getMedia_url());
             }
-
             adsEntity.setMedia_url(file.getAbsolutePath());
         }
         mIsGetNewAd = true;

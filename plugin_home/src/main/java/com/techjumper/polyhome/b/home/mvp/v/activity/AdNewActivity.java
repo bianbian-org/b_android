@@ -96,6 +96,7 @@ public class AdNewActivity extends AppBaseActivity<AdActivityPresenter> implemen
     @Override
     protected void initView(Bundle savedInstanceState) {
         position = getIntent().getIntExtra(POSITION, 0);
+        Log.d("ad15", "过来的position" + position);
         type = getIntent().getIntExtra(TYPE, TYPE_ONE);
         time = getIntent().getLongExtra(TIME, 0L);
 
@@ -118,24 +119,19 @@ public class AdNewActivity extends AppBaseActivity<AdActivityPresenter> implemen
                         y1 = event.getY();
                         break;
                     case MotionEvent.ACTION_MOVE:
-                        Log.d("ad12", "关掉");
                         adController.stopAdTimer(AdController.TYPE_HOME);
                         break;
                     case MotionEvent.ACTION_UP:
-                        Log.d("ad12", "开启");
-                        Log.d("ad12", x1 + " " + x2);
                         x2 = event.getX();
                         y2 = event.getY();
                         if (Math.abs(x1 - x2) < 6 && Math.abs(y1 - y2) < 6) {
                             if (adsEntities != null && adsEntities.size() > 0) {
                                 AdEntity.AdsEntity entity = adsEntities.get(adViewPager.getCurrentItem());
-                                if (entity != null || !TextUtils.isEmpty(entity.getUrl())) {
-
+                                if (entity != null && !TextUtils.isEmpty(entity.getUrl())) {
                                     adViewPager.setVisibility(View.GONE);
                                     call.setVisibility(View.GONE);
                                     webView.setVisibility(View.VISIBLE);
 
-                                    Log.d("ad15", entity.getUrl());
                                     webView.loadUrl(entity.getUrl());
                                 }
                             }
@@ -222,6 +218,10 @@ public class AdNewActivity extends AppBaseActivity<AdActivityPresenter> implemen
                         }
                         adapter.setViews(views, adsEntities);
                         adapter.notifyDataSetChanged();
+                    }
+
+                    @Override
+                    public void onAdReceive(AdEntity.AdsEntity adsEntity, File file) {
                         if (isFirst) {
                             if (position <= views.size() - 1) {
                                 currentPage = position;
@@ -229,17 +229,16 @@ public class AdNewActivity extends AppBaseActivity<AdActivityPresenter> implemen
                                 currentPage = 0;
                             }
                             adViewPager.setCurrentItem(currentPage);
+                            Log.d("ad15", "第一次page:" + currentPage);
                             isFirst = false;
-                        }
-                    }
+                        } else {
+                            adViewPager.setCurrentItem(currentPage, false);
 
-                    @Override
-                    public void onAdReceive(AdEntity.AdsEntity adsEntity, File file) {
-                        if (currentPage == views.size() - 1) {
-                            currentPage = -1;
+                            if (currentPage == views.size() - 1) {
+                                currentPage = -1;
+                            }
+                            currentPage++;
                         }
-                        currentPage++;
-                        adViewPager.setCurrentItem(currentPage, false);
                     }
 
                     @Override
