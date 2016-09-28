@@ -45,7 +45,7 @@ public class AdNewActivityPresenter extends AppBaseActivityPresenter<AdNewActivi
     @OnClick(R.id.call)
     void call() {
         Intent it = new Intent();
-        ComponentName componentName = new ComponentName("com.dnake.talk", "com.dnake.activity.CallingActivity");
+        ComponentName componentName = new ComponentName("com.dnake.talk", "com.dnake.activity.TalkingActivity");
         it.setComponent(componentName);
         it.putExtra("com.dnake.talk", "CallingActivity");
         getView().startActivity(it);

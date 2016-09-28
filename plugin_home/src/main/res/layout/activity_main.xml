@@ -94,7 +94,7 @@
                 android:drawableLeft="@mipmap/bg_alarm_new"
                 android:drawablePadding="@dimen/dp_5"
                 android:gravity="center_vertical"
-                android:text="@string/title_call_service"
+                android:text="@string/title_call"
                 android:textStyle="bold"
                 android:textColor="@color/color_37a991"
                 android:textSize="@dimen/sp_18" />

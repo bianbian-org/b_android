@@ -231,7 +231,7 @@ public class MainActivityPresenter extends AppBaseActivityPresenter<MainActivity
     @OnClick(R.id.call_service)
     void callService() {
         Intent it = new Intent();
-        ComponentName componentName = new ComponentName("com.dnake.talk", "com.dnake.activity.CallingActivity");
+        ComponentName componentName = new ComponentName("com.dnake.talk", "com.dnake.activity.TalkingActivity");
         it.setComponent(componentName);
         it.putExtra("com.dnake.talk", "CallingActivity");
         getView().startActivity(it);
