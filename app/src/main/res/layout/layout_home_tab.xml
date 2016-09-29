@@ -21,7 +21,7 @@
             android:layout_gravity="center"
             android:layout_marginBottom="@dimen/dp_5"
             app:src="@mipmap/icon_home"
-            app:text="首页"
+            app:text="@string/tab_main"
             app:textColor="@color/color_acacac"
             app:textSize="@dimen/sp_12" />
 
@@ -40,7 +40,7 @@
             android:layout_gravity="center"
             android:layout_marginBottom="@dimen/dp_5"
             app:src="@mipmap/icon_friend"
-            app:text="友邻"
+            app:text="@string/tab_friend"
             app:textColor="@color/color_acacac"
             app:textSize="@dimen/sp_12" />
 
@@ -59,10 +59,22 @@
             android:layout_gravity="center"
             android:layout_marginBottom="@dimen/dp_5"
             app:src="@mipmap/icon_shopping"
-            app:text="商城"
+            app:text="@string/tab_shopping"
             app:textColor="@color/color_acacac"
             app:textSize="@dimen/sp_12" />
 
     <!--</FrameLayout>-->
+
+    <com.techjumper.polyhomeb.widget.PolyTabView
+        android:id="@+id/tab_4"
+        android:layout_width="0dp"
+        android:layout_weight="1"
+        android:layout_height="match_parent"
+        android:layout_gravity="center"
+        android:layout_marginBottom="@dimen/dp_5"
+        app:src="@mipmap/icon_service"
+        app:text="@string/tab_service"
+        app:textColor="@color/color_acacac"
+        app:textSize="@dimen/sp_12" />
 
 </LinearLayout>

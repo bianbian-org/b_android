@@ -37,6 +37,7 @@ public abstract class AppBaseWebViewFragment<T extends AppBaseFragmentPresenter>
                 super.onReceivedTitle(view, title);
                 AppBaseWebViewFragment.this.onReceivedTitle(view, title);
             }
+
         });
 
         mWebView.addHttpHeader("HUSERID", UserManager.INSTANCE.getUserInfo(UserManager.KEY_ID));
@@ -44,6 +45,7 @@ public abstract class AppBaseWebViewFragment<T extends AppBaseFragmentPresenter>
         mWebView.addHttpHeader("HVILLAGEID", UserManager.INSTANCE.getUserInfo(UserManager.KEY_CURRENT_VILLAGE_ID));
 
         mIsInit = true;
+
     }
 
     public AdvancedWebView getWebView() {
@@ -132,5 +134,7 @@ public abstract class AppBaseWebViewFragment<T extends AppBaseFragmentPresenter>
     protected void onReceivedTitle(WebView view, String title) {
 
     }
+
+
 
 }

@@ -15,6 +15,7 @@ import com.techjumper.polyhomeb.mvp.v.fragment.AppBaseFragment;
 import com.techjumper.polyhomeb.mvp.v.fragment.FriendFragment;
 import com.techjumper.polyhomeb.mvp.v.fragment.HomeFragment;
 import com.techjumper.polyhomeb.mvp.v.fragment.HomeMenuFragment;
+import com.techjumper.polyhomeb.mvp.v.fragment.ServiceFragment;
 import com.techjumper.polyhomeb.mvp.v.fragment.ShoppingFragment;
 import com.techjumper.polyhomeb.widget.HomeViewPager;
 import com.techjumper.polyhomeb.widget.PolyTab;
@@ -58,10 +59,8 @@ public class TabHomeActivity extends AppBaseActivity<TabHomeActivityPresenter> {
         initSlidingMenu();
         initFragmentsAndPager();
         if (savedInstanceState == null) {
-//            if (UserManager.INSTANCE.isLogin()) {
             mVp.setCurrentItem(0);
             mTab.check(0);
-//        }
         }
         switchFragment(R.id.menu_container, HomeMenuFragment.getInstance(), false, false);
     }
@@ -91,11 +90,12 @@ public class TabHomeActivity extends AppBaseActivity<TabHomeActivityPresenter> {
         mFragments.add(HomeFragment.getInstance());
         mFragments.add(FriendFragment.getInstance());
         mFragments.add(ShoppingFragment.getInstance());
+        mFragments.add(ServiceFragment.getInstance());
 
         FragmentAdapter adapter = new FragmentAdapter(this, mFragments);
         mVp.setAdapter(adapter);
         mVp.setScanScroll(false);
-        mVp.setOffscreenPageLimit(3);
+        mVp.setOffscreenPageLimit(4);
 
     }
 
@@ -110,16 +110,6 @@ public class TabHomeActivity extends AppBaseActivity<TabHomeActivityPresenter> {
     public HomeViewPager getHomeViewPager() {
         return mVp;
     }
-
-//    public void onTabChange(int index) {
-//        mTab.check(index);
-//        mVp.setCurrentItem(index, false);
-//    }
-//
-//    public void onLogout() {
-//        // TODO: 16/8/1
-//    }
-
 
     @Override
     protected boolean canSlide2Close() {

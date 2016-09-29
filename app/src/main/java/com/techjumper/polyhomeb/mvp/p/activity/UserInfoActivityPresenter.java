@@ -6,7 +6,6 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
-import android.os.Environment;
 import android.provider.MediaStore;
 import android.text.TextUtils;
 import android.view.View;
@@ -48,6 +47,8 @@ import java.util.Calendar;
 import butterknife.OnClick;
 import rx.Observer;
 import rx.Subscription;
+
+import static android.os.Environment.getExternalStorageDirectory;
 
 /**
  * * * * * * * * * * * * * * * * * * * * * * *
@@ -257,8 +258,8 @@ public class UserInfoActivityPresenter extends AppBaseActivityPresenter<UserInfo
             case 0:
                 Intent openCameraIntent = new Intent(
                         MediaStore.ACTION_IMAGE_CAPTURE);
-                tempUri = Uri.fromFile(new File(Environment
-                        .getExternalStorageDirectory().getAbsolutePath() + File.separator + Config.sParentDirName + File.separator + Config.sAvatarsDirName, "image.jpg"));
+                tempUri = Uri.fromFile(new File(
+                        getExternalStorageDirectory().getAbsolutePath() + File.separator + Config.sParentDirName + File.separator + Config.sAvatarsDirName, "image.jpg"));
                 // 指定照片保存路径（SD卡），image.jpg为一个临时文件，每次拍照后这个图片都会被替换
                 openCameraIntent.putExtra(MediaStore.EXTRA_OUTPUT, tempUri);
                 getView().startActivityForResult(openCameraIntent, TAKE_PICTURE);
@@ -322,7 +323,7 @@ public class UserInfoActivityPresenter extends AppBaseActivityPresenter<UserInfo
             Bitmap photo = extras.getParcelable("data");
             String imagePath = PicUtils.savePhoto(
                     photo
-                    , Environment.getExternalStorageDirectory().getAbsolutePath() + File.separator + Config.sParentDirName + File.separator + Config.sAvatarsDirName
+                    , getExternalStorageDirectory().getAbsolutePath() + File.separator + Config.sParentDirName + File.separator + Config.sAvatarsDirName
                     , String.valueOf(System.currentTimeMillis()));
             mLocalAvatarPath = imagePath;
             uploadPicToServer(imagePath);
@@ -396,7 +397,7 @@ public class UserInfoActivityPresenter extends AppBaseActivityPresenter<UserInfo
                     Bitmap bitmap = PicassoHelper.load(avatarUrl).get();
                     String path = PicUtils.savePhoto(
                             bitmap
-                            , Environment.getExternalStorageDirectory().getAbsolutePath() + File.separator + Config.sParentDirName + File.separator + Config.sAvatarsDirName
+                            , getExternalStorageDirectory().getAbsolutePath() + File.separator + Config.sParentDirName + File.separator + Config.sAvatarsDirName
                             , String.valueOf(System.currentTimeMillis()) + "avatar");
                     if (!TextUtils.isEmpty(path)) {
                         UserManager.INSTANCE.saveUserInfo(UserManager.KEY_LOCAL_AVATAR, path);

@@ -341,6 +341,10 @@
     <string name="medical_change_account_success">切换账号成功</string>
     <string name="medical_please_input_account">请输入账号</string>
     <string name="medical_please_input_psw">请输入密码</string>
+    <string name="tab_service">生活服务</string>
+    <string name="tab_shopping">商城</string>
+    <string name="tab_friend">友邻</string>
+    <string name="tab_main">首页</string>
 
 
 </resources>

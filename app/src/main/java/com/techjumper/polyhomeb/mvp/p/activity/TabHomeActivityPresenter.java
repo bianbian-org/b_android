@@ -26,7 +26,7 @@ public class TabHomeActivityPresenter extends AppBaseActivityPresenter<TabHomeAc
         implements PolyTab.ITabClick {
 
     private boolean mCanExit;
-    private Subscription mSubs1, mLoginSubscription, mLoginEventSubs;
+    private Subscription mSubs1;
 
     @Override
     public void initData(Bundle savedInstanceState) {
@@ -42,87 +42,21 @@ public class TabHomeActivityPresenter extends AppBaseActivityPresenter<TabHomeAc
     private void onToggleMenuClick() {
         RxUtils.unsubscribeIfNotNull(mSubs1);
         addSubscription(
-                mSubs1 = RxBus.INSTANCE.asObservable().subscribe(o -> {
-                    if (o instanceof ToggleMenuClickEvent) {
-                        if (getView().getSlidingMenu() != null) {
-                            getView().toggleMenu();
-                        }
-                    }
-                }));
+                mSubs1 = RxBus.INSTANCE.asObservable()
+                        .subscribe(o -> {
+                            if (o instanceof ToggleMenuClickEvent) {
+                                if (getView().getSlidingMenu() != null) {
+                                    getView().toggleMenu();
+                                }
+                            }
+                        }));
     }
 
     @Override
     public void onTabClick(int index) {
         if (getView().getHomeViewPager().getCurrentItem() == index) return;
-//        if (index != 2) {
-//            processLogin(index);
-//            return;
-//        }
         getView().getHomeViewPager().setCurrentItem(index, false);
     }
-
-//    public void processLogin(int index) {
-//        RxUtils.unsubscribeIfNotNull(mLoginSubscription);
-//        registerLogEvent(false);
-//        mLoginSubscription = LoginHelper.processLogin(getView())
-//                .subscribe(new Subscriber<Object>() {
-//                    @Override
-//                    public void onCompleted() {
-//                    }
-//
-//                    @Override
-//                    public void onError(Throwable e) {
-//                        JLog.d(e);
-//                    }
-//
-//                    @Override
-//                    public void onNext(Object o) {
-//                        if (!(o instanceof LoginEvent)) return;
-//
-//                        LoginEvent event = (LoginEvent) o;
-//                        if (event.isLogin()) {
-//                            getView().onTabChange(index);
-//                        } else {
-//                            getView().onTabChange(2);
-//                        }
-//                        RxUtils.unsubscribeIfNotNull(mLoginSubscription);
-//                        registerLogEvent(true);
-//                    }
-//                });
-//    }
-
-//    private void registerLogEvent(boolean register) {
-//        RxUtils.unsubscribeIfNotNull(mLoginEventSubs);
-//        if (!register) return;
-//        addSubscription(
-//                mLoginEventSubs = RxBus.INSTANCE.asObservable()
-//                        .observeOn(AndroidSchedulers.mainThread())
-//                        .subscribe(new Subscriber<Object>() {
-//                            @Override
-//                            public void onCompleted() {
-//
-//                            }
-//
-//                            @Override
-//                            public void onError(Throwable e) {
-//
-//                            }
-//
-//                            @Override
-//                            public void onNext(Object o) {
-//                                if (!(o instanceof LoginEvent)) return;
-//
-//                                LoginEvent event = (LoginEvent) o;
-//                                if (event.isLogin()) {
-//                                    getView().onTabChange(0);
-//                                } else {
-//                                    getView().onLogout();
-//                                    getView().onTabChange(2);
-//                                }
-//                            }
-//                        })
-//        );
-//    }
 
     public void onBackPressed() {
 

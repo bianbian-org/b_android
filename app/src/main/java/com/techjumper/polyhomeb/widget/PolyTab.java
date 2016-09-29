@@ -26,7 +26,7 @@ import butterknife.OnClick;
  **/
 public class PolyTab extends RatioFrameLayout {
 
-    @Bind({R.id.tab_1, R.id.tab_2, R.id.tab_3})
+    @Bind({R.id.tab_1, R.id.tab_2, R.id.tab_3, R.id.tab_4})
     List<PolyTabView> mPolyViewList;
 
     private int mCurrIndex;
@@ -83,7 +83,7 @@ public class PolyTab extends RatioFrameLayout {
         changeTextColorAndIcon(index);
     }
 
-    @OnClick({R.id.tab_1, R.id.tab_2, R.id.tab_3})
+    @OnClick({R.id.tab_1, R.id.tab_2, R.id.tab_3, R.id.tab_4})
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.tab_1:
@@ -100,6 +100,11 @@ public class PolyTab extends RatioFrameLayout {
                 if (mCurrIndex == 2)
                     break;
                 check(2);
+                break;
+            case R.id.tab_4:
+                if (mCurrIndex == 3)
+                    break;
+                check(3);
                 break;
         }
     }
@@ -124,16 +129,25 @@ public class PolyTab extends RatioFrameLayout {
                 getCurrItem().setIcon(R.mipmap.icon_home_choose);
                 mPolyViewList.get(1).setIcon(R.mipmap.icon_friend);
                 mPolyViewList.get(2).setIcon(R.mipmap.icon_shopping);
+                mPolyViewList.get(3).setIcon(R.mipmap.icon_service);
                 break;
             case 1:
                 getCurrItem().setIcon(R.mipmap.icon_friend_choose);
                 mPolyViewList.get(0).setIcon(R.mipmap.icon_home);
                 mPolyViewList.get(2).setIcon(R.mipmap.icon_shopping);
+                mPolyViewList.get(3).setIcon(R.mipmap.icon_service);
                 break;
             case 2:
                 getCurrItem().setIcon(R.mipmap.icon_shopping_choose);
                 mPolyViewList.get(0).setIcon(R.mipmap.icon_home);
                 mPolyViewList.get(1).setIcon(R.mipmap.icon_friend);
+                mPolyViewList.get(3).setIcon(R.mipmap.icon_service);
+                break;
+            case 3:
+                getCurrItem().setIcon(R.mipmap.icon_service_choose);
+                mPolyViewList.get(0).setIcon(R.mipmap.icon_home);
+                mPolyViewList.get(1).setIcon(R.mipmap.icon_friend);
+                mPolyViewList.get(2).setIcon(R.mipmap.icon_shopping);
                 break;
         }
     }
