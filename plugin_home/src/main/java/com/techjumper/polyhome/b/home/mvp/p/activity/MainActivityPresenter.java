@@ -46,6 +46,8 @@ import com.techjumper.polyhome.b.home.UserInfoManager;
 import com.techjumper.polyhome.b.home.db.util.AdClickDbUtil;
 import com.techjumper.polyhome.b.home.mvp.m.MainActivityModel;
 import com.techjumper.polyhome.b.home.mvp.p.fragment.PloyhomeFragmentPresenter;
+import com.techjumper.polyhome.b.home.mvp.v.activity.AdDetailActivity;
+import com.techjumper.polyhome.b.home.mvp.v.activity.JujiaActivity;
 import com.techjumper.polyhome.b.home.mvp.v.activity.MainActivity;
 import com.techjumper.polyhome.b.home.tool.AlarmManagerUtil;
 import com.techjumper.polyhome.b.home.widget.MyVideoView;
@@ -259,7 +261,13 @@ public class MainActivityPresenter extends AppBaseActivityPresenter<MainActivity
             @Override
             public void onAdsClick(AdEntity.AdsEntity adsEntity, File file) {
                 RxBus.INSTANCE.send(new AdControllerEvent());
-                AdWindowManager.getInstance().closeWindow(true);
+                if (adsEntity != null && !TextUtils.isEmpty(adsEntity.getUrl())) {
+                    Intent intent = new Intent(getView(), AdDetailActivity.class);
+                    intent.putExtra(AdDetailActivity.ADITEM, adsEntity);
+                    getView().startActivity(intent);
+                } else {
+                    AdWindowManager.getInstance().closeWindow(true);
+                }
             }
         });
         AdWindowManager.getInstance().setOnWindowShowListener(new AdWindowManager.IAdWindow() {
