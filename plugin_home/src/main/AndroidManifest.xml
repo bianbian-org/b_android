@@ -38,62 +38,64 @@
         <activity android:name=".mvp.v.activity.AdActivity" />
         <activity android:name=".mvp.v.activity.AdNewActivity" />
         <activity android:name=".mvp.v.activity.ShoppingActivity" />
-        <activity android:name=".mvp.v.activity.JujiaActivity"></activity>
+        <activity android:name=".mvp.v.activity.JujiaActivity" />
+        <activity android:name=".mvp.v.activity.AdDetailActivity" />
 
         <receiver android:name=".tool.alarm.AlarmReceiver">
             <intent-filter>
                 <action android:name="android.intent.action.ALARM_RECEIVER" />
+
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </receiver>
-
         <receiver android:name=".tool.alarm.AlarmReceiver">
             <intent-filter>
                 <action android:name="android.intent.action.ALARM_RECEIVER" />
+
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </receiver>
-
         <receiver
             android:name=".receiver.NoticeReceiver"
             android:exported="true">
             <intent-filter>
                 <action android:name="action_push_receive" />
+
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </receiver>
-
         <receiver
             android:name=".receiver.NoticeReceiver"
             android:exported="true">
             <intent-filter>
                 <action android:name="action_push_receive" />
+
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </receiver>
-
         <receiver
             android:name=".receiver.MissReadReceiver"
             android:exported="true">
             <intent-filter>
                 <action android:name="com.dnake.broadcast" />
+
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </receiver>
-
         <receiver android:name=".receiver.ScreenOffReceiver">
             <intent-filter>
                 <action android:name="android.intent.action.SCREEN_OFF" />
+
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </receiver>
-
         <receiver android:name=".receiver.ScreenOnReceiver">
             <intent-filter>
                 <action android:name="android.intent.action.SCREEN_ON" />
+
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </receiver>
-
     </application>
+
 </manifest>

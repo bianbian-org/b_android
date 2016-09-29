@@ -1,64 +1,44 @@
 package com.techjumper.polyhome.b.home.mvp.v.activity;
 
-import android.content.ComponentName;
-import android.content.Intent;
 import android.os.Bundle;
+import android.text.TextUtils;
+import android.util.Log;
 import android.view.View;
 import android.webkit.WebChromeClient;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
-import android.widget.TextView;
 
-import com.techjumper.commonres.entity.event.TimeEvent;
-import com.techjumper.commonres.entity.event.TimerEvent;
-import com.techjumper.commonres.util.CommonDateUtil;
 import com.techjumper.corelib.mvp.factory.Presenter;
-import com.techjumper.corelib.rx.tools.RxBus;
-import com.techjumper.polyhome.b.home.InfoManager;
 import com.techjumper.polyhome.b.home.R;
-import com.techjumper.polyhome.b.home.mvp.p.activity.JujiaActivityPresenter;
-import com.techjumper.polyhome_b.adlib.Config;
-
-import java.util.Timer;
-import java.util.TimerTask;
+import com.techjumper.polyhome.b.home.mvp.p.activity.AdDetailActivityPresenter;
+import com.techjumper.polyhome_b.adlib.entity.AdEntity;
+import com.techjumper.polyhome_b.adlib.window.AdWindowManager;
 
 import butterknife.Bind;
-import butterknife.ButterKnife;
-import butterknife.OnClick;
 
-@Presenter(JujiaActivityPresenter.class)
-public class JujiaActivity extends AppBaseActivity<JujiaActivityPresenter> {
+@Presenter(AdDetailActivityPresenter.class)
+public class AdDetailActivity extends AppBaseActivity<AdDetailActivityPresenter> {
 
-    public static final String TIME = "time";
+    public static final String ADITEM = "aditem";
+    private AdEntity.AdsEntity adsEntity = new AdEntity.AdsEntity();
 
     @Bind(R.id.webview)
     WebView webView;
-    @Bind(R.id.bottom_title)
-    TextView bottomTitle;
-    @Bind(R.id.bottom_date)
-    TextView bottomDate;
-
-    private long time;
-    private TimerTask timerTask;
-
-    public TextView getBottomDate() {
-        return bottomDate;
-    }
 
     @Override
     protected View inflateView(Bundle savedInstanceState) {
-        return inflate(R.layout.activity_jujia);
-    }
-
-    public long getTime() {
-        return time;
+        return inflate(R.layout.activity_ad_detail);
     }
 
     @Override
     protected void initView(Bundle savedInstanceState) {
-        bottomTitle.setText(R.string.title_jujia_server);
-        time = getIntent().getLongExtra(TIME, 0L);
+        if (getIntent() != null) {
+            adsEntity = (AdEntity.AdsEntity) getIntent().getSerializableExtra(ADITEM);
+        }
+
+        if (adsEntity == null || TextUtils.isEmpty(adsEntity.getUrl()))
+            return;
 
         WebSettings ws = webView.getSettings();
 
@@ -81,9 +61,8 @@ public class JujiaActivity extends AppBaseActivity<JujiaActivityPresenter> {
 
             }
         });
-        webView.setWebViewClient(new webViewClient());
-        webView.loadUrl(Config.sJujia);
-
+        webView.setWebViewClient(new AdDetailActivity.webViewClient());
+        webView.loadUrl(adsEntity.getUrl());
 
     }
 
@@ -114,15 +93,15 @@ public class JujiaActivity extends AppBaseActivity<JujiaActivityPresenter> {
     private class webViewClient extends WebViewClient {
         @Override
         public boolean shouldOverrideUrlLoading(WebView view, String url) {
-//            showLoading();
+            showLoading();
             view.loadUrl(url);
             return false;
         }
 
         @Override
         public void onPageFinished(WebView view, String url) {
+            dismissLoading();
             super.onPageFinished(view, url);
-//            dismissLoading();
         }
     }
 }

@@ -4,6 +4,7 @@ import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.PixelFormat;
 import android.graphics.SurfaceTexture;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
 import android.view.WindowManager;
@@ -21,7 +22,7 @@ import java.io.File;
 
 public class AdWindowManager {
 
-    private final WindowManager mWindowManager;
+    private WindowManager mWindowManager;
     private FrameLayout mContainer;
     private WindowManager.LayoutParams mContainerParams;
     private ImageView mImageView;
@@ -33,7 +34,6 @@ public class AdWindowManager {
 
     private AdWindowManager() {
         mWindowManager = (WindowManager) Utils.appContext.getSystemService(Context.WINDOW_SERVICE);
-
 
         mContainer = new FrameLayout(Utils.appContext);
         mContainer.setBackgroundColor(0xFF000000);
@@ -172,7 +172,8 @@ public class AdWindowManager {
             if (iAdWindow != null) {
                 iAdWindow.onAdWindowClose(byUser);
             }
-        } catch (Exception ignored) {
+        } catch (Exception e) {
+            JLog.e(e);
         }
     }
 
