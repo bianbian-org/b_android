@@ -15,6 +15,7 @@ import android.widget.FrameLayout;
 import android.widget.ImageView;
 
 import com.jakewharton.rxbinding.view.RxView;
+import com.techjumper.commonres.ComConstant;
 import com.techjumper.commonres.UserInfoEntity;
 import com.techjumper.commonres.entity.NoticeEntity;
 import com.techjumper.commonres.entity.WeatherEntity;
@@ -359,7 +360,7 @@ public class PloyhomeFragmentPresenter extends AppBaseFragmentPresenter<Ployhome
                         x2 = event.getX();
                         y2 = event.getY();
                         if (Math.abs(x1 - x2) < 6 && Math.abs(y1 - y2) < 6) {
-                            AdClickDbUtil.insert(Long.valueOf(mAdsEntity.getId()), AdController.TYPE_HOME, heartbeatTime);
+                            AdClickDbUtil.insert(Long.valueOf(mAdsEntity.getId()), AdController.TYPE_HOME, ComConstant.AD_TYPE_CLICK, heartbeatTime);
                             Intent intent = new Intent(getView().getActivity(), AdNewActivity.class);
                             intent.putExtra(AdNewActivity.POSITION, adViewPager.getCurrentItem());
                             intent.putExtra(AdNewActivity.TYPE, AdNewActivity.TYPE_ONE);
@@ -912,7 +913,6 @@ public class PloyhomeFragmentPresenter extends AppBaseFragmentPresenter<Ployhome
 
     @Override
     public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
-
     }
 
     @Override
@@ -921,8 +921,8 @@ public class PloyhomeFragmentPresenter extends AppBaseFragmentPresenter<Ployhome
         if (views.size() != 0
                 && adsEntities.size() != 0
                 && views.size() == adsEntities.size()) {
-            AdEntity.AdsEntity adsEntity = adsEntities.get(position);
-            if (adsEntity.getMedia_type().equals(VIDEO_AD_TYPE)) {
+            mAdsEntity = adsEntities.get(position);
+            if (mAdsEntity.getMedia_type().equals(VIDEO_AD_TYPE)) {
                 if (currentView != null) {
                     ((MyTextureView) currentView).stop();
                     currentView = null;
@@ -932,7 +932,7 @@ public class PloyhomeFragmentPresenter extends AppBaseFragmentPresenter<Ployhome
                 if (currentView == null)
                     return;
 
-                adapter.playVideo(currentView, adsEntity.getFile());
+                adapter.playVideo(currentView, mAdsEntity.getFile());
             } else {
                 if (currentView != null) {
                     ((MyTextureView) currentView).stop();
@@ -944,6 +944,8 @@ public class PloyhomeFragmentPresenter extends AppBaseFragmentPresenter<Ployhome
 
     @Override
     public void onPageScrollStateChanged(int state) {
-
+        if (state == 2 && mAdsEntity != null) {
+            AdClickDbUtil.insert(Long.valueOf(mAdsEntity.getId()), AdController.TYPE_HOME, ComConstant.AD_TYPE_SLIDE, heartbeatTime);
+        }
     }
 }

@@ -107,19 +107,20 @@ public class AdClickDbExecutor {
             return mDb == null;
         }
 
-        private long insertAd(long adId, long familyId, String time, String position) {
+        private long insertAd(long adId, long familyId, String behavior, String time, String position) {
             return mDb.insert(AdClick.TABLE_NAME
                     , AdClick.FACTORY.marshal()
                             .ad_id(adId)
                             .family_id(familyId)
+                            .behavior(behavior)
                             .time(time)
                             .position(position)
                             .asContentValues()
             );
         }
 
-        public Observable<Long> insert(long adId, long familyId, String time, String position) {
-            long id = insertAd(adId, familyId, time, position);
+        public Observable<Long> insert(long adId, long familyId, String behavior, String time, String position) {
+            long id = insertAd(adId, familyId, behavior, time, position);
             return query(String.valueOf(id))
                     .map(adClick -> {
                         return adClick._id();

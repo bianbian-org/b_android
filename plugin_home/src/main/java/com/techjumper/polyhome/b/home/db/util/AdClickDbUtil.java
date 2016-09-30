@@ -22,7 +22,7 @@ public class AdClickDbUtil {
     private static AdClickDbExecutor.BriteDatabaseHelper helper;
     private static String timeString;
 
-    public static void insert(long adId, String position, long time) {
+    public static void insert(long adId, String position, String behavior, long time) {
         helper = AdClickDbExecutor.getHelper();
         if (time == 0L) {
             timeString = CommonDateUtil.getCurrentTime();
@@ -31,14 +31,14 @@ public class AdClickDbUtil {
             timeString = CommonDateUtil.getCurrentTime(time);
             Log.d("submitOnline", "获取心跳时间" + timeString);
         }
-        helper.insert(adId, UserInfoManager.getLongFamilyId(), timeString, position)
+        helper.insert(adId, UserInfoManager.getLongFamilyId(), behavior, timeString, position)
                 .flatMap(aLong -> helper.query(String.valueOf(aLong)))
                 .subscribe(adClick -> {
                     if (adClick == null) {
                         Log.d("adclick", "查找ID为" + adId + "的广告失败");
                         return;
                     }
-                    Log.d("adclick", "插入成功 id=" + adId + " familyid=" + adClick.family_id() + " time=" + adClick.time() + " position=" + adClick.position());
+                    Log.d("adclick", "插入成功 id=" + adId + " familyid=" + adClick.family_id() + " time=" + adClick.time() + "behavior" + adClick.behavior() + " position=" + adClick.position());
                 });
     }
 
@@ -79,6 +79,7 @@ public class AdClickDbUtil {
             AdClickEntity.AdClickItemEntity adClickItemEntity = new AdClickEntity.AdClickItemEntity();
             adClickItemEntity.setAd_id(String.valueOf(adClick.ad_id()));
             adClickItemEntity.setFamily_id(String.valueOf(adClick.family_id()));
+            adClickItemEntity.setBehavior(adClick.behavior());
             adClickItemEntity.setTime(String.valueOf(adClick.time()));
             adClickItemEntity.setPosition(adClick.position());
             entities.add(adClickItemEntity);

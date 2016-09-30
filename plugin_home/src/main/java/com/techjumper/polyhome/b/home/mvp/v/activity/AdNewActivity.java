@@ -13,10 +13,12 @@ import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.ImageView;
 
+import com.techjumper.commonres.ComConstant;
 import com.techjumper.corelib.mvp.factory.Presenter;
 import com.techjumper.polyhome.b.home.R;
 import com.techjumper.polyhome.b.home.UserInfoManager;
 import com.techjumper.polyhome.b.home.adapter.AdViewPagerAdapter;
+import com.techjumper.polyhome.b.home.db.util.AdClickDbUtil;
 import com.techjumper.polyhome.b.home.mvp.p.activity.AdActivityPresenter;
 import com.techjumper.polyhome.b.home.mvp.p.activity.AdNewActivityPresenter;
 import com.techjumper.polyhome.b.home.widget.AdViewPager;
@@ -27,9 +29,10 @@ import com.techjumper.polyhome_b.adlib.manager.AdController;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Timer;
+import java.util.TimerTask;
 
 import butterknife.Bind;
-import butterknife.ButterKnife;
 import butterknife.OnClick;
 
 /**
@@ -63,6 +66,8 @@ public class AdNewActivity extends AppBaseActivity<AdActivityPresenter> implemen
     private View currentView;
     private List<AdEntity.AdsEntity> adsEntities = new ArrayList<>();
     private String addType = IMAGE_AD_TYPE;
+    private AdEntity.AdsEntity mAdsEntity;
+    private Timer timer = new Timer();
 
     @Bind(R.id.pager)
     AdViewPager adViewPager;
@@ -88,6 +93,10 @@ public class AdNewActivity extends AppBaseActivity<AdActivityPresenter> implemen
         return time;
     }
 
+    public void setTime(long time) {
+        this.time = time;
+    }
+
     @Override
     protected View inflateView(Bundle savedInstanceState) {
         return inflate(R.layout.layout_ad_new);
@@ -99,6 +108,12 @@ public class AdNewActivity extends AppBaseActivity<AdActivityPresenter> implemen
         Log.d("ad15", "过来的position" + position);
         type = getIntent().getIntExtra(TYPE, TYPE_ONE);
         time = getIntent().getLongExtra(TIME, 0L);
+
+        if (time == 0L) {
+            time = System.currentTimeMillis() / 1000;
+        }
+
+        setTime(time);
 
         inflater = LayoutInflater.from(this);
 
@@ -126,13 +141,13 @@ public class AdNewActivity extends AppBaseActivity<AdActivityPresenter> implemen
                         y2 = event.getY();
                         if (Math.abs(x1 - x2) < 6 && Math.abs(y1 - y2) < 6) {
                             if (adsEntities != null && adsEntities.size() > 0) {
-                                AdEntity.AdsEntity entity = adsEntities.get(adViewPager.getCurrentItem());
-                                if (entity != null && !TextUtils.isEmpty(entity.getUrl())) {
+                                AdEntity.AdsEntity adsEntity = adsEntities.get(adViewPager.getCurrentItem());
+                                if (adsEntity != null && !TextUtils.isEmpty(adsEntity.getUrl())) {
                                     adViewPager.setVisibility(View.GONE);
                                     call.setVisibility(View.GONE);
                                     webView.setVisibility(View.VISIBLE);
 
-                                    webView.loadUrl(entity.getUrl());
+                                    webView.loadUrl(adsEntity.getUrl());
                                 }
                             }
                         }
@@ -142,6 +157,16 @@ public class AdNewActivity extends AppBaseActivity<AdActivityPresenter> implemen
                 return false;
             }
         });
+
+        timer.schedule(new TimerTask() {
+            @Override
+            public void run() {
+                if (time != 0L) {
+                    time = time + 1;
+                    setTime(time);
+                }
+            }
+        }, 0, 1000);
     }
 
     @Override
@@ -164,6 +189,12 @@ public class AdNewActivity extends AppBaseActivity<AdActivityPresenter> implemen
         if (adController != null) {
             adController.clearPolling();
         }
+
+        if (timer != null) {
+            timer.cancel();
+            timer = null;
+        }
+
         super.onDestroy();
     }
 
@@ -196,24 +227,24 @@ public class AdNewActivity extends AppBaseActivity<AdActivityPresenter> implemen
                         }
 
                         for (int i = 0; i < allAds.size(); i++) {
-                            AdEntity.AdsEntity entity = allAds.get(i);
-                            File file = entity.getFile();
+                            AdEntity.AdsEntity adsEntity = allAds.get(i);
+                            File file = adsEntity.getFile();
                             if (file.exists()) {
-                                adsEntities.add(entity);
-                                Log.d("ad12", file + ", 详细信息: " + entity);
-                                addType = entity.getMedia_type();
+                                adsEntities.add(adsEntity);
+                                Log.d("ad12", file + ", 详细信息: " + adsEntity);
+                                addType = adsEntity.getMedia_type();
 
                                 if (IMAGE_AD_TYPE.equals(addType)) {
                                     ImageView imageView = (ImageView) inflater.inflate(R.layout.layout_ad_new_image, null);
 
                                     views.add(imageView);
-                                    entity.setMedia_url(file.getAbsolutePath());
+                                    adsEntity.setMedia_url(file.getAbsolutePath());
                                 } else if (VIDEO_AD_TYPE.equals(addType)) {
 
                                     MyTextureView textureView = (MyTextureView) inflater.inflate(R.layout.layout_ad_new_video, null);
 
                                     views.add(textureView);
-                                    entity.setMedia_url(file.getAbsolutePath());
+                                    adsEntity.setMedia_url(file.getAbsolutePath());
                                 }
                             }
                         }
@@ -230,6 +261,7 @@ public class AdNewActivity extends AppBaseActivity<AdActivityPresenter> implemen
                                 currentPage = 0;
                             }
                             adViewPager.setCurrentItem(currentPage);
+                            mAdsEntity = adsEntity;
                             Log.d("ad15", "第一次page:" + currentPage);
                             isFirst = false;
                         } else {
@@ -298,8 +330,8 @@ public class AdNewActivity extends AppBaseActivity<AdActivityPresenter> implemen
         if (views.size() != 0
                 && adsEntities.size() != 0
                 && views.size() == adsEntities.size()) {
-            AdEntity.AdsEntity adsEntity = adsEntities.get(position);
-            if (adsEntity.getMedia_type().equals(VIDEO_AD_TYPE)) {
+            mAdsEntity = adsEntities.get(position);
+            if (mAdsEntity.getMedia_type().equals(VIDEO_AD_TYPE)) {
                 if (currentView != null) {
                     ((MyTextureView) currentView).stop();
                     currentView = null;
@@ -309,7 +341,7 @@ public class AdNewActivity extends AppBaseActivity<AdActivityPresenter> implemen
                 if (currentView == null)
                     return;
 
-                adapter.playVideo(currentView, adsEntity.getFile());
+                adapter.playVideo(currentView, mAdsEntity.getFile());
             } else {
                 if (currentView != null) {
                     ((MyTextureView) currentView).stop();
@@ -321,7 +353,9 @@ public class AdNewActivity extends AppBaseActivity<AdActivityPresenter> implemen
 
     @Override
     public void onPageScrollStateChanged(int state) {
-
+        if (state == 2 && mAdsEntity != null) {
+            AdClickDbUtil.insert(Long.valueOf(mAdsEntity.getId()), AdController.TYPE_HOME, ComConstant.AD_TYPE_SLIDE, time);
+        }
     }
 
     private class webViewClient extends WebViewClient {

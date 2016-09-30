@@ -39,7 +39,6 @@ import rx.Subscriber;
 public class AdNewActivityPresenter extends AppBaseActivityPresenter<AdNewActivity> {
 
     private long time;
-    private Timer timer = new Timer();
     private AdNewActivityModel model = new AdNewActivityModel(this);
 
     @OnClick(R.id.call)
@@ -67,36 +66,17 @@ public class AdNewActivityPresenter extends AppBaseActivityPresenter<AdNewActivi
         super.onPause();
     }
 
-    @Override
-    public void onDestroy() {
-        super.onDestroy();
-        if (timer != null) {
-            timer.cancel();
-            timer = null;
-        }
-    }
 
     @Override
     public void onViewInited(Bundle savedInstanceState) {
-        time = getView().getTime();
 
-        if (time == 0L) {
-            time = System.currentTimeMillis() / 1000;
-        }
-
-        timer.schedule(new TimerTask() {
-            @Override
-            public void run() {
-                if (time != 0L) {
-                    time = time + 1;
-                }
-            }
-        }, 0, 1000);
     }
 
     private void submitTimer() {
         if (!UserInfoManager.isLogin())
             return;
+
+        time = getView().getTime();
 
         TimerClickEntity entity = new TimerClickEntity();
         TimerClickEntity.TimerClickItemEntity itemEntity = new TimerClickEntity.TimerClickItemEntity();
