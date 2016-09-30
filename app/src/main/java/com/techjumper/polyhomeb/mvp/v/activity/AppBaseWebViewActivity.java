@@ -106,17 +106,17 @@ public abstract class AppBaseWebViewActivity<T extends AppBaseActivityPresenter>
 
     @Override
     public void onPageFinished(String url) {
-
+        JLog.e("onPageFinished");
     }
 
     @Override
     public void onPageError(int errorCode, String description, String failingUrl) {
-        JLog.e("" + errorCode);
+        JLog.e("onPageError:errorCode->" + errorCode);
     }
 
     @Override
     public void onPageHttpError(WebView view, WebResourceRequest request, WebResourceResponse errorResponse) {
-        JLog.e("status" + errorResponse.getStatusCode());
+        JLog.e("onPageHttpError:errorResponse.getStatusCode->" + errorResponse.getStatusCode());
     }
 
     @Override

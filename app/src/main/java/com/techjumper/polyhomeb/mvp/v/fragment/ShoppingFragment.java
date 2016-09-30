@@ -187,7 +187,7 @@ public class ShoppingFragment extends AppBaseWebViewFragment<ShoppingFragmentPre
 
     public void reload() {
         initWebView((AdvancedWebView) mViewRoot.findViewById(R.id.wb));
-        getWebView().loadUrl(Config.sFriend);
+        getWebView().loadUrl(Config.sShopping);
     }
 
     public void stopRefresh(String msg) {

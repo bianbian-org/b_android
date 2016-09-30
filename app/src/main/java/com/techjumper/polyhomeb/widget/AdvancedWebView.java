@@ -503,6 +503,7 @@ public class AdvancedWebView extends WebView {
                 if (mCustomWebViewClient != null) {
                     mCustomWebViewClient.onReceivedError(view, errorCode, description, failingUrl);
                 }
+
             }
 
             @Override
@@ -562,8 +563,15 @@ public class AdvancedWebView extends WebView {
             public WebResourceResponse shouldInterceptRequest(WebView view, String url) {
                 if (Build.VERSION.SDK_INT >= 11) {
                     if (mCustomWebViewClient != null) {
+
+//                        WebResourceResponse resourceResponse = mCustomWebViewClient.shouldInterceptRequest(view, url);
+//                        int statusCode = resourceResponse.getStatusCode();
+//                        JLog.e(statusCode + "呵呵");
                         return mCustomWebViewClient.shouldInterceptRequest(view, url);
                     } else {
+//                        WebResourceResponse resourceResponse = super.shouldInterceptRequest(view, url);
+//                        int statusCode = resourceResponse.getStatusCode();
+//                        JLog.e(statusCode + "哈哈");
                         return super.shouldInterceptRequest(view, url);
                     }
                 } else {
@@ -576,8 +584,18 @@ public class AdvancedWebView extends WebView {
             public WebResourceResponse shouldInterceptRequest(WebView view, WebResourceRequest request) {
                 if (Build.VERSION.SDK_INT >= 21) {
                     if (mCustomWebViewClient != null) {
+
+//                        WebResourceResponse resourceResponse = mCustomWebViewClient.shouldInterceptRequest(view, request);
+//                        int statusCode = resourceResponse.getStatusCode();
+//                        JLog.e(statusCode + "嘿嘿");
+
                         return mCustomWebViewClient.shouldInterceptRequest(view, request);
                     } else {
+
+//                        WebResourceResponse resourceResponse = mCustomWebViewClient.shouldInterceptRequest(view, request);
+//                        int statusCode = resourceResponse.getStatusCode();
+//                        JLog.e(statusCode + "恩恩");
+
                         return super.shouldInterceptRequest(view, request);
                     }
                 } else {
