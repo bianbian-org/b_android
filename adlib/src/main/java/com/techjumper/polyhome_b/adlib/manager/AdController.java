@@ -575,7 +575,7 @@ public class AdController {
             setCurrentTimerIndex(index);
             if (mAdEntities == null || mAdEntities.size() == 0 || mTotalTime == 0L)
                 return;
-            timer(mTotalTime, mAdEntities);
+            timer(mTotalTime, mAdEntities, true);
         }
 
         public void fetchAd(String family_id, String user_id, String ticket, boolean fromCache, IExecuteRule iExecuteRule) {
@@ -690,6 +690,10 @@ public class AdController {
         }
 
         private void timer(long totalTime, List<AdEntity.AdsEntity> adEntities) {
+            timer(totalTime, adEntities, false);
+        }
+
+        private void timer(long totalTime, List<AdEntity.AdsEntity> adEntities, boolean isTimer) {
             if (adEntities == null || adEntities.size() == 0)
                 return;
 //            int executeTime = NumberUtil.convertToint(currentTimeToRuleKey(), 0);
@@ -750,7 +754,7 @@ public class AdController {
                 }
 
 
-            });
+            }, isTimer);
 
         }
 
@@ -784,6 +788,10 @@ public class AdController {
 
 
         private void oneTimer(long delay, AdEntity.AdsEntity adsEntity, ITimer iTimer) {
+            oneTimer(delay, adsEntity, iTimer, false);
+        }
+
+        private void oneTimer(long delay, AdEntity.AdsEntity adsEntity, ITimer iTimer, boolean isTimer) {
             AdDownloadManager.getInstance().download(adsEntity.getMd5(), adsEntity.getMedia_url(), file -> {
                 if (file == null) {
                     notifyAdDownloadError(adsEntity);
@@ -796,7 +804,9 @@ public class AdController {
                     return;
                 }
 
-                notifyAdReceive(adsEntity, file);
+                if (!isTimer) {
+                    notifyAdReceive(adsEntity, file);
+                }
                 //保存广告ID到数据库
                 saveAdStatToDb(adsEntity.getId(), mRuleType);
                 mTimerSubs = Observable.timer(delay, TimeUnit.SECONDS)
@@ -806,7 +816,6 @@ public class AdController {
                                 iTimer.onTimerFinished(true);
                         });
             });
-
         }
 
         private int getCurrentTimerIndex(List<AdEntity.AdsEntity> entities) {

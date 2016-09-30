@@ -34,4 +34,10 @@ public class ComConstant {
 
     public static final String BASE_DEBUG_B_URL = Config.sHost + "/api/v1b/";
     public static final String BASE_DEBUG_URL = Config.sHost + "/api/v1/";
+
+    /**
+     * 广告统计类型
+     */
+    public static final String AD_TYPE_CLICK = "1";
+    public static final String AD_TYPE_SLIDE = "2";
 }

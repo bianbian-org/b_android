@@ -12,6 +12,7 @@ import android.view.View;
 import android.widget.ImageView;
 
 import com.jakewharton.rxbinding.view.RxView;
+import com.techjumper.commonres.ComConstant;
 import com.techjumper.commonres.entity.CalendarEntity;
 import com.techjumper.commonres.entity.MedicalEntity;
 import com.techjumper.commonres.entity.WeatherEntity;
@@ -184,7 +185,7 @@ public class InfoFragmentPresenter extends AppBaseFragmentPresenter<InfoFragment
                 })
                 .compose(RxUtil.applySchedulers())
                 .subscribe(aVoid -> {
-                    AdClickDbUtil.insert(Long.valueOf(mAdsEntity.getId()), AdController.TYPE_HOME_TWO, heartbeatTime);
+                    AdClickDbUtil.insert(Long.valueOf(mAdsEntity.getId()), AdController.TYPE_HOME_TWO, ComConstant.AD_TYPE_CLICK, heartbeatTime);
                     Intent intent = new Intent(getView().getActivity(), AdActivity.class);
                     intent.putExtra(AdActivity.ADITEM, mAdsEntity);
                     getView().getActivity().startActivity(intent);
@@ -293,7 +294,7 @@ public class InfoFragmentPresenter extends AppBaseFragmentPresenter<InfoFragment
                         x2 = event.getX();
                         y2 = event.getY();
                         if (Math.abs(x1 - x2) < 6 && Math.abs(y1 - y2) < 6) {
-                            AdClickDbUtil.insert(Long.valueOf(mAdsEntity.getId()), AdController.TYPE_HOME, heartbeatTime);
+                            AdClickDbUtil.insert(Long.valueOf(mAdsEntity.getId()), AdController.TYPE_HOME,  ComConstant.AD_TYPE_CLICK, heartbeatTime);
                             Intent intent = new Intent(getView().getActivity(), AdNewActivity.class);
                             intent.putExtra(AdNewActivity.POSITION, adViewPager.getCurrentItem());
                             intent.putExtra(AdNewActivity.TYPE, AdNewActivity.TYPE_TWO);
@@ -543,6 +544,7 @@ public class InfoFragmentPresenter extends AppBaseFragmentPresenter<InfoFragment
                     @Override
                     public void onAdReceive(AdEntity.AdsEntity adsEntity, File file) {
 //                        HandleAd(adsEntity, file);
+                        Log.d("ad12", "跳下一页, 当前页" + currentPage);
                         adViewPager.setCurrentItem(currentPage, false);
                         mIsGetNewAd = true;
                         mAdsEntity = adsEntity;
@@ -589,8 +591,8 @@ public class InfoFragmentPresenter extends AppBaseFragmentPresenter<InfoFragment
         if (views.size() != 0
                 && adsEntities.size() != 0
                 && views.size() == adsEntities.size()) {
-            AdEntity.AdsEntity adsEntity = adsEntities.get(position);
-            if (adsEntity.getMedia_type().equals(PloyhomeFragmentPresenter.VIDEO_AD_TYPE)) {
+            mAdsEntity = adsEntities.get(position);
+            if (mAdsEntity.getMedia_type().equals(PloyhomeFragmentPresenter.VIDEO_AD_TYPE)) {
                 if (currentView != null) {
                     ((MyTextureView) currentView).stop();
                     currentView = null;
@@ -600,7 +602,7 @@ public class InfoFragmentPresenter extends AppBaseFragmentPresenter<InfoFragment
                 if (currentView == null)
                     return;
 
-                adapter.playVideo(currentView, adsEntity.getFile());
+                adapter.playVideo(currentView, mAdsEntity.getFile());
             } else {
                 if (currentView != null) {
                     ((MyTextureView) currentView).stop();
@@ -612,6 +614,9 @@ public class InfoFragmentPresenter extends AppBaseFragmentPresenter<InfoFragment
 
     @Override
     public void onPageScrollStateChanged(int state) {
-
+        Log.d("scoll", state + "");
+        if (state == 2 && mAdsEntity != null) {
+            AdClickDbUtil.insert(Long.valueOf(mAdsEntity.getId()), AdController.TYPE_HOME, ComConstant.AD_TYPE_SLIDE, heartbeatTime);
+        }
     }
 }

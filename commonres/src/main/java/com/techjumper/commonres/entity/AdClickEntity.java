@@ -20,6 +20,7 @@ public class AdClickEntity {
     public static class AdClickItemEntity {
         private String ad_id;
         private String family_id;
+        private String behavior;
         private String time;
         private String position;
 
@@ -41,6 +42,14 @@ public class AdClickEntity {
 
         public String getTime() {
             return time;
+        }
+
+        public String getBehavior() {
+            return behavior;
+        }
+
+        public void setBehavior(String behavior) {
+            this.behavior = behavior;
         }
 
         public void setTime(String time) {
