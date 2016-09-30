@@ -39,6 +39,7 @@ public class MedicalUserInfoActivity extends AppBaseActivity<MedicalUserInfoActi
         mRv.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
         mAdapter = new MedicalUserInfoAdapter();
         mRv.setAdapter(mAdapter);
+
     }
 
     @Override

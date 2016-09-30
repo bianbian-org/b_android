@@ -59,7 +59,6 @@ import static android.os.Environment.getExternalStorageDirectory;
 public class UserInfoActivityPresenter extends AppBaseActivityPresenter<UserInfoActivity> {
 
     private UserInfoActivityModel mModel = new UserInfoActivityModel(this);
-
     private Subscription mSubs1, mSubs2, mSubs3, mSubs4;
 
     private String mBirthday = UserManager.INSTANCE.getUserInfo(UserManager.KEY_BIRTHDAY);
@@ -83,7 +82,6 @@ public class UserInfoActivityPresenter extends AppBaseActivityPresenter<UserInfo
 
     @Override
     public void initData(Bundle savedInstanceState) {
-
     }
 
     @Override
@@ -409,5 +407,4 @@ public class UserInfoActivityPresenter extends AppBaseActivityPresenter<UserInfo
 
         }
     }
-
 }
