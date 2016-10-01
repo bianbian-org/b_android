@@ -14,6 +14,8 @@ import com.techjumper.polyhomeb.entity.JS2JavaImageViewEntity;
 import com.techjumper.polyhomeb.entity.JS2JavaNotificationEntity;
 import com.techjumper.polyhomeb.entity.JS2JavaPageJumpEntity;
 import com.techjumper.polyhomeb.entity.event.WebViewNotificationEvent;
+import com.techjumper.polyhomeb.mvp.p.activity.LoginActivityPresenter;
+import com.techjumper.polyhomeb.mvp.v.activity.LoginActivity;
 import com.techjumper.polyhomeb.mvp.v.activity.ReplyCommentActivity;
 import com.techjumper.polyhomeb.mvp.v.activity.ReplyDetailActivity;
 import com.techjumper.polyhomeb.mvp.v.activity.WebViewShowBigPicActivity;
@@ -144,6 +146,11 @@ public class JavascriptObject {
                 JS2JavaNotificationEntity.ParamsBean paramsBean = js2JavaNotificationEntity.getParams();
                 String result = paramsBean.getResult();
                 RxBus.INSTANCE.send(new WebViewNotificationEvent(result));
+                break;
+            case "login":
+                Bundle bundle = new Bundle();
+                bundle.putString(LoginActivityPresenter.KEY_COME_FROM, LoginActivityPresenter.VALUE_COME_FROM_WEBVIEW);
+                new AcHelper.Builder(mActivity).extra(bundle).closeCurrent(false).target(LoginActivity.class).start();
                 break;
         }
 

@@ -65,15 +65,17 @@ public class FriendFragmentPresenter extends AppBaseFragmentPresenter<FriendFrag
     private void reloadPage() {
         RxUtils.unsubscribeIfNotNull(mSubs1);
         addSubscription(
-                mSubs1 = RxBus.INSTANCE.asObservable().subscribe(o -> {
-                    if (o instanceof ReloadWebPageEvent) {  //此方法没什么用了,只是在回复帖子之后使用
+                mSubs1 = RxBus.INSTANCE
+                        .asObservable()
+                        .subscribe(o -> {
+                            if (o instanceof ReloadWebPageEvent) {  //此方法没什么用了,只是在回复帖子之后使用
 //                        getView().getWebView().reload();
-                    } else if (o instanceof RefreshStopEvent) {  //此方法没有任何用了.之前是在JS中通知停止刷新
-                        getView().stopRefresh("");
-                    } else if (o instanceof ChangeVillageIdRefreshEvent) {
-                        getView().reload();
-                    }
-                }));
+                            } else if (o instanceof RefreshStopEvent) {  //此方法没有任何用了.之前是在JS中通知停止刷新
+                                getView().stopRefresh("");
+                            } else if (o instanceof ChangeVillageIdRefreshEvent) {
+                                getView().reload();
+                            }
+                        }));
 
     }
 

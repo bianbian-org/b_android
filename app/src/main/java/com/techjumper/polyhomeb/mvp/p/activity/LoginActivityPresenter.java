@@ -13,6 +13,7 @@ import com.techjumper.corelib.utils.common.AcHelper;
 import com.techjumper.corelib.utils.window.ToastUtils;
 import com.techjumper.polyhomeb.R;
 import com.techjumper.polyhomeb.entity.LoginEntity;
+import com.techjumper.polyhomeb.entity.event.ChangeVillageIdRefreshEvent;
 import com.techjumper.polyhomeb.mvp.m.LoginActivityModel;
 import com.techjumper.polyhomeb.mvp.v.activity.ChooseVillageFamilyActivity;
 import com.techjumper.polyhomeb.mvp.v.activity.FindPasswordActivity;
@@ -36,6 +37,8 @@ import rx.android.schedulers.AndroidSchedulers;
 public class LoginActivityPresenter extends AppBaseActivityPresenter<LoginActivity> {
 
     public static final String KEY_PHONE_NUMBER = "key_phone_number";
+    public static final String KEY_COME_FROM = "key_come_from";
+    public static final String VALUE_COME_FROM_WEBVIEW = "key_come_from_webview";
 
     private boolean mCanExit;
 
@@ -60,12 +63,17 @@ public class LoginActivityPresenter extends AppBaseActivityPresenter<LoginActivi
                                 LoginEvent event = (LoginEvent) o;
                                 if (event.isLogin()) {
                                     if (UserManager.INSTANCE.hasChoosedFamilyOrVillage()) {
-                                    new AcHelper.Builder(getView())
-                                            .target(TabHomeActivity.class)
-                                            .closeCurrent(true)
-                                            .enterAnim(R.anim.fade_in)
-                                            .exitAnim(R.anim.fade_out)
-                                            .start();
+                                        if (VALUE_COME_FROM_WEBVIEW.equals(mModel.getComeFrom())) {
+                                            RxBus.INSTANCE.send(new ChangeVillageIdRefreshEvent()); //发出消息,让webview们重新加载,带上header
+                                            getView().finish();
+                                        } else {
+                                            new AcHelper.Builder(getView())
+                                                    .target(TabHomeActivity.class)
+                                                    .closeCurrent(true)
+                                                    .enterAnim(R.anim.fade_in)
+                                                    .exitAnim(R.anim.fade_out)
+                                                    .start();
+                                        }
                                     } else {
                                         new AcHelper.Builder(getView())
                                                 .target(ChooseVillageFamilyActivity.class)
@@ -100,7 +108,6 @@ public class LoginActivityPresenter extends AppBaseActivityPresenter<LoginActivi
         if (!StringUtils.PATTERN_MOBILE.matcher(getView().getPhoneNumber()).matches()) {
             et = getView().getEtAccount();
             getView().setText(et, et.getText());
-//            getView().showHint(Utils.appContext.getString(R.string.error_wrong_phone_number));
             getView().getLayoutWrong().setVisibility(View.VISIBLE);
         } else {
             getView().getLayoutWrong().setVisibility(View.INVISIBLE);
@@ -109,7 +116,6 @@ public class LoginActivityPresenter extends AppBaseActivityPresenter<LoginActivi
         if (!StringUtils.PATTERN_PASSWORD.matcher(getView().getEtPsw().getText().toString()).matches()) {
             et = getView().getEtPsw();
             getView().setText(et, et.getText());
-//            getView().showHint(Utils.appContext.getString(R.string.error_wrong_password));
             getView().getLayoutWrong().setVisibility(View.VISIBLE);
         } else {
             getView().getLayoutWrong().setVisibility(View.INVISIBLE);

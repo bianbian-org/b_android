@@ -1,5 +1,7 @@
 package com.techjumper.polyhomeb.mvp.m;
 
+import android.os.Bundle;
+
 import com.techjumper.corelib.rx.tools.CommonWrap;
 import com.techjumper.lib2.others.KeyValuePair;
 import com.techjumper.lib2.utils.RetrofitHelper;
@@ -30,5 +32,13 @@ public class LoginActivityModel extends BaseModel<LoginActivityPresenter> {
         return RetrofitHelper.<ServiceAPI>createDefault()
                 .login(argument)
                 .compose(CommonWrap.wrap());
+    }
+
+    public Bundle getExtra() {
+        return getPresenter().getView().getIntent().getExtras();
+    }
+
+    public String getComeFrom() {
+        return getExtra().getString(getPresenter().KEY_COME_FROM, "");
     }
 }

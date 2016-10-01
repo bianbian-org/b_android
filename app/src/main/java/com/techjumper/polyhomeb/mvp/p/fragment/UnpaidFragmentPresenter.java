@@ -101,6 +101,7 @@ public class UnpaidFragmentPresenter extends AppBaseFragmentPresenter<UnpaidFrag
 
                             @Override
                             public void onNext(OrdersEntity entity) {
+
 //                                if (!processNetworkResult(entity)) {
 //                                    return;
 //                                }
