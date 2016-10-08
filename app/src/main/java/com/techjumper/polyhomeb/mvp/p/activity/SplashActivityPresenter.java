@@ -5,7 +5,6 @@ import android.text.TextUtils;
 
 import com.techjumper.corelib.rx.tools.RxUtils;
 import com.techjumper.corelib.utils.common.AcHelper;
-import com.techjumper.polyhomeb.R;
 import com.techjumper.polyhomeb.entity.UserFamiliesAndVillagesEntity;
 import com.techjumper.polyhomeb.mvp.m.SplashActivityModel;
 import com.techjumper.polyhomeb.mvp.v.activity.ChooseVillageFamilyActivity;
@@ -118,8 +117,8 @@ public class SplashActivityPresenter extends AppBaseActivityPresenter<SplashActi
         new AcHelper.Builder(getView())
                 .target(LoginActivity.class)
                 .closeCurrent(true)
-                .enterAnim(R.anim.fade_in)
-                .exitAnim(R.anim.fade_out)
+//                .enterAnim(R.anim.fade_in)
+//                .exitAnim(R.anim.fade_out)
                 .start();
         getView().setCanBack(true);
     }
@@ -128,8 +127,8 @@ public class SplashActivityPresenter extends AppBaseActivityPresenter<SplashActi
         new AcHelper.Builder(getView())
                 .target(ChooseVillageFamilyActivity.class)
                 .closeCurrent(true)
-                .enterAnim(R.anim.fade_in)
-                .exitAnim(R.anim.fade_out)
+//                .enterAnim(R.anim.fade_in)
+//                .exitAnim(R.anim.fade_out)
                 .start();
         getView().setCanBack(true);
     }
@@ -138,8 +137,8 @@ public class SplashActivityPresenter extends AppBaseActivityPresenter<SplashActi
         new AcHelper.Builder(getView())
                 .target(TabHomeActivity.class)
                 .closeCurrent(true)
-                .enterAnim(R.anim.fade_in)
-                .exitAnim(R.anim.fade_out)
+//                .enterAnim(R.anim.fade_in)
+//                .exitAnim(R.anim.fade_out)
                 .start();
         getView().setCanBack(true);
     }
