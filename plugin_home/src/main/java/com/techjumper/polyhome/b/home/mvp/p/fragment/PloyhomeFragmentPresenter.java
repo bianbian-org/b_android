@@ -18,6 +18,8 @@ import com.jakewharton.rxbinding.view.RxView;
 import com.techjumper.commonres.ComConstant;
 import com.techjumper.commonres.UserInfoEntity;
 import com.techjumper.commonres.entity.NoticeEntity;
+import com.techjumper.commonres.entity.TimerClickEntity;
+import com.techjumper.commonres.entity.TrueEntity;
 import com.techjumper.commonres.entity.WeatherEntity;
 import com.techjumper.commonres.entity.event.AdControllerEvent;
 import com.techjumper.commonres.entity.event.AdEvent;
@@ -162,6 +164,7 @@ public class PloyhomeFragmentPresenter extends AppBaseFragmentPresenter<Ployhome
                 })
                 .compose(RxUtil.applySchedulers())
                 .subscribe(aVoid -> {
+                    submitTimer(TimerClickEntity.ONCLICK_PROPERTY);
                     long familyId = UserInfoManager.getLongFamilyId();
                     long userId = UserInfoManager.getLongUserId();
                     String ticket = UserInfoManager.getTicket();
@@ -179,6 +182,7 @@ public class PloyhomeFragmentPresenter extends AppBaseFragmentPresenter<Ployhome
                 })
                 .compose(RxUtil.applySchedulers())
                 .subscribe(aVoid -> {
+                    submitTimer(TimerClickEntity.ONCLICK_INFO);
                     long userId = UserInfoManager.getLongUserId();
                     long familyId = UserInfoManager.getLongFamilyId();
                     String ticket = UserInfoManager.getTicket();
@@ -224,6 +228,7 @@ public class PloyhomeFragmentPresenter extends AppBaseFragmentPresenter<Ployhome
                 })
                 .compose(RxUtil.applySchedulers())
                 .subscribe(aVoid -> {
+                    submitTimer(TimerClickEntity.ONCLICK_SHOPPING);
                     Intent intent = new Intent(getView().getActivity(), ShoppingActivity.class);
                     intent.putExtra(ShoppingActivity.TIME, heartbeatTime);
                     getView().startActivity(intent);
@@ -232,6 +237,7 @@ public class PloyhomeFragmentPresenter extends AppBaseFragmentPresenter<Ployhome
         addSubscription(RxView.clicks(getView().getJujia())
                 .compose(RxUtil.applySchedulers())
                 .subscribe(aVoid -> {
+                    submitTimer(TimerClickEntity.ONCLICK_JUJIA);
                     Intent intent = new Intent(getView().getActivity(), JujiaActivity.class);
                     intent.putExtra(JujiaActivity.TIME, heartbeatTime);
                     getView().startActivity(intent);
@@ -242,6 +248,7 @@ public class PloyhomeFragmentPresenter extends AppBaseFragmentPresenter<Ployhome
         addSubscription(RxView.clicks(getView().getSmarthome())
                 .compose(RxUtil.applySchedulers())
                 .subscribe(aVoid -> {
+                    submitTimer(TimerClickEntity.ONCLICK_SMARTHOME);
                     PluginEngineUtil.startSmartHome();
                 }));
 
@@ -947,5 +954,49 @@ public class PloyhomeFragmentPresenter extends AppBaseFragmentPresenter<Ployhome
         if (state == 2 && mAdsEntity != null) {
             AdClickDbUtil.insert(Long.valueOf(mAdsEntity.getId()), AdController.TYPE_HOME, ComConstant.AD_TYPE_SLIDE, heartbeatTime);
         }
+    }
+
+    private void submitTimer(String eventId) {
+        if (!UserInfoManager.isLogin())
+            return;
+
+        TimerClickEntity entity = new TimerClickEntity();
+        TimerClickEntity.TimerClickItemEntity itemEntity = new TimerClickEntity.TimerClickItemEntity();
+
+        itemEntity.setEvent_id(eventId);
+        itemEntity.setStart_time(String.valueOf(heartbeatTime));
+        itemEntity.setEnd_time(String.valueOf(heartbeatTime));
+
+        List<TimerClickEntity.TimerClickItemEntity> entities = new ArrayList<>();
+        entities.add(itemEntity);
+        entity.setDatas(entities);
+
+        String timer = com.techjumper.lib2.utils.GsonUtils.toJson(entity);
+        Log.d("timerClick", timer);
+
+        addSubscription(model.submitTimer(timer)
+                .subscribe(new Subscriber<TrueEntity>() {
+                    @Override
+                    public void onCompleted() {
+
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        getView().showError(e);
+                    }
+
+                    @Override
+                    public void onNext(TrueEntity trueEntity) {
+                        if (!processNetworkResult(trueEntity, false))
+                            return;
+
+                        if (trueEntity == null ||
+                                trueEntity.getData() == null)
+                            return;
+
+                        Log.d("timerClick", "上传成功了");
+                    }
+                }));
     }
 }

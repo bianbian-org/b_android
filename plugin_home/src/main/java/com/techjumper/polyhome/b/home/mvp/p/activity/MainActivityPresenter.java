@@ -237,11 +237,12 @@ public class MainActivityPresenter extends AppBaseActivityPresenter<MainActivity
         it.setComponent(componentName);
         it.putExtra("com.dnake.talk", "CallingActivity");
         getView().startActivity(it);
-        submitTimer();
+        submitTimer(TimerClickEntity.YIJIAN_HOME);
     }
 
     @OnClick(R.id.vedio)
     void callVedio() {
+        submitTimer(TimerClickEntity.ONCLICK_VIDEO);
         Intent it = new Intent();
         ComponentName componentName = new ComponentName("com.dnake.talk", "com.dnake.activity.VideoSurveillanceActivity");
         it.setComponent(componentName);
@@ -253,7 +254,6 @@ public class MainActivityPresenter extends AppBaseActivityPresenter<MainActivity
         RxBus.INSTANCE.send(new AdControllerEvent());
         isShowMainAd(false);
     }
-
 
     @Override
     public void initData(Bundle savedInstanceState) {
@@ -519,14 +519,14 @@ public class MainActivityPresenter extends AppBaseActivityPresenter<MainActivity
                 });
     }
 
-    private void submitTimer() {
+    private void submitTimer(String eventId) {
         if (!UserInfoManager.isLogin())
             return;
 
         TimerClickEntity entity = new TimerClickEntity();
         TimerClickEntity.TimerClickItemEntity itemEntity = new TimerClickEntity.TimerClickItemEntity();
 
-        itemEntity.setEvent_id(TimerClickEntity.YIJIAN_HOME);
+        itemEntity.setEvent_id(eventId);
         itemEntity.setStart_time(String.valueOf(totalTime));
         itemEntity.setEnd_time(String.valueOf(totalTime));
 

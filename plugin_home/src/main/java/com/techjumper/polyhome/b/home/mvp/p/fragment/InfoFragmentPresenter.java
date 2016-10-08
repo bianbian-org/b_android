@@ -15,6 +15,8 @@ import com.jakewharton.rxbinding.view.RxView;
 import com.techjumper.commonres.ComConstant;
 import com.techjumper.commonres.entity.CalendarEntity;
 import com.techjumper.commonres.entity.MedicalEntity;
+import com.techjumper.commonres.entity.TimerClickEntity;
+import com.techjumper.commonres.entity.TrueEntity;
 import com.techjumper.commonres.entity.WeatherEntity;
 import com.techjumper.commonres.entity.event.AdTemEvent;
 import com.techjumper.commonres.entity.event.HeartbeatTimeEvent;
@@ -140,6 +142,7 @@ public class InfoFragmentPresenter extends AppBaseFragmentPresenter<InfoFragment
         addSubscription(RxView.clicks(getView().getSetting())
                 .compose(RxUtil.applySchedulers())
                 .subscribe(aVoid -> {
+                    submitTimer(TimerClickEntity.ONCLICK_SETTING);
                     Intent it = new Intent();
                     ComponentName componentName = new ComponentName("com.dnake.talk", "com.dnake.setting.activity.SettingActivity");
                     it.setComponent(componentName);
@@ -149,27 +152,32 @@ public class InfoFragmentPresenter extends AppBaseFragmentPresenter<InfoFragment
         addSubscription(RxView.clicks(getView().getAdvDetect())
                 .compose(RxUtil.applySchedulers())
                 .subscribe(aVoid -> {
+                    submitTimer(TimerClickEntity.ONCLICK_MEDICAL);
                     PluginEngineUtil.startMedical();
                 }));
         addSubscription(RxView.clicks(getView().getAdvHeartrate())
                 .compose(RxUtil.applySchedulers())
                 .subscribe(aVoid -> {
+                    submitTimer(TimerClickEntity.ONCLICK_MEDICAL);
                     PluginEngineUtil.startMedical();
                 }));
         addSubscription(RxView.clicks(getView().getAdvBloodsugar())
                 .compose(RxUtil.applySchedulers())
                 .subscribe(aVoid -> {
+                    submitTimer(TimerClickEntity.ONCLICK_MEDICAL);
                     PluginEngineUtil.startMedical();
                 }));
         addSubscription(RxView.clicks(getView().getAdvBloodpressure())
                 .compose(RxUtil.applySchedulers())
                 .subscribe(aVoid -> {
+                    submitTimer(TimerClickEntity.ONCLICK_MEDICAL);
                     PluginEngineUtil.startMedical();
                 }));
 
         addSubscription(RxView.clicks(getView().getSpeak())
                 .compose(RxUtil.applySchedulers())
                 .subscribe(aVoid -> {
+                    submitTimer(TimerClickEntity.ONCLICK_TALK);
                     Intent it = new Intent();
                     ComponentName componentName = new ComponentName("com.dnake.talk", "com.dnake.activity.CallingActivity");
                     it.setComponent(componentName);
@@ -618,5 +626,49 @@ public class InfoFragmentPresenter extends AppBaseFragmentPresenter<InfoFragment
         if (state == 2 && mAdsEntity != null) {
             AdClickDbUtil.insert(Long.valueOf(mAdsEntity.getId()), AdController.TYPE_HOME, ComConstant.AD_TYPE_SLIDE, heartbeatTime);
         }
+    }
+
+    private void submitTimer(String eventId) {
+        if (!UserInfoManager.isLogin())
+            return;
+
+        TimerClickEntity entity = new TimerClickEntity();
+        TimerClickEntity.TimerClickItemEntity itemEntity = new TimerClickEntity.TimerClickItemEntity();
+
+        itemEntity.setEvent_id(eventId);
+        itemEntity.setStart_time(String.valueOf(heartbeatTime));
+        itemEntity.setEnd_time(String.valueOf(heartbeatTime));
+
+        List<TimerClickEntity.TimerClickItemEntity> entities = new ArrayList<>();
+        entities.add(itemEntity);
+        entity.setDatas(entities);
+
+        String timer = com.techjumper.lib2.utils.GsonUtils.toJson(entity);
+        Log.d("timerClick", timer);
+
+        addSubscription(infoFragmentModel.submitTimer(timer)
+                .subscribe(new Subscriber<TrueEntity>() {
+                    @Override
+                    public void onCompleted() {
+
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        getView().showError(e);
+                    }
+
+                    @Override
+                    public void onNext(TrueEntity trueEntity) {
+                        if (!processNetworkResult(trueEntity, false))
+                            return;
+
+                        if (trueEntity == null ||
+                                trueEntity.getData() == null)
+                            return;
+
+                        Log.d("timerClick", "上传成功了");
+                    }
+                }));
     }
 }

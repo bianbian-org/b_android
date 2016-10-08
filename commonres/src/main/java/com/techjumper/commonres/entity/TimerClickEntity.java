@@ -10,6 +10,15 @@ public class TimerClickEntity {
     public static final String YIJIAN_HOME = "1001";
     public static final String YIJIAN_AD = "1002";
     public static final String YIJIAN_JUJIA = "1003";
+    public static final String ONCLICK_JUJIA = "1004";
+    public static final String ONCLICK_SMARTHOME = "1005";
+    public static final String ONCLICK_PROPERTY = "1006";
+    public static final String ONCLICK_INFO = "1007";
+    public static final String ONCLICK_SHOPPING = "1008";
+    public static final String ONCLICK_MEDICAL = "1009";
+    public static final String ONCLICK_TALK = "1010";
+    public static final String ONCLICK_SETTING = "1011";
+    public static final String ONCLICK_VIDEO = "1012";
 
     private List<TimerClickItemEntity> datas;
 
