@@ -45,15 +45,13 @@ public class MyVillageFamilyActivityViewHolder extends BaseRecyclerViewHolder<My
             setImageBitmap(R.id.iv_choose, null);
         }
         setOnClickListener(R.id.layout_village, v -> {
-            //下面这个if else必须在点击的时候做,不然..
             // HomeFragment和HomeMenuFragment中收到消息,和MyVillageFamilyActivityPresenter中收到消息是同时的,
             // 会导致那时候SP中还没存数据,但是调用和更新title和侧边栏的方法,导致界面没更新.
-            //(最开始是写在MyVillageFamilyActivityPresenter中的,肯定不得行)
             if (!data.isChoosed()) {
                 if (0 == data.isFamilyData()) {  //家庭
-                    UserManager.INSTANCE.updateFamilyOrVillageInfo(true, family_id + "", name, villageId+"");
+                    UserManager.INSTANCE.updateFamilyOrVillageInfo(true, family_id + "", name, villageId + "");
                 } else if (1 == data.isFamilyData()) {   //小区
-                    UserManager.INSTANCE.updateFamilyOrVillageInfo(false, villageId + "", name, villageId+"");
+                    UserManager.INSTANCE.updateFamilyOrVillageInfo(false, villageId + "", name, villageId + "");
                 }
                 RxBus.INSTANCE.send(new ChooseFamilyVillageEvent(name, data.isFamilyData(), getLayoutPosition()));
             }

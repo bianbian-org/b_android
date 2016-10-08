@@ -1,6 +1,7 @@
 package com.techjumper.polyhomeb.mvp.v.activity;
 
 import android.os.Bundle;
+import android.os.Handler;
 import android.text.Editable;
 import android.view.View;
 import android.widget.EditText;
@@ -9,7 +10,9 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.techjumper.corelib.mvp.factory.Presenter;
+import com.techjumper.corelib.ui.activity.BaseActivity;
 import com.techjumper.corelib.utils.window.KeyboardUtils;
+import com.techjumper.corelib.utils.window.ToastUtils;
 import com.techjumper.polyhomeb.R;
 import com.techjumper.polyhomeb.mvp.p.activity.LoginActivityPresenter;
 import com.techjumper.polyhomeb.user.UserManager;
@@ -40,6 +43,8 @@ public class LoginActivity extends AppBaseActivity<LoginActivityPresenter> {
     @Bind(R.id.iv_left_icon)
     ImageView mIvBack;
 
+    private boolean mCanExit;
+
     @Override
     protected View inflateView(Bundle savedInstanceState) {
         return inflate(R.layout.activity_login);
@@ -47,13 +52,24 @@ public class LoginActivity extends AppBaseActivity<LoginActivityPresenter> {
 
     @Override
     protected void initView(Bundle savedInstanceState) {
-        mIvBack.setVisibility(View.INVISIBLE);
-        UserManager.INSTANCE.logoutDontNotify();
+        boolean showLeft = isShowLeft();
+        if (showLeft) {
+            mTvForgetPsw.setVisibility(View.GONE);
+            mTvRegist.setVisibility(View.GONE);
+        } else {
+            UserManager.INSTANCE.logoutDontNotify();
+        }
     }
 
     @Override
     protected boolean onTitleLeftClick() {
+        getPresenter().onTitleLeftClick();
         return true;
+    }
+
+    @Override
+    protected boolean canSlide2Close() {
+        return getPresenter().VALUE_COME_FROM_WEBVIEW.equals(getPresenter().getComeFrom()) ? true : false;
     }
 
     @Override
@@ -84,6 +100,16 @@ public class LoginActivity extends AppBaseActivity<LoginActivityPresenter> {
 
     }
 
+    public boolean isShowLeft() {
+        boolean isShowLeft = getPresenter().VALUE_COME_FROM_WEBVIEW.equals(getPresenter().getComeFrom()) ? true : false;
+        if (isShowLeft) {
+            mIvBack.setVisibility(View.VISIBLE);
+        } else {
+            mIvBack.setVisibility(View.INVISIBLE);
+        }
+        return isShowLeft;
+    }
+
     private void setSelectionToEnd(EditText et) {
         et.setSelection(et.getText().length());
     }
@@ -98,11 +124,17 @@ public class LoginActivity extends AppBaseActivity<LoginActivityPresenter> {
 
     @Override
     public void onBackPressed() {
-        getPresenter().onBackPressed();
+        if (getPresenter().VALUE_COME_FROM_WEBVIEW.equals(getPresenter().getComeFrom())) {
+            super.onBackPressed();
+        } else {
+            if (!mCanExit) {
+                ToastUtils.show(getString(R.string.exit_app));
+                mCanExit = true;
+                new Handler().postDelayed(() -> mCanExit = false, 2000);
+                return;
+            }
+            BaseActivity.finishAll();
+        }
     }
 
-    @Override
-    protected boolean canSlide2Close() {
-        return false;
-    }
 }

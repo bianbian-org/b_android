@@ -1,16 +1,13 @@
 package com.techjumper.polyhomeb.mvp.p.activity;
 
 import android.os.Bundle;
-import android.os.Handler;
 import android.view.View;
 import android.widget.EditText;
 
 import com.techjumper.corelib.rx.tools.RxBus;
 import com.techjumper.corelib.rx.tools.RxUtils;
-import com.techjumper.corelib.ui.activity.BaseActivity;
 import com.techjumper.corelib.utils.basic.StringUtils;
 import com.techjumper.corelib.utils.common.AcHelper;
-import com.techjumper.corelib.utils.window.ToastUtils;
 import com.techjumper.polyhomeb.R;
 import com.techjumper.polyhomeb.entity.LoginEntity;
 import com.techjumper.polyhomeb.entity.event.ChangeVillageIdRefreshEvent;
@@ -40,8 +37,6 @@ public class LoginActivityPresenter extends AppBaseActivityPresenter<LoginActivi
     public static final String KEY_COME_FROM = "key_come_from";
     public static final String VALUE_COME_FROM_WEBVIEW = "key_come_from_webview";
 
-    private boolean mCanExit;
-
     private Subscription mSubs1;
 
     private LoginActivityModel mModel = new LoginActivityModel(this);
@@ -49,6 +44,12 @@ public class LoginActivityPresenter extends AppBaseActivityPresenter<LoginActivi
     @Override
     public void initData(Bundle savedInstanceState) {
 
+    }
+
+    public void onTitleLeftClick() {
+        if (getView().isShowLeft()) {
+            getView().onBackPressed();
+        }
     }
 
     @Override
@@ -159,13 +160,7 @@ public class LoginActivityPresenter extends AppBaseActivityPresenter<LoginActivi
         );
     }
 
-    public void onBackPressed() {
-        if (!mCanExit) {
-            ToastUtils.show(getView().getString(R.string.exit_app));
-            mCanExit = true;
-            new Handler().postDelayed(() -> mCanExit = false, 2000);
-            return;
-        }
-        BaseActivity.finishAll();
+    public String getComeFrom() {
+        return mModel.getComeFrom();
     }
 }

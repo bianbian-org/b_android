@@ -12,13 +12,13 @@ public class UserFamiliesAndVillagesEntity extends BaseEntity<UserFamiliesAndVil
 
     public static class DataBean {
         /**
-         * id : 1
+         * id : 1   家庭id
          * family_name : 家庭001
          */
 
         private List<FamilyInfosBean> family_infos;
         /**
-         * village_id : 2
+         * village_id : 2  小区id
          * verified : 0   #审核是否通过 0-未通过 1-已通过
          * village_name : 小区002
          */

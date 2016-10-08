@@ -5,6 +5,7 @@ import android.text.TextUtils;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.techjumper.corelib.rx.tools.RxBus;
+import com.techjumper.corelib.utils.common.JLog;
 import com.techjumper.corelib.utils.file.PreferenceUtils;
 import com.techjumper.polyhomeb.Config;
 import com.techjumper.polyhomeb.entity.LoginEntity;
@@ -140,6 +141,9 @@ public enum UserManager {
             PreferenceUtils.save(UserManager.KEY_CURRENT_VILLAGE_ID, village_id);
             PreferenceUtils.save(UserManager.KEY_CURRENT_SHOW_IS_FAMILY_OR_VILLAGE, UserManager.VALUE_IS_VILLAGE);
         }
+
+        JLog.e("f" + getUserInfo(KEY_CURRENT_VILLAGE_ID));
+        JLog.e("v" + getUserInfo(KEY_CURRENT_FAMILY_ID));
     }
 
     /**
