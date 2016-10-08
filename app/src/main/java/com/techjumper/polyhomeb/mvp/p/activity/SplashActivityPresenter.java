@@ -59,12 +59,17 @@ public class SplashActivityPresenter extends AppBaseActivityPresenter<SplashActi
 
                             @Override
                             public void onError(Throwable e) {
-                                jumpToTabHomeActivity();
+                                //此处本身是jumpToTabHomeActivity的,但是如果走到error了,
+                                //就会导致在splash页面停留过久,并且跳转到jumpToTabHomeActivity,
+                                //如果此时是新用户之类的,跳转过去,就会出问题,因为小区和家庭都没得。
+                                //所以这时候直接跳转到登录界面去,(在登录里面会清空sp数据,做到真正的退出登录了,再重新登录)
+//                                jumpToTabHomeActivity();
+                                getView().showError(e);
+                                jumpToLoginActivity();
                             }
 
                             @Override
                             public void onNext(UserFamiliesAndVillagesEntity userFamiliesAndVillagesEntity) {
-//                                if (!processNetworkResult(userFamiliesAndVillagesEntity)) return;
                                 if (NetHelper.CODE_NOT_LOGIN == userFamiliesAndVillagesEntity.getError_code()) {
                                     //新增了这个操作,所以这里会显示 功能登陆后可用  弹出的toast是在processNetworkResult中进行的.只为了屏蔽Toast
                                     jumpToLoginActivity();

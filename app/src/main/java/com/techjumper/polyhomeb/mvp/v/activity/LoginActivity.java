@@ -12,6 +12,7 @@ import com.techjumper.corelib.mvp.factory.Presenter;
 import com.techjumper.corelib.utils.window.KeyboardUtils;
 import com.techjumper.polyhomeb.R;
 import com.techjumper.polyhomeb.mvp.p.activity.LoginActivityPresenter;
+import com.techjumper.polyhomeb.user.UserManager;
 
 import butterknife.Bind;
 
@@ -47,6 +48,7 @@ public class LoginActivity extends AppBaseActivity<LoginActivityPresenter> {
     @Override
     protected void initView(Bundle savedInstanceState) {
         mIvBack.setVisibility(View.INVISIBLE);
+        UserManager.INSTANCE.logoutDontNotify();
     }
 
     @Override

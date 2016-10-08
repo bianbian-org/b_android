@@ -34,11 +34,15 @@ public class LoginActivityModel extends BaseModel<LoginActivityPresenter> {
                 .compose(CommonWrap.wrap());
     }
 
-    public Bundle getExtra() {
+    private Bundle getExtra() {
         return getPresenter().getView().getIntent().getExtras();
     }
 
     public String getComeFrom() {
-        return getExtra().getString(getPresenter().KEY_COME_FROM, "");
+        if (getExtra() != null) {  //如果不加判断的话,正常登陆会报空。因为在SplashActivity过来的时候没有带Bundle.所以如果这里不想判断的话,在SplashActivity跳转的时候带个Bundle,里面是空的也行
+            return getExtra().getString(getPresenter().KEY_COME_FROM, "");
+        } else {
+            return "";
+        }
     }
 }
