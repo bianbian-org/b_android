@@ -28,6 +28,7 @@ import com.techjumper.commonres.entity.event.HeartbeatEvent;
 import com.techjumper.commonres.entity.event.InfoDetailEvent;
 import com.techjumper.commonres.entity.event.InfoTypeEvent;
 import com.techjumper.commonres.entity.event.PropertyNormalDetailEvent;
+import com.techjumper.commonres.entity.event.StayEvent;
 import com.techjumper.commonres.entity.event.TimeEvent;
 import com.techjumper.commonres.entity.event.loadmoreevent.LoadmoreInfoEvent;
 import com.techjumper.commonres.util.CommonDateUtil;
@@ -163,6 +164,8 @@ public class InfoMainActivity extends AppBaseActivity {
             backType = BackEvent.FINISH;
         }
     }
+
+
 
     private CommonRecyclerAdapter adapter;
 

@@ -87,6 +87,10 @@ public class MainActivityPresenter extends AppBaseActivityPresenter<MainActivity
     private Timer timer;
     public static final String ACTION_START_HOST_DAEMON = "action_start_host_daemon";
 
+    private String eventId = "";
+    private long startTime;
+    private long endTime;
+
     private IPluginMessageReceiver mIPluginMessageReceiver = (code, message, extras) -> {
 
         if (code == PluginEngine.CODE_GET_SAVE_INFO) {
@@ -232,17 +236,19 @@ public class MainActivityPresenter extends AppBaseActivityPresenter<MainActivity
 
     @OnClick(R.id.call_service)
     void callService() {
+        submitTimer(TimerClickEntity.YIJIAN_HOME, totalTime, totalTime);
+        eventId = TimerClickEntity.STAY_TALK;
         Intent it = new Intent();
         ComponentName componentName = new ComponentName("com.dnake.talk", "com.dnake.activity.CallingActivity");
         it.setComponent(componentName);
         it.putExtra("com.dnake.talk", "CallingActivity");
         getView().startActivity(it);
-        submitTimer(TimerClickEntity.YIJIAN_HOME);
     }
 
     @OnClick(R.id.vedio)
     void callVedio() {
-        submitTimer(TimerClickEntity.ONCLICK_VIDEO);
+        submitTimer(TimerClickEntity.ONCLICK_VIDEO, totalTime, totalTime);
+        eventId = TimerClickEntity.STAY_VIDEO;
         Intent it = new Intent();
         ComponentName componentName = new ComponentName("com.dnake.talk", "com.dnake.activity.VideoSurveillanceActivity");
         it.setComponent(componentName);
@@ -287,6 +293,26 @@ public class MainActivityPresenter extends AppBaseActivityPresenter<MainActivity
                 }
             }
         });
+    }
+
+    @Override
+    public void onPause() {
+        if (!TextUtils.isEmpty(eventId) && !UserInfoManager.getFamilyId().equals("-1")) {
+            startTime = totalTime;
+        }
+        super.onPause();
+    }
+
+    @Override
+    public void onResume() {
+        if (!TextUtils.isEmpty(eventId) && !UserInfoManager.getFamilyId().equals("-1") && startTime != 0) {
+            endTime = totalTime;
+            submitTimer(eventId, startTime, endTime);
+        }
+        eventId = "";
+        startTime = 0;
+        endTime = 0;
+        super.onResume();
     }
 
     @Override
@@ -519,16 +545,20 @@ public class MainActivityPresenter extends AppBaseActivityPresenter<MainActivity
                 });
     }
 
-    private void submitTimer(String eventId) {
+    private void submitTimer(String eventId, long startTime, long endTime) {
         if (!UserInfoManager.isLogin())
             return;
+
+        if (endTime < startTime){
+            return;
+        }
 
         TimerClickEntity entity = new TimerClickEntity();
         TimerClickEntity.TimerClickItemEntity itemEntity = new TimerClickEntity.TimerClickItemEntity();
 
         itemEntity.setEvent_id(eventId);
-        itemEntity.setStart_time(String.valueOf(totalTime));
-        itemEntity.setEnd_time(String.valueOf(totalTime));
+        itemEntity.setStart_time(String.valueOf(startTime));
+        itemEntity.setEnd_time(String.valueOf(endTime));
 
         List<TimerClickEntity.TimerClickItemEntity> entities = new ArrayList<>();
         entities.add(itemEntity);

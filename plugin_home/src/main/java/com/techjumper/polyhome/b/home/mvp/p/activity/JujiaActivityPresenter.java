@@ -39,7 +39,7 @@ public class JujiaActivityPresenter extends AppBaseActivityPresenter<JujiaActivi
 
     @OnClick(R.id.bottom_back)
     void back() {
-        getView().finish();
+       getView().finish();
     }
 
     @OnClick(R.id.bottom_home)
@@ -55,7 +55,7 @@ public class JujiaActivityPresenter extends AppBaseActivityPresenter<JujiaActivi
         it.putExtra("com.dnake.talk", "CallingActivity");
         getView().startActivity(it);
 
-        submitTimer();
+        submitTimer(TimerClickEntity.YIJIAN_JUJIA, time, time);
     }
 
     @Override
@@ -65,11 +65,11 @@ public class JujiaActivityPresenter extends AppBaseActivityPresenter<JujiaActivi
 
     @Override
     public void onDestroy() {
-        super.onDestroy();
         if (timer != null) {
             timer.cancel();
             timer = null;
         }
+        super.onDestroy();
     }
 
     @Override
@@ -116,16 +116,23 @@ public class JujiaActivityPresenter extends AppBaseActivityPresenter<JujiaActivi
         }, 0, 1000);
     }
 
-    private void submitTimer() {
-        if (!UserInfoManager.isLogin())
+    private void submitTimer(String eventId, long startTime, long endTime) {
+        if (!UserInfoManager.isLogin()) {
+            getView().finish();
             return;
+        }
+
+        if (UserInfoManager.getFamilyId().equals("-1")){
+            getView().finish();
+            return;
+        }
 
         TimerClickEntity entity = new TimerClickEntity();
         TimerClickEntity.TimerClickItemEntity itemEntity = new TimerClickEntity.TimerClickItemEntity();
 
-        itemEntity.setEvent_id(TimerClickEntity.YIJIAN_JUJIA);
-        itemEntity.setStart_time(String.valueOf(time));
-        itemEntity.setEnd_time(String.valueOf(time));
+        itemEntity.setEvent_id(eventId);
+        itemEntity.setStart_time(String.valueOf(startTime));
+        itemEntity.setEnd_time(String.valueOf(endTime));
 
         List<TimerClickEntity.TimerClickItemEntity> entities = new ArrayList<>();
         entities.add(itemEntity);
@@ -138,22 +145,27 @@ public class JujiaActivityPresenter extends AppBaseActivityPresenter<JujiaActivi
                 .subscribe(new Subscriber<TrueEntity>() {
                     @Override
                     public void onCompleted() {
-
+                        getView().finish();
                     }
 
                     @Override
                     public void onError(Throwable e) {
                         getView().showError(e);
+                        getView().finish();
                     }
 
                     @Override
                     public void onNext(TrueEntity trueEntity) {
-                        if (!processNetworkResult(trueEntity, false))
+                        if (!processNetworkResult(trueEntity, false)) {
+                            getView().finish();
                             return;
+                        }
 
                         if (trueEntity == null ||
-                                trueEntity.getData() == null)
+                                trueEntity.getData() == null) {
+                            getView().finish();
                             return;
+                        }
 
                         Log.d("timerClick", "上传成功了");
                     }

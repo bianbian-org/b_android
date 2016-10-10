@@ -111,6 +111,10 @@ public class PloyhomeFragmentPresenter extends AppBaseFragmentPresenter<Ployhome
 
     private List<AdEntity.AdsEntity> adsEntities = new ArrayList<>();
 
+    private String eventId = "";
+    private long startTime = 0;
+    private long endTime = 0;
+
     @Override
     public void onDestroy() {
         if (adController != null) {
@@ -164,7 +168,8 @@ public class PloyhomeFragmentPresenter extends AppBaseFragmentPresenter<Ployhome
                 })
                 .compose(RxUtil.applySchedulers())
                 .subscribe(aVoid -> {
-                    submitTimer(TimerClickEntity.ONCLICK_PROPERTY);
+                    submitTimer(TimerClickEntity.ONCLICK_PROPERTY, heartbeatTime, heartbeatTime);
+                    eventId = TimerClickEntity.STAY_PROPERTY;
                     long familyId = UserInfoManager.getLongFamilyId();
                     long userId = UserInfoManager.getLongUserId();
                     String ticket = UserInfoManager.getTicket();
@@ -182,7 +187,8 @@ public class PloyhomeFragmentPresenter extends AppBaseFragmentPresenter<Ployhome
                 })
                 .compose(RxUtil.applySchedulers())
                 .subscribe(aVoid -> {
-                    submitTimer(TimerClickEntity.ONCLICK_INFO);
+                    submitTimer(TimerClickEntity.ONCLICK_INFO, heartbeatTime, heartbeatTime);
+                    eventId = TimerClickEntity.STAY_INFO;
                     long userId = UserInfoManager.getLongUserId();
                     long familyId = UserInfoManager.getLongFamilyId();
                     String ticket = UserInfoManager.getTicket();
@@ -228,7 +234,8 @@ public class PloyhomeFragmentPresenter extends AppBaseFragmentPresenter<Ployhome
                 })
                 .compose(RxUtil.applySchedulers())
                 .subscribe(aVoid -> {
-                    submitTimer(TimerClickEntity.ONCLICK_SHOPPING);
+                    submitTimer(TimerClickEntity.ONCLICK_SHOPPING, heartbeatTime, heartbeatTime);
+                    eventId = TimerClickEntity.STAY_SHOPPING;
                     Intent intent = new Intent(getView().getActivity(), ShoppingActivity.class);
                     intent.putExtra(ShoppingActivity.TIME, heartbeatTime);
                     getView().startActivity(intent);
@@ -237,7 +244,8 @@ public class PloyhomeFragmentPresenter extends AppBaseFragmentPresenter<Ployhome
         addSubscription(RxView.clicks(getView().getJujia())
                 .compose(RxUtil.applySchedulers())
                 .subscribe(aVoid -> {
-                    submitTimer(TimerClickEntity.ONCLICK_JUJIA);
+                    submitTimer(TimerClickEntity.ONCLICK_JUJIA, heartbeatTime, heartbeatTime);
+                    eventId = TimerClickEntity.STAY_JUJIA;
                     Intent intent = new Intent(getView().getActivity(), JujiaActivity.class);
                     intent.putExtra(JujiaActivity.TIME, heartbeatTime);
                     getView().startActivity(intent);
@@ -248,7 +256,8 @@ public class PloyhomeFragmentPresenter extends AppBaseFragmentPresenter<Ployhome
         addSubscription(RxView.clicks(getView().getSmarthome())
                 .compose(RxUtil.applySchedulers())
                 .subscribe(aVoid -> {
-                    submitTimer(TimerClickEntity.ONCLICK_SMARTHOME);
+                    submitTimer(TimerClickEntity.ONCLICK_SMARTHOME, heartbeatTime, heartbeatTime);
+                    eventId = TimerClickEntity.STAY_SMARTHOME;
                     PluginEngineUtil.startSmartHome();
                 }));
 
@@ -533,6 +542,10 @@ public class PloyhomeFragmentPresenter extends AppBaseFragmentPresenter<Ployhome
             mIsGetAd = false;
             RxBus.INSTANCE.send(new TimerEvent(false));
         }
+
+        if (!TextUtils.isEmpty(eventId) && !UserInfoManager.getFamilyId().equals("-1")) {
+            startTime = heartbeatTime;
+        }
     }
 
     @Override
@@ -557,6 +570,15 @@ public class PloyhomeFragmentPresenter extends AppBaseFragmentPresenter<Ployhome
             getNormalAd(mIsGetNewAd);
             mIsGetAd = true;
         }
+
+        if (!TextUtils.isEmpty(eventId) && !UserInfoManager.getFamilyId().equals("-1") && startTime != 0) {
+            endTime = heartbeatTime;
+            submitTimer(eventId, startTime, endTime);
+        }
+
+        eventId = "";
+        startTime = 0;
+        endTime = 0;
     }
 
     @Override
@@ -956,16 +978,20 @@ public class PloyhomeFragmentPresenter extends AppBaseFragmentPresenter<Ployhome
         }
     }
 
-    private void submitTimer(String eventId) {
+    private void submitTimer(String eventId, long startTime, long endTime) {
         if (!UserInfoManager.isLogin())
             return;
+
+        if (endTime < startTime){
+            return;
+        }
 
         TimerClickEntity entity = new TimerClickEntity();
         TimerClickEntity.TimerClickItemEntity itemEntity = new TimerClickEntity.TimerClickItemEntity();
 
         itemEntity.setEvent_id(eventId);
-        itemEntity.setStart_time(String.valueOf(heartbeatTime));
-        itemEntity.setEnd_time(String.valueOf(heartbeatTime));
+        itemEntity.setStart_time(String.valueOf(startTime));
+        itemEntity.setEnd_time(String.valueOf(endTime));
 
         List<TimerClickEntity.TimerClickItemEntity> entities = new ArrayList<>();
         entities.add(itemEntity);

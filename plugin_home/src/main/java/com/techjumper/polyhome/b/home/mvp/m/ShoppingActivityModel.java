@@ -7,7 +7,6 @@ import com.techjumper.corelib.rx.tools.CommonWrap;
 import com.techjumper.lib2.others.KeyValuePair;
 import com.techjumper.lib2.utils.RetrofitHelper;
 import com.techjumper.polyhome.b.home.UserInfoManager;
-import com.techjumper.polyhome.b.home.mvp.p.activity.JujiaActivityPresenter;
 import com.techjumper.polyhome.b.home.mvp.p.activity.ShoppingActivityPresenter;
 import com.techjumper.polyhome.b.home.net.KeyValueCreator;
 import com.techjumper.polyhome.b.home.net.NetHelper;
@@ -16,12 +15,12 @@ import com.techjumper.polyhome.b.home.net.ServiceAPI;
 import rx.Observable;
 
 /**
- * Created by kevin on 16/9/26.
+ * Created by kevin on 16/10/9.
  */
 
-public class JujiaActivityModel extends BaseModel<JujiaActivityPresenter> {
+public class ShoppingActivityModel extends BaseModel<ShoppingActivityPresenter> {
 
-    public JujiaActivityModel(JujiaActivityPresenter presenter) {
+    public ShoppingActivityModel(ShoppingActivityPresenter presenter) {
         super(presenter);
     }
 

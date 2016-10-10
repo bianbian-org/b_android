@@ -4,10 +4,13 @@ import android.os.Bundle;
 import android.util.Log;
 
 import com.techjumper.commonres.UserInfoEntity;
+import com.techjumper.commonres.entity.TimerClickEntity;
+import com.techjumper.commonres.entity.TrueEntity;
 import com.techjumper.commonres.entity.event.BackEvent;
 import com.techjumper.commonres.entity.event.HeartbeatEvent;
 import com.techjumper.commonres.entity.event.PropertyActionEvent;
 import com.techjumper.commonres.entity.event.PropertyListEvent;
+import com.techjumper.commonres.entity.event.StayEvent;
 import com.techjumper.commonres.entity.event.TimeEvent;
 import com.techjumper.commonres.entity.event.UserInfoEvent;
 import com.techjumper.commonres.util.CommonDateUtil;
@@ -19,15 +22,19 @@ import com.techjumper.plugincommunicateengine.entity.core.SaveInfoEntity;
 import com.techjumper.plugincommunicateengine.utils.GsonUtils;
 import com.techjumper.polyhome.b.property.R;
 import com.techjumper.polyhome.b.property.UserInfoManager;
+import com.techjumper.polyhome.b.property.mvp.m.MainActivityModel;
 import com.techjumper.polyhome.b.property.mvp.v.activity.MainActivity;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Timer;
 import java.util.TimerTask;
 
 import butterknife.OnClick;
 import rx.Scheduler;
+import rx.Subscriber;
 import rx.android.schedulers.AndroidSchedulers;
 
 /**
@@ -38,6 +45,7 @@ public class MainActivityPresenter extends AppBaseActivityPresenter<MainActivity
     private int backType = BackEvent.PROPERTY_ACTION;
     private long time;
     private Timer timer = new Timer();
+    private MainActivityModel model = new MainActivityModel(this);
 
     @OnClick(R.id.bottom_back)
     void back() {
@@ -57,10 +65,10 @@ public class MainActivityPresenter extends AppBaseActivityPresenter<MainActivity
 
     @Override
     public void onDestroy() {
-        super.onDestroy();
         if (timer != null) {
             timer.cancel();
         }
+        super.onDestroy();
     }
 
     @Override
@@ -75,6 +83,7 @@ public class MainActivityPresenter extends AppBaseActivityPresenter<MainActivity
         if (time == 0L) {
             time = System.currentTimeMillis() / 1000;
         }
+
         getView().getBottomDate().setText(CommonDateUtil.getTitleNewDate(time));
 
         addSubscription(RxBus.INSTANCE.asObservable()

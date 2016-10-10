@@ -92,6 +92,10 @@ public class InfoFragmentPresenter extends AppBaseFragmentPresenter<InfoFragment
 
     private List<AdEntity.AdsEntity> adsEntities = new ArrayList<>();
 
+    private String eventId = "";
+    private long startTime;
+    private long endTime;
+
     @OnClick(R.id.info_arrow_layout)
     void changeMedicalInfo() {
         Log.d("medical: ", "entities.size()" + entities.size());
@@ -142,7 +146,8 @@ public class InfoFragmentPresenter extends AppBaseFragmentPresenter<InfoFragment
         addSubscription(RxView.clicks(getView().getSetting())
                 .compose(RxUtil.applySchedulers())
                 .subscribe(aVoid -> {
-                    submitTimer(TimerClickEntity.ONCLICK_SETTING);
+                    submitTimer(TimerClickEntity.ONCLICK_SETTING, heartbeatTime, heartbeatTime);
+                    eventId = TimerClickEntity.STAY_SETTING;
                     Intent it = new Intent();
                     ComponentName componentName = new ComponentName("com.dnake.talk", "com.dnake.setting.activity.SettingActivity");
                     it.setComponent(componentName);
@@ -152,32 +157,37 @@ public class InfoFragmentPresenter extends AppBaseFragmentPresenter<InfoFragment
         addSubscription(RxView.clicks(getView().getAdvDetect())
                 .compose(RxUtil.applySchedulers())
                 .subscribe(aVoid -> {
-                    submitTimer(TimerClickEntity.ONCLICK_MEDICAL);
+                    submitTimer(TimerClickEntity.ONCLICK_MEDICAL, heartbeatTime, heartbeatTime);
+                    eventId = TimerClickEntity.STAY_MEDICAL;
                     PluginEngineUtil.startMedical();
                 }));
         addSubscription(RxView.clicks(getView().getAdvHeartrate())
                 .compose(RxUtil.applySchedulers())
                 .subscribe(aVoid -> {
-                    submitTimer(TimerClickEntity.ONCLICK_MEDICAL);
+                    submitTimer(TimerClickEntity.ONCLICK_MEDICAL, heartbeatTime, heartbeatTime);
+                    eventId = TimerClickEntity.STAY_MEDICAL;
                     PluginEngineUtil.startMedical();
                 }));
         addSubscription(RxView.clicks(getView().getAdvBloodsugar())
                 .compose(RxUtil.applySchedulers())
                 .subscribe(aVoid -> {
-                    submitTimer(TimerClickEntity.ONCLICK_MEDICAL);
+                    submitTimer(TimerClickEntity.ONCLICK_MEDICAL, heartbeatTime, heartbeatTime);
+                    eventId = TimerClickEntity.STAY_MEDICAL;
                     PluginEngineUtil.startMedical();
                 }));
         addSubscription(RxView.clicks(getView().getAdvBloodpressure())
                 .compose(RxUtil.applySchedulers())
                 .subscribe(aVoid -> {
-                    submitTimer(TimerClickEntity.ONCLICK_MEDICAL);
+                    submitTimer(TimerClickEntity.ONCLICK_MEDICAL, heartbeatTime, heartbeatTime);
+                    eventId = TimerClickEntity.STAY_MEDICAL;
                     PluginEngineUtil.startMedical();
                 }));
 
         addSubscription(RxView.clicks(getView().getSpeak())
                 .compose(RxUtil.applySchedulers())
                 .subscribe(aVoid -> {
-                    submitTimer(TimerClickEntity.ONCLICK_TALK);
+                    submitTimer(TimerClickEntity.ONCLICK_TALK, heartbeatTime, heartbeatTime);
+                    eventId = TimerClickEntity.STAY_TALK;
                     Intent it = new Intent();
                     ComponentName componentName = new ComponentName("com.dnake.talk", "com.dnake.activity.CallingActivity");
                     it.setComponent(componentName);
@@ -302,7 +312,7 @@ public class InfoFragmentPresenter extends AppBaseFragmentPresenter<InfoFragment
                         x2 = event.getX();
                         y2 = event.getY();
                         if (Math.abs(x1 - x2) < 6 && Math.abs(y1 - y2) < 6) {
-                            AdClickDbUtil.insert(Long.valueOf(mAdsEntity.getId()), AdController.TYPE_HOME,  ComConstant.AD_TYPE_CLICK, heartbeatTime);
+                            AdClickDbUtil.insert(Long.valueOf(mAdsEntity.getId()), AdController.TYPE_HOME, ComConstant.AD_TYPE_CLICK, heartbeatTime);
                             Intent intent = new Intent(getView().getActivity(), AdNewActivity.class);
                             intent.putExtra(AdNewActivity.POSITION, adViewPager.getCurrentItem());
                             intent.putExtra(AdNewActivity.TYPE, AdNewActivity.TYPE_TWO);
@@ -327,6 +337,10 @@ public class InfoFragmentPresenter extends AppBaseFragmentPresenter<InfoFragment
             }
             initAd();
             mIsGetAd = false;
+        }
+
+        if (!TextUtils.isEmpty(eventId) && !UserInfoManager.getFamilyId().equals("-1")) {
+            startTime = heartbeatTime;
         }
     }
 
@@ -362,6 +376,15 @@ public class InfoFragmentPresenter extends AppBaseFragmentPresenter<InfoFragment
             getNormalAd(mIsGetNewAd);
             mIsGetAd = true;
         }
+
+        if (!TextUtils.isEmpty(eventId) && !UserInfoManager.getFamilyId().equals("-1") && startTime != 0) {
+            endTime = heartbeatTime;
+            submitTimer(eventId, startTime, endTime);
+        }
+
+        eventId = "";
+        startTime = 0;
+        endTime = 0;
     }
 
     //获取天气相关
@@ -628,16 +651,20 @@ public class InfoFragmentPresenter extends AppBaseFragmentPresenter<InfoFragment
         }
     }
 
-    private void submitTimer(String eventId) {
+    private void submitTimer(String eventId, long startTime, long endTime) {
         if (!UserInfoManager.isLogin())
             return;
+
+        if (endTime < startTime){
+            return;
+        }
 
         TimerClickEntity entity = new TimerClickEntity();
         TimerClickEntity.TimerClickItemEntity itemEntity = new TimerClickEntity.TimerClickItemEntity();
 
         itemEntity.setEvent_id(eventId);
-        itemEntity.setStart_time(String.valueOf(heartbeatTime));
-        itemEntity.setEnd_time(String.valueOf(heartbeatTime));
+        itemEntity.setStart_time(String.valueOf(startTime));
+        itemEntity.setEnd_time(String.valueOf(endTime));
 
         List<TimerClickEntity.TimerClickItemEntity> entities = new ArrayList<>();
         entities.add(itemEntity);

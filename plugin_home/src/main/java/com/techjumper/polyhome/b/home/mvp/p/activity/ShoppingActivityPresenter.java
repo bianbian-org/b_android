@@ -3,17 +3,24 @@ package com.techjumper.polyhome.b.home.mvp.p.activity;
 import android.os.Bundle;
 import android.util.Log;
 
-import com.techjumper.commonres.entity.event.BackEvent;
+import com.techjumper.commonres.entity.TimerClickEntity;
+import com.techjumper.commonres.entity.TrueEntity;
 import com.techjumper.commonres.entity.event.TimeEvent;
 import com.techjumper.commonres.util.CommonDateUtil;
 import com.techjumper.corelib.rx.tools.RxBus;
+import com.techjumper.lib2.utils.GsonUtils;
 import com.techjumper.polyhome.b.home.R;
+import com.techjumper.polyhome.b.home.UserInfoManager;
+import com.techjumper.polyhome.b.home.mvp.m.ShoppingActivityModel;
 import com.techjumper.polyhome.b.home.mvp.v.activity.ShoppingActivity;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
 
 import butterknife.OnClick;
+import rx.Subscriber;
 import rx.android.schedulers.AndroidSchedulers;
 
 /**
@@ -23,6 +30,7 @@ public class ShoppingActivityPresenter extends AppBaseActivityPresenter<Shopping
 
     private long time;
     private Timer timer = new Timer();
+    private ShoppingActivityModel model = new ShoppingActivityModel(this);
 
     @OnClick(R.id.bottom_back)
     void back() {
@@ -41,11 +49,11 @@ public class ShoppingActivityPresenter extends AppBaseActivityPresenter<Shopping
 
     @Override
     public void onDestroy() {
-        super.onDestroy();
         if (timer != null) {
             timer.cancel();
             timer = null;
         }
+        super.onDestroy();
     }
 
     @Override
