@@ -33,6 +33,9 @@ public class ShoppingActivity extends AppBaseActivity<ShoppingActivityPresenter>
     TextView bottomTitle;
     @Bind(R.id.bottom_date)
     TextView bottomDate;
+    @Bind(R.id.close)
+    TextView close;
+
     private long time;
 
     @Override
@@ -48,10 +51,15 @@ public class ShoppingActivity extends AppBaseActivity<ShoppingActivityPresenter>
         return bottomDate;
     }
 
+    public WebView getWebView() {
+        return webView;
+    }
+
     @Override
     protected void initView(Bundle savedInstanceState) {
         bottomTitle.setText(R.string.title_shopping);
         time = getIntent().getLongExtra(TIME, 0L);
+        close.setVisibility(View.VISIBLE);
 
         WebSettings ws = webView.getSettings();
         ws.setJavaScriptEnabled(true);

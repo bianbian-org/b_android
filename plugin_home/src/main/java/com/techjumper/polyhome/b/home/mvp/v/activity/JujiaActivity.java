@@ -1,7 +1,5 @@
 package com.techjumper.polyhome.b.home.mvp.v.activity;
 
-import android.content.ComponentName;
-import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.webkit.WebChromeClient;
@@ -10,22 +8,15 @@ import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.TextView;
 
-import com.techjumper.commonres.entity.event.TimeEvent;
-import com.techjumper.commonres.entity.event.TimerEvent;
-import com.techjumper.commonres.util.CommonDateUtil;
 import com.techjumper.corelib.mvp.factory.Presenter;
-import com.techjumper.corelib.rx.tools.RxBus;
-import com.techjumper.polyhome.b.home.InfoManager;
 import com.techjumper.polyhome.b.home.R;
 import com.techjumper.polyhome.b.home.mvp.p.activity.JujiaActivityPresenter;
 import com.techjumper.polyhome_b.adlib.Config;
 
-import java.util.Timer;
 import java.util.TimerTask;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
-import butterknife.OnClick;
 
 @Presenter(JujiaActivityPresenter.class)
 public class JujiaActivity extends AppBaseActivity<JujiaActivityPresenter> {
@@ -38,12 +29,18 @@ public class JujiaActivity extends AppBaseActivity<JujiaActivityPresenter> {
     TextView bottomTitle;
     @Bind(R.id.bottom_date)
     TextView bottomDate;
+    @Bind(R.id.close)
+    TextView close;
 
     private long time;
     private TimerTask timerTask;
 
     public TextView getBottomDate() {
         return bottomDate;
+    }
+
+    public WebView getWebView() {
+        return webView;
     }
 
     @Override
@@ -59,6 +56,7 @@ public class JujiaActivity extends AppBaseActivity<JujiaActivityPresenter> {
     protected void initView(Bundle savedInstanceState) {
         bottomTitle.setText(R.string.title_jujia_server);
         time = getIntent().getLongExtra(TIME, 0L);
+        close.setVisibility(View.VISIBLE);
 
         WebSettings ws = webView.getSettings();
 

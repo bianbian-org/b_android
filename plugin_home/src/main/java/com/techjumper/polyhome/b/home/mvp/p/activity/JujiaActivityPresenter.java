@@ -4,6 +4,7 @@ import android.content.ComponentName;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.webkit.WebView;
 
 import com.techjumper.commonres.entity.TimerClickEntity;
 import com.techjumper.commonres.entity.TrueEntity;
@@ -36,14 +37,25 @@ public class JujiaActivityPresenter extends AppBaseActivityPresenter<JujiaActivi
 
     private long time;
     private Timer timer = new Timer();
+    private WebView webView;
 
     @OnClick(R.id.bottom_back)
     void back() {
-       getView().finish();
+        if (webView.canGoBack()){
+            Log.d("weburi", webView.getUrl());
+            webView.goBack();
+        }else {
+            getView().finish();
+        }
     }
 
     @OnClick(R.id.bottom_home)
     void home() {
+        getView().finish();
+    }
+
+    @OnClick(R.id.close)
+    void close() {
         getView().finish();
     }
 
@@ -75,6 +87,7 @@ public class JujiaActivityPresenter extends AppBaseActivityPresenter<JujiaActivi
     @Override
     public void onViewInited(Bundle savedInstanceState) {
         time = getView().getTime();
+        webView = getView().getWebView();
 
         if (time == 0L) {
             time = System.currentTimeMillis() / 1000;
@@ -122,7 +135,7 @@ public class JujiaActivityPresenter extends AppBaseActivityPresenter<JujiaActivi
             return;
         }
 
-        if (UserInfoManager.getFamilyId().equals("-1")){
+        if (UserInfoManager.getFamilyId().equals("-1")) {
             getView().finish();
             return;
         }
