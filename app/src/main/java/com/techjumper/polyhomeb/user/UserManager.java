@@ -49,7 +49,7 @@ public enum UserManager {
     public static final String KEY_CURRENT_FAMILY_ID = "key_current_show_id";
     public static final String KEY_CURRENT_VILLAGE_ID = "key_current_village_id";
     public static final String KEY_CURRENT_SHOW_IS_FAMILY_OR_VILLAGE = "key_current_show_is_family_or_village";
-    public static final String KEY_ = "key_current_show_is_family_or_village";
+    public static final String KEY_CURRENT_FAMILY_INFO = "key_current_family_info";
 
     public static final String VALUE_IS_FAMILY = "value_is_family";
     public static final String VALUE_IS_VILLAGE = "value_is_village";
@@ -369,7 +369,6 @@ public enum UserManager {
 //        String userInfo = PreferenceUtils.get(KEY_MEDICAL_ALL_USER_INFO_LIST, "");
 //        return GsonUtils.fromJson(userInfo, List.class);
     }
-
 
 
 }
