@@ -80,7 +80,7 @@ public class AdjustAccountsActivity extends AppBaseActivity<AdjustAccountsActivi
         mTvDeathLine.setText(getPresenter().getDeathLine()); //截止日期
         mTvNotTotal.setText(getString(R.string.￥) + getPresenter().getTotal()); //总价,不包含滞纳金
         if (sLate == getPresenter().getIsLate()) {   //已经逾期
-            String text1 = String.format(getString(R.string.late_x_day), Math.abs(getPresenter().getDay())); //超过X天
+            String text1 = String.format(getString(R.string.late_x_day), Math.abs(getPresenter().getDay()) + ""); //超过X天
             String text2 = getString(R.string.x_exceed);  //产生
             String text3 = getString(R.string.yuan);  //元
             String text4 = getString(R.string.expiry_price);  //滞纳金

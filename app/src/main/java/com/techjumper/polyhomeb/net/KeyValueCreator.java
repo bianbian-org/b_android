@@ -49,13 +49,6 @@ public class KeyValueCreator {
                 .put("count", count);
     }
 
-    public static KeyValuePair propertyNoticeDetail(String user_id, String ticket, String noticeId) {
-        return newPair()
-                .put("user_id", user_id)
-                .put("ticket", ticket)
-                .put("id", noticeId);
-    }
-
     public static KeyValuePair propertyComplain(String user_id, String ticket, String status, String page, String count) {
         return newPair()
                 .put("user_id", user_id)
@@ -163,7 +156,6 @@ public class KeyValueCreator {
      * @param price            # 现价
      * @param origin_price     # 原价
      * @param discount         # 是否接受议价 0-接受 1-不接受
-     * @return
      */
     public static KeyValuePair newArticle(String user_id, String ticket, String village_id, String forum_section_id, String title, String content, String[] article_images, String category, String price, String origin_price, String discount) {
         return newPair()
@@ -193,7 +185,6 @@ public class KeyValueCreator {
      * @param price          # 现价
      * @param origin_price   # 原价
      * @param discount       # 是否接受议价 0-接受 1-不接受
-     * @return
      */
     public static KeyValuePair newArticle(String user_id, String ticket, String village_id, String title, String content, String[] article_images, String category, String price, String origin_price, String discount) {
         return newPair()
@@ -286,15 +277,11 @@ public class KeyValueCreator {
                 .put("logintype", logintype);
     }
 
-    public static KeyValuePair getMedicalMainData(String user_id, String ticket) {
+    public static KeyValuePair payments(String user_id, String ticket, String category, String order_number) {
         return newPair()
                 .put("user_id", user_id)
-                .put("ticket", ticket);
-    }
-
-    public static KeyValuePair getMedicalUserData(String user_id, String ticket) {
-        return newPair()
-                .put("user_id", user_id)
-                .put("ticket", ticket);
+                .put("ticket", ticket)
+                .put("category", category)
+                .put("order_number", order_number);
     }
 }

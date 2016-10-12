@@ -7,6 +7,7 @@ import android.widget.EditText;
 import com.techjumper.corelib.mvp.factory.Presenter;
 import com.techjumper.polyhomeb.R;
 import com.techjumper.polyhomeb.mvp.p.activity.MedicalLoginActivityPresenter;
+import com.techjumper.polyhomeb.user.UserManager;
 
 import butterknife.Bind;
 
@@ -31,7 +32,7 @@ public class MedicalLoginActivity extends AppBaseActivity<MedicalLoginActivityPr
 
     @Override
     protected void initView(Bundle savedInstanceState) {
-
+        UserManager.INSTANCE.medicalLogout();  //在登录界面清空医疗相关的sp,这样在第二次点击医疗的时候,就不会出现  显示一下main 界面才去登录了
     }
 
     @Override
