@@ -270,6 +270,7 @@ public class MainActivityPresenter extends AppBaseActivityPresenter<MainActivity
                 if (adsEntity != null && !TextUtils.isEmpty(adsEntity.getUrl())) {
                     Intent intent = new Intent(getView(), AdDetailActivity.class);
                     intent.putExtra(AdDetailActivity.ADITEM, adsEntity);
+                    intent.putExtra(AdDetailActivity.TIME, totalTime);
                     getView().startActivity(intent);
                 } else {
                     AdWindowManager.getInstance().closeWindow(true);

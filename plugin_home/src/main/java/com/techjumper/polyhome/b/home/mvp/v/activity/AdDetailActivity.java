@@ -9,10 +9,13 @@ import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 
+import com.techjumper.commonres.ComConstant;
 import com.techjumper.corelib.mvp.factory.Presenter;
 import com.techjumper.polyhome.b.home.R;
+import com.techjumper.polyhome.b.home.db.util.AdClickDbUtil;
 import com.techjumper.polyhome.b.home.mvp.p.activity.AdDetailActivityPresenter;
 import com.techjumper.polyhome_b.adlib.entity.AdEntity;
+import com.techjumper.polyhome_b.adlib.manager.AdController;
 import com.techjumper.polyhome_b.adlib.window.AdWindowManager;
 
 import butterknife.Bind;
@@ -21,7 +24,9 @@ import butterknife.Bind;
 public class AdDetailActivity extends AppBaseActivity<AdDetailActivityPresenter> {
 
     public static final String ADITEM = "aditem";
+    public static final String TIME = "time";
     private AdEntity.AdsEntity adsEntity = new AdEntity.AdsEntity();
+    private long time;
 
     @Bind(R.id.webview)
     WebView webView;
@@ -35,6 +40,7 @@ public class AdDetailActivity extends AppBaseActivity<AdDetailActivityPresenter>
     protected void initView(Bundle savedInstanceState) {
         if (getIntent() != null) {
             adsEntity = (AdEntity.AdsEntity) getIntent().getSerializableExtra(ADITEM);
+            time = getIntent().getLongExtra(TIME, System.currentTimeMillis() / 1000);
         }
 
         if (adsEntity == null || TextUtils.isEmpty(adsEntity.getUrl()))
@@ -63,7 +69,7 @@ public class AdDetailActivity extends AppBaseActivity<AdDetailActivityPresenter>
         });
         webView.setWebViewClient(new AdDetailActivity.webViewClient());
         webView.loadUrl(adsEntity.getUrl());
-
+        AdClickDbUtil.insert(Long.valueOf(adsEntity.getId()), AdController.TYPE_HOME, ComConstant.AD_TYPE_CLICK, time);
     }
 
     @Override

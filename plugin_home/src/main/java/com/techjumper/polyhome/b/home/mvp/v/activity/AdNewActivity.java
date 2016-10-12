@@ -39,7 +39,7 @@ import butterknife.OnClick;
  * Created by kevin on 16/4/29.
  */
 @Presenter(AdNewActivityPresenter.class)
-public class AdNewActivity extends AppBaseActivity<AdActivityPresenter> implements AdController.IAlarm, ViewPager.OnPageChangeListener {
+public class AdNewActivity extends AppBaseActivity<AdNewActivityPresenter> implements AdController.IAlarm, ViewPager.OnPageChangeListener {
     public static final String IMAGE_AD_TYPE = "1";
     public static final String VIDEO_AD_TYPE = "2";
     public static final String TIME = "time";
@@ -148,6 +148,8 @@ public class AdNewActivity extends AppBaseActivity<AdActivityPresenter> implemen
                                     webView.setVisibility(View.VISIBLE);
 
                                     webView.loadUrl(adsEntity.getUrl());
+
+                                    AdClickDbUtil.insert(Long.valueOf(adsEntity.getId()), AdController.TYPE_HOME, ComConstant.AD_TYPE_CLICK, time);
                                 }
                             }
                         }
