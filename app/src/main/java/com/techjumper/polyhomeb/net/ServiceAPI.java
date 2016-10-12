@@ -12,6 +12,7 @@ import com.techjumper.polyhomeb.entity.PropertyComplainEntity;
 import com.techjumper.polyhomeb.entity.PropertyPlacardEntity;
 import com.techjumper.polyhomeb.entity.PropertyRepairDetailEntity;
 import com.techjumper.polyhomeb.entity.PropertyRepairEntity;
+import com.techjumper.polyhomeb.entity.QueryFamilyEntity;
 import com.techjumper.polyhomeb.entity.SectionsEntity;
 import com.techjumper.polyhomeb.entity.TrueEntity;
 import com.techjumper.polyhomeb.entity.UploadPicEntity;
@@ -536,6 +537,8 @@ public interface ServiceAPI {
     @GET("sign")
     Observable<CheckInEntity> getCheckInData(@QueryMap Map<String, String> stringStringMap);
 
+    @POST("family_query")
+    Observable<QueryFamilyEntity> queryFamilyInfo(@Body BaseArgumentsEntity entity);
 
 /*********************************************************医疗接口*********************************************************/
 

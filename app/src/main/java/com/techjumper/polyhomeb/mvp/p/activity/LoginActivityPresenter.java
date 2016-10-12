@@ -38,6 +38,7 @@ public class LoginActivityPresenter extends AppBaseActivityPresenter<LoginActivi
     public static final String VALUE_COME_FROM_WEBVIEW = "key_come_from_webview";
 
     private Subscription mSubs1;
+    private String mPhoneNumber;
 
     private LoginActivityModel mModel = new LoginActivityModel(this);
 
@@ -104,9 +105,11 @@ public class LoginActivityPresenter extends AppBaseActivityPresenter<LoginActivi
         }
     }
 
+
     private void checkingInputAndLogin() {
         EditText et = null;
-        if (!StringUtils.PATTERN_MOBILE.matcher(getView().getPhoneNumber()).matches()) {
+        mPhoneNumber = getView().getPhoneNumber();
+        if (!StringUtils.PATTERN_MOBILE.matcher(mPhoneNumber).matches()) {
             et = getView().getEtAccount();
             getView().setText(et, et.getText());
             getView().getLayoutWrong().setVisibility(View.VISIBLE);
@@ -152,10 +155,12 @@ public class LoginActivityPresenter extends AppBaseActivityPresenter<LoginActivi
                                     return;
                                 }
 
+                                UserManager.INSTANCE.saveUserInfo(UserManager.KEY_PHONE_NUMBER, mPhoneNumber);
                                 UserManager.INSTANCE.saveUserInfo(entity);
                                 getView().showHint(getView().getString(R.string.success_login));
                                 UserManager.INSTANCE.notifyLoginOrLogoutEvent(true);
                             }
+
                         })
         );
     }

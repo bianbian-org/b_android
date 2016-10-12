@@ -297,4 +297,11 @@ public class KeyValueCreator {
                 .put("user_id", user_id)
                 .put("ticket", ticket);
     }
+
+    public static KeyValuePair queryFamily(String user_id, String ticket, String family_id) {
+        return newPair()
+                .put("user_id", user_id)
+                .put("ticket", ticket)
+                .put("family_id", family_id);
+    }
 }
