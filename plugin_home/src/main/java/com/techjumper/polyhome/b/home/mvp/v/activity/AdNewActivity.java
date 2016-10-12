@@ -229,23 +229,17 @@ public class AdNewActivity extends AppBaseActivity<AdActivityPresenter> implemen
                         for (int i = 0; i < allAds.size(); i++) {
                             AdEntity.AdsEntity adsEntity = allAds.get(i);
                             File file = adsEntity.getFile();
-                            if (file.exists()) {
-                                adsEntities.add(adsEntity);
-                                Log.d("ad12", file + ", 详细信息: " + adsEntity);
-                                addType = adsEntity.getMedia_type();
+//                            if (file.exists()) {
+                            adsEntities.add(adsEntity);
+                            Log.d("ad12", file + ", 详细信息: " + adsEntity);
+                            addType = adsEntity.getMedia_type();
 
-                                if (IMAGE_AD_TYPE.equals(addType)) {
-                                    ImageView imageView = (ImageView) inflater.inflate(R.layout.layout_ad_new_image, null);
-
-                                    views.add(imageView);
-                                    adsEntity.setMedia_url(file.getAbsolutePath());
-                                } else if (VIDEO_AD_TYPE.equals(addType)) {
-
-                                    MyTextureView textureView = (MyTextureView) inflater.inflate(R.layout.layout_ad_new_video, null);
-
-                                    views.add(textureView);
-                                    adsEntity.setMedia_url(file.getAbsolutePath());
-                                }
+                            if (IMAGE_AD_TYPE.equals(addType)) {
+                                ImageView imageView = (ImageView) inflater.inflate(R.layout.layout_ad_new_image, null);
+                                views.add(imageView);
+                            } else if (VIDEO_AD_TYPE.equals(addType)) {
+                                MyTextureView textureView = (MyTextureView) inflater.inflate(R.layout.layout_ad_new_video, null);
+                                views.add(textureView);
                             }
                         }
                         adapter.setViews(views, adsEntities);
@@ -260,7 +254,7 @@ public class AdNewActivity extends AppBaseActivity<AdActivityPresenter> implemen
                             } else {
                                 currentPage = 0;
                             }
-                            adViewPager.setCurrentItem(currentPage);
+                            adViewPager.setCurrentItem(currentPage, false);
                             mAdsEntity = adsEntity;
                             Log.d("ad15", "第一次page:" + currentPage);
                             isFirst = false;
@@ -341,7 +335,13 @@ public class AdNewActivity extends AppBaseActivity<AdActivityPresenter> implemen
                 if (currentView == null)
                     return;
 
-                adapter.playVideo(currentView, mAdsEntity.getFile());
+                if (mAdsEntity.getFile().exists()) {
+                    adapter.playVideo(currentView, mAdsEntity.getFile());
+                } else {
+                    adapter.playVideo(currentView, mAdsEntity.getMedia_url());
+                }
+
+
             } else {
                 if (currentView != null) {
                     ((MyTextureView) currentView).stop();

@@ -3,6 +3,7 @@ package com.techjumper.polyhome.b.home.adapter;
 import android.content.Context;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -68,6 +69,15 @@ public class AdViewPagerAdapter extends PagerAdapter {
         if (file.exists()) {
             Log.d("ad12", "textureView加载本地: " + file.getAbsolutePath());
             ((MyTextureView) view).play(file.getAbsolutePath());
+        }
+    }
+
+    public void playVideo(View view, String url) {
+        ((MyTextureView) view).initMediaPlayer();
+
+        if (!TextUtils.isEmpty(url)) {
+            Log.d("ad12", "textureView加载url: " + url);
+            ((MyTextureView) view).play(url);
         }
     }
 

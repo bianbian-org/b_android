@@ -547,7 +547,7 @@ public class InfoFragmentPresenter extends AppBaseFragmentPresenter<InfoFragment
                         for (int i = 0; i < allAds.size(); i++) {
                             AdEntity.AdsEntity entity = allAds.get(i);
                             File file = entity.getFile();
-                            if (file.exists()) {
+//                            if (file.exists()) {
                                 adsEntities.add(entity);
                                 Log.d("ad12", file + ", 详细信息: " + entity);
                                 addType = entity.getMedia_type();
@@ -558,15 +558,15 @@ public class InfoFragmentPresenter extends AppBaseFragmentPresenter<InfoFragment
                                     ImageView imageView = (ImageView) inflater.inflate(R.layout.layout_ad_image, null);
 
                                     views.add(imageView);
-                                    entity.setMedia_url(file.getAbsolutePath());
+//                                    entity.setMedia_url(file.getAbsolutePath());
                                 } else if (PloyhomeFragmentPresenter.VIDEO_AD_TYPE.equals(addType)) {
 
                                     MyTextureView textureView = (MyTextureView) inflater.inflate(R.layout.layout_ad_video, null);
 
                                     views.add(textureView);
-                                    entity.setMedia_url(file.getAbsolutePath());
+//                                    entity.setMedia_url(file.getAbsolutePath());
                                 }
-                            }
+//                            }
                         }
                         adapter.setViews(views, adsEntities);
                         adapter.notifyDataSetChanged();
@@ -633,7 +633,11 @@ public class InfoFragmentPresenter extends AppBaseFragmentPresenter<InfoFragment
                 if (currentView == null)
                     return;
 
-                adapter.playVideo(currentView, mAdsEntity.getFile());
+                if (mAdsEntity.getFile().exists()){
+                    adapter.playVideo(currentView, mAdsEntity.getFile());
+                }else {
+                    adapter.playVideo(currentView, mAdsEntity.getMedia_url());
+                }
             } else {
                 if (currentView != null) {
                     ((MyTextureView) currentView).stop();
