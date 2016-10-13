@@ -384,7 +384,7 @@ public class PloyhomeFragmentPresenter extends AppBaseFragmentPresenter<Ployhome
                             intent.putExtra(AdNewActivity.TIME, heartbeatTime);
                             getView().getActivity().startActivity(intent);
                         }
-                        adController.startAdTimer(AdController.TYPE_HOME, adViewPager.getCurrentItem());
+                        adController.startAdTimer(AdController.TYPE_HOME, currentPage);
                         break;
                 }
                 return false;
@@ -874,24 +874,24 @@ public class PloyhomeFragmentPresenter extends AppBaseFragmentPresenter<Ployhome
                             AdEntity.AdsEntity entity = allAds.get(i);
                             File file = entity.getFile();
 //                            if (file.exists()) {
-                                adsEntities.add(entity);
-                                Log.d("ad12", file + ", 详细信息: " + entity);
-                                addType = entity.getMedia_type();
+                            adsEntities.add(entity);
+                            Log.d("ad12", file + ", 详细信息: " + entity);
+                            addType = entity.getMedia_type();
 
-                                if (adImageView == null || textureView == null)
-                                    return;
-                                if (IMAGE_AD_TYPE.equals(addType)) {
-                                    ImageView imageView = (ImageView) inflater.inflate(R.layout.layout_ad_image, null);
+                            if (adImageView == null || textureView == null)
+                                return;
+                            if (IMAGE_AD_TYPE.equals(addType)) {
+                                ImageView imageView = (ImageView) inflater.inflate(R.layout.layout_ad_image, null);
 
-                                    views.add(imageView);
+                                views.add(imageView);
 //                                    entity.setMedia_url(file.getAbsolutePath());
-                                } else if (VIDEO_AD_TYPE.equals(addType)) {
+                            } else if (VIDEO_AD_TYPE.equals(addType)) {
 
-                                    MyTextureView textureView = (MyTextureView) inflater.inflate(R.layout.layout_ad_video, null);
+                                MyTextureView textureView = (MyTextureView) inflater.inflate(R.layout.layout_ad_video, null);
 
-                                    views.add(textureView);
+                                views.add(textureView);
 //                                    entity.setMedia_url(file.getAbsolutePath());
-                                }
+                            }
 //                            }
                         }
                         adapter.setViews(views, adsEntities);
@@ -906,7 +906,9 @@ public class PloyhomeFragmentPresenter extends AppBaseFragmentPresenter<Ployhome
 //                        HandleAd(adsEntity, file);
                         Log.d("ad12", "跳下一页, 当前页" + currentPage);
 
-                        adViewPager.setCurrentItem(currentPage, false);
+                        if (adViewPager != null) {
+                            adViewPager.setCurrentItem(currentPage, false);
+                        }
                         mIsGetNewAd = true;
                         mAdsEntity = adsEntity;
 
@@ -962,9 +964,9 @@ public class PloyhomeFragmentPresenter extends AppBaseFragmentPresenter<Ployhome
                 if (currentView == null)
                     return;
 
-                if (mAdsEntity.getFile().exists()){
+                if (mAdsEntity.getFile().exists()) {
                     adapter.playVideo(currentView, mAdsEntity.getFile());
-                }else {
+                } else {
                     adapter.playVideo(currentView, mAdsEntity.getMedia_url());
                 }
             } else {
@@ -974,6 +976,7 @@ public class PloyhomeFragmentPresenter extends AppBaseFragmentPresenter<Ployhome
                 }
             }
         }
+        currentPage = position;
     }
 
     @Override
