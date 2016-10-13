@@ -80,9 +80,8 @@ public class JujiaActivity extends AppBaseActivity<JujiaActivityPresenter> {
             }
         });
         webView.setWebViewClient(new webViewClient());
-        webView.loadUrl(Config.sJujia);
-
-
+//        webView.loadUrl(Config.sJujia);
+        webView.loadUrl("http://pl.techjumper.com/jujia/pad");
     }
 
     @Override
