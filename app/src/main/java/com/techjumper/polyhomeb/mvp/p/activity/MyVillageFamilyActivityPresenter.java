@@ -6,7 +6,6 @@ import com.steve.creact.library.display.DisplayBean;
 import com.techjumper.corelib.rx.tools.RxBus;
 import com.techjumper.corelib.rx.tools.RxUtils;
 import com.techjumper.corelib.utils.common.AcHelper;
-import com.techjumper.corelib.utils.common.JLog;
 import com.techjumper.polyhomeb.Constant;
 import com.techjumper.polyhomeb.adapter.databean.MyVillageFamilyBean;
 import com.techjumper.polyhomeb.entity.UserFamiliesAndVillagesEntity;
@@ -69,7 +68,6 @@ public class MyVillageFamilyActivityPresenter extends AppBaseActivityPresenter<M
                             public void onError(Throwable e) {
                                 getView().dismissLoading();
                                 getView().showError(e);
-                                JLog.e(e);
                             }
 
                             @Override

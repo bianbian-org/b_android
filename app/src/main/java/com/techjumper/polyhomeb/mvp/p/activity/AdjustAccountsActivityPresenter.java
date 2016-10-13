@@ -1,16 +1,17 @@
 package com.techjumper.polyhomeb.mvp.p.activity;
 
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.ImageView;
 
 import com.techjumper.corelib.rx.tools.RxUtils;
 import com.techjumper.corelib.utils.common.AcHelper;
-import com.techjumper.corelib.utils.common.JLog;
 import com.techjumper.corelib.utils.window.ToastUtils;
 import com.techjumper.lib2.utils.PicassoHelper;
 import com.techjumper.polyhome.alipay.AliPay;
-import com.techjumper.polyhome.alipay.OnAliPayListener;
+import com.techjumper.polyhome.paycorelib.OnPayListener;
+import com.techjumper.polyhome.wechatpay.WeChatPay;
 import com.techjumper.polyhomeb.Constant;
 import com.techjumper.polyhomeb.R;
 import com.techjumper.polyhomeb.entity.PaymentsEntity;
@@ -34,13 +35,13 @@ import rx.Subscription;
  * * * * * * * * * * * * * * * * * * * * * * *
  **/
 public class AdjustAccountsActivityPresenter extends AppBaseActivityPresenter<AdjustAccountsActivity>
-        implements OnAliPayListener {
+        implements OnPayListener {
 
     private AdjustAccountsActivityModel mModel = new AdjustAccountsActivityModel(this);
 
     private Subscription mSubs1;
 
-    public int mCurrentPayment = 0;  //选择的付款方式
+    public int mCurrentPayment = 1;  //选择的付款方式，默认是第一个，微信支付
     public List<ImageView> mPaymentWay = new ArrayList<>();
 
     @Override
@@ -65,7 +66,7 @@ public class AdjustAccountsActivityPresenter extends AppBaseActivityPresenter<Ad
     //处理选择支付方式和打钩状态
     private void processStatus(int which) {
         for (int i = 0; i < mPaymentWay.size(); i++) {
-            if (i == which) {
+            if (i + 1 == which) {
                 PicassoHelper.getDefault().load(R.mipmap.icon_choose_green).into(mPaymentWay.get(i));
             } else {
                 mPaymentWay.get(i).setImageBitmap(null);
@@ -116,29 +117,23 @@ public class AdjustAccountsActivityPresenter extends AppBaseActivityPresenter<Ad
                             public void onNext(PaymentsEntity paymentsEntity) {
                                 getView().dismissLoading();
                                 if (!processNetworkResult(paymentsEntity)) return;
+                                if (paymentsEntity.getData() == null) {
+                                    ToastUtils.show(getView().getString(R.string.pay_order_info));
+                                    return;
+                                }
                                 loadPay(paymentsEntity);
                             }
                         }));
     }
 
+    //paymentsEntity.getData()不会为null，因为在走到这一步的时候就已经判断过了。
     private void loadPay(PaymentsEntity paymentsEntity) {
         switch (mCurrentPayment) {
             case Constant.TENCENT_PAY:
+                weChatPay(paymentsEntity);
                 break;
             case Constant.ALIPAY:
-                //if(支付宝的databean == null  || dataBean.parms_str()||databean.getSign()是空的字符串) break;
-                String parms_str = paymentsEntity.getData().getParms_str();
-                String sign = paymentsEntity.getData().getSign();
-                String signs = "";
-                try {
-                    signs = URLEncoder.encode(sign, "UTF-8");
-                } catch (UnsupportedEncodingException e) {
-                    e.printStackTrace();
-                }
-                JLog.e(parms_str + "&sign=" + signs);
-                AliPay aliPay = new AliPay(getView(), parms_str + "&sign=" + signs);
-                aliPay.setListener(this);
-                aliPay.pay();
+                aliPay(paymentsEntity);
                 break;
             case Constant.UNION_PAY:
                 break;
@@ -167,6 +162,54 @@ public class AdjustAccountsActivityPresenter extends AppBaseActivityPresenter<Ad
         ToastUtils.show("等待");
     }
 
+    @Override
+    public void onFailed() {
+        ToastUtils.show("失败");
+    }
+
+    /**
+     * 微信支付
+     */
+    private void weChatPay(PaymentsEntity paymentsEntity) {
+        WeChatPay weChatPay = new WeChatPay(getView());
+        if (paymentsEntity.getData().getWxpay() == null) {
+            ToastUtils.show(getView().getString(R.string.pay_order_info));
+            return;
+        }
+        PaymentsEntity.DataBean.WxpayBean bean = paymentsEntity.getData().getWxpay();
+        weChatPay.setOrderInfo(bean.getAppid(), bean.getNoncestr(), bean.getPackageX(), bean.getPartnerid()
+                , bean.getPrepayid(), bean.getSign(), bean.getTimestamp());
+        if (!weChatPay.isOrderInfoLegal()) {
+            ToastUtils.show(getView().getString(R.string.pay_order_info));
+            return;
+        }
+        weChatPay.pay();
+    }
+
+    /**
+     * 支付宝支付
+     */
+    private void aliPay(PaymentsEntity paymentsEntity) {
+        if (paymentsEntity.getData().getAlipay() == null
+                || TextUtils.isEmpty(paymentsEntity.getData().getAlipay().getParms_str())
+                || TextUtils.isEmpty(paymentsEntity.getData().getAlipay().getSign())) {
+            ToastUtils.show(getView().getString(R.string.pay_order_info));
+            return;
+        }
+        String parms_str = paymentsEntity.getData().getAlipay().getParms_str();
+        String sign = paymentsEntity.getData().getAlipay().getSign();
+        String signs = "";
+        try {
+            signs = URLEncoder.encode(sign, "UTF-8");
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+        }
+        AliPay aliPay = new AliPay(getView(), parms_str + "&sign=" + signs);
+        aliPay.setListener(this);
+        aliPay.pay();
+    }
+
+    /**************************以下字段均为B端自己服务器返回的数据*************************/
     /**
      * 订单号 334209320948023
      */
@@ -236,6 +279,5 @@ public class AdjustAccountsActivityPresenter extends AppBaseActivityPresenter<Ad
     public int getDay() {
         return mModel.getDay();
     }
-
 
 }

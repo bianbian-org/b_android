@@ -277,8 +277,9 @@ public class KeyValueCreator {
                 .put("logintype", logintype);
     }
 
-    public static KeyValuePair payments(String user_id, String ticket, String category, String order_number) {
+    public static KeyValuePair payments(String user_ip, String user_id, String ticket, String category, String order_number) {
         return newPair()
+                .put("user_ip", user_ip)
                 .put("user_id", user_id)
                 .put("ticket", ticket)
                 .put("category", category)

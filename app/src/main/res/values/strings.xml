@@ -345,6 +345,7 @@
     <string name="tab_shopping">商城</string>
     <string name="tab_friend">友邻</string>
     <string name="tab_main">首页</string>
+    <string name="pay_order_info">订单信息有误</string>
 
 
 </resources>

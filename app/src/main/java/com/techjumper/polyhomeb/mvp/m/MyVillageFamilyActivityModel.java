@@ -2,6 +2,7 @@ package com.techjumper.polyhomeb.mvp.m;
 
 import com.steve.creact.library.display.DisplayBean;
 import com.techjumper.corelib.rx.tools.CommonWrap;
+import com.techjumper.corelib.utils.basic.NumberUtil;
 import com.techjumper.corelib.utils.common.RuleUtils;
 import com.techjumper.lib2.others.KeyValuePair;
 import com.techjumper.lib2.utils.RetrofitHelper;
@@ -133,7 +134,7 @@ public class MyVillageFamilyActivityModel extends BaseModel<MyVillageFamilyActiv
                 myVillageFamilyData.setFamilyData(1);
                 String isFamilyOrVillage = UserManager.INSTANCE.getUserInfo(UserManager.KEY_CURRENT_SHOW_IS_FAMILY_OR_VILLAGE);
                 if (isFamilyOrVillage.equals(UserManager.VALUE_IS_VILLAGE)) {
-                    if (village_infos.get(i).getVillage_id() == Integer.parseInt(UserManager.INSTANCE.getCurrentId())) {
+                    if (village_infos.get(i).getVillage_id() == NumberUtil.convertToint(UserManager.INSTANCE.getCurrentId(), -1)) {
                         myVillageFamilyData.setChoosed(true);
                     }
                 }

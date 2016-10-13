@@ -7,6 +7,7 @@ import android.os.Message;
 import android.text.TextUtils;
 
 import com.alipay.sdk.app.PayTask;
+import com.techjumper.polyhome.paycorelib.OnPayListener;
 
 import java.util.Map;
 
@@ -21,7 +22,7 @@ public class AliPay {
     private static final int SDK_PAY_FLAG = 1;
 
     private Activity mActivity;
-    private OnAliPayListener mListener;
+    private OnPayListener mListener;
     private String mOrderInfo;
 
     public AliPay(Activity activity, String orderInfo) {
@@ -53,13 +54,13 @@ public class AliPay {
                     } else if (TextUtils.equals(resultStatus, "8000")) {
 //                        if (mListener != null) mListener.onHandle();
                     } else if (TextUtils.equals(resultStatus, "4000")) {
-//                        if (mListener != null) mListener.onFailed();
+                        if (mListener != null) mListener.onFailed();
                     } else if (TextUtils.equals(resultStatus, "5000")) {
 //                        if (mListener != null) mListener.onRepeat();
                     } else if (TextUtils.equals(resultStatus, "6001")) {
                         if (mListener != null) mListener.onCancel();
                     } else if (TextUtils.equals(resultStatus, "6002")) {
-//                        if (mListener != null) mListener.onNetError();
+                        if (mListener != null) mListener.onFailed();
                     }
                     break;
             }
@@ -86,7 +87,7 @@ public class AliPay {
         payThread.start();
     }
 
-    public void setListener(OnAliPayListener listener) {
+    public void setListener(OnPayListener listener) {
         mListener = listener;
     }
 }

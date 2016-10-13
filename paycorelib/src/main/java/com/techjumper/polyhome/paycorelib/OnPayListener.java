@@ -1,4 +1,4 @@
-package com.techjumper.polyhome.alipay;
+package com.techjumper.polyhome.paycorelib;
 
 /**
  * * * * * * * * * * * * * * * * * * * * * * *
@@ -7,7 +7,7 @@ package com.techjumper.polyhome.alipay;
  * * * * * * * * * * * * * * * * * * * * * * *
  **/
 
-public interface OnAliPayListener {
+public interface OnPayListener {
     /**
      * 支付成功
      */
@@ -22,4 +22,9 @@ public interface OnAliPayListener {
      * 等待确认
      */
     void onWait();
+
+    /**
+     * 支付失败
+     */
+    void onFailed();
 }

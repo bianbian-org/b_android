@@ -137,7 +137,8 @@ public enum UserManager {
             PreferenceUtils.save(UserManager.KEY_CURRENT_VILLAGE_ID, village_id);
             PreferenceUtils.save(UserManager.KEY_CURRENT_SHOW_IS_FAMILY_OR_VILLAGE, UserManager.VALUE_IS_FAMILY);
         } else {
-            PreferenceUtils.save(UserManager.KEY_CURRENT_FAMILY_ID, "");
+//            PreferenceUtils.save(UserManager.KEY_CURRENT_FAMILY_ID, "");
+            PreferenceUtils.save(UserManager.KEY_CURRENT_FAMILY_ID, family_id);
             PreferenceUtils.save(UserManager.KEY_CURRENT_SHOW_TITLE_NAME, name);
             PreferenceUtils.save(UserManager.KEY_CURRENT_VILLAGE_ID, village_id);
             PreferenceUtils.save(UserManager.KEY_CURRENT_SHOW_IS_FAMILY_OR_VILLAGE, UserManager.VALUE_IS_VILLAGE);

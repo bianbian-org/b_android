@@ -1,5 +1,10 @@
 package com.techjumper.polyhomeb.mvp.m;
 
+import android.content.Context;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
+import android.net.wifi.WifiInfo;
+import android.net.wifi.WifiManager;
 import android.os.Bundle;
 
 import com.techjumper.corelib.rx.tools.CommonWrap;
@@ -14,6 +19,10 @@ import com.techjumper.polyhomeb.net.NetHelper;
 import com.techjumper.polyhomeb.net.ServiceAPI;
 import com.techjumper.polyhomeb.user.UserManager;
 
+import java.net.InetAddress;
+import java.net.NetworkInterface;
+import java.net.SocketException;
+import java.util.Enumeration;
 import java.util.Map;
 
 import rx.Observable;
@@ -32,7 +41,8 @@ public class AdjustAccountsActivityModel extends BaseModel<AdjustAccountsActivit
 
     public Observable<PaymentsEntity> payments(String category) {
         KeyValuePair keyValuePair = KeyValueCreator.payments(
-                UserManager.INSTANCE.getUserInfo(UserManager.KEY_ID)
+                getIp()
+                , UserManager.INSTANCE.getUserInfo(UserManager.KEY_ID)
                 , UserManager.INSTANCE.getTicket()
                 , category
                 , getOrderNum());
@@ -127,6 +137,70 @@ public class AdjustAccountsActivityModel extends BaseModel<AdjustAccountsActivit
                 return getPresenter().getView().getString(R.string.pop_other);
         }
         return "";
+    }
+
+    private String getIp() {
+        String ip = "";
+        ConnectivityManager conMann = (ConnectivityManager)
+                getPresenter().getView().getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo mobileNetworkInfo = conMann.getNetworkInfo(ConnectivityManager.TYPE_MOBILE);
+        NetworkInfo wifiNetworkInfo = conMann.getNetworkInfo(ConnectivityManager.TYPE_WIFI);
+
+        if (mobileNetworkInfo.isConnected()) {
+            ip = getLocalIp();
+        } else if (wifiNetworkInfo.isConnected()) {
+            WifiManager wifiManager = (WifiManager) getPresenter().getView().getSystemService(Context.WIFI_SERVICE);
+            WifiInfo wifiInfo = wifiManager.getConnectionInfo();
+            int ipAddress = wifiInfo.getIpAddress();
+            ip = intToIp(ipAddress);
+        }
+        return ip;
+    }
+
+    //获取wifi网络ip
+    private String intToIp(int ipInt) {
+        StringBuilder sb = new StringBuilder();
+        sb.append(ipInt & 0xFF).append(".");
+        sb.append((ipInt >> 8) & 0xFF).append(".");
+        sb.append((ipInt >> 16) & 0xFF).append(".");
+        sb.append((ipInt >> 24) & 0xFF);
+        return sb.toString();
+    }
+
+    //获取移动网络ip
+//    private String getLocalIpAddress() {
+//        try {
+//            String ipv4;
+//            ArrayList<NetworkInterface> nilist = Collections.list(NetworkInterface.getNetworkInterfaces());
+//            for (NetworkInterface ni : nilist) {
+//                ArrayList<InetAddress> ialist = Collections.list(ni.getInetAddresses());
+//                for (InetAddress address : ialist) {
+//                    if (!address.isLoopbackAddress() && InetAddressUtils.isIPv4Address(ipv4 = address.getHostAddress())) {
+//                        return ipv4;
+//                    }
+//                }
+//
+//            }
+//
+//        } catch (SocketException ex) {
+//        }
+//        return null;
+//    }
+
+    private String getLocalIp() {
+        try {
+            for (Enumeration<NetworkInterface> en = NetworkInterface.getNetworkInterfaces(); en.hasMoreElements(); ) {
+                NetworkInterface intf = en.nextElement();
+                for (Enumeration<InetAddress> enumIpAddr = intf.getInetAddresses(); enumIpAddr.hasMoreElements(); ) {
+                    InetAddress inetAddress = enumIpAddr.nextElement();
+                    if (!inetAddress.isLoopbackAddress() && !inetAddress.isLinkLocalAddress()) {
+                        return inetAddress.getHostAddress().toString();
+                    }
+                }
+            }
+        } catch (SocketException ex) {
+        }
+        return null;
     }
 
 }
