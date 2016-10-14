@@ -114,7 +114,7 @@ public class PaymentFragmentContentViewHolder extends BaseRecyclerViewHolder<Pay
     }
 
     private void allPaid(PaymentFragmentContentData data) {
-        setText(R.id.tv_time, String.format(getContext().getString(R.string.pay_day), data.getTime()));
+        setText(R.id.tv_time, String.format(getContext().getString(R.string.pay_day), data.getPayment_date()));
         if (sLate == data.getIs_late()) {   //已经逾期
             String text1 = String.format(getContext().getString(R.string.late_x_day), Math.abs(data.getDay())); //超过X天
             String text2 = getContext().getString(R.string.x_exceed);  //产生
