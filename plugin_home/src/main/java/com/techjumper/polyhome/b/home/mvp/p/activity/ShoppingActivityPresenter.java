@@ -14,6 +14,7 @@ import com.techjumper.polyhome.b.home.R;
 import com.techjumper.polyhome.b.home.UserInfoManager;
 import com.techjumper.polyhome.b.home.mvp.m.ShoppingActivityModel;
 import com.techjumper.polyhome.b.home.mvp.v.activity.ShoppingActivity;
+import com.techjumper.polyhome_b.adlib.Config;
 
 import java.util.ArrayList;
 import java.util.List;

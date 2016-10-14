@@ -148,24 +148,7 @@ public class PloyhomeFragmentPresenter extends AppBaseFragmentPresenter<Ployhome
         getAd(true);
         getNotices();
 
-//        addSubscription(RxView.clicks(getView().getProperty())
-//                .compose(RxUtil.applySchedulers())
-//                .subscribe(aVoid -> {
-//                    Intent it = new Intent();
-//                    ComponentName componentName = new ComponentName("com.dnake.talk", "com.dnake.activity.CallingActivity");
-//                    it.setComponent(componentName);
-//                    it.putExtra("com.dnake.talk", "CallingActivity");
-//                    getView().startActivity(it);
-//                }));
-
         addSubscription(RxView.clicks(getView().getProperty())
-                .filter(aVoid -> {
-                    if (UserInfoManager.isLogin())
-                        return true;
-
-                    ToastUtils.show(getView().getString(R.string.error_no_login));
-                    return false;
-                })
                 .compose(RxUtil.applySchedulers())
                 .subscribe(aVoid -> {
                     submitTimer(TimerClickEntity.ONCLICK_PROPERTY, heartbeatTime, heartbeatTime);
@@ -175,6 +158,22 @@ public class PloyhomeFragmentPresenter extends AppBaseFragmentPresenter<Ployhome
                     String ticket = UserInfoManager.getTicket();
                     PluginEngineUtil.startProperty(familyId, userId, ticket);
                 }));
+
+//        addSubscription(RxView.clicks(getView().getProperty())
+//                .filter(aVoid -> {
+//                    if (UserInfoManager.isLogin())
+//                        return true;
+//
+//                    ToastUtils.show(getView().getString(R.string.error_no_login));
+//                    return false;
+//                })
+//                .compose(RxUtil.applySchedulers())
+//                .subscribe(aVoid -> {
+//                    long familyId = UserInfoManager.getLongFamilyId();
+//                    long userId = UserInfoManager.getLongUserId();
+//                    String ticket = UserInfoManager.getTicket();
+//                    PluginEngineUtil.startProperty(familyId, userId, ticket);
+//                }));
 
         addSubscription(RxView.clicks(getView().getNoticeLayout())
                 .filter(aVoid -> {

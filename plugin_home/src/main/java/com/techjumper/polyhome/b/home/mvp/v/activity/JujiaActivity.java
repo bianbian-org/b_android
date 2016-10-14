@@ -6,6 +6,7 @@ import android.webkit.WebChromeClient;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.techjumper.corelib.mvp.factory.Presenter;
@@ -31,6 +32,12 @@ public class JujiaActivity extends AppBaseActivity<JujiaActivityPresenter> {
     TextView bottomDate;
     @Bind(R.id.close)
     TextView close;
+    @Bind(R.id.bottom_back)
+    LinearLayout bottomBack;
+    @Bind(R.id.call_text)
+    TextView callText;
+    @Bind(R.id.call_layout)
+    LinearLayout callLayout;
 
     private long time;
     private TimerTask timerTask;
@@ -58,6 +65,8 @@ public class JujiaActivity extends AppBaseActivity<JujiaActivityPresenter> {
         time = getIntent().getLongExtra(TIME, 0L);
         close.setVisibility(View.VISIBLE);
 
+        callText.setText(R.string.call_order);
+
         WebSettings ws = webView.getSettings();
 
         ws.setJavaScriptEnabled(true);
@@ -71,10 +80,13 @@ public class JujiaActivity extends AppBaseActivity<JujiaActivityPresenter> {
                 // TODO Auto-generated method stub
                 if (newProgress == 100) {
                     // 网页加载完成
-
+                    if (webView.getUrl().equals(Config.sJujia)) {
+                        callLayout.setVisibility(View.GONE);
+                    } else {
+                        callLayout.setVisibility(View.VISIBLE);
+                    }
                 } else {
                     // 加载中
-
                 }
 
             }
@@ -106,6 +118,13 @@ public class JujiaActivity extends AppBaseActivity<JujiaActivityPresenter> {
         if (webView != null) {
             webView.destroy();
         }
+    }
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        // TODO: add setContentView(...) invocation
+        ButterKnife.bind(this);
     }
 
     private class webViewClient extends WebViewClient {
