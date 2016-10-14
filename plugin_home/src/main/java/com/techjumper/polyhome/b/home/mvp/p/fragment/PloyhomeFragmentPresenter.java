@@ -876,7 +876,9 @@ public class PloyhomeFragmentPresenter extends AppBaseFragmentPresenter<Ployhome
 //                        HandleAd(adsEntity, file);
                         Log.d("ad12", "跳下一页, 当前页" + currentPage);
 
-                        adViewPager.setCurrentItem(currentPage, false);
+                        if (adViewPager != null) {
+                            adViewPager.setCurrentItem(currentPage, false);
+                        }
                         mIsGetNewAd = true;
                         mAdsEntity = adsEntity;
 

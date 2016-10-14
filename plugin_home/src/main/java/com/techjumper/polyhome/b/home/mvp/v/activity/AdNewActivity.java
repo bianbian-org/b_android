@@ -12,6 +12,7 @@ import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 
 import com.techjumper.commonres.ComConstant;
 import com.techjumper.corelib.mvp.factory.Presenter;
@@ -39,7 +40,7 @@ import butterknife.OnClick;
  * Created by kevin on 16/4/29.
  */
 @Presenter(AdNewActivityPresenter.class)
-public class AdNewActivity extends AppBaseActivity<AdActivityPresenter> implements AdController.IAlarm, ViewPager.OnPageChangeListener {
+public class AdNewActivity extends AppBaseActivity<AdNewActivityPresenter> implements AdController.IAlarm, ViewPager.OnPageChangeListener {
     public static final String IMAGE_AD_TYPE = "1";
     public static final String VIDEO_AD_TYPE = "2";
     public static final String TIME = "time";
@@ -75,8 +76,8 @@ public class AdNewActivity extends AppBaseActivity<AdActivityPresenter> implemen
     @Bind(R.id.webview)
     WebView webView;
 
-    @Bind(R.id.call)
-    ImageView call;
+    @Bind(R.id.call_layout)
+    LinearLayout call;
 
     @OnClick(R.id.bottom_back)
     void back() {
@@ -108,6 +109,8 @@ public class AdNewActivity extends AppBaseActivity<AdActivityPresenter> implemen
         Log.d("ad15", "过来的position" + position);
         type = getIntent().getIntExtra(TYPE, TYPE_ONE);
         time = getIntent().getLongExtra(TIME, 0L);
+
+        call.setVisibility(View.VISIBLE);
 
         if (time == 0L) {
             time = System.currentTimeMillis() / 1000;

@@ -4,6 +4,7 @@ import android.content.ComponentName;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.webkit.WebView;
 
 import com.techjumper.commonres.entity.TimerClickEntity;
 import com.techjumper.commonres.entity.TrueEntity;
@@ -36,10 +37,15 @@ public class JujiaActivityPresenter extends AppBaseActivityPresenter<JujiaActivi
 
     private long time;
     private Timer timer = new Timer();
+    private WebView webView;
 
     @OnClick(R.id.bottom_back)
     void back() {
-        getView().finish();
+        if (webView.canGoBack()) {
+            webView.goBack();
+        } else {
+            getView().finish();
+        }
     }
 
     @OnClick(R.id.bottom_home)
@@ -47,7 +53,7 @@ public class JujiaActivityPresenter extends AppBaseActivityPresenter<JujiaActivi
         getView().finish();
     }
 
-    @OnClick(R.id.call)
+    @OnClick(R.id.call_layout)
     void call() {
         Intent it = new Intent();
         ComponentName componentName = new ComponentName("com.dnake.talk", "com.dnake.activity.TalkingActivity");
@@ -75,6 +81,7 @@ public class JujiaActivityPresenter extends AppBaseActivityPresenter<JujiaActivi
     @Override
     public void onViewInited(Bundle savedInstanceState) {
         time = getView().getTime();
+        webView = getView().getWebView();
 
         if (time == 0L) {
             time = System.currentTimeMillis() / 1000;

@@ -44,6 +44,10 @@ public class ShoppingActivity extends AppBaseActivity<ShoppingActivityPresenter>
         return time;
     }
 
+    public WebView getWebView() {
+        return webView;
+    }
+
     public TextView getBottomDate() {
         return bottomDate;
     }
@@ -74,7 +78,7 @@ public class ShoppingActivity extends AppBaseActivity<ShoppingActivityPresenter>
             }
         });
         webView.setWebViewClient(new webViewClient());
-        webView.loadUrl(Config.sShoppingLogin);
+        webView.loadUrl(Config.sShopping);
         webView.addJavascriptInterface(new AndroidForJs(this), "JavaScriptInterface");
     }
 

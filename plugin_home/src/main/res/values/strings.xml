@@ -38,4 +38,7 @@
     <string name="error_no_data">暂无任何内容</string>
 
     <string name="error_no_login">需要去工程设置页面登录！</string>
+
+    <string name="call">一键呼叫</string>
+    <string name="call_order">呼叫下单</string>
 </resources>

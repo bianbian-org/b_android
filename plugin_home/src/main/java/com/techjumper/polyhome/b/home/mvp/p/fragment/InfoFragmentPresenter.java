@@ -545,7 +545,9 @@ public class InfoFragmentPresenter extends AppBaseFragmentPresenter<InfoFragment
                     public void onAdReceive(AdEntity.AdsEntity adsEntity, File file) {
 //                        HandleAd(adsEntity, file);
                         Log.d("ad12", "跳下一页, 当前页" + currentPage);
-                        adViewPager.setCurrentItem(currentPage, false);
+                        if (adViewPager != null) {
+                            adViewPager.setCurrentItem(currentPage, false);
+                        }
                         mIsGetNewAd = true;
                         mAdsEntity = adsEntity;
 

@@ -2,6 +2,7 @@ package com.techjumper.polyhome.b.home.mvp.p.activity;
 
 import android.os.Bundle;
 import android.util.Log;
+import android.webkit.WebView;
 
 import com.techjumper.commonres.entity.event.BackEvent;
 import com.techjumper.commonres.entity.event.TimeEvent;
@@ -9,6 +10,7 @@ import com.techjumper.commonres.util.CommonDateUtil;
 import com.techjumper.corelib.rx.tools.RxBus;
 import com.techjumper.polyhome.b.home.R;
 import com.techjumper.polyhome.b.home.mvp.v.activity.ShoppingActivity;
+import com.techjumper.polyhome_b.adlib.Config;
 
 import java.util.Timer;
 import java.util.TimerTask;
@@ -23,10 +25,15 @@ public class ShoppingActivityPresenter extends AppBaseActivityPresenter<Shopping
 
     private long time;
     private Timer timer = new Timer();
+    private WebView webView;
 
     @OnClick(R.id.bottom_back)
     void back() {
-        getView().finish();
+        if (webView.getUrl().equals(Config.sShopping)) {
+            getView().finish();
+        } else {
+            webView.goBack();
+        }
     }
 
     @OnClick(R.id.bottom_home)
@@ -51,6 +58,7 @@ public class ShoppingActivityPresenter extends AppBaseActivityPresenter<Shopping
     @Override
     public void onViewInited(Bundle savedInstanceState) {
         time = getView().getTime();
+        webView = getView().getWebView();
 
         if (time == 0L) {
             time = System.currentTimeMillis() / 1000;
