@@ -43,7 +43,6 @@ public class DebugActivityPresenter extends AppBaseActivityPresenter<DebugActivi
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.btn_open_smart_home:
-                JLog.d("Polyhome B Application: "+ Utils.appContext);
                 openSmartHome();
                 break;
             case R.id.btn_uninstall_smart_home:
@@ -64,7 +63,11 @@ public class DebugActivityPresenter extends AppBaseActivityPresenter<DebugActivi
         addSubscription(
                 RxPermissions.getInstance(getView())
                         .request(Manifest.permission.WRITE_EXTERNAL_STORAGE)
-                        .filter(aBoolean -> aBoolean != null && aBoolean)
+                        .filter(aBoolean -> {
+                            if (aBoolean != null && !aBoolean)
+                                ToastUtils.show(Utils.appContext.getString(R.string.error_no_access_sd_card_permission));
+                            return aBoolean != null && aBoolean;
+                        })
                         .flatMap(aBoolean1 -> {
                             getView().showLoading();
                             return PluginAssetsManager.getInstance().copyAssetsPluginToInstallDir();
@@ -77,18 +80,17 @@ public class DebugActivityPresenter extends AppBaseActivityPresenter<DebugActivi
 
                             @Override
                             public void onError(Throwable e) {
-                                getView().dismissLoading();
                                 ToastUtils.show(Utils.appContext.getString(R.string.cannot_access_sd_card));
                             }
 
                             @Override
                             public void onNext(PluginAssetsManager.CopyEntity copyEntity) {
-                                getView().dismissLoading();
                                 if (!TextUtils.isEmpty(copyEntity.getPath())) {
                                     try {
-                                        if (!AppUtils.hasUpdate(copyEntity.getPath()))
-                                            mPluginManager.startCMainActivity();
-                                        else {
+                                        if (!AppUtils.hasUpdate(copyEntity.getPath())) {
+                                            startCAppPlugin();
+                                        } else {
+                                            getView().dismissLoading();
                                             mPluginManager.installCPlugin(copyEntity.getPath());
                                         }
                                     } catch (Exception e) {
@@ -98,7 +100,7 @@ public class DebugActivityPresenter extends AppBaseActivityPresenter<DebugActivi
                                 }
 
                                 try {
-                                    mPluginManager.startCMainActivity();
+                                    startCAppPlugin();
                                 } catch (Exception e) {
                                     ToastUtils.show(Utils.appContext.getString(R.string.cannot_access_sd_card));
                                 }
@@ -108,5 +110,28 @@ public class DebugActivityPresenter extends AppBaseActivityPresenter<DebugActivi
         );
 
 
+    }
+
+    private void startCAppPlugin() {
+        addSubscription(
+                mPluginManager.startCMainActivityAuto()
+                        .subscribe(new Subscriber<Boolean>() {
+                            @Override
+                            public void onCompleted() {
+                                getView().dismissLoading();
+                            }
+
+                            @Override
+                            public void onError(Throwable e) {
+                                JLog.d("打开页面失败：" + e);
+                            }
+
+                            @Override
+                            public void onNext(Boolean aBoolean) {
+                                getView().dismissLoading();
+                                JLog.d(aBoolean != null && aBoolean ? "打开CApp成功" : "打开CApp失败");
+                            }
+                        })
+        );
     }
 }

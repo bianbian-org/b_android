@@ -11,6 +11,7 @@ import com.techjumper.polyhomeb.Config;
 import com.techjumper.polyhomeb.entity.LoginEntity;
 import com.techjumper.polyhomeb.entity.medicalEntity.MedicalAllUserEntity;
 import com.techjumper.polyhomeb.entity.medicalEntity.MedicalUserLoginEntity;
+import com.techjumper.polyhomeb.manager.PolyPluginFileManager;
 import com.techjumper.polyhomeb.user.event.LoginEvent;
 import com.techjumper.polyhomeb.utils.HostIpHelper;
 
@@ -49,7 +50,6 @@ public enum UserManager {
     public static final String KEY_CURRENT_FAMILY_ID = "key_current_show_id";
     public static final String KEY_CURRENT_VILLAGE_ID = "key_current_village_id";
     public static final String KEY_CURRENT_SHOW_IS_FAMILY_OR_VILLAGE = "key_current_show_is_family_or_village";
-    public static final String KEY_CURRENT_FAMILY_INFO = "key_current_family_info";
 
     public static final String VALUE_IS_FAMILY = "value_is_family";
     public static final String VALUE_IS_VILLAGE = "value_is_village";
@@ -82,10 +82,9 @@ public enum UserManager {
         if (entity.getData().getFamilies() != null && entity.getData().getFamilies().size() != 0) {
             //登录接口多出来的
 //            PreferenceUtils.save(KEY_ALL_FAMILIES, GsonUtils.toJson(entity.getData().getFamilies()));
-            Gson gson = new Gson();
-            String json = gson.toJson(entity.getData().getFamilies(), List.class);
-            PreferenceUtils.save(KEY_ALL_FAMILIES, json);
-
+//            Gson gson = new Gson();
+//            String json = gson.toJson(entity.getData().getFamilies(), List.class);
+//            PreferenceUtils.save(KEY_ALL_FAMILIES, json);
             String family_id = entity.getData().getFamilies().get(0).getFamily_id();
             String family_name = entity.getData().getFamilies().get(0).getFamily_name();
             int village_id = entity.getData().getFamilies().get(0).getVillage_id();
@@ -252,6 +251,7 @@ public enum UserManager {
         PreferenceUtils.save(KEY_CURRENT_FAMILY_ID, "");
         PreferenceUtils.save(KEY_CURRENT_SHOW_IS_FAMILY_OR_VILLAGE, "");
         PreferenceUtils.save(KEY_CURRENT_VILLAGE_ID, "");
+        PolyPluginFileManager.getInstance().clearFamilyInfoFile().subscribe();
 
         HostIpHelper.getInstance().clear();
         if (notify)
