@@ -58,10 +58,10 @@ public class HomeFragmentModel extends BaseModel<HomeFragmentPresenter> {
 
         //增加  智能家居  部分的数据  item = 3
         PolyHomeData polyHomeData = new PolyHomeData();
-        polyHomeData.setSceneName1("哇咔咔");
-        polyHomeData.setSceneName2("我嘞个擦");
-        polyHomeData.setSceneName3("这 这就尴尬了");
-        polyHomeData.setSceneName4("呵呵");
+        polyHomeData.setSceneName1("卧室照明");
+        polyHomeData.setSceneName2("二楼灯光");
+        polyHomeData.setSceneName3("客厅安防");
+        polyHomeData.setSceneName4("起夜模式");
         PolyHomeDataBean polyHomeDataBean = new PolyHomeDataBean(polyHomeData);
         displayBeans.add(polyHomeDataBean);
 

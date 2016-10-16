@@ -5,11 +5,9 @@ import com.techjumper.corelib.utils.file.FileUtils;
 import com.techjumper.corelib.utils.system.AppUtils;
 import com.techjumper.lib2.Config;
 
-import java.io.File;
 import java.io.InputStream;
 import java.util.concurrent.TimeUnit;
 
-import okhttp3.Cache;
 import okhttp3.Interceptor;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
@@ -93,7 +91,7 @@ public class OkHttpHelper {
         OkHttpClient.Builder builder = new OkHttpClient.Builder()
                 .hostnameVerifier((hostname, session) -> true)
                 .sslSocketFactory(sslParams.sSLSocketFactory, sslParams.trustManager)
-                .cache(new Cache(new File(cachePath), cacheSize))
+//                .cache(new Cache(new File(cachePath), cacheSize))
                 .connectTimeout(10, TimeUnit.SECONDS)
                 .readTimeout(10, TimeUnit.SECONDS)
                 .writeTimeout(10, TimeUnit.SECONDS);

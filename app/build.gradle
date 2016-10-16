@@ -89,6 +89,10 @@ dependencies {
     compile project(':magicindicator')
     compile project(':PhotoPicker')
     compile project(':zxing')
+    compile project(':alipay')
+    compile project(':doormaster')
+    compile project(':wechatpay')
+    compile project (':paycorelib')
     compile "com.creact:powerful-adapter-lib-release:$rootProject.recyclerAdapter"
     provided "com.creact:powerful-adapter-annotations-release:$rootProject.recyclerAdapter"
     apt "com.creact:powerful-adapter-complier-release:$rootProject.recyclerAdapter"

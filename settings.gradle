@@ -1,1 +1,2 @@
-include ':app', ':corelib', ':lib2', ':LightWidget', ':progressdialog', ':loading-more-view', ':ptr_lib', ':slidingmenulib', ':magicindicator', ':PhotoPicker', ':zxing', ':wechatpay'
+include ':app', ':corelib', ':lib2', ':LightWidget', ':progressdialog', ':loading-more-view', ':ptr_lib', ':slidingmenulib', ':magicindicator', ':PhotoPicker', ':zxing', ':alipay', ':doormaster', ':wechatpay', ':paycorelib'
+

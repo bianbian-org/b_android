@@ -18,6 +18,15 @@ public class PaymentFragmentContentData {
     private String order_num;
     private int status;
     private int is_late;
+    private String payment_date;
+
+    public String getPayment_date() {
+        return payment_date;
+    }
+
+    public void setPayment_date(String payment_date) {
+        this.payment_date = payment_date;
+    }
 
     public int getIs_late() {
         return is_late;

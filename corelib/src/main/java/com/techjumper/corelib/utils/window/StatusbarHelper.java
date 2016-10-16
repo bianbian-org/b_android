@@ -65,15 +65,10 @@ public final class StatusbarHelper {
         if (isLessKitkat()) return;
 
         if (view == null) return;
-        view.post(new Runnable() {
-            @Override
-            public void run() {
-                view.setPadding(view.getLeft()
-                        , getStatusBarHeightPx(view.getContext()) + view.getPaddingTop()
-                        , view.getPaddingRight()
-                        , view.getPaddingBottom());
-            }
-        });
+        view.post(() -> view.setPadding(view.getLeft()
+                , getStatusBarHeightPx(view.getContext()) + view.getPaddingTop()
+                , view.getPaddingRight()
+                , view.getPaddingBottom()));
     }
 
     /**
@@ -286,7 +281,7 @@ public final class StatusbarHelper {
                     | View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
         }
         if (transparentStatusbar) {
-            //改变字体颜色
+            //透明
             flag |= View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN | View.SYSTEM_UI_FLAG_LAYOUT_STABLE;
         }
         window.getDecorView().setSystemUiVisibility(flag);

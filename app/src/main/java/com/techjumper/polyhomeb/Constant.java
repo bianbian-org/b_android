@@ -66,10 +66,10 @@ public class Constant {
 
     //支付方式
     public static final String PAYMENT_WAY = "payment_way";
-    public static final int TENCENT_PAY = 0;
-    public static final int ALIPAY = 1;
-    public static final int UNION_PAY = 2;
-    public static final int YI_PAY = 3;
+    public static final int TENCENT_PAY = 1;
+    public static final int ALIPAY = 2;
+    public static final int UNION_PAY = 3;
+    public static final int YI_PAY = 4;
 
 
 

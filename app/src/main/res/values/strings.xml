@@ -347,6 +347,7 @@
     <string name="tab_main">首页</string>
     <string name="no_specified_family_information">没有指定的家庭信息</string>
     <string name="error_no_access_sd_card_permission">没有访问SD卡权限</string>
+    <string name="pay_order_info">订单信息有误</string>
 
 
 </resources>

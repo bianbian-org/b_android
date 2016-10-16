@@ -105,7 +105,8 @@ public class AllpaidFragmentModel extends BaseModel<AllpaidFragmentPresenter> {
             OrdersEntity.DataBean.OrdersBean ordersBean = orders.get(i);
 
             int expiry = ordersBean.getExpiry();                //#逾期时间（天）  +24意味着还有24天缴费,-24意味着已经逾期24天
-            String expiry_date = ordersBean.getExpiry_date();   //#缴费日期  "2016-09-22"
+            String expiry_date = ordersBean.getExpiry_date();   //#截止缴费日期  "2016-09-22"
+            String payment_date = ordersBean.getPayment_date(); //#实际缴费日期
             double expiry_price = ordersBean.getExpiry_price(); //#滞纳金   15.19
             String object = ordersBean.getObject();             //#缴费对象    "1栋3单元21-111"
             String order_number = ordersBean.getOrder_number(); //#订单号   "2014731502779997"
@@ -118,6 +119,7 @@ public class AllpaidFragmentModel extends BaseModel<AllpaidFragmentPresenter> {
             //第三个item,内容
             PaymentFragmentContentData paymentFragmentContentData = new PaymentFragmentContentData();
             paymentFragmentContentData.setTitle(pay_name);
+            paymentFragmentContentData.setPayment_date(payment_date);
             paymentFragmentContentData.setBtnName(pay_type);
             paymentFragmentContentData.setTime(expiry_date);
             paymentFragmentContentData.setContent(object);

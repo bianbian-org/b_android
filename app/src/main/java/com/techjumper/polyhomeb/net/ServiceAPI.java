@@ -7,6 +7,7 @@ import com.techjumper.polyhomeb.entity.CheckInEntity;
 import com.techjumper.polyhomeb.entity.LoginEntity;
 import com.techjumper.polyhomeb.entity.MessageEntity;
 import com.techjumper.polyhomeb.entity.OrdersEntity;
+import com.techjumper.polyhomeb.entity.PaymentsEntity;
 import com.techjumper.polyhomeb.entity.PropertyComplainDetailEntity;
 import com.techjumper.polyhomeb.entity.PropertyComplainEntity;
 import com.techjumper.polyhomeb.entity.PropertyPlacardEntity;
@@ -536,6 +537,12 @@ public interface ServiceAPI {
      */
     @GET("sign")
     Observable<CheckInEntity> getCheckInData(@QueryMap Map<String, String> stringStringMap);
+
+    /**
+     * 发起支付请求
+     */
+    @GET("payments")
+    Observable<PaymentsEntity> payments(@QueryMap Map<String, String> q);
 
     @POST("family_query")
     Observable<QueryFamilyEntity> queryFamilyInfo(@Body BaseArgumentsEntity entity);

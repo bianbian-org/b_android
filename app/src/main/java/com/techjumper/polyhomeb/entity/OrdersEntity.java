@@ -35,13 +35,22 @@ public class OrdersEntity extends BaseEntity<OrdersEntity.DataBean> {
             private String order_number;  // #订单号   "2014731502779997"
             private int pay_type;   //#缴费类型 1-物业费 2-水费 3-电费 4-燃气费 5-其他
             private String pay_name;  // #费用名称   "8月份电费"
-            private String expiry_date;   //#缴费日期  "2016-09-22"
+            private String expiry_date;   //#截止缴费日期  "2016-09-22"
             private int status;   //#缴费状态 1-未缴费 2-已缴费
             private String object;   //#缴费对象    "1栋3单元21-111"
             private double price;   //#缴费金额    96.68
             private int is_late;    // #是否逾期   0-没逾期, 1-逾期
             private double expiry_price;  //#滞纳金   15.19
             private int expiry;    //#逾期时间（天）  24
+            private String payment_date;  //已经交费和未缴缴费的订单中均有此字段，只不过为缴费的并没有值，所以这个字段仅仅用于已经交费的地方，提示用户缴费日期
+
+            public String getPayment_date() {
+                return payment_date;
+            }
+
+            public void setPayment_date(String payment_date) {
+                this.payment_date = payment_date;
+            }
 
             public String getOrder_number() {
                 return order_number;
