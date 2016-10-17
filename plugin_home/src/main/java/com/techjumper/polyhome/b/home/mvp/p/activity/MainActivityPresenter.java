@@ -239,7 +239,7 @@ public class MainActivityPresenter extends AppBaseActivityPresenter<MainActivity
         submitTimer(TimerClickEntity.YIJIAN_HOME, totalTime, totalTime);
         eventId = TimerClickEntity.STAY_TALK;
         Intent it = new Intent();
-        ComponentName componentName = new ComponentName("com.dnake.talk", "com.dnake.activity.TalkingActivity");
+        ComponentName componentName = new ComponentName("com.dnake.talk", "com.dnake.activity.CallingActivity");
         it.setComponent(componentName);
         it.putExtra("com.dnake.talk", "CallingActivity");
         getView().startActivity(it);
