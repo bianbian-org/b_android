@@ -48,85 +48,86 @@ public class AdStatService extends Service {
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
+        try {
 
-        PollingUtils.stopPollingService(Utils.appContext
-                , AdStatService.class, "", AdController.CODE_AD_STAT);
-        PollingUtils.startPollingServiceBySet(Utils.appContext
-                , AdController.getAdStatUploadNextTime()
-                , AdStatService.class, "", true, AdController.CODE_AD_STAT, true);
+            String familyId = PreferenceUtils.getPreference(SP_NAME).getString(KEY_FAMILY_ID, "");
+            if (TextUtils.isEmpty(familyId)) {
+                JLog.d("<ad> 没有familyId或者还没有执行过广告, 所以无法上报数据");
+                return super.onStartCommand(intent, flags, startId);
+            }
 
-        String familyId = PreferenceUtils.getPreference(SP_NAME).getString(KEY_FAMILY_ID, "");
-        if (TextUtils.isEmpty(familyId)) {
-            JLog.d("<ad> 没有familyId或者还没有执行过广告, 所以无法上报数据");
-            return super.onStartCommand(intent, flags, startId);
-        }
+            AdStatDbExecutor.BriteDatabaseHelper dbHelper = AdStatDbExecutor.getHelper();
 
-
-        AdStatDbExecutor.BriteDatabaseHelper dbHelper = AdStatDbExecutor.getHelper();
-
-        dbHelper.getAdStatTime()
-                .map(adStatTime -> {
-                    if (adStatTime == null) {
-                        JLog.d("<ad> 还未有任何广告时间记录");
-                        return false;
-                    }
-
-                    long lastTime = NumberUtil.convertTolong(adStatTime.time(), -1L);
-
-                    boolean b = System.currentTimeMillis() - lastTime >= ADSTAT_TIME_INTERVAL || System.currentTimeMillis() <= lastTime;
-                    String log = b ? "<ad> 到达上报时间, 开始上报广告" : "<ad> 未到上报广告时间";
-                    JLog.d(log);
-                    return b;
-                })
-                .filter(aBoolean -> aBoolean)
-                .flatMap(aBoolean1 -> dbHelper.queryAll())
-                .filter(adStats -> {
-                    if (adStats != null && adStats.size() != 0) {
-                        return true;
-                    } else {
-                        JLog.d("<ad> 没有可以上报的广告");
-                        return false;
-                    }
-                })
-                .flatMap(adStats1 -> {
-                    String json = createParamJson(adStats1);
-                    JLog.d("<ad> 准备上报广告数据: familyId=" + familyId + ", json=" + json);
-                    return RetrofitTemplate.getInstance().adStat(familyId, json);
-                })
-                .subscribe(new Subscriber<BaseEntity>() {
-                    @Override
-                    public void onCompleted() {
-
-                    }
-
-                    @Override
-                    public void onError(Throwable e) {
-                        JLog.d("<ad> 上报失败: " + e);
-                    }
-
-                    @Override
-                    public void onNext(BaseEntity baseEntity) {
-                        if (!NetHelper.isSuccess(baseEntity)) {
-                            String reason = baseEntity == null ? "未知原因" : baseEntity.getError_msg();
-                            JLog.d("<ad> 广告上报失败: " + reason);
-                            return;
+            dbHelper.getAdStatTime()
+                    .map(adStatTime -> {
+                        if (adStatTime == null) {
+                            JLog.d("<ad> 还未有任何广告时间记录");
+                            return false;
                         }
 
-                        Observable
-                                .create(new Observable.OnSubscribe<Boolean>() {
-                                    @Override
-                                    public void call(Subscriber<? super Boolean> subscriber) {
-                                        subscriber.onNext(dbHelper.deleteAll());
-                                        subscriber.onCompleted();
-                                    }
-                                })
-                                .subscribeOn(Schedulers.io())
-                                .subscribe(result -> {
-                                    JLog.d("<ad> 上报成功");
-                                });
-                    }
-                });
+                        long lastTime = NumberUtil.convertTolong(adStatTime.time(), -1L);
 
+                        boolean b = System.currentTimeMillis() - lastTime >= ADSTAT_TIME_INTERVAL || System.currentTimeMillis() <= lastTime;
+                        String log = b ? "<ad> 到达上报时间, 开始上报广告" : "<ad> 未到上报广告时间";
+                        JLog.d(log);
+                        return b;
+                    })
+                    .filter(aBoolean -> aBoolean)
+                    .flatMap(aBoolean1 -> dbHelper.queryAll())
+                    .filter(adStats -> {
+                        if (adStats != null && adStats.size() != 0) {
+                            return true;
+                        } else {
+                            JLog.d("<ad> 没有可以上报的广告");
+                            return false;
+                        }
+                    })
+                    .flatMap(adStats1 -> {
+                        String json = createParamJson(adStats1);
+                        JLog.d("<ad> 准备上报广告数据: familyId=" + familyId + ", json=" + json);
+                        return RetrofitTemplate.getInstance().adStat(familyId, json);
+                    })
+                    .subscribe(new Subscriber<BaseEntity>() {
+                        @Override
+                        public void onCompleted() {
+
+                        }
+
+                        @Override
+                        public void onError(Throwable e) {
+                            JLog.d("<ad> 上报失败: " + e);
+                        }
+
+                        @Override
+                        public void onNext(BaseEntity baseEntity) {
+                            if (!NetHelper.isSuccess(baseEntity)) {
+                                String reason = baseEntity == null ? "未知原因" : baseEntity.getError_msg();
+                                JLog.d("<ad> 广告上报失败: " + reason);
+                                return;
+                            }
+
+                            Observable
+                                    .create(new Observable.OnSubscribe<Boolean>() {
+                                        @Override
+                                        public void call(Subscriber<? super Boolean> subscriber) {
+                                            subscriber.onNext(dbHelper.deleteAll());
+                                            subscriber.onCompleted();
+                                        }
+                                    })
+                                    .subscribeOn(Schedulers.io())
+                                    .subscribe(result -> {
+                                        JLog.d("<ad> 上报成功");
+                                        dbHelper.close();
+                                    });
+                        }
+                    });
+        } finally {
+//            PollingUtils.stopPollingService(Utils.appContext
+//                    , AdStatService.class, "", AdController.CODE_AD_STAT);
+            PollingUtils.startPollingServiceBySet(Utils.appContext
+                    , AdController.getAdStatUploadNextTime()
+                    , AdStatService.class, "", true, AdController.CODE_AD_STAT, true);
+        }
 
         return super.onStartCommand(intent, flags, startId);
     }

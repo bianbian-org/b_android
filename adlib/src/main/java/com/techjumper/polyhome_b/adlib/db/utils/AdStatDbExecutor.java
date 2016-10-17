@@ -130,8 +130,9 @@ public class AdStatDbExecutor {
         public synchronized void close() {
             try {
                 mDb.close();
-                mDb = null;
             } catch (Exception ignored) {
+            }finally {
+                mDb = null;
             }
         }
 
