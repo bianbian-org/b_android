@@ -31,7 +31,7 @@ public class Config {
     public static String sFriend = "http://pl.techjumper.com/neighbor?title=友邻&left=::NativeMenu&right=::NativeNewArticle,::NativeNotification";
     public static String sShopping = "http://pl.techjumper.com/shop/mobile?title=商城&left=::NativeMenu&right=::person";
     public static String sFriendNotification = "http://pl.techjumper.com/neighbor/user/notices?title=通知&left=::NativeReturn&right=";
-    public static String sService = "http://pl.techjumper.com/neighbor/user/notices?title=通知&left=::NativeReturn&right=";
+    public static String sService = "http://pl.techjumper.com/life?title=生活服务&left=::NativeMenu&right=";
 
     /**
      * 在SD空间的文件夹名字,以及文件夹内部的头像文件夹名称以及log文件夹名称

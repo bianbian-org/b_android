@@ -348,6 +348,7 @@
     <string name="no_specified_family_information">没有指定的家庭信息</string>
     <string name="error_no_access_sd_card_permission">没有访问SD卡权限</string>
     <string name="pay_order_info">订单信息有误</string>
+    <string name="confirm_call_x">确定拨打电话%1$s吗?</string>
 
 
 </resources>

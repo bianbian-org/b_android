@@ -56,8 +56,8 @@ public class ServiceFragment extends AppBaseWebViewFragment<ServiceFragmentPrese
     private String mRefreshType = "";     //下拉刷新的类型:根据url带的refresh=这个参数来判断
     private boolean mIsOtherError = false;//是不是其他类型的错误(其他类型错误包括:404.500,等等,以及断网这种错误)
 
-    public static FriendFragment getInstance() {
-        return new FriendFragment();
+    public static ServiceFragment getInstance() {
+        return new ServiceFragment();
     }
 
     @Override
@@ -180,7 +180,7 @@ public class ServiceFragment extends AppBaseWebViewFragment<ServiceFragmentPrese
 
     public void reload() {
         initWebView((AdvancedWebView) mViewRoot.findViewById(R.id.wb));
-        getWebView().loadUrl(Config.sFriend);
+        getWebView().loadUrl(Config.sService);
     }
 
 //    /**
