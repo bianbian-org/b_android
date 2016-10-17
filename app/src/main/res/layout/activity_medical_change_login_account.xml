@@ -99,7 +99,7 @@
                 android:textSize="@dimen/sp_16" />
 
             <EditText
-                android:singleLine="true"
+                android:maxLines="1"
                 android:imeOptions="actionNext"
                 android:id="@+id/et_account"
                 android:layout_width="match_parent"
@@ -144,7 +144,6 @@
                 android:inputType="textPassword"
                 android:maxLength="20"
                 android:maxLines="1"
-                android:singleLine="true"
                 android:textColor="@color/color_a8a8a8"
                 android:textSize="@dimen/sp_16" />
 
