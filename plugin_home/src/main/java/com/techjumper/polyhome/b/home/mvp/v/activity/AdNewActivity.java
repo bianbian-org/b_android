@@ -368,14 +368,14 @@ public class AdNewActivity extends AppBaseActivity<AdNewActivityPresenter> imple
     private class webViewClient extends WebViewClient {
         @Override
         public boolean shouldOverrideUrlLoading(WebView view, String url) {
-            showLoading();
+//            showLoading();
             view.loadUrl(url);
             return false;
         }
 
         @Override
         public void onPageFinished(WebView view, String url) {
-            dismissLoading();
+//            dismissLoading();
             super.onPageFinished(view, url);
         }
     }
