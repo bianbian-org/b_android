@@ -52,4 +52,7 @@ public interface ServiceAPI {
 
     @POST("family/online")
     Observable<HeartbeatEntity> submitOnline(@Body BaseArgumentsEntity entity);
+
+    @POST("module_statistics")
+    Observable<TrueEntity> submitTimer(@Body BaseArgumentsEntity entity);
 }

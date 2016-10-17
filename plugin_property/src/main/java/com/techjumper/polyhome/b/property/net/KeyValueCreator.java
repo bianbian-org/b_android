@@ -107,4 +107,10 @@ public class KeyValueCreator {
                 .put("family_id", family_id)
                 .put("device_id", device_id);
     }
+
+    public static KeyValuePair submitTimer(String family_id, String timer) {
+        return newPair()
+                .put("family_id", family_id)
+                .put("json", timer);
+    }
 }

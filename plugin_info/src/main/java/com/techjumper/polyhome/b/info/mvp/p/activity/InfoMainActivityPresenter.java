@@ -7,11 +7,13 @@ import android.util.Log;
 import com.techjumper.commonres.entity.AnnouncementEntity;
 import com.techjumper.commonres.entity.InfoEntity;
 import com.techjumper.commonres.entity.NoticeEntity;
+import com.techjumper.commonres.entity.TimerClickEntity;
 import com.techjumper.commonres.entity.TrueEntity;
 import com.techjumper.commonres.entity.event.HeartbeatEvent;
 import com.techjumper.commonres.entity.event.InfoTypeEvent;
 import com.techjumper.commonres.entity.event.PropertyNormalDetailEvent;
 import com.techjumper.commonres.entity.event.ReadMessageEvent;
+import com.techjumper.commonres.entity.event.StayEvent;
 import com.techjumper.commonres.entity.event.TimeEvent;
 import com.techjumper.commonres.entity.event.loadmoreevent.LoadmoreInfoEvent;
 import com.techjumper.commonres.util.CommonDateUtil;
@@ -22,6 +24,8 @@ import com.techjumper.polyhome.b.info.mvp.m.InfoMainActivityModel;
 import com.techjumper.polyhome.b.info.mvp.v.activity.InfoMainActivity;
 import com.techjumper.polyhome.b.info.net.NetHelper;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -48,11 +52,11 @@ public class InfoMainActivityPresenter extends AppBaseActivityPresenter<InfoMain
 
     @Override
     public void onDestroy() {
-        super.onDestroy();
         if (timer != null) {
             timer.cancel();
             timer = null;
         }
+        super.onDestroy();
     }
 
     @Override
@@ -62,8 +66,8 @@ public class InfoMainActivityPresenter extends AppBaseActivityPresenter<InfoMain
         if (time == 0L) {
             time = System.currentTimeMillis() / 1000;
         }
-        getView().getBottomDate().setText(CommonDateUtil.getTitleNewDate(time));
 
+        getView().getBottomDate().setText(CommonDateUtil.getTitleNewDate(time));
 
         intentType = getView().getType();
         if (intentType == NoticeEntity.PROPERTY) {
@@ -111,6 +115,7 @@ public class InfoMainActivityPresenter extends AppBaseActivityPresenter<InfoMain
                                     Log.d("infosubmitOnline", "心跳时间:" + time);
                                     getView().getBottomDate().setText(CommonDateUtil.getTitleNewDate(time));
                                 }
+                            }else if (o instanceof StayEvent){
                             }
                         })
         );

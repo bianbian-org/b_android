@@ -2,18 +2,27 @@ package com.techjumper.polyhome.b.home.mvp.p.activity;
 
 import android.os.Bundle;
 import android.util.Log;
+import android.webkit.WebView;
 
-import com.techjumper.commonres.entity.event.BackEvent;
+import com.techjumper.commonres.entity.TimerClickEntity;
+import com.techjumper.commonres.entity.TrueEntity;
 import com.techjumper.commonres.entity.event.TimeEvent;
 import com.techjumper.commonres.util.CommonDateUtil;
 import com.techjumper.corelib.rx.tools.RxBus;
+import com.techjumper.lib2.utils.GsonUtils;
 import com.techjumper.polyhome.b.home.R;
+import com.techjumper.polyhome.b.home.UserInfoManager;
+import com.techjumper.polyhome.b.home.mvp.m.ShoppingActivityModel;
 import com.techjumper.polyhome.b.home.mvp.v.activity.ShoppingActivity;
+import com.techjumper.polyhome_b.adlib.Config;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
 
 import butterknife.OnClick;
+import rx.Subscriber;
 import rx.android.schedulers.AndroidSchedulers;
 
 /**
@@ -23,14 +32,25 @@ public class ShoppingActivityPresenter extends AppBaseActivityPresenter<Shopping
 
     private long time;
     private Timer timer = new Timer();
+    private ShoppingActivityModel model = new ShoppingActivityModel(this);
+    private WebView webView;
 
     @OnClick(R.id.bottom_back)
     void back() {
-        getView().finish();
+        if (webView.getUrl().equals("http://pl.techjumper.com/shop/pad") || webView.getUrl().equals("http://polyhome.techjumper.com/shop/pad")) {
+            getView().finish();
+        } else {
+            webView.goBack();
+        }
     }
 
     @OnClick(R.id.bottom_home)
     void home() {
+        getView().finish();
+    }
+
+    @OnClick(R.id.close)
+    void close() {
         getView().finish();
     }
 
@@ -41,21 +61,21 @@ public class ShoppingActivityPresenter extends AppBaseActivityPresenter<Shopping
 
     @Override
     public void onDestroy() {
-        super.onDestroy();
         if (timer != null) {
             timer.cancel();
             timer = null;
         }
+        super.onDestroy();
     }
 
     @Override
     public void onViewInited(Bundle savedInstanceState) {
         time = getView().getTime();
+        webView = getView().getWebView();
 
         if (time == 0L) {
             time = System.currentTimeMillis() / 1000;
         }
-
         getView().getBottomDate().setText(CommonDateUtil.getTitleNewDate(time));
 
         addSubscription(RxBus.INSTANCE.asObservable()

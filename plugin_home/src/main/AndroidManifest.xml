@@ -39,7 +39,8 @@
         <activity android:name=".mvp.v.activity.AdNewActivity" />
         <activity android:name=".mvp.v.activity.ShoppingActivity" />
         <activity android:name=".mvp.v.activity.JujiaActivity" />
-        <activity android:name=".mvp.v.activity.AdDetailActivity" />
+        <activity android:name=".mvp.v.activity.AdDetailActivity"
+            android:launchMode="singleTask"/>
 
         <receiver android:name=".tool.alarm.AlarmReceiver">
             <intent-filter>

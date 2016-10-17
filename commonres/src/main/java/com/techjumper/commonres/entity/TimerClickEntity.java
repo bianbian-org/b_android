@@ -19,6 +19,17 @@ public class TimerClickEntity {
     public static final String ONCLICK_TALK = "1010";
     public static final String ONCLICK_SETTING = "1011";
     public static final String ONCLICK_VIDEO = "1012";
+    public static final String ONCLICK_ONE_AD = "1013";
+    public static final String ONCLICK_TWO_AD = "1014";
+    public static final String STAY_JUJIA = "1015";
+    public static final String STAY_PROPERTY = "1016";
+    public static final String STAY_INFO = "1017";
+    public static final String STAY_SHOPPING = "1018";
+    public static final String STAY_SMARTHOME = "1019";
+    public static final String STAY_MEDICAL = "1020";
+    public static final String STAY_TALK = "1021";
+    public static final String STAY_SETTING = "1022";
+    public static final String STAY_VIDEO = "1023";
 
     private List<TimerClickItemEntity> datas;
 

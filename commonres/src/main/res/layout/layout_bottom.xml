@@ -20,7 +20,21 @@
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
             android:src="@mipmap/icon_bottom_arrow" />
+
+
     </LinearLayout>
+
+    <TextView
+        android:id="@+id/close"
+        android:layout_width="wrap_content"
+        android:layout_height="@dimen/dp_54"
+        android:gravity="center"
+        android:textColor="@color/color_ffffff"
+        android:textSize="@dimen/sp_18"
+        android:layout_marginLeft="@dimen/dp_10"
+        android:layout_toRightOf="@id/bottom_back"
+        android:visibility="gone"
+        android:text="关闭"/>
 
     <LinearLayout
         android:id="@+id/bottom_home"

@@ -22,8 +22,12 @@ public class Config {
         sHost = DEBUG ? "http://poly.techjumper.com" : "http://api.ourjujia.com";
     }
 
+//    static {
+//        sJujia = DEBUG ? "http://jujia.techjumper.com" : "http://www.ourjujia.com";
+//    }
+
     static {
-        sJujia = DEBUG ? "http://jujia.techjumper.com" : "http://www.ourjujia.com";
+        sJujia = DEBUG ? "http://pl.techjumper.com/jujia/pad" : "http://www.ourjujia.com/pad";
     }
 
     static {

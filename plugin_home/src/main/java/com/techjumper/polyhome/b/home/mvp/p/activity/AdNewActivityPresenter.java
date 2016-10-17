@@ -41,7 +41,7 @@ public class AdNewActivityPresenter extends AppBaseActivityPresenter<AdNewActivi
     private long time;
     private AdNewActivityModel model = new AdNewActivityModel(this);
 
-    @OnClick(R.id.call)
+    @OnClick(R.id.call_layout)
     void call() {
         Intent it = new Intent();
         ComponentName componentName = new ComponentName("com.dnake.talk", "com.dnake.activity.CallingActivity");
