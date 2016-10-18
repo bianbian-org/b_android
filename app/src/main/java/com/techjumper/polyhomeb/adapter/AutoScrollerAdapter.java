@@ -101,6 +101,7 @@ public class AutoScrollerAdapter extends PagerAdapter {
             iv.setOnClickListener(mClickListener);
         }
         iv.setImageResource(mDataList.get(position));
+        iv.setScaleType(ImageView.ScaleType.FIT_XY);
         return iv;
     }
 }

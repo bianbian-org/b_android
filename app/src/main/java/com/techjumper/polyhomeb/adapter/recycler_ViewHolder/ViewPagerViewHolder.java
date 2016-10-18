@@ -4,7 +4,6 @@ import android.view.View;
 
 import com.steve.creact.annotation.DataBean;
 import com.steve.creact.library.viewholder.BaseRecyclerViewHolder;
-import com.techjumper.corelib.utils.window.ToastUtils;
 import com.techjumper.polyhomeb.R;
 import com.techjumper.polyhomeb.adapter.AutoScrollerAdapter;
 import com.techjumper.polyhomeb.adapter.recycler_Data.ViewPagerData;
@@ -36,7 +35,7 @@ public class ViewPagerViewHolder extends BaseRecyclerViewHolder<ViewPagerData> {
         AutoScrollerViewPager viewPager = getView(R.id.vp);
         AutoScrollerAdapter autoScrollerAdapter = new AutoScrollerAdapter(getContext(), mImageList, v -> {
             int currentItem = viewPager.getCurrentItem() % mImageList.size();
-            ToastUtils.show("这是第" + (currentItem + 1) + "张");
+//            ToastUtils.show("这是第" + (currentItem + 1) + "张");
         });
         int length = autoScrollerAdapter.getLength();
         viewPager.setLength(length);

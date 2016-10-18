@@ -6,107 +6,106 @@
     android:background="@color/color_ffffff"
     android:orientation="vertical">
 
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="@dimen/dp_14"
-        android:layout_marginTop="@dimen/dp_20">
+    <!--<RelativeLayout-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:layout_marginLeft="@dimen/dp_14"-->
+        <!--android:layout_marginTop="@dimen/dp_20">-->
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerVertical="true"
-            android:text="@string/polyhome"
-            android:textColor="@color/color_727272"
-            android:textSize="@dimen/sp_16" />
+        <!--<TextView-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:layout_centerVertical="true"-->
+            <!--android:text="@string/polyhome"-->
+            <!--android:textColor="@color/color_727272"-->
+            <!--android:textSize="@dimen/sp_16" />-->
 
-        <Button
-            android:id="@+id/btn_more"
-            android:layout_width="@dimen/dp_54"
-            android:layout_height="@dimen/dp_25"
-            android:layout_alignParentRight="true"
-            android:layout_centerVertical="true"
-            android:layout_marginRight="@dimen/dp_14"
-            android:background="@drawable/bg_button_green"
-            android:text="@string/more"
-            android:textColor="@color/color_37a991"
-            android:textSize="@dimen/sp_14" />
+        <!--<Button-->
+            <!--android:id="@+id/btn_more"-->
+            <!--android:layout_width="@dimen/dp_54"-->
+            <!--android:layout_height="@dimen/dp_25"-->
+            <!--android:layout_alignParentRight="true"-->
+            <!--android:layout_centerVertical="true"-->
+            <!--android:layout_marginRight="@dimen/dp_14"-->
+            <!--android:background="@drawable/bg_button_green"-->
+            <!--android:text="@string/more"-->
+            <!--android:textColor="@color/color_37a991"-->
+            <!--android:textSize="@dimen/sp_14" />-->
 
-    </RelativeLayout>
+    <!--</RelativeLayout>-->
+
+    <!--<LinearLayout-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:layout_marginTop="@dimen/dp_12"-->
+        <!--android:orientation="horizontal">-->
+
+        <!--<com.techjumper.polyhomeb.widget.PolyModeView-->
+            <!--android:id="@+id/hengwen"-->
+            <!--android:layout_width="0dp"-->
+            <!--android:layout_height="match_parent"-->
+            <!--android:layout_weight="1"-->
+            <!--polymodeview:centerIconHeight="60"-->
+            <!--polymodeview:centerIconWidth="60"-->
+            <!--polymodeview:ratio="1.333"-->
+            <!--polymodeview:src="@mipmap/icon_polyhome_sun"-->
+            <!--polymodeview:text="@string/polyhome_hengwen"-->
+            <!--polymodeview:textColor="@color/color_727272"-->
+            <!--polymodeview:textMarginTop="@dimen/dp_5"-->
+            <!--polymodeview:textSize="@dimen/sp_13" />-->
+
+        <!--<com.techjumper.polyhomeb.widget.PolyModeView-->
+            <!--android:id="@+id/anfang"-->
+            <!--android:layout_width="0dp"-->
+            <!--android:layout_height="match_parent"-->
+            <!--android:layout_weight="1"-->
+            <!--polymodeview:centerIconHeight="60"-->
+            <!--polymodeview:centerIconWidth="60"-->
+            <!--polymodeview:ratio="1.333"-->
+            <!--polymodeview:src="@mipmap/icon_polyhome_house"-->
+            <!--polymodeview:text="@string/polyhome_anfang"-->
+            <!--polymodeview:textColor="@color/color_727272"-->
+            <!--polymodeview:textMarginTop="@dimen/dp_5"-->
+            <!--polymodeview:textSize="@dimen/sp_13" />-->
+
+        <!--<com.techjumper.polyhomeb.widget.PolyModeView-->
+            <!--android:id="@+id/test3"-->
+            <!--android:layout_width="0dp"-->
+            <!--android:layout_height="match_parent"-->
+            <!--android:layout_weight="1"-->
+            <!--polymodeview:centerIconHeight="60"-->
+            <!--polymodeview:centerIconWidth="60"-->
+            <!--polymodeview:ratio="1.333"-->
+            <!--polymodeview:src="@mipmap/icon_polyhome_security"-->
+            <!--polymodeview:text="@string/polyhome_hengwen"-->
+            <!--polymodeview:textColor="@color/color_727272"-->
+            <!--polymodeview:textMarginTop="@dimen/dp_5"-->
+            <!--polymodeview:textSize="@dimen/sp_13" />-->
+
+        <!--<com.techjumper.polyhomeb.widget.PolyModeView-->
+            <!--android:id="@+id/test4"-->
+            <!--android:layout_width="0dp"-->
+            <!--android:layout_height="match_parent"-->
+            <!--android:layout_weight="1"-->
+            <!--polymodeview:centerIconHeight="60"-->
+            <!--polymodeview:centerIconWidth="60"-->
+            <!--polymodeview:ratio="1.333"-->
+            <!--polymodeview:src="@mipmap/icon_polyhome_moon"-->
+            <!--polymodeview:text="@string/polyhome_anfang"-->
+            <!--polymodeview:textColor="@color/color_727272"-->
+            <!--polymodeview:textMarginTop="@dimen/dp_5"-->
+            <!--polymodeview:textSize="@dimen/sp_13" />-->
+
+    <!--</LinearLayout>-->
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/dp_12"
-        android:orientation="horizontal">
-
-        <com.techjumper.polyhomeb.widget.PolyModeView
-            android:id="@+id/hengwen"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            polymodeview:centerIconHeight="60"
-            polymodeview:centerIconWidth="60"
-            polymodeview:ratio="1.333"
-            polymodeview:src="@mipmap/icon_polyhome_sun"
-            polymodeview:text="@string/polyhome_hengwen"
-            polymodeview:textColor="@color/color_727272"
-            polymodeview:textMarginTop="@dimen/dp_5"
-            polymodeview:textSize="@dimen/sp_13" />
-
-        <com.techjumper.polyhomeb.widget.PolyModeView
-            android:id="@+id/anfang"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            polymodeview:centerIconHeight="60"
-            polymodeview:centerIconWidth="60"
-            polymodeview:ratio="1.333"
-            polymodeview:src="@mipmap/icon_polyhome_house"
-            polymodeview:text="@string/polyhome_anfang"
-            polymodeview:textColor="@color/color_727272"
-            polymodeview:textMarginTop="@dimen/dp_5"
-            polymodeview:textSize="@dimen/sp_13" />
-
-        <com.techjumper.polyhomeb.widget.PolyModeView
-            android:id="@+id/test3"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            polymodeview:centerIconHeight="60"
-            polymodeview:centerIconWidth="60"
-            polymodeview:ratio="1.333"
-            polymodeview:src="@mipmap/icon_polyhome_security"
-            polymodeview:text="@string/polyhome_hengwen"
-            polymodeview:textColor="@color/color_727272"
-            polymodeview:textMarginTop="@dimen/dp_5"
-            polymodeview:textSize="@dimen/sp_13" />
-
-        <com.techjumper.polyhomeb.widget.PolyModeView
-            android:id="@+id/test4"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            polymodeview:centerIconHeight="60"
-            polymodeview:centerIconWidth="60"
-            polymodeview:ratio="1.333"
-            polymodeview:src="@mipmap/icon_polyhome_moon"
-            polymodeview:text="@string/polyhome_anfang"
-            polymodeview:textColor="@color/color_727272"
-            polymodeview:textMarginTop="@dimen/dp_5"
-            polymodeview:textSize="@dimen/sp_13" />
-
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="-10dp"
         android:orientation="horizontal"
         android:padding="@dimen/dp_8">
 
         <LinearLayout
-            android:id="@+id/layout_check_in"
+            android:id="@+id/layout_poly_home"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginRight="@dimen/dp_4"
@@ -121,7 +120,7 @@
                 android:layout_marginLeft="12dp"
                 android:layout_marginRight="10dp"
                 android:layout_marginTop="12dp"
-                android:src="@mipmap/icon_signature" />
+                android:src="@mipmap/icon_poly_home" />
 
             <LinearLayout
                 android:layout_width="wrap_content"
@@ -132,15 +131,16 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@string/signature"
+                    android:text="@string/polyhome"
                     android:textColor="@color/color_727272"
-                    android:textSize="@dimen/sp_16" />
+                    android:textSize="@dimen/sp_16"
+                    android:id="@+id/textView" />
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/dp_6"
-                    android:text="@string/signature_notice"
+                    android:text="@string/poly_home_control"
                     android:textColor="@color/color_acacac"
                     android:textSize="@dimen/sp_11" />
 
@@ -189,5 +189,6 @@
 
             </LinearLayout>
         </LinearLayout>
+
     </LinearLayout>
 </LinearLayout>

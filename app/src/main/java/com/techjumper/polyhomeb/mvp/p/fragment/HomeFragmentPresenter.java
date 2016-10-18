@@ -6,10 +6,12 @@ import android.view.View;
 import com.steve.creact.library.display.DisplayBean;
 import com.techjumper.corelib.rx.tools.RxBus;
 import com.techjumper.corelib.rx.tools.RxUtils;
+import com.techjumper.corelib.utils.common.AcHelper;
 import com.techjumper.polyhomeb.R;
 import com.techjumper.polyhomeb.entity.event.ChooseFamilyVillageEvent;
 import com.techjumper.polyhomeb.entity.event.ToggleMenuClickEvent;
 import com.techjumper.polyhomeb.mvp.m.HomeFragmentModel;
+import com.techjumper.polyhomeb.mvp.v.activity.CheckInActivity;
 import com.techjumper.polyhomeb.mvp.v.fragment.HomeFragment;
 import com.techjumper.polyhomeb.user.UserManager;
 import com.techjumper.polyhomeb.user.event.LoginEvent;
@@ -59,11 +61,16 @@ public class HomeFragmentPresenter extends AppBaseFragmentPresenter<HomeFragment
                         }));
     }
 
-    @OnClick(R.id.iv_left_icon)
+    @OnClick({R.id.iv_left_icon, R.id.right_tv})
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.iv_left_icon:
                 RxBus.INSTANCE.send(new ToggleMenuClickEvent());
+                break;
+            case R.id.right_tv:
+                new AcHelper.Builder(getView().getActivity())
+                        .target(CheckInActivity.class)
+                        .start();
                 break;
         }
     }

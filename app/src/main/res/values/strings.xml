@@ -47,6 +47,7 @@
     <string name="polyhome_anfang">安防模式</string>
     <string name="signature">签到</string>
     <string name="signature_notice">每日签到  赢Poly币</string>
+    <string name="poly_home_control">博力恒昌智能控制</string>
     <string name="medical">医疗</string>
     <string name="medical_notice">体检报告及时查看</string>
     <string name="exit_app">再按一次, 退出应用</string>

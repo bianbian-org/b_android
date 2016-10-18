@@ -36,6 +36,8 @@ public class HomeFragment extends AppBaseFragment<HomeFragmentPresenter> {
     PtrClassicFrameLayout mPtr;
     @Bind(R.id.tv_title)
     TextView mTvTitle;
+    @Bind(R.id.right_tv)
+    TextView mTvRight;
 
     private HomePageAdapter mAdapter;
 
@@ -50,7 +52,7 @@ public class HomeFragment extends AppBaseFragment<HomeFragmentPresenter> {
 
     @Override
     protected void initView(Bundle savedInstanceState) {
-
+        mTvRight.setVisibility(View.VISIBLE);
         mRv.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false));
         mAdapter = new HomePageAdapter();
         mRv.addItemDecoration(new DividerItemDecoration(28));
