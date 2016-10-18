@@ -37,7 +37,7 @@
                 android:imeOptions="actionNext"
                 android:inputType="number"
                 android:maxLength="11"
-                android:maxLines="1"
+                android:singleLine="true"
                 android:textColor="@color/color_a8a8a8"
                 android:textSize="@dimen/sp_16" />
 
@@ -73,6 +73,7 @@
                 android:inputType="textPassword"
                 android:maxLength="20"
                 android:maxLines="1"
+                android:singleLine="true"
                 android:textColor="@color/color_a8a8a8"
                 android:textSize="@dimen/sp_16" />
 

@@ -22,6 +22,7 @@
         <EditText
             android:maxLines="1"
             android:maxLength="6"
+            android:inputType="numberDecimal"
             android:id="@+id/et_building"
             android:layout_width="match_parent"
             android:layout_height="@dimen/dp_50"
@@ -29,6 +30,7 @@
             android:gravity="center|left"
             android:hint="@string/building"
             android:paddingLeft="@dimen/dp_14"
+            android:singleLine="true"
             android:textColor="@color/color_a8a8a8"
             android:textColorHint="@color/color_a8a8a8"
             android:textSize="@dimen/sp_16" />
@@ -42,6 +44,7 @@
         <EditText
             android:maxLines="1"
             android:maxLength="6"
+            android:inputType="numberDecimal"
             android:id="@+id/et_unit"
             android:layout_width="match_parent"
             android:layout_height="@dimen/dp_50"
@@ -49,6 +52,7 @@
             android:gravity="center|left"
             android:hint="@string/unit"
             android:paddingLeft="@dimen/dp_14"
+            android:singleLine="true"
             android:textColor="@color/color_a8a8a8"
             android:textColorHint="@color/color_a8a8a8"
             android:textSize="@dimen/sp_16" />
@@ -60,6 +64,7 @@
             android:background="@color/color_ceced2" />
 
         <EditText
+            android:inputType="numberDecimal"
             android:maxLines="1"
             android:maxLength="6"
             android:id="@+id/et_room"
@@ -69,6 +74,7 @@
             android:gravity="center|left"
             android:hint="@string/room"
             android:paddingLeft="@dimen/dp_14"
+            android:singleLine="true"
             android:textColor="@color/color_a8a8a8"
             android:textColorHint="@color/color_a8a8a8"
             android:textSize="@dimen/sp_16" />
