@@ -533,22 +533,25 @@ public class AdvancedWebView extends WebView {
                             .request(Manifest.permission.CALL_PHONE)
                             .subscribe(aBoolean -> {
                                 if (aBoolean) {
-                                    DialogUtils.getBuilder((Activity) context)
-                                            .content(String.format(context.getString(R.string.confirm_call_x)
-                                                    , url.replace("tel:", "")))
-                                            .positiveText(R.string.ok)
-                                            .negativeText(R.string.cancel)
-                                            .onAny((dialog, which) -> {
-                                                switch (which) {
-                                                    case POSITIVE:
-                                                        Intent intent = new Intent();
-                                                        intent.setAction(Intent.ACTION_CALL);
-                                                        intent.setData(Uri.parse(url));
-                                                        context.startActivity(intent);
-                                                        break;
-                                                }
-                                            })
-                                            .show();
+                                    String[] split = url.split("tel:");
+                                    if (split.length == 2 && !TextUtils.isEmpty(split[1])) {
+                                        DialogUtils.getBuilder((Activity) context)
+                                                .content(String.format(context.getString(R.string.confirm_call_x)
+                                                        , url.replace("tel:", "")))
+                                                .positiveText(R.string.ok)
+                                                .negativeText(R.string.cancel)
+                                                .onAny((dialog, which) -> {
+                                                    switch (which) {
+                                                        case POSITIVE:
+                                                            Intent intent = new Intent();
+                                                            intent.setAction(Intent.ACTION_CALL);
+                                                            intent.setData(Uri.parse(url));
+                                                            context.startActivity(intent);
+                                                            break;
+                                                    }
+                                                })
+                                                .show();
+                                    }
                                 }
                             });
                     return true;
