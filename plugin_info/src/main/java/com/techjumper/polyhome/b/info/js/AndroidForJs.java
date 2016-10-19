@@ -29,4 +29,10 @@ public class AndroidForJs {
         String userId = UserInfoManager.getUserIdString();
         return TextUtils.isEmpty(userId) ? "" : userId;
     }
+
+    @JavascriptInterface
+    public String getFamilyId() {
+        String familyId = UserInfoManager.getFamilyIdString();
+        return TextUtils.isEmpty(familyId) ? "" : familyId;
+    }
 }
