@@ -93,6 +93,7 @@ dependencies {
     compile project(':doormaster')
     compile project(':wechatpay')
     compile project (':paycorelib')
+    compile project (':slide2unlock')
     compile "com.creact:powerful-adapter-lib-release:$rootProject.recyclerAdapter"
     provided "com.creact:powerful-adapter-annotations-release:$rootProject.recyclerAdapter"
     apt "com.creact:powerful-adapter-complier-release:$rootProject.recyclerAdapter"

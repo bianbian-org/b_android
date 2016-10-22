@@ -111,5 +111,7 @@ public class ScanHostQRCodeActivityPresenter extends AppBaseActivityPresenter<Sc
         //KEY_CURRENT_BUILDING
         //KEY_CURRENT_UNIT
         //KEY_CURRENT_ROOM
+
+        // TODO: 2016/10/22 和 侧边栏切换小区或者家庭的地方一样，请求 蓝牙门锁 接口
     }
 }

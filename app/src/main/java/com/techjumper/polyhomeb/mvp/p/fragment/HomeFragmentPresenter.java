@@ -8,6 +8,7 @@ import com.techjumper.corelib.rx.tools.RxBus;
 import com.techjumper.corelib.rx.tools.RxUtils;
 import com.techjumper.corelib.utils.common.AcHelper;
 import com.techjumper.polyhomeb.R;
+import com.techjumper.polyhomeb.entity.event.BLEInfoChangedEvent;
 import com.techjumper.polyhomeb.entity.event.ChooseFamilyVillageEvent;
 import com.techjumper.polyhomeb.entity.event.ToggleMenuClickEvent;
 import com.techjumper.polyhomeb.mvp.m.HomeFragmentModel;
@@ -41,6 +42,7 @@ public class HomeFragmentPresenter extends AppBaseFragmentPresenter<HomeFragment
     @Override
     public void onViewInited(Bundle savedInstanceState) {
         changeTitle();
+        bleChangeInfo();
     }
 
     private void changeTitle() {
@@ -77,5 +79,16 @@ public class HomeFragmentPresenter extends AppBaseFragmentPresenter<HomeFragment
 
     public List<DisplayBean> getDatas() {
         return mModel.initPropertyData();
+    }
+
+    private void bleChangeInfo() {
+        RxBus.INSTANCE.asObservable()
+                .subscribe(o -> {
+                    if (o instanceof BLEInfoChangedEvent) {
+                        if (getView().getAdapter() != null) {
+                            getView().getAdapter().loadData(getDatas());
+                        }
+                    }
+                });
     }
 }

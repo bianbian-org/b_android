@@ -10,7 +10,9 @@ import com.techjumper.corelib.utils.common.AcHelper;
 import com.techjumper.corelib.utils.window.ToastUtils;
 import com.techjumper.polyhomeb.Constant;
 import com.techjumper.polyhomeb.R;
+import com.techjumper.polyhomeb.entity.BluetoothLockDoorInfoEntity;
 import com.techjumper.polyhomeb.entity.TrueEntity;
+import com.techjumper.polyhomeb.entity.event.BLEInfoChangedEvent;
 import com.techjumper.polyhomeb.entity.event.ChooseFamilyVillageEvent;
 import com.techjumper.polyhomeb.mvp.m.JoinVillageActivityModel;
 import com.techjumper.polyhomeb.mvp.v.activity.JoinVillageActivity;
@@ -31,7 +33,7 @@ public class JoinVillageActivityPresenter extends AppBaseActivityPresenter<JoinV
 
     private JoinVillageActivityModel mModel = new JoinVillageActivityModel(this);
 
-    private Subscription mSubs1;
+    private Subscription mSubs1, mSubs2;
 
     @Override
     public void initData(Bundle savedInstanceState) {
@@ -83,7 +85,7 @@ public class JoinVillageActivityPresenter extends AppBaseActivityPresenter<JoinV
                         .subscribe(new Observer<TrueEntity>() {
                             @Override
                             public void onCompleted() {
-                                getView().dismissLoading();
+//                                getView().dismissLoading();
                             }
 
                             @Override
@@ -97,20 +99,62 @@ public class JoinVillageActivityPresenter extends AppBaseActivityPresenter<JoinV
                                 if (!processNetworkResult(trueEntity)) return;
                                 if (Constant.TRUE_ENTITY_RESULT.equals(trueEntity.getData().getResult())) {
                                     ToastUtils.show(getView().getString(R.string.commit_to_verify));
-                                    getView().dismissLoading();
+//                                    getView().dismissLoading();
                                     //此处发送RxBus,目的是为了让用户加入之后,能够实时改变侧边栏和首页的title
                                     RxBus.INSTANCE.send(new ChooseFamilyVillageEvent(mModel.getName(), 1, -1));
                                     //将楼栋号,单元号,房间号,名字,id全都存下来
                                     UserManager.INSTANCE.saveUserInfo(UserManager.KEY_CURRENT_BUILDING, getView().getEtBuilding().getEditableText().toString());
                                     UserManager.INSTANCE.saveUserInfo(UserManager.KEY_CURRENT_UNIT, getView().getEtUnit().getEditableText().toString());
                                     UserManager.INSTANCE.saveUserInfo(UserManager.KEY_CURRENT_ROOM, getView().getEtRoom().getEditableText().toString());
-                                    UserManager.INSTANCE.updateFamilyOrVillageInfo(false, mModel.getId() + "", mModel.getName(), mModel.getId()+"");
-                                    new AcHelper.Builder(getView())
-                                            .closeCurrent(true)
-                                            .enterAnim(R.anim.fade_in)
-                                            .exitAnim(R.anim.fade_out)
-                                            .target(TabHomeActivity.class)
-                                            .start();
+                                    UserManager.INSTANCE.updateFamilyOrVillageInfo(false, mModel.getId() + "", mModel.getName(), mModel.getId() + "");
+
+//                                    new AcHelper.Builder(getView())
+//                                            .closeCurrent(true)
+//                                            .enterAnim(R.anim.fade_in)
+//                                            .exitAnim(R.anim.fade_out)
+//                                            .target(TabHomeActivity.class)
+//                                            .start();
+                                    getBLEDoorInfo();
+                                }
+                            }
+                        }));
+    }
+
+    private void getBLEDoorInfo() {
+        boolean isFamily = UserManager.INSTANCE.isFamily();//true为家庭,false为小区
+        String family_id = UserManager.INSTANCE.getUserInfo(UserManager.KEY_CURRENT_FAMILY_ID);
+        String village_id = UserManager.INSTANCE.getUserInfo(UserManager.KEY_CURRENT_VILLAGE_ID);
+        if (!isFamily) {
+            family_id = "";
+        }
+        RxUtils.unsubscribeIfNotNull(mSubs2);
+        addSubscription(
+                mSubs2 = mModel.getBLEDoorInfo(village_id, family_id)
+                        .subscribe(new Observer<BluetoothLockDoorInfoEntity>() {
+                            @Override
+                            public void onCompleted() {
+                                getView().dismissLoading();
+                                new AcHelper.Builder(getView())
+                                        .closeCurrent(true)
+                                        .enterAnim(R.anim.fade_in)
+                                        .exitAnim(R.anim.fade_out)
+                                        .target(TabHomeActivity.class)
+                                        .start();
+                            }
+
+                            @Override
+                            public void onError(Throwable e) {
+                                getView().dismissLoading();
+                            }
+
+                            @Override
+                            public void onNext(BluetoothLockDoorInfoEntity bluetoothLockDoorInfoEntity) {
+                                if (!processNetworkResult(bluetoothLockDoorInfoEntity)) return;
+                                if (bluetoothLockDoorInfoEntity != null
+                                        && bluetoothLockDoorInfoEntity.getData() != null) {
+                                    //切换家庭或者小区之后，发送消息给HomeFragment,刷新首页数据
+                                    RxBus.INSTANCE.send(new BLEInfoChangedEvent());
+                                    UserManager.INSTANCE.saveBLEInfo(bluetoothLockDoorInfoEntity);
                                 }
                             }
                         }));

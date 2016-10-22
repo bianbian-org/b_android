@@ -42,34 +42,6 @@ public class ChooseVillageFamilyActivityPresenter extends AppBaseActivityPresent
     @Override
     public void onViewInited(Bundle savedInstanceState) {
         getVillages();
-
-        /****************假数据******************/
-//        VillageEntity villageEntity = new VillageEntity();
-//        VillageEntity.DataBean dataBean = new VillageEntity.DataBean();
-//        List<VillageEntity.DataBean.InfosBean> list = new ArrayList<>();
-//
-//        for (int i = 0; i < 7; i++) {
-//            VillageEntity.DataBean.InfosBean infosBean = new VillageEntity.DataBean.InfosBean();
-//            infosBean.setProvince("省" + i);
-//            List<VillageEntity.DataBean.InfosBean.VillagesBean> list1 = new ArrayList<>();
-//            for (int j = 0; j < i + 1; j++) {
-//                VillageEntity.DataBean.InfosBean.VillagesBean villagesBean = new VillageEntity.DataBean.InfosBean.VillagesBean();
-//                villagesBean.setId(j);
-//                villagesBean.setName("小区" + j + ".." + i);
-//                list1.add(villagesBean);
-//            }
-//            infosBean.setVillages(list1);
-//            list.add(infosBean);
-//        }
-//
-//        dataBean.setInfos(list);
-//        villageEntity.setData(dataBean);
-//
-//        mModel.processData(villageEntity);
-//        getView().onProvinceDataReceive(mModel.getProvinces());
-//        getView().onNameAndIdDataReceive(mModel.getNamesAndIds());
-        /****************假数据******************/
-
         RxUtils.unsubscribeIfNotNull(mSubs2);
         mSubs2 = RxBus.INSTANCE
                 .asObservable().subscribe(new Observer<Object>() {

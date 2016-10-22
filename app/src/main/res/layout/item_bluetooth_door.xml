@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/color_ffffff"
+    android:orientation="vertical">
+
+    <com.techjumper.polyhome.slide2unlock.view.Slide2UnlockView
+        android:id="@+id/lock_view"
+        android:layout_width="match_parent"
+        android:layout_height="52dp"
+        android:layout_marginLeft="@dimen/dp_14"
+        android:layout_marginRight="@dimen/dp_14"
+        android:layout_marginTop="@dimen/dp_20"
+        app:lock_inside_left_bg_color_default="#261ed350"
+        app:lock_inside_left_bg_color_failed="#26fc402a"
+        app:lock_inside_left_bg_color_success="#261ed350"
+        app:lock_inside_padding="5dp"
+        app:lock_inside_right_bg_color_default="#ffffff"
+        app:lock_inside_right_bg_color_failed="#ffffff"
+        app:lock_inside_right_bg_color_success="#ffffff"
+        app:lock_outside_bg_color_default="#ffffff"
+        app:lock_outside_bg_color_failed="#ffffff"
+        app:lock_outside_bg_color_success="#ffffff"
+        app:lock_outside_stroke_color_default="#1ed351"
+        app:lock_outside_stroke_color_failed="#fd412b"
+        app:lock_outside_stroke_color_success="#1ed351"
+        app:lock_outside_stroke_width="1dp"
+        app:lock_pic_default="@mipmap/icon_default"
+        app:lock_pic_failed="@mipmap/icon_failed"
+        app:lock_pic_success="@mipmap/icon_success"
+        app:lock_pic_unusable="@mipmap/icon_unusable"
+        app:lock_text="中间滑块的大小是根据控件大小得到的"
+        app:lock_text_color_default="#1ed351"
+        app:lock_text_color_failed="#ff3927"
+        app:lock_text_color_success="#1ed351"
+        app:lock_text_size="14sp" />
+
+</LinearLayout>

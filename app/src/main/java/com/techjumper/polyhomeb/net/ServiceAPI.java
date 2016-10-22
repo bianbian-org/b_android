@@ -3,6 +3,7 @@ package com.techjumper.polyhomeb.net;
 
 import com.techjumper.polyhomeb.entity.AvatarEntity;
 import com.techjumper.polyhomeb.entity.BaseArgumentsEntity;
+import com.techjumper.polyhomeb.entity.BluetoothLockDoorInfoEntity;
 import com.techjumper.polyhomeb.entity.CheckInEntity;
 import com.techjumper.polyhomeb.entity.LoginEntity;
 import com.techjumper.polyhomeb.entity.MessageEntity;
@@ -537,6 +538,12 @@ public interface ServiceAPI {
      */
     @GET("sign")
     Observable<CheckInEntity> getCheckInData(@QueryMap Map<String, String> stringStringMap);
+
+    /**
+     * 获取蓝牙门锁信息
+     */
+    @GET("outdoor_pads")
+    Observable<BluetoothLockDoorInfoEntity> getBLEDoorInfo(@QueryMap Map<String, String> stringStringMap);
 
     /**
      * 发起支付请求

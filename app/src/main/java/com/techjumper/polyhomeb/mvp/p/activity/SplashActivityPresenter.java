@@ -3,9 +3,12 @@ package com.techjumper.polyhomeb.mvp.p.activity;
 import android.os.Bundle;
 import android.text.TextUtils;
 
+import com.techjumper.corelib.rx.tools.RxBus;
 import com.techjumper.corelib.rx.tools.RxUtils;
 import com.techjumper.corelib.utils.common.AcHelper;
+import com.techjumper.polyhomeb.entity.BluetoothLockDoorInfoEntity;
 import com.techjumper.polyhomeb.entity.UserFamiliesAndVillagesEntity;
+import com.techjumper.polyhomeb.entity.event.BLEInfoChangedEvent;
 import com.techjumper.polyhomeb.mvp.m.SplashActivityModel;
 import com.techjumper.polyhomeb.mvp.v.activity.ChooseVillageFamilyActivity;
 import com.techjumper.polyhomeb.mvp.v.activity.LoginActivity;
@@ -28,7 +31,7 @@ public class SplashActivityPresenter extends AppBaseActivityPresenter<SplashActi
 
     private SplashActivityModel mModel = new SplashActivityModel(this);
 
-    private Subscription mSubs1;
+    private Subscription mSubs1, mSubs2;
 
     @Override
     public void initData(Bundle savedInstanceState) {
@@ -117,8 +120,6 @@ public class SplashActivityPresenter extends AppBaseActivityPresenter<SplashActi
         new AcHelper.Builder(getView())
                 .target(LoginActivity.class)
                 .closeCurrent(true)
-//                .enterAnim(R.anim.fade_in)
-//                .exitAnim(R.anim.fade_out)
                 .start();
         getView().setCanBack(true);
     }
@@ -127,18 +128,23 @@ public class SplashActivityPresenter extends AppBaseActivityPresenter<SplashActi
         new AcHelper.Builder(getView())
                 .target(ChooseVillageFamilyActivity.class)
                 .closeCurrent(true)
-//                .enterAnim(R.anim.fade_in)
-//                .exitAnim(R.anim.fade_out)
                 .start();
         getView().setCanBack(true);
     }
 
     private void jumpToTabHomeActivity() {
+//        new AcHelper.Builder(getView())
+//                .target(TabHomeActivity.class)
+//                .closeCurrent(true)
+//                .start();
+//        getView().setCanBack(true);
+        getBLEDoorInfo();
+    }
+
+    private void jump2TabHomeActivity() {
         new AcHelper.Builder(getView())
                 .target(TabHomeActivity.class)
                 .closeCurrent(true)
-//                .enterAnim(R.anim.fade_in)
-//                .exitAnim(R.anim.fade_out)
                 .start();
         getView().setCanBack(true);
     }
@@ -146,5 +152,45 @@ public class SplashActivityPresenter extends AppBaseActivityPresenter<SplashActi
     private void saveDataToSp(UserFamiliesAndVillagesEntity userFamiliesAndVillagesEntity) {
         mModel.saveDataToSp(userFamiliesAndVillagesEntity);
     }
+
+    private void getBLEDoorInfo() {
+        boolean isFamily = UserManager.INSTANCE.isFamily();//true为家庭,false为小区
+        String family_id = UserManager.INSTANCE.getUserInfo(UserManager.KEY_CURRENT_FAMILY_ID);
+        String village_id = UserManager.INSTANCE.getUserInfo(UserManager.KEY_CURRENT_VILLAGE_ID);
+        if (!isFamily) {
+            family_id = "";
+        }
+        RxUtils.unsubscribeIfNotNull(mSubs2);
+        addSubscription(
+                mSubs2 = mModel.getBLEDoorInfo(village_id, family_id)
+                        .subscribe(new Observer<BluetoothLockDoorInfoEntity>() {
+                            @Override
+                            public void onCompleted() {
+                                jump2TabHomeActivity();
+                            }
+
+                            @Override
+                            public void onError(Throwable e) {
+                            }
+
+                            @Override
+                            public void onNext(BluetoothLockDoorInfoEntity bluetoothLockDoorInfoEntity) {
+                                if (!processNetworkResult(bluetoothLockDoorInfoEntity)) return;
+                                if (bluetoothLockDoorInfoEntity != null
+                                        && bluetoothLockDoorInfoEntity.getData() != null) {
+                                    //切换家庭或者小区之后，发送消息给HomeFragment,刷新首页数据
+                                    RxBus.INSTANCE.send(new BLEInfoChangedEvent());
+                                    UserManager.INSTANCE.saveBLEInfo(bluetoothLockDoorInfoEntity);
+                                }
+                            }
+                        }));
+    }
+
+    //关于蓝牙门锁的信息获取:
+    //splash之后，如果去了登录界面，登录界面已经做了请求接口的处理->A.
+    //splash之后，如果去了选择家庭小区的界面，在加入小区，填写楼栋单元号，以及扫描二维码的地方，做了请求接口的处理->B.
+    //splash之后，如果去了首页，也做了请求处理.
+    //splash之后，如果去了注册界面，注册完毕后一定是要先选小区或者家庭，所以也就走了A或者B的逻辑.
+    //另外在侧边栏切换的时候也做了处理，如果用户想要新加入家庭或者小区，走的界面还是上面 A和B的逻辑，相当于也是做了处理.
 }
 

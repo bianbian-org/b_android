@@ -7,12 +7,15 @@ import com.techjumper.lib2.others.KeyValuePair;
 import com.techjumper.lib2.utils.RetrofitHelper;
 import com.techjumper.polyhomeb.Constant;
 import com.techjumper.polyhomeb.entity.BaseArgumentsEntity;
+import com.techjumper.polyhomeb.entity.BluetoothLockDoorInfoEntity;
 import com.techjumper.polyhomeb.entity.TrueEntity;
 import com.techjumper.polyhomeb.mvp.p.activity.JoinVillageActivityPresenter;
 import com.techjumper.polyhomeb.net.KeyValueCreator;
 import com.techjumper.polyhomeb.net.NetHelper;
 import com.techjumper.polyhomeb.net.ServiceAPI;
 import com.techjumper.polyhomeb.user.UserManager;
+
+import java.util.Map;
 
 import rx.Observable;
 
@@ -51,6 +54,18 @@ public class JoinVillageActivityModel extends BaseModel<JoinVillageActivityPrese
         BaseArgumentsEntity entity = NetHelper.createBaseArguments(keyValuePair);
         return RetrofitHelper.<ServiceAPI>createDefault()
                 .joinVillage(entity)
+                .compose(CommonWrap.wrap());
+    }
+
+    public Observable<BluetoothLockDoorInfoEntity> getBLEDoorInfo(String village_id, String family_id) {
+        KeyValuePair keyValuePair = KeyValueCreator.getBLEDoorInfo(
+                UserManager.INSTANCE.getUserInfo(UserManager.KEY_ID)
+                , UserManager.INSTANCE.getTicket()
+                , village_id
+                , family_id);
+        Map<String, String> map = NetHelper.createBaseArgumentsMap(keyValuePair);
+        return RetrofitHelper.<ServiceAPI>createDefault()
+                .getBLEDoorInfo(map)
                 .compose(CommonWrap.wrap());
     }
 }

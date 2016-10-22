@@ -9,7 +9,9 @@ import com.techjumper.corelib.rx.tools.RxUtils;
 import com.techjumper.corelib.utils.basic.StringUtils;
 import com.techjumper.corelib.utils.common.AcHelper;
 import com.techjumper.polyhomeb.R;
+import com.techjumper.polyhomeb.entity.BluetoothLockDoorInfoEntity;
 import com.techjumper.polyhomeb.entity.LoginEntity;
+import com.techjumper.polyhomeb.entity.event.BLEInfoChangedEvent;
 import com.techjumper.polyhomeb.entity.event.ChangeVillageIdRefreshEvent;
 import com.techjumper.polyhomeb.mvp.m.LoginActivityModel;
 import com.techjumper.polyhomeb.mvp.v.activity.ChooseVillageFamilyActivity;
@@ -21,6 +23,7 @@ import com.techjumper.polyhomeb.user.UserManager;
 import com.techjumper.polyhomeb.user.event.LoginEvent;
 
 import butterknife.OnClick;
+import rx.Observer;
 import rx.Subscriber;
 import rx.Subscription;
 import rx.android.schedulers.AndroidSchedulers;
@@ -37,7 +40,7 @@ public class LoginActivityPresenter extends AppBaseActivityPresenter<LoginActivi
     public static final String KEY_COME_FROM = "key_come_from";
     public static final String VALUE_COME_FROM_WEBVIEW = "key_come_from_webview";
 
-    private Subscription mSubs1;
+    private Subscription mSubs1,mSubs2;
     private String mPhoneNumber;
 
     private LoginActivityModel mModel = new LoginActivityModel(this);
@@ -66,9 +69,12 @@ public class LoginActivityPresenter extends AppBaseActivityPresenter<LoginActivi
                                 if (event.isLogin()) {
                                     if (UserManager.INSTANCE.hasChoosedFamilyOrVillage()) {
                                         if (VALUE_COME_FROM_WEBVIEW.equals(mModel.getComeFrom())) {
-                                            RxBus.INSTANCE.send(new ChangeVillageIdRefreshEvent()); //发出消息,让webview们重新加载,带上header
+                                            //发出消息,让webview们重新加载,带上header
+                                            RxBus.INSTANCE.send(new ChangeVillageIdRefreshEvent());
                                             getView().finish();
                                         } else {
+
+                                            // TODO: 2016/10/22 调用 请求蓝牙的接口
                                             new AcHelper.Builder(getView())
                                                     .target(TabHomeActivity.class)
                                                     .closeCurrent(true)
@@ -158,7 +164,8 @@ public class LoginActivityPresenter extends AppBaseActivityPresenter<LoginActivi
                                 UserManager.INSTANCE.saveUserInfo(UserManager.KEY_PHONE_NUMBER, mPhoneNumber);
                                 UserManager.INSTANCE.saveUserInfo(entity);
                                 getView().showHint(getView().getString(R.string.success_login));
-                                UserManager.INSTANCE.notifyLoginOrLogoutEvent(true);
+//                                UserManager.INSTANCE.notifyLoginOrLogoutEvent(true);
+                                getBLEDoorInfo();
                             }
 
                         })
@@ -167,5 +174,41 @@ public class LoginActivityPresenter extends AppBaseActivityPresenter<LoginActivi
 
     public String getComeFrom() {
         return mModel.getComeFrom();
+    }
+
+    private void getBLEDoorInfo() {
+        boolean isFamily = UserManager.INSTANCE.isFamily();//true为家庭,false为小区
+        String family_id = UserManager.INSTANCE.getUserInfo(UserManager.KEY_CURRENT_FAMILY_ID);
+        String village_id = UserManager.INSTANCE.getUserInfo(UserManager.KEY_CURRENT_VILLAGE_ID);
+        if (!isFamily) {
+            family_id = "";
+        }
+        RxUtils.unsubscribeIfNotNull(mSubs2);
+        addSubscription(
+                mSubs2 = mModel.getBLEDoorInfo(village_id, family_id)
+                        .subscribe(new Observer<BluetoothLockDoorInfoEntity>() {
+                            @Override
+                            public void onCompleted() {
+                                getView().dismissLoading();
+                                UserManager.INSTANCE.notifyLoginOrLogoutEvent(true);
+                            }
+
+                            @Override
+                            public void onError(Throwable e) {
+                                getView().dismissLoading();
+//                                getView().showError(e);
+                            }
+
+                            @Override
+                            public void onNext(BluetoothLockDoorInfoEntity bluetoothLockDoorInfoEntity) {
+                                if (!processNetworkResult(bluetoothLockDoorInfoEntity)) return;
+                                if (bluetoothLockDoorInfoEntity != null
+                                        && bluetoothLockDoorInfoEntity.getData() != null) {
+                                    //切换家庭或者小区之后，发送消息给HomeFragment,刷新首页数据
+                                    RxBus.INSTANCE.send(new BLEInfoChangedEvent());
+                                    UserManager.INSTANCE.saveBLEInfo(bluetoothLockDoorInfoEntity);
+                                }
+                            }
+                        }));
     }
 }

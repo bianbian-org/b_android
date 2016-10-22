@@ -3,6 +3,7 @@ package com.techjumper.polyhomeb.mvp.m;
 import com.techjumper.corelib.rx.tools.CommonWrap;
 import com.techjumper.lib2.others.KeyValuePair;
 import com.techjumper.lib2.utils.RetrofitHelper;
+import com.techjumper.polyhomeb.entity.BluetoothLockDoorInfoEntity;
 import com.techjumper.polyhomeb.entity.UserFamiliesAndVillagesEntity;
 import com.techjumper.polyhomeb.mvp.p.activity.SplashActivityPresenter;
 import com.techjumper.polyhomeb.net.KeyValueCreator;
@@ -35,6 +36,18 @@ public class SplashActivityModel extends BaseModel<SplashActivityPresenter> {
         return RetrofitHelper
                 .<ServiceAPI>createDefault()
                 .getFamilyAndVillage(baseArgumentsMap)
+                .compose(CommonWrap.wrap());
+    }
+
+    public Observable<BluetoothLockDoorInfoEntity> getBLEDoorInfo(String village_id, String family_id) {
+        KeyValuePair keyValuePair = KeyValueCreator.getBLEDoorInfo(
+                UserManager.INSTANCE.getUserInfo(UserManager.KEY_ID)
+                , UserManager.INSTANCE.getTicket()
+                , village_id
+                , family_id);
+        Map<String, String> map = NetHelper.createBaseArgumentsMap(keyValuePair);
+        return RetrofitHelper.<ServiceAPI>createDefault()
+                .getBLEDoorInfo(map)
                 .compose(CommonWrap.wrap());
     }
 

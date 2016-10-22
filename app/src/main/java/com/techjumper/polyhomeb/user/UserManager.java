@@ -5,9 +5,9 @@ import android.text.TextUtils;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.techjumper.corelib.rx.tools.RxBus;
-import com.techjumper.corelib.utils.common.JLog;
 import com.techjumper.corelib.utils.file.PreferenceUtils;
 import com.techjumper.polyhomeb.Config;
+import com.techjumper.polyhomeb.entity.BluetoothLockDoorInfoEntity;
 import com.techjumper.polyhomeb.entity.LoginEntity;
 import com.techjumper.polyhomeb.entity.medicalEntity.MedicalAllUserEntity;
 import com.techjumper.polyhomeb.entity.medicalEntity.MedicalUserLoginEntity;
@@ -54,6 +54,8 @@ public enum UserManager {
     public static final String VALUE_IS_FAMILY = "value_is_family";
     public static final String VALUE_IS_VILLAGE = "value_is_village";
 
+    public static final String KEY_IS_CURRENT_COMMUNITY_SUPPORT_BLE_DOOR = "is_current_community_support_ble_door";
+    public static final String KEY_CURRENT_COMMUNITY_BLE_DOOR_INFO = "current_community_ble_door_info";
 
     /**
      * 通过LoginEntity将用户信息同步到本地
@@ -142,9 +144,6 @@ public enum UserManager {
             PreferenceUtils.save(UserManager.KEY_CURRENT_VILLAGE_ID, village_id);
             PreferenceUtils.save(UserManager.KEY_CURRENT_SHOW_IS_FAMILY_OR_VILLAGE, UserManager.VALUE_IS_VILLAGE);
         }
-
-        JLog.e("f" + getUserInfo(KEY_CURRENT_VILLAGE_ID));
-        JLog.e("v" + getUserInfo(KEY_CURRENT_FAMILY_ID));
     }
 
     /**
@@ -226,6 +225,46 @@ public enum UserManager {
     }
 
     /**
+     * 存储当前小区/家庭的蓝牙门锁信息
+     */
+    public void saveBLEInfo(BluetoothLockDoorInfoEntity entity) {
+        if (entity.getData().getInfos() != null
+                && entity.getData().getInfos().size() != 0) {
+            List<BluetoothLockDoorInfoEntity.DataBean.InfosBean> infos = entity.getData().getInfos();
+            Gson gson = new Gson();
+            String json = gson.toJson(infos, List.class);
+            PreferenceUtils.save(KEY_CURRENT_COMMUNITY_BLE_DOOR_INFO, json);
+        } else {
+            PreferenceUtils.save(KEY_CURRENT_COMMUNITY_BLE_DOOR_INFO, "");
+        }
+        if (1 == entity.getData().getHas_bluelock()) {
+            PreferenceUtils.save(KEY_IS_CURRENT_COMMUNITY_SUPPORT_BLE_DOOR, "1");
+        } else {
+            PreferenceUtils.save(KEY_IS_CURRENT_COMMUNITY_SUPPORT_BLE_DOOR, "0");
+        }
+
+    }
+
+    /**
+     * 得到当前小区/家庭的蓝牙门锁信息
+     */
+    public List<BluetoothLockDoorInfoEntity.DataBean.InfosBean> getBLEInfo() {
+        Gson gson = new Gson();
+        String userInfo = PreferenceUtils.get(KEY_CURRENT_COMMUNITY_BLE_DOOR_INFO, "");
+        List<BluetoothLockDoorInfoEntity.DataBean.InfosBean> options
+                = gson.fromJson(userInfo, new TypeToken<List<BluetoothLockDoorInfoEntity.DataBean.InfosBean>>() {
+        }.getType());
+        return options;
+    }
+
+    /**
+     * 当前小区/家庭是否支持蓝牙门锁
+     */
+    public boolean isCurrentCommunitySupportBLEDoor() {
+        return PreferenceUtils.get(KEY_IS_CURRENT_COMMUNITY_SUPPORT_BLE_DOOR, "0").equals("1");
+    }
+
+    /**
      * 注销登陆
      */
     public void logout() {
@@ -252,6 +291,8 @@ public enum UserManager {
         PreferenceUtils.save(KEY_CURRENT_FAMILY_ID, "");
         PreferenceUtils.save(KEY_CURRENT_SHOW_IS_FAMILY_OR_VILLAGE, "");
         PreferenceUtils.save(KEY_CURRENT_VILLAGE_ID, "");
+        PreferenceUtils.save(KEY_IS_CURRENT_COMMUNITY_SUPPORT_BLE_DOOR, "0");
+        PreferenceUtils.save(KEY_CURRENT_COMMUNITY_BLE_DOOR_INFO, "");
         PolyPluginFileManager.getInstance().clearFamilyInfoFile().subscribe();
 
         HostIpHelper.getInstance().clear();
@@ -288,7 +329,6 @@ public enum UserManager {
     public String getCurrentFamilyInfo(String key) {
         return getUserInfo(key);
     }
-
 
     /**************************************
      * 医疗的用户信息

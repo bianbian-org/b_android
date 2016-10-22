@@ -15,6 +15,7 @@ import com.techjumper.polyhomeb.adapter.recycler_Data.PropertyPlacardDividerLong
 import com.techjumper.polyhomeb.adapter.recycler_ViewHolder.databean.MyVillageFamilyTextBean;
 import com.techjumper.polyhomeb.adapter.recycler_ViewHolder.databean.PropertyPlacardDividerBean;
 import com.techjumper.polyhomeb.adapter.recycler_ViewHolder.databean.PropertyPlacardDividerLongBean;
+import com.techjumper.polyhomeb.entity.BluetoothLockDoorInfoEntity;
 import com.techjumper.polyhomeb.entity.UserFamiliesAndVillagesEntity;
 import com.techjumper.polyhomeb.mvp.p.activity.MyVillageFamilyActivityPresenter;
 import com.techjumper.polyhomeb.net.KeyValueCreator;
@@ -48,6 +49,18 @@ public class MyVillageFamilyActivityModel extends BaseModel<MyVillageFamilyActiv
         return RetrofitHelper
                 .<ServiceAPI>createDefault()
                 .getFamilyAndVillage(baseArgumentsMap)
+                .compose(CommonWrap.wrap());
+    }
+
+    public Observable<BluetoothLockDoorInfoEntity> getBLEDoorInfo(String village_id, String family_id) {
+        KeyValuePair keyValuePair = KeyValueCreator.getBLEDoorInfo(
+                UserManager.INSTANCE.getUserInfo(UserManager.KEY_ID)
+                , UserManager.INSTANCE.getTicket()
+                , village_id
+                , family_id);
+        Map<String, String> map = NetHelper.createBaseArgumentsMap(keyValuePair);
+        return RetrofitHelper.<ServiceAPI>createDefault()
+                .getBLEDoorInfo(map)
                 .compose(CommonWrap.wrap());
     }
 
