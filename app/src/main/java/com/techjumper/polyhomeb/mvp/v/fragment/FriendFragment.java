@@ -283,4 +283,5 @@ public class FriendFragment extends AppBaseWebViewFragment<FriendFragmentPresent
     public View getRootView() {
         return mViewRoot;
     }
+
 }

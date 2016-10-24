@@ -9,9 +9,15 @@ import android.view.View;
 import android.widget.TextView;
 
 import com.techjumper.corelib.mvp.factory.Presenter;
+import com.techjumper.corelib.rx.tools.RxBus;
+import com.techjumper.corelib.utils.common.JLog;
+import com.techjumper.corelib.utils.window.ToastUtils;
 import com.techjumper.polyhomeb.R;
 import com.techjumper.polyhomeb.adapter.HomePageAdapter;
+import com.techjumper.polyhomeb.entity.event.ShakeToOpenDoorEvent;
+import com.techjumper.polyhomeb.manager.ShakeManager;
 import com.techjumper.polyhomeb.mvp.p.fragment.HomeFragmentPresenter;
+import com.techjumper.polyhomeb.mvp.v.activity.TabHomeActivity;
 import com.techjumper.polyhomeb.user.UserManager;
 import com.techjumper.polyhomeb.widget.HomePtrClassicFrameLayout;
 import com.techjumper.ptr_lib.PtrDefaultHandler;
@@ -27,7 +33,8 @@ import cn.finalteam.loadingviewfinal.RecyclerViewFinal;
  * * * * * * * * * * * * * * * * * * * * * * *
  **/
 @Presenter(HomeFragmentPresenter.class)
-public class HomeFragment extends AppBaseFragment<HomeFragmentPresenter> {
+public class HomeFragment extends AppBaseFragment<HomeFragmentPresenter>
+        implements ShakeManager.ISensor {
 
     @Bind(R.id.rv)
     RecyclerViewFinal mRv;
@@ -39,6 +46,7 @@ public class HomeFragment extends AppBaseFragment<HomeFragmentPresenter> {
     TextView mTvRight;
 
     private HomePageAdapter mAdapter;
+    private boolean mIsFragmentVisible = true;
 
     public static HomeFragment getInstance() {
         return new HomeFragment();
@@ -88,5 +96,65 @@ public class HomeFragment extends AppBaseFragment<HomeFragmentPresenter> {
 
     public HomePageAdapter getAdapter() {
         return mAdapter;
+    }
+
+    @Override
+    public void onSensorChange(float force) {
+        if (force > 50) {
+            RxBus.INSTANCE.send(new ShakeToOpenDoorEvent());
+            ToastUtils.show("呵呵");
+        }
+    }
+
+    @Override
+    public void onDestroy() {
+        ShakeManager.with(getActivity()).cancel();
+        JLog.d("需要取消注册摇一摇或者取消定时扫描服务");
+        super.onDestroy();
+    }
+
+    @Override
+    public void onPause() {
+        ShakeManager.with(getActivity()).cancel();
+        JLog.d("需要取消注册摇一摇或者取消定时扫描服务");
+        super.onPause();
+    }
+
+    @Override
+    public void onStop() {
+        ShakeManager.with(getActivity()).cancel();
+        JLog.d("需要取消注册摇一摇或者取消定时扫描服务");
+        super.onStop();
+    }
+
+    @Override
+    public void onResume() {
+        boolean isActivityVisible = ((TabHomeActivity) getActivity()).isTabHomeActivityVisible();
+        boolean supportBLEDoor = UserManager.INSTANCE.isCurrentCommunitySupportBLEDoor();
+        if (isActivityVisible && supportBLEDoor && mIsFragmentVisible) {
+            ShakeManager.with(getActivity()).startShake(this);
+            JLog.d("需要注册摇一摇或者启动定时扫描服务---------");
+        } else {
+            ShakeManager.with(getActivity()).cancel();
+            JLog.d("需要取消注册摇一摇或者取消定时扫描服务");
+        }
+        super.onResume();
+    }
+
+    @Override
+    public void setUserVisibleHint(boolean isVisibleToUser) {
+        super.setUserVisibleHint(isVisibleToUser);
+        mIsFragmentVisible = isVisibleToUser;
+        if (getActivity() != null) {
+            boolean supportBLEDoor = UserManager.INSTANCE.isCurrentCommunitySupportBLEDoor();
+            boolean isActivityVisible = ((TabHomeActivity) getActivity()).isTabHomeActivityVisible();
+            if (mIsFragmentVisible && isActivityVisible && supportBLEDoor) {
+                JLog.d("需要注册摇一摇或者启动定时扫描服务---------");
+                ShakeManager.with(getActivity()).startShake(this);
+            } else {
+                JLog.d("需要取消注册摇一摇或者取消定时扫描服务");
+                ShakeManager.with(getActivity()).cancel();
+            }
+        }
     }
 }

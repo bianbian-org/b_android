@@ -7,10 +7,12 @@ import com.steve.creact.library.display.DisplayBean;
 import com.techjumper.corelib.rx.tools.RxBus;
 import com.techjumper.corelib.rx.tools.RxUtils;
 import com.techjumper.corelib.utils.common.AcHelper;
+import com.techjumper.corelib.utils.common.JLog;
 import com.techjumper.polyhomeb.R;
 import com.techjumper.polyhomeb.entity.event.BLEInfoChangedEvent;
 import com.techjumper.polyhomeb.entity.event.ChooseFamilyVillageEvent;
 import com.techjumper.polyhomeb.entity.event.ToggleMenuClickEvent;
+import com.techjumper.polyhomeb.manager.ShakeManager;
 import com.techjumper.polyhomeb.mvp.m.HomeFragmentModel;
 import com.techjumper.polyhomeb.mvp.v.activity.CheckInActivity;
 import com.techjumper.polyhomeb.mvp.v.fragment.HomeFragment;
@@ -86,6 +88,14 @@ public class HomeFragmentPresenter extends AppBaseFragmentPresenter<HomeFragment
                 .subscribe(o -> {
                     if (o instanceof BLEInfoChangedEvent) {
                         if (getView().getAdapter() != null) {
+                            boolean supportBLEDoor = UserManager.INSTANCE.isCurrentCommunitySupportBLEDoor();
+                            if (supportBLEDoor) {
+                                JLog.d("侧边栏发来的消息：需要注册摇一摇或者开启定时扫描服务-------");
+                                ShakeManager.with(getView().getActivity()).startShake(getView());
+                            } else {
+                                JLog.d("侧边栏发来的消息：需要取消注册摇一摇或者取消定时扫描服务");
+                                ShakeManager.with(getView().getActivity()).cancel();
+                            }
                             getView().getAdapter().loadData(getDatas());
                         }
                     }

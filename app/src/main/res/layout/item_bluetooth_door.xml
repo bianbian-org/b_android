@@ -31,7 +31,6 @@
         app:lock_pic_failed="@mipmap/icon_failed"
         app:lock_pic_success="@mipmap/icon_success"
         app:lock_pic_unusable="@mipmap/icon_unusable"
-        app:lock_text="中间滑块的大小是根据控件大小得到的"
         app:lock_text_color_default="#1ed351"
         app:lock_text_color_failed="#ff3927"
         app:lock_text_color_success="#1ed351"

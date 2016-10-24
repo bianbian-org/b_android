@@ -12,6 +12,7 @@ import com.techjumper.corelib.utils.window.KeyboardUtils;
 import com.techjumper.corelib.utils.window.StatusbarHelper;
 import com.techjumper.corelib.utils.window.ToastUtils;
 import com.techjumper.polyhomeb.R;
+import com.techjumper.polyhomeb.manager.ActivityStack;
 import com.techjumper.polyhomeb.mvp.p.activity.AppBaseActivityPresenter;
 import com.techjumper.polyhomeb.utils.TitleHelper;
 import com.techjumper.progressdialog.KProgressHUD;
@@ -39,7 +40,9 @@ public abstract class AppBaseActivity<T extends AppBaseActivityPresenter> extend
     private TitleHelper.Builder mTitleBuilder;
 
 
-    /***************compile 'me.imid.swipebacklayout.lib:library:1.0.0'侧滑库**************/
+    /***************
+     * compile 'me.imid.swipebacklayout.lib:library:1.0.0'侧滑库
+     **************/
     //包括implements SwipeBackActivityBase
     //不需要设置透明
     private SwipeBackActivityHelper mHelper;
@@ -77,7 +80,9 @@ public abstract class AppBaseActivity<T extends AppBaseActivityPresenter> extend
         getSwipeBackLayout().scrollToFinishActivity();
     }
 
-    /**********************compile 'me.imid.swipebacklayout.lib:library:1.0.0'侧滑库*********************/
+    /**********************
+     * compile 'me.imid.swipebacklayout.lib:library:1.0.0'侧滑库
+     *********************/
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -115,6 +120,7 @@ public abstract class AppBaseActivity<T extends AppBaseActivityPresenter> extend
 //            Slidr.attach(this, config);
 //        }
         /**************************compile 'com.r0adkll:slidableactivity:2.0.5'侧滑库***********************/
+
     }
 
     protected boolean canSlide2Close() {
@@ -176,11 +182,13 @@ public abstract class AppBaseActivity<T extends AppBaseActivityPresenter> extend
 
     public void onResume() {
         MobclickAgent.onResume(this);
+        ActivityStack.getInstance().setResumeActivity(this);
         super.onResume();
     }
 
     public void onPause() {
         MobclickAgent.onPause(this);
+        ActivityStack.getInstance().setResumeActivity(null);
         super.onPause();
     }
 

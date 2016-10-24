@@ -33,10 +33,10 @@ public class PolyHomeViewHolder extends BaseRecyclerViewHolder<PolyHomeData> {
     public void setData(PolyHomeData data) {
         if (data == null) return;
 //
-//        ((PolyModeView) getView(R.id.hengwen)).setText(data.getSceneName1());
-//        ((PolyModeView) getView(R.id.anfang)).setText(data.getSceneName2());
-//        ((PolyModeView) getView(R.id.test3)).setText(data.getSceneName3());
-//        ((PolyModeView) getView(R.id.test4)).setText(data.getSceneName4());
+//        ((PolyModeView) getView(R.id.hengwen)).setTextDefault(data.getSceneName1());
+//        ((PolyModeView) getView(R.id.anfang)).setTextDefault(data.getSceneName2());
+//        ((PolyModeView) getView(R.id.test3)).setTextDefault(data.getSceneName3());
+//        ((PolyModeView) getView(R.id.test4)).setTextDefault(data.getSceneName4());
 
         setOnClickListener(R.id.layout_poly_home, v -> ToastUtils.show("此功能已经集成,正在做最后的调试..."));
 

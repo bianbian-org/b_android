@@ -66,4 +66,5 @@ public class PolyApplication extends Lib2Application {
     protected Class getDefaultInterfaceClass() {
         return ServiceAPI.class;
     }
+
 }

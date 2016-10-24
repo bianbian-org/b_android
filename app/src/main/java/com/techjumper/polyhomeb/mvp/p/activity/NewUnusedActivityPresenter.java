@@ -150,7 +150,7 @@ public class NewUnusedActivityPresenter extends AppBaseActivityPresenter<NewUnus
 //
 //        @Override
 //        public void callBack(int position, String s) {
-//            getView().getTvType().setText(s);
+//            getView().getTvType().setTextDefault(s);
 //            mPop.thisDismiss(PolyPopupWindow.AnimStyle.ALPHA);
 //            for (Map.Entry<Integer, String> entry : mSectionMap.entrySet()) {
 //                if (entry.getValue().equals(s)) {

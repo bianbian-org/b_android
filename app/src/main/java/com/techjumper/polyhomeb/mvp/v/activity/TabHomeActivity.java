@@ -42,6 +42,7 @@ public class TabHomeActivity extends AppBaseActivity<TabHomeActivityPresenter> {
 
     public SlidingMenu mSlidingMenu;
     private List<AppBaseFragment> mFragments = new ArrayList<>();
+    private boolean mIsTabHomeActivityVisible = false;
 
     @Override
     protected View inflateView(Bundle savedInstanceState) {
@@ -96,7 +97,6 @@ public class TabHomeActivity extends AppBaseActivity<TabHomeActivityPresenter> {
         mVp.setAdapter(adapter);
         mVp.setScanScroll(false);
         mVp.setOffscreenPageLimit(4);
-
     }
 
     public void toggleMenu() {
@@ -114,5 +114,39 @@ public class TabHomeActivity extends AppBaseActivity<TabHomeActivityPresenter> {
     @Override
     protected boolean canSlide2Close() {
         return false;
+    }
+
+    public boolean isTabHomeActivityVisible() {
+        return mIsTabHomeActivityVisible;
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        mIsTabHomeActivityVisible = true;
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        mIsTabHomeActivityVisible = false;
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        mIsTabHomeActivityVisible = false;
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        mIsTabHomeActivityVisible = false;
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        mIsTabHomeActivityVisible = true;
     }
 }

@@ -42,6 +42,7 @@ public class JavascriptObject {
     //两种情况,event对应事件,没有链接,http对应链接
     //event://NativeNewComment?id=11&token=123232
     //http://www.baidu.com?id=11&type=1
+    //pay://
     private void pageJump(String url) {
         if (url.startsWith("http")) {
             Bundle bundle = new Bundle();

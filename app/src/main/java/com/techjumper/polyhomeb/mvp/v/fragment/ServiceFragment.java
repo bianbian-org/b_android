@@ -283,4 +283,5 @@ public class ServiceFragment extends AppBaseWebViewFragment<ServiceFragmentPrese
     public View getRootView() {
         return mViewRoot;
     }
+
 }
