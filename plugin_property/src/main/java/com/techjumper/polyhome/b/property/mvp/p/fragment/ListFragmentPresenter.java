@@ -216,8 +216,6 @@ public class ListFragmentPresenter extends AppBaseFragmentPresenter<ListFragment
         infoId = getView().getInfoId();
         showType = getView().getShowType();
 
-        Log.d("wowo", "presenter获取showType :" + showType + "presenter获取infoId :" + infoId);
-
         if (showType == -1) {
             if (getView().getListType() == MainActivity.ANNOUNCEMENT) {
                 getAnnouncements();
@@ -227,7 +225,6 @@ public class ListFragmentPresenter extends AppBaseFragmentPresenter<ListFragment
                 getComplaints();
             }
         } else {
-            Log.d("wowo", "请求详情");
             getMessageDetail(infoId, showType);
         }
 
