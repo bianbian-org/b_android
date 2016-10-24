@@ -59,11 +59,18 @@ public class HomeFragment extends AppBaseFragment<HomeFragmentPresenter>
 
     @Override
     protected void initView(Bundle savedInstanceState) {
+
         mTvRight.setVisibility(View.VISIBLE);
         mRv.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false));
         mAdapter = new HomePageAdapter();
         mRv.setAdapter(mAdapter);
         mAdapter.loadData(getPresenter().getDatas());
+        mAdapter.setClickListener(new HomePageAdapter.IListener() {
+            @Override
+            public void onSmartHomeClick() {
+                getPresenter().onSmartHomeClick();
+            }
+        });
         mPtr.setPtrHandler(new PtrDefaultHandler() {
             @Override
             public void onRefreshBegin(PtrFrameLayout frame) {
