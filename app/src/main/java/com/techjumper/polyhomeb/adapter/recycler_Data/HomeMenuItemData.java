@@ -8,8 +8,28 @@ package com.techjumper.polyhomeb.adapter.recycler_Data;
  **/
 public class HomeMenuItemData {
 
+    public enum ItemType {
+        FAMILY,
+        SMARTHOME,
+        MESSAGE,
+        POINIS,
+        SETTING,
+        OTHER
+    }
+
     private String title;
     private String rightText;
+    private ItemType itemType;
+
+    public ItemType getItemType() {
+        if (itemType == null)
+            return ItemType.OTHER;
+        return itemType;
+    }
+
+    public void setItemType(ItemType itemType) {
+        this.itemType = itemType;
+    }
 
     public String getRightText() {
         return rightText;

@@ -10,7 +10,9 @@ import com.bumptech.glide.Glide;
 import com.steve.creact.library.display.DisplayBean;
 import com.techjumper.corelib.rx.tools.RxBus;
 import com.techjumper.corelib.rx.tools.RxUtils;
+import com.techjumper.corelib.utils.Utils;
 import com.techjumper.corelib.utils.common.AcHelper;
+import com.techjumper.corelib.utils.window.ToastUtils;
 import com.techjumper.lib2.utils.PicassoHelper;
 import com.techjumper.polyhomeb.Config;
 import com.techjumper.polyhomeb.R;
@@ -161,5 +163,9 @@ public class HomeMenuFragmentPresenter extends AppBaseFragmentPresenter<HomeMenu
                     }
                 })
         );
+    }
+
+    public void openStartHomeSetting() {
+        ToastUtils.show(Utils.appContext.getString(R.string.error_not_complete));
     }
 }

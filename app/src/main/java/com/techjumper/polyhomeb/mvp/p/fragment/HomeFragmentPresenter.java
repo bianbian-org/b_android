@@ -6,11 +6,14 @@ import android.view.View;
 import com.steve.creact.library.display.DisplayBean;
 import com.techjumper.corelib.rx.tools.RxBus;
 import com.techjumper.corelib.rx.tools.RxUtils;
+import com.techjumper.corelib.utils.Utils;
 import com.techjumper.corelib.utils.common.AcHelper;
+import com.techjumper.corelib.utils.window.ToastUtils;
 import com.techjumper.polyhomeb.R;
 import com.techjumper.polyhomeb.entity.event.BLEInfoChangedEvent;
 import com.techjumper.polyhomeb.entity.event.ChooseFamilyVillageEvent;
 import com.techjumper.polyhomeb.entity.event.ToggleMenuClickEvent;
+import com.techjumper.polyhomeb.manager.PolyPluginManager;
 import com.techjumper.polyhomeb.mvp.m.HomeFragmentModel;
 import com.techjumper.polyhomeb.mvp.v.activity.CheckInActivity;
 import com.techjumper.polyhomeb.mvp.v.fragment.HomeFragment;
@@ -33,10 +36,11 @@ public class HomeFragmentPresenter extends AppBaseFragmentPresenter<HomeFragment
     private HomeFragmentModel mModel = new HomeFragmentModel(this);
 
     private Subscription mSubs1;
+    private PolyPluginManager mPluginManager;
 
     @Override
     public void initData(Bundle savedInstanceState) {
-
+        mPluginManager = PolyPluginManager.with(getView().getActivity());
     }
 
     @Override
@@ -90,5 +94,40 @@ public class HomeFragmentPresenter extends AppBaseFragmentPresenter<HomeFragment
                         }
                     }
                 });
+    }
+
+    public void onSmartHomeClick() {
+        if (!UserManager.INSTANCE.isFamily()) {
+            ToastUtils.showLong(Utils.appContext.getString(R.string.error_to_open_smarthome_due_not_family));
+            return;
+        }
+
+        mPluginManager.openSmartHome(new PolyPluginManager.IStartPluginListener() {
+            @Override
+            public void onPluginLoading() {
+                getView().showLoading();
+            }
+
+            @Override
+            public void onPluginInstalling() {
+                getView().dismissLoading();
+            }
+
+            @Override
+            public void onPluginStarted() {
+                getView().dismissLoading();
+            }
+
+            @Override
+            public void onPluginError(Throwable e) {
+                getView().dismissLoading();
+            }
+        });
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        mPluginManager.quit();
     }
 }

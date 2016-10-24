@@ -47,22 +47,13 @@ public class HomeMenuFragmentModel extends BaseModel<HomeMenuFragmentPresenter> 
 //                ? UserManager.INSTANCE.getUserInfo(UserManager.KEY_CURRENT_VILLAGE_NAME)
 //                : UserManager.INSTANCE.getUserInfo(UserManager.KEY_CURRENT_FAMILY_NAME));
         String rightText = UserManager.INSTANCE.getCurrentTitle();
-        for (int i = 0; i < 3; i++) {
-            String title = i == 0 ? Utils.appContext.getString(R.string.my_village_or_family) : (i == 1 ? Utils.appContext.getString(R.string.polyhome_setting) : Utils.appContext.getString(R.string.message_center));
-            //item
-            HomeMenuItemData homeMenuItemData = new HomeMenuItemData(title);
-            homeMenuItemData.setRightText(i == 0 ? rightText : null);
-            HomeMenuItemBean homeMenuItemBean = new HomeMenuItemBean(homeMenuItemData);
-            displayBeen.add(homeMenuItemBean);
-
-            if (i == 2) {
-                //细长分割线
-                displayBeen.add(propertyPlacardDividerLongBean);
-            } else {
-                //短一些分割线
-                displayBeen.add(propertyPlacardDividerBean);
-            }
-        }
+        displayBeen.add(propertyPlacardDividerLongBean);//细长分割线
+        displayBeen.add(newItem(Utils.appContext.getString(R.string.my_village_or_family), rightText, HomeMenuItemData.ItemType.FAMILY));
+        displayBeen.add(propertyPlacardDividerBean);//短一些分割线
+        displayBeen.add(newItem(Utils.appContext.getString(R.string.polyhome_setting), "", HomeMenuItemData.ItemType.SMARTHOME));
+        displayBeen.add(propertyPlacardDividerBean);//短一些分割线
+        displayBeen.add(newItem(Utils.appContext.getString(R.string.message_center), "", HomeMenuItemData.ItemType.MESSAGE));
+        displayBeen.add(propertyPlacardDividerLongBean);//细长分割线
 
         //大分割线
         PropertyRepairBigDividerData propertyRepairBigDividerData = new PropertyRepairBigDividerData();
@@ -73,10 +64,8 @@ public class HomeMenuFragmentModel extends BaseModel<HomeMenuFragmentPresenter> 
         //细长分割线
         displayBeen.add(propertyPlacardDividerLongBean);
 
-        //item
-        HomeMenuItemData homeMenuItemData1 = new HomeMenuItemData(Utils.appContext.getString(R.string.my_points));
-        HomeMenuItemBean homeMenuItemBean1 = new HomeMenuItemBean(homeMenuItemData1);
-        displayBeen.add(homeMenuItemBean1);
+        //我的积分
+        displayBeen.add(newItem(Utils.appContext.getString(R.string.my_points), "", HomeMenuItemData.ItemType.POINIS));
 
         //细的分割线
         displayBeen.add(propertyPlacardDividerLongBean);
@@ -88,13 +77,18 @@ public class HomeMenuFragmentModel extends BaseModel<HomeMenuFragmentPresenter> 
         displayBeen.add(propertyPlacardDividerLongBean);
 
         //item
-        HomeMenuItemData homeMenuItemData3 = new HomeMenuItemData(Utils.appContext.getString(R.string.settings));
-        HomeMenuItemBean homeMenuItemBean3 = new HomeMenuItemBean(homeMenuItemData3);
-        displayBeen.add(homeMenuItemBean3);
+        displayBeen.add(newItem(Utils.appContext.getString(R.string.settings), "", HomeMenuItemData.ItemType.SETTING));
 
         //细长分割线
         displayBeen.add(propertyPlacardDividerLongBean);
 
         return displayBeen;
+    }
+
+    private HomeMenuItemBean newItem(String title, String rightText, HomeMenuItemData.ItemType itemType) {
+        HomeMenuItemData homeMenuItemData = new HomeMenuItemData(title);
+        homeMenuItemData.setRightText(rightText);
+        homeMenuItemData.setItemType(itemType);
+        return new HomeMenuItemBean(homeMenuItemData);
     }
 }

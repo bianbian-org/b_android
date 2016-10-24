@@ -11,11 +11,17 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.techjumper.corelib.mvp.factory.Presenter;
+import com.techjumper.corelib.utils.Utils;
+import com.techjumper.corelib.utils.common.AcHelper;
 import com.techjumper.corelib.utils.common.RuleUtils;
 import com.techjumper.corelib.utils.window.StatusbarHelper;
+import com.techjumper.corelib.utils.window.ToastUtils;
 import com.techjumper.polyhomeb.R;
 import com.techjumper.polyhomeb.adapter.HomeMenuAdapter;
 import com.techjumper.polyhomeb.mvp.p.fragment.HomeMenuFragmentPresenter;
+import com.techjumper.polyhomeb.mvp.v.activity.MessageCenterActivity;
+import com.techjumper.polyhomeb.mvp.v.activity.MyVillageFamilyActivity;
+import com.techjumper.polyhomeb.mvp.v.activity.SettingActivity;
 
 import butterknife.Bind;
 import cn.finalteam.loadingviewfinal.RecyclerViewFinal;
@@ -75,14 +81,39 @@ public class HomeMenuFragment extends AppBaseFragment<HomeMenuFragmentPresenter>
         layout.setLayoutParams(ivLayoutParams);
         mLayout.requestLayout();
 
-
         mRv.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false));
         mAdapter = new HomeMenuAdapter();
         mRv.setAdapter(mAdapter);
         mAdapter.loadData(getPresenter().getDatas());
+        mAdapter.setOnItemClick(data -> {
+            switch (data.getItemType()) {
+                case FAMILY:
+                    new AcHelper.Builder(getActivity()).target(MyVillageFamilyActivity.class).start();
+                    break;
+                case SMARTHOME:
+                    getPresenter().openStartHomeSetting();
+                    break;
+                case MESSAGE:
+                    new AcHelper.Builder(getActivity()).target(MessageCenterActivity.class).start();
+                    break;
+                case POINIS:
+                    ToastUtils.show(Utils.appContext.getString(R.string.error_not_complete));
+                    break;
+                case SETTING:
+                    new AcHelper.Builder(getActivity()).target(SettingActivity.class).start();
+                    break;
+                default:
+                    break;
+            }
+        });
 
         getPresenter().setAvatarAndName();
 
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
     }
 
     public TextView getTvUserName() {
