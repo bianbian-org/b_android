@@ -30,7 +30,7 @@
         android:paddingRight="@dimen/dp_15"
         android:textColor="@color/color_7fffffff"
         android:text=""
-        android:textSize="@dimen/sp_20" />
+        android:textSize="@dimen/sp_22" />
 
     <FrameLayout
         android:layout_width="@dimen/dp_40"

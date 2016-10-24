@@ -3,6 +3,7 @@
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:gravity="center_horizontal"
+    android:background="@color/color_0ca9e4"
     android:orientation="vertical">
 
     <TextView
@@ -11,7 +12,7 @@
         android:layout_height="wrap_content"
         android:text="周一"
         android:textColor="@color/color_ffffff"
-        android:textSize="@dimen/sp_14" />
+        android:textSize="@dimen/sp_18" />
 
     <ImageView
         android:id="@+id/lw_img"
@@ -28,6 +29,6 @@
         android:layout_height="wrap_content"
         android:text="31°/18°"
         android:textColor="@color/color_ffffff"
-        android:textSize="@dimen/sp_14"
+        android:textSize="@dimen/sp_18"
         android:layout_marginTop="@dimen/dp_10"/>
 </LinearLayout>

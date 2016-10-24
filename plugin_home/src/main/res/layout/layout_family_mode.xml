@@ -26,7 +26,7 @@
         android:drawableTop="@mipmap/bg_family_new"
         android:text="@string/family_mode_away"
         android:textColor="@color/color_ffffff"
-        android:textSize="@dimen/sp_18" />
+        android:textSize="@dimen/sp_25" />
 
     <com.techjumper.polyhome.b.home.widget.ArcView
         android:id="@+id/left_arc"

@@ -35,7 +35,7 @@
             android:layout_height="wrap_content"
             android:text="晴转多云"
             android:textColor="@color/color_ffffff"
-            android:textSize="@dimen/sp_16" />
+            android:textSize="@dimen/sp_18" />
 
         <TextView
             android:id="@+id/liw_sub_temperature"
@@ -43,7 +43,7 @@
             android:layout_height="wrap_content"
             android:text="17°/25°"
             android:textColor="@color/color_ffffff"
-            android:textSize="@dimen/sp_16" />
+            android:textSize="@dimen/sp_18" />
     </LinearLayout>
 
     <include
@@ -62,7 +62,7 @@
         android:drawableTop="@mipmap/bg_running"
         android:text="适宜跑步"
         android:textColor="@color/color_ffffff"
-        android:textSize="@dimen/sp_16"
+        android:textSize="@dimen/sp_18"
         android:visibility="gone" />
 
     <LinearLayout
@@ -92,7 +92,7 @@
                 android:layout_height="wrap_content"
                 android:text="PM2.5"
                 android:textColor="@color/color_ffffff"
-                android:textSize="@dimen/sp_16" />
+                android:textSize="@dimen/sp_18" />
         </LinearLayout>
 
         <LinearLayout
@@ -107,9 +107,9 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:gravity="center"
-                android:singleLine="true"
+                android:maxLines="1"
                 android:textColor="@color/color_ffffff"
-                android:textSize="@dimen/sp_40"
+                android:textSize="@dimen/sp_45"
                 tools:text="良好" />
 
             <TextView
@@ -119,7 +119,7 @@
                 android:text="空气质量"
                 android:layout_marginTop="@dimen/dp_5"
                 android:textColor="@color/color_ffffff"
-                android:textSize="@dimen/sp_16" />
+                android:textSize="@dimen/sp_18" />
         </LinearLayout>
     </LinearLayout>
 </RelativeLayout>

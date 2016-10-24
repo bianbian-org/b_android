@@ -52,7 +52,7 @@
         android:layout_marginLeft="@dimen/dp_13"
         android:text="丙申猴年二月初九"
         android:textColor="@color/color_ffffff"
-        android:textSize="@dimen/sp_16" />
+        android:textSize="@dimen/sp_20" />
 
     <com.techjumper.polyhome.b.home.widget.AlmanacView
         android:id="@+id/lid_almanac_ok"

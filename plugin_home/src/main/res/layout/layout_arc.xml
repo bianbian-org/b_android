@@ -35,7 +35,7 @@
             android:layout_alignRight="@id/content_text"
             android:layout_below="@id/content_text"
             android:textColor="@color/color_B3ffffff"
-            android:textSize="@dimen/sp_12"
+            android:textSize="@dimen/sp_14"
             tools:text="mmhg" />
     </LinearLayout>
 
@@ -47,7 +47,7 @@
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
         android:textColor="@color/color_ffffff"
-        android:textSize="@dimen/sp_16"
+        android:textSize="@dimen/sp_20"
         android:layout_marginBottom="@dimen/dp_13"
         tools:text="9月23日 检测" />
 </RelativeLayout>
