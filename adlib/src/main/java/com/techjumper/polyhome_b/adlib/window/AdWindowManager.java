@@ -35,6 +35,8 @@ public class AdWindowManager {
     private boolean mIsAttach;
     private IAdWindow iAdWindow;
 
+    private static final int CALL_LAYOUT = 1; //一键呼叫布局
+
     private ParentClickListener mParentClickListener;
 
     private AdWindowManager() {
@@ -68,6 +70,7 @@ public class AdWindowManager {
         mContainer.addView(myVideoView, videoLayoutParams);
 
         mContainer.addView(callLayout);
+        callLayout.setTag(CALL_LAYOUT);
         callLayout.setOnClickListener(v -> {
             Intent it = new Intent();
             ComponentName componentName = new ComponentName("com.dnake.talk", "com.dnake.activity.TalkingActivity");
@@ -200,12 +203,21 @@ public class AdWindowManager {
                     if (inView.getVisibility() != View.VISIBLE) {
                         inView.setVisibility(View.VISIBLE);
                     }
-                } else {
+                } else if (!shouldInvisibleView(childView)) {
                     childView.setVisibility(View.GONE);
                 }
             }
         } catch (Exception ignored) {
         }
+    }
+
+    private boolean shouldInvisibleView(View view) {
+        if (view == null || view.getTag() == null)
+            return false;
+        if (!(view.getTag() instanceof Integer))
+            return false;
+        int type = (int) view.getTag();
+        return CALL_LAYOUT == type;
     }
 
 
