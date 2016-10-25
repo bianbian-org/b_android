@@ -1,6 +1,7 @@
 package com.techjumper.polyhomeb.adapter.recycler_ViewHolder;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.view.View;
 
 import com.intelligoo.sdk.LibDevModel;
@@ -18,8 +19,10 @@ import com.techjumper.polyhome.slide2unlock.view.enums.LockViewResult;
 import com.techjumper.polyhomeb.R;
 import com.techjumper.polyhomeb.adapter.recycler_Data.BluetoothData;
 import com.techjumper.polyhomeb.entity.BluetoothLockDoorInfoEntity;
+import com.techjumper.polyhomeb.entity.event.ScanDeviceEvent;
 import com.techjumper.polyhomeb.entity.event.ShakeToOpenDoorEvent;
 import com.techjumper.polyhomeb.manager.ShakeManager;
+import com.techjumper.polyhomeb.service.ScanBluetoothService;
 import com.techjumper.polyhomeb.user.UserManager;
 
 import java.util.ArrayList;
@@ -50,12 +53,12 @@ public class BluetoothDoorViewHolder extends BaseRecyclerViewHolder<BluetoothDat
         mView.setTextDefault("附近暂没有可用门锁");
         mView.setTextSuccess("解锁成功");
         mView.setTextFailed("解锁失败");
-        mView.postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                mView.setUsable(false);
+        mView.postDelayed(() -> {
+            mView.setUsable(false);
+            if (getContext() != null) {
                 ShakeManager.with((getContext())).cancel();
                 JLog.d("ViewHolder的消息：setUsable(false),需要取消注册摇一摇");
+                getContext().stopService(new Intent(getContext(), ScanBluetoothService.class));
             }
         }, 200);
         //设备扫描的回调
@@ -68,8 +71,11 @@ public class BluetoothDoorViewHolder extends BaseRecyclerViewHolder<BluetoothDat
                     mView.setUsable(true);
                 } else {
                     mView.setUsable(false);
-                    ShakeManager.with((getContext())).cancel();
                     JLog.d("ViewHolder的消息：扫描设备之后的回调,需要取消注册摇一摇");
+                    if (getContext() != null) {
+                        ShakeManager.with((getContext())).cancel();
+                        getContext().stopService(new Intent(getContext(), ScanBluetoothService.class));
+                    }
                 }
             }
         });
@@ -95,6 +101,23 @@ public class BluetoothDoorViewHolder extends BaseRecyclerViewHolder<BluetoothDat
                 }
             }
         });
+
+        RxBus.INSTANCE.asObservable().subscribe(o -> {
+            if (o instanceof ScanDeviceEvent) {
+                List<BluetoothLockDoorInfoEntity.DataBean.InfosBean> bleInfo = UserManager.INSTANCE.getBLEInfo();
+                if (bleInfo == null || bleInfo.size() == 0) return;
+                List<LibDevModel> list = new ArrayList<>();
+                for (BluetoothLockDoorInfoEntity.DataBean.InfosBean bean : bleInfo) {
+                    LibDevModel model = new LibDevModel();
+                    model.eKey = bean.getEkey();
+                    model.devMac = bean.getMac();
+                    model.devSn = bean.getSn();
+                    model.devType = 0;
+                    list.add(model);
+                }
+                SmartDoorBluetoothManager.with().scanBLEDevices((Activity) getContext(), list);
+            }
+        });
     }
 
     @Override
@@ -117,7 +140,10 @@ public class BluetoothDoorViewHolder extends BaseRecyclerViewHolder<BluetoothDat
 
     @Override
     public void startUnLock(Slide2UnlockView view) {
-        ShakeManager.with((getContext())).cancel();
+        if (getContext() != null) {
+            ShakeManager.with((getContext())).cancel();
+            getContext().stopService(new Intent(getContext(), ScanBluetoothService.class));
+        }
         JLog.d("ViewHolder的消息：开始解锁,需要取消注册摇一摇");
         ToastUtils.show("开始解锁");
         String mac = "";
@@ -153,8 +179,11 @@ public class BluetoothDoorViewHolder extends BaseRecyclerViewHolder<BluetoothDat
     @Override
     public void unLocking(Slide2UnlockView view) {
         ToastUtils.show("正在解锁中");
-        ShakeManager.with((getContext())).cancel();
         JLog.d("ViewHolder的消息：正在解锁中,需要取消注册摇一摇");
+        if (getContext() != null) {
+            getContext().stopService(new Intent(getContext(), ScanBluetoothService.class));
+            ShakeManager.with((getContext())).cancel();
+        }
     }
 
     private String getDoorNameBySn(String sn) {

@@ -289,7 +289,6 @@ public class RegistActivityPresenter extends AppBaseActivityPresenter<RegistActi
         if (activity == null) return;
 
         activity.startService(new Intent(activity, CountdownService.class));
-
     }
 
     private boolean checkPhoneNumber() {

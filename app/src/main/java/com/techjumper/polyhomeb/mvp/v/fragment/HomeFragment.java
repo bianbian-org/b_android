@@ -1,5 +1,6 @@
 package com.techjumper.polyhomeb.mvp.v.fragment;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v7.widget.LinearLayoutManager;
@@ -18,6 +19,7 @@ import com.techjumper.polyhomeb.entity.event.ShakeToOpenDoorEvent;
 import com.techjumper.polyhomeb.manager.ShakeManager;
 import com.techjumper.polyhomeb.mvp.p.fragment.HomeFragmentPresenter;
 import com.techjumper.polyhomeb.mvp.v.activity.TabHomeActivity;
+import com.techjumper.polyhomeb.service.ScanBluetoothService;
 import com.techjumper.polyhomeb.user.UserManager;
 import com.techjumper.polyhomeb.widget.HomePtrClassicFrameLayout;
 import com.techjumper.ptr_lib.PtrDefaultHandler;
@@ -104,27 +106,39 @@ public class HomeFragment extends AppBaseFragment<HomeFragmentPresenter>
         if (isFastDoubleClick() && force > 30) {
             RxBus.INSTANCE.send(new ShakeToOpenDoorEvent());
             ToastUtils.show("摇一摇开锁中...");
+            if (getActivity() != null) {
+                getActivity().stopService(new Intent(getActivity(), ScanBluetoothService.class));
+            }
         }
     }
 
     @Override
     public void onDestroy() {
-        ShakeManager.with(getActivity()).cancel();
         JLog.d("需要取消注册摇一摇或者取消定时扫描服务");
+        if (getActivity() != null) {
+            ShakeManager.with(getActivity()).cancel();
+            getActivity().stopService(new Intent(getActivity(), ScanBluetoothService.class));
+        }
         super.onDestroy();
     }
 
     @Override
     public void onPause() {
-        ShakeManager.with(getActivity()).cancel();
         JLog.d("需要取消注册摇一摇或者取消定时扫描服务");
+        if (getActivity() != null) {
+            ShakeManager.with(getActivity()).cancel();
+            getActivity().stopService(new Intent(getActivity(), ScanBluetoothService.class));
+        }
         super.onPause();
     }
 
     @Override
     public void onStop() {
-        ShakeManager.with(getActivity()).cancel();
         JLog.d("需要取消注册摇一摇或者取消定时扫描服务");
+        if (getActivity() != null) {
+            ShakeManager.with(getActivity()).cancel();
+            getActivity().stopService(new Intent(getActivity(), ScanBluetoothService.class));
+        }
         super.onStop();
     }
 
@@ -132,12 +146,14 @@ public class HomeFragment extends AppBaseFragment<HomeFragmentPresenter>
     public void onResume() {
         boolean isActivityVisible = ((TabHomeActivity) getActivity()).isTabHomeActivityVisible();
         boolean supportBLEDoor = UserManager.INSTANCE.isCurrentCommunitySupportBLEDoor();
-        if (isActivityVisible && supportBLEDoor && mIsFragmentVisible) {
+        if (getActivity() != null && isActivityVisible && supportBLEDoor && mIsFragmentVisible) {
             ShakeManager.with(getActivity()).startShake(this);
             JLog.d("需要注册摇一摇或者启动定时扫描服务---------");
+            getActivity().startService(new Intent(getActivity(), ScanBluetoothService.class));
         } else {
             ShakeManager.with(getActivity()).cancel();
             JLog.d("需要取消注册摇一摇或者取消定时扫描服务");
+            getActivity().stopService(new Intent(getActivity(), ScanBluetoothService.class));
         }
         super.onResume();
     }
@@ -152,9 +168,11 @@ public class HomeFragment extends AppBaseFragment<HomeFragmentPresenter>
             if (mIsFragmentVisible && isActivityVisible && supportBLEDoor) {
                 JLog.d("需要注册摇一摇或者启动定时扫描服务---------");
                 ShakeManager.with(getActivity()).startShake(this);
+                getActivity().startService(new Intent(getActivity(), ScanBluetoothService.class));
             } else {
                 JLog.d("需要取消注册摇一摇或者取消定时扫描服务");
                 ShakeManager.with(getActivity()).cancel();
+                getActivity().stopService(new Intent(getActivity(), ScanBluetoothService.class));
             }
         }
     }

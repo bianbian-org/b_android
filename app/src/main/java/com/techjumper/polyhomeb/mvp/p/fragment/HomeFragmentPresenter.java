@@ -1,5 +1,6 @@
 package com.techjumper.polyhomeb.mvp.p.fragment;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 
@@ -21,6 +22,7 @@ import com.techjumper.polyhomeb.manager.ShakeManager;
 import com.techjumper.polyhomeb.mvp.m.HomeFragmentModel;
 import com.techjumper.polyhomeb.mvp.v.activity.CheckInActivity;
 import com.techjumper.polyhomeb.mvp.v.fragment.HomeFragment;
+import com.techjumper.polyhomeb.service.ScanBluetoothService;
 import com.techjumper.polyhomeb.user.UserManager;
 import com.techjumper.polyhomeb.user.event.LoginEvent;
 
@@ -97,10 +99,16 @@ public class HomeFragmentPresenter extends AppBaseFragmentPresenter<HomeFragment
                             boolean supportBLEDoor = UserManager.INSTANCE.isCurrentCommunitySupportBLEDoor();
                             if (supportBLEDoor) {
                                 JLog.d("侧边栏发来的消息：需要注册摇一摇或者开启定时扫描服务-------");
-                                ShakeManager.with(getView().getActivity()).startShake(getView());
+                                if (getView().getActivity()!= null) {
+                                    ShakeManager.with(getView().getActivity()).startShake(getView());
+                                    getView().getActivity().startService(new Intent(getView().getActivity(), ScanBluetoothService.class));
+                                }
                             } else {
                                 JLog.d("侧边栏发来的消息：需要取消注册摇一摇或者取消定时扫描服务");
-                                ShakeManager.with(getView().getActivity()).cancel();
+                                if (getView().getActivity()!= null) {
+                                    ShakeManager.with(getView().getActivity()).cancel();
+                                    getView().getActivity().stopService(new Intent(getView().getActivity(), ScanBluetoothService.class));
+                                }
                             }
                             getView().getAdapter().loadData(getDatas());
                         }
@@ -109,17 +117,26 @@ public class HomeFragmentPresenter extends AppBaseFragmentPresenter<HomeFragment
                         boolean result1 = result.isResult();
                         if (result1) {
                             JLog.d("ViewHolder发来的消息：解锁成功了，需要注册摇一摇或者开启定时扫描服务-------");
-                            ShakeManager.with(getView().getActivity()).startShake(getView());
+                            if (getView().getActivity()!= null) {
+                                ShakeManager.with(getView().getActivity()).startShake(getView());
+                                getView().getActivity().startService(new Intent(getView().getActivity(), ScanBluetoothService.class));
+                            }
                         }
                     } else if (o instanceof BLEScanResultEvent) {
                         BLEScanResultEvent event = (BLEScanResultEvent) o;
                         boolean hasDevice = event.isHasDevice();
                         if (hasDevice) {
                             JLog.d("ViewHolder发来的消息：搜索到设备了，需要注册摇一摇或者开启定时扫描服务-------");
-                            ShakeManager.with(getView().getActivity()).startShake(getView());
+                            if (getView().getActivity()!= null) {
+                                ShakeManager.with(getView().getActivity()).startShake(getView());
+                                getView().getActivity().startService(new Intent(getView().getActivity(), ScanBluetoothService.class));
+                            }
                         } else {
-                            JLog.d("ViewHolder发来的消息：没有搜索到设备，需要取消注册摇一摇或者关闭定时扫描服务-------");
-                            ShakeManager.with(getView().getActivity()).startShake(getView());
+                            JLog.d("ViewHolder发来的消息：没有搜索到设备，需要取消注册摇一摇或者关闭定时扫描服务");
+                            if (getView().getActivity()!= null) {
+                                ShakeManager.with(getView().getActivity()).cancel();
+                                getView().getActivity().stopService(new Intent(getView().getActivity(), ScanBluetoothService.class));
+                            }
                         }
                     }
                 });

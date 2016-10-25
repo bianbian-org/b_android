@@ -293,6 +293,8 @@
 
         <service android:name=".service.CountdownService" />
 
+        <service android:name=".service.ScanBluetoothService" />
+
 
     </application>
 

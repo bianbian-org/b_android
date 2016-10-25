@@ -9,7 +9,6 @@ import com.intelligoo.sdk.LibInterface;
 import com.intelligoo.sdk.ScanCallback;
 import com.techjumper.corelib.rx.tools.RxBus;
 import com.techjumper.corelib.utils.common.JLog;
-import com.techjumper.corelib.utils.window.ToastUtils;
 import com.techjumper.polyhome.doormaster.bluetoothEvent.BLEScanResultEvent;
 import com.techjumper.polyhome.doormaster.bluetoothEvent.OpenDoorResult;
 
@@ -104,12 +103,9 @@ public class SmartDoorBluetoothManager {
                         if (result == 0x00) {
                             //开门成功
                             RxBus.INSTANCE.send(new OpenDoorResult(true));
-                            JLog.e("hehe");
                         } else {
                             //开门失败
                             RxBus.INSTANCE.send(new OpenDoorResult(false));
-                            ToastUtils.show("result"+result);
-                            JLog.e("hahahaah");
                         }
                     }
                 });
@@ -121,17 +117,30 @@ public class SmartDoorBluetoothManager {
         device.devMac = mac;
         device.eKey = ekey;
         try {
-            int ret = LibDevModel.cleanCard(context, device, callback);
-            if (ret == 0x00) {
-                JLog.e("\"开门\"这个消息 发送成功 开始执行开门的指令");
-            } else {
-                JLog.e("\"开门\"这个消息 发送失败 没有执行开门的指令");
-                RxBus.INSTANCE.send(new OpenDoorResult(false));
-                ToastUtils.show("ret"+ret);
+            if (!isFastDoubleClick()) {
+                int ret = LibDevModel.cleanCard(context, device, callback);
+                if (ret == 0x00) {
+                    JLog.e("\"开门\"这个消息 发送成功 开始执行开门的指令");
+                } else {
+                    JLog.e("\"开门\"这个消息 发送失败 没有执行开门的指令");
+                    RxBus.INSTANCE.send(new OpenDoorResult(false));
+                }
             }
         } catch (NumberFormatException e) {
             e.printStackTrace();
         }
+    }
+
+    private long lastClickTime;
+
+    private boolean isFastDoubleClick() {
+        long time = System.currentTimeMillis();
+        long timeD = time - lastClickTime;
+        if (0 < timeD && timeD < 3000) {
+            return true;
+        }
+        lastClickTime = time;
+        return false;
     }
 
     private String getClosedDeviceSn() {

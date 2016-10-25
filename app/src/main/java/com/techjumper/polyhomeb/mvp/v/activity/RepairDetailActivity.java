@@ -102,11 +102,15 @@ public class RepairDetailActivity extends AppBaseActivity<RepairDetailActivityPr
         //现在认为只要控件将Activity向上推的高度超过了1/3屏幕高，就认为软键盘弹起
         if (oldBottom != 0 && bottom != 0 && (oldBottom - bottom > mKeyHeight)) {
             mStaticHead.setVisibility(View.GONE);
-            mAdapter.notifyDataSetChanged();
+            if (mAdapter != null) {
+                mAdapter.notifyDataSetChanged();
+            }
             mRv.smoothScrollToPosition(mAdapter.getItemCount() + 1);  //mRv跳至最后一个item
         } else if (oldBottom != 0 && bottom != 0 && (bottom - oldBottom > mKeyHeight)) {
             mStaticHead.setVisibility(View.VISIBLE);
-            mAdapter.notifyDataSetChanged();
+            if (mAdapter!= null) {
+                mAdapter.notifyDataSetChanged();
+            }
         }
 
     }
