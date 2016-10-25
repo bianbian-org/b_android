@@ -6,7 +6,6 @@ import android.content.Intent;
 import android.util.Log;
 
 import com.techjumper.commonres.entity.event.AdClickEvent;
-import com.techjumper.commonres.entity.event.SubmitOnlineClickEvent;
 import com.techjumper.commonres.entity.event.WeatherDateEvent;
 import com.techjumper.commonres.entity.event.pushevent.NoticePushEvent;
 import com.techjumper.commonres.util.CommonDateUtil;
@@ -24,7 +23,6 @@ public class AlarmReceiver extends BroadcastReceiver {
     public static final int WEATHER = 0;
     public static final int NOTICES = 1;
     public static final int ADCLICK = 2;
-    public static final int SUBMITONLINE = 3;
 
     public static final String TYPE = "type";
 
@@ -45,14 +43,10 @@ public class AlarmReceiver extends BroadcastReceiver {
             if (UserInfoManager.isLogin()) {
                 RxBus.INSTANCE.send(new NoticePushEvent());
             }
-        } else if (intent.getIntExtra(TYPE, WEATHER) == ADCLICK) {
+        } else {
             Log.d(AlarmManagerUtil.TAG, "执行上传点击广告请求......");
             AlarmManagerUtil.setAdClick(Utils.appContext);
             RxBus.INSTANCE.send(new AdClickEvent());
-        } else {
-            Log.d(AlarmManagerUtil.TAG, "执行心跳包......");
-            AlarmManagerUtil.setSubmitOnlineClick(Utils.appContext);
-            RxBus.INSTANCE.send(new SubmitOnlineClickEvent());
         }
     }
 }

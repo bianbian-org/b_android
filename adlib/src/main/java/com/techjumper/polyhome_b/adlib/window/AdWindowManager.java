@@ -80,8 +80,8 @@ public class AdWindowManager {
         mContainer.setOnClickListener(mParentClickListener);
     }
 
-    public void setOnCallClickListener(View.OnClickListener listener) {
-        callLayout.findViewById(R.id.call_layout).setOnClickListener(listener);
+    public void setOnCallClickListener(View.OnClickListener listener){
+        callLayout.setOnClickListener(listener);
     }
 
     public void unregisterClickListener() {
