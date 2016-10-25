@@ -145,11 +145,15 @@ public class PloyhomeFragmentPresenter extends AppBaseFragmentPresenter<Ployhome
         addSubscription(RxView.clicks(getView().getProperty())
                 .compose(RxUtil.applySchedulers())
                 .subscribe(aVoid -> {
-                    Intent it = new Intent();
-                    ComponentName componentName = new ComponentName("com.dnake.talk", "com.dnake.activity.TalkingActivity");
-                    it.setComponent(componentName);
-                    it.putExtra("com.dnake.talk", "CallingActivity");
-                    getView().startActivity(it);
+                    try {
+                        Intent it = new Intent();
+                        ComponentName componentName = new ComponentName("com.dnake.talk", "com.dnake.activity.TalkingActivity");
+                        it.setComponent(componentName);
+                        it.putExtra("com.dnake.talk", "CallingActivity");
+                        getView().startActivity(it);
+                    }catch (Exception e){
+                        ToastUtils.show("无法打开对讲");
+                    }
                 }));
 
 //        addSubscription(RxView.clicks(getView().getProperty())

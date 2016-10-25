@@ -232,12 +232,16 @@ public class MainActivityPresenter extends AppBaseActivityPresenter<MainActivity
 
     @OnClick(R.id.call_service)
     void callService() {
-        Intent it = new Intent();
-        ComponentName componentName = new ComponentName("com.dnake.talk", "com.dnake.activity.TalkingActivity");
-        it.setComponent(componentName);
-        it.putExtra("com.dnake.talk", "CallingActivity");
-        getView().startActivity(it);
-        submitTimer();
+        try {
+            Intent it = new Intent();
+            ComponentName componentName = new ComponentName("com.dnake.talk", "com.dnake.activity.TalkingActivity");
+            it.setComponent(componentName);
+            it.putExtra("com.dnake.talk", "CallingActivity");
+            getView().startActivity(it);
+            submitTimer();
+        }catch (Exception e){
+            ToastUtils.show("无法打开对讲");
+        }
     }
 
     @OnClick(R.id.vedio)
@@ -285,6 +289,18 @@ public class MainActivityPresenter extends AppBaseActivityPresenter<MainActivity
                 } else {
                     AdController.getInstance().turnOffScreen();
                 }
+            }
+        });
+
+        AdWindowManager.getInstance().setOnCallClickListener(v -> {
+            try {
+                Intent it = new Intent();
+                ComponentName componentName = new ComponentName("com.dnake.talk", "com.dnake.activity.TalkingActivity");
+                it.setComponent(componentName);
+                it.putExtra("com.dnake.talk", "CallingActivity");
+                getView().startActivity(it);
+            } catch (Exception e) {
+                ToastUtils.show("无法打开对讲");
             }
         });
     }

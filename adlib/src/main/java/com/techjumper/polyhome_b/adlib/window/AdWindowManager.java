@@ -30,7 +30,7 @@ public class AdWindowManager {
     private FrameLayout mContainer;
     private WindowManager.LayoutParams mContainerParams;
     private ImageView mImageView;
-    private LinearLayout callLayout;
+    private FrameLayout callLayout;
     private MyTextureView myVideoView;
     private boolean mIsAttach;
     private IAdWindow iAdWindow;
@@ -43,7 +43,7 @@ public class AdWindowManager {
         mWindowManager = (WindowManager) Utils.appContext.getSystemService(Context.WINDOW_SERVICE);
 
         mContainer = new FrameLayout(Utils.appContext);
-        callLayout = (LinearLayout) LayoutInflater.from(Utils.appContext).inflate(R.layout.layout_sleep_ad, null);
+        callLayout = (FrameLayout) LayoutInflater.from(Utils.appContext).inflate(R.layout.layout_sleep_ad, null);
         mContainer.setBackgroundColor(0xFF000000);
         mContainerParams = new WindowManager.LayoutParams();
         mContainerParams.type = WindowManager.LayoutParams.TYPE_PHONE;
@@ -69,20 +69,19 @@ public class AdWindowManager {
                 , FrameLayout.LayoutParams.MATCH_PARENT);
         mContainer.addView(myVideoView, videoLayoutParams);
 
-        mContainer.addView(callLayout);
+        FrameLayout.LayoutParams callParams = new FrameLayout.LayoutParams(FrameLayout.LayoutParams.MATCH_PARENT
+                , FrameLayout.LayoutParams.MATCH_PARENT);
+        mContainer.addView(callLayout, callParams);
         callLayout.setTag(CALL_LAYOUT);
-        callLayout.setOnClickListener(v -> {
-            Intent it = new Intent();
-            ComponentName componentName = new ComponentName("com.dnake.talk", "com.dnake.activity.TalkingActivity");
-            it.setComponent(componentName);
-            it.putExtra("com.dnake.talk", "CallingActivity");
-            Utils.appContext.startActivity(it);
-        });
     }
 
     public void setOnAdsClickListener(ParentClickListener listener) {
         mParentClickListener = listener;
         mContainer.setOnClickListener(mParentClickListener);
+    }
+
+    public void setOnCallClickListener(View.OnClickListener listener){
+        callLayout.setOnClickListener(listener);
     }
 
     public void unregisterClickListener() {
