@@ -151,7 +151,7 @@ public class PloyhomeFragmentPresenter extends AppBaseFragmentPresenter<Ployhome
                         it.setComponent(componentName);
                         it.putExtra("com.dnake.talk", "CallingActivity");
                         getView().startActivity(it);
-                    }catch (Exception e){
+                    } catch (Exception e) {
                         ToastUtils.show("无法打开对讲");
                     }
                 }));
@@ -292,8 +292,8 @@ public class PloyhomeFragmentPresenter extends AppBaseFragmentPresenter<Ployhome
                         SquareView restrictSv = getView().getFpRestrict();
                         SquareView temperatureSv = getView().getFpTemperature();
 
-                        temperatureSv.showContentText(TextUtils.isEmpty(entity.getTemperature()) ? "0" : entity.getTemperature() + "°");
-                        temperatureSv.showTitleText("pm2.5 " + (TextUtils.isEmpty(entity.getPm25()) ? "0" : entity.getPm25()));
+                        temperatureSv.showContentText(TextUtils.isEmpty(entity.getPm25()) ? "0" : entity.getPm25());
+                        temperatureSv.showTitleText("pm2.5");
 
                         String date = entity.getDate_one();
                         String restrictNo = getRestrictNo(date, entity.getRestrict());
