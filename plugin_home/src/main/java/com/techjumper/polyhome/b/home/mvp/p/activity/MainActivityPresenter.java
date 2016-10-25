@@ -25,6 +25,7 @@ import com.techjumper.commonres.entity.event.HeartbeatEvent;
 import com.techjumper.commonres.entity.event.HeartbeatTimeEvent;
 import com.techjumper.commonres.entity.event.MedicalEvent;
 import com.techjumper.commonres.entity.event.ShowMainAdEvent;
+import com.techjumper.commonres.entity.event.SubmitOnlineClickEvent;
 import com.techjumper.commonres.entity.event.TimeEvent;
 import com.techjumper.commonres.entity.event.UserInfoEvent;
 import com.techjumper.commonres.util.CommonDateUtil;
@@ -380,6 +381,8 @@ public class MainActivityPresenter extends AppBaseActivityPresenter<MainActivity
                                     totalTime = time;
                                     PluginEngineUtil.saveHeartbeatTime(totalTime);
                                 }
+                            } else if (o instanceof SubmitOnlineClickEvent) {
+                                submitOnline();
                             }
                         }
                 ));
@@ -401,6 +404,7 @@ public class MainActivityPresenter extends AppBaseActivityPresenter<MainActivity
                 registerReceiver(mIPluginMessageReceiver);
 
         AlarmManagerUtil.setAdClick(Utils.appContext);
+        AlarmManagerUtil.setSubmitOnlineClick(Utils.appContext);
 
         if (timer == null) {
             timer = new Timer();
@@ -478,12 +482,7 @@ public class MainActivityPresenter extends AppBaseActivityPresenter<MainActivity
 
         Log.d("submitOnline", "心跳开始");
 
-        RxUtils.unsubscribeIfNotNull(submitOnlineSubscription);
-
-        submitOnlineSubscription = mainActivityModel.submitOnline()
-                .repeatWhen(observable -> {
-                    return observable.delay(120000, TimeUnit.MILLISECONDS);
-                })
+        addSubscription(mainActivityModel.submitOnline()
                 .subscribe(new Subscriber<HeartbeatEntity>() {
                     @Override
                     public void onCompleted() {
@@ -492,13 +491,16 @@ public class MainActivityPresenter extends AppBaseActivityPresenter<MainActivity
 
                     @Override
                     public void onError(Throwable e) {
-                        getView().showError(e);
+                        if (e != null)
+                            Log.d("submitOnline", e.toString());
                     }
 
                     @Override
                     public void onNext(HeartbeatEntity heartbeatEntity) {
-                        if (!processNetworkResult(heartbeatEntity, false))
+                        if (!processNetworkResult(heartbeatEntity, false)) {
+                            Log.d("submitOnline", "error_code: " + heartbeatEntity.getError_code());
                             return;
+                        }
 
                         if (heartbeatEntity != null && heartbeatEntity.getData() != null) {
                             Log.d("submitOnline", "心跳成功");
@@ -508,9 +510,42 @@ public class MainActivityPresenter extends AppBaseActivityPresenter<MainActivity
                             RxBus.INSTANCE.send(new HeartbeatEvent(heartbeatEntity.getData().getTime()));
                         }
                     }
-                });
+                }));
 
-        addSubscription(submitOnlineSubscription);
+
+//        RxUtils.unsubscribeIfNotNull(submitOnlineSubscription);
+//        submitOnlineSubscription = mainActivityModel.submitOnline()
+//                .repeatWhen(observable -> {
+//                    Log.d("submitOnline", "心跳请求");
+//                    return observable.delay(120000, TimeUnit.MILLISECONDS);
+//                })
+//                .subscribe(new Subscriber<HeartbeatEntity>() {
+//                    @Override
+//                    public void onCompleted() {
+//                        Log.d("submitOnline", "心跳一次完毕");
+//                    }
+//
+//                    @Override
+//                    public void onError(Throwable e) {
+//                        getView().showError(e);
+//                    }
+//
+//                    @Override
+//                    public void onNext(HeartbeatEntity heartbeatEntity) {
+//                        if (!processNetworkResult(heartbeatEntity, false))
+//                            return;
+//
+//                        if (heartbeatEntity != null && heartbeatEntity.getData() != null) {
+//                            Log.d("submitOnline", "心跳成功");
+//                            Log.d("submitOnline", "时间" + heartbeatEntity.getData().getTime());
+//                            Log.d("submitOnline", "ticket" + heartbeatEntity.getData().getTicket());
+//                            UserInfoManager.saveTicket(heartbeatEntity.getData().getTicket());
+//                            RxBus.INSTANCE.send(new HeartbeatEvent(heartbeatEntity.getData().getTime()));
+//                        }
+//                    }
+//                });
+//
+//        addSubscription(submitOnlineSubscription);
     }
 
     private void submitClicks() {
@@ -550,7 +585,7 @@ public class MainActivityPresenter extends AppBaseActivityPresenter<MainActivity
         if (!UserInfoManager.isLogin())
             return;
 
-        if (endTime < startTime){
+        if (endTime < startTime) {
             return;
         }
 
