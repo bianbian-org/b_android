@@ -59,18 +59,12 @@ public class HomeFragment extends AppBaseFragment<HomeFragmentPresenter>
 
     @Override
     protected void initView(Bundle savedInstanceState) {
-
         mTvRight.setVisibility(View.VISIBLE);
         mRv.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false));
         mAdapter = new HomePageAdapter();
         mRv.setAdapter(mAdapter);
         mAdapter.loadData(getPresenter().getDatas());
-        mAdapter.setClickListener(new HomePageAdapter.IListener() {
-            @Override
-            public void onSmartHomeClick() {
-                getPresenter().onSmartHomeClick();
-            }
-        });
+        mAdapter.setClickListener(() -> getPresenter().onSmartHomeClick());
         mPtr.setPtrHandler(new PtrDefaultHandler() {
             @Override
             public void onRefreshBegin(PtrFrameLayout frame) {
@@ -107,9 +101,9 @@ public class HomeFragment extends AppBaseFragment<HomeFragmentPresenter>
 
     @Override
     public void onSensorChange(float force) {
-        if (force > 50) {
+        if (isFastDoubleClick() && force > 30) {
             RxBus.INSTANCE.send(new ShakeToOpenDoorEvent());
-            ToastUtils.show("呵呵");
+            ToastUtils.show("摇一摇开锁中...");
         }
     }
 
@@ -163,5 +157,17 @@ public class HomeFragment extends AppBaseFragment<HomeFragmentPresenter>
                 ShakeManager.with(getActivity()).cancel();
             }
         }
+    }
+
+    private long lastClickTime;
+
+    private boolean isFastDoubleClick() {
+        long time = System.currentTimeMillis();
+        long timeD = time - lastClickTime;
+        if (0 < timeD && timeD < 2000) {
+            return true;
+        }
+        lastClickTime = time;
+        return false;
     }
 }

@@ -18,6 +18,7 @@ import android.os.Message;
 import android.support.annotation.Nullable;
 import android.text.TextUtils;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 
@@ -128,7 +129,6 @@ public class Slide2UnlockView extends View {
             return false;
         }
     });
-
 
     public Slide2UnlockView(Context context) {
         this(context, null);
@@ -284,8 +284,13 @@ public class Slide2UnlockView extends View {
             throw new RuntimeException("并没有设置解锁圆圈默认状态下的图片");
         }
 
-        getBitmap(mLockPicDefault);
+        if (isFirst) {
+            getBitmap(mLockPicDefault);
+            isFirst = false;
+        }
     }
+
+    private boolean isFirst = true;
 
     private void getBitmap(int pic) {
         //将锁圆圈图片转换成bitmap
@@ -568,9 +573,9 @@ public class Slide2UnlockView extends View {
         this.mDuration = duration;
     }
 
-    public void setUsable(boolean mIsUsable) {
-        this.mIsUsable = mIsUsable;
-        if (mIsUsable) {
+    public void setUsable(boolean isUsable) {
+        this.mIsUsable = isUsable;
+        if (isUsable) {
             //以下属性恢复
 //            setTextStyle(mStyle);
             mOutSideStrokePaint.setColor(mOutsideStrokeDefaultColor);
@@ -678,7 +683,7 @@ public class Slide2UnlockView extends View {
         this.mStyle = style;
     }
 
-    public boolean isUsable(){
+    public boolean isUsable() {
         return mIsUsable;
     }
 

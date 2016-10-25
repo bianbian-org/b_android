@@ -10,12 +10,14 @@ import com.techjumper.corelib.utils.Utils;
 import com.techjumper.corelib.utils.common.AcHelper;
 import com.techjumper.corelib.utils.common.JLog;
 import com.techjumper.corelib.utils.window.ToastUtils;
+import com.techjumper.polyhome.doormaster.bluetoothEvent.BLEScanResultEvent;
+import com.techjumper.polyhome.doormaster.bluetoothEvent.OpenDoorResult;
 import com.techjumper.polyhomeb.R;
 import com.techjumper.polyhomeb.entity.event.BLEInfoChangedEvent;
 import com.techjumper.polyhomeb.entity.event.ChooseFamilyVillageEvent;
 import com.techjumper.polyhomeb.entity.event.ToggleMenuClickEvent;
-import com.techjumper.polyhomeb.manager.ShakeManager;
 import com.techjumper.polyhomeb.manager.PolyPluginManager;
+import com.techjumper.polyhomeb.manager.ShakeManager;
 import com.techjumper.polyhomeb.mvp.m.HomeFragmentModel;
 import com.techjumper.polyhomeb.mvp.v.activity.CheckInActivity;
 import com.techjumper.polyhomeb.mvp.v.fragment.HomeFragment;
@@ -101,6 +103,23 @@ public class HomeFragmentPresenter extends AppBaseFragmentPresenter<HomeFragment
                                 ShakeManager.with(getView().getActivity()).cancel();
                             }
                             getView().getAdapter().loadData(getDatas());
+                        }
+                    } else if (o instanceof OpenDoorResult) {
+                        OpenDoorResult result = (OpenDoorResult) o;
+                        boolean result1 = result.isResult();
+                        if (result1) {
+                            JLog.d("ViewHolder发来的消息：解锁成功了，需要注册摇一摇或者开启定时扫描服务-------");
+                            ShakeManager.with(getView().getActivity()).startShake(getView());
+                        }
+                    } else if (o instanceof BLEScanResultEvent) {
+                        BLEScanResultEvent event = (BLEScanResultEvent) o;
+                        boolean hasDevice = event.isHasDevice();
+                        if (hasDevice) {
+                            JLog.d("ViewHolder发来的消息：搜索到设备了，需要注册摇一摇或者开启定时扫描服务-------");
+                            ShakeManager.with(getView().getActivity()).startShake(getView());
+                        } else {
+                            JLog.d("ViewHolder发来的消息：没有搜索到设备，需要取消注册摇一摇或者关闭定时扫描服务-------");
+                            ShakeManager.with(getView().getActivity()).startShake(getView());
                         }
                     }
                 });

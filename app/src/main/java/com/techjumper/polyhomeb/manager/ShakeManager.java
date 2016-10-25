@@ -68,7 +68,6 @@ public class ShakeManager {
                 float z = event.values[2];
 
                 float force = Math.abs(x + y + z - lastZ - lastY - lastX);
-
                 if (iSensor != null) {
                     iSensor.onSensorChange(force);
                 }
@@ -79,6 +78,7 @@ public class ShakeManager {
         public void onAccuracyChanged(Sensor sensor, int accuracy) {
 
         }
+
     }
 
     public void cancel() {

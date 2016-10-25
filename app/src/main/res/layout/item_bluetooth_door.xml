@@ -27,6 +27,7 @@
         app:lock_outside_stroke_color_failed="#fd412b"
         app:lock_outside_stroke_color_success="#1ed351"
         app:lock_outside_stroke_width="1dp"
+        app:lock_is_usable="false"
         app:lock_pic_default="@mipmap/icon_default"
         app:lock_pic_failed="@mipmap/icon_failed"
         app:lock_pic_success="@mipmap/icon_success"

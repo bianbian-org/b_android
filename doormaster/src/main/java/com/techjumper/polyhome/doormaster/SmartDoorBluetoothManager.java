@@ -104,10 +104,12 @@ public class SmartDoorBluetoothManager {
                         if (result == 0x00) {
                             //开门成功
                             RxBus.INSTANCE.send(new OpenDoorResult(true));
+                            JLog.e("hehe");
                         } else {
                             //开门失败
                             RxBus.INSTANCE.send(new OpenDoorResult(false));
                             ToastUtils.show("result"+result);
+                            JLog.e("hahahaah");
                         }
                     }
                 });
@@ -129,7 +131,6 @@ public class SmartDoorBluetoothManager {
             }
         } catch (NumberFormatException e) {
             e.printStackTrace();
-            JLog.e(e.toString());
         }
     }
 
