@@ -203,7 +203,7 @@ public class AdWindowManager {
                     if (inView.getVisibility() != View.VISIBLE) {
                         inView.setVisibility(View.VISIBLE);
                     }
-                } else if (!shouldInvisibleView(childView)) {
+                } else if (shouldInvisibleView(childView)) {
                     childView.setVisibility(View.GONE);
                 }
             }
@@ -212,12 +212,12 @@ public class AdWindowManager {
     }
 
     private boolean shouldInvisibleView(View view) {
-        if (view == null || view.getTag() == null)
+        if (view == null)
             return false;
-        if (!(view.getTag() instanceof Integer))
-            return false;
+        else if (view.getTag() == null || !(view.getTag() instanceof Integer))
+            return true;
         int type = (int) view.getTag();
-        return CALL_LAYOUT == type;
+        return CALL_LAYOUT != type;
     }
 
 
