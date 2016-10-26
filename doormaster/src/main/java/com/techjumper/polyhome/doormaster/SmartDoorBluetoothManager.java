@@ -44,6 +44,7 @@ public class SmartDoorBluetoothManager {
     }
 
     public void scanBLEDevices(final Activity context, final List<LibDevModel> existsDatas) {
+        if (isFastScan()) return;
         scanDevices.clear();
         canOpenDevices.clear();
         ScanCallback callback = new ScanCallback() {
@@ -96,6 +97,7 @@ public class SmartDoorBluetoothManager {
     }
 
     public void unlock(final Activity context, String sn, String mac, String ekey) {
+        if (isFastOpen()) return;
         LibInterface.ManagerCallback callback = new LibInterface.ManagerCallback() {
             @Override
             public void setResult(final int result, Bundle bundle) {
@@ -119,30 +121,39 @@ public class SmartDoorBluetoothManager {
         device.devMac = mac;
         device.eKey = ekey;
         try {
-            if (!isFastDoubleClick()) {
-                int ret = LibDevModel.cleanCard(context, device, callback);
-                if (ret == 0x00) {
-                    JLog.e("\"开门\"这个消息 发送成功 开始执行开门的指令");
-                } else {
-                    JLog.e("\"开门\"这个消息 发送失败 没有执行开门的指令");
-                    RxBus.INSTANCE.send(new OpenDoorResult(false));
-                    processError(ret);
-                }
+            int ret = LibDevModel.cleanCard(context, device, callback);
+            if (ret == 0x00) {
+                JLog.e("\"开门\"这个消息 发送成功 开始执行开门的指令");
+            } else {
+                JLog.e("\"开门\"这个消息 发送失败 没有执行开门的指令");
+                RxBus.INSTANCE.send(new OpenDoorResult(false));
+                processError(ret);
             }
         } catch (NumberFormatException e) {
             e.printStackTrace();
         }
     }
 
-    private long lastClickTime;
+    private long lastOpenTime;
+    private long lastScanTime;
 
-    private boolean isFastDoubleClick() {
+    private boolean isFastOpen() {
         long time = System.currentTimeMillis();
-        long timeD = time - lastClickTime;
-        if (0 < timeD && timeD < 3000) {
+        long timeD = time - lastOpenTime;
+        if (0 < timeD && timeD < 2000) {
             return true;
         }
-        lastClickTime = time;
+        lastOpenTime = time;
+        return false;
+    }
+
+    private boolean isFastScan() {
+        long time = System.currentTimeMillis();
+        long timeD = time - lastScanTime;
+        if (0 < timeD && timeD < 2500) {
+            return true;
+        }
+        lastScanTime = time;
         return false;
     }
 

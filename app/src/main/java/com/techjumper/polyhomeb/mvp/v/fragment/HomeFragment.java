@@ -101,9 +101,22 @@ public class HomeFragment extends AppBaseFragment<HomeFragmentPresenter>
         return mAdapter;
     }
 
+    private long lastClickTime;
+
+    private boolean isFastDoubleClick() {
+        long time = System.currentTimeMillis();
+        long timeD = time - lastClickTime;
+        if (0 < timeD && timeD < 1500) {
+            return true;
+        }
+        lastClickTime = time;
+        return false;
+    }
+
     @Override
     public void onSensorChange(float force) {
-        if (force > 35) {
+        //如果View是不可用状态，那么直接return
+        if (force > 35 && !isFastDoubleClick()) {
             if (getActivity() != null) {
                 getActivity().stopService(new Intent(getActivity(), ScanBluetoothService.class));
             }
@@ -175,17 +188,5 @@ public class HomeFragment extends AppBaseFragment<HomeFragmentPresenter>
                 getActivity().stopService(new Intent(getActivity(), ScanBluetoothService.class));
             }
         }
-    }
-
-    private long lastClickTime;
-
-    private boolean isFastDoubleClick() {
-        long time = System.currentTimeMillis();
-        long timeD = time - lastClickTime;
-        if (0 < timeD && timeD < 3000) {
-            return true;
-        }
-        lastClickTime = time;
-        return false;
     }
 }
