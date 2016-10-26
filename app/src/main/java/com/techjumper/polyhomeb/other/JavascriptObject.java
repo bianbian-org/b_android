@@ -19,6 +19,7 @@ import com.techjumper.polyhomeb.mvp.v.activity.LoginActivity;
 import com.techjumper.polyhomeb.mvp.v.activity.ReplyCommentActivity;
 import com.techjumper.polyhomeb.mvp.v.activity.ReplyDetailActivity;
 import com.techjumper.polyhomeb.mvp.v.activity.WebViewShowBigPicActivity;
+import com.techjumper.polyhomeb.user.UserManager;
 
 import java.util.List;
 
@@ -42,7 +43,7 @@ public class JavascriptObject {
     //两种情况,event对应事件,没有链接,http对应链接
     //event://NativeNewComment?id=11&token=123232
     //http://www.baidu.com?id=11&type=1
-    //pay://
+    //pay://order_num=11111&total=11.0
     private void pageJump(String url) {
         if (url.startsWith("http")) {
             Bundle bundle = new Bundle();
@@ -143,16 +144,26 @@ public class JavascriptObject {
                 response();
                 break;
             case "RefreshNotice":
-                JS2JavaNotificationEntity js2JavaNotificationEntity = GsonUtils.fromJson(json, JS2JavaNotificationEntity.class);
-                JS2JavaNotificationEntity.ParamsBean paramsBean = js2JavaNotificationEntity.getParams();
-                String result = paramsBean.getResult();
-                RxBus.INSTANCE.send(new WebViewNotificationEvent(result));
+                //2016/10/26  友邻网页做判断，如果是家庭权限就能点，如果不是就不能点(客户端做或者H5做都行.最好是客户端做)
+                if (UserManager.INSTANCE.isFamily()) {
+                    JS2JavaNotificationEntity js2JavaNotificationEntity = GsonUtils.fromJson(json, JS2JavaNotificationEntity.class);
+                    JS2JavaNotificationEntity.ParamsBean paramsBean = js2JavaNotificationEntity.getParams();
+                    String result = paramsBean.getResult();
+                    RxBus.INSTANCE.send(new WebViewNotificationEvent(result));
+                }
                 break;
             case "login":
                 Bundle bundle = new Bundle();
                 bundle.putString(LoginActivityPresenter.KEY_COME_FROM, LoginActivityPresenter.VALUE_COME_FROM_WEBVIEW);
                 new AcHelper.Builder(mActivity).extra(bundle).closeCurrent(false).target(LoginActivity.class).start();
                 break;
+            case "pay":
+                //解析json字符串
+                //根据字符串的内容，选择支付方式
+                //开始支付
+//                PayManager.with().loadPay(null, mActivity, 1, null);
+                break;
+
         }
 
     }

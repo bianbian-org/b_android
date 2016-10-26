@@ -9,10 +9,12 @@ import android.view.View;
 
 import com.steve.creact.library.display.DisplayBean;
 import com.techjumper.corelib.mvp.factory.Presenter;
+import com.techjumper.corelib.utils.window.ToastUtils;
 import com.techjumper.polyhomeb.R;
 import com.techjumper.polyhomeb.adapter.PropertyRepairAdapter;
 import com.techjumper.polyhomeb.mvp.p.fragment.RepairFragmentPresenter;
 import com.techjumper.polyhomeb.net.NetHelper;
+import com.techjumper.polyhomeb.user.UserManager;
 import com.techjumper.ptr_lib.PtrClassicFrameLayout;
 import com.techjumper.ptr_lib.PtrDefaultHandler;
 import com.techjumper.ptr_lib.PtrFrameLayout;
@@ -56,12 +58,20 @@ public class RepairFragment extends AppBaseFragment<RepairFragmentPresenter> {
     }
 
     private void initListener() {
-        mRv.setOnLoadMoreListener(() -> getPresenter().getRepairData());
+        mRv.setOnLoadMoreListener(() -> {
+            getPresenter().getRepairData();
+        });
         mPtr.setPtrHandler(new PtrDefaultHandler() {
             @Override
             public void onRefreshBegin(PtrFrameLayout frame) {
-                getPresenter().refreshData();
-                new Handler().postDelayed(() -> stopRefresh(""), NetHelper.GLOBAL_TIMEOUT);
+                if (!UserManager.INSTANCE.isFamily()) {
+                    ToastUtils.show(getActivity().getString(R.string.no_authority));
+                    onRepairDataReceive(getPresenter().noData());
+                    new Handler().postDelayed(() -> stopRefresh(""), 0);
+                } else {
+                    getPresenter().refreshData();
+                    new Handler().postDelayed(() -> stopRefresh(""), NetHelper.GLOBAL_TIMEOUT);
+                }
             }
 
             @Override
@@ -104,7 +114,7 @@ public class RepairFragment extends AppBaseFragment<RepairFragmentPresenter> {
         return mAdapter;
     }
 
-    public PtrClassicFrameLayout getPtr(){
+    public PtrClassicFrameLayout getPtr() {
         return mPtr;
     }
 

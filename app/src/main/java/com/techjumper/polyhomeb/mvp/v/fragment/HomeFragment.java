@@ -103,12 +103,12 @@ public class HomeFragment extends AppBaseFragment<HomeFragmentPresenter>
 
     @Override
     public void onSensorChange(float force) {
-        if (isFastDoubleClick() && force > 30) {
-            RxBus.INSTANCE.send(new ShakeToOpenDoorEvent());
-            ToastUtils.show("摇一摇开锁中...");
+        if (force > 35) {
             if (getActivity() != null) {
                 getActivity().stopService(new Intent(getActivity(), ScanBluetoothService.class));
             }
+            ToastUtils.show("摇一摇开锁中...");
+            RxBus.INSTANCE.send(new ShakeToOpenDoorEvent());
         }
     }
 
@@ -182,7 +182,7 @@ public class HomeFragment extends AppBaseFragment<HomeFragmentPresenter>
     private boolean isFastDoubleClick() {
         long time = System.currentTimeMillis();
         long timeD = time - lastClickTime;
-        if (0 < timeD && timeD < 2000) {
+        if (0 < timeD && timeD < 3000) {
             return true;
         }
         lastClickTime = time;

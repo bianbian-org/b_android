@@ -67,14 +67,13 @@ public class LoginActivityPresenter extends AppBaseActivityPresenter<LoginActivi
                             if (o instanceof LoginEvent) {
                                 LoginEvent event = (LoginEvent) o;
                                 if (event.isLogin()) {
+                                    getView().dismissLoading();
                                     if (UserManager.INSTANCE.hasChoosedFamilyOrVillage()) {
                                         if (VALUE_COME_FROM_WEBVIEW.equals(mModel.getComeFrom())) {
                                             //发出消息,让webview们重新加载,带上header
                                             RxBus.INSTANCE.send(new ChangeVillageIdRefreshEvent());
                                             getView().finish();
                                         } else {
-
-                                            // TODO: 2016/10/22 调用 请求蓝牙的接口
                                             new AcHelper.Builder(getView())
                                                     .target(TabHomeActivity.class)
                                                     .closeCurrent(true)
@@ -189,7 +188,7 @@ public class LoginActivityPresenter extends AppBaseActivityPresenter<LoginActivi
                         .subscribe(new Observer<BluetoothLockDoorInfoEntity>() {
                             @Override
                             public void onCompleted() {
-                                getView().dismissLoading();
+//                                getView().dismissLoading();
                                 UserManager.INSTANCE.notifyLoginOrLogoutEvent(true);
                             }
 

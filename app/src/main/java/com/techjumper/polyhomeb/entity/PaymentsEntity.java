@@ -12,7 +12,6 @@ import com.google.gson.annotations.SerializedName;
 public class PaymentsEntity extends BaseEntity<PaymentsEntity.DataBean> {
 
     public static class DataBean {
-
         private WxpayBean wxpay;
         private AliPayBean alipay;
 

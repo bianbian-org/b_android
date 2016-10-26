@@ -6,6 +6,7 @@ import com.techjumper.corelib.rx.tools.RxBus;
 import com.techjumper.corelib.rx.tools.RxUtils;
 import com.techjumper.corelib.utils.common.AcHelper;
 import com.techjumper.corelib.utils.common.ResourceUtils;
+import com.techjumper.corelib.utils.window.ToastUtils;
 import com.techjumper.polyhomeb.Constant;
 import com.techjumper.polyhomeb.R;
 import com.techjumper.polyhomeb.entity.event.ChangeVillageIdRefreshEvent;
@@ -16,6 +17,7 @@ import com.techjumper.polyhomeb.entity.event.WebViewNotificationEvent;
 import com.techjumper.polyhomeb.mvp.v.activity.NewInvitationActivity;
 import com.techjumper.polyhomeb.mvp.v.activity.NewUnusedActivity;
 import com.techjumper.polyhomeb.mvp.v.fragment.FriendFragment;
+import com.techjumper.polyhomeb.user.UserManager;
 import com.techjumper.polyhomeb.utils.WebTitleHelper;
 import com.techjumper.polyhomeb.widget.PolyPopupWindow;
 
@@ -96,7 +98,11 @@ public class FriendFragmentPresenter extends AppBaseFragmentPresenter<FriendFrag
     }
 
     public void onTitleRightClick() {
-        clickAdd();
+        if (UserManager.INSTANCE.isFamily()) {
+            clickAdd();
+        } else {
+            ToastUtils.show(getView().getActivity().getString(R.string.no_authority));
+        }
     }
 
     private void clickAdd() {

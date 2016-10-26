@@ -48,6 +48,14 @@ public class MedicalLoginActivityPresenter extends AppBaseActivityPresenter<Medi
 
     @OnClick(R.id.tv_login)
     public void onClick(View view) {
+        if (TextUtils.isEmpty(getView().getEtAccount().getEditableText().toString())){
+            ToastUtils.show(getView().getString(R.string.medical_please_input_account));
+            return;
+        }
+        if (TextUtils.isEmpty(getView().getEtPsw().getEditableText().toString())) {
+            ToastUtils.show(getView().getString(R.string.medical_please_input_psw));
+            return;
+        }
         medicalLogin();
     }
 

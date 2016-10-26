@@ -36,7 +36,7 @@ public class HomeMenuFragmentModel extends BaseModel<HomeMenuFragmentPresenter> 
         //细长分割线
         PropertyPlacardDividerLongData propertyPlacardDividerLongData = new PropertyPlacardDividerLongData();
         PropertyPlacardDividerLongBean propertyPlacardDividerLongBean = new PropertyPlacardDividerLongBean(propertyPlacardDividerLongData);
-        displayBeen.add(propertyPlacardDividerLongBean);
+//        displayBeen.add(propertyPlacardDividerLongBean);
 
         //短分割线(先声明初始化出来,方便后面使用)
         PropertyPlacardDividerData propertyPlacardDividerData = new PropertyPlacardDividerData();

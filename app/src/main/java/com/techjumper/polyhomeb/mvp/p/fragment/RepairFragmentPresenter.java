@@ -2,14 +2,20 @@ package com.techjumper.polyhomeb.mvp.p.fragment;
 
 import android.os.Bundle;
 
+import com.steve.creact.library.display.DisplayBean;
 import com.techjumper.corelib.rx.tools.RxBus;
 import com.techjumper.corelib.rx.tools.RxUtils;
+import com.techjumper.corelib.utils.window.ToastUtils;
 import com.techjumper.polyhomeb.Constant;
+import com.techjumper.polyhomeb.R;
 import com.techjumper.polyhomeb.entity.PropertyRepairEntity;
 import com.techjumper.polyhomeb.entity.event.RefreshRepairListDataEvent;
 import com.techjumper.polyhomeb.entity.event.RepairStatusEvent;
 import com.techjumper.polyhomeb.mvp.m.RepairFragmentModel;
 import com.techjumper.polyhomeb.mvp.v.fragment.RepairFragment;
+import com.techjumper.polyhomeb.user.UserManager;
+
+import java.util.List;
 
 import rx.Subscriber;
 import rx.Subscription;
@@ -33,9 +39,14 @@ public class RepairFragmentPresenter extends AppBaseFragmentPresenter<RepairFrag
 
     @Override
     public void onViewInited(Bundle savedInstanceState) {
-        getStatus();
-        refreshData();
-        newRepairFinish();
+        if (!UserManager.INSTANCE.isFamily()) {
+            ToastUtils.show(getView().getString(R.string.no_authority));
+            getView().onRepairDataReceive(mModel.noData());
+        } else {
+            getStatus();
+            refreshData();
+            newRepairFinish();
+        }
     }
 
     private void newRepairFinish() {
@@ -132,4 +143,9 @@ public class RepairFragmentPresenter extends AppBaseFragmentPresenter<RepairFrag
         getRepairData();
         mModel.mIsFirst = true;
     }
+
+    public List<DisplayBean> noData() {
+        return mModel.noData();
+    }
+
 }

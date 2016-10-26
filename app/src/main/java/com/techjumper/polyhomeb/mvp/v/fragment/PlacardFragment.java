@@ -59,18 +59,19 @@ public class PlacardFragment extends AppBaseFragment<PlacardFragmentPresenter> {
 
     private void initListener() {
         mRv.setOnLoadMoreListener(() -> {
-            if (!UserManager.INSTANCE.isFamily()) {
-                ToastUtils.show(getActivity().getString(R.string.no_authority));
-                onNoticeDataReceive(getPresenter().noData());
-            } else {
-                getPresenter().getNoticeData();
-            }
+            getPresenter().getNoticeData();
         });
         mPtr.setPtrHandler(new PtrDefaultHandler() {
             @Override
             public void onRefreshBegin(PtrFrameLayout frame) {
-                getPresenter().refreshData();
-                new Handler().postDelayed(() -> stopRefresh(""), NetHelper.GLOBAL_TIMEOUT);
+                if (!UserManager.INSTANCE.isFamily()) {
+                    ToastUtils.show(getActivity().getString(R.string.no_authority));
+                    onNoticeDataReceive(getPresenter().noData());
+                    new Handler().postDelayed(() -> stopRefresh(""), 0);
+                } else {
+                    getPresenter().refreshData();
+                    new Handler().postDelayed(() -> stopRefresh(""), NetHelper.GLOBAL_TIMEOUT);
+                }
             }
 
             @Override

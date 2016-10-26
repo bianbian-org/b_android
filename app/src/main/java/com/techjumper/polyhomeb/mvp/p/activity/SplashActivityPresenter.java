@@ -6,6 +6,7 @@ import android.text.TextUtils;
 import com.techjumper.corelib.rx.tools.RxBus;
 import com.techjumper.corelib.rx.tools.RxUtils;
 import com.techjumper.corelib.utils.common.AcHelper;
+import com.techjumper.corelib.utils.common.JLog;
 import com.techjumper.polyhomeb.entity.BluetoothLockDoorInfoEntity;
 import com.techjumper.polyhomeb.entity.UserFamiliesAndVillagesEntity;
 import com.techjumper.polyhomeb.entity.event.BLEInfoChangedEvent;
@@ -67,6 +68,7 @@ public class SplashActivityPresenter extends AppBaseActivityPresenter<SplashActi
                                 //所以这时候直接跳转到登录界面去,(在登录里面会清空sp数据,做到真正的退出登录了,再重新登录)
 //                                jumpToTabHomeActivity();
                                 getView().showError(e);
+                                JLog.e("splash：onError->请求家庭和小区的时候出问题啦");
                                 jumpToLoginActivity();
                             }
 
@@ -75,6 +77,7 @@ public class SplashActivityPresenter extends AppBaseActivityPresenter<SplashActi
                                 if (NetHelper.CODE_NOT_LOGIN == userFamiliesAndVillagesEntity.getError_code()) {
                                     //新增了这个操作,所以这里会显示 功能登陆后可用  弹出的toast是在processNetworkResult中进行的.只为了屏蔽Toast
                                     jumpToLoginActivity();
+                                    JLog.e("splash：onNext->请求家庭和小区的时候出问题啦");
                                     return;
                                 }
                                 //(userFamiliesAndVillagesEntity是空的)短路与((家庭是空的或者大小为0)并上(小区是空的或者大小为0))
