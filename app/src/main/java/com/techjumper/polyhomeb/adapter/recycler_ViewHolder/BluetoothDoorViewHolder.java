@@ -59,11 +59,12 @@ public class BluetoothDoorViewHolder extends BaseRecyclerViewHolder<BluetoothDat
         mView.setTextFailed(getContext().getString(R.string.ble_unlock_failed));
         mView.postDelayed(() -> {
             mView.setUsable(false);
-            if (getContext() != null) {
-                ShakeManager.with((getContext())).cancel();
-                JLog.d("ViewHolder的消息：setUsable(false),需要取消注册摇一摇");
-                getContext().stopService(new Intent(getContext(), ScanBluetoothService.class));
-            }
+            //2016-10-26  将下面这部分注释.如果不注释的话会导致，进入主界面，启动服务，200毫秒之后服务被关闭，然后就再也启不起来了，需要切换界面或者tab才能重新启动服务
+//            if (getContext() != null) {
+//                ShakeManager.with((getContext())).cancel();
+//                JLog.d("ViewHolder的消息：setUsable(false),需要取消注册摇一摇");
+//                getContext().stopService(new Intent(getContext(), ScanBluetoothService.class));
+//            }
         }, 200);
 
         RxUtils.unsubscribeIfNotNull(mSubs1);
