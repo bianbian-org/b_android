@@ -96,8 +96,7 @@ public class HomeFragmentPresenter extends AppBaseFragmentPresenter<HomeFragment
                 .subscribe(o -> {
                     if (o instanceof BLEInfoChangedEvent) {
                         if (getView().getAdapter() != null) {
-                            boolean supportBLEDoor = UserManager.INSTANCE.isCurrentCommunitySupportBLEDoor();
-                            if (supportBLEDoor) {
+                            if (UserManager.INSTANCE.isCurrentCommunitySupportBLEDoor()) {
                                 JLog.d("侧边栏发来的消息：需要注册摇一摇或者开启定时扫描服务-------");
                                 if (getView().getActivity()!= null) {
                                     ShakeManager.with(getView().getActivity()).startShake(getView());
@@ -114,8 +113,7 @@ public class HomeFragmentPresenter extends AppBaseFragmentPresenter<HomeFragment
                         }
                     } else if (o instanceof OpenDoorResult) {
                         OpenDoorResult result = (OpenDoorResult) o;
-                        boolean result1 = result.isResult();
-                        if (result1) {
+                        if (result.isResult()) {
                             JLog.d("ViewHolder发来的消息：解锁成功了，需要注册摇一摇或者开启定时扫描服务-------");
                             if (getView().getActivity()!= null) {
                                 ShakeManager.with(getView().getActivity()).startShake(getView());
@@ -124,8 +122,7 @@ public class HomeFragmentPresenter extends AppBaseFragmentPresenter<HomeFragment
                         }
                     } else if (o instanceof BLEScanResultEvent) {
                         BLEScanResultEvent event = (BLEScanResultEvent) o;
-                        boolean hasDevice = event.isHasDevice();
-                        if (hasDevice) {
+                        if (event.isHasDevice()) {
                             JLog.d("ViewHolder发来的消息：搜索到设备了，需要注册摇一摇或者开启定时扫描服务-------");
                             if (getView().getActivity()!= null) {
                                 ShakeManager.with(getView().getActivity()).startShake(getView());

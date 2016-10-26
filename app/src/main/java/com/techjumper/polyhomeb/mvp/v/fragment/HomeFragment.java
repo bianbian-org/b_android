@@ -12,7 +12,6 @@ import android.widget.TextView;
 import com.techjumper.corelib.mvp.factory.Presenter;
 import com.techjumper.corelib.rx.tools.RxBus;
 import com.techjumper.corelib.utils.common.JLog;
-import com.techjumper.corelib.utils.window.ToastUtils;
 import com.techjumper.polyhomeb.R;
 import com.techjumper.polyhomeb.adapter.HomePageAdapter;
 import com.techjumper.polyhomeb.entity.event.ShakeToOpenDoorEvent;
@@ -115,12 +114,10 @@ public class HomeFragment extends AppBaseFragment<HomeFragmentPresenter>
 
     @Override
     public void onSensorChange(float force) {
-        //如果View是不可用状态，那么直接return
         if (force > 35 && !isFastDoubleClick()) {
             if (getActivity() != null) {
                 getActivity().stopService(new Intent(getActivity(), ScanBluetoothService.class));
             }
-            ToastUtils.show(getString(R.string.ble_shake_to_unlock));
             RxBus.INSTANCE.send(new ShakeToOpenDoorEvent());
         }
     }
