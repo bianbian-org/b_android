@@ -1,7 +1,6 @@
 package com.techjumper.polyhomeb.mvp.p.activity;
 
 import android.os.Bundle;
-import android.text.TextUtils;
 import android.view.View;
 import android.widget.ImageView;
 
@@ -9,18 +8,15 @@ import com.techjumper.corelib.rx.tools.RxUtils;
 import com.techjumper.corelib.utils.common.AcHelper;
 import com.techjumper.corelib.utils.window.ToastUtils;
 import com.techjumper.lib2.utils.PicassoHelper;
-import com.techjumper.polyhome.alipay.AliPay;
 import com.techjumper.polyhome.paycorelib.OnPayListener;
-import com.techjumper.polyhome.wechatpay.WeChatPay;
 import com.techjumper.polyhomeb.Constant;
 import com.techjumper.polyhomeb.R;
 import com.techjumper.polyhomeb.entity.PaymentsEntity;
+import com.techjumper.polyhomeb.manager.PayManager;
 import com.techjumper.polyhomeb.mvp.m.AdjustAccountsActivityModel;
 import com.techjumper.polyhomeb.mvp.v.activity.AdjustAccountsActivity;
 import com.techjumper.polyhomeb.mvp.v.activity.PaymentSuccessActivity;
 
-import java.io.UnsupportedEncodingException;
-import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -128,18 +124,19 @@ public class AdjustAccountsActivityPresenter extends AppBaseActivityPresenter<Ad
 
     //paymentsEntity.getData()不会为null，因为在走到这一步的时候就已经判断过了。
     private void loadPay(PaymentsEntity paymentsEntity) {
-        switch (mCurrentPayment) {
-            case Constant.TENCENT_PAY:
-                weChatPay(paymentsEntity);
-                break;
-            case Constant.ALIPAY:
-                aliPay(paymentsEntity);
-                break;
-            case Constant.UNION_PAY:
-                break;
-            case Constant.YI_PAY:
-                break;
-        }
+//        switch (mCurrentPayment) {
+//            case Constant.TENCENT_PAY:
+//                weChatPay(paymentsEntity);
+//                break;
+//            case Constant.ALIPAY:
+//                aliPay(paymentsEntity);
+//                break;
+//            case Constant.UNION_PAY:
+//                break;
+//            case Constant.YI_PAY:
+//                break;
+//        }
+        PayManager.with().loadPay(this, getView(), mCurrentPayment, paymentsEntity);
     }
 
     @Override
@@ -150,11 +147,13 @@ public class AdjustAccountsActivityPresenter extends AppBaseActivityPresenter<Ad
         bundle.putString(Constant.KEY_PAY_NAME, getPayName()); //费用名称
         bundle.putDouble(Constant.KEY_PAY_ALL_COST, getTotal() + getExpiryPrice()); //总金额
         new AcHelper.Builder(getView()).target(PaymentSuccessActivity.class).extra(bundle).start();
+        PayManager.with().onDestroy();
     }
 
     @Override
     public void onCancel() {
         ToastUtils.show("取消");
+        PayManager.with().onDestroy();
     }
 
     @Override
@@ -165,49 +164,50 @@ public class AdjustAccountsActivityPresenter extends AppBaseActivityPresenter<Ad
     @Override
     public void onFailed() {
         ToastUtils.show("失败");
+        PayManager.with().onDestroy();
     }
 
-    /**
-     * 微信支付
-     */
-    private void weChatPay(PaymentsEntity paymentsEntity) {
-        WeChatPay weChatPay = new WeChatPay(getView());
-        if (paymentsEntity.getData().getWxpay() == null) {
-            ToastUtils.show(getView().getString(R.string.pay_order_info));
-            return;
-        }
-        PaymentsEntity.DataBean.WxpayBean bean = paymentsEntity.getData().getWxpay();
-        weChatPay.setOrderInfo(bean.getAppid(), bean.getNoncestr(), bean.getPackageX(), bean.getPartnerid()
-                , bean.getPrepayid(), bean.getSign(), bean.getTimestamp());
-        if (!weChatPay.isOrderInfoLegal()) {
-            ToastUtils.show(getView().getString(R.string.pay_order_info));
-            return;
-        }
-        weChatPay.pay();
-    }
-
-    /**
-     * 支付宝支付
-     */
-    private void aliPay(PaymentsEntity paymentsEntity) {
-        if (paymentsEntity.getData().getAlipay() == null
-                || TextUtils.isEmpty(paymentsEntity.getData().getAlipay().getParms_str())
-                || TextUtils.isEmpty(paymentsEntity.getData().getAlipay().getSign())) {
-            ToastUtils.show(getView().getString(R.string.pay_order_info));
-            return;
-        }
-        String parms_str = paymentsEntity.getData().getAlipay().getParms_str();
-        String sign = paymentsEntity.getData().getAlipay().getSign();
-        String signs = "";
-        try {
-            signs = URLEncoder.encode(sign, "UTF-8");
-        } catch (UnsupportedEncodingException e) {
-            e.printStackTrace();
-        }
-        AliPay aliPay = new AliPay(getView(), parms_str + "&sign=" + signs);
-        aliPay.setListener(this);
-        aliPay.pay();
-    }
+//    /**
+//     * 微信支付
+//     */
+//    private void weChatPay(PaymentsEntity paymentsEntity) {
+//        WeChatPay weChatPay = new WeChatPay(getView());
+//        if (paymentsEntity.getData().getWxpay() == null) {
+//            ToastUtils.show(getView().getString(R.string.pay_order_info));
+//            return;
+//        }
+//        PaymentsEntity.DataBean.WxpayBean bean = paymentsEntity.getData().getWxpay();
+//        weChatPay.setOrderInfo(bean.getAppid(), bean.getNoncestr(), bean.getPackageX(), bean.getPartnerid()
+//                , bean.getPrepayid(), bean.getSign(), bean.getTimestamp());
+//        if (!weChatPay.isOrderInfoLegal()) {
+//            ToastUtils.show(getView().getString(R.string.pay_order_info));
+//            return;
+//        }
+//        weChatPay.pay();
+//    }
+//
+//    /**
+//     * 支付宝支付
+//     */
+//    private void aliPay(PaymentsEntity paymentsEntity) {
+//        if (paymentsEntity.getData().getAlipay() == null
+//                || TextUtils.isEmpty(paymentsEntity.getData().getAlipay().getParms_str())
+//                || TextUtils.isEmpty(paymentsEntity.getData().getAlipay().getSign())) {
+//            ToastUtils.show(getView().getString(R.string.pay_order_info));
+//            return;
+//        }
+//        String parms_str = paymentsEntity.getData().getAlipay().getParms_str();
+//        String sign = paymentsEntity.getData().getAlipay().getSign();
+//        String signs = "";
+//        try {
+//            signs = URLEncoder.encode(sign, "UTF-8");
+//        } catch (UnsupportedEncodingException e) {
+//            e.printStackTrace();
+//        }
+//        AliPay aliPay = new AliPay(getView(), parms_str + "&sign=" + signs);
+//        aliPay.setListener(this);
+//        aliPay.pay();
+//    }
 
     /**************************以下字段均为B端自己服务器返回的数据*************************/
     /**

@@ -102,6 +102,7 @@ public class BluetoothDoorViewHolder extends BaseRecyclerViewHolder<BluetoothDat
             }
         });
 
+        //ScanService服务扫描周围设备,扫一次接收一次.
         RxBus.INSTANCE.asObservable().subscribe(o -> {
             if (o instanceof ScanDeviceEvent) {
                 List<BluetoothLockDoorInfoEntity.DataBean.InfosBean> bleInfo = UserManager.INSTANCE.getBLEInfo();
@@ -124,6 +125,7 @@ public class BluetoothDoorViewHolder extends BaseRecyclerViewHolder<BluetoothDat
     public void setData(BluetoothData data) {
         if (data == null) return;
         //相当于Demo中,从云端获取到的"此账号"能开的锁的所有信息
+        //这里进来默认让他扫描一遍，之后 这个  扫描  动作的发起才由Service控制，才会走到上面的RxBub去。
         List<BluetoothLockDoorInfoEntity.DataBean.InfosBean> infosBeen = data.getInfosBeen();
         if (infosBeen == null || infosBeen.size() == 0) return;
         List<LibDevModel> list = new ArrayList<>();

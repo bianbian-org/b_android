@@ -2,8 +2,8 @@ package com.techjumper.polyhomeb.widget;
 
 import android.content.Context;
 import android.util.AttributeSet;
+import android.view.GestureDetector;
 import android.view.MotionEvent;
-import android.view.ViewConfiguration;
 
 import com.techjumper.ptr_lib.PtrClassicFrameLayout;
 
@@ -15,61 +15,106 @@ import com.techjumper.ptr_lib.PtrClassicFrameLayout;
  **/
 public class HomePtrClassicFrameLayout extends PtrClassicFrameLayout {
 
-    private float startY;
-    private float startX;
-    // 记录viewPager是否拖拽的标记
-    private boolean mIsDraggerByOrSlide2UnlockView;
-    private final int mTouchSlop;
+    private GestureDetector detector;
+    private boolean mIsDisallowIntercept = false;
+    private boolean mIsHorizontalMode = false;
+    private boolean isFirst = true;
 
     public HomePtrClassicFrameLayout(Context context) {
         super(context);
-        mTouchSlop = ViewConfiguration.get(context).getScaledTouchSlop();
+        initGesture();
     }
 
     public HomePtrClassicFrameLayout(Context context, AttributeSet attrs) {
         super(context, attrs);
-        mTouchSlop = ViewConfiguration.get(context).getScaledTouchSlop();
+        initGesture();
     }
 
     public HomePtrClassicFrameLayout(Context context, AttributeSet attrs, int defStyle) {
         super(context, attrs, defStyle);
-        mTouchSlop = ViewConfiguration.get(context).getScaledTouchSlop();
+        initGesture();
+    }
+
+    private void initGesture() {
+        detector = new GestureDetector(getContext(), gestureListener);
     }
 
     @Override
-    public boolean onInterceptTouchEvent(MotionEvent ev) {
-        int action = ev.getAction();
-        switch (action) {
-            case MotionEvent.ACTION_DOWN:
-                // 记录手指按下的位置
-                startY = ev.getY();
-                startX = ev.getX();
-                // 初始化标记
-                mIsDraggerByOrSlide2UnlockView = false;
-                break;
-            case MotionEvent.ACTION_MOVE:
-                // 如果viewpager或者滑动解锁控件正在拖拽中，那么不拦截它的事件，直接return false；
-                if(mIsDraggerByOrSlide2UnlockView) {
-                    return false;
-                }
-                // 获取当前手指位置
-                float endY = ev.getY();
-                float endX = ev.getX();
-                float distanceX = Math.abs(endX - startX);
-                float distanceY = Math.abs(endY - startY);
-                // 如果X轴位移大于Y轴位移，那么将事件交给viewPager或者滑动解锁控件处理。
-                if(distanceX > mTouchSlop && distanceX > distanceY) {
-                    mIsDraggerByOrSlide2UnlockView = true;
-                    return false;
-                }
-                break;
-            case MotionEvent.ACTION_UP:
-            case MotionEvent.ACTION_CANCEL:
-                // 初始化标记
-                mIsDraggerByOrSlide2UnlockView = false;
-                break;
+    public boolean dispatchTouchEvent(MotionEvent e) {
+        if (e.getAction() == MotionEvent.ACTION_UP) {
+            isFirst = true;
+            mIsHorizontalMode = false;
+            mIsDisallowIntercept = false;
+            return super.dispatchTouchEvent(e);
         }
-        // 如果是Y轴位移大于X轴，事件交给PtrClassicFrameLayout处理。
-        return super.onInterceptTouchEvent(ev);
+        if (detector.onTouchEvent(e) && mIsDisallowIntercept && mIsHorizontalMode) {
+            return dispatchTouchEventSupper(e);
+        }
+        if (mIsHorizontalMode) {
+            return dispatchTouchEventSupper(e);
+        }
+        return super.dispatchTouchEvent(e);
     }
+
+    @Override
+    public void requestDisallowInterceptTouchEvent(boolean disallowIntercept) {
+        this.mIsDisallowIntercept = disallowIntercept;
+        super.requestDisallowInterceptTouchEvent(disallowIntercept);
+    }
+
+    private GestureDetector.OnGestureListener gestureListener = new GestureDetector.OnGestureListener() {
+        @Override
+        public boolean onDown(MotionEvent e) {
+            return true;
+        }
+
+        @Override
+        public void onShowPress(MotionEvent e) {
+        }
+
+        @Override
+        public boolean onSingleTapUp(MotionEvent e) {
+            return false;
+        }
+
+        @Override
+        public boolean onScroll(MotionEvent e1, MotionEvent e2, float distanceX, float distanceY) {
+            float disX, disY;
+            if (distanceX < 0) {
+                disX = -distanceX;
+            } else {
+                disX = distanceX;
+            }
+            if (distanceY < 0) {
+                disY = -distanceY;
+            } else {
+                disY = distanceY;
+            }
+
+            if (disX > disY) {
+                if (isFirst) {
+                    mIsHorizontalMode = true;
+                    isFirst = false;
+                }
+            } else {
+                if (isFirst) {
+                    mIsHorizontalMode = false;
+                    isFirst = false;
+                }
+                return false;//垂直滑动会返回false
+            }
+
+            return true;//水平滑动会返回true
+        }
+
+        @Override
+        public void onLongPress(MotionEvent e) {
+
+        }
+
+        @Override
+        public boolean onFling(MotionEvent e1, MotionEvent e2, float velocityX, float velocityY) {
+            return false;
+        }
+    };
 }
