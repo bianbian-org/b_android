@@ -69,6 +69,7 @@ public class SplashActivityPresenter extends AppBaseActivityPresenter<SplashActi
 //                                jumpToTabHomeActivity();
                                 getView().showError(e);
                                 JLog.e("splash：onError->请求家庭和小区的时候出问题啦");
+                                JLog.e("splash请求家庭和小区的错误信息"+e.toString());
                                 jumpToLoginActivity();
                             }
 
