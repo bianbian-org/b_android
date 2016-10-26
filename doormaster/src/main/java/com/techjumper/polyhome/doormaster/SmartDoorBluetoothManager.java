@@ -8,7 +8,9 @@ import com.intelligoo.sdk.LibDevModel;
 import com.intelligoo.sdk.LibInterface;
 import com.intelligoo.sdk.ScanCallback;
 import com.techjumper.corelib.rx.tools.RxBus;
+import com.techjumper.corelib.utils.basic.NumberUtil;
 import com.techjumper.corelib.utils.common.JLog;
+import com.techjumper.corelib.utils.window.ToastUtils;
 import com.techjumper.polyhome.doormaster.bluetoothEvent.BLEScanResultEvent;
 import com.techjumper.polyhome.doormaster.bluetoothEvent.OpenDoorResult;
 
@@ -90,6 +92,7 @@ public class SmartDoorBluetoothManager {
         } else {
             //"扫描"这个消息 发送失败
             JLog.e("\"扫描\"这个消息 发送失败 没有执行扫描设备的指令");
+            processError(ret);
         }
     }
 
@@ -124,6 +127,7 @@ public class SmartDoorBluetoothManager {
                 } else {
                     JLog.e("\"开门\"这个消息 发送失败 没有执行开门的指令");
                     RxBus.INSTANCE.send(new OpenDoorResult(false));
+                    processError(ret);
                 }
             }
         } catch (NumberFormatException e) {
@@ -169,6 +173,73 @@ public class SmartDoorBluetoothManager {
         }
 
         return sn_;
+    }
+
+    private void processError(int code_) {
+        int code = NumberUtil.convertToint("0x" + code_, -1);
+        switch (code) {
+            case -1:
+                ToastUtils.show("未知错误");
+                break;
+            case 0x02:
+                ToastUtils.show("通信命令格式错误");
+                break;
+            case 0x03:
+                ToastUtils.show("设备管理密码错误");
+                break;
+            case 0x06:
+                ToastUtils.show("用户未注册在设备中");
+                break;
+            case 0x0b:
+                ToastUtils.show("dev_Key检测错误");
+                break;
+            case 0x30:
+                ToastUtils.show("通信连接超时");
+                break;
+            case 0x31:
+                ToastUtils.show("蓝牙服务未发现");
+                break;
+            case 0x51:
+                ToastUtils.show("卡号为空");
+                break;
+            case 0x52:
+                ToastUtils.show("sn为空");
+                break;
+            case 0x53:
+                ToastUtils.show("mac为空");
+                break;
+            case 0x54:
+                ToastUtils.show("key为空");
+                break;
+            case 0x91:
+                ToastUtils.show("参数错误");
+                break;
+            case 0x92:
+                ToastUtils.show("SDK参数错误");
+                break;
+            case 0x93:
+                ToastUtils.show("BLE未打开");
+                break;
+            case 0x94:
+                ToastUtils.show("不支持BLE");
+                break;
+            case 0x95:
+                ToastUtils.show("sn不存在");
+                break;
+            case 0x96:
+                ToastUtils.show("蓝牙通信返回值为空");
+                break;
+            case 0x97:
+                ToastUtils.show("设备未反应");
+                break;
+            case 0x98:
+                ToastUtils.show("设备不在附近");
+                break;
+            case 0x99:
+                ToastUtils.show("设备正在操作中");
+                break;
+
+        }
     }
 
 }
