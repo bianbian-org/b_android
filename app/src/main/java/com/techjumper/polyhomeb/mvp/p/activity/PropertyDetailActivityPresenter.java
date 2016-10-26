@@ -52,21 +52,19 @@ public class PropertyDetailActivityPresenter extends AppBaseActivityPresenter<Pr
     }
 
     public void onTitleRightClick() {
-        Bundle bundle = new Bundle();
-        switch (getView().getViewPager().getCurrentItem()) {
-            case 1:
-                if (!UserManager.INSTANCE.isFamily()) {
-                    ToastUtils.show(getView().getString(R.string.no_authority));
-                    break;
-                } else {
+        if (!UserManager.INSTANCE.isFamily()) {
+            ToastUtils.show(getView().getString(R.string.no_authority));
+        } else {
+            Bundle bundle = new Bundle();
+            switch (getView().getViewPager().getCurrentItem()) {
+                case 1:
                     bundle.putInt(Constant.PROPERTY_REPAIR_STATUS, mRepairStatus);
                     new AcHelper.Builder(getView()).extra(bundle).target(NewRepairActivity.class).start();
+                case 2:
+                    bundle.putInt(Constant.PROPERTY_COMPLAIN_STATUS, mComplainStatus);
+                    new AcHelper.Builder(getView()).extra(bundle).target(NewComplainActivity.class).start();
                     break;
-                }
-            case 2:
-                bundle.putInt(Constant.PROPERTY_COMPLAIN_STATUS, mComplainStatus);
-                new AcHelper.Builder(getView()).extra(bundle).target(NewComplainActivity.class).start();
-                break;
+            }
         }
     }
 
