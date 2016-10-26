@@ -93,7 +93,8 @@ public class PlacardFragmentModel extends BaseModel<PlacardFragmentPresenter> {
 
             //绿色的 12月 那个时间轴
             PropertyPlacardTimeLineData timeLineData = new PropertyPlacardTimeLineData();
-            timeLineData.setTime(time.substring(0, 1) + getPresenter().getView().getString(R.string.month));
+//            timeLineData.setTime(time.substring(0, 1) + getPresenter().getView().getString(R.string.month));
+            timeLineData.setTime(new SimpleDateFormat("M").format(new Date(time_ * 1000))+getPresenter().getView().getString(R.string.month));
             PropertyPlacardTimeLineBean timeLineBean = new PropertyPlacardTimeLineBean(timeLineData);
             mDataList.add(timeLineBean);
 
@@ -126,11 +127,12 @@ public class PlacardFragmentModel extends BaseModel<PlacardFragmentPresenter> {
                 SimpleDateFormat format = new SimpleDateFormat(getPresenter().getView().getResources().getString(R.string.pattren_M_D));
                 String time = format.format(new Date(time_ * 1000));
 
-                if (!lastMonth.equals(time.substring(0, 1))) {//就说明第一个时间区域完结,此时布局需要加载新的时间轴title
+                if (!lastMonth.equals(new SimpleDateFormat("M").format(new Date(time_ * 1000)))) {//就说明第一个时间区域完结,此时布局需要加载新的时间轴title
 
                     //绿色的 12月 那个时间轴
                     PropertyPlacardTimeLineData timeLineData = new PropertyPlacardTimeLineData();
-                    timeLineData.setTime(time.substring(0, 1) + getPresenter().getView().getString(R.string.month));
+//                    timeLineData.setTime(time.substring(0, 1) + getPresenter().getView().getString(R.string.month));
+                    timeLineData.setTime(new SimpleDateFormat("M").format(new Date(time_ * 1000))+getPresenter().getView().getString(R.string.month));
                     PropertyPlacardTimeLineBean timeLineBean = new PropertyPlacardTimeLineBean(timeLineData);
                     mDataList.add(timeLineBean);
 
@@ -165,7 +167,8 @@ public class PlacardFragmentModel extends BaseModel<PlacardFragmentPresenter> {
                     PropertyPlacardContentBean contentBean = new PropertyPlacardContentBean(propertyPlacardContentData);
                     mDataList.add(contentBean);
                 }
-                lastMonth = time.substring(0, 1);
+//                lastMonth = time.substring(0, 1);
+                lastMonth = new SimpleDateFormat("M").format(new Date(time_ * 1000));
             }
         }
 

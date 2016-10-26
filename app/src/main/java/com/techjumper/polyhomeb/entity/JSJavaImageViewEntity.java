@@ -8,7 +8,7 @@ import java.util.List;
  * Date: 16/8/23
  * * * * * * * * * * * * * * * * * * * * * * *
  **/
-public class JS2JavaImageViewEntity {
+public class JSJavaImageViewEntity {
 
 
     /**

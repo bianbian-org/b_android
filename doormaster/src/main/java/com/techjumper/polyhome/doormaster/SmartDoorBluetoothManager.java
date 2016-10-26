@@ -87,10 +87,8 @@ public class SmartDoorBluetoothManager {
         //上下文,扫描到设备立即返回与否,扫描时间,扫描结束后的回调
         int ret = LibDevModel.scanDevice(context, false, 4, callback);
         if (ret == 0x00) {
-            //"扫描"这个消息 发送成功
             JLog.e("\"扫描\"这个消息 发送成功 开始执行扫描设备的指令");
         } else {
-            //"扫描"这个消息 发送失败
             JLog.e("\"扫描\"这个消息 发送失败 没有执行扫描设备的指令");
             processError(ret);
         }

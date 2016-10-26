@@ -7,7 +7,6 @@ import android.webkit.WebResourceRequest;
 import android.webkit.WebResourceResponse;
 import android.webkit.WebView;
 
-import com.techjumper.corelib.utils.common.JLog;
 import com.techjumper.polyhomeb.mvp.p.activity.AppBaseActivityPresenter;
 import com.techjumper.polyhomeb.user.UserManager;
 import com.techjumper.polyhomeb.widget.AdvancedWebView;
@@ -106,17 +105,17 @@ public abstract class AppBaseWebViewActivity<T extends AppBaseActivityPresenter>
 
     @Override
     public void onPageFinished(String url) {
-        JLog.e("onPageFinished");
+//        JLog.e("onPageFinished");
     }
 
     @Override
     public void onPageError(int errorCode, String description, String failingUrl) {
-        JLog.e("onPageError:errorCode->" + errorCode);
+//        JLog.e("onPageError:errorCode->" + errorCode);
     }
 
     @Override
     public void onPageHttpError(WebView view, WebResourceRequest request, WebResourceResponse errorResponse) {
-        JLog.e("onPageHttpError:errorResponse.getStatusCode->" + errorResponse.getStatusCode());
+//        JLog.e("onPageHttpError:errorResponse.getStatusCode->" + errorResponse.getStatusCode());
     }
 
     @Override

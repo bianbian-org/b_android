@@ -6,7 +6,7 @@ package com.techjumper.polyhomeb.entity;
  * Date: 16/8/23
  * * * * * * * * * * * * * * * * * * * * * * *
  **/
-public class JS2JavaBaseEntity<T> {
+public class JSJavaBaseEntity<T> {
 
     private String method;
     private T params;

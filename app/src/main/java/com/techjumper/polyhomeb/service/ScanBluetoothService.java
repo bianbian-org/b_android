@@ -33,7 +33,7 @@ public class ScanBluetoothService extends Service {
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
-        mSubs = Observable.interval(15, TimeUnit.SECONDS)
+        mSubs = Observable.interval(20, TimeUnit.SECONDS)
                 .subscribe(new Observer<Long>() {
                     @Override
                     public void onCompleted() {
@@ -47,7 +47,7 @@ public class ScanBluetoothService extends Service {
 
                     @Override
                     public void onNext(Long aLong) {
-                        //10S一次，扫描周围设备
+                        //20S一次，扫描周围设备
                         RxBus.INSTANCE.send(new ScanDeviceEvent());
                     }
                 });

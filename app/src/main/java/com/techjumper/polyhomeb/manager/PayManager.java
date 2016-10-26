@@ -107,15 +107,7 @@ public class PayManager {
         if (onPayListener != null) {
             if (aliPay != null) {
                 aliPay.setListener(null);
-                aliPay = null;
             }
-            if (weChatPay != null) {
-                weChatPay = null;
-            }
-        }
-
-        if (context != null) {
-            context = null;
         }
     }
 }

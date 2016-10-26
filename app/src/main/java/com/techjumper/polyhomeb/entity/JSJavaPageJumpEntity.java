@@ -3,12 +3,19 @@ package com.techjumper.polyhomeb.entity;
 /**
  * * * * * * * * * * * * * * * * * * * * * * *
  * Created by lixin
- * Date: 16/9/18
+ * Date: 16/8/23
  * * * * * * * * * * * * * * * * * * * * * * *
  **/
-public class JS2JavaNotificationEntity {
+public class JSJavaPageJumpEntity {
+    /**
+     * method : PageJump
+     * params : {"url":"http://pl.techjumper.com/neighbor/articles/show/69?title=%E5%B8%96%E5%AD%90%E8%AF%A6%E6%83%85&left=::NativeReturn&right="}
+     */
 
     private String method;
+    /**
+     * url : http://pl.techjumper.com/neighbor/articles/show/69?title=%E5%B8%96%E5%AD%90%E8%AF%A6%E6%83%85&left=::NativeReturn&right=
+     */
 
     private ParamsBean params;
 
@@ -29,14 +36,15 @@ public class JS2JavaNotificationEntity {
     }
 
     public static class ParamsBean {
-        private String result;
+        private String url;
 
-        public String getResult() {
-            return result;
+        public String getUrl() {
+            return url;
         }
 
-        public void setResult(String result) {
-            this.result = result;
+        public void setUrl(String url) {
+            this.url = url;
         }
     }
+
 }

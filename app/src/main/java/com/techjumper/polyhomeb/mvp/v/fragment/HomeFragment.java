@@ -120,14 +120,14 @@ public class HomeFragment extends AppBaseFragment<HomeFragmentPresenter>
             if (getActivity() != null) {
                 getActivity().stopService(new Intent(getActivity(), ScanBluetoothService.class));
             }
-            ToastUtils.show("摇一摇开锁中...");
+            ToastUtils.show(getString(R.string.ble_shake_to_unlock));
             RxBus.INSTANCE.send(new ShakeToOpenDoorEvent());
         }
     }
 
     @Override
     public void onDestroy() {
-        JLog.d("需要取消注册摇一摇或者取消定时扫描服务");
+        JLog.d("onDestroy:需要取消注册摇一摇或者取消定时扫描服务");
         if (getActivity() != null) {
             ShakeManager.with(getActivity()).cancel();
             getActivity().stopService(new Intent(getActivity(), ScanBluetoothService.class));
@@ -137,7 +137,7 @@ public class HomeFragment extends AppBaseFragment<HomeFragmentPresenter>
 
     @Override
     public void onPause() {
-        JLog.d("需要取消注册摇一摇或者取消定时扫描服务");
+        JLog.d("onPause:需要取消注册摇一摇或者取消定时扫描服务");
         if (getActivity() != null) {
             ShakeManager.with(getActivity()).cancel();
             getActivity().stopService(new Intent(getActivity(), ScanBluetoothService.class));
@@ -147,7 +147,7 @@ public class HomeFragment extends AppBaseFragment<HomeFragmentPresenter>
 
     @Override
     public void onStop() {
-        JLog.d("需要取消注册摇一摇或者取消定时扫描服务");
+        JLog.d("onStop:需要取消注册摇一摇或者取消定时扫描服务");
         if (getActivity() != null) {
             ShakeManager.with(getActivity()).cancel();
             getActivity().stopService(new Intent(getActivity(), ScanBluetoothService.class));
@@ -161,11 +161,11 @@ public class HomeFragment extends AppBaseFragment<HomeFragmentPresenter>
         boolean supportBLEDoor = UserManager.INSTANCE.isCurrentCommunitySupportBLEDoor();
         if (getActivity() != null && isActivityVisible && supportBLEDoor && mIsFragmentVisible) {
             ShakeManager.with(getActivity()).startShake(this);
-            JLog.d("需要注册摇一摇或者启动定时扫描服务---------");
+            JLog.d("onResume:需要注册摇一摇或者启动定时扫描服务---------");
             getActivity().startService(new Intent(getActivity(), ScanBluetoothService.class));
         } else {
             ShakeManager.with(getActivity()).cancel();
-            JLog.d("需要取消注册摇一摇或者取消定时扫描服务");
+            JLog.d("onResume:需要取消注册摇一摇或者取消定时扫描服务");
             getActivity().stopService(new Intent(getActivity(), ScanBluetoothService.class));
         }
         super.onResume();
@@ -179,11 +179,11 @@ public class HomeFragment extends AppBaseFragment<HomeFragmentPresenter>
             boolean supportBLEDoor = UserManager.INSTANCE.isCurrentCommunitySupportBLEDoor();
             boolean isActivityVisible = ((TabHomeActivity) getActivity()).isTabHomeActivityVisible();
             if (mIsFragmentVisible && isActivityVisible && supportBLEDoor) {
-                JLog.d("需要注册摇一摇或者启动定时扫描服务---------");
+                JLog.d("setUserVisibleHint:需要注册摇一摇或者启动定时扫描服务---------");
                 ShakeManager.with(getActivity()).startShake(this);
                 getActivity().startService(new Intent(getActivity(), ScanBluetoothService.class));
             } else {
-                JLog.d("需要取消注册摇一摇或者取消定时扫描服务");
+                JLog.d("setUserVisibleHint:需要取消注册摇一摇或者取消定时扫描服务");
                 ShakeManager.with(getActivity()).cancel();
                 getActivity().stopService(new Intent(getActivity(), ScanBluetoothService.class));
             }

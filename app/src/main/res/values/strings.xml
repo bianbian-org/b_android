@@ -353,6 +353,13 @@
     <string name="error_to_get_family_info">家庭信息获取失败</string>
     <string name="error_not_complete">功能完善中~</string>
     <string name="error_to_open_smarthome_due_not_family">小区无法打开智能家居，\n请切换到家庭后再操作</string>
+    <string name="ble_scan_no_device">附近暂没有可用门锁</string>
+    <string name="ble_unlock_success">解锁成功</string>
+    <string name="ble_unlock_failed">解锁失败</string>
+    <string name="ble_slide_or_shake_to">滑动或摇一摇开门(</string>
+    <string name="ble_start_unlock">开始解锁</string>
+    <string name="ble_unlocking">正在解锁中</string>
+    <string name="ble_shake_to_unlock">摇一摇开锁中...</string>
 
 
 </resources>

@@ -9,11 +9,14 @@ import com.techjumper.corelib.rx.tools.RxBus;
 import com.techjumper.corelib.utils.common.AcHelper;
 import com.techjumper.lib2.utils.GsonUtils;
 import com.techjumper.polyhomeb.Constant;
-import com.techjumper.polyhomeb.entity.JS2JavaBaseEntity;
-import com.techjumper.polyhomeb.entity.JS2JavaImageViewEntity;
-import com.techjumper.polyhomeb.entity.JS2JavaNotificationEntity;
-import com.techjumper.polyhomeb.entity.JS2JavaPageJumpEntity;
+import com.techjumper.polyhomeb.entity.JSH5PaymentsEntity;
+import com.techjumper.polyhomeb.entity.JSJavaBaseEntity;
+import com.techjumper.polyhomeb.entity.JSJavaImageViewEntity;
+import com.techjumper.polyhomeb.entity.JSJavaNotificationEntity;
+import com.techjumper.polyhomeb.entity.JSJavaPageJumpEntity;
+import com.techjumper.polyhomeb.entity.PaymentsEntity;
 import com.techjumper.polyhomeb.entity.event.WebViewNotificationEvent;
+import com.techjumper.polyhomeb.manager.PayManager;
 import com.techjumper.polyhomeb.mvp.p.activity.LoginActivityPresenter;
 import com.techjumper.polyhomeb.mvp.v.activity.LoginActivity;
 import com.techjumper.polyhomeb.mvp.v.activity.ReplyCommentActivity;
@@ -117,21 +120,21 @@ public class JavascriptObject {
     public void postMessage(String json) {
 
         if (TextUtils.isEmpty(json)) return;
-        JS2JavaBaseEntity baseEntity = GsonUtils.fromJson(json, JS2JavaBaseEntity.class);
+        JSJavaBaseEntity baseEntity = GsonUtils.fromJson(json, JSJavaBaseEntity.class);
         if (baseEntity == null) return;
         String method = baseEntity.getMethod();
         if (TextUtils.isEmpty(method)) return;
 
         switch (method) {
             case "PageJump":
-                JS2JavaPageJumpEntity js2JavaPageJumpEntity = GsonUtils.fromJson(json, JS2JavaPageJumpEntity.class);
-                JS2JavaPageJumpEntity.ParamsBean params = js2JavaPageJumpEntity.getParams();
+                JSJavaPageJumpEntity jsJavaPageJumpEntity = GsonUtils.fromJson(json, JSJavaPageJumpEntity.class);
+                JSJavaPageJumpEntity.ParamsBean params = jsJavaPageJumpEntity.getParams();
                 String url = params.getUrl();
                 pageJump(url);
                 break;
             case "ImageView":
-                JS2JavaImageViewEntity js2JavaImageViewEntity = GsonUtils.fromJson(json, JS2JavaImageViewEntity.class);
-                JS2JavaImageViewEntity.ParamsBean params1 = js2JavaImageViewEntity.getParams();
+                JSJavaImageViewEntity jsJavaImageViewEntity = GsonUtils.fromJson(json, JSJavaImageViewEntity.class);
+                JSJavaImageViewEntity.ParamsBean params1 = jsJavaImageViewEntity.getParams();
                 int index = params1.getIndex();
                 List<String> images = params1.getImages();
                 String[] imageArray = new String[images.size()];
@@ -146,8 +149,8 @@ public class JavascriptObject {
             case "RefreshNotice":
                 //2016/10/26  友邻网页做判断，如果是家庭权限就能点，如果不是就不能点(客户端做或者H5做都行.最好是客户端做)
                 if (UserManager.INSTANCE.isFamily()) {
-                    JS2JavaNotificationEntity js2JavaNotificationEntity = GsonUtils.fromJson(json, JS2JavaNotificationEntity.class);
-                    JS2JavaNotificationEntity.ParamsBean paramsBean = js2JavaNotificationEntity.getParams();
+                    JSJavaNotificationEntity jsJavaNotificationEntity = GsonUtils.fromJson(json, JSJavaNotificationEntity.class);
+                    JSJavaNotificationEntity.ParamsBean paramsBean = jsJavaNotificationEntity.getParams();
                     String result = paramsBean.getResult();
                     RxBus.INSTANCE.send(new WebViewNotificationEvent(result));
                 }
@@ -158,14 +161,46 @@ public class JavascriptObject {
                 new AcHelper.Builder(mActivity).extra(bundle).closeCurrent(false).target(LoginActivity.class).start();
                 break;
             case "pay":
-                //解析json字符串
-                //根据字符串的内容，选择支付方式
-                //开始支付
-//                PayManager.with().loadPay(null, mActivity, 1, null);
+                h5Pay(json);
                 break;
 
         }
+    }
 
+    private void h5Pay(String json) {
+        JSJavaPageJumpEntity payEntity = GsonUtils.fromJson(json, JSJavaPageJumpEntity.class);
+        JSJavaPageJumpEntity.ParamsBean payParams = payEntity.getParams();
+        String payJson = payParams.getUrl();
+        if (TextUtils.isEmpty(payJson)) return;
+        JSH5PaymentsEntity paymentsEntity = GsonUtils.fromJson(payJson, JSH5PaymentsEntity.class);
+        if (paymentsEntity.getType() == -1) return;
+        int type = paymentsEntity.getType();
+
+        PaymentsEntity entity = new PaymentsEntity();
+        PaymentsEntity.DataBean dataBean = new PaymentsEntity.DataBean();
+
+        switch (type) {
+            case 1:
+                break;
+            case 2:
+                JSH5PaymentsEntity.AlipayBean alipay = paymentsEntity.getAlipay();
+                if (alipay == null
+                        || TextUtils.isEmpty(alipay.getParms_str())
+                        || TextUtils.isEmpty(alipay.getSign())) return;
+                String parms_str = alipay.getParms_str();
+                String sign = alipay.getSign();
+                PaymentsEntity.DataBean.AliPayBean aliPayBean = new PaymentsEntity.DataBean.AliPayBean();
+                aliPayBean.setParms_str(parms_str);
+                aliPayBean.setSign(sign);
+                dataBean.setAlipay(aliPayBean);
+                entity.setData(dataBean);
+                break;
+            case 3:
+                break;
+            case 4:
+                break;
+        }
+        PayManager.with().loadPay(null, mActivity, type, entity);
     }
 
 }

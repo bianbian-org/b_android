@@ -41,18 +41,18 @@ public class BluetoothDoorViewHolder extends BaseRecyclerViewHolder<BluetoothDat
     public static final int LAYOUT_ID = R.layout.item_bluetooth_door;
     private Slide2UnlockView mView;
     private String sn;
-    private List<BluetoothLockDoorInfoEntity.DataBean.InfosBean> bleInfo = UserManager.INSTANCE.getBLEInfo();
+    private List<BluetoothLockDoorInfoEntity.DataBean.InfosBean> bleInfo;
 
     public BluetoothDoorViewHolder(View itemView) {
         super(itemView);
         mView = getView(R.id.lock_view);
         mView.setOnUnLockViewStateListener(this);
-        mView.setDelayTime(1000);
-        mView.setWaitTime(5000);
-        mView.setTextUnusable("附近暂没有可用门锁");
-        mView.setTextDefault("附近暂没有可用门锁");
-        mView.setTextSuccess("解锁成功");
-        mView.setTextFailed("解锁失败");
+        mView.setDelayTime(700);
+        mView.setWaitTime(4000);
+        mView.setTextUnusable(getContext().getString(R.string.ble_scan_no_device));
+        mView.setTextDefault(getContext().getString(R.string.ble_scan_no_device));
+        mView.setTextSuccess(getContext().getString(R.string.ble_unlock_success));
+        mView.setTextFailed(getContext().getString(R.string.ble_unlock_failed));
         mView.postDelayed(() -> {
             mView.setUsable(false);
             if (getContext() != null) {
@@ -67,7 +67,7 @@ public class BluetoothDoorViewHolder extends BaseRecyclerViewHolder<BluetoothDat
                 BLEScanResultEvent event = (BLEScanResultEvent) o;
                 if (event.isHasDevice()) {
                     sn = event.getSn();
-                    mView.setText("滑动或摇一摇开门(" + getDoorNameBySn(sn) + ")");
+                    mView.setText(getContext().getString(R.string.ble_slide_or_shake_to) + getDoorNameBySn(sn) + ")");
                     mView.setUsable(true);
                 } else {
                     mView.setUsable(false);
@@ -105,7 +105,9 @@ public class BluetoothDoorViewHolder extends BaseRecyclerViewHolder<BluetoothDat
         //ScanService服务扫描周围设备,扫一次接收一次.
         RxBus.INSTANCE.asObservable().subscribe(o -> {
             if (o instanceof ScanDeviceEvent) {
-                List<BluetoothLockDoorInfoEntity.DataBean.InfosBean> bleInfo = UserManager.INSTANCE.getBLEInfo();
+                if (bleInfo == null) {
+                    bleInfo = UserManager.INSTANCE.getBLEInfo();
+                }
                 if (bleInfo == null || bleInfo.size() == 0) return;
                 List<LibDevModel> list = new ArrayList<>();
                 for (BluetoothLockDoorInfoEntity.DataBean.InfosBean bean : bleInfo) {
@@ -126,10 +128,10 @@ public class BluetoothDoorViewHolder extends BaseRecyclerViewHolder<BluetoothDat
         if (data == null) return;
         //相当于Demo中,从云端获取到的"此账号"能开的锁的所有信息
         //这里进来默认让他扫描一遍，之后 这个  扫描  动作的发起才由Service控制，才会走到上面的RxBub去。
-        List<BluetoothLockDoorInfoEntity.DataBean.InfosBean> infosBeen = data.getInfosBeen();
-        if (infosBeen == null || infosBeen.size() == 0) return;
+        bleInfo = data.getInfosBeen();
+        if (bleInfo == null || bleInfo.size() == 0) return;
         List<LibDevModel> list = new ArrayList<>();
-        for (BluetoothLockDoorInfoEntity.DataBean.InfosBean bean : infosBeen) {
+        for (BluetoothLockDoorInfoEntity.DataBean.InfosBean bean : bleInfo) {
             LibDevModel model = new LibDevModel();
             model.eKey = bean.getEkey();
             model.devMac = bean.getMac();
@@ -147,7 +149,7 @@ public class BluetoothDoorViewHolder extends BaseRecyclerViewHolder<BluetoothDat
             getContext().stopService(new Intent(getContext(), ScanBluetoothService.class));
         }
         JLog.d("ViewHolder的消息：开始解锁,需要取消注册摇一摇");
-        ToastUtils.show("开始解锁");
+        ToastUtils.show(getContext().getString(R.string.ble_start_unlock));
         String mac = "";
         String ekey = "";
         if (bleInfo != null && bleInfo.size() != 0) {
@@ -180,7 +182,7 @@ public class BluetoothDoorViewHolder extends BaseRecyclerViewHolder<BluetoothDat
 
     @Override
     public void unLocking(Slide2UnlockView view) {
-        ToastUtils.show("正在解锁中");
+        ToastUtils.show(getContext().getString(R.string.ble_unlocking));
         JLog.d("ViewHolder的消息：正在解锁中,需要取消注册摇一摇");
         if (getContext() != null) {
             getContext().stopService(new Intent(getContext(), ScanBluetoothService.class));
