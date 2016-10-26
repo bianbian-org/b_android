@@ -24,6 +24,7 @@ import rx.Subscription;
 public class ScanBluetoothService extends Service {
 
     private Subscription mSubs;
+    private boolean mIsServiceAlive = false;  //服务可尚存？今安在？
 
     @Nullable
     @Override
@@ -33,6 +34,8 @@ public class ScanBluetoothService extends Service {
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
+        if (mIsServiceAlive) return super.onStartCommand(intent, flags, startId);
+        mIsServiceAlive = true;
         mSubs = Observable.interval(20, TimeUnit.SECONDS)
                 .subscribe(new Observer<Long>() {
                     @Override
@@ -57,6 +60,7 @@ public class ScanBluetoothService extends Service {
 
     @Override
     public void onDestroy() {
+        mIsServiceAlive = false;
         RxUtils.unsubscribeIfNotNull(mSubs);
         super.onDestroy();
     }

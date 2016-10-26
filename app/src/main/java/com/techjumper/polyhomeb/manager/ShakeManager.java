@@ -23,6 +23,7 @@ public class ShakeManager {
     private float lastX;
     private float lastY;
     private float lastZ;
+    private boolean mIsShakeListenerAlive = false;  //监听可尚存？今安在？
 
     private ShakeManager(Context mContext) {
         this.mContext = mContext;
@@ -36,6 +37,8 @@ public class ShakeManager {
     }
 
     public void startShake(final ISensor iSensor) {
+        if (mIsShakeListenerAlive) return;
+        mIsShakeListenerAlive = true;
         SensorManager sensorManager = (SensorManager) mContext.getSystemService(Context.SENSOR_SERVICE);
         List<Sensor> sensorList = sensorManager.getSensorList(Sensor.TYPE_ACCELEROMETER);
         if (sensorList.size() == 0) return;
@@ -82,6 +85,7 @@ public class ShakeManager {
     }
 
     public void cancel() {
+        mIsShakeListenerAlive = false;
         SensorManager sensorManager = (SensorManager) mContext.getSystemService(Context.SENSOR_SERVICE);
         sensorManager.unregisterListener(mySensor);
     }
