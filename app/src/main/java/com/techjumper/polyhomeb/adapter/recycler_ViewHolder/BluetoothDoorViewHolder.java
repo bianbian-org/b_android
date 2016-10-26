@@ -8,6 +8,7 @@ import com.intelligoo.sdk.LibDevModel;
 import com.steve.creact.annotation.DataBean;
 import com.steve.creact.library.viewholder.BaseRecyclerViewHolder;
 import com.techjumper.corelib.rx.tools.RxBus;
+import com.techjumper.corelib.rx.tools.RxUtils;
 import com.techjumper.corelib.utils.common.JLog;
 import com.techjumper.corelib.utils.window.ToastUtils;
 import com.techjumper.polyhome.doormaster.SmartDoorBluetoothManager;
@@ -28,6 +29,8 @@ import com.techjumper.polyhomeb.user.UserManager;
 import java.util.ArrayList;
 import java.util.List;
 
+import rx.Subscription;
+
 /**
  * * * * * * * * * * * * * * * * * * * * * * *
  * Created by lixin
@@ -42,6 +45,7 @@ public class BluetoothDoorViewHolder extends BaseRecyclerViewHolder<BluetoothDat
     private Slide2UnlockView mView;
     private String sn;
     private List<BluetoothLockDoorInfoEntity.DataBean.InfosBean> bleInfo;
+    private Subscription mSubs1;
 
     public BluetoothDoorViewHolder(View itemView) {
         super(itemView);
@@ -61,9 +65,11 @@ public class BluetoothDoorViewHolder extends BaseRecyclerViewHolder<BluetoothDat
                 getContext().stopService(new Intent(getContext(), ScanBluetoothService.class));
             }
         }, 200);
-        //设备扫描的回调
-        RxBus.INSTANCE.asObservable().subscribe(o -> {
+
+        RxUtils.unsubscribeIfNotNull(mSubs1);
+        mSubs1 = RxBus.INSTANCE.asObservable().subscribe(o -> {
             if (o instanceof BLEScanResultEvent) {
+                //设备扫描的回调
                 BLEScanResultEvent event = (BLEScanResultEvent) o;
                 if (event.isHasDevice()) {
                     sn = event.getSn();
@@ -77,12 +83,8 @@ public class BluetoothDoorViewHolder extends BaseRecyclerViewHolder<BluetoothDat
                         getContext().stopService(new Intent(getContext(), ScanBluetoothService.class));
                     }
                 }
-            }
-        });
-
-        //接收开锁成功或者失败的回调
-        RxBus.INSTANCE.asObservable().subscribe(o -> {
-            if (o instanceof OpenDoorResult) {
+            } else if (o instanceof OpenDoorResult) {
+                //接收开锁成功或者失败的回调
                 OpenDoorResult result = (OpenDoorResult) o;
                 boolean result1 = result.isResult();
                 if (result1) {
@@ -90,21 +92,14 @@ public class BluetoothDoorViewHolder extends BaseRecyclerViewHolder<BluetoothDat
                 } else {
                     mView.unLockResult(LockViewResult.FAILED);
                 }
-            }
-        });
-
-        //摇一摇时候接收到的消息
-        RxBus.INSTANCE.asObservable().subscribe(o -> {
-            if (o instanceof ShakeToOpenDoorEvent) {
+            } else if (o instanceof ShakeToOpenDoorEvent) {
+                //摇一摇时候接收到的消息
                 if (mView != null && mView.isUsable()) {
                     mView.autoUnlock(1000, null);
+                    ToastUtils.show(getContext().getString(R.string.ble_shake_to_unlock));
                 }
-            }
-        });
-
-        //ScanService服务扫描周围设备,扫一次接收一次.
-        RxBus.INSTANCE.asObservable().subscribe(o -> {
-            if (o instanceof ScanDeviceEvent) {
+            } else if (o instanceof ScanDeviceEvent) {
+                //ScanService服务扫描周围设备,扫一次接收一次.
                 if (bleInfo == null) {
                     bleInfo = UserManager.INSTANCE.getBLEInfo();
                 }
