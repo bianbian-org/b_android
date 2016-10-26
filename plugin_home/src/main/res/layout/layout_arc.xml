@@ -24,7 +24,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textColor="@color/color_ffffff"
-            android:textSize="@dimen/sp_24"
+            android:textSize="@dimen/sp_32"
             tools:text="奶奶" />
 
         <TextView
@@ -47,7 +47,7 @@
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
         android:textColor="@color/color_ffffff"
-        android:textSize="@dimen/sp_20"
+        android:textSize="@dimen/sp_22"
         android:layout_marginBottom="@dimen/dp_13"
         tools:text="9月23日 检测" />
 </RelativeLayout>

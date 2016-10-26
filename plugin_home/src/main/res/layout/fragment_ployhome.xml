@@ -40,7 +40,7 @@
                 android:layout_marginLeft="@dimen/dp_10"
                 app:bg="@drawable/selector_button_0ca9e4"
                 app:content_img="@mipmap/bg_property"
-                app:title_text="@string/title_jujia_call" />
+                app:title_text="@string/title_jujia_call_service" />
 
         </LinearLayout>
 
@@ -128,5 +128,4 @@
                 app:title_text="@string/title_shopping" />
         </LinearLayout>
     </LinearLayout>
-
 </LinearLayout>
