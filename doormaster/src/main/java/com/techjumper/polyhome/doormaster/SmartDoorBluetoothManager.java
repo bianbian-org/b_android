@@ -52,8 +52,10 @@ public class SmartDoorBluetoothManager {
             public void onScanResult(final ArrayList<String> deviceList, final ArrayList<Integer> rssis) {
 
                 //如果null或者=0，说明没有扫描到可用设备
-                if (deviceList == null || deviceList.size() == 0 || rssis == null || rssis.size() == 0)
+                if (deviceList == null || deviceList.size() == 0 || rssis == null || rssis.size() == 0) {
+                    RxBus.INSTANCE.send(new BLEScanResultEvent(false, ""));
                     return;
+                }
                 context.runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
@@ -108,6 +110,7 @@ public class SmartDoorBluetoothManager {
                         } else {
                             //开门失败
                             RxBus.INSTANCE.send(new OpenDoorResult(false));
+                            processError(result);
                         }
                     }
                 });

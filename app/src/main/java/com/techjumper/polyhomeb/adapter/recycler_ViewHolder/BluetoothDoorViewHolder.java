@@ -78,10 +78,10 @@ public class BluetoothDoorViewHolder extends BaseRecyclerViewHolder<BluetoothDat
                     mView.setUsable(true);
                 } else {
                     mView.setUsable(false);
-                    JLog.d("ViewHolder的消息：扫描设备之后的回调,需要取消注册摇一摇");
+                    JLog.d("ViewHolder的消息：扫描设备之后的回调,需要取消注册摇一摇,但是不取消扫描设备");
                     if (getContext() != null) {
                         ShakeManager.with((getContext())).cancel();
-                        getContext().stopService(new Intent(getContext(), ScanBluetoothService.class));
+//                        getContext().stopService(new Intent(getContext(), ScanBluetoothService.class));
                     }
                 }
             } else if (o instanceof OpenDoorResult) {

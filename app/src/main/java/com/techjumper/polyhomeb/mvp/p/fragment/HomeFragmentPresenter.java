@@ -131,10 +131,10 @@ public class HomeFragmentPresenter extends AppBaseFragmentPresenter<HomeFragment
                                 getView().getActivity().startService(new Intent(getView().getActivity(), ScanBluetoothService.class));
                             }
                         } else {
-                            JLog.d("ViewHolder发来的消息：没有搜索到设备，需要取消注册摇一摇或者关闭定时扫描服务");
+                            JLog.d("ViewHolder发来的消息：没有搜索到设备，需要取消注册摇一摇但是不关闭扫描服务");
                             if (getView().getActivity() != null) {
                                 ShakeManager.with(getView().getActivity()).cancel();
-                                getView().getActivity().stopService(new Intent(getView().getActivity(), ScanBluetoothService.class));
+//                                getView().getActivity().stopService(new Intent(getView().getActivity(), ScanBluetoothService.class));
                             }
                         }
                     }
