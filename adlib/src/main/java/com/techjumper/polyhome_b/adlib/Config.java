@@ -10,7 +10,7 @@ public class Config {
     /**
      * 是否是调试环境
      */
-    public static final boolean DEBUG = true;
+    public static final boolean DEBUG = false;
 
     public static String sHost;
     public static String sJujia;

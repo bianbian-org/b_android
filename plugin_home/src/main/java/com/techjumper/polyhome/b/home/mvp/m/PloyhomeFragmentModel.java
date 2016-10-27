@@ -1,5 +1,6 @@
 package com.techjumper.polyhome.b.home.mvp.m;
 
+import android.content.Context;
 import android.util.Log;
 
 import com.techjumper.commonres.entity.BaseArgumentsEntity;
@@ -10,6 +11,7 @@ import com.techjumper.commonres.entity.TrueEntity;
 import com.techjumper.commonres.util.StringUtil;
 import com.techjumper.corelib.mvp.model.BaseModel;
 import com.techjumper.corelib.rx.tools.CommonWrap;
+import com.techjumper.corelib.utils.Utils;
 import com.techjumper.lib2.others.KeyValuePair;
 import com.techjumper.lib2.utils.RetrofitHelper;
 import com.techjumper.polyhome.b.home.UserInfoManager;
@@ -42,7 +44,7 @@ public class PloyhomeFragmentModel extends BaseModel<PloyhomeFragmentPresenter> 
     }
 
     public Observable<HeartbeatEntity> submitOnline() {
-        KeyValuePair keyValuePair = KeyValueCreator.submitOnline(UserInfoManager.getFamilyId(), StringUtil.getMacAddress());
+        KeyValuePair keyValuePair = KeyValueCreator.submitOnline(UserInfoManager.getFamilyId(), StringUtil.getMacAddress(), StringUtil.getVersion(Utils.appContext));
         BaseArgumentsEntity argument = NetHelper.createBaseArguments(keyValuePair);
         Log.d("submitOnline", "familyId: " + UserInfoManager.getFamilyId() + "  deviceId: " + StringUtil.getMacAddress());
         return RetrofitHelper.<ServiceAPI>createDefault()

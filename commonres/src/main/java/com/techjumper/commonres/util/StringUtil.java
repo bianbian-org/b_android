@@ -1,5 +1,8 @@
 package com.techjumper.commonres.util;
 
+import android.content.Context;
+import android.content.pm.PackageManager;
+
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
@@ -35,5 +38,17 @@ public class StringUtil {
         }
         reader.close();
         return fileData.toString();
+    }
+
+    public static String getVersion(Context context) {
+        String version = "";
+        PackageManager manager = context.getPackageManager();
+        try {
+            version = context.getPackageName() + "_" + manager.getPackageInfo(context.getPackageName(), 0).versionCode;
+        } catch (PackageManager.NameNotFoundException e) {
+            e.printStackTrace();
+        }
+
+        return version;
     }
 }
