@@ -15,19 +15,15 @@ import android.graphics.Rect;
 import android.graphics.RectF;
 import android.os.Handler;
 import android.os.Message;
-import android.support.annotation.Nullable;
 import android.text.TextUtils;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
-
 import com.techjumper.polyhome.slide2unlock.R;
 import com.techjumper.polyhome.slide2unlock.interfaces.IUnLockViewState;
 import com.techjumper.polyhome.slide2unlock.interpolator.Easing;
 import com.techjumper.polyhome.slide2unlock.interpolator.RPInterpolator;
 import com.techjumper.polyhome.slide2unlock.view.enums.LockViewResult;
-import com.techjumper.polyhome.slide2unlock.view.enums.TextStyle;
 
 import java.util.Timer;
 import java.util.TimerTask;
@@ -50,7 +46,6 @@ public class Slide2UnlockView extends View {
     private RectF mInsideLeftRect = new RectF();
     private RectF mInsideRightRect = new RectF();
     private Rect mTextBounds = new Rect();
-    private TextStyle mStyle = TextStyle.NORMAL;
     //锁圆圈图片
     private int mLockPicDefault, mLockPicSuccess, mLockPicFailed, mLockPicUnusable;
     //通过mLockPic得到的bitmap
@@ -230,28 +225,6 @@ public class Slide2UnlockView extends View {
         mTextPaint.setTextAlign(Paint.Align.LEFT);
     }
 
-//    private LinearGradient mLinearGradient;
-//    private Matrix mGradientMatrix;
-//    private int mViewWidth = 0;
-//    private int mTranslate = 0;
-//    private int mMatrixColor;
-//    private boolean mAnimating = true;
-//
-//    @Override
-//    protected void onSizeChanged(int w, int h, int oldw, int oldh) {
-//        super.onSizeChanged(w, h, oldw, oldh);
-//        if (mViewWidth == 0) {
-//            mViewWidth = getMeasuredWidth();
-//            if (mViewWidth > 0) {
-//                mLinearGradient = new LinearGradient(mViewWidth, 0, 0, 0,
-//                        new int[]{mMatrixColor, 0xffffffff, mMatrixColor},
-//                        new float[]{0, 0.5f, 1}, Shader.TileMode.CLAMP);
-//                mTextPaint.setShader(mLinearGradient);
-//                mGradientMatrix = new Matrix();
-//            }
-//        }
-//    }
-
     @Override
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
         super.onMeasure(widthMeasureSpec, heightMeasureSpec);
@@ -344,24 +317,6 @@ public class Slide2UnlockView extends View {
     private void drawText(Canvas canvas) {
         //绘制文字
         if (!TextUtils.isEmpty(mTextDefault)) {
-            switch (mStyle) {
-                case NORMAL:
-//                    mTextPaint.setShader(null);
-                    break;
-                case IOS6:
-//                    if (mAnimating && mGradientMatrix != null) {
-//                        mTranslate += mViewWidth / 15;
-//                        if (mTranslate > 2 * mViewWidth) {
-//                            mTranslate = -mViewWidth;
-//                        }
-//                        mGradientMatrix.setTranslate(mTranslate, 0);
-//                        mLinearGradient.setLocalMatrix(mGradientMatrix);
-//                        postInvalidateDelayed(50);
-//                    }
-                    break;
-                case LYRIC:
-                    break;
-            }
             mTextPaint.getTextBounds(mTextDefault, 0, mTextDefault.length(), mTextBounds);
             Paint.FontMetricsInt fontMetrics = mTextPaint.getFontMetricsInt();
             float baseline = (mHeight - fontMetrics.bottom + fontMetrics.top) / 2 - fontMetrics.top;
@@ -577,7 +532,6 @@ public class Slide2UnlockView extends View {
         this.mIsUsable = isUsable;
         if (isUsable) {
             //以下属性恢复
-//            setTextStyle(mStyle);
             mOutSideStrokePaint.setColor(mOutsideStrokeDefaultColor);
             mInsideRightPaint.setColor(mInsideRightDefaultBgColor);
             mOutSidePaint.setColor(mOutsideDefaultBgColor);
@@ -592,7 +546,6 @@ public class Slide2UnlockView extends View {
             //内圈颜色设置为灰色
             //圆圈图片设置为灰色
             //文字设置为灰色,且没有特效
-//            setTextStyle(TextStyle.NORMAL);
             mOutSideStrokePaint.setColor(0xFF979797);
             mInsideRightPaint.setColor(Color.WHITE);
             mOutSidePaint.setColor(Color.WHITE);
@@ -679,15 +632,11 @@ public class Slide2UnlockView extends View {
         this.mText = mText;
     }
 
-    public void setTextStyle(TextStyle style) {
-        this.mStyle = style;
-    }
-
     public boolean isUsable() {
         return mIsUsable;
     }
 
-    public void autoUnlock(long time, @Nullable Easing easing) {
+    public void autoUnlock(long time,Easing easing) {
         if (mLockPicSuccess == -1)
             throw new RuntimeException("并没有设置解锁成功后的圆圈图片");
         if (mLockPicFailed == -1)
@@ -764,7 +713,6 @@ public class Slide2UnlockView extends View {
 
     private void processSuccess() {
         mTextPaint.setColor(mTextSuccessColor);
-//        mMatrixColor = mTextSuccessColor;
         mInsideRightPaint.setColor(mInsideRightSuccessBgColor);
         mInsideLeftPaint.setColor(mInsideLeftSuccessBgColor);
         mOutSidePaint.setColor(mOutsideSuccessBgColor);
@@ -778,7 +726,6 @@ public class Slide2UnlockView extends View {
 
     private void processFailed() {
         mTextPaint.setColor(mTextFailedColor);
-//        mMatrixColor = mTextFailedColor;
         mInsideRightPaint.setColor(mInsideRightFailedBgColor);
         mInsideLeftPaint.setColor(mInsideLeftFailedBgColor);
         mOutSidePaint.setColor(mOutsideFailedBgColor);
@@ -792,7 +739,6 @@ public class Slide2UnlockView extends View {
 
     private void processDefault() {
         mTextPaint.setColor(mTextDefaultColor);
-//        mMatrixColor = mTextDefaultColor;
         mInsideRightPaint.setColor(mInsideRightDefaultBgColor);
         mInsideLeftPaint.setColor(mInsideLeftDefaultBgColor);
         mOutSidePaint.setColor(mOutsideDefaultBgColor);

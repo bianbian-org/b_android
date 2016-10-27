@@ -97,6 +97,9 @@ public class PayManager {
             ToastUtils.show(context.getString(R.string.pay_order_info));
             return;
         }
+        if (onPayListener != null) {
+            weChatPay.setListener(onPayListener);
+        }
         weChatPay.pay();
     }
 

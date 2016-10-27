@@ -2,13 +2,17 @@ package com.techjumper.polyhomeb.other;
 
 import android.app.Activity;
 import android.os.Bundle;
+import android.os.Handler;
 import android.text.TextUtils;
 import android.webkit.JavascriptInterface;
 
 import com.techjumper.corelib.rx.tools.RxBus;
 import com.techjumper.corelib.utils.common.AcHelper;
+import com.techjumper.corelib.utils.window.ToastUtils;
 import com.techjumper.lib2.utils.GsonUtils;
+import com.techjumper.polyhome.paycorelib.OnPayListener;
 import com.techjumper.polyhomeb.Constant;
+import com.techjumper.polyhomeb.R;
 import com.techjumper.polyhomeb.entity.JSH5PaymentsEntity;
 import com.techjumper.polyhomeb.entity.JSJavaBaseEntity;
 import com.techjumper.polyhomeb.entity.JSJavaImageViewEntity;
@@ -21,6 +25,7 @@ import com.techjumper.polyhomeb.mvp.p.activity.LoginActivityPresenter;
 import com.techjumper.polyhomeb.mvp.v.activity.LoginActivity;
 import com.techjumper.polyhomeb.mvp.v.activity.ReplyCommentActivity;
 import com.techjumper.polyhomeb.mvp.v.activity.ReplyDetailActivity;
+import com.techjumper.polyhomeb.mvp.v.activity.TabHomeActivity;
 import com.techjumper.polyhomeb.mvp.v.activity.WebViewShowBigPicActivity;
 import com.techjumper.polyhomeb.user.UserManager;
 
@@ -199,8 +204,39 @@ public class JavascriptObject {
                 break;
             case 4:
                 break;
+            default:
+                break;
         }
-        PayManager.with().loadPay(null, mActivity, type, entity);
+        PayManager.with().loadPay(new OnPayListener() {
+            @Override
+            public void onSuccess() {
+                ToastUtils.show(mActivity.getString(R.string.result_pay_success));
+                new Handler().postDelayed(() -> {
+                    if (mActivity != null) {
+                        new AcHelper.Builder(mActivity)
+                                .closeCurrent(true)
+                                .exitAnim(R.anim.fade_out)
+                                .target(TabHomeActivity.class)
+                                .start();
+                    }
+                }, 1500);
+            }
+
+            @Override
+            public void onCancel() {
+                ToastUtils.show(mActivity.getString(R.string.result_pay_cancel));
+            }
+
+            @Override
+            public void onWait() {
+                ToastUtils.show(mActivity.getString(R.string.result_pay_wait));
+            }
+
+            @Override
+            public void onFailed() {
+                ToastUtils.show(mActivity.getString(R.string.result_pay_failed));
+            }
+        }, mActivity, type, entity);
     }
 
 }

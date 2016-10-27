@@ -72,6 +72,7 @@ public abstract class AppBaseActivity<T extends AppBaseActivityPresenter> extend
     @Override
     public void setSwipeBackEnable(boolean enable) {
         getSwipeBackLayout().setEnableGesture(enable);
+
     }
 
     @Override
@@ -101,6 +102,7 @@ public abstract class AppBaseActivity<T extends AppBaseActivityPresenter> extend
             mHelper.onActivityCreate();
             mSwipeBackLayout = getSwipeBackLayout();
             mSwipeBackLayout.setEdgeTrackingEnabled(SwipeBackLayout.EDGE_LEFT);
+            mSwipeBackLayout.setEdgeSize(20);
         }
 
         /**************************compile 'com.r0adkll:slidableactivity:2.0.5'侧滑库***********************/

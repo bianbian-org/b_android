@@ -122,7 +122,6 @@ public class AdjustAccountsActivityPresenter extends AppBaseActivityPresenter<Ad
                         }));
     }
 
-    //paymentsEntity.getData()不会为null，因为在走到这一步的时候就已经判断过了。
     private void loadPay(PaymentsEntity paymentsEntity) {
 //        switch (mCurrentPayment) {
 //            case Constant.TENCENT_PAY:
@@ -141,7 +140,7 @@ public class AdjustAccountsActivityPresenter extends AppBaseActivityPresenter<Ad
 
     @Override
     public void onSuccess() {
-        ToastUtils.show("成功");
+        ToastUtils.show(getView().getString(R.string.result_pay_success));
         Bundle bundle = new Bundle();
         bundle.putInt(Constant.PAYMENT_WAY, mCurrentPayment);  //支付方式
         bundle.putString(Constant.KEY_PAY_NAME, getPayName()); //费用名称
@@ -152,18 +151,18 @@ public class AdjustAccountsActivityPresenter extends AppBaseActivityPresenter<Ad
 
     @Override
     public void onCancel() {
-        ToastUtils.show("取消");
+        ToastUtils.show(getView().getString(R.string.result_pay_cancel));
         PayManager.with().onDestroy();
     }
 
     @Override
     public void onWait() {
-        ToastUtils.show("等待");
+        ToastUtils.show(getView().getString(R.string.result_pay_wait));
     }
 
     @Override
     public void onFailed() {
-        ToastUtils.show("失败");
+        ToastUtils.show(getView().getString(R.string.result_pay_failed));
         PayManager.with().onDestroy();
     }
 

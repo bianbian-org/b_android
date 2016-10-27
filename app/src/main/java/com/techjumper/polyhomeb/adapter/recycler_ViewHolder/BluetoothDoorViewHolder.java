@@ -87,8 +87,7 @@ public class BluetoothDoorViewHolder extends BaseRecyclerViewHolder<BluetoothDat
             } else if (o instanceof OpenDoorResult) {
                 //接收开锁成功或者失败的回调
                 OpenDoorResult result = (OpenDoorResult) o;
-                boolean result1 = result.isResult();
-                if (result1) {
+                if (result.isResult()) {
                     mView.unLockResult(LockViewResult.SUCCESS);
                 } else {
                     mView.unLockResult(LockViewResult.FAILED);

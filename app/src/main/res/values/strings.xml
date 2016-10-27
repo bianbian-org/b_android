@@ -360,6 +360,10 @@
     <string name="ble_start_unlock">开始解锁</string>
     <string name="ble_unlocking">正在解锁中</string>
     <string name="ble_shake_to_unlock">摇一摇开锁中...</string>
+    <string name="result_pay_success">支付成功</string>
+    <string name="result_pay_cancel">支付取消</string>
+    <string name="result_pay_wait">支付等待</string>
+    <string name="result_pay_failed">支付失败</string>
 
 
 </resources>

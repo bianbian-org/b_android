@@ -114,7 +114,7 @@ public class HomeFragment extends AppBaseFragment<HomeFragmentPresenter>
 
     @Override
     public void onSensorChange(float force) {
-        if (force > 35 && !isFastDoubleClick()) {
+        if (force > 45 && !isFastDoubleClick()) {
             if (getActivity() != null) {
                 getActivity().stopService(new Intent(getActivity(), ScanBluetoothService.class));
             }
