@@ -10,6 +10,7 @@ import com.techjumper.corelib.utils.window.DialogUtils;
 import com.techjumper.polyhomeb.Config;
 import com.techjumper.polyhomeb.R;
 import com.techjumper.polyhomeb.manager.PolyPluginManager;
+import com.techjumper.polyhomeb.mvp.v.activity.AboutUsActivity;
 import com.techjumper.polyhomeb.mvp.v.activity.LoginActivity;
 import com.techjumper.polyhomeb.mvp.v.activity.SettingActivity;
 import com.techjumper.polyhomeb.user.UserManager;
@@ -39,7 +40,7 @@ public class SettingActivityPresenter extends AppBaseActivityPresenter<SettingAc
 
     }
 
-    @OnClick({R.id.tv_logout, R.id.layout_cache, R.id.tv_uninstall_smarthome})
+    @OnClick({R.id.tv_logout, R.id.layout_cache, R.id.tv_uninstall_smarthome, R.id.tv_about})
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.tv_logout:
@@ -50,6 +51,9 @@ public class SettingActivityPresenter extends AppBaseActivityPresenter<SettingAc
                 break;
             case R.id.tv_uninstall_smarthome:
                 mPluginManager.uninstallCPlugin();
+                break;
+            case R.id.tv_about:
+                aboutUs();
                 break;
         }
     }
@@ -96,5 +100,9 @@ public class SettingActivityPresenter extends AppBaseActivityPresenter<SettingAc
 
     public PolyPluginManager getPluginManager() {
         return mPluginManager;
+    }
+
+    private void aboutUs() {
+        new AcHelper.Builder(getView()).target(AboutUsActivity.class).start();
     }
 }
