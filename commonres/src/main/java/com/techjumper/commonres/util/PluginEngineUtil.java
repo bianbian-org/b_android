@@ -4,7 +4,7 @@ import android.os.Bundle;
 
 import com.techjumper.commonres.ComConstant;
 import com.techjumper.commonres.PluginConstant;
-import com.techjumper.commonres.UserInfoEntity;
+import com.techjumper.commonres.entity.UserInfoEntity;
 import com.techjumper.plugincommunicateengine.HostDataBuilder;
 import com.techjumper.plugincommunicateengine.PluginEngine;
 

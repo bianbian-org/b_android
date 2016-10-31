@@ -3,19 +3,6 @@ package com.techjumper.polyhome.b.home.receiver;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
-import android.os.Bundle;
-import android.util.Log;
-
-import com.techjumper.commonres.UserInfoEntity;
-import com.techjumper.commonres.entity.event.UserInfoEvent;
-import com.techjumper.corelib.rx.tools.RxBus;
-import com.techjumper.plugincommunicateengine.PluginEngine;
-import com.techjumper.plugincommunicateengine.entity.core.SaveInfoEntity;
-import com.techjumper.plugincommunicateengine.utils.GsonUtils;
-import com.techjumper.polyhome.b.home.UserInfoManager;
-
-import java.util.HashMap;
-import java.util.Map;
 
 /**
  * Created by kevin on 16/7/5.

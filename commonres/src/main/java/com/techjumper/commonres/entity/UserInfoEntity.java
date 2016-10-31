@@ -1,4 +1,4 @@
-package com.techjumper.commonres;
+package com.techjumper.commonres.entity;
 
 /**
  * Created by kevin on 16/6/22.

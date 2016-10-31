@@ -64,4 +64,9 @@ public class KeyValueCreator {
                 .put("family_id", family_id)
                 .put("json", timer);
     }
+
+    public static KeyValuePair getUserInfo(String mac) {
+        return newPair()
+                .put("mac", mac);
+    }
 }

@@ -6,6 +6,7 @@ import android.util.Log;
 import com.techjumper.commonres.entity.BaseArgumentsEntity;
 import com.techjumper.commonres.entity.HeartbeatEntity;
 import com.techjumper.commonres.entity.TrueEntity;
+import com.techjumper.commonres.entity.UserEntity;
 import com.techjumper.commonres.util.StringUtil;
 import com.techjumper.corelib.mvp.model.BaseModel;
 import com.techjumper.corelib.rx.tools.CommonWrap;
@@ -52,6 +53,12 @@ public class MainActivityModel extends BaseModel<MainActivityPresenter> {
         BaseArgumentsEntity argument = NetHelper.createBaseArguments(keyValuePair);
         return RetrofitHelper.<ServiceAPI>createDefault()
                 .submitTimer(argument)
+                .compose(CommonWrap.wrap());
+    }
+
+    public Observable<UserEntity> getUserInfo() {
+        return RetrofitHelper.<ServiceAPI>createDefault()
+                .getUserInfo(NetHelper.createBaseArgumentsMap(KeyValueCreator.getUserInfo(StringUtil.getMacAddress())))
                 .compose(CommonWrap.wrap());
     }
 }

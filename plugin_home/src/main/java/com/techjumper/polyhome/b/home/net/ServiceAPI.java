@@ -6,6 +6,7 @@ import com.techjumper.commonres.entity.HeartbeatEntity;
 import com.techjumper.commonres.entity.InfoEntity;
 import com.techjumper.commonres.entity.NoticeEntity;
 import com.techjumper.commonres.entity.TrueEntity;
+import com.techjumper.commonres.entity.UserEntity;
 import com.techjumper.commonres.entity.WeatherEntity;
 
 import java.util.Map;
@@ -44,4 +45,7 @@ public interface ServiceAPI {
 
     @POST("module_statistics")
     Observable<TrueEntity> submitTimer(@Body BaseArgumentsEntity entity);
+
+    @GET("family/info")
+    Observable<UserEntity> getUserInfo(@QueryMap Map<String, String> map);
 }
