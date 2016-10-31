@@ -3,31 +3,19 @@ package com.techjumper.polyhome.b.property.mvp.p.activity;
 import android.os.Bundle;
 import android.util.Log;
 
-import com.techjumper.commonres.UserInfoEntity;
 import com.techjumper.commonres.entity.event.BackEvent;
 import com.techjumper.commonres.entity.event.HeartbeatEvent;
-import com.techjumper.commonres.entity.event.PropertyActionEvent;
 import com.techjumper.commonres.entity.event.PropertyListEvent;
 import com.techjumper.commonres.entity.event.TimeEvent;
-import com.techjumper.commonres.entity.event.UserInfoEvent;
 import com.techjumper.commonres.util.CommonDateUtil;
-import com.techjumper.commonres.util.PluginEngineUtil;
 import com.techjumper.corelib.rx.tools.RxBus;
-import com.techjumper.corelib.rx.tools.SchedulersCompat;
-import com.techjumper.plugincommunicateengine.PluginEngine;
-import com.techjumper.plugincommunicateengine.entity.core.SaveInfoEntity;
-import com.techjumper.plugincommunicateengine.utils.GsonUtils;
 import com.techjumper.polyhome.b.property.R;
-import com.techjumper.polyhome.b.property.UserInfoManager;
 import com.techjumper.polyhome.b.property.mvp.v.activity.MainActivity;
 
-import java.util.HashMap;
-import java.util.Map;
 import java.util.Timer;
 import java.util.TimerTask;
 
 import butterknife.OnClick;
-import rx.Scheduler;
 import rx.android.schedulers.AndroidSchedulers;
 
 /**

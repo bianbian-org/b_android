@@ -1,6 +1,6 @@
 package com.techjumper.polyhome.b.property;
 
-import com.techjumper.commonres.UserInfoEntity;
+import com.techjumper.commonres.entity.UserInfoEntity;
 import com.techjumper.corelib.utils.file.PreferenceUtils;
 
 /**

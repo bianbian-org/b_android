@@ -12,11 +12,12 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 
 import com.techjumper.commonres.ComConstant;
-import com.techjumper.commonres.UserInfoEntity;
+import com.techjumper.commonres.entity.UserInfoEntity;
 import com.techjumper.commonres.entity.HeartbeatEntity;
 import com.techjumper.commonres.entity.MedicalEntity;
 import com.techjumper.commonres.entity.TimerClickEntity;
 import com.techjumper.commonres.entity.TrueEntity;
+import com.techjumper.commonres.entity.UserEntity;
 import com.techjumper.commonres.entity.event.AdClickEvent;
 import com.techjumper.commonres.entity.event.AdControllerEvent;
 import com.techjumper.commonres.entity.event.AdMainEvent;
@@ -31,7 +32,6 @@ import com.techjumper.commonres.entity.event.UserInfoEvent;
 import com.techjumper.commonres.util.CommonDateUtil;
 import com.techjumper.commonres.util.PluginEngineUtil;
 import com.techjumper.corelib.rx.tools.RxBus;
-import com.techjumper.corelib.rx.tools.RxUtils;
 import com.techjumper.corelib.utils.Utils;
 import com.techjumper.corelib.utils.basic.NumberUtil;
 import com.techjumper.corelib.utils.common.JLog;
@@ -48,7 +48,6 @@ import com.techjumper.polyhome.b.home.db.util.AdClickDbUtil;
 import com.techjumper.polyhome.b.home.mvp.m.MainActivityModel;
 import com.techjumper.polyhome.b.home.mvp.p.fragment.PloyhomeFragmentPresenter;
 import com.techjumper.polyhome.b.home.mvp.v.activity.AdDetailActivity;
-import com.techjumper.polyhome.b.home.mvp.v.activity.JujiaActivity;
 import com.techjumper.polyhome.b.home.mvp.v.activity.MainActivity;
 import com.techjumper.polyhome.b.home.tool.AlarmManagerUtil;
 import com.techjumper.polyhome.b.home.widget.MyVideoView;
@@ -66,7 +65,6 @@ import java.util.Map;
 import java.util.TimeZone;
 import java.util.Timer;
 import java.util.TimerTask;
-import java.util.concurrent.TimeUnit;
 
 import butterknife.OnClick;
 import rx.Subscriber;
@@ -240,7 +238,7 @@ public class MainActivityPresenter extends AppBaseActivityPresenter<MainActivity
             it.putExtra("com.dnake.talk", "CallingActivity");
             getView().startActivity(it);
             submitTimer();
-        }catch (Exception e){
+        } catch (Exception e) {
             ToastUtils.show("无法打开对讲");
         }
     }
@@ -323,6 +321,7 @@ public class MainActivityPresenter extends AppBaseActivityPresenter<MainActivity
     @Override
     public void onViewInited(Bundle savedInstanceState) {
         submitOnline();
+        getUserInfo();
 
         totalTime = System.currentTimeMillis() / 1000;
         Log.d("submitOnline", "当前时间" + totalTime);
@@ -610,6 +609,40 @@ public class MainActivityPresenter extends AppBaseActivityPresenter<MainActivity
                             return;
 
                         Log.d("timerClick", "上传成功了");
+                    }
+                }));
+    }
+
+    private void getUserInfo() {
+        addSubscription(mainActivityModel.getUserInfo()
+                .subscribe(new Subscriber<UserEntity>() {
+                    @Override
+                    public void onCompleted() {
+
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        getView().showError(e);
+                    }
+
+                    @Override
+                    public void onNext(UserEntity userEntity) {
+                        if (!processNetworkResult(userEntity, false))
+                            return;
+
+                        if (userEntity == null ||
+                                userEntity.getData() == null)
+                            return;
+
+                        Log.d("UserInfoEntity", "获取用户信息id" + userEntity.getData().getId());
+                        Log.d("UserInfoEntity", "获取用户信息familyname" + userEntity.getData().getFamily_name());
+                        Log.d("UserInfoEntity", "获取用户信息ticket" + userEntity.getData().getTicket());
+                        Log.d("UserInfoEntity", "获取用户信息hasbinding" + userEntity.getData().getHas_binding());
+                        Log.d("UserInfoEntity", "获取用户信息userid" + userEntity.getData().getUser_id());
+
+                        UserInfoEntity userInfoEntity = userEntity.getData();
+                        UserInfoManager.saveUserInfo(userInfoEntity);
                     }
                 }));
     }
