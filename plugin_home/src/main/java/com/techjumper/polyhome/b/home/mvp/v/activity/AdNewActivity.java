@@ -154,7 +154,7 @@ public class AdNewActivity extends AppBaseActivity<AdNewActivityPresenter> imple
                                 }
                             }
                         }
-                        adController.startAdTimer(AdController.TYPE_HOME, adViewPager.getCurrentItem());
+                        adController.startAdTimer(AdController.TYPE_HOME, currentPage);
                         break;
                 }
                 return false;
@@ -263,7 +263,7 @@ public class AdNewActivity extends AppBaseActivity<AdNewActivityPresenter> imple
                             } else {
                                 currentPage = 0;
                             }
-                            adViewPager.setCurrentItem(currentPage);
+                            adViewPager.setCurrentItem(currentPage, false);
                             mAdsEntity = adsEntity;
                             Log.d("ad15", "第一次page:" + currentPage);
                             isFirst = false;
@@ -352,6 +352,7 @@ public class AdNewActivity extends AppBaseActivity<AdNewActivityPresenter> imple
                 }
             }
         }
+        currentPage = position;
     }
 
     @Override

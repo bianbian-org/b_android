@@ -367,7 +367,7 @@ public class PloyhomeFragmentPresenter extends AppBaseFragmentPresenter<Ployhome
                             intent.putExtra(AdNewActivity.TIME, heartbeatTime);
                             getView().getActivity().startActivity(intent);
                         }
-                        adController.startAdTimer(AdController.TYPE_HOME, adViewPager.getCurrentItem());
+                        adController.startAdTimer(AdController.TYPE_HOME, currentPage);
                         break;
                 }
                 return false;
@@ -942,6 +942,7 @@ public class PloyhomeFragmentPresenter extends AppBaseFragmentPresenter<Ployhome
                 }
             }
         }
+        currentPage = position;
     }
 
     @Override
