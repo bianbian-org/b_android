@@ -34,8 +34,6 @@ public class HomeFragmentModel extends BaseModel<HomeFragmentPresenter> {
 
     public List<DisplayBean> initPropertyData() {
 
-        boolean supportBLEDoor = UserManager.INSTANCE.isCurrentCommunitySupportBLEDoor();
-
         //大分割线
         PropertyRepairBigDividerData propertyRepairBigDividerData = new PropertyRepairBigDividerData();
         PropertyRepairBigDividerBean propertyRepairBigDividerBean = new PropertyRepairBigDividerBean(propertyRepairBigDividerData);
@@ -53,13 +51,12 @@ public class HomeFragmentModel extends BaseModel<HomeFragmentPresenter> {
         ViewPagerDataBean viewPagerDataBean = new ViewPagerDataBean(data);
         displayBeans.add(viewPagerDataBean);
 
-        if (supportBLEDoor) {
-            //蓝牙开锁部分的item    item = 1
-            BluetoothData bluetoothData = new BluetoothData();
-            bluetoothData.setInfosBeen(UserManager.INSTANCE.getBLEInfo());
-            BluetoothBean bluetoothBean = new BluetoothBean(bluetoothData);
-            displayBeans.add(bluetoothBean);
-        }
+        //蓝牙开锁部分的item    item = 1
+        BluetoothData bluetoothData = new BluetoothData();
+        bluetoothData.setInfosBeen(UserManager.INSTANCE.getBLEInfo());
+        bluetoothData.setShow(UserManager.INSTANCE.isCurrentCommunitySupportBLEDoor());
+        BluetoothBean bluetoothBean = new BluetoothBean(bluetoothData);
+        displayBeans.add(bluetoothBean);
 
         //增加 物业 部分的数据    item = 2
         PropertyData propertyData = new PropertyData();

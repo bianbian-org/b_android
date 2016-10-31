@@ -2,6 +2,8 @@ package com.techjumper.polyhomeb.utils;
 
 import android.graphics.Bitmap;
 
+import com.techjumper.corelib.utils.file.FileUtils;
+
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
@@ -18,13 +20,10 @@ public class PicUtils {
     /**
      * 将bitmap保存为本地图片
      */
-
-    public static String savePhoto(Bitmap photoBitmap, String path,
-                                   String photoName) {
+    public static String savePhoto(Bitmap photoBitmap, String path, String photoName) {
 
         String localPath = null;
-        if (android.os.Environment.getExternalStorageState().equals(
-                android.os.Environment.MEDIA_MOUNTED)) {
+        if (FileUtils.isSDCardMounted()) {
             File dir = new File(path);
             if (!dir.exists()) {
                 dir.mkdirs();

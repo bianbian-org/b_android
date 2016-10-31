@@ -298,9 +298,8 @@
             android:windowSoftInputMode="stateHidden|adjustPan" />
 
         <service android:name=".service.CountdownService" />
-
         <service android:name=".service.ScanBluetoothService" />
-
+        <service android:name=".service.UpdateService" />
 
     </application>
 

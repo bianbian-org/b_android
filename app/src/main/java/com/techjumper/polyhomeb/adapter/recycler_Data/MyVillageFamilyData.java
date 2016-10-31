@@ -1,5 +1,9 @@
 package com.techjumper.polyhomeb.adapter.recycler_Data;
 
+import com.techjumper.polyhomeb.entity.UserFamiliesAndVillagesEntity;
+
+import java.util.List;
+
 /**
  * * * * * * * * * * * * * * * * * * * * * * *
  * Created by lixin
@@ -11,9 +15,17 @@ public class MyVillageFamilyData {
     private int family_id;
     private boolean choosed;
     private String name;
-    private int verified;
     private int isFamilyData;  //0是家庭  1是小区
     private int villageId;
+    private  List<UserFamiliesAndVillagesEntity.DataBean.VillageInfosBean.RoomsBean> rooms;
+
+    public List<UserFamiliesAndVillagesEntity.DataBean.VillageInfosBean.RoomsBean> getRooms() {
+        return rooms;
+    }
+
+    public void setRooms(List<UserFamiliesAndVillagesEntity.DataBean.VillageInfosBean.RoomsBean> rooms) {
+        this.rooms = rooms;
+    }
 
     public int getVillageId() {
         return villageId;
@@ -45,14 +57,6 @@ public class MyVillageFamilyData {
 
     public void setName(String name) {
         this.name = name;
-    }
-
-    public int getVerified() {
-        return verified;
-    }
-
-    public void setVerified(int verified) {
-        this.verified = verified;
     }
 
     public int getFamily_id() {

@@ -38,7 +38,8 @@ public class Config {
      * 在SD空间的文件夹名字,以及文件夹内部的头像文件夹名称以及log文件夹名称
      */
     public static final String sParentDirName = "polyhomeb";
-    public static final String sAvatarsDirName = "avatars";
+    public static final String sAPKDirName = "apk";
+    public static final String sAvatarsDirName = ".avatars";
     public static final String sLogDirName = "log";
 
     /**
@@ -55,8 +56,6 @@ public class Config {
      * 默认数据库的版本
      */
     public static final int DEFAULT_DB_VERSION = 1;
-
-
 
 
 }

@@ -17,6 +17,7 @@ import com.techjumper.polyhomeb.entity.PropertyRepairEntity;
 import com.techjumper.polyhomeb.entity.QueryFamilyEntity;
 import com.techjumper.polyhomeb.entity.SectionsEntity;
 import com.techjumper.polyhomeb.entity.TrueEntity;
+import com.techjumper.polyhomeb.entity.UpdateInfoEntity;
 import com.techjumper.polyhomeb.entity.UploadPicEntity;
 import com.techjumper.polyhomeb.entity.UserFamiliesAndVillagesEntity;
 import com.techjumper.polyhomeb.entity.VillageEntity;
@@ -29,6 +30,7 @@ import com.techjumper.polyhomeb.entity.medicalEntity.MedicalVerificationCodeEnti
 
 import java.util.Map;
 
+import okhttp3.ResponseBody;
 import retrofit2.adapter.rxjava.Result;
 import retrofit2.http.Body;
 import retrofit2.http.GET;
@@ -36,6 +38,8 @@ import retrofit2.http.Header;
 import retrofit2.http.POST;
 import retrofit2.http.Path;
 import retrofit2.http.QueryMap;
+import retrofit2.http.Streaming;
+import retrofit2.http.Url;
 import rx.Observable;
 
 /**
@@ -553,6 +557,19 @@ public interface ServiceAPI {
 
     @POST("family_query")
     Observable<QueryFamilyEntity> queryFamilyInfo(@Body BaseArgumentsEntity entity);
+
+    /**
+     * 检查更新
+     */
+    @GET("update/apk")
+    Observable<UpdateInfoEntity> getAppUpdateInfo(@QueryMap Map<String, String> map);
+
+    /**
+     * 下载新版本apk
+     */
+    @Streaming
+    @GET
+    Observable<ResponseBody> downloadNewApk(@Url String url);
 
 /*********************************************************医疗接口*********************************************************/
 

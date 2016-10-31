@@ -8,6 +8,7 @@ import android.webkit.JavascriptInterface;
 
 import com.techjumper.corelib.rx.tools.RxBus;
 import com.techjumper.corelib.utils.common.AcHelper;
+import com.techjumper.corelib.utils.common.JLog;
 import com.techjumper.corelib.utils.window.ToastUtils;
 import com.techjumper.lib2.utils.GsonUtils;
 import com.techjumper.polyhome.paycorelib.OnPayListener;
@@ -44,6 +45,22 @@ public class JavascriptObject {
     public JavascriptObject(Activity mActivity) {
         this.mActivity = mActivity;
     }
+
+    private boolean isFastDoubleClick(String url) {
+        long time = System.currentTimeMillis();
+        long timeD = time - lastClickTime;
+        boolean flag = this.url.equalsIgnoreCase(url);
+        if (0 < timeD && timeD < 300 && flag) {
+            this.url = url;
+            return true;
+        }
+        this.url = url;
+        lastClickTime = time;
+        return false;
+    }
+
+    private String url = "";
+    private long lastClickTime;
 
     /**
      * 跳转界面:回复评论,帖子详情
@@ -123,7 +140,7 @@ public class JavascriptObject {
      */
     @JavascriptInterface
     public void postMessage(String json) {
-
+        JLog.e(json);
         if (TextUtils.isEmpty(json)) return;
         JSJavaBaseEntity baseEntity = GsonUtils.fromJson(json, JSJavaBaseEntity.class);
         if (baseEntity == null) return;
@@ -135,7 +152,9 @@ public class JavascriptObject {
                 JSJavaPageJumpEntity jsJavaPageJumpEntity = GsonUtils.fromJson(json, JSJavaPageJumpEntity.class);
                 JSJavaPageJumpEntity.ParamsBean params = jsJavaPageJumpEntity.getParams();
                 String url = params.getUrl();
-                pageJump(url);
+                if (!isFastDoubleClick(url)) {
+                    pageJump(url);
+                }
                 break;
             case "ImageView":
                 JSJavaImageViewEntity jsJavaImageViewEntity = GsonUtils.fromJson(json, JSJavaImageViewEntity.class);

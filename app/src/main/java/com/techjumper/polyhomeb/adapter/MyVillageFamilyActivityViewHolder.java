@@ -9,8 +9,11 @@ import com.techjumper.corelib.rx.tools.RxBus;
 import com.techjumper.lib2.utils.PicassoHelper;
 import com.techjumper.polyhomeb.R;
 import com.techjumper.polyhomeb.adapter.recycler_Data.MyVillageFamilyData;
+import com.techjumper.polyhomeb.entity.UserFamiliesAndVillagesEntity;
 import com.techjumper.polyhomeb.entity.event.ChooseFamilyVillageEvent;
 import com.techjumper.polyhomeb.user.UserManager;
+
+import java.util.List;
 
 /**
  * * * * * * * * * * * * * * * * * * * * * * *
@@ -33,11 +36,29 @@ public class MyVillageFamilyActivityViewHolder extends BaseRecyclerViewHolder<My
         int villageId = data.getVillageId();
         int family_id = data.getFamily_id();   //家庭or小区id
         String name = data.getName();  //家庭or小区名字
-        int verified = data.getVerified();  //0是未审核,1是已审核
         if (data.isFamilyData() == 0) { //家庭
             setText(R.id.tv_name, data.getName());
         } else if (data.isFamilyData() == 1) { //小区
-            setText(R.id.tv_name, data.getName() + (verified == 0 ? getContext().getString(R.string.uncheck) : getContext().getString(R.string.check)));
+            boolean isNoRoomVerified = false;
+            List<UserFamiliesAndVillagesEntity.DataBean.VillageInfosBean.RoomsBean> rooms = data.getRooms();
+            StringBuffer verifiedRoom = new StringBuffer();
+            verifiedRoom.append("(");
+            for (int i = 0; i < rooms.size(); i++) {
+                UserFamiliesAndVillagesEntity.DataBean.VillageInfosBean.RoomsBean roomsBean = rooms.get(i);
+                String room_num = roomsBean.getRoom_num();
+                int verified = roomsBean.getVerified();  //0是未审核,1是已审核
+                if (1 == verified) {
+                    verifiedRoom.append(room_num + "、");
+                    isNoRoomVerified = true;
+                }
+            }
+            verifiedRoom.append(")");
+            verifiedRoom.deleteCharAt(verifiedRoom.length() - 2);
+            if (isNoRoomVerified) {
+                setText(R.id.tv_name, data.getName() + verifiedRoom.toString());
+            } else {
+                setText(R.id.tv_name, data.getName() + getContext().getString(R.string.uncheck));
+            }
         }
         if (data.isChoosed()) {
             PicassoHelper.load(R.mipmap.icon_choose_green).into((ImageView) getView(R.id.iv_choose));

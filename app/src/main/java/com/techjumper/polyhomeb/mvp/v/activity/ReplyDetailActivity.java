@@ -129,6 +129,4 @@ public class ReplyDetailActivity extends AppBaseWebViewActivity<ReplyDetailActiv
         if (TextUtils.isEmpty(method)) return;
         getWebView().loadUrl("javascript:" + method + "()");
     }
-
-
 }

@@ -364,6 +364,14 @@
     <string name="result_pay_cancel">支付取消</string>
     <string name="result_pay_wait">支付等待</string>
     <string name="result_pay_failed">支付失败</string>
+    <string name="version_info">版本信息</string>
+    <string name="current_version">当前版本:v%1$s</string>
+    <string name="no_new_version">已是最新版本啦~~</string>
+    <string name="has_new_version">有新版本，是否更新？</string>
+    <string name="download_begin">开始下载</string>
+    <string name="current_progress">当前进度:%1$s</string>
+    <string name="download_complete">下载完毕</string>
+    <string name="download_error">下载出错，请重试</string>
 
 
 </resources>

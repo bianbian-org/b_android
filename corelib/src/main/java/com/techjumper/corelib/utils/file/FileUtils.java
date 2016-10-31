@@ -520,8 +520,8 @@ public class FileUtils {
             sb.append(0);
             sb.append("M");
         } else if (size < 1024) {//显示B
-            sb.append(size);
-            sb.append("B");
+            sb.append(size / 1024.0);
+            sb.append("M");
         } else if (size < 1024 * 1024) {  //显示KB
             sb.append(df.format(size / 1024.0));
             sb.append("K");

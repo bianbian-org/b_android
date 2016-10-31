@@ -300,4 +300,8 @@ public class KeyValueCreator {
                 .put("village_id", village_id)
                 .put("family_id", family_id);
     }
+
+    public static KeyValuePair getAppUpdateInfo(String[] packages) {
+        return newPair().put("packages", packages);
+    }
 }

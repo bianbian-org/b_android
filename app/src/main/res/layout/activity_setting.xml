@@ -20,6 +20,42 @@
             android:background="@color/color_ceced2" />
 
         <RelativeLayout
+            android:id="@+id/layout_version_info"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/dp_50">
+
+            <TextView
+                android:id="@+id/tv_version_info"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/dp_50"
+                android:drawableRight="@mipmap/icon_right_arrow"
+                android:gravity="center|left"
+                android:paddingLeft="@dimen/dp_14"
+                android:paddingRight="@dimen/dp_14"
+                android:singleLine="true"
+                android:text="@string/version_info"
+                android:textColor="@color/color_a8a8a8"
+                android:textSize="@dimen/sp_14" />
+
+            <TextView
+                android:id="@+id/tv_current_version"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/dp_50"
+                android:gravity="right|center"
+                android:paddingRight="@dimen/dp_28"
+                android:singleLine="true"
+                android:textColor="@color/color_a8a8a8"
+                android:textSize="@dimen/sp_14" />
+
+        </RelativeLayout>
+
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="0.5dp"
+            android:background="@color/color_ceced2" />
+
+        <RelativeLayout
             android:id="@+id/layout_cache"
             android:layout_width="match_parent"
             android:layout_height="@dimen/dp_50">

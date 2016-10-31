@@ -123,7 +123,17 @@ public class BluetoothDoorViewHolder extends BaseRecyclerViewHolder<BluetoothDat
         if (data == null) return;
         //相当于Demo中,从云端获取到的"此账号"能开的锁的所有信息
         //这里进来默认让他扫描一遍，之后 这个  扫描  动作的发起才由Service控制，才会走到上面的RxBub去。
+        //如果!show，那么说明不支持门锁，所以直接gone了，反之则visible。
+        boolean show = data.isShow();
         bleInfo = data.getInfosBeen();
+        if (!show) {
+            if (mView != null) {
+                mView.setVisibility(View.GONE);
+            }
+            return;
+        } else {
+            mView.setVisibility(View.VISIBLE);
+        }
         if (bleInfo == null || bleInfo.size() == 0) return;
         List<LibDevModel> list = new ArrayList<>();
         for (BluetoothLockDoorInfoEntity.DataBean.InfosBean bean : bleInfo) {

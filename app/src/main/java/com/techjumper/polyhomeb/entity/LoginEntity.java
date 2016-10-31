@@ -138,8 +138,8 @@ public class LoginEntity extends BaseEntity<LoginEntity.LoginDataEntity> {
 
         public static class VillagesBean {
             private int village_id;
-            private int verified;
             private String village_name;
+            private List<RoomsBean> rooms;
 
             public int getVillage_id() {
                 return village_id;
@@ -149,20 +149,41 @@ public class LoginEntity extends BaseEntity<LoginEntity.LoginDataEntity> {
                 this.village_id = village_id;
             }
 
-            public int getVerified() {
-                return verified;
-            }
-
-            public void setVerified(int verified) {
-                this.verified = verified;
-            }
-
             public String getVillage_name() {
                 return village_name;
             }
 
             public void setVillage_name(String village_name) {
                 this.village_name = village_name;
+            }
+
+            public List<RoomsBean> getRooms() {
+                return rooms;
+            }
+
+            public void setRooms(List<RoomsBean> rooms) {
+                this.rooms = rooms;
+            }
+
+            public static class RoomsBean {
+                private String room_num;
+                private int verified;
+
+                public String getRoom_num() {
+                    return room_num;
+                }
+
+                public void setRoom_num(String room_num) {
+                    this.room_num = room_num;
+                }
+
+                public int getVerified() {
+                    return verified;
+                }
+
+                public void setVerified(int verified) {
+                    this.verified = verified;
+                }
             }
         }
 

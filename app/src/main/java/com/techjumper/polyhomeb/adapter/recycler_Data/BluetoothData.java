@@ -14,6 +14,15 @@ import java.util.List;
 public class BluetoothData {
 
     private List<BluetoothLockDoorInfoEntity.DataBean.InfosBean> infosBeen;
+    private boolean isShow;
+
+    public boolean isShow() {
+        return isShow;
+    }
+
+    public void setShow(boolean show) {
+        isShow = show;
+    }
 
     public List<BluetoothLockDoorInfoEntity.DataBean.InfosBean> getInfosBeen() {
         return infosBeen;

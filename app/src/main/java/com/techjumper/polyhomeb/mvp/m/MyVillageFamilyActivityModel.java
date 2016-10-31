@@ -143,7 +143,7 @@ public class MyVillageFamilyActivityModel extends BaseModel<MyVillageFamilyActiv
                 myVillageFamilyData.setName(village_infos.get(i).getVillage_name());
                 myVillageFamilyData.setFamily_id(village_infos.get(i).getVillage_id());
                 myVillageFamilyData.setVillageId(village_infos.get(i).getVillage_id());
-                myVillageFamilyData.setVerified(village_infos.get(i).getVerified());
+                myVillageFamilyData.setRooms(village_infos.get(i).getRooms());
                 myVillageFamilyData.setFamilyData(1);
                 String isFamilyOrVillage = UserManager.INSTANCE.getUserInfo(UserManager.KEY_CURRENT_SHOW_IS_FAMILY_OR_VILLAGE);
                 if (isFamilyOrVillage.equals(UserManager.VALUE_IS_VILLAGE)) {

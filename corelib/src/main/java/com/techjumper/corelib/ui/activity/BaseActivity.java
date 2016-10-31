@@ -35,7 +35,6 @@ public abstract class BaseActivity extends AppCompatActivity {
         sActivityList.add(this);
         mThis = this;
         mUi = UI.create(this);
-
         initData(savedInstanceState);
 //        View contentRoot = findViewById(android.R.id.content);
 //        //适配虚拟按键

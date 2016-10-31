@@ -17,7 +17,7 @@ android {
         applicationId "com.techjumper.polyhomeb"
         minSdkVersion rootProject.minSdkVersion
         targetSdkVersion rootProject.targetSdkVersion
-        versionCode 100000
+        versionCode 10000
         versionName "1.0.0"
     }
 

@@ -1,5 +1,7 @@
 package com.techjumper.polyhomeb.mvp.v.activity;
 
+import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.os.Environment;
 import android.view.View;
@@ -26,6 +28,8 @@ import butterknife.Bind;
 @Presenter(SettingActivityPresenter.class)
 public class SettingActivity extends AppBaseActivity<SettingActivityPresenter> {
 
+    @Bind(R.id.tv_current_version)
+    TextView mTvVersionInfo;   //版本信息
     @Bind(R.id.tv_clear_cache)
     TextView mTvClearCache;   //清除缓存
     @Bind(R.id.tv_appraise)
@@ -49,6 +53,7 @@ public class SettingActivity extends AppBaseActivity<SettingActivityPresenter> {
     @Override
     protected void initView(Bundle savedInstanceState) {
         showCacheSize();
+        showAppCurrentVersion();
         mTvAbout.setOnLongClickListener(v -> {
             new AcHelper.Builder(this)
                     .target(DebugActivity.class)
@@ -58,6 +63,18 @@ public class SettingActivity extends AppBaseActivity<SettingActivityPresenter> {
 
         initPluginLayout();
 
+    }
+
+    private void showAppCurrentVersion() {
+        String version_name = "";
+        try {
+            PackageManager manager = this.getPackageManager();
+            PackageInfo info = manager.getPackageInfo(this.getPackageName(), 0);
+            version_name += info.versionName;
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        mTvVersionInfo.setText(String.format(getString(R.string.current_version), version_name));
     }
 
     private void initPluginLayout() {
