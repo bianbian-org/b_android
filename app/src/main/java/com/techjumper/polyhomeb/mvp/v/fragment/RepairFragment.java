@@ -62,14 +62,8 @@ public class RepairFragment extends AppBaseFragment<RepairFragmentPresenter> {
         mPtr.setPtrHandler(new PtrDefaultHandler() {
             @Override
             public void onRefreshBegin(PtrFrameLayout frame) {
-//                if (!UserManager.INSTANCE.isFamily()) {
-//                    ToastUtils.show(getActivity().getString(R.string.no_authority));
-//                    onRepairDataReceive(getPresenter().noData());
-//                    new Handler().postDelayed(() -> stopRefresh(""), 0);
-//                } else {
-                    getPresenter().refreshData();
-                    new Handler().postDelayed(() -> stopRefresh(""), NetHelper.GLOBAL_TIMEOUT);
-//                }
+                getPresenter().refreshData();
+                new Handler().postDelayed(() -> stopRefresh(""), NetHelper.GLOBAL_TIMEOUT);
             }
 
             @Override

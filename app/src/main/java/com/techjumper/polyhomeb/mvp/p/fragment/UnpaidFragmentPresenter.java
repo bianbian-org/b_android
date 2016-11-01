@@ -36,14 +36,10 @@ public class UnpaidFragmentPresenter extends AppBaseFragmentPresenter<UnpaidFrag
 
     @Override
     public void onViewInited(Bundle savedInstanceState) {
+        getView().showLoading();
         getPayType();
         refreshPaymentData();
-//        if (!UserManager.INSTANCE.isFamily()) {
-//            ToastUtils.show(getView().getString(R.string.no_authority));
-//            getView().onOrdersDataReceive(mModel.noData());
-//        } else {
-            refreshData();
-//        }
+        refreshData();
     }
 
     //在付款成功界面,点击大的绿色返回按钮的时候,收到消息,刷新数据
@@ -85,11 +81,13 @@ public class UnpaidFragmentPresenter extends AppBaseFragmentPresenter<UnpaidFrag
                         .subscribe(new Subscriber<OrdersEntity>() {
                             @Override
                             public void onCompleted() {
+                                getView().dismissLoading();
                                 getView().stopRefresh("");
                             }
 
                             @Override
                             public void onError(Throwable e) {
+                                getView().dismissLoading();
                                 getView().showError(e);
                                 loadMoreError();
                                 getView().onOrdersDataReceive(mModel.noData());

@@ -36,14 +36,10 @@ public class RepairFragmentPresenter extends AppBaseFragmentPresenter<RepairFrag
 
     @Override
     public void onViewInited(Bundle savedInstanceState) {
-//        if (!UserManager.INSTANCE.isFamily()) {
-//            ToastUtils.show(getView().getString(R.string.no_authority));
-//            getView().onRepairDataReceive(mModel.noData());
-//        } else {
-            getStatus();
-            refreshData();
-            newRepairFinish();
-//        }
+        getView().showLoading();
+        getStatus();
+        refreshData();
+        newRepairFinish();
     }
 
     private void newRepairFinish() {
@@ -53,11 +49,11 @@ public class RepairFragmentPresenter extends AppBaseFragmentPresenter<RepairFrag
                         .asObservable()
                         .subscribe(o -> {
                             if (o instanceof RefreshRepairListDataEvent) {
-                               //增加下面这个判断可以节约流量,
-                               //因为当前提交的内容肯定是在全部和未处理里面的,
-                               //当处在这两个标签(status)下时,提交之后肯定希望看到界面的变化,自己提交的东西能即时实时显示出来,所以需要刷新
-                               //如果当前不在这两个标签下,那么就没有刷新的必要了,
-                               //因为切换标签的时候又会去重新请求一次那个标签的数据,刚提交的数据自然而然地会从服务器拿到
+                                //增加下面这个判断可以节约流量,
+                                //因为当前提交的内容肯定是在全部和未处理里面的,
+                                //当处在这两个标签(status)下时,提交之后肯定希望看到界面的变化,自己提交的东西能即时实时显示出来,所以需要刷新
+                                //如果当前不在这两个标签下,那么就没有刷新的必要了,
+                                //因为切换标签的时候又会去重新请求一次那个标签的数据,刚提交的数据自然而然地会从服务器拿到
                                 RefreshRepairListDataEvent event = (RefreshRepairListDataEvent) o;
                                 int repairStatus = event.getRepairStatus();
                                 if (Constant.STATUS_ALL == repairStatus || Constant.STATUS_NOT_PROCESS == repairStatus) {
@@ -91,11 +87,13 @@ public class RepairFragmentPresenter extends AppBaseFragmentPresenter<RepairFrag
                         .subscribe(new Subscriber<PropertyRepairEntity>() {
                             @Override
                             public void onCompleted() {
+                                getView().dismissLoading();
                                 getView().stopRefresh("");
                             }
 
                             @Override
                             public void onError(Throwable e) {
+                                getView().dismissLoading();
                                 getView().showError(e);
                                 loadMoreError();
                                 getView().onRepairDataReceive(mModel.noData());

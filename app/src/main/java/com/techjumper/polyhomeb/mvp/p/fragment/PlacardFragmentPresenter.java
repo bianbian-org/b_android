@@ -31,12 +31,8 @@ public class PlacardFragmentPresenter extends AppBaseFragmentPresenter<PlacardFr
 
     @Override
     public void onViewInited(Bundle savedInstanceState) {
-//        if (!UserManager.INSTANCE.isFamily()) {
-//            ToastUtils.show(getView().getString(R.string.no_authority));
-//            getView().onNoticeDataReceive(mModel.noData());
-//        } else {
-            refreshData();
-//        }
+        getView().showLoading();
+        refreshData();
     }
 
     public void getNoticeData() {
@@ -46,11 +42,13 @@ public class PlacardFragmentPresenter extends AppBaseFragmentPresenter<PlacardFr
                         .subscribe(new Subscriber<PropertyPlacardEntity>() {
                             @Override
                             public void onCompleted() {
+                                getView().dismissLoading();
                                 getView().stopRefresh("");
                             }
 
                             @Override
                             public void onError(Throwable e) {
+                                getView().dismissLoading();
                                 getView().showError(e);
                                 loadMoreError();
                                 getView().onNoticeDataReceive(mModel.noData());

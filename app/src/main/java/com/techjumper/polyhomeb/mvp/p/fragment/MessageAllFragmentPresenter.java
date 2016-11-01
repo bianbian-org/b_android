@@ -29,6 +29,7 @@ public class MessageAllFragmentPresenter extends AppBaseFragmentPresenter<Messag
 
     @Override
     public void onViewInited(Bundle savedInstanceState) {
+        getView().showLoading();
         refreshData();
     }
 
@@ -39,11 +40,13 @@ public class MessageAllFragmentPresenter extends AppBaseFragmentPresenter<Messag
                         .subscribe(new Subscriber<MessageEntity>() {
                             @Override
                             public void onCompleted() {
+                                getView().dismissLoading();
                                 getView().stopRefresh("");
                             }
 
                             @Override
                             public void onError(Throwable e) {
+                                getView().dismissLoading();
                                 getView().showError(e);
                                 loadMoreError();
                                 getView().onDataReceive(mModel.noData());
