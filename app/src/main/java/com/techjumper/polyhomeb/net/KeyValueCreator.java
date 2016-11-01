@@ -301,7 +301,9 @@ public class KeyValueCreator {
                 .put("family_id", family_id);
     }
 
-    public static KeyValuePair getAppUpdateInfo(String[] packages) {
-        return newPair().put("packages", packages);
+    public static KeyValuePair getAppUpdateInfo(int platform, String[] packages) {
+        return newPair()
+                .put("platform", platform)
+                .put("packages", packages);
     }
 }

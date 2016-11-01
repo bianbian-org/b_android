@@ -31,7 +31,7 @@ public class TabHomeActivityModel extends BaseModel<TabHomeActivityPresenter> {
     }
 
     public Observable<UpdateInfoEntity> checkUpdate(String[] packageInfos) {
-        KeyValuePair keyValuePair = KeyValueCreator.getAppUpdateInfo(packageInfos);
+        KeyValuePair keyValuePair = KeyValueCreator.getAppUpdateInfo(1,packageInfos);
         Map<String, String> map = NetHelper.createBaseArgumentsMap(keyValuePair);
         return RetrofitHelper
                 .<ServiceAPI>createDefault()
