@@ -16,6 +16,8 @@ import com.techjumper.polyhomeb.mvp.v.fragment.AppBaseFragment;
 import com.techjumper.polyhomeb.mvp.v.fragment.ComplainFragment;
 import com.techjumper.polyhomeb.mvp.v.fragment.PlacardFragment;
 import com.techjumper.polyhomeb.mvp.v.fragment.RepairFragment;
+import com.techjumper.polyhomeb.user.UserManager;
+import com.techjumper.polyhomeb.widget.NonScrollViewPager;
 
 import net.lucode.hackware.magicindicator.MagicIndicator;
 import net.lucode.hackware.magicindicator.buildins.commonnavigator.CommonNavigator;
@@ -37,13 +39,14 @@ public class PropertyDetailActivity extends AppBaseActivity<PropertyDetailActivi
     @Bind(R.id.indicator)
     MagicIndicator mIndicator;
     @Bind(R.id.vp)
-    ViewPager mViewPager;
+    NonScrollViewPager mViewPager;
     @Bind(R.id.right_group)
     FrameLayout mRightGroup;
 
     private int mComeFrom;
     private List<String> mIndicatorTitles = new ArrayList<>();
     private List<AppBaseFragment> mFragments = new ArrayList<>();
+    private boolean mHasAuthority = UserManager.INSTANCE.hasAuthority();
 
     @Override
     protected View inflateView(Bundle savedInstanceState) {
@@ -55,6 +58,7 @@ public class PropertyDetailActivity extends AppBaseActivity<PropertyDetailActivi
         mComeFrom = getPresenter().comeFromWitchButton();
         initIndicator();
         initViewPager();
+        mViewPager.setCanScroll(mHasAuthority);
     }
 
     @Override
@@ -79,7 +83,7 @@ public class PropertyDetailActivity extends AppBaseActivity<PropertyDetailActivi
         mIndicatorTitles.add(Utils.appContext.getResources().getString(R.string.complaint_));
         CommonNavigator navigator = new CommonNavigator(this);
         navigator.setAdjustMode(true);
-        IndicatorAdapter indicatorAdapter = new IndicatorAdapter(mIndicatorTitles, mViewPager);
+        IndicatorAdapter indicatorAdapter = new IndicatorAdapter(mIndicatorTitles, mViewPager, mHasAuthority);
         indicatorAdapter.setNormalColor("#acacac");
         indicatorAdapter.setSelectedColor("#37a991");
         navigator.setAdapter(indicatorAdapter);
@@ -116,7 +120,7 @@ public class PropertyDetailActivity extends AppBaseActivity<PropertyDetailActivi
         mViewPager.setCurrentItem(mComeFrom);  //如此设置了之后,indicator也会跟着一起被设置
     }
 
-    public ViewPager getViewPager() {
+    public NonScrollViewPager getViewPager() {
         return mViewPager;
     }
 }

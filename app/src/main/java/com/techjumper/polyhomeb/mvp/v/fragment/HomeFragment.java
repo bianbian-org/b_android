@@ -123,13 +123,19 @@ public class HomeFragment extends AppBaseFragment<HomeFragmentPresenter>
     }
 
     @Override
-    public void onDestroy() {
-        JLog.d("onDestroy:需要取消注册摇一摇或者取消定时扫描服务");
-        if (getActivity() != null) {
+    public void onResume() {
+        boolean isActivityVisible = ((TabHomeActivity) getActivity()).isTabHomeActivityVisible();
+        boolean supportBLEDoor = UserManager.INSTANCE.isCurrentCommunitySupportBLEDoor();
+        if (getActivity() != null && isActivityVisible && supportBLEDoor && mIsFragmentVisible) {
+            ShakeManager.with(getActivity()).startShake(this);
+            JLog.d("onResume:需要注册摇一摇或者启动定时扫描服务---------");
+            getActivity().startService(new Intent(getActivity(), ScanBluetoothService.class));
+        } else {
             ShakeManager.with(getActivity()).cancel();
+            JLog.d("onResume:需要取消注册摇一摇或者取消定时扫描服务");
             getActivity().stopService(new Intent(getActivity(), ScanBluetoothService.class));
         }
-        super.onDestroy();
+        super.onResume();
     }
 
     @Override
@@ -153,19 +159,13 @@ public class HomeFragment extends AppBaseFragment<HomeFragmentPresenter>
     }
 
     @Override
-    public void onResume() {
-        boolean isActivityVisible = ((TabHomeActivity) getActivity()).isTabHomeActivityVisible();
-        boolean supportBLEDoor = UserManager.INSTANCE.isCurrentCommunitySupportBLEDoor();
-        if (getActivity() != null && isActivityVisible && supportBLEDoor && mIsFragmentVisible) {
-            ShakeManager.with(getActivity()).startShake(this);
-            JLog.d("onResume:需要注册摇一摇或者启动定时扫描服务---------");
-            getActivity().startService(new Intent(getActivity(), ScanBluetoothService.class));
-        } else {
+    public void onDestroy() {
+        JLog.d("onDestroy:需要取消注册摇一摇或者取消定时扫描服务");
+        if (getActivity() != null) {
             ShakeManager.with(getActivity()).cancel();
-            JLog.d("onResume:需要取消注册摇一摇或者取消定时扫描服务");
             getActivity().stopService(new Intent(getActivity(), ScanBluetoothService.class));
         }
-        super.onResume();
+        super.onDestroy();
     }
 
     @Override

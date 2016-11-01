@@ -52,7 +52,8 @@ public class AllpaidFragmentModel extends BaseModel<AllpaidFragmentPresenter> {
         KeyValuePair keyValuePair = KeyValueCreator.getOrdersInfo(
                 UserManager.INSTANCE.getUserInfo(UserManager.KEY_ID)
                 , UserManager.INSTANCE.getTicket()
-                , UserManager.INSTANCE.getCurrentId()
+                , getFamilyId()
+                , getVillageId()
                 , sStatus
                 , payType
                 , mCurrentPage
@@ -176,6 +177,18 @@ public class AllpaidFragmentModel extends BaseModel<AllpaidFragmentPresenter> {
 
     public void setCurrentPage(int page) {
         mCurrentPage = page;
+    }
+
+    private String getFamilyId() {
+        if (UserManager.INSTANCE.isFamily()) {
+            return UserManager.INSTANCE.getCurrentId();
+        } else {
+            return "";
+        }
+    }
+
+    private String getVillageId() {
+        return UserManager.INSTANCE.getUserInfo(UserManager.KEY_CURRENT_VILLAGE_ID);
     }
 
 }

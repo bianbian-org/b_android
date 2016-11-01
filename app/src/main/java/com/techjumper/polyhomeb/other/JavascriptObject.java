@@ -1,14 +1,19 @@
 package com.techjumper.polyhomeb.other;
 
+import android.Manifest;
 import android.app.Activity;
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.text.TextUtils;
 import android.webkit.JavascriptInterface;
 
+import com.tbruyelle.rxpermissions.RxPermissions;
 import com.techjumper.corelib.rx.tools.RxBus;
 import com.techjumper.corelib.utils.common.AcHelper;
 import com.techjumper.corelib.utils.common.JLog;
+import com.techjumper.corelib.utils.window.DialogUtils;
 import com.techjumper.corelib.utils.window.ToastUtils;
 import com.techjumper.lib2.utils.GsonUtils;
 import com.techjumper.polyhome.paycorelib.OnPayListener;
@@ -16,6 +21,7 @@ import com.techjumper.polyhomeb.Constant;
 import com.techjumper.polyhomeb.R;
 import com.techjumper.polyhomeb.entity.JSH5PaymentsEntity;
 import com.techjumper.polyhomeb.entity.JSJavaBaseEntity;
+import com.techjumper.polyhomeb.entity.JSJavaContactShopEntity;
 import com.techjumper.polyhomeb.entity.JSJavaImageViewEntity;
 import com.techjumper.polyhomeb.entity.JSJavaNotificationEntity;
 import com.techjumper.polyhomeb.entity.JSJavaPageJumpEntity;
@@ -41,6 +47,8 @@ import java.util.List;
 public class JavascriptObject {
 
     private Activity mActivity;
+    private String url = "";
+    private long lastClickTime;
 
     public JavascriptObject(Activity mActivity) {
         this.mActivity = mActivity;
@@ -59,8 +67,64 @@ public class JavascriptObject {
         return false;
     }
 
-    private String url = "";
-    private long lastClickTime;
+    /**
+     * 总的交互入口,根据json来判断执行的操作
+     */
+    @JavascriptInterface
+    public void postMessage(String json) {
+        JLog.e(json);
+        if (TextUtils.isEmpty(json)) return;
+        JSJavaBaseEntity baseEntity = GsonUtils.fromJson(json, JSJavaBaseEntity.class);
+        if (baseEntity == null) return;
+        String method = baseEntity.getMethod();
+        if (TextUtils.isEmpty(method)) return;
+
+        switch (method) {
+            case "PageJump":
+                JSJavaPageJumpEntity jsJavaPageJumpEntity = GsonUtils.fromJson(json, JSJavaPageJumpEntity.class);
+                JSJavaPageJumpEntity.ParamsBean params = jsJavaPageJumpEntity.getParams();
+                String url = params.getUrl();
+                if (!isFastDoubleClick(url)) {
+                    pageJump(url);
+                }
+                break;
+            case "ImageView":
+                JSJavaImageViewEntity jsJavaImageViewEntity = GsonUtils.fromJson(json, JSJavaImageViewEntity.class);
+                JSJavaImageViewEntity.ParamsBean params1 = jsJavaImageViewEntity.getParams();
+                int index = params1.getIndex();
+                List<String> images = params1.getImages();
+                String[] imageArray = new String[images.size()];
+                for (int i = 0; i < images.size(); i++) {
+                    imageArray[i] = images.get(i);
+                }
+                imageView(index, imageArray);
+                break;
+            case "RefreshLoaded":
+                response();
+                break;
+            case "RefreshNotice":
+                //2016/10/26  友邻网页做判断，如果是家庭权限就能点，如果不是就不能点(客户端做或者H5做都行.最好是客户端做)
+                if (UserManager.INSTANCE.isFamily()) {
+                    JSJavaNotificationEntity jsJavaNotificationEntity = GsonUtils.fromJson(json, JSJavaNotificationEntity.class);
+                    JSJavaNotificationEntity.ParamsBean paramsBean = jsJavaNotificationEntity.getParams();
+                    String result = paramsBean.getResult();
+                    RxBus.INSTANCE.send(new WebViewNotificationEvent(result));
+                }
+                break;
+            case "login":
+                Bundle bundle = new Bundle();
+                bundle.putString(LoginActivityPresenter.KEY_COME_FROM, LoginActivityPresenter.VALUE_COME_FROM_WEBVIEW);
+                new AcHelper.Builder(mActivity).extra(bundle).closeCurrent(false).target(LoginActivity.class).start();
+                break;
+            case "pay":
+                h5Pay(json);
+                break;
+            case "ContactShop":
+                contactShop(json);
+                break;
+
+        }
+    }
 
     /**
      * 跳转界面:回复评论,帖子详情
@@ -135,62 +199,6 @@ public class JavascriptObject {
 //        RxBus.INSTANCE.send(new RefreshStopEvent());
     }
 
-    /**
-     * 总的交互入口,根据json来判断执行的操作
-     */
-    @JavascriptInterface
-    public void postMessage(String json) {
-        JLog.e(json);
-        if (TextUtils.isEmpty(json)) return;
-        JSJavaBaseEntity baseEntity = GsonUtils.fromJson(json, JSJavaBaseEntity.class);
-        if (baseEntity == null) return;
-        String method = baseEntity.getMethod();
-        if (TextUtils.isEmpty(method)) return;
-
-        switch (method) {
-            case "PageJump":
-                JSJavaPageJumpEntity jsJavaPageJumpEntity = GsonUtils.fromJson(json, JSJavaPageJumpEntity.class);
-                JSJavaPageJumpEntity.ParamsBean params = jsJavaPageJumpEntity.getParams();
-                String url = params.getUrl();
-                if (!isFastDoubleClick(url)) {
-                    pageJump(url);
-                }
-                break;
-            case "ImageView":
-                JSJavaImageViewEntity jsJavaImageViewEntity = GsonUtils.fromJson(json, JSJavaImageViewEntity.class);
-                JSJavaImageViewEntity.ParamsBean params1 = jsJavaImageViewEntity.getParams();
-                int index = params1.getIndex();
-                List<String> images = params1.getImages();
-                String[] imageArray = new String[images.size()];
-                for (int i = 0; i < images.size(); i++) {
-                    imageArray[i] = images.get(i);
-                }
-                imageView(index, imageArray);
-                break;
-            case "RefreshLoaded":
-                response();
-                break;
-            case "RefreshNotice":
-                //2016/10/26  友邻网页做判断，如果是家庭权限就能点，如果不是就不能点(客户端做或者H5做都行.最好是客户端做)
-                if (UserManager.INSTANCE.isFamily()) {
-                    JSJavaNotificationEntity jsJavaNotificationEntity = GsonUtils.fromJson(json, JSJavaNotificationEntity.class);
-                    JSJavaNotificationEntity.ParamsBean paramsBean = jsJavaNotificationEntity.getParams();
-                    String result = paramsBean.getResult();
-                    RxBus.INSTANCE.send(new WebViewNotificationEvent(result));
-                }
-                break;
-            case "login":
-                Bundle bundle = new Bundle();
-                bundle.putString(LoginActivityPresenter.KEY_COME_FROM, LoginActivityPresenter.VALUE_COME_FROM_WEBVIEW);
-                new AcHelper.Builder(mActivity).extra(bundle).closeCurrent(false).target(LoginActivity.class).start();
-                break;
-            case "pay":
-                h5Pay(json);
-                break;
-
-        }
-    }
-
     private void h5Pay(String json) {
         JSJavaPageJumpEntity payEntity = GsonUtils.fromJson(json, JSJavaPageJumpEntity.class);
         JSJavaPageJumpEntity.ParamsBean payParams = payEntity.getParams();
@@ -256,6 +264,42 @@ public class JavascriptObject {
                 ToastUtils.show(mActivity.getString(R.string.result_pay_failed));
             }
         }, mActivity, type, entity);
+    }
+
+    private void contactShop(String json) {
+        JSJavaContactShopEntity jsJavaContactShopEntity = GsonUtils.fromJson(json, JSJavaContactShopEntity.class);
+        if (jsJavaContactShopEntity == null
+                && jsJavaContactShopEntity.getParams() == null) return;
+        JSJavaContactShopEntity.ParamsBean paramsBean = jsJavaContactShopEntity.getParams();
+        String tel = paramsBean.getTel();
+        String shop_id = paramsBean.getShop_id();
+
+        if (!TextUtils.isEmpty(tel)) {
+            RxPermissions.getInstance(mActivity)
+                    .request(Manifest.permission.CALL_PHONE)
+                    .subscribe(aBoolean -> {
+                        if (aBoolean) {
+                            DialogUtils.getBuilder(mActivity)
+                                    .content(String.format(mActivity.getString(R.string.confirm_call_x), tel))
+                                    .positiveText(R.string.ok)
+                                    .negativeText(R.string.cancel)
+                                    .onAny((dialog, which) -> {
+                                        switch (which) {
+                                            case POSITIVE:
+                                                Intent intent = new Intent();
+                                                intent.setAction(Intent.ACTION_CALL);
+                                                intent.setData(Uri.parse(tel));
+                                                mActivity.startActivity(intent);
+
+                                                // TODO: 2016/11/1  调用接口，通知商铺id
+                                                break;
+                                        }
+                                    })
+                                    .show();
+                        }
+                    });
+        }
+
     }
 
 }

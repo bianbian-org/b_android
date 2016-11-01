@@ -60,7 +60,7 @@ public class PaymentActivity extends AppBaseActivity<PaymentActivityPresenter> {
         mIndicatorTitles.add(Utils.appContext.getResources().getString(R.string.paymented));
         CommonNavigator navigator = new CommonNavigator(this);
         navigator.setAdjustMode(true);
-        IndicatorAdapter indicatorAdapter = new IndicatorAdapter(mIndicatorTitles, mViewPager);
+        IndicatorAdapter indicatorAdapter = new IndicatorAdapter(mIndicatorTitles, mViewPager, true);
         indicatorAdapter.setNormalColor("#acacac");
         indicatorAdapter.setSelectedColor("#37a991");
         navigator.setAdapter(indicatorAdapter);

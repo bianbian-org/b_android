@@ -5,15 +5,12 @@ import android.os.Bundle;
 import com.steve.creact.library.display.DisplayBean;
 import com.techjumper.corelib.rx.tools.RxBus;
 import com.techjumper.corelib.rx.tools.RxUtils;
-import com.techjumper.corelib.utils.window.ToastUtils;
 import com.techjumper.polyhomeb.Constant;
-import com.techjumper.polyhomeb.R;
 import com.techjumper.polyhomeb.entity.PropertyComplainEntity;
 import com.techjumper.polyhomeb.entity.event.ComplainStatusEvent;
 import com.techjumper.polyhomeb.entity.event.RefreshComplainListDataEvent;
 import com.techjumper.polyhomeb.mvp.m.ComplainFragmentModel;
 import com.techjumper.polyhomeb.mvp.v.fragment.ComplainFragment;
-import com.techjumper.polyhomeb.user.UserManager;
 
 import java.util.List;
 
@@ -39,14 +36,14 @@ public class ComplainFragmentPresenter extends AppBaseFragmentPresenter<Complain
 
     @Override
     public void onViewInited(Bundle savedInstanceState) {
-        if (!UserManager.INSTANCE.isFamily()) {
-            ToastUtils.show(getView().getString(R.string.no_authority));
-            getView().onComplainDataReceive(mModel.noData());
-        } else {
+//        if (!UserManager.INSTANCE.isFamily()) {
+//            ToastUtils.show(getView().getString(R.string.no_authority));
+//            getView().onComplainDataReceive(mModel.noData());
+//        } else {
             getStatus();
             refreshData();
             newComplainFinish();
-        }
+//        }
     }
 
     private void newComplainFinish() {

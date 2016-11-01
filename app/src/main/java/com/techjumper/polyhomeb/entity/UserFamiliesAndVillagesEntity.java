@@ -11,18 +11,8 @@ import java.util.List;
 public class UserFamiliesAndVillagesEntity extends BaseEntity<UserFamiliesAndVillagesEntity.DataBean> {
 
     public static class DataBean {
-        /**
-         * id : 1   家庭id
-         * family_name : 家庭001
-         */
 
         private List<FamilyInfosBean> family_infos;
-        /**
-         * village_id : 2  小区id
-         * verified : 0   #审核是否通过 0-未通过 1-已通过
-         * village_name : 小区002
-         */
-
         private List<VillageInfosBean> village_infos;
 
         public List<FamilyInfosBean> getFamily_infos() {
@@ -46,14 +36,6 @@ public class UserFamiliesAndVillagesEntity extends BaseEntity<UserFamiliesAndVil
             private String family_name;
             private int village_id;
 
-            public int getVillage_id() {
-                return village_id;
-            }
-
-            public void setVillage_id(int village_id) {
-                this.village_id = village_id;
-            }
-
             public int getId() {
                 return id;
             }
@@ -69,11 +51,24 @@ public class UserFamiliesAndVillagesEntity extends BaseEntity<UserFamiliesAndVil
             public void setFamily_name(String family_name) {
                 this.family_name = family_name;
             }
+
+            public int getVillage_id() {
+                return village_id;
+            }
+
+            public void setVillage_id(int village_id) {
+                this.village_id = village_id;
+            }
         }
 
         public static class VillageInfosBean {
             private int village_id;
             private String village_name;
+            /**
+             * room_num : 1-1-102
+             * verified : 0
+             */
+
             private List<RoomsBean> rooms;
 
             public int getVillage_id() {
@@ -100,7 +95,7 @@ public class UserFamiliesAndVillagesEntity extends BaseEntity<UserFamiliesAndVil
                 this.rooms = rooms;
             }
 
-            public static class RoomsBean{
+            public static class RoomsBean {
                 private String room_num;
                 private int verified;
 
@@ -119,7 +114,32 @@ public class UserFamiliesAndVillagesEntity extends BaseEntity<UserFamiliesAndVil
                 public void setVerified(int verified) {
                     this.verified = verified;
                 }
+
+                @Override
+                public String toString() {
+                    return "RoomsBean{" +
+                            "room_num='" + room_num + '\'' +
+                            ", verified=" + verified +
+                            '}';
+                }
             }
+
+            @Override
+            public String toString() {
+                return "VillageInfosBean{" +
+                        "village_id=" + village_id +
+                        ", village_name='" + village_name + '\'' +
+                        ", rooms=" + rooms +
+                        '}';
+            }
+        }
+
+        @Override
+        public String toString() {
+            return "DataBean{" +
+                    "family_infos=" + family_infos +
+                    ", village_infos=" + village_infos +
+                    '}';
         }
     }
 }

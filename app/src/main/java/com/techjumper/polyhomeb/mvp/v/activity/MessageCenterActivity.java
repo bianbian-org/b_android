@@ -66,7 +66,7 @@ public class MessageCenterActivity extends AppBaseActivity<MessageCenterActivity
         mIndicatorTitles.add(Utils.appContext.getResources().getString(R.string.message_title_property));
         CommonNavigator navigator = new CommonNavigator(this);
         navigator.setAdjustMode(true);
-        IndicatorAdapter indicatorAdapter = new IndicatorAdapter(mIndicatorTitles, mViewPager);
+        IndicatorAdapter indicatorAdapter = new IndicatorAdapter(mIndicatorTitles, mViewPager, true);
         indicatorAdapter.setNormalColor("#acacac");
         indicatorAdapter.setSelectedColor("#37a991");
         navigator.setAdapter(indicatorAdapter);

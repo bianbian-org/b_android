@@ -5,15 +5,12 @@ import android.os.Bundle;
 import com.steve.creact.library.display.DisplayBean;
 import com.techjumper.corelib.rx.tools.RxBus;
 import com.techjumper.corelib.rx.tools.RxUtils;
-import com.techjumper.corelib.utils.window.ToastUtils;
 import com.techjumper.polyhomeb.Constant;
-import com.techjumper.polyhomeb.R;
 import com.techjumper.polyhomeb.entity.OrdersEntity;
 import com.techjumper.polyhomeb.entity.event.PaymentQueryEvent;
 import com.techjumper.polyhomeb.entity.event.RefreshPaymentEvent;
 import com.techjumper.polyhomeb.mvp.m.UnpaidFragmentModel;
 import com.techjumper.polyhomeb.mvp.v.fragment.UnpaidFragment;
-import com.techjumper.polyhomeb.user.UserManager;
 
 import java.util.List;
 
@@ -41,12 +38,12 @@ public class UnpaidFragmentPresenter extends AppBaseFragmentPresenter<UnpaidFrag
     public void onViewInited(Bundle savedInstanceState) {
         getPayType();
         refreshPaymentData();
-        if (!UserManager.INSTANCE.isFamily()) {
-            ToastUtils.show(getView().getString(R.string.no_authority));
-            getView().onOrdersDataReceive(mModel.noData());
-        } else {
+//        if (!UserManager.INSTANCE.isFamily()) {
+//            ToastUtils.show(getView().getString(R.string.no_authority));
+//            getView().onOrdersDataReceive(mModel.noData());
+//        } else {
             refreshData();
-        }
+//        }
     }
 
     //在付款成功界面,点击大的绿色返回按钮的时候,收到消息,刷新数据

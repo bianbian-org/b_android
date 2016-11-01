@@ -9,12 +9,10 @@ import android.view.View;
 
 import com.steve.creact.library.display.DisplayBean;
 import com.techjumper.corelib.mvp.factory.Presenter;
-import com.techjumper.corelib.utils.window.ToastUtils;
 import com.techjumper.polyhomeb.R;
 import com.techjumper.polyhomeb.adapter.PropertyComplainAdapter;
 import com.techjumper.polyhomeb.mvp.p.fragment.ComplainFragmentPresenter;
 import com.techjumper.polyhomeb.net.NetHelper;
-import com.techjumper.polyhomeb.user.UserManager;
 import com.techjumper.ptr_lib.PtrClassicFrameLayout;
 import com.techjumper.ptr_lib.PtrDefaultHandler;
 import com.techjumper.ptr_lib.PtrFrameLayout;
@@ -64,14 +62,14 @@ public class ComplainFragment extends AppBaseFragment<ComplainFragmentPresenter>
         mPtr.setPtrHandler(new PtrDefaultHandler() {
             @Override
             public void onRefreshBegin(PtrFrameLayout frame) {
-                if (!UserManager.INSTANCE.isFamily()) {
-                    ToastUtils.show(getActivity().getString(R.string.no_authority));
-                    onComplainDataReceive(getPresenter().noData());
-                    new Handler().postDelayed(() -> stopRefresh(""), 0);
-                } else {
+//                if (!UserManager.INSTANCE.isFamily()) {
+//                    ToastUtils.show(getActivity().getString(R.string.no_authority));
+//                    onComplainDataReceive(getPresenter().noData());
+//                    new Handler().postDelayed(() -> stopRefresh(""), 0);
+//                } else {
                     getPresenter().refreshData();
                     new Handler().postDelayed(() -> stopRefresh(""), NetHelper.GLOBAL_TIMEOUT);
-                }
+//                }
             }
 
             @Override

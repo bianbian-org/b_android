@@ -26,12 +26,14 @@ public class IndicatorAdapter extends CommonNavigatorAdapter {
     private int mCount;
     private List<String> mIndicatorTitles;
     private ViewPager mViewPager;
-    private String mNormalColor,mSelectedColor;
+    private String mNormalColor, mSelectedColor;
+    private boolean mCanClick = true;
 
-    public IndicatorAdapter(List<String> mIndicatorTitles, ViewPager mViewPager) {
+    public IndicatorAdapter(List<String> mIndicatorTitles, ViewPager mViewPager, boolean mCanClick) {
         this.mCount = mIndicatorTitles.size();
         this.mIndicatorTitles = mIndicatorTitles;
         this.mViewPager = mViewPager;
+        this.mCanClick = mCanClick;
     }
 
     @Override
@@ -46,7 +48,9 @@ public class IndicatorAdapter extends CommonNavigatorAdapter {
         colorTransitionPagerTitleView.setNormalColor(Color.parseColor(mNormalColor));
         colorTransitionPagerTitleView.setSelectedColor(Color.parseColor(mSelectedColor));
         colorTransitionPagerTitleView.setTextSize(TypedValue.COMPLEX_UNIT_SP, 16);
-        colorTransitionPagerTitleView.setOnClickListener(v -> mViewPager.setCurrentItem(index));
+        if (mCanClick) {
+            colorTransitionPagerTitleView.setOnClickListener(v -> mViewPager.setCurrentItem(index));
+        }
         return colorTransitionPagerTitleView;
     }
 

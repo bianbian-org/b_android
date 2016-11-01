@@ -50,7 +50,8 @@ public class PlacardFragmentModel extends BaseModel<PlacardFragmentPresenter> {
     public Observable<PropertyPlacardEntity> getNotice() {
         KeyValuePair keyValuePair = KeyValueCreator.propertyNotice(
                 UserManager.INSTANCE.getUserInfo(UserManager.KEY_ID)
-                , UserManager.INSTANCE.getUserInfo(UserManager.KEY_CURRENT_FAMILY_ID)  //家庭id
+//                , UserManager.INSTANCE.getUserInfo(UserManager.KEY_CURRENT_FAMILY_ID)  //家庭id
+                , UserManager.INSTANCE.getCurrentId()  //如果当前是家庭，那么这个id就是家庭id，如果当前是小区，那么这个id就是小区id
                 , UserManager.INSTANCE.getTicket()
                 , mCurrentPage + ""
                 , mOnePageCount + "");
@@ -94,7 +95,7 @@ public class PlacardFragmentModel extends BaseModel<PlacardFragmentPresenter> {
             //绿色的 12月 那个时间轴
             PropertyPlacardTimeLineData timeLineData = new PropertyPlacardTimeLineData();
 //            timeLineData.setTime(time.substring(0, 1) + getPresenter().getView().getString(R.string.month));
-            timeLineData.setTime(new SimpleDateFormat("M").format(new Date(time_ * 1000))+getPresenter().getView().getString(R.string.month));
+            timeLineData.setTime(new SimpleDateFormat("M").format(new Date(time_ * 1000)) + getPresenter().getView().getString(R.string.month));
             PropertyPlacardTimeLineBean timeLineBean = new PropertyPlacardTimeLineBean(timeLineData);
             mDataList.add(timeLineBean);
 
@@ -132,7 +133,7 @@ public class PlacardFragmentModel extends BaseModel<PlacardFragmentPresenter> {
                     //绿色的 12月 那个时间轴
                     PropertyPlacardTimeLineData timeLineData = new PropertyPlacardTimeLineData();
 //                    timeLineData.setTime(time.substring(0, 1) + getPresenter().getView().getString(R.string.month));
-                    timeLineData.setTime(new SimpleDateFormat("M").format(new Date(time_ * 1000))+getPresenter().getView().getString(R.string.month));
+                    timeLineData.setTime(new SimpleDateFormat("M").format(new Date(time_ * 1000)) + getPresenter().getView().getString(R.string.month));
                     PropertyPlacardTimeLineBean timeLineBean = new PropertyPlacardTimeLineBean(timeLineData);
                     mDataList.add(timeLineBean);
 

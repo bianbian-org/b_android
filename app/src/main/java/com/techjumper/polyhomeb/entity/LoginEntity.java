@@ -184,6 +184,23 @@ public class LoginEntity extends BaseEntity<LoginEntity.LoginDataEntity> {
                 public void setVerified(int verified) {
                     this.verified = verified;
                 }
+
+                @Override
+                public String toString() {
+                    return "RoomsBean{" +
+                            "room_num='" + room_num + '\'' +
+                            ", verified=" + verified +
+                            '}';
+                }
+            }
+
+            @Override
+            public String toString() {
+                return "VillagesBean{" +
+                        "village_id=" + village_id +
+                        ", village_name='" + village_name + '\'' +
+                        ", rooms=" + rooms +
+                        '}';
             }
         }
 
@@ -202,5 +219,9 @@ public class LoginEntity extends BaseEntity<LoginEntity.LoginDataEntity> {
                     ", villages=" + villages +
                     '}';
         }
+
+
     }
+
+
 }
