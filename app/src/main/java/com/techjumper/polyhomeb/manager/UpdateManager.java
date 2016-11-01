@@ -8,7 +8,6 @@ import com.techjumper.polyhomeb.Config;
 
 import java.io.BufferedInputStream;
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 
@@ -56,12 +55,6 @@ public class UpdateManager {
                     }
                 }
                 fileOutputStream.flush();
-            } catch (FileNotFoundException e) {
-                apkFile.delete();
-                e.printStackTrace();
-                if (iCurrentProgress != null) {
-                    iCurrentProgress.onDownloadError();
-                }
             } catch (IOException e) {
                 apkFile.delete();
                 e.printStackTrace();
