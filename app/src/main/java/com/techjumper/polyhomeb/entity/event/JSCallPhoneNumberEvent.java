@@ -12,6 +12,7 @@ public class JSCallPhoneNumberEvent {
     private String tel;
     private String shop_id;
     private String shop_service_id;
+    private int hashCode;
 
     public String getTel() {
         return tel;
@@ -25,8 +26,13 @@ public class JSCallPhoneNumberEvent {
         return shop_service_id;
     }
 
-    public JSCallPhoneNumberEvent(String tel, String shop_id, String shop_service_id) {
+    public int getHashCode() {
+        return hashCode;
+    }
+
+    public JSCallPhoneNumberEvent(int hashCode, String tel, String shop_id, String shop_service_id) {
         this.tel = tel;
+        this.hashCode = hashCode;
         this.shop_id = shop_id;
         this.shop_service_id = shop_service_id;
     }

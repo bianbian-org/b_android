@@ -51,6 +51,19 @@ public class JSInteractionActivityPresenter extends AppBaseActivityPresenter<JSI
                                 }
                             } else if (o instanceof JSCallPhoneNumberEvent) {
                                 JSCallPhoneNumberEvent event = (JSCallPhoneNumberEvent) o;
+                                //比对当前Activity和event传过来的hashCode，必须相同才进入下一步，否则return
+                                //因为JSInteractionActivity启动模式是standard，开启多少就有多少个实例在Activity栈
+                                //所以当栈中已经存在数个JSInteractionActivity的时候，JavascriptObject中再发消息，
+                                //所有的JSInteractionActivity都会收到那个消息，那么就都会走下面的步骤，也就都会弹出对话框
+                                //造成的问题就是，当前界面弹出对话框，关闭当前界面之后，露出来的JSInteractionActivity会显示一个对话框
+                                //所以此处比对哈希值，如若发现哈希值不同，证明是JavascriptObject发出消息之后，
+                                //JSInteractionActivity1和JSInteractionActivity2以及...JSInteractionActivityN都收到消息了
+                                //但是由于哈希值不同，所以能分辨
+                                //我在JSInteractionActivity1中点击了拨打电话按钮，那么就只应该在JSInteractionActivity1上创建对话框，
+                                //其他JSInteractionActivity2，JSInteractionActivity3，JSInteractionActivityN哈希值不同，
+                                //即使收到了消息，也不能创建对话框，所以哈希值相同的情况下，能证明我在JSInteractionActivity1中的JavascriptObject
+                                //发消息出来，JSInteractionActivity1收到了，就弹出对话框.
+                                if (event.getHashCode() != getView().hashCode()) return;
                                 showCallNumDialog(event);
                             }
                         }));
