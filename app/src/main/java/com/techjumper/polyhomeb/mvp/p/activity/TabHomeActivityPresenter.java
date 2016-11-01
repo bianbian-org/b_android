@@ -1,6 +1,7 @@
 package com.techjumper.polyhomeb.mvp.p.activity;
 
 import android.Manifest;
+import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
@@ -8,13 +9,23 @@ import android.os.Handler;
 import com.tbruyelle.rxpermissions.RxPermissions;
 import com.techjumper.corelib.rx.tools.RxBus;
 import com.techjumper.corelib.rx.tools.RxUtils;
+import com.techjumper.corelib.utils.window.DialogUtils;
 import com.techjumper.corelib.utils.window.ToastUtils;
+import com.techjumper.polyhomeb.Config;
 import com.techjumper.polyhomeb.R;
+import com.techjumper.polyhomeb.entity.UpdateInfoEntity;
 import com.techjumper.polyhomeb.entity.event.ToggleMenuClickEvent;
+import com.techjumper.polyhomeb.mvp.m.TabHomeActivityModel;
 import com.techjumper.polyhomeb.mvp.v.activity.TabHomeActivity;
+import com.techjumper.polyhomeb.service.UpdateService;
 import com.techjumper.polyhomeb.widget.PolyTab;
 
+import java.util.List;
+
+import rx.Observer;
 import rx.Subscription;
+
+import static com.techjumper.polyhomeb.service.UpdateService.KEY_URL;
 
 /**
  * * * * * * * * * * * * * * * * * * * * * * *
@@ -28,6 +39,8 @@ public class TabHomeActivityPresenter extends AppBaseActivityPresenter<TabHomeAc
     private boolean mCanExit;
     private Subscription mSubs1;
 
+    private TabHomeActivityModel mModel = new TabHomeActivityModel(this);
+
     @Override
     public void initData(Bundle savedInstanceState) {
 
@@ -35,6 +48,7 @@ public class TabHomeActivityPresenter extends AppBaseActivityPresenter<TabHomeAc
 
     @Override
     public void onViewInited(Bundle savedInstanceState) {
+        checkVersionInfo();
         requestPermission();
         onToggleMenuClick();
     }
@@ -91,6 +105,55 @@ public class TabHomeActivityPresenter extends AppBaseActivityPresenter<TabHomeAc
                             .subscribe()
             );
         }
+    }
+
+    private void checkVersionInfo() {
+        String pkgName = getView().getPackageName();
+        String[] name = new String[]{pkgName};
+        RxUtils.unsubscribeIfNotNull(mSubs1);
+        addSubscription(
+                mSubs1 = mModel.checkUpdate(name)
+                        .subscribe(new Observer<UpdateInfoEntity>() {
+                            @Override
+                            public void onCompleted() {
+                            }
+
+                            @Override
+                            public void onError(Throwable e) {
+                            }
+
+                            @Override
+                            public void onNext(UpdateInfoEntity updateInfoEntity) {
+                                if (!processNetworkResult(updateInfoEntity)) return;
+                                if (updateInfoEntity.getData() != null
+                                        && updateInfoEntity.getData().getResult() != null
+                                        && updateInfoEntity.getData().getResult().size() != 0) {
+                                    List<UpdateInfoEntity.DataBean.ResultBean> result = updateInfoEntity.getData().getResult();
+                                    mModel.analyzeVersionCode(result);
+                                }
+                            }
+                        }));
+    }
+
+    public void showDialog(String url) {
+        DialogUtils.getBuilder(getView())
+                .content(R.string.has_new_version)
+                .positiveText(R.string.ok)
+                .negativeText(R.string.cancel)
+                .onAny((dialog, which) -> {
+                    switch (which) {
+                        case POSITIVE:
+                            downloadApk(url);
+                            break;
+                    }
+                })
+                .show();
+    }
+
+    private void downloadApk(String url) {
+        Intent intent = new Intent(getView(), UpdateService.class);
+        intent.putExtra(KEY_URL, Config.sHost + url);
+        getView().startService(intent);
     }
 
 }
