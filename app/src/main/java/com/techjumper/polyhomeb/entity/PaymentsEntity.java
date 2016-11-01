@@ -8,7 +8,6 @@ import com.google.gson.annotations.SerializedName;
  * Date: 2016/10/10
  * * * * * * * * * * * * * * * * * * * * * * *
  **/
-
 public class PaymentsEntity extends BaseEntity<PaymentsEntity.DataBean> {
 
     public static class DataBean {

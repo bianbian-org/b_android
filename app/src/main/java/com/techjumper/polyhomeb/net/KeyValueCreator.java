@@ -307,4 +307,13 @@ public class KeyValueCreator {
                 .put("platform", platform)
                 .put("packages", packages);
     }
+
+    public static KeyValuePair deductionWhenCall(String user_id, String ticket, String store_id, String user_tel, String shop_service_id) {
+        return newPair()
+                .put("user_id", user_id)
+                .put("ticket", ticket)
+                .put("store_id", store_id)
+                .put("user_tel", user_tel)
+                .put("shop_service_id", shop_service_id);
+    }
 }

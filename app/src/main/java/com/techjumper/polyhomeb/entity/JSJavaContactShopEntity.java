@@ -8,7 +8,18 @@ package com.techjumper.polyhomeb.entity;
  **/
 public class JSJavaContactShopEntity {
 
+
+    /**
+     * method : ContactShop
+     * params : {"store_id":"25","shop_service_id":"71","tel":"15712908185"}
+     */
+
     private String method;
+    /**
+     * store_id : 25
+     * shop_service_id : 71
+     * tel : 15712908185
+     */
 
     private ParamsBean params;
 
@@ -29,15 +40,24 @@ public class JSJavaContactShopEntity {
     }
 
     public static class ParamsBean {
-        private String shop_id;
+        private String store_id;
+        private String shop_service_id;
         private String tel;
 
-        public String getShop_id() {
-            return shop_id;
+        public String getStore_id() {
+            return store_id;
         }
 
-        public void setShop_id(String shop_id) {
-            this.shop_id = shop_id;
+        public void setStore_id(String store_id) {
+            this.store_id = store_id;
+        }
+
+        public String getShop_service_id() {
+            return shop_service_id;
+        }
+
+        public void setShop_service_id(String shop_service_id) {
+            this.shop_service_id = shop_service_id;
         }
 
         public String getTel() {

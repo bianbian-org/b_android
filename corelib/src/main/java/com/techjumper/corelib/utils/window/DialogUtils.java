@@ -32,8 +32,6 @@ public class DialogUtils {
         } catch (Exception e) {
             e.printStackTrace();
         }
-
-
     }
 
     public static MaterialDialog.Builder getBuilder(Activity context) {
@@ -45,7 +43,6 @@ public class DialogUtils {
                 .dividerColor(0xFF1DE9B6)
                 .contentColorRes(android.R.color.white)
                 .theme(Theme.DARK);
-
     }
 
 }

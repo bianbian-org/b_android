@@ -571,6 +571,12 @@ public interface ServiceAPI {
     @GET
     Observable<ResponseBody> downloadNewApk(@Url String url);
 
+    /**
+     * 生活服务-联系商家扣费接口
+     */
+    @POST("store/charge")
+    Observable<TrueEntity> deductionWhenCall(@Body BaseArgumentsEntity entity);
+
 /*********************************************************医疗接口*********************************************************/
 
     /**
