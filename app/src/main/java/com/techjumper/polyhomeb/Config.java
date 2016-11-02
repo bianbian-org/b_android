@@ -1,5 +1,9 @@
 package com.techjumper.polyhomeb;
 
+import android.os.Environment;
+
+import java.io.File;
+
 /**
  * * * * * * * * * * * * * * * * * * * * * * *
  * Created by zhaoyiding
@@ -57,5 +61,16 @@ public class Config {
      */
     public static final int DEFAULT_DB_VERSION = 1;
 
+    /**
+     * apk更新之后保存位置
+     */
+    public static final String sUpdate_Apk_Path = Environment.getExternalStorageDirectory().getAbsolutePath()
+            + File.separator + Config.sParentDirName + File.separator
+            + Config.sAPKDirName;
+
+    /**
+     * apk下载的文件名
+     */
+    public static final String sAPK_NAME = "temp.apk";
 
 }

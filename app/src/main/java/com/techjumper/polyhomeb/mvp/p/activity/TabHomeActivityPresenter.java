@@ -9,6 +9,7 @@ import android.os.Handler;
 import com.tbruyelle.rxpermissions.RxPermissions;
 import com.techjumper.corelib.rx.tools.RxBus;
 import com.techjumper.corelib.rx.tools.RxUtils;
+import com.techjumper.corelib.utils.file.FileUtils;
 import com.techjumper.corelib.utils.window.DialogUtils;
 import com.techjumper.corelib.utils.window.ToastUtils;
 import com.techjumper.polyhomeb.Config;
@@ -25,6 +26,7 @@ import java.util.List;
 import rx.Observer;
 import rx.Subscription;
 
+import static com.techjumper.polyhomeb.service.UpdateService.KEY_FILE_PATH;
 import static com.techjumper.polyhomeb.service.UpdateService.KEY_URL;
 
 /**
@@ -37,7 +39,7 @@ public class TabHomeActivityPresenter extends AppBaseActivityPresenter<TabHomeAc
         implements PolyTab.ITabClick {
 
     private boolean mCanExit;
-    private Subscription mSubs1;
+    private Subscription mSubs1, mSubs2;
 
     private TabHomeActivityModel mModel = new TabHomeActivityModel(this);
 
@@ -48,6 +50,7 @@ public class TabHomeActivityPresenter extends AppBaseActivityPresenter<TabHomeAc
 
     @Override
     public void onViewInited(Bundle savedInstanceState) {
+        checkOldApkIsExists();
         checkVersionInfo();
         requestPermission();
         onToggleMenuClick();
@@ -110,9 +113,9 @@ public class TabHomeActivityPresenter extends AppBaseActivityPresenter<TabHomeAc
     private void checkVersionInfo() {
         String pkgName = getView().getPackageName();
         String[] name = new String[]{pkgName};
-        RxUtils.unsubscribeIfNotNull(mSubs1);
+        RxUtils.unsubscribeIfNotNull(mSubs2);
         addSubscription(
-                mSubs1 = mModel.checkUpdate(name)
+                mSubs2 = mModel.checkUpdate(name)
                         .subscribe(new Observer<UpdateInfoEntity>() {
                             @Override
                             public void onCompleted() {
@@ -153,7 +156,15 @@ public class TabHomeActivityPresenter extends AppBaseActivityPresenter<TabHomeAc
     private void downloadApk(String url) {
         Intent intent = new Intent(getView(), UpdateService.class);
         intent.putExtra(KEY_URL, Config.sHost + url);
+        intent.putExtra(KEY_FILE_PATH, Config.sUpdate_Apk_Path);
         getView().startService(intent);
+    }
+
+    /**
+     * 检查xxx路径下是否有apk更新包，有的话就删除，没有就不管啦
+     */
+    private void checkOldApkIsExists() {
+        FileUtils.deleteFileIfExist(Config.sUpdate_Apk_Path, Config.sAPK_NAME);
     }
 
 }

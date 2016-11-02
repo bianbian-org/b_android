@@ -29,6 +29,7 @@ import butterknife.OnClick;
 import rx.Observer;
 import rx.Subscription;
 
+import static com.techjumper.polyhomeb.service.UpdateService.KEY_FILE_PATH;
 import static com.techjumper.polyhomeb.service.UpdateService.KEY_URL;
 
 /**
@@ -175,6 +176,7 @@ public class SettingActivityPresenter extends AppBaseActivityPresenter<SettingAc
     private void downloadApk(String url) {
         Intent intent = new Intent(getView(), UpdateService.class);
         intent.putExtra(KEY_URL, Config.sHost + url);
+        intent.putExtra(KEY_FILE_PATH, Config.sUpdate_Apk_Path);
         getView().startService(intent);
 
     }

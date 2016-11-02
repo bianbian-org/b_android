@@ -369,7 +369,7 @@
     <string name="no_new_version">已是最新版本啦~~</string>
     <string name="has_new_version">有新版本，是否更新？</string>
     <string name="download_begin">开始下载</string>
-    <string name="current_progress">当前进度:%1$s</string>
+    <string name="current_progress">正在更新：%1$s</string>
     <string name="download_complete">下载完毕</string>
     <string name="download_error">下载出错，请重试</string>
     <string name="join_village_eg_hint">例如：\n1：您的地址是10栋1单元1楼2号房，那么下面就需要依次填写10、1、102 \n2：或者您的地址是10栋1单元11楼2号房，那么下面应该填写为：10、1、1102</string>
