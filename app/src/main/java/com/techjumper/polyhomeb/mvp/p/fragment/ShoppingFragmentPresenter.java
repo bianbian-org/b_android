@@ -48,9 +48,9 @@ public class ShoppingFragmentPresenter extends AppBaseFragmentPresenter<Shopping
     }
 
     private void reloadPage() {
-        RxUtils.unsubscribeIfNotNull(mSubs1);
+        RxUtils.unsubscribeIfNotNull(mSubs2);
         addSubscription(
-                mSubs1 = RxBus.INSTANCE.asObservable().subscribe(o -> {
+                mSubs2 = RxBus.INSTANCE.asObservable().subscribe(o -> {
                     if (o instanceof ReloadWebPageEvent) {
 //                        getView().getWebView().reload();
                     } else if (o instanceof RefreshStopEvent) {
