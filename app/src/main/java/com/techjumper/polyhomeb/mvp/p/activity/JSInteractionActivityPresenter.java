@@ -143,6 +143,8 @@ public class JSInteractionActivityPresenter extends AppBaseActivityPresenter<JSI
         if (TextUtils.isEmpty(mArticleId)) return;
         DialogUtils.getBuilder(getView())
                 .content(R.string.confirm_delete_article)
+                .positiveText(R.string.ok)
+                .negativeText(R.string.cancel)
                 .onAny((dialog, which) -> {
                     switch (which) {
                         case POSITIVE:
