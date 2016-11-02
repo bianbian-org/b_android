@@ -14,6 +14,7 @@ public class SimpleDownloadBuilder {
     private String url;
     private String path;
     private String name;
+    private int notifyPercent = 2;
     private IDownloadError iDownloadError;
     private IDownloadState iDownloadState;
     private IDownloadProgress iDownloadProgress;
@@ -30,6 +31,18 @@ public class SimpleDownloadBuilder {
 
     public SimpleDownloadBuilder setName(String name) {
         this.name = name;
+        return this;
+    }
+
+    /**
+     * 设置每隔多少个百分比通知一次。如果<=0则一直通知，但会有性能问题。
+     */
+    public SimpleDownloadBuilder setNotifyPercent(int percent) {
+        if (percent < 0)
+            percent = 0;
+        else if (percent > 100)
+            percent = 100;
+        this.notifyPercent = percent;
         return this;
     }
 
@@ -56,11 +69,11 @@ public class SimpleDownloadBuilder {
     }
 
     public SimpleDownloader build() {
-        return new SimpleDownloader(url, path, name, iDownloadProgress, iDownloadState, iDownloadError);
+        return new SimpleDownloader(url, path, name, notifyPercent, iDownloadProgress, iDownloadState, iDownloadError);
     }
 
     public SimpleDownloader download() {
-        SimpleDownloader simpleDownloader = new SimpleDownloader(url, path, name, iDownloadProgress, iDownloadState, iDownloadError);
+        SimpleDownloader simpleDownloader = new SimpleDownloader(url, path, name, notifyPercent, iDownloadProgress, iDownloadState, iDownloadError);
         simpleDownloader.download();
         return simpleDownloader;
     }

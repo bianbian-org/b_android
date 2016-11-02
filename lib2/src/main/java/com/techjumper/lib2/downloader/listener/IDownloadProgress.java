@@ -7,5 +7,5 @@ package com.techjumper.lib2.downloader.listener;
  * * * * * * * * * * * * * * * * * * * * * * *
  **/
 public interface IDownloadProgress {
-    void onDownloadProgress(int progress, int total);
+    void onDownloadProgress(int progress, int total, int percent);
 }

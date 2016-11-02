@@ -35,18 +35,23 @@ public class SimpleDownloader {
 
     private String mUrl;
     private String mPath;
-    private String mName;
+    private int mNotifyPercent;
+    private int mLastPercent;
+    private File mSaveFile;
     private IDownloadProgress iDownloadProgress;
     private IDownloadState iDownloadState;
     private IDownloadError iDownloadError;
     private IDownloadState.State mState = IDownloadState.State.IDLE;
 
-    SimpleDownloader(String url, String path, String name, IDownloadProgress iDownloadProgress, IDownloadState iDownloadState, IDownloadError iDownloadError) {
+    SimpleDownloader(String url, String path, String name, int notifyPercent, IDownloadProgress iDownloadProgress, IDownloadState iDownloadState, IDownloadError iDownloadError) {
         mUrl = url;
         mPath = path;
-        mName = name;
-        if (TextUtils.isEmpty(mName))
-            mName = DEFAULT_NAME;
+        mNotifyPercent = notifyPercent;
+        String name1 = name;
+        if (TextUtils.isEmpty(name1))
+            name1 = DEFAULT_NAME;
+
+        mSaveFile = new File(mPath, name1);
         this.iDownloadProgress = iDownloadProgress;
         this.iDownloadState = iDownloadState;
         this.iDownloadError = iDownloadError;
@@ -59,10 +64,8 @@ public class SimpleDownloader {
                 .map(url -> {
                     if (!init())
                         return null;
-
-                    File saveFile = new File(mPath, mName);
-                    if (saveFile.exists()) {
-                        if (!saveFile.delete()) {
+                    if (mSaveFile.exists()) {
+                        if (!mSaveFile.delete()) {
                             notifyError(new PathErrorException("文件已存在，并且无法删除"));
                             return null;
                         }
@@ -92,7 +95,7 @@ public class SimpleDownloader {
                         }
                         int length = conn.getContentLength();
                         bis = new BufferedInputStream(conn.getInputStream());
-                        bos = new BufferedOutputStream(new FileOutputStream(saveFile));
+                        bos = new BufferedOutputStream(new FileOutputStream(mSaveFile));
                         byte[] buffer = new byte[8000];
                         int progress = 0;
                         for (int count; (count = bis.read(buffer)) != -1; ) {
@@ -114,7 +117,7 @@ public class SimpleDownloader {
                     }
 
 
-                    return saveFile;
+                    return mSaveFile;
                 })
                 .compose(CommonWrap.wrap())
                 .subscribe(new Subscriber<File>() {
@@ -136,6 +139,10 @@ public class SimpleDownloader {
 
                 );
 
+    }
+
+    public File getFile() {
+        return mSaveFile;
     }
 
     public IDownloadState.State getState() {
@@ -175,6 +182,7 @@ public class SimpleDownloader {
 
     private void notifyError(Throwable e) {
         changeStateAndNotify(IDownloadState.State.STOP);
+        mLastPercent = 0;
         Utils.mainHandler.post(() -> {
             if (iDownloadError != null)
                 iDownloadError.onDownloadError(e);
@@ -182,17 +190,25 @@ public class SimpleDownloader {
     }
 
     private void notifyProgress(int progress, int total) {
+        int percent = progress * 100 / total;
+        if (mNotifyPercent != 0) {
+            if (percent - mLastPercent < mNotifyPercent)
+                return;
+        }
+        mLastPercent = percent;
         Utils.mainHandler.post(() -> {
             if (iDownloadProgress != null)
-                iDownloadProgress.onDownloadProgress(progress, total);
+                iDownloadProgress.onDownloadProgress(progress, total, percent);
         });
     }
 
     private void changeStateAndNotify(IDownloadState.State state) {
         mState = state;
+        if (state == IDownloadState.State.FINISH)
+            mLastPercent = 0;
         Utils.mainHandler.post(() -> {
             if (iDownloadState != null)
-                iDownloadState.onDownloadStateChange(state);
+                iDownloadState.onDownloadStateChange(state, mSaveFile);
         });
     }
 

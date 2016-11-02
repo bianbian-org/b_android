@@ -1,6 +1,8 @@
 package com.techjumper.lib2.downloader.listener;
 
 
+import java.io.File;
+
 /**
  * * * * * * * * * * * * * * * * * * * * * * *
  * Created by zhaoyiding
@@ -15,5 +17,5 @@ public interface IDownloadState {
         FINISH
     }
 
-    void onDownloadStateChange(State state);
+    void onDownloadStateChange(State state, File downloadFile);
 }
