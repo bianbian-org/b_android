@@ -18,16 +18,19 @@ public class SimpleDownloadBuilder {
     private IDownloadState iDownloadState;
     private IDownloadProgress iDownloadProgress;
 
-    public void setUrl(String url) {
+    public SimpleDownloadBuilder setUrl(String url) {
         this.url = url;
+        return this;
     }
 
-    public void setPath(String path) {
+    public SimpleDownloadBuilder setPath(String path) {
         this.path = path;
+        return this;
     }
 
-    public void setName(String name) {
+    public SimpleDownloadBuilder setName(String name) {
         this.name = name;
+        return this;
     }
 
     public SimpleDownloadBuilder setDownloadErrorListener(IDownloadError iDownloadError) {
