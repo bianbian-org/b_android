@@ -361,6 +361,8 @@ public class InfoFragmentPresenter extends AppBaseFragmentPresenter<InfoFragment
         if (!UserInfoManager.isLogin())
             return;
 
+        Log.d("weatherDate", "weather begin");
+
         addSubscription(infoFragmentModel.getWeatherInfo()
                 .subscribe(new Subscriber<WeatherEntity>() {
                     @Override
@@ -380,6 +382,8 @@ public class InfoFragmentPresenter extends AppBaseFragmentPresenter<InfoFragment
 
                         if (weatherEntity != null && weatherEntity.getData() != null)
                             getView().getWeatherInfo(weatherEntity.getData());
+
+                        Log.d("weatherDate", "weather data" + weatherEntity.getData());
                         //发送给主页获取数据
                         RxBus.INSTANCE.send(new WeatherEvent(weatherEntity.getData()));
                     }
@@ -388,6 +392,8 @@ public class InfoFragmentPresenter extends AppBaseFragmentPresenter<InfoFragment
 
     //获取日历相关
     private void getCalendarInfo() {
+        Log.d("weatherDate", "date begin");
+
         addSubscription(infoFragmentModel.getCalendarInfo()
                 .subscribe(new Subscriber<CalendarEntity>() {
                     @Override
@@ -407,6 +413,8 @@ public class InfoFragmentPresenter extends AppBaseFragmentPresenter<InfoFragment
 
                         if (calendarEntity != null && calendarEntity.getData() != null)
                             getView().getCalendarInfo(calendarEntity.getData());
+
+                        Log.d("weatherDate", "date data" + calendarEntity.getData());
                     }
                 }));
     }
