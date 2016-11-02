@@ -29,7 +29,7 @@ import rx.Subscriber;
  * Date: 2016/11/1
  * * * * * * * * * * * * * * * * * * * * * * *
  **/
-class SimpleDownloader {
+public class SimpleDownloader {
 
     public static final String DEFAULT_NAME = "unnamed";
 
