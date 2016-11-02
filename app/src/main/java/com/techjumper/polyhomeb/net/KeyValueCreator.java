@@ -248,11 +248,12 @@ public class KeyValueCreator {
                 .put("cover", cover);
     }
 
-    public static KeyValuePair getOrdersInfo(String user_id, String ticket, String family_id, String status, String pay_type, int page, int count) {
+    public static KeyValuePair getOrdersInfo(String user_id, String ticket, String family_id, String village_id, String status, String pay_type, int page, int count) {
         return newPair()
                 .put("user_id", user_id)
                 .put("ticket", ticket)
                 .put("family_id", family_id)
+                .put("village_id", village_id)
                 .put("status", status)
                 .put("pay_type", pay_type)
                 .put("page", page)
@@ -305,5 +306,14 @@ public class KeyValueCreator {
         return newPair()
                 .put("platform", platform)
                 .put("packages", packages);
+    }
+
+    public static KeyValuePair deductionWhenCall(String user_id, String ticket, String store_id, String user_tel, String shop_service_id) {
+        return newPair()
+                .put("user_id", user_id)
+                .put("ticket", ticket)
+                .put("store_id", store_id)
+                .put("user_tel", user_tel)
+                .put("shop_service_id", shop_service_id);
     }
 }

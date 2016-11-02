@@ -79,6 +79,7 @@ public class MyVillageFamilyActivityPresenter extends AppBaseActivityPresenter<M
                                 if (!processNetworkResult(userFamiliesAndVillagesEntity)) return;
                                 if (userFamiliesAndVillagesEntity.getData() != null) {
                                     getView().showData(mModel.processData(userFamiliesAndVillagesEntity));
+                                    UserManager.INSTANCE.saveFamiliesAndVillages(userFamiliesAndVillagesEntity);
                                 }
                             }
                         }));

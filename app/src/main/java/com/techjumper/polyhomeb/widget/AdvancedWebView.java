@@ -6,7 +6,6 @@ package com.techjumper.polyhomeb.widget;
  * Licensed under the MIT License (https://opensource.org/licenses/MIT)
  */
 
-import android.Manifest;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.DownloadManager;
@@ -22,7 +21,6 @@ import android.net.http.SslError;
 import android.os.Build;
 import android.os.Environment;
 import android.os.Message;
-import android.text.TextUtils;
 import android.util.AttributeSet;
 import android.util.Base64;
 import android.view.InputEvent;
@@ -48,10 +46,6 @@ import android.webkit.WebSettings;
 import android.webkit.WebStorage.QuotaUpdater;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
-
-import com.tbruyelle.rxpermissions.RxPermissions;
-import com.techjumper.corelib.utils.window.DialogUtils;
-import com.techjumper.polyhomeb.R;
 
 import java.io.UnsupportedEncodingException;
 import java.lang.ref.WeakReference;
@@ -528,34 +522,34 @@ public class AdvancedWebView extends WebView {
             @Override
             public boolean shouldOverrideUrlLoading(final WebView view, final String url) {
 
-                if (!TextUtils.isEmpty(url) && url.startsWith("tel:")) {
-                    RxPermissions.getInstance(context)
-                            .request(Manifest.permission.CALL_PHONE)
-                            .subscribe(aBoolean -> {
-                                if (aBoolean) {
-                                    String[] split = url.split("tel:");
-                                    if (split.length == 2 && !TextUtils.isEmpty(split[1])) {
-                                        DialogUtils.getBuilder((Activity) context)
-                                                .content(String.format(context.getString(R.string.confirm_call_x)
-                                                        , url.replace("tel:", "")))
-                                                .positiveText(R.string.ok)
-                                                .negativeText(R.string.cancel)
-                                                .onAny((dialog, which) -> {
-                                                    switch (which) {
-                                                        case POSITIVE:
-                                                            Intent intent = new Intent();
-                                                            intent.setAction(Intent.ACTION_CALL);
-                                                            intent.setData(Uri.parse(url));
-                                                            context.startActivity(intent);
-                                                            break;
-                                                    }
-                                                })
-                                                .show();
-                                    }
-                                }
-                            });
-                    return true;
-                }
+//                if (!TextUtils.isEmpty(url) && url.startsWith("tel:")) {
+//                    RxPermissions.getInstance(context)
+//                            .request(Manifest.permission.CALL_PHONE)
+//                            .subscribe(aBoolean -> {
+//                                if (aBoolean) {
+//                                    String[] split = url.split("tel:");
+//                                    if (split.length == 2 && !TextUtils.isEmpty(split[1])) {
+//                                        DialogUtils.getBuilder((Activity) context)
+//                                                .content(String.format(context.getString(R.string.confirm_call_x)
+//                                                        , url.replace("tel:", "")))
+//                                                .positiveText(R.string.ok)
+//                                                .negativeText(R.string.cancel)
+//                                                .onAny((dialog, which) -> {
+//                                                    switch (which) {
+//                                                        case POSITIVE:
+//                                                            Intent intent = new Intent();
+//                                                            intent.setAction(Intent.ACTION_CALL);
+//                                                            intent.setData(Uri.parse(url));
+//                                                            context.startActivity(intent);
+//                                                            break;
+//                                                    }
+//                                                })
+//                                                .show();
+//                                    }
+//                                }
+//                            });
+//                    return true;
+//                }
                 // if the hostname may not be accessed
                 if (!isHostnameAllowed(url)) {
                     // if a listener is available

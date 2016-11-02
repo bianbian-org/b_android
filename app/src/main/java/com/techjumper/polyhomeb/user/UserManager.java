@@ -5,10 +5,14 @@ import android.text.TextUtils;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.techjumper.corelib.rx.tools.RxBus;
+import com.techjumper.corelib.utils.Utils;
+import com.techjumper.corelib.utils.file.FileUtils;
 import com.techjumper.corelib.utils.file.PreferenceUtils;
+import com.techjumper.lib2.utils.GsonUtils;
 import com.techjumper.polyhomeb.Config;
 import com.techjumper.polyhomeb.entity.BluetoothLockDoorInfoEntity;
 import com.techjumper.polyhomeb.entity.LoginEntity;
+import com.techjumper.polyhomeb.entity.UserFamiliesAndVillagesEntity;
 import com.techjumper.polyhomeb.entity.medicalEntity.MedicalAllUserEntity;
 import com.techjumper.polyhomeb.entity.medicalEntity.MedicalUserLoginEntity;
 import com.techjumper.polyhomeb.manager.PolyPluginFileManager;
@@ -16,6 +20,10 @@ import com.techjumper.polyhomeb.user.event.LoginEvent;
 import com.techjumper.polyhomeb.utils.HostIpHelper;
 
 import java.util.List;
+
+import okio.Buffer;
+
+import static com.techjumper.corelib.utils.file.FileUtils.loadTextFile;
 
 /**
  * * * * * * * * * * * * * * * * * * * * * * *
@@ -57,6 +65,8 @@ public enum UserManager {
     public static final String KEY_IS_CURRENT_COMMUNITY_SUPPORT_BLE_DOOR = "is_current_community_support_ble_door";
     public static final String KEY_CURRENT_COMMUNITY_BLE_DOOR_INFO = "current_community_ble_door_info";
 
+    private static final String PATH = Utils.appContext.getFilesDir().getAbsolutePath() + "_" + "userinfo";
+
     /**
      * 通过LoginEntity将用户信息同步到本地
      */
@@ -83,10 +93,9 @@ public enum UserManager {
 
         if (entity.getData().getFamilies() != null && entity.getData().getFamilies().size() != 0) {
             //登录接口多出来的
-//            PreferenceUtils.save(KEY_ALL_FAMILIES, GsonUtils.toJson(entity.getData().getFamilies()));
-//            Gson gson = new Gson();
-//            String json = gson.toJson(entity.getData().getFamilies(), List.class);
-//            PreferenceUtils.save(KEY_ALL_FAMILIES, json);
+            //将所有的家庭信息存储到内部存储
+            FileUtils.saveInputstreamToPath(new Buffer().writeUtf8(GsonUtils.toJson(
+                    entity.getData().getFamilies())).inputStream(), PATH, KEY_ALL_FAMILIES);
             String family_id = entity.getData().getFamilies().get(0).getFamily_id();
             String family_name = entity.getData().getFamilies().get(0).getFamily_name();
             int village_id = entity.getData().getFamilies().get(0).getVillage_id();
@@ -94,10 +103,9 @@ public enum UserManager {
         }
         if (entity.getData().getVillages() != null && entity.getData().getVillages().size() != 0) {
             //登录接口多出来的
-//            PreferenceUtils.save(KEY_ALL_VILLAGES, GsonUtils.toJson(entity.getData().getVillages()));
-            Gson gson = new Gson();
-            String json = gson.toJson(entity.getData().getVillages(), List.class);
-            PreferenceUtils.save(KEY_ALL_VILLAGES, json);
+            //将所有的小区信息存储到内部存储
+            FileUtils.saveInputstreamToPath(new Buffer().writeUtf8(GsonUtils.toJson(
+                    entity.getData().getVillages())).inputStream(), PATH, KEY_ALL_VILLAGES);
             //如果KEY_CURRENT_SHOW_IS_FAMILY_OR_VILLAGE是空的,或者value不是家庭的话,证明刚才没有存入家庭,现在就需要存小区.
             if (TextUtils.isEmpty(getUserInfo(KEY_CURRENT_SHOW_IS_FAMILY_OR_VILLAGE))
                     || !VALUE_IS_FAMILY.equals(getUserInfo(KEY_CURRENT_SHOW_IS_FAMILY_OR_VILLAGE))) {
@@ -112,6 +120,15 @@ public enum UserManager {
         PreferenceUtils.save(KEY_AVATAR, Config.sHost + dataEntity.getCover());
     }
 
+    /**
+     * 侧边栏存储请求到的家庭和小区数据
+     */
+    public void saveFamiliesAndVillages(UserFamiliesAndVillagesEntity entity) {
+        FileUtils.saveInputstreamToPath(new Buffer().writeUtf8(GsonUtils.toJson(
+                entity.getData().getFamily_infos())).inputStream(), PATH, KEY_ALL_FAMILIES);
+        FileUtils.saveInputstreamToPath(new Buffer().writeUtf8(GsonUtils.toJson(
+                entity.getData().getVillage_infos())).inputStream(), PATH, KEY_ALL_VILLAGES);
+    }
     /**
      * 更新Ticket
      */
@@ -138,7 +155,6 @@ public enum UserManager {
             PreferenceUtils.save(UserManager.KEY_CURRENT_VILLAGE_ID, village_id);
             PreferenceUtils.save(UserManager.KEY_CURRENT_SHOW_IS_FAMILY_OR_VILLAGE, UserManager.VALUE_IS_FAMILY);
         } else {
-//            PreferenceUtils.save(UserManager.KEY_CURRENT_FAMILY_ID, "");
             PreferenceUtils.save(UserManager.KEY_CURRENT_FAMILY_ID, family_id);
             PreferenceUtils.save(UserManager.KEY_CURRENT_SHOW_TITLE_NAME, name);
             PreferenceUtils.save(UserManager.KEY_CURRENT_VILLAGE_ID, village_id);
@@ -148,28 +164,20 @@ public enum UserManager {
 
     /**
      * 得到用户所有家庭
+     *
+     * @return json字符串
      */
-    public List<LoginEntity.LoginDataEntity.FamiliesBean> getUserAllFamilies(String key) {
-//        String allFamiliesJson = PreferenceUtils.get(KEY_ALL_FAMILIES, key);
-//        return GsonUtils.fromJson(allFamiliesJson, List.class);
-        Gson gson = new Gson();
-        String userInfo = PreferenceUtils.get(KEY_ALL_FAMILIES, "");
-        List<LoginEntity.LoginDataEntity.FamiliesBean> options = gson.fromJson(userInfo, new TypeToken<List<LoginEntity.LoginDataEntity.FamiliesBean>>() {
-        }.getType());
-        return options;
+    public String getUserAllFamilies() {
+        return loadTextFile(PATH, KEY_ALL_FAMILIES);
     }
 
     /**
      * 得到用户所有小区
+     *
+     * @return json字符串
      */
-    public List<LoginEntity.LoginDataEntity.VillagesBean> getUserAllVillages(String key) {
-//        String allVillagesJson = PreferenceUtils.get(KEY_ALL_VILLAGES, key);
-//        return GsonUtils.fromJson(allVillagesJson, List.class);
-        Gson gson = new Gson();
-        String userInfo = PreferenceUtils.get(KEY_ALL_VILLAGES, "");
-        List<LoginEntity.LoginDataEntity.VillagesBean> options = gson.fromJson(userInfo, new TypeToken<List<LoginEntity.LoginDataEntity.VillagesBean>>() {
-        }.getType());
-        return options;
+    public String getUserAllVillages() {
+        return loadTextFile(PATH, KEY_ALL_VILLAGES);
     }
 
     /**
@@ -231,11 +239,11 @@ public enum UserManager {
         if (entity.getData().getInfos() != null
                 && entity.getData().getInfos().size() != 0) {
             List<BluetoothLockDoorInfoEntity.DataBean.InfosBean> infos = entity.getData().getInfos();
-            Gson gson = new Gson();
-            String json = gson.toJson(infos, List.class);
-            PreferenceUtils.save(KEY_CURRENT_COMMUNITY_BLE_DOOR_INFO, json);
+            FileUtils.saveInputstreamToPath(new Buffer().writeUtf8(GsonUtils.toJson(infos)).inputStream(),
+                    PATH, KEY_CURRENT_COMMUNITY_BLE_DOOR_INFO);
         } else {
-            PreferenceUtils.save(KEY_CURRENT_COMMUNITY_BLE_DOOR_INFO, "");
+            FileUtils.saveInputstreamToPath(new Buffer().writeUtf8(GsonUtils.toJson(null)).inputStream(),
+                    PATH, KEY_CURRENT_COMMUNITY_BLE_DOOR_INFO);
         }
         if (1 == entity.getData().getHas_bluelock()) {
             PreferenceUtils.save(KEY_IS_CURRENT_COMMUNITY_SUPPORT_BLE_DOOR, "1");
@@ -250,10 +258,12 @@ public enum UserManager {
      */
     public List<BluetoothLockDoorInfoEntity.DataBean.InfosBean> getBLEInfo() {
         Gson gson = new Gson();
-        String userInfo = PreferenceUtils.get(KEY_CURRENT_COMMUNITY_BLE_DOOR_INFO, "");
+        String userInfo = FileUtils.loadTextFile(PATH, KEY_CURRENT_COMMUNITY_BLE_DOOR_INFO);
+        if (TextUtils.isEmpty(userInfo)) return null; //在saveBLEInfo()方法中存入了空字符串
         List<BluetoothLockDoorInfoEntity.DataBean.InfosBean> options
                 = gson.fromJson(userInfo, new TypeToken<List<BluetoothLockDoorInfoEntity.DataBean.InfosBean>>() {
         }.getType());
+        if (options == null || options.size() == 0) return null;
         return options;
     }
 
@@ -282,8 +292,6 @@ public enum UserManager {
         PreferenceUtils.save(KEY_AVATAR, "");
         PreferenceUtils.save(KEY_LOCAL_AVATAR, "");
         PreferenceUtils.save(KEY_USER_NAME, "");
-        PreferenceUtils.save(KEY_ALL_FAMILIES, "");
-        PreferenceUtils.save(KEY_ALL_VILLAGES, "");
         PreferenceUtils.save(KEY_CURRENT_BUILDING, "");
         PreferenceUtils.save(KEY_CURRENT_UNIT, "");
         PreferenceUtils.save(KEY_CURRENT_ROOM, "");
@@ -292,9 +300,8 @@ public enum UserManager {
         PreferenceUtils.save(KEY_CURRENT_SHOW_IS_FAMILY_OR_VILLAGE, "");
         PreferenceUtils.save(KEY_CURRENT_VILLAGE_ID, "");
         PreferenceUtils.save(KEY_IS_CURRENT_COMMUNITY_SUPPORT_BLE_DOOR, "0");
-        PreferenceUtils.save(KEY_CURRENT_COMMUNITY_BLE_DOOR_INFO, "");
         PolyPluginFileManager.getInstance().clearFamilyInfoFile().subscribe();
-
+        clearUserInfo();
         HostIpHelper.getInstance().clear();
         if (notify)
             notifyLoginOrLogoutEvent(false);
@@ -328,6 +335,51 @@ public enum UserManager {
      */
     public String getCurrentFamilyInfo(String key) {
         return getUserInfo(key);
+    }
+
+    /**
+     * 将内部存储的数据清空
+     */
+    public void clearUserInfo() {
+        FileUtils.deleteDir(PATH);
+    }
+
+    /**
+     * 当前小区或者家庭是否有权限进行 发帖，缴费，回复帖子等操作？
+     * <p>如果当前是家庭，默认有权限</p>
+     * <p>如果当前是小区，那么得到所有小区的数据，再进行判断：如果当前小区已经有通过审核的房间，那么有权限
+     * ，如果当前小区所有的房间均没有通过审核，则无权限</p>
+     */
+    public boolean hasAuthority() {
+        if (isFamily()) return true;
+        Gson gson = new Gson();
+        String userAllVillages = getUserAllVillages();
+        if (TextUtils.isEmpty(userAllVillages)) return false;
+        List<LoginEntity.LoginDataEntity.VillagesBean> options
+                = gson.fromJson(userAllVillages, new TypeToken<List<LoginEntity.LoginDataEntity.VillagesBean>>() {
+        }.getType());
+        if (options == null || options.size() == 0) return false;
+        String currentId = getCurrentId();
+
+        boolean hasAuthority = false;
+        for (LoginEntity.LoginDataEntity.VillagesBean bean : options) {
+            int village_id = bean.getVillage_id();
+            if ((village_id + "").equals(currentId)) {
+                //说明就是当前这个选择的小区
+                //然后取出本小区下挂的房间
+                //遍历所有房间，如果有审核过的，那就返回true，如果全都是未审核，则返回false
+                List<LoginEntity.LoginDataEntity.VillagesBean.RoomsBean> rooms = bean.getRooms();
+                for (LoginEntity.LoginDataEntity.VillagesBean.RoomsBean roomBean : rooms) {
+                    int verified = roomBean.getVerified();
+                    if (verified == 1) {  //未审核
+                        hasAuthority = true;
+                        break;
+                    }
+                }
+                break;
+            }
+        }
+        return hasAuthority;
     }
 
     /**************************************
@@ -395,20 +447,17 @@ public enum UserManager {
     }
 
     public void saveMedicalAllUserInfo(List<MedicalAllUserEntity> entities) {
-        Gson gson = new Gson();
-        String json = gson.toJson(entities, List.class);
-        PreferenceUtils.save(KEY_MEDICAL_ALL_USER_INFO_LIST, json);
-//        PreferenceUtils.save(KEY_MEDICAL_ALL_USER_INFO_LIST, GsonUtils.toJson(entities));
+        FileUtils.saveInputstreamToPath(new Buffer().writeUtf8(GsonUtils.toJson(entities)).inputStream()
+                , PATH, KEY_MEDICAL_ALL_USER_INFO_LIST);
     }
 
     public List<MedicalAllUserEntity> getMedicalAllUserInfo() {
         Gson gson = new Gson();
-        String userInfo = PreferenceUtils.get(KEY_MEDICAL_ALL_USER_INFO_LIST, "");
-        List<MedicalAllUserEntity> options = gson.fromJson(userInfo, new TypeToken<List<MedicalAllUserEntity>>() {
+        String userInfo = FileUtils.loadTextFile(PATH, KEY_MEDICAL_ALL_USER_INFO_LIST);
+        List<MedicalAllUserEntity> options
+                = gson.fromJson(userInfo, new TypeToken<List<MedicalAllUserEntity>>() {
         }.getType());
         return options;
-//        String userInfo = PreferenceUtils.get(KEY_MEDICAL_ALL_USER_INFO_LIST, "");
-//        return GsonUtils.fromJson(userInfo, List.class);
     }
 
 

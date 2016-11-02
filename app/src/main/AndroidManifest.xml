@@ -141,7 +141,7 @@
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden|stateUnchanged" />
         <activity
-            android:name=".mvp.v.activity.ReplyDetailActivity"
+            android:name=".mvp.v.activity.JSInteractionActivity"
             android:configChanges="keyboardHidden|orientation|screenSize"
             android:launchMode="standard"
             android:screenOrientation="portrait"

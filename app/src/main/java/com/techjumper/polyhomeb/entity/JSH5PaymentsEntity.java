@@ -10,8 +10,16 @@ package com.techjumper.polyhomeb.entity;
 public class JSH5PaymentsEntity {
 
     private int type = -1;
-
+    private String back_type;
     private AlipayBean alipay;
+
+    public String getBack_type() {
+        return back_type;
+    }
+
+    public void setBack_type(String back_type) {
+        this.back_type = back_type;
+    }
 
     public int getType() {
         return type;

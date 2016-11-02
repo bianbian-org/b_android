@@ -98,7 +98,13 @@ public class FriendFragmentPresenter extends AppBaseFragmentPresenter<FriendFrag
     }
 
     public void onTitleRightClick() {
-        if (UserManager.INSTANCE.isFamily()) {
+//        if (UserManager.INSTANCE.isFamily()) {
+//            clickAdd();
+//        } else {
+//            ToastUtils.show(getView().getActivity().getString(R.string.no_authority));
+//        }
+
+        if (UserManager.INSTANCE.hasAuthority()) {
             clickAdd();
         } else {
             ToastUtils.show(getView().getActivity().getString(R.string.no_authority));

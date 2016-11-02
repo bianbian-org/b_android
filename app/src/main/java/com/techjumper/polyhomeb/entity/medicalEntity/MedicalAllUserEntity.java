@@ -62,4 +62,16 @@ public class MedicalAllUserEntity {
     public void setNickName(String nickName) {
         this.nickName = nickName;
     }
+
+    @Override
+    public String toString() {
+        return "MedicalAllUserEntity{" +
+                "id='" + id + '\'' +
+                ", token='" + token + '\'' +
+                ", pName='" + pName + '\'' +
+                ", nickName='" + nickName + '\'' +
+                ", password='" + password + '\'' +
+                ", username='" + username + '\'' +
+                '}';
+    }
 }

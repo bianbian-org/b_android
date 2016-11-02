@@ -67,7 +67,6 @@ public class LoginActivityPresenter extends AppBaseActivityPresenter<LoginActivi
                             if (o instanceof LoginEvent) {
                                 LoginEvent event = (LoginEvent) o;
                                 if (event.isLogin()) {
-                                    getView().dismissLoading();
                                     if (UserManager.INSTANCE.hasChoosedFamilyOrVillage()) {
                                         if (VALUE_COME_FROM_WEBVIEW.equals(mModel.getComeFrom())) {
                                             //发出消息,让webview们重新加载,带上header
@@ -80,12 +79,14 @@ public class LoginActivityPresenter extends AppBaseActivityPresenter<LoginActivi
                                                     .enterAnim(R.anim.fade_in)
                                                     .exitAnim(R.anim.fade_out)
                                                     .start();
+                                            getView().dismissLoading();
                                         }
                                     } else {
                                         new AcHelper.Builder(getView())
                                                 .target(ChooseVillageFamilyActivity.class)
                                                 .closeCurrent(true)
                                                 .start();
+                                        getView().dismissLoading();
                                     }
                                 }
                             }
@@ -163,7 +164,6 @@ public class LoginActivityPresenter extends AppBaseActivityPresenter<LoginActivi
                                 UserManager.INSTANCE.saveUserInfo(UserManager.KEY_PHONE_NUMBER, mPhoneNumber);
                                 UserManager.INSTANCE.saveUserInfo(entity);
                                 getView().showHint(getView().getString(R.string.success_login));
-//                                UserManager.INSTANCE.notifyLoginOrLogoutEvent(true);
                                 getBLEDoorInfo();
                             }
 
@@ -188,14 +188,12 @@ public class LoginActivityPresenter extends AppBaseActivityPresenter<LoginActivi
                         .subscribe(new Observer<BluetoothLockDoorInfoEntity>() {
                             @Override
                             public void onCompleted() {
-//                                getView().dismissLoading();
                                 UserManager.INSTANCE.notifyLoginOrLogoutEvent(true);
                             }
 
                             @Override
                             public void onError(Throwable e) {
                                 getView().dismissLoading();
-//                                getView().showError(e);
                             }
 
                             @Override

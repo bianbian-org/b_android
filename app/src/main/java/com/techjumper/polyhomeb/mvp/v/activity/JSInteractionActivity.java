@@ -12,7 +12,7 @@ import com.techjumper.polyhomeb.R;
 import com.techjumper.polyhomeb.entity.event.ToggleMenuClickEvent;
 import com.techjumper.polyhomeb.interfaces.IWebViewTitleClick;
 import com.techjumper.polyhomeb.manager.WebTitleManager;
-import com.techjumper.polyhomeb.mvp.p.activity.ReplyDetailActivityPresenter;
+import com.techjumper.polyhomeb.mvp.p.activity.JSInteractionActivityPresenter;
 import com.techjumper.polyhomeb.utils.WebTitleHelper;
 import com.techjumper.polyhomeb.widget.AdvancedWebView;
 import com.techjumper.polyhomeb.widget.PolyWebView;
@@ -25,15 +25,16 @@ import butterknife.Bind;
  * Date: 16/8/17
  * * * * * * * * * * * * * * * * * * * * * * *
  **/
-@Presenter(ReplyDetailActivityPresenter.class)
-public class ReplyDetailActivity extends AppBaseWebViewActivity<ReplyDetailActivityPresenter> implements IWebViewTitleClick {
+@Presenter(JSInteractionActivityPresenter.class)
+public class JSInteractionActivity extends AppBaseWebViewActivity<JSInteractionActivityPresenter>
+        implements IWebViewTitleClick {
 
     @Bind(R.id.left_first_iv)
     ImageView iv;
 
     @Override
     protected View inflateView(Bundle savedInstanceState) {
-        return inflate(R.layout.activity_reply_detail);
+        return inflate(R.layout.activity_js_interaction);
     }
 
     @Override

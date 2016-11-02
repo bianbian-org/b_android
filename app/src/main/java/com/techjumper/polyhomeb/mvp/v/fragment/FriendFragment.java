@@ -22,7 +22,7 @@ import com.techjumper.polyhomeb.interfaces.IWebViewChromeClient;
 import com.techjumper.polyhomeb.interfaces.IWebViewTitleClick;
 import com.techjumper.polyhomeb.manager.WebTitleManager;
 import com.techjumper.polyhomeb.mvp.p.fragment.FriendFragmentPresenter;
-import com.techjumper.polyhomeb.mvp.v.activity.ReplyDetailActivity;
+import com.techjumper.polyhomeb.mvp.v.activity.JSInteractionActivity;
 import com.techjumper.polyhomeb.net.NetHelper;
 import com.techjumper.polyhomeb.utils.WebTitleHelper;
 import com.techjumper.polyhomeb.widget.AdvancedWebView;
@@ -142,7 +142,7 @@ public class FriendFragment extends AppBaseWebViewFragment<FriendFragmentPresent
             case WebTitleHelper.NATIVE_METHOD_NOTIFICATION:
                 Bundle bundle = new Bundle();
                 bundle.putString(Constant.JS_PAGE_JUMP_URL, Config.sFriendNotification);
-                new AcHelper.Builder(getActivity()).extra(bundle).target(ReplyDetailActivity.class).start();
+                new AcHelper.Builder(getActivity()).extra(bundle).target(JSInteractionActivity.class).start();
                 break;
             default:
                 onLineMethod(mRightSecondMethod);

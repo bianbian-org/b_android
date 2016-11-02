@@ -12,14 +12,8 @@ import java.util.List;
 public class BluetoothLockDoorInfoEntity extends BaseEntity<BluetoothLockDoorInfoEntity.DataBean> {
 
     public static class DataBean {
-        private int has_bluelock;
-        /**
-         * name : 小区0015号围墙机
-         * sn : 0393554485
-         * mac : 88: 55: 17: 75: 2a: 35
-         * ekey : ecb3158c7ebbdd27672d2e6896921c77000000000000000000000000000000001000
-         */
 
+        private int has_bluelock;
         private List<InfosBean> infos;
 
         public int getHas_bluelock() {
@@ -95,4 +89,5 @@ public class BluetoothLockDoorInfoEntity extends BaseEntity<BluetoothLockDoorInf
                     '}';
         }
     }
+
 }

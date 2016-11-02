@@ -9,16 +9,13 @@ import android.view.inputmethod.InputMethodManager;
 import com.techjumper.corelib.rx.tools.RxBus;
 import com.techjumper.corelib.rx.tools.RxUtils;
 import com.techjumper.corelib.utils.common.AcHelper;
-import com.techjumper.corelib.utils.window.ToastUtils;
 import com.techjumper.polyhomeb.Constant;
-import com.techjumper.polyhomeb.R;
 import com.techjumper.polyhomeb.entity.event.ComplainStatusEvent;
 import com.techjumper.polyhomeb.entity.event.RepairStatusEvent;
 import com.techjumper.polyhomeb.mvp.m.PropertyDetailActivityModel;
 import com.techjumper.polyhomeb.mvp.v.activity.NewComplainActivity;
 import com.techjumper.polyhomeb.mvp.v.activity.NewRepairActivity;
 import com.techjumper.polyhomeb.mvp.v.activity.PropertyDetailActivity;
-import com.techjumper.polyhomeb.user.UserManager;
 
 import rx.Subscription;
 
@@ -52,19 +49,19 @@ public class PropertyDetailActivityPresenter extends AppBaseActivityPresenter<Pr
     }
 
     public void onTitleRightClick() {
-        if (!UserManager.INSTANCE.isFamily()) {
-            ToastUtils.show(getView().getString(R.string.no_authority));
-        } else {
-            Bundle bundle = new Bundle();
-            switch (getView().getViewPager().getCurrentItem()) {
-                case 1:
-                    bundle.putInt(Constant.PROPERTY_REPAIR_STATUS, mRepairStatus);
-                    new AcHelper.Builder(getView()).extra(bundle).target(NewRepairActivity.class).start();
-                case 2:
-                    bundle.putInt(Constant.PROPERTY_COMPLAIN_STATUS, mComplainStatus);
-                    new AcHelper.Builder(getView()).extra(bundle).target(NewComplainActivity.class).start();
-                    break;
-            }
+//        if (!UserManager.INSTANCE.isFamily()) {
+//            ToastUtils.show(getView().getString(R.string.no_authority));
+//        } else {
+        Bundle bundle = new Bundle();
+        switch (getView().getViewPager().getCurrentItem()) {
+            case 1:
+                bundle.putInt(Constant.PROPERTY_REPAIR_STATUS, mRepairStatus);
+                new AcHelper.Builder(getView()).extra(bundle).target(NewRepairActivity.class).start();
+            case 2:
+                bundle.putInt(Constant.PROPERTY_COMPLAIN_STATUS, mComplainStatus);
+                new AcHelper.Builder(getView()).extra(bundle).target(NewComplainActivity.class).start();
+                break;
+//            }
         }
     }
 

@@ -12,11 +12,11 @@
         android:layout_height="@dimen/dp_50"
         android:background="@android:color/white" />
 
-    <android.support.v4.view.ViewPager
+    <com.techjumper.polyhomeb.widget.NonScrollViewPager
         android:id="@+id/vp"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-    </android.support.v4.view.ViewPager>
+    </com.techjumper.polyhomeb.widget.NonScrollViewPager>
 
 </LinearLayout>

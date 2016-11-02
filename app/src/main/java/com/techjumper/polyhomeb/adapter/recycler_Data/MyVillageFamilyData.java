@@ -17,7 +17,7 @@ public class MyVillageFamilyData {
     private String name;
     private int isFamilyData;  //0是家庭  1是小区
     private int villageId;
-    private  List<UserFamiliesAndVillagesEntity.DataBean.VillageInfosBean.RoomsBean> rooms;
+    private List<UserFamiliesAndVillagesEntity.DataBean.VillageInfosBean.RoomsBean> rooms;
 
     public List<UserFamiliesAndVillagesEntity.DataBean.VillageInfosBean.RoomsBean> getRooms() {
         return rooms;
