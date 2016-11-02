@@ -92,7 +92,7 @@ public class AlarmManagerUtil {
         int minute = CommonDateUtil.getMinute();
         int triggerAtMillis = 1000 * 60 * 2;
 
-        Log.d(TAG, "SubmitOnline: hour:haha" + hour + " minute:" + minute + "triggerAtMillis:" + triggerAtMillis);
+        Log.d(TAG, "SubmitOnline: hour:haha" + hour + " minute:" + minute + "triggerAtMillis:" + triggerAtMillis + "  PackageName:" + context.getPackageName());
 
         AlarmManager alarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
         Calendar calendar = Calendar.getInstance();

@@ -49,7 +49,7 @@ public class AlarmReceiver extends BroadcastReceiver {
             Log.d(AlarmManagerUtil.TAG, "执行上传点击广告请求......");
             AlarmManagerUtil.setAdClick(Utils.appContext);
             RxBus.INSTANCE.send(new AdClickEvent());
-        } else {
+        } else if (intent.getIntExtra(TYPE, WEATHER) == SUBMITONLINE){
             Log.d(AlarmManagerUtil.TAG, "执行心跳包......");
             AlarmManagerUtil.setSubmitOnlineClick(Utils.appContext);
             RxBus.INSTANCE.send(new SubmitOnlineClickEvent());
