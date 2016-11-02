@@ -3,8 +3,10 @@ package com.techjumper.polyhomeb.mvp.m;
 import android.os.Bundle;
 
 import com.techjumper.corelib.rx.tools.CommonWrap;
+import com.techjumper.lib2.others.KeyValuePair;
 import com.techjumper.lib2.utils.RetrofitHelper;
 import com.techjumper.polyhomeb.Constant;
+import com.techjumper.polyhomeb.entity.BaseArgumentsEntity;
 import com.techjumper.polyhomeb.entity.TrueEntity;
 import com.techjumper.polyhomeb.mvp.p.activity.JSInteractionActivityPresenter;
 import com.techjumper.polyhomeb.net.KeyValueCreator;
@@ -43,6 +45,17 @@ public class JSInteractionActivityModel extends BaseModel<JSInteractionActivityP
                         , store_id
                         , user_tel
                         , shop_service_id)))
+                .compose(CommonWrap.wrap());
+    }
+
+    public Observable<TrueEntity> deleteArticle(String id) {
+        KeyValuePair keyValuePair = KeyValueCreator.deleteArticle(
+                UserManager.INSTANCE.getUserInfo(UserManager.KEY_ID)
+                , UserManager.INSTANCE.getTicket()
+                , id);
+        BaseArgumentsEntity baseArguments = NetHelper.createBaseArguments(keyValuePair);
+        return RetrofitHelper.<ServiceAPI>createDefault()
+                .deleteArticle(baseArguments)
                 .compose(CommonWrap.wrap());
     }
 }

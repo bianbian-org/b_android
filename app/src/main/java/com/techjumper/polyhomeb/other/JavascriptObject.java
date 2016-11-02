@@ -17,10 +17,12 @@ import com.techjumper.polyhomeb.R;
 import com.techjumper.polyhomeb.entity.JSH5PaymentsEntity;
 import com.techjumper.polyhomeb.entity.JSJavaBaseEntity;
 import com.techjumper.polyhomeb.entity.JSJavaContactShopEntity;
+import com.techjumper.polyhomeb.entity.JSJavaGetArticleIdEntity;
 import com.techjumper.polyhomeb.entity.JSJavaImageViewEntity;
 import com.techjumper.polyhomeb.entity.JSJavaNotificationEntity;
 import com.techjumper.polyhomeb.entity.JSJavaPageJumpEntity;
 import com.techjumper.polyhomeb.entity.PaymentsEntity;
+import com.techjumper.polyhomeb.entity.event.JSArticleIdEvent;
 import com.techjumper.polyhomeb.entity.event.JSCallPhoneNumberEvent;
 import com.techjumper.polyhomeb.entity.event.WebViewNotificationEvent;
 import com.techjumper.polyhomeb.manager.PayManager;
@@ -117,6 +119,9 @@ public class JavascriptObject {
                 break;
             case "ContactShop":
                 contactShop(json);
+                break;
+            case "GetArticleId":
+                getArticleId(json);
                 break;
 
         }
@@ -289,8 +294,20 @@ public class JavascriptObject {
         //其他JSInteractionActivity2，JSInteractionActivity3，JSInteractionActivityN哈希值不同，
         //即使收到了消息，也不能创建对话框，所以哈希值相同的情况下，能证明我在JSInteractionActivity1中的JavascriptObject
         //发消息出来，JSInteractionActivity1收到了，就弹出对话框.
-        RxBus.INSTANCE.send(new JSCallPhoneNumberEvent(mActivity.hashCode(),paramsBean.getTel(), paramsBean.getStore_id()
+        RxBus.INSTANCE.send(new JSCallPhoneNumberEvent(mActivity.hashCode(), paramsBean.getTel(), paramsBean.getStore_id()
                 , paramsBean.getShop_service_id()));
+    }
+
+    /**
+     * 获取友邻帖子ID
+     */
+    private void getArticleId(String json) {
+        JSJavaGetArticleIdEntity jsJavaGetArticleIdEntity = GsonUtils.fromJson(json, JSJavaGetArticleIdEntity.class);
+        JSJavaGetArticleIdEntity.ParamsBean params = jsJavaGetArticleIdEntity.getParams();
+        if (params == null) return;
+        String article_id = params.getArticle_id();
+        if (TextUtils.isEmpty(article_id)) return;
+        RxBus.INSTANCE.send(new JSArticleIdEvent(article_id));
     }
 
 }

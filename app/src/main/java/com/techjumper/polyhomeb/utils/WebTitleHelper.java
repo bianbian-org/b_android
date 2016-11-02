@@ -23,6 +23,7 @@ public class WebTitleHelper {
     public static final String NATIVE_METHOD_NEW_ARTICLE = "NativeNewArticle";
     public static final String NATIVE_METHOD_PERSON = "person";
     public static final String NATIVE_METHOD_NOTIFICATION = "NativeNotification";
+    public static final String NATIVE_METHOD_DELETE_ARTICLE = "NativeDeleteArticle";
 
     public static void setTitleNotificationIcon(View view, int icon) {
         UI.create(view).<ImageView>findById(R.id.right_second_iv).setImageResource(icon);

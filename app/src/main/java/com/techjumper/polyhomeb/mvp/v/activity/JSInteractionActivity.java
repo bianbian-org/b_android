@@ -19,6 +19,8 @@ import com.techjumper.polyhomeb.widget.PolyWebView;
 
 import butterknife.Bind;
 
+import static com.techjumper.polyhomeb.utils.WebTitleHelper.NATIVE_METHOD_DELETE_ARTICLE;
+
 /**
  * * * * * * * * * * * * * * * * * * * * * * *
  * Created by lixin
@@ -99,6 +101,9 @@ public class JSInteractionActivity extends AppBaseWebViewActivity<JSInteractionA
                 RxBus.INSTANCE.send(new ToggleMenuClickEvent());
                 break;
             case WebTitleHelper.NATIVE_METHOD_NEW_ARTICLE:
+                break;
+            case NATIVE_METHOD_DELETE_ARTICLE:
+                getPresenter().deleteArticle();
                 break;
             default:
                 onLineMethod(mRightFirstMethod);

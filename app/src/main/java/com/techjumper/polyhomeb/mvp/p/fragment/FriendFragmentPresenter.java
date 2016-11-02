@@ -12,6 +12,7 @@ import com.techjumper.polyhomeb.R;
 import com.techjumper.polyhomeb.entity.event.ChangeVillageIdRefreshEvent;
 import com.techjumper.polyhomeb.entity.event.ChooseFamilyVillageEvent;
 import com.techjumper.polyhomeb.entity.event.RefreshStopEvent;
+import com.techjumper.polyhomeb.entity.event.RefreshWhenDeleteArticleEvent;
 import com.techjumper.polyhomeb.entity.event.ReloadWebPageEvent;
 import com.techjumper.polyhomeb.entity.event.WebViewNotificationEvent;
 import com.techjumper.polyhomeb.mvp.v.activity.NewInvitationActivity;
@@ -74,7 +75,8 @@ public class FriendFragmentPresenter extends AppBaseFragmentPresenter<FriendFrag
 //                        getView().getWebView().reload();
                             } else if (o instanceof RefreshStopEvent) {  //此方法没有任何用了.之前是在JS中通知停止刷新
                                 getView().stopRefresh("");
-                            } else if (o instanceof ChangeVillageIdRefreshEvent) {
+                            } else if (o instanceof ChangeVillageIdRefreshEvent
+                                    || o instanceof RefreshWhenDeleteArticleEvent) {
                                 getView().reload();
                             }
                         }));

@@ -9,6 +9,8 @@ import com.techjumper.polyhomeb.utils.WebTitleHelper;
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
 
+import static com.techjumper.polyhomeb.utils.WebTitleHelper.NATIVE_METHOD_DELETE_ARTICLE;
+
 /**
  * * * * * * * * * * * * * * * * * * * * * * *
  * Created by lixin
@@ -80,7 +82,7 @@ public class WebTitleManager {
         String[] splits = split.split("&");
 
         //处理title
-        for (int i = 0 ; i < splits.length;i++) {
+        for (int i = 0; i < splits.length; i++) {
             if (splits[i].contains("title=")) {
                 try {
                     mTitle = URLDecoder.decode(splits[i].replace("title=", ""), "UTF-8");
@@ -427,6 +429,9 @@ public class WebTitleManager {
                     case WebTitleHelper.NATIVE_METHOD_NEW_ARTICLE:
                         mRightFirstMethod = WebTitleHelper.NATIVE_METHOD_NEW_ARTICLE;
                         break;
+                    case NATIVE_METHOD_DELETE_ARTICLE:
+                        mRightFirstMethod = WebTitleHelper.NATIVE_METHOD_DELETE_ARTICLE;
+                        break;
                     default:
                         mRightFirstMethod = method;
                         break;
@@ -442,6 +447,9 @@ public class WebTitleManager {
                         break;
                     case WebTitleHelper.NATIVE_METHOD_NEW_ARTICLE:
                         mRightSecondMethod = WebTitleHelper.NATIVE_METHOD_NEW_ARTICLE;
+                        break;
+                    case NATIVE_METHOD_DELETE_ARTICLE:
+                        mRightSecondMethod = WebTitleHelper.NATIVE_METHOD_DELETE_ARTICLE;
                         break;
                     default:
                         mRightSecondMethod = method;

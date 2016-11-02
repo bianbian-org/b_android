@@ -577,6 +577,13 @@ public interface ServiceAPI {
     @POST("store/charge")
     Observable<TrueEntity> deductionWhenCall(@Body BaseArgumentsEntity entity);
 
+    /**
+     * 友邻删除自己的帖子
+     */
+    @POST("article/delete")
+    Observable<TrueEntity> deleteArticle(@Body BaseArgumentsEntity entity);
+
+
 /*********************************************************医疗接口*********************************************************/
 
     /**

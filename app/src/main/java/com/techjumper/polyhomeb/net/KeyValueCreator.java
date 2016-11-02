@@ -316,4 +316,11 @@ public class KeyValueCreator {
                 .put("user_tel", user_tel)
                 .put("shop_service_id", shop_service_id);
     }
+
+    public static KeyValuePair deleteArticle(String user_id, String ticket, String article_id) {
+        return newPair()
+                .put("user_id", user_id)
+                .put("ticket", ticket)
+                .put("article_id", article_id);
+    }
 }

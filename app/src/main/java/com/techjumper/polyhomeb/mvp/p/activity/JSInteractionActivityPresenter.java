@@ -11,9 +11,12 @@ import com.techjumper.corelib.rx.tools.RxBus;
 import com.techjumper.corelib.rx.tools.RxUtils;
 import com.techjumper.corelib.utils.system.AppUtils;
 import com.techjumper.corelib.utils.window.DialogUtils;
+import com.techjumper.corelib.utils.window.ToastUtils;
 import com.techjumper.polyhomeb.R;
 import com.techjumper.polyhomeb.entity.TrueEntity;
+import com.techjumper.polyhomeb.entity.event.JSArticleIdEvent;
 import com.techjumper.polyhomeb.entity.event.JSCallPhoneNumberEvent;
+import com.techjumper.polyhomeb.entity.event.RefreshWhenDeleteArticleEvent;
 import com.techjumper.polyhomeb.entity.event.ReloadWebPageEvent;
 import com.techjumper.polyhomeb.mvp.m.JSInteractionActivityModel;
 import com.techjumper.polyhomeb.mvp.v.activity.JSInteractionActivity;
@@ -32,7 +35,8 @@ public class JSInteractionActivityPresenter extends AppBaseActivityPresenter<JSI
 
     private JSInteractionActivityModel mModel = new JSInteractionActivityModel(this);
 
-    private Subscription mSubs1, mSubs2;
+    private Subscription mSubs1, mSubs2, mSubs3;
+    private String mArticleId;
 
     @Override
     public void initData(Bundle savedInstanceState) {
@@ -65,6 +69,9 @@ public class JSInteractionActivityPresenter extends AppBaseActivityPresenter<JSI
                                 //发消息出来，JSInteractionActivity1收到了，就弹出对话框.
                                 if (event.getHashCode() != getView().hashCode()) return;
                                 showCallNumDialog(event);
+                            } else if (o instanceof JSArticleIdEvent) {
+                                JSArticleIdEvent event = (JSArticleIdEvent) o;
+                                mArticleId = event.getId();
                             }
                         }));
     }
@@ -130,6 +137,49 @@ public class JSInteractionActivityPresenter extends AppBaseActivityPresenter<JSI
     private String getUserPhoneNum() {
         String extraPhoneNumber = UserManager.INSTANCE.getUserInfo(UserManager.KEY_PHONE_NUMBER);
         return TextUtils.isEmpty(AppUtils.getLine1Number()) ? extraPhoneNumber : AppUtils.getLine1Number();
+    }
+
+    public void deleteArticle() {
+        if (TextUtils.isEmpty(mArticleId)) return;
+        DialogUtils.getBuilder(getView())
+                .content(R.string.confirm_delete_article)
+                .onAny((dialog, which) -> {
+                    switch (which) {
+                        case POSITIVE:
+                            deleteArticle_();
+                            break;
+                    }
+                })
+                .show();
+    }
+
+    private void deleteArticle_() {
+        getView().showLoading();
+        RxUtils.unsubscribeIfNotNull(mSubs3);
+        addSubscription(
+                mSubs3 = mModel.deleteArticle(mArticleId)
+                        .subscribe(new Observer<TrueEntity>() {
+                            @Override
+                            public void onCompleted() {
+                                getView().dismissLoading();
+                            }
+
+                            @Override
+                            public void onError(Throwable e) {
+                                getView().dismissLoading();
+                                getView().showError(e);
+                            }
+
+                            @Override
+                            public void onNext(TrueEntity trueEntity) {
+                                if (!processNetworkResult(trueEntity)) return;
+                                if (!"true".equalsIgnoreCase(trueEntity.getData().getResult()))
+                                    return;
+                                ToastUtils.show(getView().getString(R.string.delete_success));
+                                RxBus.INSTANCE.send(new RefreshWhenDeleteArticleEvent());
+                                getView().finish();
+                            }
+                        }));
     }
 
 }

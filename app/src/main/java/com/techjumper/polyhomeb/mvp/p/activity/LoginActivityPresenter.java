@@ -8,6 +8,7 @@ import com.techjumper.corelib.rx.tools.RxBus;
 import com.techjumper.corelib.rx.tools.RxUtils;
 import com.techjumper.corelib.utils.basic.StringUtils;
 import com.techjumper.corelib.utils.common.AcHelper;
+import com.techjumper.corelib.utils.common.JLog;
 import com.techjumper.polyhomeb.R;
 import com.techjumper.polyhomeb.entity.BluetoothLockDoorInfoEntity;
 import com.techjumper.polyhomeb.entity.LoginEntity;
@@ -181,6 +182,10 @@ public class LoginActivityPresenter extends AppBaseActivityPresenter<LoginActivi
         if (!isFamily) {
             family_id = "";
         }
+
+        JLog.e(family_id);
+        JLog.e(village_id);
+
         RxUtils.unsubscribeIfNotNull(mSubs2);
         addSubscription(
                 mSubs2 = mModel.getBLEDoorInfo(village_id, family_id)
