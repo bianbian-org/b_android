@@ -128,13 +128,17 @@ public class HomeMenuFragmentPresenter extends AppBaseFragmentPresenter<HomeMenu
         if (!TextUtils.isEmpty(localAvatarUrl)) {
 //            PicassoHelper.load(localAvatarUrl).transform(new PicassoCircleTransform()).into(getView().getIvAvatar());
 //            PicassoHelper.load(R.mipmap.icon_avatar_bg).transform(new PicassoCircleTransform()).into(getView().getIvBg());
+
             Glide.with(getView()).load(localAvatarUrl).transform(new GlideBitmapTransformation(getView().getActivity())).into(getView().getIvAvatar());
             Glide.with(getView()).load(R.mipmap.icon_avatar_bg).transform(new GlideBitmapTransformation(getView().getActivity())).into(getView().getIvBg());
+
         } else if (!TextUtils.isEmpty(avatarUrl)) {
 //            PicassoHelper.load(avatarUrl).transform(new PicassoCircleTransform()).into(getView().getIvAvatar());
 //            PicassoHelper.load(R.mipmap.icon_avatar_bg).transform(new PicassoCircleTransform()).into(getView().getIvBg());
+
             Glide.with(getView()).load(avatarUrl).transform(new GlideBitmapTransformation(getView().getActivity())).into(getView().getIvAvatar());
             Glide.with(getView()).load(R.mipmap.icon_avatar_bg).transform(new GlideBitmapTransformation(getView().getActivity())).into(getView().getIvBg());
+
             //缓存图片到本地
             new Thread(() -> {
                 try {
