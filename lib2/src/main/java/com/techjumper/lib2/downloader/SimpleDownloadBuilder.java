@@ -30,22 +30,26 @@ public class SimpleDownloadBuilder {
         this.name = name;
     }
 
-    public void setDownloadErrorListener(IDownloadError iDownloadError) {
+    public SimpleDownloadBuilder setDownloadErrorListener(IDownloadError iDownloadError) {
         this.iDownloadError = iDownloadError;
+        return this;
     }
 
-    public void setDownloadFinishListener(IDownloadState iDownloadState) {
+    public SimpleDownloadBuilder setDownloadFinishListener(IDownloadState iDownloadState) {
         this.iDownloadState = iDownloadState;
+        return this;
     }
 
-    public void setDownloadProgressListener(IDownloadProgress iDownloadProgress) {
+    public SimpleDownloadBuilder setDownloadProgressListener(IDownloadProgress iDownloadProgress) {
         this.iDownloadProgress = iDownloadProgress;
+        return this;
     }
 
-    public void setListener(IDownloadProgress iDownloadProgress, IDownloadState iDownloadState, IDownloadError iDownloadError) {
+    public SimpleDownloadBuilder setListener(IDownloadProgress iDownloadProgress, IDownloadState iDownloadState, IDownloadError iDownloadError) {
         this.iDownloadError = iDownloadError;
         this.iDownloadState = iDownloadState;
         this.iDownloadProgress = iDownloadProgress;
+        return this;
     }
 
     public SimpleDownloader build() {
