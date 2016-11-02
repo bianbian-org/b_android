@@ -219,4 +219,10 @@ public class AppUtils {
         return installedInfo == null || info.versionCode > installedInfo.versionCode;
     }
 
+    public static boolean isCellPhoneSupportBLE(Context context) {
+        //如果android版本大于=4.3  &蓝牙版本是4.0以上才行
+        return (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR2)
+                && context.getPackageManager().hasSystemFeature("android.hardware.bluetooth_le");
+    }
+
 }

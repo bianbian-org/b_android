@@ -249,8 +249,6 @@ public class SmartDoorBluetoothManager {
             default:
                 ToastUtils.show("蓝牙未知错误");
                 break;
-
         }
     }
-
 }

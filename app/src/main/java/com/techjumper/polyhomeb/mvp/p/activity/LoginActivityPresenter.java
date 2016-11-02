@@ -40,7 +40,7 @@ public class LoginActivityPresenter extends AppBaseActivityPresenter<LoginActivi
     public static final String KEY_COME_FROM = "key_come_from";
     public static final String VALUE_COME_FROM_WEBVIEW = "key_come_from_webview";
 
-    private Subscription mSubs1,mSubs2;
+    private Subscription mSubs1, mSubs2;
     private String mPhoneNumber;
 
     private LoginActivityModel mModel = new LoginActivityModel(this);
@@ -110,7 +110,6 @@ public class LoginActivityPresenter extends AppBaseActivityPresenter<LoginActivi
                 break;
         }
     }
-
 
     private void checkingInputAndLogin() {
         EditText et = null;

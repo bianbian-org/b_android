@@ -10,6 +10,7 @@ import com.steve.creact.library.viewholder.BaseRecyclerViewHolder;
 import com.techjumper.corelib.rx.tools.RxBus;
 import com.techjumper.corelib.rx.tools.RxUtils;
 import com.techjumper.corelib.utils.common.JLog;
+import com.techjumper.corelib.utils.system.AppUtils;
 import com.techjumper.corelib.utils.window.ToastUtils;
 import com.techjumper.polyhome.doormaster.SmartDoorBluetoothManager;
 import com.techjumper.polyhome.doormaster.bluetoothEvent.BLEScanResultEvent;
@@ -113,7 +114,8 @@ public class BluetoothDoorViewHolder extends BaseRecyclerViewHolder<BluetoothDat
                     model.devType = 0;
                     list.add(model);
                 }
-                SmartDoorBluetoothManager.with().scanBLEDevices((Activity) getContext(), list);
+//                SmartDoorBluetoothManager.with().scanBLEDevices((Activity) getContext(), list);
+                startDeviceScan(list);
             }
         });
     }
@@ -124,14 +126,18 @@ public class BluetoothDoorViewHolder extends BaseRecyclerViewHolder<BluetoothDat
         //相当于Demo中,从云端获取到的"此账号"能开的锁的所有信息
         //这里进来默认让他扫描一遍，之后 这个  扫描  动作的发起才由Service控制，才会走到上面的RxBub去。
         //如果!show，那么说明不支持门锁，所以直接gone了，反之则visible。
-        boolean show = data.isShow();
+        boolean show = data.isCommunitySupportBleDoor();
         bleInfo = data.getInfosBeen();
+        boolean phoneSupportBLE = AppUtils.isCellPhoneSupportBLE(getContext());
         if (!show) {
             if (mView != null) {
                 mView.setVisibility(View.GONE);
             }
             return;
         } else {
+            if (!phoneSupportBLE) {
+                mView.setTextDefault(getContext().getString(R.string.ble_not_support));
+            }
             mView.setVisibility(View.VISIBLE);
         }
         if (bleInfo == null || bleInfo.size() == 0) return;
@@ -144,7 +150,8 @@ public class BluetoothDoorViewHolder extends BaseRecyclerViewHolder<BluetoothDat
             model.devType = 0;
             list.add(model);
         }
-        SmartDoorBluetoothManager.with().scanBLEDevices((Activity) getContext(), list);
+//        SmartDoorBluetoothManager.with().scanBLEDevices((Activity) getContext(), list);
+        startDeviceScan(list);
     }
 
     @Override
@@ -207,4 +214,10 @@ public class BluetoothDoorViewHolder extends BaseRecyclerViewHolder<BluetoothDat
         }
         return name;
     }
+
+    public void startDeviceScan(List<LibDevModel> list) {
+        if (!AppUtils.isCellPhoneSupportBLE(getContext())) return;
+        SmartDoorBluetoothManager.with().scanBLEDevices((Activity) getContext(), list);
+    }
+
 }

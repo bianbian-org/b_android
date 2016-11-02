@@ -126,14 +126,18 @@ public class HomeFragment extends AppBaseFragment<HomeFragmentPresenter>
     public void onResume() {
         boolean isActivityVisible = ((TabHomeActivity) getActivity()).isTabHomeActivityVisible();
         boolean supportBLEDoor = UserManager.INSTANCE.isCurrentCommunitySupportBLEDoor();
-        if (getActivity() != null && isActivityVisible && supportBLEDoor && mIsFragmentVisible) {
-            ShakeManager.with(getActivity()).startShake(this);
+        if (isActivityVisible && supportBLEDoor && mIsFragmentVisible) {
             JLog.d("onResume:需要注册摇一摇或者启动定时扫描服务---------");
-            getActivity().startService(new Intent(getActivity(), ScanBluetoothService.class));
+//            ShakeManager.with(getActivity()).startShake(this);
+//            getActivity().startService(new Intent(getActivity(), ScanBluetoothService.class));
+            getPresenter().startService();
+            getPresenter().registShakeManager();
         } else {
-            ShakeManager.with(getActivity()).cancel();
             JLog.d("onResume:需要取消注册摇一摇或者取消定时扫描服务");
-            getActivity().stopService(new Intent(getActivity(), ScanBluetoothService.class));
+//            ShakeManager.with(getActivity()).cancel();
+//            getActivity().stopService(new Intent(getActivity(), ScanBluetoothService.class));
+            getPresenter().stopService();
+            getPresenter().unRegistShakeManager();
         }
         super.onResume();
     }
@@ -141,30 +145,36 @@ public class HomeFragment extends AppBaseFragment<HomeFragmentPresenter>
     @Override
     public void onPause() {
         JLog.d("onPause:需要取消注册摇一摇或者取消定时扫描服务");
-        if (getActivity() != null) {
-            ShakeManager.with(getActivity()).cancel();
-            getActivity().stopService(new Intent(getActivity(), ScanBluetoothService.class));
-        }
+//        if (getActivity() != null) {
+//            ShakeManager.with(getActivity()).cancel();
+//            getActivity().stopService(new Intent(getActivity(), ScanBluetoothService.class));
+//        }
+        getPresenter().stopService();
+        getPresenter().unRegistShakeManager();
         super.onPause();
     }
 
     @Override
     public void onStop() {
         JLog.d("onStop:需要取消注册摇一摇或者取消定时扫描服务");
-        if (getActivity() != null) {
-            ShakeManager.with(getActivity()).cancel();
-            getActivity().stopService(new Intent(getActivity(), ScanBluetoothService.class));
-        }
+//        if (getActivity() != null) {
+//            ShakeManager.with(getActivity()).cancel();
+//            getActivity().stopService(new Intent(getActivity(), ScanBluetoothService.class));
+//        }
+        getPresenter().stopService();
+        getPresenter().unRegistShakeManager();
         super.onStop();
     }
 
     @Override
     public void onDestroy() {
         JLog.d("onDestroy:需要取消注册摇一摇或者取消定时扫描服务");
-        if (getActivity() != null) {
-            ShakeManager.with(getActivity()).cancel();
-            getActivity().stopService(new Intent(getActivity(), ScanBluetoothService.class));
-        }
+//        if (getActivity() != null) {
+//            ShakeManager.with(getActivity()).cancel();
+//            getActivity().stopService(new Intent(getActivity(), ScanBluetoothService.class));
+//        }
+        getPresenter().stopService();
+        getPresenter().unRegistShakeManager();
         super.onDestroy();
     }
 
@@ -177,12 +187,16 @@ public class HomeFragment extends AppBaseFragment<HomeFragmentPresenter>
             boolean isActivityVisible = ((TabHomeActivity) getActivity()).isTabHomeActivityVisible();
             if (mIsFragmentVisible && isActivityVisible && supportBLEDoor) {
                 JLog.d("setUserVisibleHint:需要注册摇一摇或者启动定时扫描服务---------");
-                ShakeManager.with(getActivity()).startShake(this);
-                getActivity().startService(new Intent(getActivity(), ScanBluetoothService.class));
+//                ShakeManager.with(getActivity()).startShake(this);
+//                getActivity().startService(new Intent(getActivity(), ScanBluetoothService.class));
+                getPresenter().startService();
+                getPresenter().registShakeManager();
             } else {
                 JLog.d("setUserVisibleHint:需要取消注册摇一摇或者取消定时扫描服务");
-                ShakeManager.with(getActivity()).cancel();
-                getActivity().stopService(new Intent(getActivity(), ScanBluetoothService.class));
+//                ShakeManager.with(getActivity()).cancel();
+//                getActivity().stopService(new Intent(getActivity(), ScanBluetoothService.class));
+                getPresenter().stopService();
+                getPresenter().unRegistShakeManager();
             }
         }
     }

@@ -10,6 +10,7 @@ import com.techjumper.corelib.rx.tools.RxUtils;
 import com.techjumper.corelib.utils.Utils;
 import com.techjumper.corelib.utils.common.AcHelper;
 import com.techjumper.corelib.utils.common.JLog;
+import com.techjumper.corelib.utils.system.AppUtils;
 import com.techjumper.corelib.utils.window.ToastUtils;
 import com.techjumper.polyhome.doormaster.bluetoothEvent.BLEScanResultEvent;
 import com.techjumper.polyhome.doormaster.bluetoothEvent.OpenDoorResult;
@@ -98,38 +99,47 @@ public class HomeFragmentPresenter extends AppBaseFragmentPresenter<HomeFragment
                         if (getView().getAdapter() != null) {
                             if (UserManager.INSTANCE.isCurrentCommunitySupportBLEDoor()) {
                                 JLog.d("侧边栏发来的消息：需要注册摇一摇或者开启定时扫描服务-------");
-                                if (getView().getActivity() != null) {
-                                    ShakeManager.with(getView().getActivity()).startShake(getView());
-                                    getView().getActivity().startService(new Intent(getView().getActivity(), ScanBluetoothService.class));
-                                }
+//                                if (getView().getActivity() != null) {
+//                                    ShakeManager.with(getView().getActivity()).startShake(getView());
+//                                    getView().getActivity().startService(new Intent(getView().getActivity(), ScanBluetoothService.class));
+//                                }
+                                startService();
+                                registShakeManager();
                             } else {
                                 JLog.d("侧边栏发来的消息：需要取消注册摇一摇或者取消定时扫描服务");
-                                if (getView().getActivity() != null) {
-                                    ShakeManager.with(getView().getActivity()).cancel();
-                                    getView().getActivity().stopService(new Intent(getView().getActivity(), ScanBluetoothService.class));
-                                }
+//                                if (getView().getActivity() != null) {
+//                                    ShakeManager.with(getView().getActivity()).cancel();
+//                                    getView().getActivity().stopService(new Intent(getView().getActivity(), ScanBluetoothService.class));
+//                                }
+                                stopService();
+                                unRegistShakeManager();
                             }
                             getView().getAdapter().loadData(getDatas());
                         }
                     } else if (o instanceof OpenDoorResult) {
                         JLog.d("ViewHolder发来的消息：解锁成功了，需要注册摇一摇或者开启定时扫描服务-------");
-                        if (getView().getActivity() != null) {
-                            ShakeManager.with(getView().getActivity()).startShake(getView());
-                            getView().getActivity().startService(new Intent(getView().getActivity(), ScanBluetoothService.class));
-                        }
+//                        if (getView().getActivity() != null) {
+//                            ShakeManager.with(getView().getActivity()).startShake(getView());
+//                            getView().getActivity().startService(new Intent(getView().getActivity(), ScanBluetoothService.class));
+//                        }
+                        startService();
+                        registShakeManager();
                     } else if (o instanceof BLEScanResultEvent) {
                         BLEScanResultEvent event = (BLEScanResultEvent) o;
                         if (event.isHasDevice()) {
                             JLog.d("ViewHolder发来的消息：搜索到设备了，需要注册摇一摇或者开启定时扫描服务-------");
-                            if (getView().getActivity() != null) {
-                                ShakeManager.with(getView().getActivity()).startShake(getView());
-                                getView().getActivity().startService(new Intent(getView().getActivity(), ScanBluetoothService.class));
-                            }
+//                            if (getView().getActivity() != null) {
+//                                ShakeManager.with(getView().getActivity()).startShake(getView());
+//                                getView().getActivity().startService(new Intent(getView().getActivity(), ScanBluetoothService.class));
+//                            }
+                            startService();
+                            registShakeManager();
                         } else {
                             JLog.d("ViewHolder发来的消息：没有搜索到设备，需要取消注册摇一摇但是不关闭扫描服务");
-                            if (getView().getActivity() != null) {
-                                ShakeManager.with(getView().getActivity()).cancel();
-                            }
+//                            if (getView().getActivity() != null) {
+//                                ShakeManager.with(getView().getActivity()).cancel();
+//                            }
+                            unRegistShakeManager();
                         }
                     }
                 });
@@ -164,9 +174,38 @@ public class HomeFragmentPresenter extends AppBaseFragmentPresenter<HomeFragment
         });
     }
 
+    public void registShakeManager() {
+        if (getView().getActivity() != null) {
+            if (!AppUtils.isCellPhoneSupportBLE(getView().getActivity())) return;
+            ShakeManager.with(getView().getActivity()).startShake(getView());
+        }
+    }
+
+    public void unRegistShakeManager() {
+        if (getView().getActivity() != null) {
+            if (!AppUtils.isCellPhoneSupportBLE(getView().getActivity())) return;
+            ShakeManager.with(getView().getActivity()).cancel();
+        }
+    }
+
+    public void startService() {
+        if (getView().getActivity() != null) {
+            if (!AppUtils.isCellPhoneSupportBLE(getView().getActivity())) return;
+            getView().getActivity().startService(new Intent(getView().getActivity(), ScanBluetoothService.class));
+        }
+    }
+
+    public void stopService() {
+        if (getView().getActivity() != null) {
+            if (!AppUtils.isCellPhoneSupportBLE(getView().getActivity())) return;
+            getView().getActivity().stopService(new Intent(getView().getActivity(), ScanBluetoothService.class));
+        }
+    }
+
     @Override
     public void onDestroy() {
         super.onDestroy();
         mPluginManager.quit();
     }
+
 }

@@ -14,14 +14,14 @@ import java.util.List;
 public class BluetoothData {
 
     private List<BluetoothLockDoorInfoEntity.DataBean.InfosBean> infosBeen;
-    private boolean isShow;
+    private boolean isCommunitySupportBleDoor;
 
-    public boolean isShow() {
-        return isShow;
+    public boolean isCommunitySupportBleDoor() {
+        return isCommunitySupportBleDoor;
     }
 
-    public void setShow(boolean show) {
-        isShow = show;
+    public void setCommunitySupportBleDoor(boolean communitySupportBleDoor) {
+        isCommunitySupportBleDoor = communitySupportBleDoor;
     }
 
     public List<BluetoothLockDoorInfoEntity.DataBean.InfosBean> getInfosBeen() {

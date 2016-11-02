@@ -374,6 +374,7 @@
     <string name="download_complete">下载完毕</string>
     <string name="download_error">更新出错，请重试</string>
     <string name="join_village_eg_hint">例如：\n1：您的地址是10栋1单元1楼2号房，那么下面就需要依次填写10、1、102 \n2：或者您的地址是10栋1单元11楼2号房，那么下面应该填写为：10、1、1102</string>
+    <string name="ble_not_support">手机不支持BLE</string>
 
 
 </resources>

@@ -54,7 +54,7 @@ public class HomeFragmentModel extends BaseModel<HomeFragmentPresenter> {
         //蓝牙开锁部分的item    item = 1
         BluetoothData bluetoothData = new BluetoothData();
         bluetoothData.setInfosBeen(UserManager.INSTANCE.getBLEInfo());
-        bluetoothData.setShow(UserManager.INSTANCE.isCurrentCommunitySupportBLEDoor());
+        bluetoothData.setCommunitySupportBleDoor(UserManager.INSTANCE.isCurrentCommunitySupportBLEDoor());
         BluetoothBean bluetoothBean = new BluetoothBean(bluetoothData);
         displayBeans.add(bluetoothBean);
 
