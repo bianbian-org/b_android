@@ -27,53 +27,54 @@ public class UpdateManager {
                 + File.separator + Config.sParentDirName + File.separator
                 + Config.sAPKDirName;
 
-        if (FileUtils.isSDCardMounted()) {
-            File dir = new File(path);
-            if (!dir.exists()) {
-                dir.mkdirs();
-            }
+        if (!FileUtils.isSDCardMounted()) {
+            return;
+        }
+        File dir = new File(path);
+        if (!dir.exists()) {
+            dir.mkdirs();
+        }
 
-            long currentLength = 0;
+        long currentLength = 0;
 
-            BufferedInputStream bis = null;
-            FileOutputStream fileOutputStream = null;
+        BufferedInputStream bis = null;
+        FileOutputStream fileOutputStream = null;
 
-            File apkFile = new File(path, "temp.apk");
-            long totalLength = responseBody.contentLength();
+        File apkFile = new File(path, "temp.apk");
+        long totalLength = responseBody.contentLength();
 
-            try {
-                bis = new BufferedInputStream(responseBody.byteStream());
-                fileOutputStream = new FileOutputStream(apkFile);
-                int len;
-                byte[] buffer = new byte[1024 * 4];
-                while ((len = bis.read(buffer)) != -1) {
-                    fileOutputStream.write(buffer, 0, len);
-                    currentLength += len;
-                    JLog.e("当前进度:" + currentLength);
-                    if (iCurrentProgress != null) {
-                        iCurrentProgress.progressDatas(String.valueOf(currentLength * 100 / totalLength) + "%");
-                    }
+        try {
+            bis = new BufferedInputStream(responseBody.byteStream());
+            fileOutputStream = new FileOutputStream(apkFile);
+            int len;
+            byte[] buffer = new byte[1024 * 4];
+            while ((len = bis.read(buffer)) != -1) {
+                fileOutputStream.write(buffer, 0, len);
+                currentLength += len;
+                JLog.e("当前进度:" + currentLength);
+                if (iCurrentProgress != null) {
+                    iCurrentProgress.progressDatas(String.valueOf(currentLength * 100 / totalLength) + "%");
                 }
-                fileOutputStream.flush();
+            }
+            fileOutputStream.flush();
+        } catch (IOException e) {
+            apkFile.delete();
+            e.printStackTrace();
+            if (iCurrentProgress != null) {
+                iCurrentProgress.onDownloadError();
+            }
+        } finally {
+            try {
+                if (fileOutputStream != null) {
+                    fileOutputStream.close();
+                }
+                if (bis != null) {
+                    bis.close();
+                }
             } catch (IOException e) {
-                apkFile.delete();
                 e.printStackTrace();
                 if (iCurrentProgress != null) {
                     iCurrentProgress.onDownloadError();
-                }
-            } finally {
-                try {
-                    if (fileOutputStream != null) {
-                        fileOutputStream.close();
-                    }
-                    if (bis != null) {
-                        bis.close();
-                    }
-                } catch (IOException e) {
-                    e.printStackTrace();
-                    if (iCurrentProgress != null) {
-                        iCurrentProgress.onDownloadError();
-                    }
                 }
             }
         }

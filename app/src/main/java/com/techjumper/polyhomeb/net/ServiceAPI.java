@@ -567,8 +567,8 @@ public interface ServiceAPI {
     /**
      * 下载新版本apk
      */
-    @Streaming
     @GET
+    @Streaming
     Observable<ResponseBody> downloadNewApk(@Url String url);
 
 /*********************************************************医疗接口*********************************************************/

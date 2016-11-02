@@ -9,7 +9,6 @@ import android.support.annotation.Nullable;
 import android.support.v7.app.NotificationCompat;
 import android.widget.RemoteViews;
 
-import com.techjumper.corelib.utils.basic.NumberUtil;
 import com.techjumper.corelib.utils.common.JLog;
 import com.techjumper.corelib.utils.window.ToastUtils;
 import com.techjumper.lib2.utils.RetrofitHelper;
@@ -18,7 +17,7 @@ import com.techjumper.polyhomeb.manager.UpdateManager;
 import com.techjumper.polyhomeb.net.ServiceAPI;
 
 import okhttp3.ResponseBody;
-import rx.Observer;
+import rx.Subscriber;
 import rx.Subscription;
 import rx.schedulers.Schedulers;
 
@@ -59,8 +58,8 @@ public class UpdateService extends Service {
         mSubs1 = RetrofitHelper
                 .<ServiceAPI>createDefault()
                 .downloadNewApk(intent.getStringExtra(KEY_URL))
-                .subscribeOn(Schedulers.newThread())
-                .subscribe(new Observer<ResponseBody>() {
+                .subscribeOn(Schedulers.io())
+                .subscribe(new Subscriber<ResponseBody>() {
                     @Override
                     public void onCompleted() {
 //                        RxUtils.unsubscribeIfNotNull(mSubs1);
@@ -78,21 +77,20 @@ public class UpdateService extends Service {
 //                            ToastUtils.show(getString(R.string.download_error));
 //                            return;
 //                        }
-
                         UpdateManager.writeFile2Disk(responseBody, new UpdateManager.ICurrentProgress() {
 
                             @Override
                             public void progressDatas(String percent) {
-                                notification.contentView.setProgressBar(R.id.pb, 100, NumberUtil.convertToint(percent, 0), false);
-                                String progress = String.format(getString(R.string.current_progress), percent);
-                                notification.contentView.setTextViewText(R.id.tv_progress, progress);
-                                manager.notify(NOTIFICATION_ID, notification);
-
-                                if (NumberUtil.convertToint(percent, 0) == 100) {
-                                    notification.contentView.setProgressBar(R.id.pb, 100, 100, false);
-                                    notification.contentView.setTextViewText(R.id.tv_progress, getString(R.string.download_complete));
-                                    manager.notify(NOTIFICATION_ID, notification);
-                                }
+//                                notification.contentView.setProgressBar(R.id.pb, 100, NumberUtil.convertToint(percent, 0), false);
+//                                String progress = String.format(getString(R.string.current_progress), percent);
+//                                notification.contentView.setTextViewText(R.id.tv_progress, progress);
+//                                manager.notify(NOTIFICATION_ID, notification);
+//
+//                                if (NumberUtil.convertToint(percent, 0) == 100) {
+//                                    notification.contentView.setProgressBar(R.id.pb, 100, 100, false);
+//                                    notification.contentView.setTextViewText(R.id.tv_progress, getString(R.string.download_complete));
+//                                    manager.notify(NOTIFICATION_ID, notification);
+//                                }
                             }
 
                             @Override
