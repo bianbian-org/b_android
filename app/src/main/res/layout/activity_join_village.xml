@@ -7,10 +7,20 @@
 
     <include layout="@layout/title_back" />
 
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/dp_10"
+        android:layout_marginRight="@dimen/dp_10"
+        android:layout_marginTop="@dimen/dp_10"
+        android:text="@string/join_village_eg_hint"
+        android:textColor="@color/color_a8a8a8"
+        android:textSize="12sp" />
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/dp_40"
+        android:layout_marginTop="@dimen/dp_20"
         android:background="@color/color_ffffff"
         android:orientation="vertical">
 
@@ -20,15 +30,15 @@
             android:background="@color/color_ceced2" />
 
         <EditText
-            android:maxLines="1"
-            android:maxLength="6"
-            android:inputType="numberDecimal"
             android:id="@+id/et_building"
             android:layout_width="match_parent"
             android:layout_height="@dimen/dp_50"
             android:background="@null"
             android:gravity="center|left"
             android:hint="@string/building"
+            android:inputType="numberDecimal"
+            android:maxLength="6"
+            android:maxLines="1"
             android:paddingLeft="@dimen/dp_14"
             android:singleLine="true"
             android:textColor="@color/color_a8a8a8"
@@ -42,15 +52,15 @@
             android:background="@color/color_ceced2" />
 
         <EditText
-            android:maxLines="1"
-            android:maxLength="6"
-            android:inputType="numberDecimal"
             android:id="@+id/et_unit"
             android:layout_width="match_parent"
             android:layout_height="@dimen/dp_50"
             android:background="@null"
             android:gravity="center|left"
             android:hint="@string/unit"
+            android:inputType="numberDecimal"
+            android:maxLength="6"
+            android:maxLines="1"
             android:paddingLeft="@dimen/dp_14"
             android:singleLine="true"
             android:textColor="@color/color_a8a8a8"
@@ -64,15 +74,15 @@
             android:background="@color/color_ceced2" />
 
         <EditText
-            android:inputType="numberDecimal"
-            android:maxLines="1"
-            android:maxLength="6"
             android:id="@+id/et_room"
             android:layout_width="match_parent"
             android:layout_height="@dimen/dp_50"
             android:background="@null"
             android:gravity="center|left"
             android:hint="@string/room"
+            android:inputType="numberDecimal"
+            android:maxLength="6"
+            android:maxLines="1"
             android:paddingLeft="@dimen/dp_14"
             android:singleLine="true"
             android:textColor="@color/color_a8a8a8"
