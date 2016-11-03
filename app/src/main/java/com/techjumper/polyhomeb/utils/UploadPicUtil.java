@@ -15,35 +15,6 @@ import java.io.IOException;
  **/
 public class UploadPicUtil {
 
-//    public static String bitmap2Base64(Bitmap bitmap) {
-//        String result = null;
-//        ByteArrayOutputStream baos = null;
-//        try {
-//            if (bitmap != null) {
-//                baos = new ByteArrayOutputStream();
-//                bitmap.compress(Bitmap.CompressFormat.PNG, 100, baos);
-//
-//                baos.flush();
-//                baos.close();
-//
-//                byte[] bitmapBytes = baos.toByteArray();
-//                result = Base64.encodeToString(bitmapBytes, Base64.DEFAULT);
-//            }
-//        } catch (IOException e) {
-//            e.printStackTrace();
-//        } finally {
-//            try {
-//                if (baos != null) {
-//                    baos.flush();
-//                    baos.close();
-//                }
-//            } catch (IOException e) {
-//                e.printStackTrace();
-//            }
-//        }
-//        return result;
-//    }
-
     public Bitmap base64toBitmap(String base64Data) {
 //        byte[] bitmapArray;
 //        bitmapArray = Base64.decode(base64Data, 0);
@@ -53,8 +24,36 @@ public class UploadPicUtil {
         return BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
     }
 
-    public static String bitmap2Base64(String filePath) {
+    public static String bitmapPath2Base64(String filePath) {
         Bitmap bitmap = loadSmallerBitmap(filePath);
+        if (bitmap == null) return "";
+        String result = null;
+        ByteArrayOutputStream baos = null;
+        try {
+            if (bitmap != null) {
+                baos = new ByteArrayOutputStream();
+                bitmap.compress(Bitmap.CompressFormat.PNG, 100, baos);
+                baos.flush();
+                baos.close();
+                byte[] bitmapBytes = baos.toByteArray();
+                result = Base64.encodeToString(bitmapBytes, Base64.DEFAULT);
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                if (baos != null) {
+                    baos.flush();
+                    baos.close();
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+        return result;
+    }
+
+    public static String bitmap2Base64(Bitmap bitmap) {
         if (bitmap == null) return "";
         String result = null;
         ByteArrayOutputStream baos = null;

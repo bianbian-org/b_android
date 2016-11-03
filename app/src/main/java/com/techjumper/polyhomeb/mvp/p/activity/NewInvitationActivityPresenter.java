@@ -269,7 +269,7 @@ public class NewInvitationActivityPresenter extends AppBaseActivityPresenter<New
         mBase64List.clear();
         ArrayList<String> photos = getView().getPhotos();
         for (int i = 0; i < photos.size(); i++) {
-            String base64 = UploadPicUtil.bitmap2Base64(photos.get(i));
+            String base64 = UploadPicUtil.bitmapPath2Base64(photos.get(i));
             mBase64List.add(base64);
         }
     }
