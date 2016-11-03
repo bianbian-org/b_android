@@ -11,6 +11,7 @@ import android.widget.TextView;
 
 import com.techjumper.corelib.mvp.factory.Presenter;
 import com.techjumper.polyhome.b.home.R;
+import com.techjumper.polyhome.b.home.js.AndroidForJs;
 import com.techjumper.polyhome.b.home.mvp.p.activity.JujiaActivityPresenter;
 import com.techjumper.polyhome_b.adlib.Config;
 
@@ -90,8 +91,7 @@ public class JujiaActivity extends AppBaseActivity<JujiaActivityPresenter> {
         });
         webView.setWebViewClient(new webViewClient());
         webView.loadUrl(Config.sJujia);
-
-
+        webView.addJavascriptInterface(new AndroidForJs(this), "JavaScriptInterface");
     }
 
     @Override

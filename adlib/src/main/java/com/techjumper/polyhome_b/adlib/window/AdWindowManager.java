@@ -190,7 +190,7 @@ public class AdWindowManager {
                 iAdWindow.onAdWindowClose(byUser);
             }
         } catch (Exception e) {
-            JLog.e(e);
+//            JLog.e(e);
         }
     }
 
