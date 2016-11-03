@@ -121,15 +121,9 @@ public class JoinVillageActivityPresenter extends AppBaseActivityPresenter<JoinV
     }
 
     private void getBLEDoorInfo() {
-        boolean isFamily = UserManager.INSTANCE.isFamily();//true为家庭,false为小区
-        String family_id = UserManager.INSTANCE.getUserInfo(UserManager.KEY_CURRENT_FAMILY_ID);
-        String village_id = UserManager.INSTANCE.getUserInfo(UserManager.KEY_CURRENT_VILLAGE_ID);
-        if (!isFamily) {
-            family_id = "";
-        }
         RxUtils.unsubscribeIfNotNull(mSubs2);
         addSubscription(
-                mSubs2 = mModel.getBLEDoorInfo(village_id, family_id)
+                mSubs2 = mModel.getBLEDoorInfo()
                         .subscribe(new Observer<BluetoothLockDoorInfoEntity>() {
                             @Override
                             public void onCompleted() {

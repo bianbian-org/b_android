@@ -8,7 +8,6 @@ import com.techjumper.corelib.rx.tools.RxBus;
 import com.techjumper.corelib.rx.tools.RxUtils;
 import com.techjumper.corelib.utils.basic.StringUtils;
 import com.techjumper.corelib.utils.common.AcHelper;
-import com.techjumper.corelib.utils.common.JLog;
 import com.techjumper.polyhomeb.R;
 import com.techjumper.polyhomeb.entity.BluetoothLockDoorInfoEntity;
 import com.techjumper.polyhomeb.entity.LoginEntity;
@@ -176,19 +175,9 @@ public class LoginActivityPresenter extends AppBaseActivityPresenter<LoginActivi
     }
 
     private void getBLEDoorInfo() {
-        boolean isFamily = UserManager.INSTANCE.isFamily();//true为家庭,false为小区
-        String family_id = UserManager.INSTANCE.getUserInfo(UserManager.KEY_CURRENT_FAMILY_ID);
-        String village_id = UserManager.INSTANCE.getUserInfo(UserManager.KEY_CURRENT_VILLAGE_ID);
-        if (!isFamily) {
-            family_id = "";
-        }
-
-        JLog.e(family_id);
-        JLog.e(village_id);
-
         RxUtils.unsubscribeIfNotNull(mSubs2);
         addSubscription(
-                mSubs2 = mModel.getBLEDoorInfo(village_id, family_id)
+                mSubs2 = mModel.getBLEDoorInfo()
                         .subscribe(new Observer<BluetoothLockDoorInfoEntity>() {
                             @Override
                             public void onCompleted() {

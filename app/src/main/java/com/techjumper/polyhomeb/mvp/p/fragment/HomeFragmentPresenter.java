@@ -15,6 +15,9 @@ import com.techjumper.corelib.utils.window.ToastUtils;
 import com.techjumper.polyhome.doormaster.bluetoothEvent.BLEScanResultEvent;
 import com.techjumper.polyhome.doormaster.bluetoothEvent.OpenDoorResult;
 import com.techjumper.polyhomeb.R;
+import com.techjumper.polyhomeb.adapter.HomePageAdapter;
+import com.techjumper.polyhomeb.adapter.recycler_Data.BluetoothData;
+import com.techjumper.polyhomeb.adapter.recycler_ViewHolder.databean.BluetoothBean;
 import com.techjumper.polyhomeb.entity.event.BLEInfoChangedEvent;
 import com.techjumper.polyhomeb.entity.event.ChooseFamilyVillageEvent;
 import com.techjumper.polyhomeb.entity.event.ToggleMenuClickEvent;
@@ -114,7 +117,8 @@ public class HomeFragmentPresenter extends AppBaseFragmentPresenter<HomeFragment
                                 stopService();
                                 unRegistShakeManager();
                             }
-                            getView().getAdapter().loadData(getDatas());
+//                            getView().getAdapter().loadData(getDatas());
+                            refreshBLEView();
                         }
                     } else if (o instanceof OpenDoorResult) {
                         JLog.d("ViewHolder发来的消息：解锁成功了，需要注册摇一摇或者开启定时扫描服务-------");
@@ -199,6 +203,21 @@ public class HomeFragmentPresenter extends AppBaseFragmentPresenter<HomeFragment
         if (getView().getActivity() != null) {
             if (!AppUtils.isCellPhoneSupportBLE(getView().getActivity())) return;
             getView().getActivity().stopService(new Intent(getView().getActivity(), ScanBluetoothService.class));
+        }
+    }
+
+    private void refreshBLEView() {
+        HomePageAdapter adapter = getView().getAdapter();
+        List<DisplayBean> data = adapter.getData();
+        for (int i = 0; i < data.size(); i++) {
+            if (data.get(i) instanceof BluetoothBean) {
+                BluetoothBean bluetoothBean = (BluetoothBean) data.get(i);
+                BluetoothData data1 = bluetoothBean.getData();
+                data1.setInfosBeen(UserManager.INSTANCE.getBLEInfo());
+                data1.setCommunitySupportBleDoor(UserManager.INSTANCE.isCurrentCommunitySupportBLEDoor());
+                adapter.notifyItemChanged(i);
+                break;
+            }
         }
     }
 

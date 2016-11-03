@@ -329,7 +329,7 @@ public class UserInfoActivityPresenter extends AppBaseActivityPresenter<UserInfo
     }
 
     /**
-     * 上传图片一些列操作
+     * 上传图片一系列操作
      */
     private void uploadPicToServer(String imagePath) {
         //首先将图片设置给iv

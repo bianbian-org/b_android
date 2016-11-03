@@ -52,12 +52,11 @@ public class MyVillageFamilyActivityModel extends BaseModel<MyVillageFamilyActiv
                 .compose(CommonWrap.wrap());
     }
 
-    public Observable<BluetoothLockDoorInfoEntity> getBLEDoorInfo(String village_id, String family_id) {
+    public Observable<BluetoothLockDoorInfoEntity> getBLEDoorInfo() {
         KeyValuePair keyValuePair = KeyValueCreator.getBLEDoorInfo(
                 UserManager.INSTANCE.getUserInfo(UserManager.KEY_ID)
                 , UserManager.INSTANCE.getTicket()
-                , village_id
-                , family_id);
+                , UserManager.INSTANCE.getUserInfo(UserManager.KEY_CURRENT_VILLAGE_ID));
         Map<String, String> map = NetHelper.createBaseArgumentsMap(keyValuePair);
         return RetrofitHelper.<ServiceAPI>createDefault()
                 .getBLEDoorInfo(map)
