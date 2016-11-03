@@ -8,7 +8,6 @@ import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
-import android.text.TextUtils;
 import android.view.View;
 import android.widget.ArrayAdapter;
 
@@ -22,7 +21,6 @@ import com.techjumper.corelib.utils.common.AcHelper;
 import com.techjumper.corelib.utils.file.FileUtils;
 import com.techjumper.corelib.utils.window.DialogUtils;
 import com.techjumper.corelib.utils.window.ToastUtils;
-import com.techjumper.lib2.utils.PicassoHelper;
 import com.techjumper.polyhomeb.Config;
 import com.techjumper.polyhomeb.R;
 import com.techjumper.polyhomeb.entity.AvatarEntity;
@@ -44,7 +42,6 @@ import com.techjumper.polyhomeb.utils.UploadPicUtil;
 
 import java.io.File;
 import java.io.FileNotFoundException;
-import java.io.IOException;
 import java.util.Calendar;
 
 import butterknife.OnClick;
@@ -356,7 +353,7 @@ public class UserInfoActivityPresenter extends AppBaseActivityPresenter<UserInfo
             getView().runOnUiThread(() -> uploadPic(base64));
         }).start();
     }
-
+    
     /**
      * 上传图片至服务器
      */
@@ -385,35 +382,9 @@ public class UserInfoActivityPresenter extends AppBaseActivityPresenter<UserInfo
                                 Glide.with(getView()).load(R.mipmap.icon_avatar_bg).transform(new GlideBitmapTransformation(getView())).into(getView().getIvBg());
                                 String cover = entity.getData().getCover();
                                 UserManager.INSTANCE.saveUserInfo(UserManager.KEY_AVATAR, Config.sHost + cover);
-                                UserManager.INSTANCE.saveUserInfo(UserManager.KEY_LOCAL_AVATAR, mLocalAvatarPath);
                                 ToastUtils.show(getView().getString(R.string.change_avatar_success));
                                 RxBus.INSTANCE.send(new AvatarEvent(entity.getData().getCover()));
-
-                                saveAvatarToDisk();
                             }
                         }));
-    }
-
-    /**
-     * 缓存头像到本地
-     */
-    private void saveAvatarToDisk() {
-        String avatarUrl = UserManager.INSTANCE.getUserInfo(UserManager.KEY_AVATAR);
-        if (!TextUtils.isEmpty(avatarUrl)) {
-            new Thread(() -> {
-                try {
-                    Bitmap bitmap = PicassoHelper.load(avatarUrl).get();
-                    String path = PicUtils.savePhoto(
-                            bitmap
-                            , getExternalStorageDirectory().getAbsolutePath() + File.separator + Config.sParentDirName + File.separator + Config.sAvatarsDirName
-                            , String.valueOf(System.currentTimeMillis()) + "avatar");
-                    if (!TextUtils.isEmpty(path)) {
-                        UserManager.INSTANCE.saveUserInfo(UserManager.KEY_LOCAL_AVATAR, path);
-                    }
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            }).start();
-        }
     }
 }

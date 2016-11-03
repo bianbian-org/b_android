@@ -1,8 +1,6 @@
 package com.techjumper.polyhomeb.mvp.v.activity;
 
-import android.graphics.Bitmap;
 import android.os.Bundle;
-import android.os.Environment;
 import android.text.TextUtils;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,16 +10,10 @@ import android.widget.TextView;
 import com.bumptech.glide.Glide;
 import com.techjumper.corelib.mvp.factory.Presenter;
 import com.techjumper.corelib.utils.common.ResourceUtils;
-import com.techjumper.lib2.utils.PicassoHelper;
-import com.techjumper.polyhomeb.Config;
 import com.techjumper.polyhomeb.R;
 import com.techjumper.polyhomeb.mvp.p.activity.UserInfoActivityPresenter;
 import com.techjumper.polyhomeb.other.GlideBitmapTransformation;
 import com.techjumper.polyhomeb.user.UserManager;
-import com.techjumper.polyhomeb.utils.PicUtils;
-
-import java.io.File;
-import java.io.IOException;
 
 import butterknife.Bind;
 
@@ -79,7 +71,6 @@ public class UserInfoActivity extends AppBaseActivity<UserInfoActivityPresenter>
 
     private void initDatas() {
         String avatar = UserManager.INSTANCE.getUserInfo(UserManager.KEY_AVATAR);
-        String localAvatarUrl = UserManager.INSTANCE.getUserInfo(UserManager.KEY_LOCAL_AVATAR);
         String birthday = UserManager.INSTANCE.getUserInfo(UserManager.KEY_BIRTHDAY);
         String nickName = UserManager.INSTANCE.getUserInfo(UserManager.KEY_USER_NAME);
         String email = UserManager.INSTANCE.getUserInfo(UserManager.KEY_EMAIL);
@@ -96,42 +87,8 @@ public class UserInfoActivity extends AppBaseActivity<UserInfoActivityPresenter>
         mTvBirthday.setText(birthday);
         mTvSex.setText(sex);
 
-        //关于头像
-        //先把头像下载下来,缓存到polyhomeb文件夹下
-        //然后用KEY_LOCAL_AVATAR字段将他在本地的路径存下来
-        //之后加载图片的时候优先加载本地的,如果本地没有,才去网上加载
-
-//        if (!TextUtils.isEmpty(avatar)) {
-//            PicassoHelper.load(avatar).transform(new PicassoCircleTransform()).into(mIvAvatar);
-//            PicassoHelper.load(R.mipmap.icon_avatar_bg).transform(new PicassoCircleTransform()).into(mIvBg);
-//        }
-        //优先加载本地的图片,如果不存在才去网络请求
-        if (!TextUtils.isEmpty(localAvatarUrl)) {
-//            PicassoHelper.load(localAvatarUrl).transform(new PicassoCircleTransform()).into(mIvAvatar);
-//            PicassoHelper.load(R.mipmap.icon_avatar_bg).transform(new PicassoCircleTransform()).into(mIvBg);
-            Glide.with(this).load(localAvatarUrl).transform(new GlideBitmapTransformation(this)).into(mIvAvatar);
-            Glide.with(this).load(R.mipmap.icon_avatar_bg).transform(new GlideBitmapTransformation(this)).into(mIvBg);
-        } else if (!TextUtils.isEmpty(avatar)) {
-//            PicassoHelper.load(avatar).transform(new PicassoCircleTransform()).into(mIvAvatar);
-//            PicassoHelper.load(R.mipmap.icon_avatar_bg).transform(new PicassoCircleTransform()).into(mIvBg);
-            Glide.with(this).load(avatar).transform(new GlideBitmapTransformation(this)).into(mIvAvatar);
-            Glide.with(this).load(R.mipmap.icon_avatar_bg).transform(new GlideBitmapTransformation(this)).into(mIvBg);
-            //缓存图片到本地
-            new Thread(() -> {
-                try {
-                    Bitmap bitmap = PicassoHelper.load(avatar).get();
-                    String path = PicUtils.savePhoto(
-                            bitmap
-                            , Environment.getExternalStorageDirectory().getAbsolutePath() + File.separator + Config.sParentDirName + File.separator + Config.sAvatarsDirName
-                            , String.valueOf(System.currentTimeMillis()) + "avatar");
-                    if (!TextUtils.isEmpty(path)) {
-                        UserManager.INSTANCE.saveUserInfo(UserManager.KEY_LOCAL_AVATAR, path);
-                    }
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            }).start();
-        }
+        Glide.with(this).load(avatar).transform(new GlideBitmapTransformation(this)).into(mIvAvatar);
+        Glide.with(this).load(R.mipmap.icon_avatar_bg).transform(new GlideBitmapTransformation(this)).into(mIvBg);
 
         //最开始的时候,右上角的按钮是灰色且不可点击
         canRightClick(false);

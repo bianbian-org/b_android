@@ -45,7 +45,6 @@ public enum UserManager {
     public static final String KEY_DEVICE_ID = "key_device_id";
     public static final String KEY_USER_NAME = "key_user_name";
     public static final String KEY_AVATAR = "key_avatar";
-    public static final String KEY_LOCAL_AVATAR = "key_local_avatar";
     public static final String KEY_SEX = "key_sex";
     public static final String KEY_EMAIL = "key_email";
     public static final String KEY_BIRTHDAY = "key_birthday";
@@ -290,7 +289,6 @@ public enum UserManager {
         PreferenceUtils.save(KEY_PHONE_NUMBER, "");
         PreferenceUtils.save(KEY_TICKET, "");
         PreferenceUtils.save(KEY_AVATAR, "");
-        PreferenceUtils.save(KEY_LOCAL_AVATAR, "");
         PreferenceUtils.save(KEY_USER_NAME, "");
         PreferenceUtils.save(KEY_CURRENT_BUILDING, "");
         PreferenceUtils.save(KEY_CURRENT_UNIT, "");
