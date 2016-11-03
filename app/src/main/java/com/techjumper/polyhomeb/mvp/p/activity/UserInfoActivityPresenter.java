@@ -4,6 +4,7 @@ import android.Manifest;
 import android.app.DatePickerDialog;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
@@ -18,6 +19,7 @@ import com.tbruyelle.rxpermissions.RxPermissions;
 import com.techjumper.corelib.rx.tools.RxBus;
 import com.techjumper.corelib.rx.tools.RxUtils;
 import com.techjumper.corelib.utils.common.AcHelper;
+import com.techjumper.corelib.utils.file.FileUtils;
 import com.techjumper.corelib.utils.window.DialogUtils;
 import com.techjumper.corelib.utils.window.ToastUtils;
 import com.techjumper.lib2.utils.PicassoHelper;
@@ -41,6 +43,7 @@ import com.techjumper.polyhomeb.utils.PicUtils;
 import com.techjumper.polyhomeb.utils.UploadPicUtil;
 
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.Calendar;
 
@@ -49,6 +52,7 @@ import rx.Observer;
 import rx.Subscription;
 
 import static android.os.Environment.getExternalStorageDirectory;
+import static com.techjumper.corelib.utils.file.FileUtils.createDirsAndFile;
 
 /**
  * * * * * * * * * * * * * * * * * * * * * * *
@@ -72,13 +76,19 @@ public class UserInfoActivityPresenter extends AppBaseActivityPresenter<UserInfo
 
     private String mLocalAvatarPath = "";
 
+    private String mTempPicPath = getExternalStorageDirectory().getAbsolutePath() + File.separator
+            + Config.sParentDirName + File.separator + Config.sAvatarsDirName;
+    private static String sCameraPicName = "camera_image_no_crop.jpg";
+    private static String sCropPicName = "crop.jpg";
+
+    private Uri mCameraTempUri;
+
     /**
      * 选择和裁剪图片时候的各种code
      */
-    private static final int CHOOSE_PICTURE = 0;
-    private static final int TAKE_PICTURE = 1;
-    private static final int CROP_SMALL_PICTURE = 2;
-    private static Uri tempUri;
+    private static final int GALLERY_PICTURE = 0;
+    private static final int CAMERA_PICTURE = 1;
+    private static final int CROP_PICTURE = 2;
 
     @Override
     public void initData(Bundle savedInstanceState) {
@@ -254,97 +264,97 @@ public class UserInfoActivityPresenter extends AppBaseActivityPresenter<UserInfo
     private void jump2PicChooseActivity(MaterialDialog dialog, int which) {
         switch (which) {
             case 0:
-                Intent openCameraIntent = new Intent(
-                        MediaStore.ACTION_IMAGE_CAPTURE);
-                tempUri = Uri.fromFile(new File(
-                        getExternalStorageDirectory().getAbsolutePath() + File.separator + Config.sParentDirName + File.separator + Config.sAvatarsDirName, "image.jpg"));
-                // 指定照片保存路径（SD卡），image.jpg为一个临时文件，每次拍照后这个图片都会被替换
-                openCameraIntent.putExtra(MediaStore.EXTRA_OUTPUT, tempUri);
-                getView().startActivityForResult(openCameraIntent, TAKE_PICTURE);
+                choosePicFromCamera();
                 break;
-            case 1:
-                Intent openAlbumIntent = new Intent(
-                        Intent.ACTION_GET_CONTENT);
-                openAlbumIntent.setType("image/*");
-                getView().startActivityForResult(openAlbumIntent, CHOOSE_PICTURE);
+            case 1:  //选择相册图片进行裁剪
+                choosePicFromGallery();
                 break;
         }
         dialog.dismiss();
     }
 
+    /**
+     * 从相机选择图片
+     */
+    private void choosePicFromCamera() {
+        // 指定照片保存路径（SD卡），image.jpg为一个临时文件，每次拍照后这个图片都会被替换
+        mCameraTempUri = FileUtils.createDirsAndFile(mTempPicPath, sCameraPicName);
+        Intent openCameraIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+        openCameraIntent.putExtra(MediaStore.EXTRA_OUTPUT, mCameraTempUri);
+        getView().startActivityForResult(openCameraIntent, CAMERA_PICTURE);
+    }
+
+    /**
+     * 从相册选择图片
+     */
+    private void choosePicFromGallery() {
+        Intent openAlbumIntent = new Intent(Intent.ACTION_GET_CONTENT);
+        openAlbumIntent.setType("image/*");
+        getView().startActivityForResult(openAlbumIntent, GALLERY_PICTURE);  //开启系统相册，选择图片的界面
+    }
+
+    /**
+     * 裁剪图片
+     */
+    private void cropPicture(Uri data) {
+        Intent intent = new Intent("com.android.camera.action.CROP");
+        intent.setDataAndType(data, "image/*");
+        intent.putExtra("crop", "true");//设置为裁切
+        intent.putExtra("aspectX", 1);//裁切的宽比例
+        intent.putExtra("aspectY", 1);//裁切的高比例
+        intent.putExtra("outputX", 600);//裁切的宽度
+        intent.putExtra("outputY", 600);//裁切的高度
+        intent.putExtra("scale", true);//支持缩放
+        intent.putExtra("return-data", false);
+        intent.putExtra(MediaStore.EXTRA_OUTPUT, createDirsAndFile(mTempPicPath, sCropPicName));//将裁切的结果输出到指定的Uri
+        intent.putExtra("outputFormat", Bitmap.CompressFormat.JPEG.toString());//裁切成的图片的格式
+        intent.putExtra("noFaceDetection", true);
+        getView().startActivityForResult(intent, CROP_PICTURE);  //开启系统自带的裁剪界面
+    }
+
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        if (resultCode == getView().RESULT_OK) { // 如果返回码是可以用的
+        if (resultCode == getView().RESULT_OK) {
             switch (requestCode) {
-                case TAKE_PICTURE:
-                    startPhotoZoom(tempUri); // 开始对图片进行裁剪处理
+                case CAMERA_PICTURE: //拍照之后走到这里
+                    cropPicture(mCameraTempUri); // 开始对拍照得到的图片进行裁剪处理(mCameraTempUri图片被存在SD卡本地)
                     break;
-                case CHOOSE_PICTURE:
-                    startPhotoZoom(data.getData()); // 开始对图片进行裁剪处理
+                case GALLERY_PICTURE://从相册选择图片后走到这里
+                    cropPicture(data.getData()); //开始对相册选择的图片进行剪裁处理
                     break;
-                case CROP_SMALL_PICTURE:
-                    if (data != null) {
-                        setImageToView(data); // 让刚才选择裁剪得到的图片显示在界面上
-                    }
+                case CROP_PICTURE:
+                    getCropedPic(data);
                     break;
             }
         }
+        super.onActivityResult(requestCode, resultCode, data);
     }
 
     /**
-     * 裁剪图片方法实现
+     * 得到裁剪后的图片
      */
-    protected void startPhotoZoom(Uri uri) {
-        tempUri = uri;
-        Intent intent = new Intent("com.android.camera.action.CROP");
-        intent.setDataAndType(uri, "image/*");
-        intent.putExtra("crop", "true");
-        intent.putExtra("aspectX", 1);
-        intent.putExtra("aspectY", 1);
-        intent.putExtra("outputX", 200);
-        intent.putExtra("outputY", 200);
-        intent.putExtra("noFaceDetection", true);
-        intent.putExtra("return-data", true);
-
-        getView().startActivityForResult(intent, CROP_SMALL_PICTURE);
-    }
-
-    /**
-     * 保存裁剪之后的图片数据
-     */
-    protected void setImageToView(Intent data) {
-        Bundle extras = data.getExtras();
-        if (extras != null) {
-            Bitmap photo = extras.getParcelable("data");
-            String imagePath = PicUtils.savePhoto(
-                    photo
-                    , getExternalStorageDirectory().getAbsolutePath() + File.separator + Config.sParentDirName + File.separator + Config.sAvatarsDirName
-                    , String.valueOf(System.currentTimeMillis()));
-            mLocalAvatarPath = imagePath;
-            uploadPicToServer(imagePath);
+    private void getCropedPic(Intent data) {
+        try {
+            Bitmap bitmap = BitmapFactory.decodeStream(getView().getContentResolver().
+                    openInputStream(data.getData()));
+            mLocalAvatarPath = PicUtils.savePhoto(bitmap, mTempPicPath, sCropPicName);
+            getBitmap(bitmap);
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
         }
     }
 
     /**
-     * 上传图片一系列操作
+     * 从相册选择图片并且裁剪之后得到的bitmap
+     * 1:设置给IV
+     * 2:编码后上传至服务器
      */
-    private void uploadPicToServer(String imagePath) {
-        //首先将图片设置给iv
+    private void getBitmap(Bitmap bitmap) {
         getView().showLoading();
-        Glide.with(getView()).load(imagePath).transform(new GlideBitmapTransformation(getView())).into(getView().getIvAvatar());
-        Glide.with(getView()).load(R.mipmap.icon_avatar_bg).transform(new GlideBitmapTransformation(getView())).into(getView().getIvBg());
         new Thread(() -> {
-            String base64 = transformCode(imagePath);
+            String base64 = UploadPicUtil.bitmap2Base64(bitmap);
             getView().runOnUiThread(() -> uploadPic(base64));
         }).start();
-    }
-
-    /**
-     * Base64转码
-     */
-    private String transformCode(String imagePath) {
-        return UploadPicUtil.bitmap2Base64(imagePath);
     }
 
     /**
@@ -371,6 +381,8 @@ public class UserInfoActivityPresenter extends AppBaseActivityPresenter<UserInfo
                             public void onNext(AvatarEntity entity) {
                                 getView().dismissLoading();
                                 if (!processNetworkResult(entity)) return;
+                                Glide.with(getView()).load(mLocalAvatarPath).transform(new GlideBitmapTransformation(getView())).into(getView().getIvAvatar());
+                                Glide.with(getView()).load(R.mipmap.icon_avatar_bg).transform(new GlideBitmapTransformation(getView())).into(getView().getIvBg());
                                 String cover = entity.getData().getCover();
                                 UserManager.INSTANCE.saveUserInfo(UserManager.KEY_AVATAR, Config.sHost + cover);
                                 UserManager.INSTANCE.saveUserInfo(UserManager.KEY_LOCAL_AVATAR, mLocalAvatarPath);
@@ -402,7 +414,6 @@ public class UserInfoActivityPresenter extends AppBaseActivityPresenter<UserInfo
                     e.printStackTrace();
                 }
             }).start();
-
         }
     }
 }

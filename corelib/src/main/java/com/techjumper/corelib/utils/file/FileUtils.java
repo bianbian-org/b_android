@@ -7,6 +7,7 @@ import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.drawable.Drawable;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Environment;
 import android.os.StatFs;
@@ -533,6 +534,35 @@ public class FileUtils {
             sb.append("G");
         }
         return sb.toString();
+    }
+
+    /**
+     * 根据路径和文件，创建文件夹以及文件
+     * 如果文件已经存在，那么先删除再创建
+     * 如果文件或者路径不存在，那么直接创建
+     * 最后返回Uri
+     */
+    public static Uri createDirsAndFile(String path, String fileName) {
+        Uri uri;
+
+        File file = new File(path);
+        if (!file.exists()) {
+            try {
+                file.mkdirs();
+            } catch (Exception e) {
+            }
+        }
+        File dir = new File(path, fileName);
+        if (!dir.exists()) {
+            try {
+                dir.createNewFile();
+            } catch (Exception e) {
+            }
+        } else {
+            dir.delete();
+        }
+        uri = Uri.fromFile(new File(path, fileName));
+        return uri;
     }
 
 }

@@ -1,5 +1,7 @@
 package com.techjumper.polyhomeb.entity;
 
+import android.accessibilityservice.AccessibilityService;
+
 /**
  * * * * * * * * * * * * * * * * * * * * * * *
  * Created by lixin
