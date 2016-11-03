@@ -5,7 +5,6 @@ import android.graphics.Bitmap;
 import com.techjumper.corelib.utils.file.FileUtils;
 
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 
@@ -28,22 +27,17 @@ public class PicUtils {
             if (!dir.exists()) {
                 dir.mkdirs();
             }
-
-            File photoFile = new File(path, photoName + ".png");
+            File photoFile = new File(path, photoName);
             FileOutputStream fileOutputStream = null;
             try {
                 fileOutputStream = new FileOutputStream(photoFile);
                 if (photoBitmap != null) {
-                    if (photoBitmap.compress(Bitmap.CompressFormat.PNG, 100,
+                    if (photoBitmap.compress(Bitmap.CompressFormat.JPEG, 100,
                             fileOutputStream)) {
                         localPath = photoFile.getPath();
                         fileOutputStream.flush();
                     }
                 }
-            } catch (FileNotFoundException e) {
-                photoFile.delete();
-                localPath = null;
-                e.printStackTrace();
             } catch (IOException e) {
                 photoFile.delete();
                 localPath = null;
@@ -52,7 +46,6 @@ public class PicUtils {
                 try {
                     if (fileOutputStream != null) {
                         fileOutputStream.close();
-                        fileOutputStream = null;
                     }
                 } catch (IOException e) {
                     e.printStackTrace();
@@ -60,9 +53,5 @@ public class PicUtils {
             }
         }
         return localPath;
-    }
-
-    public static void deleteTemPic() {
-
     }
 }

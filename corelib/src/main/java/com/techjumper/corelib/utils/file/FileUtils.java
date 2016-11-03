@@ -544,22 +544,18 @@ public class FileUtils {
      */
     public static Uri createDirsAndFile(String path, String fileName) {
         Uri uri;
-
         File file = new File(path);
         if (!file.exists()) {
-            try {
-                file.mkdirs();
-            } catch (Exception e) {
-            }
+            file.mkdirs();
         }
         File dir = new File(path, fileName);
-        if (!dir.exists()) {
-            try {
-                dir.createNewFile();
-            } catch (Exception e) {
-            }
-        } else {
+        if (dir.exists()) {
             dir.delete();
+        }
+        try {
+            dir.createNewFile();
+        } catch (IOException e) {
+            e.printStackTrace();
         }
         uri = Uri.fromFile(new File(path, fileName));
         return uri;
