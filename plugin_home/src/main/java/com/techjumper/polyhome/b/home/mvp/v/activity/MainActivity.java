@@ -135,12 +135,12 @@ public class MainActivity extends AppBaseActivity {
         viewpager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
             public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
-                if (positionOffset < mLastPositionOffset && positionOffset < 0.9) {
-                    viewpager.setCurrentItem(position);
-                } else if (positionOffset > mLastPositionOffset && positionOffset > 0.1) {
-                    viewpager.setCurrentItem(position + 1);
-                }
-                mLastPositionOffset = positionOffset;
+//                if (positionOffset < mLastPositionOffset && positionOffset < 0.9) {
+//                    viewpager.setCurrentItem(position);
+//                } else if (positionOffset > mLastPositionOffset && positionOffset > 0.1) {
+//                    viewpager.setCurrentItem(position + 1);
+//                }
+//                mLastPositionOffset = positionOffset;
             }
 
             @Override

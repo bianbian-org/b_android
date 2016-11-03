@@ -651,6 +651,8 @@ public class MainActivityPresenter extends AppBaseActivityPresenter<MainActivity
 
                         UserInfoEntity userInfoEntity = userEntity.getData();
                         UserInfoManager.saveUserInfo(userInfoEntity);
+
+                        RxBus.INSTANCE.send(new UserInfoEvent(userInfoEntity));
                     }
                 }));
     }
