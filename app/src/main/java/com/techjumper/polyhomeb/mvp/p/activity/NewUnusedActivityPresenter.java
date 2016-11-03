@@ -173,8 +173,8 @@ public class NewUnusedActivityPresenter extends AppBaseActivityPresenter<NewUnus
 
     private void uploadData() {
         String originPrice;
-        if (!TextUtils.isEmpty(getView().getEtSecondHandPrice().getEditableText().toString())) {
-            originPrice = getView().getEtSecondHandPrice().getEditableText().toString();
+        if (!TextUtils.isEmpty(getView().getEtOriginPrice().getEditableText().toString())) {
+            originPrice = getView().getEtOriginPrice().getEditableText().toString();
         } else {
             originPrice = "";
         }
