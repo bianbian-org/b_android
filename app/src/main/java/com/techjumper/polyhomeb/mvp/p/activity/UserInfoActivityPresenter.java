@@ -299,16 +299,14 @@ public class UserInfoActivityPresenter extends AppBaseActivityPresenter<UserInfo
         tempUri = uri;
         Intent intent = new Intent("com.android.camera.action.CROP");
         intent.setDataAndType(uri, "image/*");
-        // 设置裁剪
         intent.putExtra("crop", "true");
-        // aspectX aspectY 是宽高的比例
         intent.putExtra("aspectX", 1);
         intent.putExtra("aspectY", 1);
-        // outputX outputY 是裁剪图片宽高
         intent.putExtra("outputX", 200);
         intent.putExtra("outputY", 200);
         intent.putExtra("noFaceDetection", true);
         intent.putExtra("return-data", true);
+
         getView().startActivityForResult(intent, CROP_SMALL_PICTURE);
     }
 

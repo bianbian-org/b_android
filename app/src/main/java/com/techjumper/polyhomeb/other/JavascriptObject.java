@@ -14,13 +14,13 @@ import com.techjumper.lib2.utils.GsonUtils;
 import com.techjumper.polyhome.paycorelib.OnPayListener;
 import com.techjumper.polyhomeb.Constant;
 import com.techjumper.polyhomeb.R;
-import com.techjumper.polyhomeb.entity.JSH5PaymentsEntity;
 import com.techjumper.polyhomeb.entity.JSJavaBaseEntity;
 import com.techjumper.polyhomeb.entity.JSJavaContactShopEntity;
 import com.techjumper.polyhomeb.entity.JSJavaGetArticleIdEntity;
 import com.techjumper.polyhomeb.entity.JSJavaImageViewEntity;
 import com.techjumper.polyhomeb.entity.JSJavaNotificationEntity;
 import com.techjumper.polyhomeb.entity.JSJavaPageJumpEntity;
+import com.techjumper.polyhomeb.entity.PayEntity;
 import com.techjumper.polyhomeb.entity.PaymentsEntity;
 import com.techjumper.polyhomeb.entity.event.JSArticleIdEvent;
 import com.techjumper.polyhomeb.entity.event.JSCallPhoneNumberEvent;
@@ -201,14 +201,14 @@ public class JavascriptObject {
     }
 
     private void h5Pay(String json) {
-        JSJavaPageJumpEntity payEntity = GsonUtils.fromJson(json, JSJavaPageJumpEntity.class);
-        JSJavaPageJumpEntity.ParamsBean payParams = payEntity.getParams();
-        String payJson = payParams.getUrl();
-        if (TextUtils.isEmpty(payJson)) return;
-        JSH5PaymentsEntity paymentsEntity = GsonUtils.fromJson(payJson, JSH5PaymentsEntity.class);
-        if (paymentsEntity.getType() == -1) return;
-        int type = paymentsEntity.getType();
-        String back_type = paymentsEntity.getBack_type();
+        PayEntity payEntity = GsonUtils.fromJson(json, PayEntity.class);
+        if (payEntity == null) return;
+        PayEntity.ParamsBean bean = payEntity.getParams();
+        if (bean == null) return;
+        PayEntity.ParamsBean.UrlBean url = bean.getUrl();
+        if (url == null) return;
+        String back_type = url.getBack_type();
+        int type = url.getType();
 
         PaymentsEntity entity = new PaymentsEntity();
         PaymentsEntity.DataBean dataBean = new PaymentsEntity.DataBean();
@@ -217,7 +217,7 @@ public class JavascriptObject {
             case 1:
                 break;
             case 2:
-                JSH5PaymentsEntity.AlipayBean alipay = paymentsEntity.getAlipay();
+                PayEntity.ParamsBean.UrlBean.AlipayBean alipay = url.getAlipay();
                 if (alipay == null
                         || TextUtils.isEmpty(alipay.getParms_str())
                         || TextUtils.isEmpty(alipay.getSign())) return;
