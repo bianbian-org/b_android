@@ -294,7 +294,7 @@ public class InfoFragmentPresenter extends AppBaseFragmentPresenter<InfoFragment
                         x2 = event.getX();
                         y2 = event.getY();
                         if (Math.abs(x1 - x2) < 6 && Math.abs(y1 - y2) < 6) {
-                            AdClickDbUtil.insert(Long.valueOf(mAdsEntity.getId()), AdController.TYPE_HOME,  ComConstant.AD_TYPE_CLICK, heartbeatTime);
+                            AdClickDbUtil.insert(Long.valueOf(mAdsEntity.getId()), AdController.TYPE_HOME, ComConstant.AD_TYPE_CLICK, heartbeatTime);
                             Intent intent = new Intent(getView().getActivity(), AdNewActivity.class);
                             intent.putExtra(AdNewActivity.POSITION, adViewPager.getCurrentItem());
                             intent.putExtra(AdNewActivity.TYPE, AdNewActivity.TYPE_TWO);
@@ -373,6 +373,9 @@ public class InfoFragmentPresenter extends AppBaseFragmentPresenter<InfoFragment
                     @Override
                     public void onError(Throwable e) {
                         getView().showError(e);
+                        if (!TextUtils.isEmpty(e.toString())) {
+                            ToastUtils.showLong(e.toString());
+                        }
                     }
 
                     @Override
@@ -382,6 +385,8 @@ public class InfoFragmentPresenter extends AppBaseFragmentPresenter<InfoFragment
 
                         if (weatherEntity != null && weatherEntity.getData() != null)
                             getView().getWeatherInfo(weatherEntity.getData());
+
+                        ToastUtils.showLong("weatherEntity data" + weatherEntity.getData());
 
                         Log.d("weatherDate", "weather data" + weatherEntity.getData());
                         //发送给主页获取数据

@@ -20,6 +20,7 @@ import com.techjumper.commonres.entity.TrueEntity;
 import com.techjumper.commonres.entity.UserEntity;
 import com.techjumper.commonres.entity.event.AdClickEvent;
 import com.techjumper.commonres.entity.event.AdControllerEvent;
+import com.techjumper.commonres.entity.event.AdEvent;
 import com.techjumper.commonres.entity.event.AdMainEvent;
 import com.techjumper.commonres.entity.event.AdShowEvent;
 import com.techjumper.commonres.entity.event.HeartbeatEvent;
@@ -494,7 +495,14 @@ public class MainActivityPresenter extends AppBaseActivityPresenter<MainActivity
                             Log.d("submitOnline", "心跳成功");
                             Log.d("submitOnline", "时间" + heartbeatEntity.getData().getTime());
                             Log.d("submitOnline", "ticket" + heartbeatEntity.getData().getTicket());
+                            Log.d("submitOnline", "update_ad" + heartbeatEntity.getData().getUpdate_ad());
                             UserInfoManager.saveTicket(heartbeatEntity.getData().getTicket());
+
+                            if (heartbeatEntity.getData().getUpdate_ad() == 1) {
+                                Log.d("submitOnline", "submitOnline get new ad");
+                                RxBus.INSTANCE.send(new AdEvent());
+                            }
+
                             RxBus.INSTANCE.send(new HeartbeatEvent(heartbeatEntity.getData().getTime()));
                         }
                     }

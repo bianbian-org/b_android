@@ -275,6 +275,7 @@ public class PloyhomeFragmentPresenter extends AppBaseFragmentPresenter<Ployhome
                     } else if (o instanceof AdEvent) {
                         Log.d("pluginUserInfo", "推送更新广告");
                         getAd(false);
+                        mIsGetNewAd = false;
                     }
                 }));
 
