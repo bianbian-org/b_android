@@ -4,22 +4,31 @@ import android.Manifest;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Handler;
 import android.text.TextUtils;
 
 import com.tbruyelle.rxpermissions.RxPermissions;
 import com.techjumper.corelib.rx.tools.RxBus;
 import com.techjumper.corelib.rx.tools.RxUtils;
+import com.techjumper.corelib.utils.common.AcHelper;
 import com.techjumper.corelib.utils.system.AppUtils;
 import com.techjumper.corelib.utils.window.DialogUtils;
 import com.techjumper.corelib.utils.window.ToastUtils;
+import com.techjumper.polyhome.paycorelib.OnPayListener;
 import com.techjumper.polyhomeb.R;
+import com.techjumper.polyhomeb.entity.PayEntity;
+import com.techjumper.polyhomeb.entity.PaymentsEntity;
 import com.techjumper.polyhomeb.entity.TrueEntity;
+import com.techjumper.polyhomeb.entity.event.H5PayEvent;
 import com.techjumper.polyhomeb.entity.event.JSArticleIdEvent;
 import com.techjumper.polyhomeb.entity.event.JSCallPhoneNumberEvent;
 import com.techjumper.polyhomeb.entity.event.RefreshWhenDeleteArticleEvent;
 import com.techjumper.polyhomeb.entity.event.ReloadWebPageEvent;
+import com.techjumper.polyhomeb.entity.event.RefreshH5PayStateEvent;
+import com.techjumper.polyhomeb.manager.PayManager;
 import com.techjumper.polyhomeb.mvp.m.JSInteractionActivityModel;
 import com.techjumper.polyhomeb.mvp.v.activity.JSInteractionActivity;
+import com.techjumper.polyhomeb.mvp.v.activity.TabHomeActivity;
 import com.techjumper.polyhomeb.user.UserManager;
 
 import rx.Observer;
@@ -70,8 +79,28 @@ public class JSInteractionActivityPresenter extends AppBaseActivityPresenter<JSI
                                 if (event.getHashCode() != getView().hashCode()) return;
                                 showCallNumDialog(event);
                             } else if (o instanceof JSArticleIdEvent) {
+                                //需要删除的文章的id
                                 JSArticleIdEvent event = (JSArticleIdEvent) o;
                                 mArticleId = event.getId();
+                            } else if (o instanceof H5PayEvent) {
+                                //发起H5支付
+                                H5PayEvent event = (H5PayEvent) o;
+                                int hashCode = event.getHashCode();
+                                if (hashCode != getView().hashCode()) return;
+                                PayEntity payEntity = event.getPayEntity();
+                                h5Pay(payEntity);
+                            } else if (o instanceof RefreshH5PayStateEvent) {
+                                //当商城订单支付的时候，有多个商铺的订单，此时支付了其中一个，那么就要刷新
+                                //具体就是客户端调用H5的JS方法，将订单号传过去
+                                //然后H5刷新订单页面
+                                //而这个调用H5的动作的发起，也是这个类，因为这个activity启动模式是standard，
+                                //同上面的注释一样，这栈中，当前这个Activity前面还有N个这个名字的Activity对象
+                                //而我做这个刷新动作，必须要在订单页执行，而我支付成功后，返回去的页面就一定是那个订单页，
+                                //所以现在相当于我在N个JSInteractionActivity中发送N个Rxbus消息，在N个JSInteractionActivity
+                                //中接收这个消息。那么当我返回去的时候，H5那边有个方法正好是refresh_order，所以在N个JSInteractionActivity
+                                //中监听RxBus消息，然后就能达到目的了。
+                                RefreshH5PayStateEvent event = (RefreshH5PayStateEvent) o;
+                                refreshH5StateEvent(event.getOrder_number());
                             }
                         }));
     }
@@ -105,6 +134,7 @@ public class JSInteractionActivityPresenter extends AppBaseActivityPresenter<JSI
                 });
     }
 
+    //H5打电话
     private void deductionWhenCall(JSCallPhoneNumberEvent event) {
         RxUtils.unsubscribeIfNotNull(mSubs2);
         addSubscription(
@@ -155,6 +185,7 @@ public class JSInteractionActivityPresenter extends AppBaseActivityPresenter<JSI
                 .show();
     }
 
+    //删除帖子
     private void deleteArticle_() {
         getView().showLoading();
         RxUtils.unsubscribeIfNotNull(mSubs3);
@@ -182,6 +213,87 @@ public class JSInteractionActivityPresenter extends AppBaseActivityPresenter<JSI
                                 getView().finish();
                             }
                         }));
+    }
+
+    //H5支付
+    private void h5Pay(PayEntity entity) {
+        PayEntity.ParamsBean bean = entity.getParams();
+        if (bean == null) return;
+        PayEntity.ParamsBean.UrlBean url = bean.getUrl();
+        if (url == null) return;
+        String back_type = url.getBack_type();
+        int type = url.getType();
+        String order_number = url.getOrder_number();
+
+        PaymentsEntity paymentsEntity = new PaymentsEntity();
+        PaymentsEntity.DataBean dataBean = new PaymentsEntity.DataBean();
+
+        switch (type) {
+            case 1:
+                break;
+            case 2:
+                PayEntity.ParamsBean.UrlBean.AlipayBean alipay = url.getAlipay();
+                if (alipay == null
+                        || TextUtils.isEmpty(alipay.getParms_str())
+                        || TextUtils.isEmpty(alipay.getSign())) return;
+                String parms_str = alipay.getParms_str();
+                String sign = alipay.getSign();
+                PaymentsEntity.DataBean.AliPayBean aliPayBean = new PaymentsEntity.DataBean.AliPayBean();
+                aliPayBean.setParms_str(parms_str);
+                aliPayBean.setSign(sign);
+                dataBean.setAlipay(aliPayBean);
+                paymentsEntity.setData(dataBean);
+                break;
+            case 3:
+                break;
+            case 4:
+                break;
+            default:
+                break;
+        }
+
+        PayManager.with().loadPay(new OnPayListener() {
+            @Override
+            public void onSuccess() {
+                ToastUtils.show(getView().getString(R.string.result_pay_success));
+                new Handler().postDelayed(() -> {
+                    if (getView() != null) {
+                        //如果这个字段不是空的，就关闭当前Activity，返回上一页
+                        // (需验证其他支付方式的界面，再支付完毕之后会不会回到 选择支付方式的界面，如果不回去，则需要另寻出路)
+                        if (TextUtils.isEmpty(back_type)) {
+                            new AcHelper.Builder(getView())
+                                    .closeCurrent(true)
+                                    .exitAnim(R.anim.fade_out)
+                                    .target(TabHomeActivity.class)
+                                    .start();
+                        } else {
+                            RxBus.INSTANCE.send(new RefreshH5PayStateEvent(order_number));
+                            getView().finish();
+                        }
+                    }
+                }, 1500);
+            }
+
+            @Override
+            public void onCancel() {
+                ToastUtils.show(getView().getString(R.string.result_pay_cancel));
+            }
+
+            @Override
+            public void onWait() {
+                ToastUtils.show(getView().getString(R.string.result_pay_wait));
+            }
+
+            @Override
+            public void onFailed() {
+                ToastUtils.show(getView().getString(R.string.result_pay_failed));
+            }
+        }, getView(), type, paymentsEntity);
+    }
+
+    //支付成功后通知调用H5的js,刷新网页
+    private void refreshH5StateEvent(String order_number) {
+        getView().onLineMethod("refresh_order(" + order_number + ")");
     }
 
 }

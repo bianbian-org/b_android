@@ -131,8 +131,8 @@ public class JSInteractionActivity extends AppBaseWebViewActivity<JSInteractionA
     /**
      * 根据url传回来的method,调用页面的function
      */
-    private void onLineMethod(String method) {
+    public void onLineMethod(String method) {
         if (TextUtils.isEmpty(method)) return;
-        getWebView().loadUrl("javascript:" + method + "()");
+        getWebView().loadUrl("javascript:" + method);
     }
 }

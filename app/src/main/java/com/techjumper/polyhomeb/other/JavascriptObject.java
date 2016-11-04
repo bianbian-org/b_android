@@ -2,18 +2,14 @@ package com.techjumper.polyhomeb.other;
 
 import android.app.Activity;
 import android.os.Bundle;
-import android.os.Handler;
 import android.text.TextUtils;
 import android.webkit.JavascriptInterface;
 
 import com.techjumper.corelib.rx.tools.RxBus;
 import com.techjumper.corelib.utils.common.AcHelper;
 import com.techjumper.corelib.utils.common.JLog;
-import com.techjumper.corelib.utils.window.ToastUtils;
 import com.techjumper.lib2.utils.GsonUtils;
-import com.techjumper.polyhome.paycorelib.OnPayListener;
 import com.techjumper.polyhomeb.Constant;
-import com.techjumper.polyhomeb.R;
 import com.techjumper.polyhomeb.entity.JSJavaBaseEntity;
 import com.techjumper.polyhomeb.entity.JSJavaContactShopEntity;
 import com.techjumper.polyhomeb.entity.JSJavaGetArticleIdEntity;
@@ -21,16 +17,14 @@ import com.techjumper.polyhomeb.entity.JSJavaImageViewEntity;
 import com.techjumper.polyhomeb.entity.JSJavaNotificationEntity;
 import com.techjumper.polyhomeb.entity.JSJavaPageJumpEntity;
 import com.techjumper.polyhomeb.entity.PayEntity;
-import com.techjumper.polyhomeb.entity.PaymentsEntity;
+import com.techjumper.polyhomeb.entity.event.H5PayEvent;
 import com.techjumper.polyhomeb.entity.event.JSArticleIdEvent;
 import com.techjumper.polyhomeb.entity.event.JSCallPhoneNumberEvent;
 import com.techjumper.polyhomeb.entity.event.WebViewNotificationEvent;
-import com.techjumper.polyhomeb.manager.PayManager;
 import com.techjumper.polyhomeb.mvp.p.activity.LoginActivityPresenter;
 import com.techjumper.polyhomeb.mvp.v.activity.JSInteractionActivity;
 import com.techjumper.polyhomeb.mvp.v.activity.LoginActivity;
 import com.techjumper.polyhomeb.mvp.v.activity.ReplyCommentActivity;
-import com.techjumper.polyhomeb.mvp.v.activity.TabHomeActivity;
 import com.techjumper.polyhomeb.mvp.v.activity.WebViewShowBigPicActivity;
 import com.techjumper.polyhomeb.user.UserManager;
 
@@ -203,74 +197,10 @@ public class JavascriptObject {
     private void h5Pay(String json) {
         PayEntity payEntity = GsonUtils.fromJson(json, PayEntity.class);
         if (payEntity == null) return;
-        PayEntity.ParamsBean bean = payEntity.getParams();
-        if (bean == null) return;
-        PayEntity.ParamsBean.UrlBean url = bean.getUrl();
-        if (url == null) return;
-        String back_type = url.getBack_type();
-        int type = url.getType();
 
-        PaymentsEntity entity = new PaymentsEntity();
-        PaymentsEntity.DataBean dataBean = new PaymentsEntity.DataBean();
+        RxBus.INSTANCE.send(new H5PayEvent(mActivity.hashCode(),payEntity));
 
-        switch (type) {
-            case 1:
-                break;
-            case 2:
-                PayEntity.ParamsBean.UrlBean.AlipayBean alipay = url.getAlipay();
-                if (alipay == null
-                        || TextUtils.isEmpty(alipay.getParms_str())
-                        || TextUtils.isEmpty(alipay.getSign())) return;
-                String parms_str = alipay.getParms_str();
-                String sign = alipay.getSign();
-                PaymentsEntity.DataBean.AliPayBean aliPayBean = new PaymentsEntity.DataBean.AliPayBean();
-                aliPayBean.setParms_str(parms_str);
-                aliPayBean.setSign(sign);
-                dataBean.setAlipay(aliPayBean);
-                entity.setData(dataBean);
-                break;
-            case 3:
-                break;
-            case 4:
-                break;
-            default:
-                break;
-        }
 
-        PayManager.with().loadPay(new OnPayListener() {
-            @Override
-            public void onSuccess() {
-                ToastUtils.show(mActivity.getString(R.string.result_pay_success));
-                new Handler().postDelayed(() -> {
-                    if (mActivity != null) {
-                        if (TextUtils.isEmpty(back_type)) {  //如果这个字段是空的，那就返回首页
-                            new AcHelper.Builder(mActivity)
-                                    .closeCurrent(true)
-                                    .exitAnim(R.anim.fade_out)
-                                    .target(TabHomeActivity.class)
-                                    .start();
-                        } else {                            //如果这个字段不是空的，就关闭当前Activity，返回上一页(需验证其他支付方式的界面，再支付完毕之后会不会回到 选择支付方式的界面，如果不回去，则需要另寻出路)
-                            mActivity.finish();
-                        }
-                    }
-                }, 1500);
-            }
-
-            @Override
-            public void onCancel() {
-                ToastUtils.show(mActivity.getString(R.string.result_pay_cancel));
-            }
-
-            @Override
-            public void onWait() {
-                ToastUtils.show(mActivity.getString(R.string.result_pay_wait));
-            }
-
-            @Override
-            public void onFailed() {
-                ToastUtils.show(mActivity.getString(R.string.result_pay_failed));
-            }
-        }, mActivity, type, entity);
     }
 
     //网页上点击拨打电话

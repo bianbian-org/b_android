@@ -1,7 +1,5 @@
 package com.techjumper.polyhomeb.entity;
 
-import android.accessibilityservice.AccessibilityService;
-
 /**
  * * * * * * * * * * * * * * * * * * * * * * *
  * Created by lixin
@@ -60,12 +58,21 @@ public class PayEntity {
         public static class UrlBean {
             private int type;
             private String back_type;
+            private String order_number;
             /**
              * parms_str : app_id=2016100902063373&biz_content=%7B%22body%22%3A%22%E5%95%86%E5%9F%8E%E6%94%AF%E4%BB%98%22%2C%22extra_common_param%22%3A8%2C%22out_trade_no%22%3A%223014781507436213%22%2C%22product_code%22%3A%22QUICK_MSECURITY_PAY%22%2C%22subject%22%3A%22%E5%95%86%E5%9F%8E%E6%94%AF%E4%BB%98%22%2C%22timeout_express%22%3A%2230m%22%2C%22total_amount%22%3A%220.01%22%7D&charset=utf-8&method=alipay.trade.app.pay&notify_url=http%3A%2F%2Fpoly.techjumper.com%2Fadmin%2Falipay_notify&sign_type=RSA&timestamp=2016-11-03%2013%3A25%3A44&version=1.0
              * sign : ZhdxNPYFxr2TbSwrZPkMgp73qk3wOSXFLucfhcaSyXM+yO0H6T8TApvSQT6fsbQjYq8KHAntJfuhdWEkPSkanjHWcdcs2Z0ewH0nT4xfu8LJ8mXt4ED/LXrLgEVDAgS+3UBEH37hS1hMqBzC9XexFV5OZUlKCKjuvtJMGCbcutE=
              */
 
             private AlipayBean alipay;
+
+            public String getOrder_number() {
+                return order_number;
+            }
+
+            public void setOrder_number(String order_number) {
+                this.order_number = order_number;
+            }
 
             public int getType() {
                 return type;
