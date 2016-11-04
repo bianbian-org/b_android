@@ -101,6 +101,8 @@ public class JSInteractionActivityPresenter extends AppBaseActivityPresenter<JSI
                                 //中监听RxBus消息，然后就能达到目的了。
                                 RefreshH5PayStateEvent event = (RefreshH5PayStateEvent) o;
                                 refreshH5StateEvent(event.getOrder_number());
+                            } else if (o instanceof RefreshWhenDeleteArticleEvent) {
+                                getView().getWebView().reload();
                             }
                         }));
     }

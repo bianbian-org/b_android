@@ -117,6 +117,9 @@ public class JavascriptObject {
             case "GetArticleId":
                 getArticleId(json);
                 break;
+            case "PageRegister":
+                //似乎没什么用
+                break;
 
         }
     }
