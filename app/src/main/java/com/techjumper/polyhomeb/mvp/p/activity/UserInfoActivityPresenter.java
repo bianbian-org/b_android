@@ -37,7 +37,6 @@ import com.techjumper.polyhomeb.mvp.v.activity.ChangeSexActivity;
 import com.techjumper.polyhomeb.mvp.v.activity.UserInfoActivity;
 import com.techjumper.polyhomeb.other.GlideBitmapTransformation;
 import com.techjumper.polyhomeb.user.UserManager;
-import com.techjumper.polyhomeb.utils.PicUtils;
 import com.techjumper.polyhomeb.utils.UploadPicUtil;
 
 import java.io.File;
@@ -74,13 +73,10 @@ public class UserInfoActivityPresenter extends AppBaseActivityPresenter<UserInfo
     public static final String KEY_EMAIL = "key_email";
     public static final String KEY_SEX = "key_sex";
 
-    private String mLocalAvatarPath = "";
-
     private String mTempPicPath = getExternalStorageDirectory().getAbsolutePath() + File.separator
             + Config.sParentDirName + File.separator + Config.sAvatarsDirName;
     private static String sCameraPicName = "camera_image_no_crop.jpg";
     private static String sCropPicName = "crop.jpg";
-    private static String sCropPicName_show = "crop_show.jpg";
 
     private Uri mCameraTempUri;
 
@@ -338,8 +334,6 @@ public class UserInfoActivityPresenter extends AppBaseActivityPresenter<UserInfo
         try {
             Bitmap bitmap = BitmapFactory.decodeStream(getView().getContentResolver().
                     openInputStream(data.getData()));
-            mLocalAvatarPath = PicUtils.savePhoto(bitmap, mTempPicPath, sCropPicName_show);
-//            getBitmap(bitmap);
             uploadPic(bitmap);
         } catch (FileNotFoundException e) {
             e.printStackTrace();
@@ -352,12 +346,6 @@ public class UserInfoActivityPresenter extends AppBaseActivityPresenter<UserInfo
      * 2:编码后上传至服务器
      */
     private Observable<String> getBitmap(Bitmap bitmap) {
-//        getView().showLoading();
-//        new Thread(() -> {
-//            String base64 = UploadPicUtil.bitmap2Base64(bitmap);
-//            getView().runOnUiThread(() -> uploadPic(base64));
-//        }).start();
-
         return Observable.create(new Observable.OnSubscribe<String>() {
             @Override
             public void call(Subscriber<? super String> subscriber) {
@@ -365,7 +353,7 @@ public class UserInfoActivityPresenter extends AppBaseActivityPresenter<UserInfo
                 subscriber.onNext(base64);
                 subscriber.onCompleted();
             }
-        }).observeOn(Schedulers.io());
+        }).subscribeOn(Schedulers.io());
     }
 
     /**
@@ -394,7 +382,7 @@ public class UserInfoActivityPresenter extends AppBaseActivityPresenter<UserInfo
                             public void onNext(AvatarEntity entity) {
                                 getView().dismissLoading();
                                 if (!processNetworkResult(entity)) return;
-                                Glide.with(getView()).load(mLocalAvatarPath)
+                                Glide.with(getView()).load(Config.sHost + entity.getData().getCover())
                                         .transform(new GlideBitmapTransformation(getView())).into(getView().getIvAvatar());
                                 Glide.with(getView()).load(R.mipmap.icon_avatar_bg)
                                         .transform(new GlideBitmapTransformation(getView())).into(getView().getIvBg());
@@ -404,31 +392,5 @@ public class UserInfoActivityPresenter extends AppBaseActivityPresenter<UserInfo
                                 RxBus.INSTANCE.send(new AvatarEvent(entity.getData().getCover()));
                             }
                         }));
-//        mSubs2 = mModel.uploadPic(base64)
-//                .flatMap(uploadPicEntity -> mModel.updateAvatar(uploadPicEntity.getData().getUrl()))
-//                .subscribe(new Observer<AvatarEntity>() {
-//                    @Override
-//                    public void onCompleted() {
-//                        getView().dismissLoading();
-//                    }
-//
-//                    @Override
-//                    public void onError(Throwable e) {
-//                        getView().dismissLoading();
-//                        getView().showError(e);
-//                    }
-//
-//                    @Override
-//                    public void onNext(AvatarEntity entity) {
-//                        getView().dismissLoading();
-//                        if (!processNetworkResult(entity)) return;
-//                        Glide.with(getView()).load(mLocalAvatarPath).transform(new GlideBitmapTransformation(getView())).into(getView().getIvAvatar());
-//                        Glide.with(getView()).load(R.mipmap.icon_avatar_bg).transform(new GlideBitmapTransformation(getView())).into(getView().getIvBg());
-//                        String cover = entity.getData().getCover();
-//                        UserManager.INSTANCE.saveUserInfo(UserManager.KEY_AVATAR, Config.sHost + cover);
-//                        ToastUtils.show(getView().getString(R.string.change_avatar_success));
-//                        RxBus.INSTANCE.send(new AvatarEvent(entity.getData().getCover()));
-//                    }
-//                }));
     }
 }
