@@ -19,11 +19,6 @@ public interface OnPayListener {
     void onCancel();
 
     /**
-     * 等待确认
-     */
-    void onWait();
-
-    /**
      * 支付失败
      */
     void onFailed();

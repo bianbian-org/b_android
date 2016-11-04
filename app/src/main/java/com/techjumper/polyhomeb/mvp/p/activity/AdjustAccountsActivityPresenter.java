@@ -123,18 +123,6 @@ public class AdjustAccountsActivityPresenter extends AppBaseActivityPresenter<Ad
     }
 
     private void loadPay(PaymentsEntity paymentsEntity) {
-//        switch (mCurrentPayment) {
-//            case Constant.TENCENT_PAY:
-//                weChatPay(paymentsEntity);
-//                break;
-//            case Constant.ALIPAY:
-//                aliPay(paymentsEntity);
-//                break;
-//            case Constant.UNION_PAY:
-//                break;
-//            case Constant.YI_PAY:
-//                break;
-//        }
         PayManager.with().loadPay(this, getView(), mCurrentPayment, paymentsEntity);
     }
 
@@ -156,57 +144,10 @@ public class AdjustAccountsActivityPresenter extends AppBaseActivityPresenter<Ad
     }
 
     @Override
-    public void onWait() {
-        ToastUtils.show(getView().getString(R.string.result_pay_wait));
-    }
-
-    @Override
     public void onFailed() {
         ToastUtils.show(getView().getString(R.string.result_pay_failed));
         PayManager.with().onDestroy();
     }
-
-//    /**
-//     * 微信支付
-//     */
-//    private void weChatPay(PaymentsEntity paymentsEntity) {
-//        WeChatPay weChatPay = new WeChatPay(getView());
-//        if (paymentsEntity.getData().getWxpay() == null) {
-//            ToastUtils.show(getView().getString(R.string.pay_order_info));
-//            return;
-//        }
-//        PaymentsEntity.DataBean.WxpayBean bean = paymentsEntity.getData().getWxpay();
-//        weChatPay.setOrderInfo(bean.getAppid(), bean.getNoncestr(), bean.getPackageX(), bean.getPartnerid()
-//                , bean.getPrepayid(), bean.getSign(), bean.getTimestamp());
-//        if (!weChatPay.isOrderInfoLegal()) {
-//            ToastUtils.show(getView().getString(R.string.pay_order_info));
-//            return;
-//        }
-//        weChatPay.pay();
-//    }
-//
-//    /**
-//     * 支付宝支付
-//     */
-//    private void aliPay(PaymentsEntity paymentsEntity) {
-//        if (paymentsEntity.getData().getAlipay() == null
-//                || TextUtils.isEmpty(paymentsEntity.getData().getAlipay().getParms_str())
-//                || TextUtils.isEmpty(paymentsEntity.getData().getAlipay().getSign())) {
-//            ToastUtils.show(getView().getString(R.string.pay_order_info));
-//            return;
-//        }
-//        String parms_str = paymentsEntity.getData().getAlipay().getParms_str();
-//        String sign = paymentsEntity.getData().getAlipay().getSign();
-//        String signs = "";
-//        try {
-//            signs = URLEncoder.encode(sign, "UTF-8");
-//        } catch (UnsupportedEncodingException e) {
-//            e.printStackTrace();
-//        }
-//        AliPay aliPay = new AliPay(getView(), parms_str + "&sign=" + signs);
-//        aliPay.setListener(this);
-//        aliPay.pay();
-//    }
 
     /**************************以下字段均为B端自己服务器返回的数据*************************/
     /**

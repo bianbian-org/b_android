@@ -58,7 +58,7 @@ public class PaymentsEntity extends BaseEntity<PaymentsEntity.DataBean> {
             @SerializedName("package")
             private String packageX;
             private String noncestr;
-            private int timestamp;
+            private String timestamp;
             private String sign;
 
             public String getAppid() {
@@ -101,11 +101,11 @@ public class PaymentsEntity extends BaseEntity<PaymentsEntity.DataBean> {
                 this.noncestr = noncestr;
             }
 
-            public int getTimestamp() {
+            public String getTimestamp() {
                 return timestamp;
             }
 
-            public void setTimestamp(int timestamp) {
+            public void setTimestamp(String timestamp) {
                 this.timestamp = timestamp;
             }
 

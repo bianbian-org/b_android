@@ -3,6 +3,8 @@ package com.techjumper.polyhomeb.manager;
 import android.app.Activity;
 import android.text.TextUtils;
 
+import com.techjumper.corelib.rx.tools.RxBus;
+import com.techjumper.corelib.rx.tools.RxUtils;
 import com.techjumper.corelib.utils.window.ToastUtils;
 import com.techjumper.polyhome.alipay.AliPay;
 import com.techjumper.polyhome.paycorelib.OnPayListener;
@@ -10,9 +12,12 @@ import com.techjumper.polyhome.wechatpay.WeChatPay;
 import com.techjumper.polyhomeb.Constant;
 import com.techjumper.polyhomeb.R;
 import com.techjumper.polyhomeb.entity.PaymentsEntity;
+import com.techjumper.polyhomeb.entity.event.WechatPayResultEvent;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
+
+import rx.Subscription;
 
 /**
  * * * * * * * * * * * * * * * * * * * * * * *
@@ -27,6 +32,8 @@ public class PayManager {
     private Activity context;
     private AliPay aliPay;
     private WeChatPay weChatPay;
+
+    private Subscription mSubs1;
 
     private PayManager() {
     }
@@ -85,28 +92,53 @@ public class PayManager {
      * 微信支付
      */
     private void weChatPay(PaymentsEntity paymentsEntity) {
-        weChatPay = new WeChatPay(context);
-        if (paymentsEntity.getData().getWxpay() == null) {
+        if (paymentsEntity.getData().getWxpay() == null
+                || TextUtils.isEmpty(paymentsEntity.getData().getWxpay().getAppid())) {
             ToastUtils.show(context.getString(R.string.pay_order_info));
             return;
         }
         PaymentsEntity.DataBean.WxpayBean bean = paymentsEntity.getData().getWxpay();
+        weChatPay = new WeChatPay(context);
         weChatPay.setOrderInfo(bean.getAppid(), bean.getNoncestr(), bean.getPackageX(), bean.getPartnerid()
                 , bean.getPrepayid(), bean.getSign(), bean.getTimestamp());
         if (!weChatPay.isOrderInfoLegal()) {
             ToastUtils.show(context.getString(R.string.pay_order_info));
             return;
         }
-        if (onPayListener != null) {
-            weChatPay.setListener(onPayListener);
-        }
+        registWechatPayResult(onPayListener);
         weChatPay.pay();
+    }
+
+    private void registWechatPayResult(OnPayListener onPayListener) {
+        RxUtils.unsubscribeIfNotNull(mSubs1);
+        mSubs1 = RxBus.INSTANCE
+                .asObservable()
+                .subscribe(o -> {
+                    if (o instanceof WechatPayResultEvent) {
+                        WechatPayResultEvent event = (WechatPayResultEvent) o;
+                        int result = event.getResult();
+                        if (onPayListener != null) {
+                            switch (result) {
+                                case 0:
+                                    onPayListener.onSuccess();
+                                    break;
+                                case -1:
+                                    onPayListener.onFailed();
+                                    break;
+                                case -2:
+                                    onPayListener.onCancel();
+                                    break;
+                            }
+                        }
+                    }
+                });
     }
 
     /**
      * 销毁
      */
     public void onDestroy() {
+        RxUtils.unsubscribeIfNotNull(mSubs1);
         if (onPayListener != null) {
             if (aliPay != null) {
                 aliPay.setListener(null);

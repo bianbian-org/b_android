@@ -51,12 +51,8 @@ public class AliPay {
                     //6002——网络连接出错
                     if (TextUtils.equals(resultStatus, "9000")) {
                         if (mListener != null) mListener.onSuccess();
-                    } else if (TextUtils.equals(resultStatus, "8000")) {
-//                        if (mListener != null) mListener.onHandle();
                     } else if (TextUtils.equals(resultStatus, "4000")) {
                         if (mListener != null) mListener.onFailed();
-                    } else if (TextUtils.equals(resultStatus, "5000")) {
-//                        if (mListener != null) mListener.onRepeat();
                     } else if (TextUtils.equals(resultStatus, "6001")) {
                         if (mListener != null) mListener.onCancel();
                     } else if (TextUtils.equals(resultStatus, "6002")) {
