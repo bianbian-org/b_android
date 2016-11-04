@@ -282,11 +282,6 @@ public class JSInteractionActivityPresenter extends AppBaseActivityPresenter<JSI
             }
 
             @Override
-            public void onWait() {
-                ToastUtils.show(getView().getString(R.string.result_pay_wait));
-            }
-
-            @Override
             public void onFailed() {
                 ToastUtils.show(getView().getString(R.string.result_pay_failed));
             }
