@@ -102,47 +102,27 @@ public class HomeFragmentPresenter extends AppBaseFragmentPresenter<HomeFragment
                         if (getView().getAdapter() != null) {
                             if (UserManager.INSTANCE.isCurrentCommunitySupportBLEDoor()) {
                                 JLog.d("侧边栏发来的消息：需要注册摇一摇或者开启定时扫描服务-------");
-//                                if (getView().getActivity() != null) {
-//                                    ShakeManager.with(getView().getActivity()).startShake(getView());
-//                                    getView().getActivity().startService(new Intent(getView().getActivity(), ScanBluetoothService.class));
-//                                }
                                 startService();
                                 registShakeManager();
                             } else {
                                 JLog.d("侧边栏发来的消息：需要取消注册摇一摇或者取消定时扫描服务");
-//                                if (getView().getActivity() != null) {
-//                                    ShakeManager.with(getView().getActivity()).cancel();
-//                                    getView().getActivity().stopService(new Intent(getView().getActivity(), ScanBluetoothService.class));
-//                                }
                                 stopService();
                                 unRegistShakeManager();
                             }
-//                            getView().getAdapter().loadData(getDatas());
                             refreshBLEView();
                         }
                     } else if (o instanceof OpenDoorResult) {
                         JLog.d("ViewHolder发来的消息：解锁成功了，需要注册摇一摇或者开启定时扫描服务-------");
-//                        if (getView().getActivity() != null) {
-//                            ShakeManager.with(getView().getActivity()).startShake(getView());
-//                            getView().getActivity().startService(new Intent(getView().getActivity(), ScanBluetoothService.class));
-//                        }
                         startService();
                         registShakeManager();
                     } else if (o instanceof BLEScanResultEvent) {
                         BLEScanResultEvent event = (BLEScanResultEvent) o;
                         if (event.isHasDevice()) {
                             JLog.d("ViewHolder发来的消息：搜索到设备了，需要注册摇一摇或者开启定时扫描服务-------");
-//                            if (getView().getActivity() != null) {
-//                                ShakeManager.with(getView().getActivity()).startShake(getView());
-//                                getView().getActivity().startService(new Intent(getView().getActivity(), ScanBluetoothService.class));
-//                            }
                             startService();
                             registShakeManager();
                         } else {
                             JLog.d("ViewHolder发来的消息：没有搜索到设备，需要取消注册摇一摇但是不关闭扫描服务");
-//                            if (getView().getActivity() != null) {
-//                                ShakeManager.with(getView().getActivity()).cancel();
-//                            }
                             unRegistShakeManager();
                         }
                     }
