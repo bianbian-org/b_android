@@ -46,10 +46,13 @@ public class WXPayEntryActivity extends Activity
         if (resp.getType() == ConstantsAPI.COMMAND_PAY_BY_WX) {
             if (resp.errCode == 0) {
                 RxBus.INSTANCE.send(new WechatPayResultEvent(0));
+                finish();
             } else if (resp.errCode == -1) {
                 RxBus.INSTANCE.send(new WechatPayResultEvent(-1));
+                finish();
             } else if (resp.errCode == -2) {
                 RxBus.INSTANCE.send(new WechatPayResultEvent(-2));
+                finish();
             }
         }
     }
