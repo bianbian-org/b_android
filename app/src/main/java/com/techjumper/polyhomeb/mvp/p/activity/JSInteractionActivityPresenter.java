@@ -22,9 +22,9 @@ import com.techjumper.polyhomeb.entity.TrueEntity;
 import com.techjumper.polyhomeb.entity.event.H5PayEvent;
 import com.techjumper.polyhomeb.entity.event.JSArticleIdEvent;
 import com.techjumper.polyhomeb.entity.event.JSCallPhoneNumberEvent;
+import com.techjumper.polyhomeb.entity.event.RefreshH5PayStateEvent;
 import com.techjumper.polyhomeb.entity.event.RefreshWhenDeleteArticleEvent;
 import com.techjumper.polyhomeb.entity.event.ReloadWebPageEvent;
-import com.techjumper.polyhomeb.entity.event.RefreshH5PayStateEvent;
 import com.techjumper.polyhomeb.manager.PayManager;
 import com.techjumper.polyhomeb.mvp.m.JSInteractionActivityModel;
 import com.techjumper.polyhomeb.mvp.v.activity.JSInteractionActivity;
@@ -232,6 +232,7 @@ public class JSInteractionActivityPresenter extends AppBaseActivityPresenter<JSI
 
         switch (type) {
             case 1:
+
                 break;
             case 2:
                 PayEntity.ParamsBean.UrlBean.AlipayBean alipay = url.getAlipay();
@@ -257,33 +258,17 @@ public class JSInteractionActivityPresenter extends AppBaseActivityPresenter<JSI
         PayManager.with().loadPay(new OnPayListener() {
             @Override
             public void onSuccess() {
-                ToastUtils.show(getView().getString(R.string.result_pay_success));
-                new Handler().postDelayed(() -> {
-                    if (getView() != null) {
-                        //如果这个字段不是空的，就关闭当前Activity，返回上一页
-                        // (需验证其他支付方式的界面，再支付完毕之后会不会回到 选择支付方式的界面，如果不回去，则需要另寻出路)
-                        if (TextUtils.isEmpty(back_type)) {
-                            new AcHelper.Builder(getView())
-                                    .closeCurrent(true)
-                                    .exitAnim(R.anim.fade_out)
-                                    .target(TabHomeActivity.class)
-                                    .start();
-                        } else {
-                            RxBus.INSTANCE.send(new RefreshH5PayStateEvent(order_number));
-                            getView().finish();
-                        }
-                    }
-                }, 1500);
+                paySuccess(back_type, order_number);
             }
 
             @Override
             public void onCancel() {
-                ToastUtils.show(getView().getString(R.string.result_pay_cancel));
+                payCancel();
             }
 
             @Override
             public void onFailed() {
-                ToastUtils.show(getView().getString(R.string.result_pay_failed));
+                payFailed();
             }
         }, getView(), type, paymentsEntity);
     }
@@ -291,6 +276,76 @@ public class JSInteractionActivityPresenter extends AppBaseActivityPresenter<JSI
     //支付成功后通知调用H5的js,刷新网页
     private void refreshH5StateEvent(String order_number) {
         getView().onLineMethod("refresh_order(" + order_number + ")");
+    }
+
+    /**
+     * 银联支付之后的结果回调
+     */
+//    @Override
+//    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+//        if (data == null) {
+//            return;
+//        }
+//        String msg = "";
+//        String str = data.getExtras().getString("pay_result");
+//        if (str.equalsIgnoreCase("success")) {
+//            if (data.hasExtra("result_data")) {
+//                String result = data.getExtras().getString("result_data");
+//                try {
+//                    JSONObject resultJson = new JSONObject(result);
+//                    String sign = resultJson.getString("sign");
+//                    String dataOrg = resultJson.getString("data");
+//                    boolean ret = verify(dataOrg, sign, mMode);
+//                    if (ret) {
+//                        paySuccess();
+//                    } else {
+//                        payFailed();
+//                    }
+//                } catch (JSONException e) {
+//                }
+//            } else {
+//                paySuccess();
+//            }
+//        } else if (str.equalsIgnoreCase("fail")) {
+//            payFailed();
+//        } else if (str.equalsIgnoreCase("cancel")) {
+//            payCancel();
+//        }
+//    }
+
+    private void payCancel() {
+        ToastUtils.show(getView().getString(R.string.result_pay_cancel));
+    }
+
+    private void payFailed() {
+        ToastUtils.show(getView().getString(R.string.result_pay_failed));
+    }
+
+    private void paySuccess(String back_type, String order_number) {
+        ToastUtils.show(getView().getString(R.string.result_pay_success));
+        new Handler().postDelayed(() -> {
+            if (getView() != null) {
+                //如果这个字段不是空的，就关闭当前Activity，返回上一页
+                // (需验证其他支付方式的界面，再支付完毕之后会不会回到 选择支付方式的界面，如果不回去，则需要另寻出路)
+                if (TextUtils.isEmpty(back_type)) {
+                    new AcHelper.Builder(getView())
+                            .closeCurrent(true)
+                            .exitAnim(R.anim.fade_out)
+                            .target(TabHomeActivity.class)
+                            .start();
+                } else {
+                    RxBus.INSTANCE.send(new RefreshH5PayStateEvent(order_number));
+                    getView().finish();
+                }
+            }
+        }, 1500);
+    }
+
+    /**
+     * 银联支付后的与商户验签
+     */
+    private boolean verify(String data, String sign, String mode) {
+        return true;
     }
 
 }

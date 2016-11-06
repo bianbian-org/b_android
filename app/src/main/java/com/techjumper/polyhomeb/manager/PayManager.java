@@ -13,6 +13,7 @@ import com.techjumper.polyhomeb.Constant;
 import com.techjumper.polyhomeb.R;
 import com.techjumper.polyhomeb.entity.PaymentsEntity;
 import com.techjumper.polyhomeb.entity.event.WechatPayResultEvent;
+import com.unionpay.UPPayAssistEx;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
@@ -57,6 +58,7 @@ public class PayManager {
                 aliPay(paymentsEntity);
                 break;
             case Constant.UNION_PAY:
+                unionPay(paymentsEntity);
                 break;
             case Constant.YI_PAY:
                 break;
@@ -132,6 +134,19 @@ public class PayManager {
                         }
                     }
                 });
+    }
+
+    /**
+     * 银联支付
+     */
+    private void unionPay(PaymentsEntity paymentsEntity) {
+        if (paymentsEntity.getData().getUnion() == null) {
+            ToastUtils.show(context.getString(R.string.pay_order_info));
+            return;
+        }
+        String tn = paymentsEntity.getData().getUnion().getTn();
+        String mode = paymentsEntity.getData().getUnion().getMode();
+        UPPayAssistEx.startPay(context, null, null, tn, mode);
     }
 
     /**

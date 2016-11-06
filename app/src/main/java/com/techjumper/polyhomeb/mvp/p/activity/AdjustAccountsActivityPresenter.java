@@ -128,26 +128,84 @@ public class AdjustAccountsActivityPresenter extends AppBaseActivityPresenter<Ad
 
     @Override
     public void onSuccess() {
+        paySuccess();
+    }
+
+    @Override
+    public void onCancel() {
+        payCancel();
+    }
+
+    @Override
+    public void onFailed() {
+        payFailed();
+    }
+
+    private void paySuccess() {
         ToastUtils.show(getView().getString(R.string.result_pay_success));
         Bundle bundle = new Bundle();
         bundle.putInt(Constant.PAYMENT_WAY, mCurrentPayment);  //支付方式
         bundle.putString(Constant.KEY_PAY_NAME, getPayName()); //费用名称
         bundle.putDouble(Constant.KEY_PAY_ALL_COST, getTotal() + getExpiryPrice()); //总金额
-        new AcHelper.Builder(getView()).target(PaymentSuccessActivity.class).extra(bundle).start();
+        new AcHelper.Builder(getView())
+                .target(PaymentSuccessActivity.class)
+                .extra(bundle)
+                .start();
         PayManager.with().onDestroy();
     }
 
-    @Override
-    public void onCancel() {
+    private void payFailed() {
+        ToastUtils.show(getView().getString(R.string.result_pay_failed));
+        PayManager.with().onDestroy();
+    }
+
+    private void payCancel() {
         ToastUtils.show(getView().getString(R.string.result_pay_cancel));
         PayManager.with().onDestroy();
     }
 
-    @Override
-    public void onFailed() {
-        ToastUtils.show(getView().getString(R.string.result_pay_failed));
-        PayManager.with().onDestroy();
+    /**
+     * 银联支付之后的结果回调
+     */
+//    @Override
+//    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+//        if (data == null) {
+//            return;
+//        }
+//        String msg = "";
+//        String str = data.getExtras().getString("pay_result");
+//        if (str.equalsIgnoreCase("success")) {
+//            if (data.hasExtra("result_data")) {
+//                String result = data.getExtras().getString("result_data");
+//                try {
+//                    JSONObject resultJson = new JSONObject(result);
+//                    String sign = resultJson.getString("sign");
+//                    String dataOrg = resultJson.getString("data");
+//                    boolean ret = verify(dataOrg, sign, mMode);
+//                    if (ret) {
+//                        paySuccess();
+//                    } else {
+//                        payFailed();
+//                    }
+//                } catch (JSONException e) {
+//                }
+//            } else {
+//                paySuccess();
+//            }
+//        } else if (str.equalsIgnoreCase("fail")) {
+//            payFailed();
+//        } else if (str.equalsIgnoreCase("cancel")) {
+//            payCancel();
+//        }
+//    }
+
+    /**
+     * 银联支付后的与商户验签
+     */
+    private boolean verify(String data, String sign, String mode) {
+        return true;
     }
+
 
     /**************************以下字段均为B端自己服务器返回的数据*************************/
     /**

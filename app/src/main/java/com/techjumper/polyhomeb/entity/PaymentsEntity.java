@@ -13,6 +13,15 @@ public class PaymentsEntity extends BaseEntity<PaymentsEntity.DataBean> {
     public static class DataBean {
         private WxpayBean wxpay;
         private AliPayBean alipay;
+        private UnionBean union;
+
+        public UnionBean getUnion() {
+            return union;
+        }
+
+        public void setUnion(UnionBean union) {
+            this.union = union;
+        }
 
         public WxpayBean getWxpay() {
             return wxpay;
@@ -115,6 +124,27 @@ public class PaymentsEntity extends BaseEntity<PaymentsEntity.DataBean> {
 
             public void setSign(String sign) {
                 this.sign = sign;
+            }
+        }
+
+        public static class UnionBean{
+            private String mode;
+            private String tn;
+
+            public String getMode() {
+                return mode;
+            }
+
+            public void setMode(String mode) {
+                this.mode = mode;
+            }
+
+            public String getTn() {
+                return tn;
+            }
+
+            public void setTn(String tn) {
+                this.tn = tn;
             }
         }
     }
