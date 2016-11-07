@@ -12,7 +12,6 @@ import com.techjumper.corelib.utils.window.KeyboardUtils;
 import com.techjumper.corelib.utils.window.StatusbarHelper;
 import com.techjumper.corelib.utils.window.ToastUtils;
 import com.techjumper.polyhomeb.R;
-import com.techjumper.polyhomeb.manager.ActivityStack;
 import com.techjumper.polyhomeb.mvp.p.activity.AppBaseActivityPresenter;
 import com.techjumper.polyhomeb.utils.TitleHelper;
 import com.techjumper.progressdialog.KProgressHUD;
@@ -184,13 +183,11 @@ public abstract class AppBaseActivity<T extends AppBaseActivityPresenter> extend
 
     public void onResume() {
         MobclickAgent.onResume(this);
-        ActivityStack.getInstance().setResumeActivity(this);
         super.onResume();
     }
 
     public void onPause() {
         MobclickAgent.onPause(this);
-        ActivityStack.getInstance().setResumeActivity(null);
         super.onPause();
     }
 
