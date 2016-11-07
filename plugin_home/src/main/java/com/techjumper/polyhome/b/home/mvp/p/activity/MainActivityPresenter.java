@@ -1,5 +1,6 @@
 package com.techjumper.polyhome.b.home.mvp.p.activity;
 
+import android.app.AlertDialog;
 import android.content.ComponentName;
 import android.content.Intent;
 import android.net.Uri;
@@ -7,6 +8,8 @@ import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
+import android.view.Window;
+import android.view.WindowManager;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -85,6 +88,7 @@ public class MainActivityPresenter extends AppBaseActivityPresenter<MainActivity
     private Subscription submitOnlineSubscription;
     private long totalTime = 0L;
     private Timer timer;
+    private AlertDialog dialog;
     public static final String ACTION_START_HOST_DAEMON = "action_start_host_daemon";
 
     private IPluginMessageReceiver mIPluginMessageReceiver = (code, message, extras) -> {
@@ -258,6 +262,19 @@ public class MainActivityPresenter extends AppBaseActivityPresenter<MainActivity
         isShowMainAd(false);
     }
 
+    @OnClick(R.id.qrcode)
+    void showQrcode() {
+        dialog = new AlertDialog.Builder(getView()).create();
+        dialog.show();
+
+        Window window = dialog.getWindow();
+        window.setContentView(R.layout.dialog_qrcode);
+        WindowManager.LayoutParams params = window.getAttributes();
+        window.setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
+        params.systemUiVisibility = View.SYSTEM_UI_FLAG_HIDE_NAVIGATION;
+        window.setAttributes(params);
+
+    }
 
     @Override
     public void initData(Bundle savedInstanceState) {

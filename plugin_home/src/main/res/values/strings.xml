@@ -42,4 +42,7 @@
 
     <string name="call">一键呼叫</string>
     <string name="call_order">呼叫下单</string>
+
+    <string name="qrcode_message">请使用手机端APP
+                \n扫描二维码添加家庭</string>
 </resources>
