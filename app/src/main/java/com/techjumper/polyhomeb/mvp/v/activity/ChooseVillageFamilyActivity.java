@@ -6,7 +6,6 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
-import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.view.Gravity;
 import android.view.View;
@@ -16,6 +15,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.steve.creact.library.display.DisplayBean;
 import com.techjumper.corelib.mvp.factory.Presenter;
 import com.techjumper.corelib.ui.activity.BaseActivity;
 import com.techjumper.corelib.utils.window.ToastUtils;
@@ -25,6 +25,7 @@ import com.techjumper.polyhomeb.adapter.ChooseVillageFamilyActivityAdapter;
 import com.techjumper.polyhomeb.adapter.VillageAdapter;
 import com.techjumper.polyhomeb.entity.VillageEntity;
 import com.techjumper.polyhomeb.mvp.p.activity.ChooseVillageFamilyActivityPresenter;
+import com.techjumper.polyhomeb.other.CustomGridLayoutManager;
 import com.techjumper.polyhomeb.other.SpaceItemDecoration;
 import com.techjumper.polyhomeb.utils.TitleHelper;
 
@@ -204,11 +205,13 @@ public class ChooseVillageFamilyActivity extends AppBaseActivity<ChooseVillageFa
     }
 
     private void initRv() {
-        mRv.setLayoutManager(new GridLayoutManager(this, 4));
+        List<DisplayBean> datas = getPresenter().getRvProvinceDatas();
+        CustomGridLayoutManager manager = new CustomGridLayoutManager(datas, this, 4, mRv);
+        mRv.setLayoutManager(manager);
         mRv.addItemDecoration(new SpaceItemDecoration(40, 50));
         mAdapter = new ChooseVillageFamilyActivityAdapter();
         mRv.setAdapter(mAdapter);
-        mAdapter.loadData(getPresenter().getRvProvinceDatas());
+        mAdapter.loadData(datas);
 
         mRvVillages.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
         mVillageAdapter = new VillageAdapter();

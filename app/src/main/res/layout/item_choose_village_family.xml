@@ -4,12 +4,15 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
 
-    <TextView
+    <com.techjumper.lightwidget.textview.AutofitTextView
         android:id="@+id/tv_province"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:gravity="center"
+        android:singleLine="false"
+        android:maxLines="2"
+        android:ellipsize="end"
         android:text="呵呵"
         android:textColor="@color/color_727272"
         android:textSize="@dimen/sp_16" />

@@ -1,12 +1,12 @@
 package com.techjumper.polyhomeb.adapter.recycler_ViewHolder;
 
 import android.view.View;
-import android.widget.TextView;
 
 import com.steve.creact.annotation.DataBean;
 import com.steve.creact.library.viewholder.BaseRecyclerViewHolder;
 import com.techjumper.corelib.rx.tools.RxBus;
 import com.techjumper.corelib.utils.common.ResourceUtils;
+import com.techjumper.lightwidget.textview.AutofitTextView;
 import com.techjumper.polyhomeb.R;
 import com.techjumper.polyhomeb.adapter.recycler_Data.ChooseVillageFamilyData;
 import com.techjumper.polyhomeb.entity.event.ChooseVillageEvent;
@@ -29,11 +29,19 @@ public class ChooseVillageFamilyViewHolder extends BaseRecyclerViewHolder<Choose
     @Override
     public void setData(ChooseVillageFamilyData data) {
         if (data == null) return;
-        setText(R.id.tv_province, data.getName());
-        TextView textView = getView(R.id.tv_province);
-        textView.setTextColor(data.isChoosed() ? ResourceUtils.getColorResource(R.color.color_37a991) : ResourceUtils.getColorResource(R.color.color_727272));
+
+//        setText(R.id.tv_province, data.getName());
+//        TextView textView = getView(R.id.tv_province);
+
+
+        AutofitTextView tv = getView(R.id.tv_province);
+        tv.setSizeToFit(true);
+        tv.setText(data.getName());
+
+
+        tv.setTextColor(data.isChoosed() ? ResourceUtils.getColorResource(R.color.color_37a991) : ResourceUtils.getColorResource(R.color.color_727272));
         setOnClickListener(R.id.layout_province, v -> {
-            textView.setTextColor(ResourceUtils.getColorResource(R.color.color_37a991));
+            tv.setTextColor(ResourceUtils.getColorResource(R.color.color_37a991));
             RxBus.INSTANCE.send(new ChooseVillageEvent(data.getName()));
         });
     }
