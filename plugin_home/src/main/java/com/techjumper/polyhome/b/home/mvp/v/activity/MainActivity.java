@@ -97,6 +97,10 @@ public class MainActivity extends AppBaseActivity {
         this.mainContentLayout = mainContentLayout;
     }
 
+    public ImageView getQrcode() {
+        return qrcode;
+    }
+
     @Override
     protected View inflateView(Bundle savedInstanceState) {
         return inflate(R.layout.activity_main);
