@@ -109,7 +109,7 @@ public class MessageFriendFragmentModel extends BaseModel<MessageFriendFragmentP
             String content = messagesBean.getContent();   //消息内容
             String created_at = messagesBean.getCreated_at();  //1467254681 创建时间
             int id = messagesBean.getId();              //消息id
-            int obj_id = messagesBean.getObj_id();  //#对象ID，如订单ID等
+            String obj_id = messagesBean.getObj_id();  //#对象ID，如订单ID等
             String title = messagesBean.getTitle();  //消息title
             String rightText = messagesBean.getTypes(); // #消息类型 1-系统信息 2-订单信息 4，5-物业信息 6-友邻
             long time_ = Long.parseLong(created_at);

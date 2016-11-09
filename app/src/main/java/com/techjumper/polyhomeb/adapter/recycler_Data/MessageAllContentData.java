@@ -14,7 +14,7 @@ public class MessageAllContentData {
     private String time;
 
     private int id;
-    private int obj_id;
+    private String obj_id;
 
     public int getId() {
         return id;
@@ -24,11 +24,11 @@ public class MessageAllContentData {
         this.id = id;
     }
 
-    public int getObj_id() {
+    public String getObj_id() {
         return obj_id;
     }
 
-    public void setObj_id(int obj_id) {
+    public void setObj_id(String obj_id) {
         this.obj_id = obj_id;
     }
 

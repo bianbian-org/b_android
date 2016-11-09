@@ -56,7 +56,7 @@ public class MessageEntity extends BaseEntity<MessageEntity.DataBean> {
                 private String title;
                 private String types;
                 private String content;
-                private int obj_id;
+                private String obj_id;
                 private String has_read;
                 private String created_at;
 
@@ -92,11 +92,11 @@ public class MessageEntity extends BaseEntity<MessageEntity.DataBean> {
                     this.content = content;
                 }
 
-                public int getObj_id() {
+                public String getObj_id() {
                     return obj_id;
                 }
 
-                public void setObj_id(int obj_id) {
+                public void setObj_id(String obj_id) {
                     this.obj_id = obj_id;
                 }
 

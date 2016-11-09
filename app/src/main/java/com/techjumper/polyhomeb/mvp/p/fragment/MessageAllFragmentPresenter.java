@@ -3,6 +3,7 @@ package com.techjumper.polyhomeb.mvp.p.fragment;
 import android.os.Bundle;
 
 import com.techjumper.corelib.rx.tools.RxUtils;
+import com.techjumper.corelib.utils.common.JLog;
 import com.techjumper.polyhomeb.entity.MessageEntity;
 import com.techjumper.polyhomeb.mvp.m.MessageAllFragmentModel;
 import com.techjumper.polyhomeb.mvp.v.fragment.MessageAllFragment;
@@ -46,6 +47,7 @@ public class MessageAllFragmentPresenter extends AppBaseFragmentPresenter<Messag
 
                             @Override
                             public void onError(Throwable e) {
+                                JLog.e(e.toString());
                                 getView().dismissLoading();
                                 getView().showError(e);
                                 loadMoreError();
