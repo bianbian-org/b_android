@@ -27,6 +27,7 @@ import com.techjumper.polyhome_b.adlib.utils.PollingUtils;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -662,7 +663,7 @@ public class AdController {
                 totalTime = 60 * 70L;
             }
 //            totalTime = 5;  //测试用
-
+            Collections.shuffle(adEntities);
             notifyAllAdsReceive(adEntities);
             timer(totalTime, adEntities);
 
