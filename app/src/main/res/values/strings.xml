@@ -376,6 +376,10 @@
     <string name="ble_not_support">手机不支持BLE</string>
     <string name="confirm_delete_article">确定删除这个帖子吗？</string>
     <string name="delete_success">删除成功</string>
+    <string name="scan_qr_code_error">二维码携带的信息有误</string>
+    <string name="join_family_success">加入家庭成功</string>
+    <string name="join_family_error">用户已在该家庭</string>
+    <string name="not_login">此功能登陆后可用</string>
 
 
 </resources>

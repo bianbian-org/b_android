@@ -4,20 +4,30 @@ import android.Manifest;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.app.FragmentActivity;
+import android.text.TextUtils;
+import android.util.Base64;
 
 import com.google.zxing.Result;
 import com.tbruyelle.rxpermissions.RxPermissions;
+import com.techjumper.corelib.rx.tools.RxBus;
 import com.techjumper.corelib.rx.tools.RxUtils;
 import com.techjumper.corelib.utils.Utils;
 import com.techjumper.corelib.utils.common.AcHelper;
 import com.techjumper.corelib.utils.system.VibrateUtil;
 import com.techjumper.corelib.utils.window.ToastUtils;
 import com.techjumper.polyhomeb.R;
+import com.techjumper.polyhomeb.entity.BluetoothLockDoorInfoEntity;
+import com.techjumper.polyhomeb.entity.JoinFamilyEntity;
+import com.techjumper.polyhomeb.entity.event.BLEInfoChangedEvent;
 import com.techjumper.polyhomeb.mvp.m.ScanHostQRCodeActivityModel;
 import com.techjumper.polyhomeb.mvp.v.activity.ScanHostQRCodeActivity;
+import com.techjumper.polyhomeb.mvp.v.activity.TabHomeActivity;
+import com.techjumper.polyhomeb.user.UserManager;
 import com.techjumper.polyhomeb.utils.SoundUtils;
 import com.techjumper.zxing.ZXingScannerView;
 
+import rx.Observable;
+import rx.Observer;
 import rx.Subscription;
 
 /**
@@ -33,7 +43,7 @@ public class ScanHostQRCodeActivityPresenter extends AppBaseActivityPresenter<Sc
 
     private Subscription mSubs1, mSubs2;
 
-    public static final String KEY_QR_CODE = "key_qr_code";
+    private static final String KEY = "jumper_polyhome_b";
 
     @Override
     public void initData(Bundle savedInstanceState) {
@@ -77,20 +87,10 @@ public class ScanHostQRCodeActivityPresenter extends AppBaseActivityPresenter<Sc
 
     @Override
     public void handleResult(Result rawResult) {
+        getView().showLoading();
         VibrateUtil.vibrate(40);
         SoundUtils.playScanSound();
-
-        Bundle bundle = new Bundle();
-        bundle.putString(KEY_QR_CODE, rawResult.getText());
-        ToastUtils.show(rawResult.getText());
-//        bundle.putString(KEY_QR_CODE, "TWHB0001161266900002");
-//        new AcHelper.Builder(getView())
-//                .extra(bundle)
-//                .target(AddCameraActivity.class)
-//                .closeCurrent(true)
-//                .start();
-        uploadData(rawResult.getText());
-
+        joinFamily(rawResult.getText());
         Handler handler = new Handler();
         handler.postDelayed(() -> {
             if (getView() == null || getView().getScannerView() == null || getView() == null
@@ -99,19 +99,74 @@ public class ScanHostQRCodeActivityPresenter extends AppBaseActivityPresenter<Sc
         }, 2000);
     }
 
-    private void uploadData(String result) {
+    private void joinFamily(String result) {
+        String decrypt = decrypt(result);
+        if (TextUtils.isEmpty(decrypt)) {
+            ToastUtils.show(getView().getString(R.string.scan_qr_code_error));
+            getView().dismissLoading();
+            return;
+        }
         RxUtils.unsubscribeIfNotNull(mSubs2);
-//        addSubscription(
-//                mSubs2 = mModel.uploadData(result));
+        addSubscription(
+                mSubs2 = mModel.joinFamily(decrypt)
+                        .flatMap(joinFamilyEntity -> {
+                            if (joinFamilyEntity.getError_code() == 109) {
+                                return Observable.error(new Exception(getView().getString(R.string.not_login)));
+                            }
+                            if (joinFamilyEntity.getError_code() == 302) {
+                                return Observable.error(new Exception(getView().getString(R.string.join_family_error)));
+                            }
+                            JoinFamilyEntity.DataBean data = joinFamilyEntity.getData();
+                            int family_id = data.getFamily_id();
+                            String family_name = data.getFamily_name();
+                            int village_id = data.getVillage_id();
+                            UserManager.INSTANCE.updateFamilyOrVillageInfo(true, family_id + ""
+                                    , family_name, village_id + "");
+                            return mModel.getBLEDoorInfo(village_id + "");
+                        }).subscribe(new Observer<BluetoothLockDoorInfoEntity>() {
+                            @Override
+                            public void onCompleted() {
+                                getView().dismissLoading();
+                            }
 
-        // TODO: 16/8/28  //将楼栋号,单元号,房间号,家庭名字,家庭id全都存下来
-        //KEY_CURRENT_FAMILY_ID
-        //KEY_CURRENT_FAMILY_NAME
-        //后面这三个字段,有的话就写入,没得就算了
-        //KEY_CURRENT_BUILDING
-        //KEY_CURRENT_UNIT
-        //KEY_CURRENT_ROOM
+                            @Override
+                            public void onError(Throwable e) {
+                                getView().dismissLoading();
+                                getView().showHint(e.toString());
+                            }
 
-        // TODO: 2016/10/22 和 侧边栏切换小区或者家庭的地方一样，请求 蓝牙门锁 接口
+                            @Override
+                            public void onNext(BluetoothLockDoorInfoEntity bluetoothLockDoorInfoEntity) {
+                                if (!processNetworkResult(bluetoothLockDoorInfoEntity)) return;
+                                if (bluetoothLockDoorInfoEntity != null
+                                        && bluetoothLockDoorInfoEntity.getData() != null) {
+                                    ToastUtils.show(getView().getString(R.string.join_family_success));
+                                    //切换家庭或者小区之后，发送消息给HomeFragment,刷新首页数据
+                                    RxBus.INSTANCE.send(new BLEInfoChangedEvent());
+                                    UserManager.INSTANCE.saveBLEInfo(bluetoothLockDoorInfoEntity);
+                                    jumpToTabHomeActivity();
+                                }
+                            }
+                        }));
+    }
+
+    private String decrypt(String encryptString) {
+        if (TextUtils.isEmpty(encryptString))
+            return "";
+
+        String result = new String(Base64.decode(encryptString, Base64.DEFAULT));
+        String key = result.substring(0, result.indexOf(":"));
+
+        if (TextUtils.isEmpty(key) || !key.equals(KEY))
+            return "";
+
+        return result.substring(result.indexOf(":") + 1, result.length());
+    }
+
+    private void jumpToTabHomeActivity() {
+        new AcHelper.Builder(getView())
+                .target(TabHomeActivity.class)
+                .closeCurrent(true)
+                .start();
     }
 }
