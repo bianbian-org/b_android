@@ -19,10 +19,14 @@ import com.techjumper.polyhomeb.net.NetHelper;
 import com.techjumper.polyhomeb.net.ServiceAPI;
 import com.techjumper.polyhomeb.user.UserManager;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+import okhttp3.MediaType;
+import okhttp3.MultipartBody;
+import okhttp3.RequestBody;
 import rx.Observable;
 
 /**
@@ -83,14 +87,27 @@ public class NewInvitationActivityModel extends BaseModel<NewInvitationActivityP
         return displayBeen;
     }
 
-    public Observable<UploadPicEntity> uploadPic(String base64) {
-        KeyValuePair keyValuePair = KeyValueCreator.uploadPic(
-                UserManager.INSTANCE.getUserInfo(UserManager.KEY_ID)
-                , UserManager.INSTANCE.getTicket()
-                , base64);
-        BaseArgumentsEntity entity = NetHelper.createBaseArguments(keyValuePair);
-        return RetrofitHelper.<ServiceAPI>createDefault()
-                .uploadPic(entity)
+//    public Observable<UploadPicEntity> uploadPic(String base64) {
+//        KeyValuePair keyValuePair = KeyValueCreator.uploadPic(
+//                UserManager.INSTANCE.getUserInfo(UserManager.KEY_ID)
+//                , UserManager.INSTANCE.getTicket()
+//                , base64);
+//        BaseArgumentsEntity entity = NetHelper.createBaseArguments(keyValuePair);
+//        return RetrofitHelper.<ServiceAPI>createDefault()
+//                .uploadPic(entity)
+//                .compose(CommonWrap.wrap());
+//    }
+
+    public Observable<UploadPicEntity> uploadPic(String filePath) {
+//        File file = new File("/storage/emulated/0/DCIM/Camera/IMG_20161108_161909_HDR.jpg");
+        File file = new File(filePath);
+        MultipartBody multipartBody = new MultipartBody.Builder()
+                .addFormDataPart("file", file.getName(), RequestBody.create(MediaType.parse("image/*"), new File(filePath)))
+                .setType(MultipartBody.FORM)
+                .build();
+        return RetrofitHelper
+                .<ServiceAPI>createDefault()
+                .uploadPicFile(multipartBody)
                 .compose(CommonWrap.wrap());
     }
 

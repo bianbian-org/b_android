@@ -106,9 +106,7 @@ public class HomeMenuFragment extends AppBaseFragment<HomeMenuFragmentPresenter>
                     break;
             }
         });
-
         getPresenter().setAvatarAndName();
-
     }
 
     @Override

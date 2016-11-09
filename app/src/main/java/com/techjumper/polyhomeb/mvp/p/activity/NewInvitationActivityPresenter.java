@@ -19,7 +19,6 @@ import com.techjumper.polyhomeb.entity.UploadPicEntity;
 import com.techjumper.polyhomeb.entity.event.DeletePicNotifyEvent;
 import com.techjumper.polyhomeb.mvp.m.NewInvitationActivityModel;
 import com.techjumper.polyhomeb.mvp.v.activity.NewInvitationActivity;
-import com.techjumper.polyhomeb.utils.UploadPicUtil;
 import com.techjumper.polyhomeb.widget.PolyPopupWindow;
 
 import java.util.ArrayList;
@@ -111,12 +110,13 @@ public class NewInvitationActivityPresenter extends AppBaseActivityPresenter<New
 
         getView().showLoading();
         if (getView().getPhotos().size() != 0) {
-            new Thread(() -> {
-                transformCode();
-                if (mBase64List.size() == getView().getPhotos().size()) {
-                    getView().runOnUiThread(() -> uploadPic());
-                }
-            }).start();
+//            new Thread(() -> {
+//                transformCode();
+//                if (mBase64List.size() == getView().getPhotos().size()) {
+//                    getView().runOnUiThread(() -> uploadPic());
+            uploadPic();
+//                }
+//            }).start();
         } else if (getView().getPhotos().size() == 0) {
             uploadData();
         }
@@ -235,7 +235,8 @@ public class NewInvitationActivityPresenter extends AppBaseActivityPresenter<New
         RxUtils.unsubscribeIfNotNull(mSubs3);
         addSubscription(
                 mSubs3 = Observable
-                        .from(mBase64List)
+//                        .from(mBase64List)
+                        .from(getView().getPhotos())
                         .flatMap(s -> mModel.uploadPic(s))
                         .map(uploadPicEntity -> {
                             mUrls.add(uploadPicEntity.getData().getUrl());
@@ -262,17 +263,17 @@ public class NewInvitationActivityPresenter extends AppBaseActivityPresenter<New
 
     }
 
-    /**
-     * 将图片转换为base64编码
-     */
-    private void transformCode() {
-        mBase64List.clear();
-        ArrayList<String> photos = getView().getPhotos();
-        for (int i = 0; i < photos.size(); i++) {
-            String base64 = UploadPicUtil.bitmapPath2Base64(photos.get(i));
-            mBase64List.add(base64);
-        }
-    }
+//    /**
+//     * 将图片转换为base64编码
+//     */
+//    private void transformCode() {
+//        mBase64List.clear();
+//        ArrayList<String> photos = getView().getPhotos();
+//        for (int i = 0; i < photos.size(); i++) {
+//            String base64 = UploadPicUtil.bitmapPath2Base64(photos.get(i));
+//            mBase64List.add(base64);
+//        }
+//    }
 
     private void onSectionsReceive(String[][] result) {
         mSectionMap.clear();
@@ -296,4 +297,5 @@ public class NewInvitationActivityPresenter extends AppBaseActivityPresenter<New
     public ArrayList<String> getChoosedPhoto() {
         return getView().getPhotos();
     }
+
 }

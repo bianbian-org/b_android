@@ -15,7 +15,6 @@ import com.techjumper.polyhomeb.entity.UploadPicEntity;
 import com.techjumper.polyhomeb.entity.event.DeletePicNotifyEvent;
 import com.techjumper.polyhomeb.mvp.m.NewUnusedActivityModel;
 import com.techjumper.polyhomeb.mvp.v.activity.NewUnusedActivity;
-import com.techjumper.polyhomeb.utils.UploadPicUtil;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -120,12 +119,13 @@ public class NewUnusedActivityPresenter extends AppBaseActivityPresenter<NewUnus
 
         getView().showLoading();
         if (getView().getPhotos().size() != 0) {
-            new Thread(() -> {
-                transformCode();
-                if (mBase64List.size() == getView().getPhotos().size()) {
-                    getView().runOnUiThread(() -> uploadPic());
-                }
-            }).start();
+//            new Thread(() -> {
+//                transformCode();
+//                if (mBase64List.size() == getView().getPhotos().size()) {
+//                    getView().runOnUiThread(() -> uploadPic());
+//                }
+//            }).start();
+            uploadPic();
         } else if (getView().getPhotos().size() == 0) {
             uploadData();
         }
@@ -249,7 +249,8 @@ public class NewUnusedActivityPresenter extends AppBaseActivityPresenter<NewUnus
         RxUtils.unsubscribeIfNotNull(mSubs3);
         addSubscription(
                 mSubs3 = Observable
-                        .from(mBase64List)
+//                        .from(mBase64List)
+                        .from(getView().getPhotos())
                         .flatMap(s -> mModel.uploadPic(s))
                         .map(uploadPicEntity -> {
                             mUrls.add(uploadPicEntity.getData().getUrl());
@@ -277,17 +278,17 @@ public class NewUnusedActivityPresenter extends AppBaseActivityPresenter<NewUnus
 
     }
 
-    /**
-     * 将图片转换为base64编码
-     */
-    private void transformCode() {
-        mBase64List.clear();
-        ArrayList<String> photos = getView().getPhotos();
-        for (int i = 0; i < photos.size(); i++) {
-            String base64 = UploadPicUtil.bitmapPath2Base64(photos.get(i));
-            mBase64List.add(base64);
-        }
-    }
+//    /**
+//     * 将图片转换为base64编码
+//     */
+//    private void transformCode() {
+//        mBase64List.clear();
+//        ArrayList<String> photos = getView().getPhotos();
+//        for (int i = 0; i < photos.size(); i++) {
+//            String base64 = UploadPicUtil.bitmapPath2Base64(photos.get(i));
+//            mBase64List.add(base64);
+//        }
+//    }
 
 //    private void onSectionsReceive(String[][] result) {
 //        mSectionMap.clear();

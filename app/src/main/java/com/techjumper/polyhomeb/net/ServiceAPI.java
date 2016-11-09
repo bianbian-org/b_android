@@ -5,6 +5,7 @@ import com.techjumper.polyhomeb.entity.AvatarEntity;
 import com.techjumper.polyhomeb.entity.BaseArgumentsEntity;
 import com.techjumper.polyhomeb.entity.BluetoothLockDoorInfoEntity;
 import com.techjumper.polyhomeb.entity.CheckInEntity;
+import com.techjumper.polyhomeb.entity.JoinFamilyEntity;
 import com.techjumper.polyhomeb.entity.LoginEntity;
 import com.techjumper.polyhomeb.entity.MessageEntity;
 import com.techjumper.polyhomeb.entity.OrdersEntity;
@@ -30,6 +31,7 @@ import com.techjumper.polyhomeb.entity.medicalEntity.MedicalVerificationCodeEnti
 
 import java.util.Map;
 
+import okhttp3.MultipartBody;
 import okhttp3.ResponseBody;
 import retrofit2.adapter.rxjava.Result;
 import retrofit2.http.Body;
@@ -582,6 +584,18 @@ public interface ServiceAPI {
      */
     @POST("article/delete")
     Observable<TrueEntity> deleteArticle(@Body BaseArgumentsEntity entity);
+
+    /**
+     * 扫描二维码加入家庭
+     */
+    @POST("family/join")
+    Observable<JoinFamilyEntity> joinFamily(@Body BaseArgumentsEntity entity);
+
+    /**
+     * 上传图片(文件方式)
+     */
+    @POST("upload/images")
+    Observable<UploadPicEntity> uploadPicFile(@Body MultipartBody body);
 
 
 /*********************************************************医疗接口*********************************************************/

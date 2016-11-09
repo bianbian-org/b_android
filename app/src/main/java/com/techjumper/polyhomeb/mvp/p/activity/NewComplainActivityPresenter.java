@@ -94,12 +94,13 @@ public class NewComplainActivityPresenter extends AppBaseActivityPresenter<NewCo
 
         getView().showLoading();
         if (getView().getPhotos().size() != 0) {
-            new Thread(() -> {
-                transformCode();
-                if (mBase64List.size() == getView().getPhotos().size()) {
-                    getView().runOnUiThread(() -> uploadPic());
-                }
-            }).start();
+//            new Thread(() -> {
+//                transformCode();
+//                if (mBase64List.size() == getView().getPhotos().size()) {
+//                    getView().runOnUiThread(() -> uploadPic());
+            uploadPic();
+//                }
+//            }).start();
         } else if (getView().getPhotos().size() == 0) {
             uploadData();
         }
@@ -178,7 +179,8 @@ public class NewComplainActivityPresenter extends AppBaseActivityPresenter<NewCo
         RxUtils.unsubscribeIfNotNull(mSubs3);
         addSubscription(
                 mSubs3 = Observable
-                        .from(mBase64List)
+//                        .from(mBase64List)
+                        .from(getView().getPhotos())
                         .flatMap(s -> mModel.uploadPic(s))
                         .map(uploadPicEntity -> {
                             mUrls.add(uploadPicEntity.getData().getUrl());

@@ -101,7 +101,7 @@ public class OkHttpHelper {
             builder.addInterceptor(logging);
             JLog.d("开启HTTP日志");
         }
-        builder.networkInterceptors().add(REWRITE_CACHE_CONTROL_INTERCEPTOR);
+//        builder.networkInterceptors().add(REWRITE_CACHE_CONTROL_INTERCEPTOR);
         return builder.build();
     }
 
