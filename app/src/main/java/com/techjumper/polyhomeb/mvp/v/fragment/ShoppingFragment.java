@@ -11,7 +11,7 @@ import android.webkit.WebView;
 
 import com.techjumper.corelib.mvp.factory.Presenter;
 import com.techjumper.corelib.rx.tools.RxBus;
-import com.techjumper.corelib.utils.window.ToastUtils;
+import com.techjumper.corelib.utils.common.JLog;
 import com.techjumper.polyhomeb.Config;
 import com.techjumper.polyhomeb.Constant;
 import com.techjumper.polyhomeb.R;
@@ -220,7 +220,6 @@ public class ShoppingFragment extends AppBaseWebViewFragment<ShoppingFragmentPre
     public void onPageError(int errorCode, String description, String failingUrl) {
         //        mWebView.loadUrl("http://pl.techjumper.com/neighbor/404");
 //        mWebView.loadUrl(Config.sFriendErrorPage);
-        ToastUtils.show("友邻网页错误,错误码:" + errorCode);
         mIsOtherError = true;
     }
 
@@ -229,7 +228,8 @@ public class ShoppingFragment extends AppBaseWebViewFragment<ShoppingFragmentPre
      */
     @Override
     public void onPageHttpError(WebView view, WebResourceRequest request, WebResourceResponse errorResponse) {
-        ToastUtils.show("在友邻中,WebView的HTTP错误了");
+        JLog.e(request.getUrl().toString());
+        JLog.e(errorResponse.getStatusCode() + "");
         mIsOtherError = true;
     }
 
