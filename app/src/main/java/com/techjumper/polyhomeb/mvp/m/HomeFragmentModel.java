@@ -3,13 +3,11 @@ package com.techjumper.polyhomeb.mvp.m;
 import com.steve.creact.library.display.DisplayBean;
 import com.techjumper.polyhomeb.R;
 import com.techjumper.polyhomeb.adapter.recycler_Data.BluetoothData;
-import com.techjumper.polyhomeb.adapter.recycler_Data.JuJiaData;
 import com.techjumper.polyhomeb.adapter.recycler_Data.PolyHomeData;
 import com.techjumper.polyhomeb.adapter.recycler_Data.PropertyData;
 import com.techjumper.polyhomeb.adapter.recycler_Data.PropertyRepairBigDividerData;
 import com.techjumper.polyhomeb.adapter.recycler_Data.ViewPagerData;
 import com.techjumper.polyhomeb.adapter.recycler_ViewHolder.databean.BluetoothBean;
-import com.techjumper.polyhomeb.adapter.recycler_ViewHolder.databean.JuJiaDataBean;
 import com.techjumper.polyhomeb.adapter.recycler_ViewHolder.databean.PolyHomeDataBean;
 import com.techjumper.polyhomeb.adapter.recycler_ViewHolder.databean.PropertyDataBean;
 import com.techjumper.polyhomeb.adapter.recycler_ViewHolder.databean.PropertyRepairBigDividerBean;
@@ -65,13 +63,13 @@ public class HomeFragmentModel extends BaseModel<HomeFragmentPresenter> {
         displayBeans.add(propertyDataBean);
 
         //分割线
-        displayBeans.add(propertyRepairBigDividerBean);
-
-        //增加 聚家 部分的数据    item = 3
-        JuJiaData juJiaData = new JuJiaData();
-        juJiaData.setNotice("您有2个快递正在派送中");
-        JuJiaDataBean juJiaDataBean = new JuJiaDataBean(juJiaData);
-        displayBeans.add(juJiaDataBean);
+//        displayBeans.add(propertyRepairBigDividerBean);
+//
+//        //增加 聚家 部分的数据    item = 3
+//        JuJiaData juJiaData = new JuJiaData();
+//        juJiaData.setNotice("您有2个快递正在派送中");
+//        JuJiaDataBean juJiaDataBean = new JuJiaDataBean(juJiaData);
+//        displayBeans.add(juJiaDataBean);
 
         //分割线
         displayBeans.add(propertyRepairBigDividerBean);
