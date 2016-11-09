@@ -11,6 +11,7 @@ public class HeartbeatEntity extends BaseEntity<HeartbeatEntity.HeartbeatDataEnt
         private long time;
         private String ticket;
         private int update_ad; //更新广告 0-不更新 1-更新
+        private int update_notic; //更新消息中心 0-不更新 1-更新
 
         public String getResult() {
             return result;
@@ -42,6 +43,14 @@ public class HeartbeatEntity extends BaseEntity<HeartbeatEntity.HeartbeatDataEnt
 
         public void setUpdate_ad(int update_ad) {
             this.update_ad = update_ad;
+        }
+
+        public int getUpdate_notic() {
+            return update_notic;
+        }
+
+        public void setUpdate_notic(int update_notic) {
+            this.update_notic = update_notic;
         }
     }
 }

@@ -30,6 +30,7 @@ import com.techjumper.commonres.entity.event.ShowMainAdEvent;
 import com.techjumper.commonres.entity.event.SubmitOnlineClickEvent;
 import com.techjumper.commonres.entity.event.TimeEvent;
 import com.techjumper.commonres.entity.event.UserInfoEvent;
+import com.techjumper.commonres.entity.event.pushevent.NoticePushEvent;
 import com.techjumper.commonres.util.CommonDateUtil;
 import com.techjumper.commonres.util.PluginEngineUtil;
 import com.techjumper.corelib.rx.tools.RxBus;
@@ -496,11 +497,17 @@ public class MainActivityPresenter extends AppBaseActivityPresenter<MainActivity
                             Log.d("submitOnline", "时间" + heartbeatEntity.getData().getTime());
                             Log.d("submitOnline", "ticket" + heartbeatEntity.getData().getTicket());
                             Log.d("submitOnline", "update_ad" + heartbeatEntity.getData().getUpdate_ad());
+                            Log.d("submitOnline", "update_notic" + heartbeatEntity.getData().getUpdate_notic());
                             UserInfoManager.saveTicket(heartbeatEntity.getData().getTicket());
 
                             if (heartbeatEntity.getData().getUpdate_ad() == 1) {
                                 Log.d("submitOnline", "submitOnline get new ad");
                                 RxBus.INSTANCE.send(new AdEvent());
+                            }
+
+                            if (heartbeatEntity.getData().getUpdate_notic() == 1) {
+                                Log.d("submitOnline", "submitOnline get new notice");
+                                RxBus.INSTANCE.send(new NoticePushEvent());
                             }
 
                             RxBus.INSTANCE.send(new HeartbeatEvent(heartbeatEntity.getData().getTime()));
