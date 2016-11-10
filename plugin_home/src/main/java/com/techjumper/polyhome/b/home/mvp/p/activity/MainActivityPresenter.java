@@ -284,12 +284,7 @@ public class MainActivityPresenter extends AppBaseActivityPresenter<MainActivity
 
             @Override
             public void onAdWindowClose(boolean byUser) {
-                if (byUser) {
-//                    AdController.getInstance().resetSleepTime();
-                    RxBus.INSTANCE.send(new ShowMainAdEvent());
-                } else {
-                    AdController.getInstance().turnOffScreen();
-                }
+                RxBus.INSTANCE.send(new ShowMainAdEvent());
             }
         });
 
