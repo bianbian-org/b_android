@@ -133,6 +133,15 @@ public class JSInteractionActivity extends AppBaseWebViewActivity<JSInteractionA
      */
     public void onLineMethod(String method) {
         if (TextUtils.isEmpty(method)) return;
-        getWebView().loadUrl("javascript:" + method);
+        getWebView().loadUrl("javascript:" + method + "()");
     }
+
+    /**
+     * 用于支付之后，通知H5支付结束
+     */
+    public void refreshH5StateEvent(String order_number) {
+        if (TextUtils.isEmpty(order_number)) return;
+        getWebView().loadUrl("javascript:" + "refresh_order(" + order_number + ")");
+    }
+
 }

@@ -275,7 +275,7 @@ public class JSInteractionActivityPresenter extends AppBaseActivityPresenter<JSI
 
     //支付成功后通知调用H5的js,刷新网页
     private void refreshH5StateEvent(String order_number) {
-        getView().onLineMethod("refresh_order(" + order_number + ")");
+        getView().refreshH5StateEvent(order_number);
     }
 
     /**
