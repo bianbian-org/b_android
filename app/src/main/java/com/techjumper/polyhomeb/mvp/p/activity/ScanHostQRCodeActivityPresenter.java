@@ -155,6 +155,12 @@ public class ScanHostQRCodeActivityPresenter extends AppBaseActivityPresenter<Sc
             return "";
 
         String result = new String(Base64.decode(encryptString, Base64.DEFAULT));
+        if (!result.contains(":")) {
+            return "";
+        }
+        if (result.length() <= 1) {
+            return "";
+        }
         String key = result.substring(0, result.indexOf(":"));
 
         if (TextUtils.isEmpty(key) || !key.equals(KEY))
