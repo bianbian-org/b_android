@@ -11,6 +11,7 @@
     <string name="title_property">物业</string>
     <string name="title_shopping">周边商店</string>
     <string name="title_speak">对讲</string>
+    <string name="title_qrcode">二维码</string>
     <string name="title_setting">设置</string>
     <string name="title_call">一键呼叫</string>
     <string name="title_jujia_call_service">呼叫服务</string>
@@ -42,4 +43,7 @@
 
     <string name="call">一键呼叫</string>
     <string name="call_order">呼叫下单</string>
+
+    <string name="qrcode_message">请使用手机端APP
+                \n扫描左侧二维码添加家庭</string>
 </resources>

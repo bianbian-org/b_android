@@ -9,6 +9,7 @@ public class TimeEvent {
     public static String JUJIA = "jujia";
     public static String SHOPPING = "shopping";
     public static String MAIN = "main";
+    public static String QRCODE = "qrcode";
 
     private String type;
     private long time;

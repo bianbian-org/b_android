@@ -1,16 +1,25 @@
 package com.techjumper.polyhome.b.home.mvp.p.activity;
 
+import android.app.AlertDialog;
 import android.content.ComponentName;
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
+import android.view.Window;
+import android.view.WindowManager;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 
+import com.google.zxing.BarcodeFormat;
+import com.google.zxing.EncodeHintType;
+import com.google.zxing.common.BitMatrix;
+import com.google.zxing.qrcode.QRCodeWriter;
+import com.jakewharton.rxbinding.view.RxView;
 import com.techjumper.commonres.ComConstant;
 import com.techjumper.commonres.entity.UserInfoEntity;
 import com.techjumper.commonres.entity.HeartbeatEntity;
@@ -33,10 +42,14 @@ import com.techjumper.commonres.entity.event.UserInfoEvent;
 import com.techjumper.commonres.entity.event.pushevent.NoticePushEvent;
 import com.techjumper.commonres.util.CommonDateUtil;
 import com.techjumper.commonres.util.PluginEngineUtil;
+import com.techjumper.commonres.util.RxUtil;
+import com.techjumper.commonres.util.StringUtil;
+import com.techjumper.corelib.rx.tools.CommonWrap;
 import com.techjumper.corelib.rx.tools.RxBus;
 import com.techjumper.corelib.utils.Utils;
 import com.techjumper.corelib.utils.basic.NumberUtil;
 import com.techjumper.corelib.utils.common.JLog;
+import com.techjumper.corelib.utils.common.RuleUtils;
 import com.techjumper.corelib.utils.window.ToastUtils;
 import com.techjumper.lib2.utils.PicassoHelper;
 import com.techjumper.plugincommunicateengine.IPluginMessageReceiver;
@@ -51,6 +64,8 @@ import com.techjumper.polyhome.b.home.mvp.m.MainActivityModel;
 import com.techjumper.polyhome.b.home.mvp.p.fragment.PloyhomeFragmentPresenter;
 import com.techjumper.polyhome.b.home.mvp.v.activity.AdDetailActivity;
 import com.techjumper.polyhome.b.home.mvp.v.activity.MainActivity;
+import com.techjumper.polyhome.b.home.mvp.v.activity.QrcodeActivity;
+import com.techjumper.polyhome.b.home.mvp.v.activity.ShoppingActivity;
 import com.techjumper.polyhome.b.home.tool.AlarmManagerUtil;
 import com.techjumper.polyhome.b.home.widget.MyVideoView;
 import com.techjumper.polyhome_b.adlib.entity.AdEntity;
@@ -62,6 +77,7 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.HashMap;
+import java.util.Hashtable;
 import java.util.List;
 import java.util.Map;
 import java.util.TimeZone;
@@ -69,6 +85,7 @@ import java.util.Timer;
 import java.util.TimerTask;
 
 import butterknife.OnClick;
+import rx.Observable;
 import rx.Subscriber;
 import rx.Subscription;
 import rx.android.schedulers.AndroidSchedulers;
@@ -86,6 +103,7 @@ public class MainActivityPresenter extends AppBaseActivityPresenter<MainActivity
     private Subscription submitOnlineSubscription;
     private long totalTime = 0L;
     private Timer timer;
+    private AlertDialog dialog;
     public static final String ACTION_START_HOST_DAEMON = "action_start_host_daemon";
 
     private IPluginMessageReceiver mIPluginMessageReceiver = (code, message, extras) -> {
@@ -259,6 +277,23 @@ public class MainActivityPresenter extends AppBaseActivityPresenter<MainActivity
         isShowMainAd(false);
     }
 
+    @OnClick(R.id.qrcode)
+    void showQrcode() {
+        addSubscription(RxView.clicks(getView().getQrcode())
+                .filter(aVoid -> {
+                    if (UserInfoManager.isLogin())
+                        return true;
+
+                    ToastUtils.show(getView().getString(R.string.error_no_login));
+                    return false;
+                })
+                .compose(RxUtil.applySchedulers())
+                .subscribe(aVoid -> {
+                    Intent intent = new Intent(getView(), QrcodeActivity.class);
+                    intent.putExtra(QrcodeActivity.TIME, totalTime);
+                    getView().startActivity(intent);
+                }));
+    }
 
     @Override
     public void initData(Bundle savedInstanceState) {
