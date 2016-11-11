@@ -40,7 +40,6 @@ import com.techjumper.polyhomeb.user.UserManager;
 import com.techjumper.polyhomeb.utils.UploadPicUtil;
 
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.util.Calendar;
 
 import butterknife.OnClick;
@@ -320,7 +319,7 @@ public class UserInfoActivityPresenter extends AppBaseActivityPresenter<UserInfo
                     cropPicture(data.getData()); //开始对相册选择的图片进行剪裁处理
                     break;
                 case CROP_PICTURE:
-                    getCropedPic(data);
+                    getCropedPic(data.getData());
                     break;
             }
         }
@@ -330,12 +329,12 @@ public class UserInfoActivityPresenter extends AppBaseActivityPresenter<UserInfo
     /**
      * 得到裁剪后的图片
      */
-    private void getCropedPic(Intent data) {
+    private void getCropedPic(Uri uri) {
         try {
             Bitmap bitmap = BitmapFactory.decodeStream(getView().getContentResolver().
-                    openInputStream(data.getData()));
+                    openInputStream(uri));
             uploadPic(bitmap);
-        } catch (FileNotFoundException e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }
