@@ -8,7 +8,7 @@ package com.techjumper.polyhomeb.adapter.recycler_Data;
  **/
 public class PaymentFragmentContentData {
 
-    private int btnName;
+    private String btnName;
     private String title;
     private String content;
     private String time;
@@ -60,11 +60,11 @@ public class PaymentFragmentContentData {
         this.expiry_price = expiry_price;
     }
 
-    public int getBtnName() {
+    public String getBtnName() {
         return btnName;
     }
 
-    public void setBtnName(int btnName) {
+    public void setBtnName(String btnName) {
         this.btnName = btnName;
     }
 

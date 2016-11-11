@@ -17,6 +17,7 @@ import com.techjumper.polyhomeb.adapter.recycler_ViewHolder.databean.PaymentTitl
 import com.techjumper.polyhomeb.adapter.recycler_ViewHolder.databean.PropertyPlacardDividerLongBean;
 import com.techjumper.polyhomeb.adapter.recycler_ViewHolder.databean.PropertyRepairBigDividerBean;
 import com.techjumper.polyhomeb.entity.OrdersEntity;
+import com.techjumper.polyhomeb.entity.PaymentTypeEntity;
 import com.techjumper.polyhomeb.mvp.p.fragment.AllpaidFragmentPresenter;
 import com.techjumper.polyhomeb.net.KeyValueCreator;
 import com.techjumper.polyhomeb.net.NetHelper;
@@ -67,7 +68,7 @@ public class AllpaidFragmentModel extends BaseModel<AllpaidFragmentPresenter> {
                 || entity.getData().getOrders().size() < mOnePageCount);
     }
 
-    public void updateOrdersData(OrdersEntity entity) {
+    public void updateOrdersData(OrdersEntity entity,List<PaymentTypeEntity.DataBean.ItemsBean> items) {
         if (entity == null || entity.getData() == null
                 || entity.getData().getOrders() == null || entity.getData().getOrders().size() == 0)
             return;
@@ -89,6 +90,8 @@ public class AllpaidFragmentModel extends BaseModel<AllpaidFragmentPresenter> {
             PaymentTitleData paymentTitleData = new PaymentTitleData();
             paymentTitleData.setTitle(getPresenter().getView().getString(R.string.paymented_total) + ":");
             paymentTitleData.setTotal(total_price);
+            paymentTitleData.setItems(items);
+            paymentTitleData.setTypeName(getPresenter().getTypeName());
             paymentTitleData.setWhere(Constant.PAID_FRAGMENT_TITLE);
             PaymentTitleBean paymentTitleBean = new PaymentTitleBean(paymentTitleData);
             mDataList.add(paymentTitleBean);
@@ -112,7 +115,7 @@ public class AllpaidFragmentModel extends BaseModel<AllpaidFragmentPresenter> {
             String object = ordersBean.getObject();             //#缴费对象    "1栋3单元21-111"
             String order_number = ordersBean.getOrder_number(); //#订单号   "2014731502779997"
             String pay_name = ordersBean.getPay_name();         //#费用名称   "8月份电费"
-            int pay_type = ordersBean.getPay_type();            //#缴费类型 1-物业费 2-水费 3-电费 4-燃气费 5-其他
+            String pay_type = ordersBean.getPay_type();            //#缴费类型 1-物业费 2-水费 3-电费 4-燃气费 5-其他
             double price = ordersBean.getPrice();               //#缴费金额    96.68
             int status = ordersBean.getStatus();                //#缴费状态 1-未缴费 2-已缴费
             int is_late = ordersBean.getIs_late();              //#是否逾期 0-没逾期, 1-逾期
@@ -143,7 +146,7 @@ public class AllpaidFragmentModel extends BaseModel<AllpaidFragmentPresenter> {
     }
 
     //无数据的时候显示的视图
-    public List<DisplayBean> noData() {
+    public List<DisplayBean> noData(List<PaymentTypeEntity.DataBean.ItemsBean> items) {
         List<DisplayBean> displayBeen = new ArrayList<>();
 
         PropertyRepairBigDividerData propertyRepairBigDividerData = new PropertyRepairBigDividerData();
@@ -153,6 +156,8 @@ public class AllpaidFragmentModel extends BaseModel<AllpaidFragmentPresenter> {
         PaymentTitleData paymentTitleData = new PaymentTitleData();
         paymentTitleData.setTitle(getPresenter().getView().getString(R.string.paymented_total) + ":");
         paymentTitleData.setTotal(0);
+        paymentTitleData.setItems(items);
+        paymentTitleData.setTypeName(getPresenter().getTypeName());
         paymentTitleData.setWhere(Constant.PAID_FRAGMENT_TITLE);
         PaymentTitleBean paymentTitleBean = new PaymentTitleBean(paymentTitleData);
         displayBeen.add(paymentTitleBean);
@@ -189,6 +194,17 @@ public class AllpaidFragmentModel extends BaseModel<AllpaidFragmentPresenter> {
 
     private String getVillageId() {
         return UserManager.INSTANCE.getUserInfo(UserManager.KEY_CURRENT_VILLAGE_ID);
+    }
+
+    public Observable<PaymentTypeEntity> getSections() {
+        KeyValuePair keyValuePair = KeyValueCreator.getPaymentType(
+                UserManager.INSTANCE.getUserInfo(UserManager.KEY_ID)
+                , UserManager.INSTANCE.getTicket());
+        Map<String, String> baseArgumentsMap = NetHelper.createBaseArgumentsMap(keyValuePair);
+        return RetrofitHelper
+                .<ServiceAPI>createDefault()
+                .getPaymentType(baseArgumentsMap)
+                .compose(CommonWrap.wrap());
     }
 
 }

@@ -9,6 +9,7 @@ import com.techjumper.polyhomeb.entity.JoinFamilyEntity;
 import com.techjumper.polyhomeb.entity.LoginEntity;
 import com.techjumper.polyhomeb.entity.MessageEntity;
 import com.techjumper.polyhomeb.entity.OrdersEntity;
+import com.techjumper.polyhomeb.entity.PaymentTypeEntity;
 import com.techjumper.polyhomeb.entity.PaymentsEntity;
 import com.techjumper.polyhomeb.entity.PropertyComplainDetailEntity;
 import com.techjumper.polyhomeb.entity.PropertyComplainEntity;
@@ -596,6 +597,12 @@ public interface ServiceAPI {
      */
     @POST("upload/images")
     Observable<UploadPicEntity> uploadPicFile(@Body MultipartBody body);
+
+    /**
+     * 获取物业缴费类型
+     */
+    @GET("estate_orders/estate_items")
+    Observable<PaymentTypeEntity> getPaymentType(@QueryMap Map<String, String> map);
 
 
 /*********************************************************医疗接口*********************************************************/

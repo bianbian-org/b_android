@@ -253,7 +253,7 @@ public class AdjustAccountsActivityPresenter extends AppBaseActivityPresenter<Ad
     /**
      * 费用类型  1-物业费 2-水费 3-电费 4-燃气费 5-其他
      */
-    public int getPayType() {
+    public String getPayType() {
         return mModel.getPayType();
     }
 

@@ -33,7 +33,8 @@ public class OrdersEntity extends BaseEntity<OrdersEntity.DataBean> {
 
         public static class OrdersBean {
             private String order_number;  // #订单号   "2014731502779997"
-            private int pay_type;   //#缴费类型 1-物业费 2-水费 3-电费 4-燃气费 5-其他
+//            private int pay_type;   //#缴费类型 1-物业费 2-水费 3-电费 4-燃气费 5-其他
+            private String pay_type;   //#缴费类型 1-物业费 2-水费 3-电费 4-燃气费 5-其他
             private String pay_name;  // #费用名称   "8月份电费"
             private String expiry_date;   //#截止缴费日期  "2016-09-22"
             private int status;   //#缴费状态 1-未缴费 2-已缴费
@@ -60,11 +61,11 @@ public class OrdersEntity extends BaseEntity<OrdersEntity.DataBean> {
                 this.order_number = order_number;
             }
 
-            public int getPay_type() {
+            public String getPay_type() {
                 return pay_type;
             }
 
-            public void setPay_type(int pay_type) {
+            public void setPay_type(String pay_type) {
                 this.pay_type = pay_type;
             }
 

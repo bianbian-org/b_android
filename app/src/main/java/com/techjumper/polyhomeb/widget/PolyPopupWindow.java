@@ -31,7 +31,8 @@ import java.util.List;
  * Date: 16/7/16
  * * * * * * * * * * * * * * * * * * * * * * *
  **/
-public class PolyPopupWindow extends PopupWindow implements PopupWindow.OnDismissListener, Animation.AnimationListener {
+public class PolyPopupWindow extends PopupWindow
+        implements PopupWindow.OnDismissListener, Animation.AnimationListener {
 
     private Activity mActivity;
     private View rootView, anchorView;

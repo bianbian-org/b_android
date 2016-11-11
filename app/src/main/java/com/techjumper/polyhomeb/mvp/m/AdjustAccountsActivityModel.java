@@ -11,7 +11,6 @@ import com.techjumper.corelib.rx.tools.CommonWrap;
 import com.techjumper.lib2.others.KeyValuePair;
 import com.techjumper.lib2.utils.RetrofitHelper;
 import com.techjumper.polyhomeb.Constant;
-import com.techjumper.polyhomeb.R;
 import com.techjumper.polyhomeb.entity.PaymentsEntity;
 import com.techjumper.polyhomeb.mvp.p.activity.AdjustAccountsActivityPresenter;
 import com.techjumper.polyhomeb.net.KeyValueCreator;
@@ -102,8 +101,8 @@ public class AdjustAccountsActivityModel extends BaseModel<AdjustAccountsActivit
     /**
      * 费用类型  1-物业费 2-水费 3-电费 4-燃气费 5-其他
      */
-    public int getPayType() {
-        return getExtra().getInt(Constant.KEY_PAY_TYPE, 0);
+    public String getPayType() {
+        return getExtra().getString(Constant.KEY_PAY_TYPE, "");
     }
 
     /**
@@ -124,19 +123,20 @@ public class AdjustAccountsActivityModel extends BaseModel<AdjustAccountsActivit
      * 费用类型  1-物业费 2-水费 3-电费 4-燃气费 5-其他
      */
     public String getPayTypeString() {
-        switch (getPayType()) {
-            case 1:
-                return getPresenter().getView().getString(R.string.pop_property_pay);
-            case 2:
-                return getPresenter().getView().getString(R.string.pop_water_pay);
-            case 3:
-                return getPresenter().getView().getString(R.string.pop_elec_pay);
-            case 4:
-                return getPresenter().getView().getString(R.string.pop_gas_pay);
-            case 5:
-                return getPresenter().getView().getString(R.string.pop_other);
-        }
-        return "";
+//        switch (getPayType()) {
+//            case 1:
+//                return getPresenter().getView().getString(R.string.pop_property_pay);
+//            case 2:
+//                return getPresenter().getView().getString(R.string.pop_water_pay);
+//            case 3:
+//                return getPresenter().getView().getString(R.string.pop_elec_pay);
+//            case 4:
+//                return getPresenter().getView().getString(R.string.pop_gas_pay);
+//            case 5:
+//                return getPresenter().getView().getString(R.string.pop_other);
+//        }
+//        return "";
+        return getPayType();
     }
 
     private String getIp() {

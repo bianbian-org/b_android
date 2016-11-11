@@ -88,7 +88,7 @@ public class NewInvitationActivityPresenter extends AppBaseActivityPresenter<New
                     mPop.show(PolyPopupWindow.AnimStyle.ALPHA);
                     KeyboardUtils.closeKeyboard(getView().getEtContent());
                 } else {
-                    ToastUtils.show(getView().getString(R.string.get_sections));
+                    ToastUtils.show(getView().getString(R.string.get_sections_error));
                 }
                 break;
         }
@@ -218,7 +218,7 @@ public class NewInvitationActivityPresenter extends AppBaseActivityPresenter<New
                             @Override
                             public void onError(Throwable e) {
                                 isFirstRequestSuccess = false;
-                                ToastUtils.show(getView().getString(R.string.get_sections));
+                                ToastUtils.show(getView().getString(R.string.get_sections_error));
                             }
 
                             @Override

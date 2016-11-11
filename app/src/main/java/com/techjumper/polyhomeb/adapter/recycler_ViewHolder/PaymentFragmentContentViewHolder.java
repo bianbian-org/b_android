@@ -55,25 +55,26 @@ public class PaymentFragmentContentViewHolder extends BaseRecyclerViewHolder<Pay
         setText(R.id.tv_price, getContext().getString(R.string.￥) + data.getPrice());
         String btnName = "";
         ((MarqueeTextView) getView(R.id.tv_notice)).setText(data.getTitle());
-        switch (data.getBtnName()) {
-            //1-物业费 2-水费 3-电费 4-燃气费 5-其他
-            case 1:
-                btnName = getContext().getResources().getString(R.string.pop_property_pay);
-                break;
-            case 2:
-                btnName = getContext().getResources().getString(R.string.pop_water_pay);
-                break;
-            case 3:
-                btnName = getContext().getResources().getString(R.string.pop_elec_pay);
-                break;
-            case 4:
-                btnName = getContext().getResources().getString(R.string.pop_gas_pay);
-                break;
-            case 5:
-                btnName = getContext().getResources().getString(R.string.pop_other);
-                break;
-        }
-        setText(R.id.btn, btnName);
+//        switch (data.getBtnName()) {
+//            //1-物业费 2-水费 3-电费 4-燃气费 5-其他
+//            case 1:
+//                btnName = getContext().getResources().getString(R.string.pop_property_pay);
+//                break;
+//            case 2:
+//                btnName = getContext().getResources().getString(R.string.pop_water_pay);
+//                break;
+//            case 3:
+//                btnName = getContext().getResources().getString(R.string.pop_elec_pay);
+//                break;
+//            case 4:
+//                btnName = getContext().getResources().getString(R.string.pop_gas_pay);
+//                break;
+//            case 5:
+//                btnName = getContext().getResources().getString(R.string.pop_other);
+//                break;
+//        }
+//        setText(R.id.btn, btnName);
+        setText(R.id.btn, data.getBtnName());
         setText(R.id.tv_content, getContext().getString(R.string.charge_object) + data.getContent());
 //        setOnClickListener(R.id.layout_content, new View.OnClickListener() {
 //            @Override
@@ -103,7 +104,7 @@ public class PaymentFragmentContentViewHolder extends BaseRecyclerViewHolder<Pay
             bundle.putDouble(Constant.KEY_PAY_TOTAL, data.getPrice()); //费用总计   $99
             bundle.putDouble(Constant.KEY_PAY_EXPIRY, data.getExpiry_price()); //滞纳金
 
-            bundle.putInt(Constant.KEY_PAY_TYPE, data.getBtnName()); //费用类型  水电,物业之类
+            bundle.putString(Constant.KEY_PAY_TYPE, data.getBtnName()); //费用类型  水电,物业之类
             bundle.putInt(Constant.KEY_PAY_IS_LATE, data.getIs_late()); //是否逾期 0-没逾期, 1-逾期
             bundle.putInt(Constant.KEY_PAY_DAY, data.getDay()); //超过X天,  还剩下10天,是+10天,逾期超过了10天则是-10天
             new AcHelper.Builder((Activity) getContext())
