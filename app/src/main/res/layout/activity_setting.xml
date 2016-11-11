@@ -49,8 +49,8 @@
 
         </RelativeLayout>
 
-
         <View
+            android:layout_marginLeft="@dimen/dp_14"
             android:layout_width="match_parent"
             android:layout_height="0.5dp"
             android:background="@color/color_ceced2" />
