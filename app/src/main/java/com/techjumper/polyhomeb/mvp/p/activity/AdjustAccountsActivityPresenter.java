@@ -1,5 +1,6 @@
 package com.techjumper.polyhomeb.mvp.p.activity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageView;
@@ -16,6 +17,9 @@ import com.techjumper.polyhomeb.manager.PayManager;
 import com.techjumper.polyhomeb.mvp.m.AdjustAccountsActivityModel;
 import com.techjumper.polyhomeb.mvp.v.activity.AdjustAccountsActivity;
 import com.techjumper.polyhomeb.mvp.v.activity.PaymentSuccessActivity;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -167,37 +171,37 @@ public class AdjustAccountsActivityPresenter extends AppBaseActivityPresenter<Ad
     /**
      * 银联支付之后的结果回调
      */
-//    @Override
-//    public void onActivityResult(int requestCode, int resultCode, Intent data) {
-//        if (data == null) {
-//            return;
-//        }
-//        String msg = "";
-//        String str = data.getExtras().getString("pay_result");
-//        if (str.equalsIgnoreCase("success")) {
-//            if (data.hasExtra("result_data")) {
-//                String result = data.getExtras().getString("result_data");
-//                try {
-//                    JSONObject resultJson = new JSONObject(result);
-//                    String sign = resultJson.getString("sign");
-//                    String dataOrg = resultJson.getString("data");
-//                    boolean ret = verify(dataOrg, sign, mMode);
-//                    if (ret) {
-//                        paySuccess();
-//                    } else {
-//                        payFailed();
-//                    }
-//                } catch (JSONException e) {
-//                }
-//            } else {
-//                paySuccess();
-//            }
-//        } else if (str.equalsIgnoreCase("fail")) {
-//            payFailed();
-//        } else if (str.equalsIgnoreCase("cancel")) {
-//            payCancel();
-//        }
-//    }
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (data == null) {
+            return;
+        }
+        String msg = "";
+        String str = data.getExtras().getString("pay_result");
+        if (str.equalsIgnoreCase("success")) {
+            if (data.hasExtra("result_data")) {
+                String result = data.getExtras().getString("result_data");
+                try {
+                    JSONObject resultJson = new JSONObject(result);
+                    String sign = resultJson.getString("sign");
+                    String dataOrg = resultJson.getString("data");
+                    boolean ret = verify(dataOrg, sign, "01");
+                    if (ret) {
+                        paySuccess();
+                    } else {
+                        payFailed();
+                    }
+                } catch (JSONException e) {
+                }
+            } else {
+                paySuccess();
+            }
+        } else if (str.equalsIgnoreCase("fail")) {
+            payFailed();
+        } else if (str.equalsIgnoreCase("cancel")) {
+            payCancel();
+        }
+    }
 
     /**
      * 银联支付后的与商户验签

@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:id="@+id/root"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+
+    <include layout="@layout/item_property_repair_divider_long" />
+
+    <TextView
+        android:id="@+id/tv"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dp_48"
+        android:background="@color/color_ffffff"
+        android:gravity="center"
+        android:orientation="vertical"
+        android:text="@string/new_room"
+        android:textColor="@color/color_24c88a"
+        android:textSize="@dimen/sp_16" />
+
+    <include layout="@layout/item_property_repair_divider_long" />
+
+</LinearLayout>

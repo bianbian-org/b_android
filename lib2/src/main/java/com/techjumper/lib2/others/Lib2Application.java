@@ -18,6 +18,7 @@ public abstract class Lib2Application extends JumperApplication {
         RxORM.setDefaultDbVersion(getDbVersion());
         Config.sDefaultBaseUrl = getDefaultBaseUrl();
         Config.sMedicalBaseUrl = getMedicalBaseUrl();
+        Config.sCAPPBaseUrl = getCAPPBaseUrl();
         RetrofitHelper.sDefaultInterface = getDefaultInterfaceClass();
 
     }
@@ -28,5 +29,8 @@ public abstract class Lib2Application extends JumperApplication {
 
     protected abstract String getMedicalBaseUrl();
 
+    protected abstract String getCAPPBaseUrl();
+
     protected abstract Class getDefaultInterfaceClass();
+
 }

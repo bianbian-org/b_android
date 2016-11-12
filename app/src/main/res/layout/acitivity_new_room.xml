@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/color_ebecec"
+    android:orientation="vertical">
+
+    <include layout="@layout/title_back" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="0.4dp"
+        android:layout_marginTop="@dimen/dp_40"
+        android:background="@color/color_ceced2" />
+
+    <EditText
+        android:id="@+id/et"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dp_50"
+        android:background="@color/color_ffffff"
+        android:hint="@string/room_name"
+        android:lines="1"
+        android:maxLength="11"
+        android:paddingLeft="@dimen/dp_14"
+        android:paddingRight="@dimen/dp_14"
+        android:textColor="@color/color_000000"
+        android:textColorHint="@color/color_a8a8a8"
+        android:textSize="@dimen/sp_16" />
+
+    <include layout="@layout/item_property_repair_divider_long" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/sp_14"
+        android:layout_marginTop="@dimen/sp_15"
+        android:text="@string/room_name_length_5"
+        android:textColor="@color/color_727272"
+        android:textSize="@dimen/sp_12" />
+
+    <TextView
+        android:id="@+id/tv_ok"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dp_47"
+        android:layout_marginLeft="@dimen/dp_14"
+        android:layout_marginRight="@dimen/dp_14"
+        android:layout_marginTop="@dimen/dp_64"
+        android:background="@drawable/bg_green_button"
+        android:gravity="center"
+        android:text="@string/ok"
+        android:textColor="@color/color_ffffff"
+        android:textSize="@dimen/sp_20" />
+
+</LinearLayout>

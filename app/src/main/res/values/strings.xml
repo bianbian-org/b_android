@@ -96,7 +96,8 @@
     <string name="show_big_pic">查看大图</string>
     <!--<string name="click_to_login_in">点击登录</string>-->
     <string name="my_village">我的小区</string>
-    <string name="polyhome_setting">智能家居设置</string>
+    <string name="room_manage">房间管理</string>
+    <string name="member_manage">成员管理</string>
     <string name="message_center">消息中心</string>
     <string name="my_points">我的积分</string>
     <string name="settings">设置</string>
@@ -380,6 +381,19 @@
     <string name="join_family_success">加入家庭成功</string>
     <string name="join_family_error">用户已在该家庭</string>
     <string name="not_login">此功能登陆后可用</string>
+    <string name="no_room">暂无任何房间</string>
+    <string name="new_room">新增房间</string>
+    <string name="new_room_">新建房间</string>
+    <string name="edit">编辑</string>
+    <string name="confirm_delete_x_room">确定删除房间\"%1$s\"吗?</string>
+    <string name="delete_x_failed">删除房间\"%1$s\"失败，请重试</string>
+    <string name="room_name_length_5">不超过5个字符</string>
+    <string name="room_name">房间名称</string>
+    <string name="can_not_be_null">名称不能为空</string>
+    <string name="error_new_room_x">创建房间失败：%1$s</string>
+    <string name="error_new_room">创建房间失败</string>
+    <string name="rename_room">重命名房间</string>
+    <string name="error_rename_room">重命名房间失败</string>
 
 
 </resources>

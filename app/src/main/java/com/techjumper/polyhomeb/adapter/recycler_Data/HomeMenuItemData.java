@@ -10,9 +10,10 @@ public class HomeMenuItemData {
 
     public enum ItemType {
         FAMILY,
-        SMARTHOME,
+        ROOM_MANAGE,
+        MEMBER_MANAGE,
         MESSAGE,
-        POINIS,
+        POINTS,
         SETTING,
         OTHER
     }

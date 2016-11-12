@@ -335,4 +335,35 @@ public class KeyValueCreator {
                 .put("user_id", user_id)
                 .put("ticket", ticket);
     }
+
+    public static KeyValuePair getAllRooms(String user_id, String ticket, String family_id, String query_user_id) {
+        return newPair()
+                .put("user_id", user_id)
+                .put("ticket", ticket)
+                .put("family_id", family_id)
+                .put("query_user_id", query_user_id);
+    }
+
+    public static KeyValuePair deleteRoom(String user_id, String ticket, String room_id) {
+        return newPair()
+                .put("user_id", user_id)
+                .put("ticket", ticket)
+                .put("room_id", room_id);
+    }
+
+    public static KeyValuePair newRoom(String user_id, String ticket, String room_name, String family_id) {
+        return newPair()
+                .put("user_id", user_id)
+                .put("ticket", ticket)
+                .put("room_name", room_name)
+                .put("family_id", family_id);
+    }
+
+    public static KeyValuePair renameRoom(String user_id, String ticket, String room_id, String room_name) {
+        return newPair()
+                .put("user_id", user_id)
+                .put("ticket", ticket)
+                .put("room_id", room_id)
+                .put("room_name", room_name);
+    }
 }

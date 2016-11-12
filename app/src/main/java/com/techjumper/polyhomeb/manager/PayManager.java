@@ -145,8 +145,8 @@ public class PayManager {
             return;
         }
         String tn = paymentsEntity.getData().getUnion().getTn();
-        String mode = paymentsEntity.getData().getUnion().getMode();
-        UPPayAssistEx.startPay(context, null, null, tn, mode);
+//        String mode = paymentsEntity.getData().getUnion().getMode();
+        UPPayAssistEx.startPay(context, null, null, tn, "01");
     }
 
     /**

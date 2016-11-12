@@ -51,6 +51,21 @@ public class NetHelper {
         return map;
     }
 
+    public static BaseArgumentsEntity createBaseCAPPArguments(KeyValuePair keyValuePair) {
+        String json = GsonUtils.toJson(keyValuePair.toMap());
+        String encrypt = encrypt(json);
+        return new BaseArgumentsEntity(encrypt, json);
+    }
+
+    public static Map<String, String> createBaseCAPPArgumentsMap(KeyValuePair keyValuePair) {
+        String json = GsonUtils.toJson(keyValuePair.toMap());
+        String encrypt = encrypt(json);
+        HashMap<String, String> map = new HashMap<>();
+        map.put(BaseArgumentsEntity.FILED_SIGN, encrypt);
+        map.put(BaseArgumentsEntity.FILED_DATA, json);
+        return map;
+    }
+
     public static BaseArgumentsMedicalEntity createMedicalUserLoginArguments(KeyValuePair<String, Integer> argMap) {
         return new BaseArgumentsMedicalEntity(argMap.get("devicetype"), argMap.get("logintype"));
     }

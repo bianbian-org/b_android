@@ -87,6 +87,7 @@
     <dimen name="dp_23">23dp</dimen>
     <dimen name="sp_25">25sp</dimen>
     <dimen name="dp_49">49dp</dimen>
+    <dimen name="dp_64">64dp</dimen>
 
 
 </resources>

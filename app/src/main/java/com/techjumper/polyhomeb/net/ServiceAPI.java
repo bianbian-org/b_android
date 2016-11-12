@@ -4,10 +4,12 @@ package com.techjumper.polyhomeb.net;
 import com.techjumper.polyhomeb.entity.AvatarEntity;
 import com.techjumper.polyhomeb.entity.BaseArgumentsEntity;
 import com.techjumper.polyhomeb.entity.BluetoothLockDoorInfoEntity;
+import com.techjumper.polyhomeb.entity.C_AllRoomEntity;
 import com.techjumper.polyhomeb.entity.CheckInEntity;
 import com.techjumper.polyhomeb.entity.JoinFamilyEntity;
 import com.techjumper.polyhomeb.entity.LoginEntity;
 import com.techjumper.polyhomeb.entity.MessageEntity;
+import com.techjumper.polyhomeb.entity.NewRoomEntity;
 import com.techjumper.polyhomeb.entity.OrdersEntity;
 import com.techjumper.polyhomeb.entity.PaymentTypeEntity;
 import com.techjumper.polyhomeb.entity.PaymentsEntity;
@@ -17,6 +19,7 @@ import com.techjumper.polyhomeb.entity.PropertyPlacardEntity;
 import com.techjumper.polyhomeb.entity.PropertyRepairDetailEntity;
 import com.techjumper.polyhomeb.entity.PropertyRepairEntity;
 import com.techjumper.polyhomeb.entity.QueryFamilyEntity;
+import com.techjumper.polyhomeb.entity.RenameRoomEntity;
 import com.techjumper.polyhomeb.entity.SectionsEntity;
 import com.techjumper.polyhomeb.entity.TrueEntity;
 import com.techjumper.polyhomeb.entity.UpdateInfoEntity;
@@ -648,5 +651,32 @@ public interface ServiceAPI {
 
     @POST("signs")
     Observable<MedicalChangeAccountEntity> getMedicalUserData(@Body BaseArgumentsEntity entity);
+
+
+    /**********************************C端接口*************************************/
+
+    /**
+     * 查询所有房间
+     */
+    @POST("room_user_queryrooms")
+    Observable<C_AllRoomEntity> getAllRooms(@Body BaseArgumentsEntity entity);
+
+    /**
+     * 删除某房间
+     */
+    @POST("room_delete")
+    Observable<TrueEntity> deleteRoom(@Body BaseArgumentsEntity entity);
+
+    /**
+     * 新建房间
+     */
+    @POST("room")
+    Observable<NewRoomEntity> newRoom(@Body BaseArgumentsEntity entity);
+
+    /**
+     * 重命名房间
+     */
+    @POST("room_update")
+    Observable<RenameRoomEntity> renameRoom(@Body BaseArgumentsEntity entity);
 }
 

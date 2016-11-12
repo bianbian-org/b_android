@@ -8,6 +8,7 @@ import com.techjumper.corelib.mvp.factory.Presenter;
 import com.techjumper.corelib.rx.tools.RxUtils;
 import com.techjumper.corelib.ui.activity.BaseFragmentActivity;
 import com.techjumper.corelib.utils.Utils;
+import com.techjumper.corelib.utils.common.JLog;
 import com.techjumper.corelib.utils.window.KeyboardUtils;
 import com.techjumper.corelib.utils.window.StatusbarHelper;
 import com.techjumper.corelib.utils.window.ToastUtils;
@@ -218,6 +219,7 @@ public abstract class AppBaseActivity<T extends AppBaseActivityPresenter> extend
 
     public void showError(Throwable e) {
         ToastUtils.show(Utils.appContext.getString(R.string.error_to_connect_server));
+        JLog.e(e.toString());
     }
 
     public void showLoading() {

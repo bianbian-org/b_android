@@ -30,6 +30,12 @@ public class Config {
     public static String sBaseUrl = sHost + "/api/v1bm/";
 
     /**
+     * C端接口地址
+     * http://poly.techjumper.com/api/v1/
+     */
+    public static String sCBaseUrl = sHost + "/api/v1/";
+
+    /**
      * 友邻和商城链接
      */
     public static String sFriend = "http://pl.techjumper.com/neighbor?title=友邻&left=::NativeMenu&right=::NativeNewArticle,::NativeNotification";

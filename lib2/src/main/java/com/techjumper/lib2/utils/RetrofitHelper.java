@@ -33,6 +33,12 @@ public class RetrofitHelper {
     }
 
     @SuppressWarnings("unchecked")
+    public static <T> T createCAPPDefault() {
+        Retrofit retrofit = mRetrofit.baseUrl(Config.sCAPPBaseUrl).build();
+        return (T) retrofit.create(sDefaultInterface);
+    }
+
+    @SuppressWarnings("unchecked")
     public static <T> T createMedicalConnection() {
         Retrofit retrofit = mRetrofit.baseUrl(Config.sMedicalBaseUrl).build();
         return (T) retrofit.create(sDefaultInterface);

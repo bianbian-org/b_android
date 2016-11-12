@@ -11,6 +11,7 @@ import com.techjumper.corelib.mvp.factory.Presenter;
 import com.techjumper.corelib.ui.fragment.BaseViewFragment;
 import com.techjumper.corelib.utils.Utils;
 import com.techjumper.corelib.utils.common.AcHelper;
+import com.techjumper.corelib.utils.common.JLog;
 import com.techjumper.corelib.utils.window.KeyboardUtils;
 import com.techjumper.corelib.utils.window.StatusbarHelper;
 import com.techjumper.corelib.utils.window.ToastUtils;
@@ -134,6 +135,7 @@ public abstract class AppBaseFragment<T extends AppBaseFragmentPresenter> extend
 
     public void showError(Throwable e) {
         ToastUtils.showLong(Utils.appContext.getString(R.string.error_to_connect_server));
+        JLog.e(e.toString());
     }
 
     public void showLoading() {

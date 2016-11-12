@@ -19,8 +19,10 @@ import com.techjumper.corelib.utils.window.ToastUtils;
 import com.techjumper.polyhomeb.R;
 import com.techjumper.polyhomeb.adapter.HomeMenuAdapter;
 import com.techjumper.polyhomeb.mvp.p.fragment.HomeMenuFragmentPresenter;
+import com.techjumper.polyhomeb.mvp.v.activity.MemberManageActivity;
 import com.techjumper.polyhomeb.mvp.v.activity.MessageCenterActivity;
 import com.techjumper.polyhomeb.mvp.v.activity.MyVillageFamilyActivity;
+import com.techjumper.polyhomeb.mvp.v.activity.RoomManageActivity;
 import com.techjumper.polyhomeb.mvp.v.activity.SettingActivity;
 
 import butterknife.Bind;
@@ -90,13 +92,16 @@ public class HomeMenuFragment extends AppBaseFragment<HomeMenuFragmentPresenter>
                 case FAMILY:
                     new AcHelper.Builder(getActivity()).target(MyVillageFamilyActivity.class).start();
                     break;
-                case SMARTHOME:
-                    getPresenter().openStartHomeSetting();
+                case ROOM_MANAGE:
+                    new AcHelper.Builder(getActivity()).target(RoomManageActivity.class).start();
+                    break;
+                case MEMBER_MANAGE:
+                    new AcHelper.Builder(getActivity()).target(MemberManageActivity.class).start();
                     break;
                 case MESSAGE:
                     new AcHelper.Builder(getActivity()).target(MessageCenterActivity.class).start();
                     break;
-                case POINIS:
+                case POINTS:
                     ToastUtils.show(Utils.appContext.getString(R.string.error_not_complete));
                     break;
                 case SETTING:

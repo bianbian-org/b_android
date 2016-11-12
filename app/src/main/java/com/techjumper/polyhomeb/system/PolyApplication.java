@@ -63,6 +63,11 @@ public class PolyApplication extends Lib2Application {
     }
 
     @Override
+    protected String getCAPPBaseUrl() {
+        return Config.sCBaseUrl;
+    }
+
+    @Override
     protected Class getDefaultInterfaceClass() {
         return ServiceAPI.class;
     }

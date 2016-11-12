@@ -12,4 +12,6 @@ public class Config {
 
     public static String sMedicalBaseUrl;
 
+    public static String sCAPPBaseUrl;
+
 }

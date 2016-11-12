@@ -36,22 +36,22 @@ public class HomeMenuFragmentModel extends BaseModel<HomeMenuFragmentPresenter> 
         //细长分割线
         PropertyPlacardDividerLongData propertyPlacardDividerLongData = new PropertyPlacardDividerLongData();
         PropertyPlacardDividerLongBean propertyPlacardDividerLongBean = new PropertyPlacardDividerLongBean(propertyPlacardDividerLongData);
-//        displayBeen.add(propertyPlacardDividerLongBean);
 
-        //短分割线(先声明初始化出来,方便后面使用)
+        //短分割线
         PropertyPlacardDividerData propertyPlacardDividerData = new PropertyPlacardDividerData();
         propertyPlacardDividerData.setMarginLeft(RuleUtils.dp2Px(14));//和布局中文字的marginLeft相同
         PropertyPlacardDividerBean propertyPlacardDividerBean = new PropertyPlacardDividerBean(propertyPlacardDividerData);
 
-//        String rightText = (TextUtils.isEmpty(UserManager.INSTANCE.getUserInfo(UserManager.KEY_CURRENT_FAMILY_NAME))
-//                ? UserManager.INSTANCE.getUserInfo(UserManager.KEY_CURRENT_VILLAGE_NAME)
-//                : UserManager.INSTANCE.getUserInfo(UserManager.KEY_CURRENT_FAMILY_NAME));
         String rightText = UserManager.INSTANCE.getCurrentTitle();
         displayBeen.add(propertyPlacardDividerLongBean);//细长分割线
         displayBeen.add(newItem(Utils.appContext.getString(R.string.my_village_or_family), rightText, HomeMenuItemData.ItemType.FAMILY));
         displayBeen.add(propertyPlacardDividerBean);//短一些分割线
-        displayBeen.add(newItem(Utils.appContext.getString(R.string.polyhome_setting), "", HomeMenuItemData.ItemType.SMARTHOME));
-        displayBeen.add(propertyPlacardDividerBean);//短一些分割线
+        if (UserManager.INSTANCE.isFamily()) {
+            displayBeen.add(newItem(Utils.appContext.getString(R.string.room_manage), "", HomeMenuItemData.ItemType.ROOM_MANAGE));
+            displayBeen.add(propertyPlacardDividerBean);//短一些分割线
+            displayBeen.add(newItem(Utils.appContext.getString(R.string.member_manage), "", HomeMenuItemData.ItemType.MEMBER_MANAGE));
+            displayBeen.add(propertyPlacardDividerBean);//短一些分割线
+        }
         displayBeen.add(newItem(Utils.appContext.getString(R.string.message_center), "", HomeMenuItemData.ItemType.MESSAGE));
         displayBeen.add(propertyPlacardDividerLongBean);//细长分割线
 
@@ -65,7 +65,7 @@ public class HomeMenuFragmentModel extends BaseModel<HomeMenuFragmentPresenter> 
         displayBeen.add(propertyPlacardDividerLongBean);
 
         //我的积分
-        displayBeen.add(newItem(Utils.appContext.getString(R.string.my_points), "", HomeMenuItemData.ItemType.POINIS));
+        displayBeen.add(newItem(Utils.appContext.getString(R.string.my_points), "", HomeMenuItemData.ItemType.POINTS));
 
         //细的分割线
         displayBeen.add(propertyPlacardDividerLongBean);

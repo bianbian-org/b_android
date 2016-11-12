@@ -13,14 +13,14 @@ public class PaymentsEntity extends BaseEntity<PaymentsEntity.DataBean> {
     public static class DataBean {
         private WxpayBean wxpay;
         private AliPayBean alipay;
-        private UnionBean union;
+        private UnionBean unionpay;
 
         public UnionBean getUnion() {
-            return union;
+            return unionpay;
         }
 
-        public void setUnion(UnionBean union) {
-            this.union = union;
+        public void setUnion(UnionBean unionpay) {
+            this.unionpay = unionpay;
         }
 
         public WxpayBean getWxpay() {
