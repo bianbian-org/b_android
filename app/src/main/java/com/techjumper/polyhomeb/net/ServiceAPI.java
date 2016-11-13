@@ -4,7 +4,9 @@ package com.techjumper.polyhomeb.net;
 import com.techjumper.polyhomeb.entity.AvatarEntity;
 import com.techjumper.polyhomeb.entity.BaseArgumentsEntity;
 import com.techjumper.polyhomeb.entity.BluetoothLockDoorInfoEntity;
+import com.techjumper.polyhomeb.entity.C_AllMemberEntity;
 import com.techjumper.polyhomeb.entity.C_AllRoomEntity;
+import com.techjumper.polyhomeb.entity.C_RoomsByMemberEntity;
 import com.techjumper.polyhomeb.entity.CheckInEntity;
 import com.techjumper.polyhomeb.entity.JoinFamilyEntity;
 import com.techjumper.polyhomeb.entity.LoginEntity;
@@ -678,5 +680,24 @@ public interface ServiceAPI {
      */
     @POST("room_update")
     Observable<RenameRoomEntity> renameRoom(@Body BaseArgumentsEntity entity);
+
+    /**
+     * 查询所有成员
+     */
+    @POST("family_user_queryusers")
+    Observable<C_AllMemberEntity> getAllMember(@Body BaseArgumentsEntity entity);
+
+    /**
+     * 通过成员id和家庭id查询此成员在此家庭下的房间
+     */
+    @POST("room_user_queryrooms")
+    Observable<C_RoomsByMemberEntity> getRoomsByMember(@Body BaseArgumentsEntity entity);
+
+    /**
+     * 删除家庭内某个成员
+     */
+    @POST("family_user_delete")
+    Observable<TrueEntity> deleteMember(@Body BaseArgumentsEntity entity);
+
 }
 

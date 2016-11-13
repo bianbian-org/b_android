@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/color_ebecec"
+    android:orientation="vertical">
+
+    <include layout="@layout/title_back" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/dp_30"
+        android:orientation="vertical">
+
+        <include layout="@layout/item_property_repair_divider_long" />
+
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/dp_48"
+            android:background="@color/color_ffffff">
+
+            <TextView
+                android:id="@+id/tv"
+                android:layout_width="wrap_content"
+                android:layout_height="@dimen/dp_48"
+                android:layout_marginLeft="@dimen/sp_14"
+                android:gravity="center"
+                android:text="@string/set_as_admin"
+                android:textColor="@color/color_3e3e3e"
+                android:textSize="@dimen/sp_16" />
+
+            <android.support.v7.widget.SwitchCompat
+                android:id="@+id/switch_admin"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="right|center"
+                android:layout_marginRight="@dimen/dp_14" />
+
+        </FrameLayout>
+
+        <include layout="@layout/item_property_repair_divider_long" />
+
+    </LinearLayout>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/dp_5"
+        android:layout_marginLeft="@dimen/dp_14"
+        android:layout_marginTop="@dimen/dp_35"
+        android:text="@string/manageable_room"
+        android:textColor="@color/color_727272"
+        android:textSize="@dimen/sp_15" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1">
+
+            <cn.finalteam.loadingviewfinal.RecyclerViewFinal
+                android:id="@+id/rv"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+
+        </FrameLayout>
+
+        <TextView
+            android:id="@+id/tv_ok"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/dp_47"
+            android:layout_gravity="bottom"
+            android:layout_marginBottom="@dimen/dp_20"
+            android:layout_marginLeft="@dimen/dp_14"
+            android:layout_marginRight="@dimen/dp_14"
+            android:layout_marginTop="@dimen/dp_20"
+            android:background="@drawable/bg_green_button"
+            android:gravity="center"
+            android:text="@string/ok"
+            android:textColor="@color/color_ffffff"
+            android:textSize="@dimen/sp_20" />
+
+    </LinearLayout>
+
+</LinearLayout>

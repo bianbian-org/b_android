@@ -386,7 +386,9 @@
     <string name="new_room_">新建房间</string>
     <string name="edit">编辑</string>
     <string name="confirm_delete_x_room">确定删除房间\"%1$s\"吗?</string>
-    <string name="delete_x_failed">删除房间\"%1$s\"失败，请重试</string>
+    <string name="confirm_delete_x_member">确定移除成员\"%1$s\"吗?</string>
+    <string name="delete_room_x_failed">删除房间\"%1$s\"失败，请重试</string>
+    <string name="delete_member_x_failed">移除成员\"%1$s\"失败，请重试</string>
     <string name="room_name_length_5">不超过5个字符</string>
     <string name="room_name">房间名称</string>
     <string name="can_not_be_null">名称不能为空</string>
@@ -394,6 +396,9 @@
     <string name="error_new_room">创建房间失败</string>
     <string name="rename_room">重命名房间</string>
     <string name="error_rename_room">重命名房间失败</string>
+    <string name="member_detail">成员详情</string>
+    <string name="set_as_admin">是否设为管理员</string>
+    <string name="manageable_room">可管理的房间</string>
 
 
 </resources>

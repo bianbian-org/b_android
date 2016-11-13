@@ -79,6 +79,7 @@ public class RoomManageActivity extends AppBaseActivity<RoomManageActivityPresen
     }
 
     public void onRoomsDataReceive(List<DisplayBean> datas) {
+        if (mAdapter == null) return;
         mAdapter.loadData(datas);
     }
 

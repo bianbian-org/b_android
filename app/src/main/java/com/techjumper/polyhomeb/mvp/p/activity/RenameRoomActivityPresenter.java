@@ -88,6 +88,7 @@ public class RenameRoomActivityPresenter extends AppBaseActivityPresenter<Rename
                                 }
                                 RxBus.INSTANCE.send(new RenameRoomEvent(renameRoomEntity.getData().getId()
                                         , renameRoomEntity.getData().getRoom_name()));
+                                KeyboardUtils.closeKeyboard(getView().getEtNewRoom());
                                 getView().finish();
                             }
                         }));

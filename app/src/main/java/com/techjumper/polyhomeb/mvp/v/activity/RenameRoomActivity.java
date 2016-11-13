@@ -6,6 +6,7 @@ import android.view.View;
 import android.widget.EditText;
 
 import com.techjumper.corelib.mvp.factory.Presenter;
+import com.techjumper.corelib.utils.window.KeyboardUtils;
 import com.techjumper.polyhomeb.R;
 import com.techjumper.polyhomeb.mvp.p.activity.RenameRoomActivityPresenter;
 
@@ -47,5 +48,17 @@ public class RenameRoomActivity extends AppBaseActivity<RenameRoomActivityPresen
 
     public EditText getEtNewRoom() {
         return mEtRenameRoom;
+    }
+
+    @Override
+    protected void onDestroy() {
+        KeyboardUtils.closeKeyboard(getEtNewRoom());
+        super.onDestroy();
+    }
+
+    @Override
+    public void onBackPressed() {
+        KeyboardUtils.closeKeyboard(getEtNewRoom());
+        super.onBackPressed();
     }
 }

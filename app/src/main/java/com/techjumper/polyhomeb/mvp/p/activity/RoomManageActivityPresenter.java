@@ -184,12 +184,14 @@ public class RoomManageActivityPresenter extends AppBaseActivityPresenter<RoomMa
         addSubscription(
                 mSubs2 = mModel.deleteRoom(room_id)
                         .flatMap(trueEntity -> {
+                            if (!processNetworkResult(trueEntity)) return mModel.getAllRooms();
                             if (trueEntity == null
                                     || trueEntity.getData() == null
                                     || TextUtils.isEmpty(trueEntity.getData().getResult())
                                     || !"true".equalsIgnoreCase(trueEntity.getData().getResult())) {
                                 ToastUtils.show(String.format(
-                                        getView().getString(R.string.delete_x_failed), room_name));
+                                        getView().getString(R.string.delete_room_x_failed), room_name));
+                                return mModel.getAllRooms();
                             }
                             return mModel.getAllRooms();
                         })

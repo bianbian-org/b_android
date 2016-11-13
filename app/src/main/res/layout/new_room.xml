@@ -13,7 +13,6 @@
         android:layout_height="@dimen/dp_48"
         android:background="@color/color_ffffff"
         android:gravity="center"
-        android:orientation="vertical"
         android:text="@string/new_room"
         android:textColor="@color/color_24c88a"
         android:textSize="@dimen/sp_16" />

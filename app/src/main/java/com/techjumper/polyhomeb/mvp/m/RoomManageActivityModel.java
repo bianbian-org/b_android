@@ -100,15 +100,6 @@ public class RoomManageActivityModel extends BaseModel<RoomManageActivityPresent
             displayBeen.add(roomManageBean);
 
             displayBeen.add(propertyPlacardDividerLongBean);
-            displayBeen.add(propertyRepairBigDividerBean);
-            displayBeen.add(propertyPlacardDividerLongBean);
-
-            //新增房间
-            NewRoomData newRoomData = new NewRoomData();
-            newRoomData.setCanShow(getPresenter().isEditMode());
-            NewRoomBean newRoomBean = new NewRoomBean(newRoomData);
-            displayBeen.add(newRoomBean);
-            displayBeen.add(propertyPlacardDividerLongBean);
 
         } else {
             for (int i = 0; i < result.size(); i++) {
