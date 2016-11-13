@@ -1,16 +1,12 @@
 package com.techjumper.polyhome.b.home.adapter;
 
-import android.content.Context;
 import android.support.v4.view.PagerAdapter;
-import android.support.v4.view.ViewPager;
 import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 
 import com.techjumper.lib2.utils.PicassoHelper;
-import com.techjumper.polyhome.b.home.R;
 import com.techjumper.polyhome.b.home.widget.MyTextureView;
 import com.techjumper.polyhome_b.adlib.entity.AdEntity;
 
@@ -23,6 +19,7 @@ import java.util.List;
  */
 
 public class AdViewPagerAdapter extends PagerAdapter {
+    public static final int MAX_SIZE = 5000;
     private List<View> views;
     private List<AdEntity.AdsEntity> adsEntities;
 
@@ -50,7 +47,8 @@ public class AdViewPagerAdapter extends PagerAdapter {
 
     @Override
     public int getCount() {
-        return views.size();
+//        return views.size();
+        return views.size() == 0 ? 0 : MAX_SIZE;
     }
 
     @Override
@@ -58,8 +56,13 @@ public class AdViewPagerAdapter extends PagerAdapter {
         return arg0 == arg1;
     }
 
+    public List<View> getViews() {
+        return views;
+    }
+
     @Override
     public void destroyItem(ViewGroup container, int position, Object object) {
+        position %= views.size();
         container.removeView(views.get(position));
     }
 
@@ -74,6 +77,7 @@ public class AdViewPagerAdapter extends PagerAdapter {
     @Override
     public Object instantiateItem(ViewGroup container, int position) {
         Log.d("ad12", "instantiateItem");
+        position %= views.size();
         View view = views.get(position);
         view.setTag(position);
 
