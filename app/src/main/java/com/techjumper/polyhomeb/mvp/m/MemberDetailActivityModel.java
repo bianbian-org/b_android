@@ -55,7 +55,7 @@ public class MemberDetailActivityModel extends BaseModel<MemberDetailActivityPre
         return getExtras().getString(KEY_MEMBER_NAME, "");
     }
 
-    private String getMemberId() {
+    public String getMemberId() {
         return getExtras().getString(KEY_MEMBER_ID, "");
     }
 
@@ -92,6 +92,18 @@ public class MemberDetailActivityModel extends BaseModel<MemberDetailActivityPre
         BaseArgumentsEntity baseArguments = NetHelper.createBaseCAPPArguments(keyValuePair);
         return RetrofitHelper.<ServiceAPI>createCAPPDefault()
                 .addMemberToRoom(baseArguments)
+                .compose(CommonWrap.wrap());
+    }
+
+    public Observable<TrueEntity> transferAuthority() {
+        KeyValuePair keyValuePair = KeyValueCreator.transferAuthority(
+                UserManager.INSTANCE.getUserInfo(UserManager.KEY_ID)
+                , UserManager.INSTANCE.getTicket()
+                , UserManager.INSTANCE.getUserInfo(UserManager.KEY_CURRENT_FAMILY_ID)
+                , getMemberId());
+        BaseArgumentsEntity entity = NetHelper.createBaseArguments(keyValuePair);
+        return RetrofitHelper.<ServiceAPI>createDefault()
+                .transferAuthority(entity)
                 .compose(CommonWrap.wrap());
     }
 

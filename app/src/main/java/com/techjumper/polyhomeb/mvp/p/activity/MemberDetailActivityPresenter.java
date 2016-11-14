@@ -6,6 +6,7 @@ import android.view.View;
 import android.widget.CompoundButton;
 
 import com.techjumper.corelib.rx.tools.RxUtils;
+import com.techjumper.corelib.utils.common.AcHelper;
 import com.techjumper.corelib.utils.window.ToastUtils;
 import com.techjumper.polyhomeb.R;
 import com.techjumper.polyhomeb.adapter.recycler_ViewHolder.databean.MemberDetailBean;
@@ -13,6 +14,8 @@ import com.techjumper.polyhomeb.entity.C_AllRoomEntity;
 import com.techjumper.polyhomeb.entity.TrueEntity;
 import com.techjumper.polyhomeb.mvp.m.MemberDetailActivityModel;
 import com.techjumper.polyhomeb.mvp.v.activity.MemberDetailActivity;
+import com.techjumper.polyhomeb.mvp.v.activity.TabHomeActivity;
+import com.techjumper.polyhomeb.user.UserManager;
 
 import butterknife.OnClick;
 import rx.Observer;
@@ -94,15 +97,41 @@ public class MemberDetailActivityPresenter extends AppBaseActivityPresenter<Memb
     }
 
     private void transferAuthority() {
+        getView().showLoading(false);
         RxUtils.unsubscribeIfNotNull(mSubs4);
-//        addSubscription(
-//                mSubs4 = mModel.transferAuthority().subscribe());
+        addSubscription(
+                mSubs4 = mModel.transferAuthority()
+                        .subscribe(new Observer<TrueEntity>() {
+                            @Override
+                            public void onCompleted() {
+                                getView().dismissLoading();
+                            }
 
+                            @Override
+                            public void onError(Throwable e) {
+                                getView().dismissLoading();
+                                getView().showError(e);
+                            }
 
-        //成功的话,直接把管理员字段存下来，因为在开启TabHomeActivity的时候，侧边栏自己会去查找这个字段的值.
-        //关闭当前页面，跳转到TabHomeActivity去
-
-        //失败的话就保留在原位置不动.
+                            @Override
+                            public void onNext(TrueEntity trueEntity) {
+                                if (!processNetworkResult(trueEntity)) return;
+                                if (trueEntity == null || trueEntity.getData() == null
+                                        || trueEntity.getData().getResult() == null
+                                        || TextUtils.isEmpty(trueEntity.getData().getResult())
+                                        || !"true".equalsIgnoreCase(trueEntity.getData().getResult())) {
+                                    ToastUtils.show(getView().getString(R.string.transfer_authority_failed));
+                                    return;
+                                }
+                                ToastUtils.show(getView().getString(R.string.transfer_authority_success));
+                                UserManager.INSTANCE.saveUserInfo(UserManager.KEY_CURRENT_FAMILY_MANAGER_ID
+                                        , mModel.getMemberId());
+                                new AcHelper.Builder(getView())
+                                        .closeCurrent(true)
+                                        .target(TabHomeActivity.class)
+                                        .start();
+                            }
+                        }));
     }
 
     private void deleteMemberFromRoom(CompoundButton buttonView, String room_id) {
@@ -120,7 +149,7 @@ public class MemberDetailActivityPresenter extends AppBaseActivityPresenter<Memb
                             public void onError(Throwable e) {
                                 getView().dismissLoading();
                                 getView().showError(e);
-                                revertView(buttonView, true);
+//                                revertView(buttonView, true);
                             }
 
                             @Override
@@ -130,7 +159,7 @@ public class MemberDetailActivityPresenter extends AppBaseActivityPresenter<Memb
                                         || TextUtils.isEmpty(trueEntity.getData().getResult())
                                         || !"true".equals(trueEntity.getData().getResult())) {
                                     ToastUtils.show(getView().getString(R.string.delete_member_failed));
-                                    revertView(buttonView, true);
+//                                    revertView(buttonView, true);
                                     return;
                                 }
                                 ToastUtils.show(getView().getString(R.string.delete_member_success));
@@ -153,7 +182,7 @@ public class MemberDetailActivityPresenter extends AppBaseActivityPresenter<Memb
                             public void onError(Throwable e) {
                                 getView().dismissLoading();
                                 getView().showError(e);
-                                revertView(buttonView, false);
+//                                revertView(buttonView, false);
                             }
 
                             @Override
@@ -163,7 +192,7 @@ public class MemberDetailActivityPresenter extends AppBaseActivityPresenter<Memb
                                         || TextUtils.isEmpty(trueEntity.getData().getResult())
                                         || !"true".equals(trueEntity.getData().getResult())) {
                                     ToastUtils.show(getView().getString(R.string.add_member_failed));
-                                    revertView(buttonView, false);
+//                                    revertView(buttonView, false);
                                     return;
                                 }
                                 ToastUtils.show(getView().getString(R.string.add_member_success));
@@ -171,10 +200,10 @@ public class MemberDetailActivityPresenter extends AppBaseActivityPresenter<Memb
                         }));
     }
 
-    private void revertView(CompoundButton buttonView, boolean checked) {
-        if (buttonView != null) {
-            buttonView.setChecked(checked);
-        }
-    }
+//    private void revertView(CompoundButton buttonView, boolean checked) {
+//        if (buttonView != null) {
+//            buttonView.setChecked(checked);
+//        }
+//    }
 
 }

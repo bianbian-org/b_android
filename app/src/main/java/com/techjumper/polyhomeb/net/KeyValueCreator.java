@@ -405,4 +405,11 @@ public class KeyValueCreator {
                 .put("add_user_id", add_user_id)
                 .put("room_id", room_ids);
     }
+
+    public static KeyValuePair transferAuthority(String user_id, String ticket, String family_id, String new_user_id) {
+        return newPair().put("user_id", user_id)
+                .put("ticket", ticket)
+                .put("family_id", family_id)
+                .put("new_user_id", new_user_id);
+    }
 }

@@ -714,5 +714,11 @@ public interface ServiceAPI {
     @POST("room_user_add")
     Observable<TrueEntity> addMemberToRoom(@Body BaseArgumentsEntity entity);
 
+    /**
+     * 转交管理员权限
+     */
+    @POST("family/change_manager")
+    Observable<TrueEntity> transferAuthority(@Body BaseArgumentsEntity entity);
+
 }
 
