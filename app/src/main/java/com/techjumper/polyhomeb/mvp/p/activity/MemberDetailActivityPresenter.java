@@ -7,6 +7,7 @@ import android.widget.CompoundButton;
 
 import com.techjumper.corelib.rx.tools.RxUtils;
 import com.techjumper.corelib.utils.common.AcHelper;
+import com.techjumper.corelib.utils.window.DialogUtils;
 import com.techjumper.corelib.utils.window.ToastUtils;
 import com.techjumper.polyhomeb.R;
 import com.techjumper.polyhomeb.adapter.recycler_ViewHolder.databean.MemberDetailBean;
@@ -93,7 +94,22 @@ public class MemberDetailActivityPresenter extends AppBaseActivityPresenter<Memb
 
     @OnClick(R.id.to_admin_user)
     public void onClick(View view) {
-        transferAuthority();
+        showConfirmDialog();
+    }
+
+    private void showConfirmDialog() {
+        DialogUtils.getBuilder(getView())
+                .negativeText(R.string.cancel)
+                .positiveText(R.string.ok)
+                .content(String.format(getView().getString(R.string.confirm_transfer_authority_to_x), mModel.getMemberName()))
+                .onAny((dialog, which) -> {
+                    switch (which) {
+                        case POSITIVE:
+                            transferAuthority();
+                            break;
+                    }
+                })
+                .show();
     }
 
     private void transferAuthority() {

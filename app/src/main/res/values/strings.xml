@@ -402,8 +402,8 @@
     <string name="add_member_success">添加房间成功</string>
     <string name="delete_member_failed">移除房间失败</string>
     <string name="add_member_failed">添加房间失败</string>
+    <string name="confirm_transfer_authority_to_x">确定移交权限给\"%1$s\"吗?</string>
     <string name="transfer_authority_failed">管理员权限转移失败</string>
     <string name="transfer_authority_success">管理员权限转移成功</string>
-
 
 </resources>
