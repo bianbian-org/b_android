@@ -27,6 +27,11 @@ public class ShoppingActivityPresenter extends AppBaseActivityPresenter<Shopping
         getView().finish();
     }
 
+    @OnClick(R.id.close)
+    void close() {
+        getView().finish();
+    }
+
     @Override
     public void initData(Bundle savedInstanceState) {
 

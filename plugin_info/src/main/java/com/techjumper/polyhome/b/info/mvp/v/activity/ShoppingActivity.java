@@ -36,6 +36,8 @@ public class ShoppingActivity extends AppBaseActivity<ShoppingActivityPresenter>
     TextView bottomTitle;
     @Bind(R.id.bottom_date)
     TextView bottomDate;
+    @Bind(R.id.close)
+    TextView close;
     private Timer timer = new Timer();
 
     @Override
@@ -55,6 +57,7 @@ public class ShoppingActivity extends AppBaseActivity<ShoppingActivityPresenter>
 
         bottomTitle.setText(R.string.title_shopping);
         bottomDate.setText(CommonDateUtil.getTitleDate());
+        close.setVisibility(View.VISIBLE);
 
         WebSettings ws = webView.getSettings();
         ws.setJavaScriptEnabled(true);

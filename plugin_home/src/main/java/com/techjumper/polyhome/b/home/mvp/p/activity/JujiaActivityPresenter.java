@@ -18,6 +18,7 @@ import com.techjumper.polyhome.b.home.UserInfoManager;
 import com.techjumper.polyhome.b.home.db.util.AdClickDbUtil;
 import com.techjumper.polyhome.b.home.mvp.m.JujiaActivityModel;
 import com.techjumper.polyhome.b.home.mvp.v.activity.JujiaActivity;
+import com.techjumper.polyhome_b.adlib.Config;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -41,15 +42,20 @@ public class JujiaActivityPresenter extends AppBaseActivityPresenter<JujiaActivi
 
     @OnClick(R.id.bottom_back)
     void back() {
-        if (webView.canGoBack()) {
-            webView.goBack();
-        } else {
+        if (webView.getUrl().equals(Config.sJujia)) {
             getView().finish();
+        } else {
+            webView.goBack();
         }
     }
 
     @OnClick(R.id.bottom_home)
     void home() {
+        getView().finish();
+    }
+
+    @OnClick(R.id.close)
+    void close() {
         getView().finish();
     }
 

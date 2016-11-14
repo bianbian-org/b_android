@@ -37,6 +37,8 @@ public class JujiaActivity extends AppBaseActivity<JujiaActivityPresenter> {
     TextView callText;
     @Bind(R.id.call_layout)
     LinearLayout callLayout;
+    @Bind(R.id.close)
+    TextView close;
 
     private long time;
     private TimerTask timerTask;
@@ -62,6 +64,7 @@ public class JujiaActivity extends AppBaseActivity<JujiaActivityPresenter> {
     protected void initView(Bundle savedInstanceState) {
         bottomTitle.setText(R.string.title_jujia_server);
         time = getIntent().getLongExtra(TIME, 0L);
+        close.setVisibility(View.VISIBLE);
 
         callText.setText(R.string.call_order);
 
@@ -116,13 +119,6 @@ public class JujiaActivity extends AppBaseActivity<JujiaActivityPresenter> {
         if (webView != null) {
             webView.destroy();
         }
-    }
-
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        // TODO: add setContentView(...) invocation
-        ButterKnife.bind(this);
     }
 
     private class webViewClient extends WebViewClient {
