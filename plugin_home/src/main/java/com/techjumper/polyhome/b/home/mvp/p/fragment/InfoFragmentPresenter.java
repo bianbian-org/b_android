@@ -4,6 +4,7 @@ import android.content.ComponentName;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.view.ViewPager;
+import android.support.v4.widget.Space;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -30,7 +31,6 @@ import com.techjumper.commonres.util.RxUtil;
 import com.techjumper.corelib.rx.tools.RxBus;
 import com.techjumper.corelib.utils.Utils;
 import com.techjumper.corelib.utils.common.JLog;
-import com.techjumper.corelib.utils.window.ToastUtils;
 import com.techjumper.lib2.utils.PicassoHelper;
 import com.techjumper.polyhome.b.home.R;
 import com.techjumper.polyhome.b.home.UserInfoManager;
@@ -51,7 +51,6 @@ import com.techjumper.polyhome_b.adlib.window.AdWindowManager;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Random;
 
 import butterknife.OnClick;
 import rx.Subscriber;
@@ -66,7 +65,7 @@ public class InfoFragmentPresenter extends AppBaseFragmentPresenter<InfoFragment
     private MyTextureView textureView;
     private ImageView adImageView;
     private AdEntity.AdsEntity mAdsEntity = new AdEntity.AdsEntity();
-    private String addType = PloyhomeFragmentPresenter.IMAGE_AD_TYPE;
+    private String addType = AdViewPagerAdapter.IMAGE_AD_TYPE;
     private List<MedicalEntity.MedicalItemEntity> entities = new ArrayList<>();
     private ArcDataView advHeartrate;
     private ArcDataView advBloodsugar;
@@ -80,7 +79,7 @@ public class InfoFragmentPresenter extends AppBaseFragmentPresenter<InfoFragment
     private long heartbeatTime;
     private AdViewPager adViewPager;
 
-    private AdViewPagerAdapter adapter;
+    private AdViewPagerAdapter adapter = new AdViewPagerAdapter();
     private List<View> views = new ArrayList<>();
     private List<Integer> resIds = new ArrayList<>();
     private int currentPage = 0;
@@ -127,7 +126,7 @@ public class InfoFragmentPresenter extends AppBaseFragmentPresenter<InfoFragment
         textureView = getView().getTextureViewTem();
         adViewPager = getView().getAdvp();
 
-        adViewPager.setAdapter(adapter = new AdViewPagerAdapter());
+        adViewPager.setAdapter(adapter);
         adViewPager.setOffscreenPageLimit(3);
         adViewPager.addOnPageChangeListener(this);
         adViewPager.setCurrentItem(0);
@@ -473,7 +472,7 @@ public class InfoFragmentPresenter extends AppBaseFragmentPresenter<InfoFragment
         JLog.d("有新的广告来啦. 本地广告路径:" + file + ", 详细信息: " + adsEntity);
         addType = adsEntity.getMedia_type();
 
-        if (addType.equals(PloyhomeFragmentPresenter.IMAGE_AD_TYPE)) {
+        if (addType.equals(AdViewPagerAdapter.IMAGE_AD_TYPE)) {
             adImageView.setVisibility(View.VISIBLE);
             textureView.setVisibility(View.INVISIBLE);
 
@@ -490,7 +489,7 @@ public class InfoFragmentPresenter extends AppBaseFragmentPresenter<InfoFragment
             }
 
             adsEntity.setMedia_url(file.getAbsolutePath());
-        } else if (addType.equals(PloyhomeFragmentPresenter.VIDEO_AD_TYPE)) {
+        } else if (addType.equals(AdViewPagerAdapter.VIDEO_AD_TYPE)) {
             Log.d("ergou", "equals");
             adImageView.setVisibility(View.INVISIBLE);
             textureView.setVisibility(View.VISIBLE);
@@ -540,22 +539,29 @@ public class InfoFragmentPresenter extends AppBaseFragmentPresenter<InfoFragment
 
                                 if (adImageView == null || textureView == null)
                                     return;
-                                if (PloyhomeFragmentPresenter.IMAGE_AD_TYPE.equals(addType)) {
-                                    ImageView imageView = (ImageView) inflater.inflate(R.layout.layout_ad_image, null);
+                                if (AdViewPagerAdapter.IMAGE_AD_TYPE.equals(addType)) {
+//                                    ImageView imageView = (ImageView) inflater.inflate(R.layout.layout_ad_image, null);
+                                    View imageView = new Space(getView().getContext());
 
                                     views.add(imageView);
                                     entity.setMedia_url(file.getAbsolutePath());
-                                } else if (PloyhomeFragmentPresenter.VIDEO_AD_TYPE.equals(addType)) {
-
-                                    MyTextureView textureView = (MyTextureView) inflater.inflate(R.layout.layout_ad_video, null);
+                                } else if (AdViewPagerAdapter.VIDEO_AD_TYPE.equals(addType)) {
+//                                    MyTextureView textureView = (MyTextureView) inflater.inflate(R.layout.layout_ad_video, null);
+                                    View textureView = new Space(getView().getContext());
 
                                     views.add(textureView);
                                     entity.setMedia_url(file.getAbsolutePath());
                                 }
                             }
                         }
-                        adapter.setViews(views, adsEntities);
-                        adapter.notifyDataSetChanged();
+//                        adapter.setViews(views, adsEntities);
+                        adapter.setDatas(adsEntities);
+                        if (adViewPager == null)
+                            return;
+                        if (adViewPager.getWrapper() != null) {
+                            adViewPager.getWrapper().notifyDataSetChanged();
+                        }
+//                        adapter.notifyDataSetChanged();
                     }
 
                     @Override
@@ -563,7 +569,7 @@ public class InfoFragmentPresenter extends AppBaseFragmentPresenter<InfoFragment
 //                        HandleAd(adsEntity, file);
                         Log.d("ad12", "跳下一页, 当前页" + currentPage);
                         if (adViewPager != null) {
-                            adViewPager.setCurrentItem(currentPage, false);
+                            adViewPager.setCurrentItem(currentPage, false, true);
                         }
                         mIsGetNewAd = true;
                         mAdsEntity = adsEntity;
@@ -611,7 +617,7 @@ public class InfoFragmentPresenter extends AppBaseFragmentPresenter<InfoFragment
                 && adsEntities.size() != 0
                 && views.size() == adsEntities.size()) {
             mAdsEntity = adsEntities.get(position);
-            if (mAdsEntity.getMedia_type().equals(PloyhomeFragmentPresenter.VIDEO_AD_TYPE)) {
+            if (mAdsEntity.getMedia_type().equals(AdViewPagerAdapter.VIDEO_AD_TYPE)) {
                 if (currentView != null) {
                     ((MyTextureView) currentView).stop();
                     currentView = null;
@@ -623,7 +629,7 @@ public class InfoFragmentPresenter extends AppBaseFragmentPresenter<InfoFragment
 
                 adapter.playVideo(currentView, mAdsEntity.getFile());
             } else {
-                if (currentView != null) {
+                if (currentView != null && currentView instanceof MyTextureView) {
                     ((MyTextureView) currentView).stop();
                     currentView = null;
                 }

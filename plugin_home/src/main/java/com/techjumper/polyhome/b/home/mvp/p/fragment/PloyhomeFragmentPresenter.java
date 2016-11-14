@@ -4,6 +4,7 @@ import android.content.ComponentName;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.view.ViewPager;
+import android.support.v4.widget.Space;
 import android.text.Html;
 import android.text.TextUtils;
 import android.util.Log;
@@ -66,12 +67,12 @@ import java.util.TimerTask;
 import rx.Subscriber;
 import rx.android.schedulers.AndroidSchedulers;
 
+import static com.techjumper.polyhome.b.home.mvp.v.activity.AdNewActivity.IMAGE_AD_TYPE;
+
 /**
  * Created by kevin on 16/4/28.
  */
 public class PloyhomeFragmentPresenter extends AppBaseFragmentPresenter<PloyhomeFragment> implements AdController.IAlarm, ViewPager.OnPageChangeListener {
-    public static final String IMAGE_AD_TYPE = "1";
-    public static final String VIDEO_AD_TYPE = "2";
 
     private PloyhomeFragmentModel model = new PloyhomeFragmentModel(this);
     private int type = -1;
@@ -96,7 +97,7 @@ public class PloyhomeFragmentPresenter extends AppBaseFragmentPresenter<Ployhome
     private boolean isOnResume;
     private long heartbeatTime;
     private AdViewPager adViewPager;
-    private AdViewPagerAdapter adapter;
+    private AdViewPagerAdapter adapter = new AdViewPagerAdapter();
     private List<View> views = new ArrayList<>();
     private List<Integer> resIds = new ArrayList<>();
     private int currentPage = 0;
@@ -125,12 +126,12 @@ public class PloyhomeFragmentPresenter extends AppBaseFragmentPresenter<Ployhome
     @Override
     public void onViewInited(Bundle savedInstanceState) {
         inflater = LayoutInflater.from(getView().getContext());
-//
+
         adImageView = getView().getAd();
         textureView = getView().getTextureView();
         adViewPager = getView().getAdvp();
 
-        adViewPager.setAdapter(adapter = new AdViewPagerAdapter());
+        adViewPager.setAdapter(adapter);
         adViewPager.setOffscreenPageLimit(3);
         adViewPager.addOnPageChangeListener(this);
         adViewPager.setCurrentItem(0);
@@ -662,7 +663,7 @@ public class PloyhomeFragmentPresenter extends AppBaseFragmentPresenter<Ployhome
             }
 
             adsEntity.setMedia_url(file.getAbsolutePath());
-        } else if (VIDEO_AD_TYPE.equals(addType)) {
+        } else if (AdViewPagerAdapter.VIDEO_AD_TYPE.equals(addType)) {
             Log.d("ergou", "equals");
             adImageView.setVisibility(View.INVISIBLE);
             textureView.setVisibility(View.VISIBLE);
@@ -840,7 +841,6 @@ public class PloyhomeFragmentPresenter extends AppBaseFragmentPresenter<Ployhome
                         }
 
                         Log.d("ad11", "所有" + allAds);
-
                         for (int i = 0; i < allAds.size(); i++) {
                             AdEntity.AdsEntity entity = allAds.get(i);
                             File file = entity.getFile();
@@ -848,25 +848,30 @@ public class PloyhomeFragmentPresenter extends AppBaseFragmentPresenter<Ployhome
                                 adsEntities.add(entity);
                                 Log.d("ad12", file + ", 详细信息: " + entity);
                                 addType = entity.getMedia_type();
-
                                 if (adImageView == null || textureView == null)
                                     return;
-                                if (IMAGE_AD_TYPE.equals(addType)) {
-                                    ImageView imageView = (ImageView) inflater.inflate(R.layout.layout_ad_image, null);
+                                if (AdViewPagerAdapter.IMAGE_AD_TYPE.equals(addType)) {
+//                                    ImageView imageView = (ImageView) inflater.inflate(R.layout.layout_ad_image, null);
+                                    View imageView = new Space(getView().getContext());
 
                                     views.add(imageView);
                                     entity.setMedia_url(file.getAbsolutePath());
-                                } else if (VIDEO_AD_TYPE.equals(addType)) {
-
-                                    MyTextureView textureView = (MyTextureView) inflater.inflate(R.layout.layout_ad_video, null);
+                                } else if (AdViewPagerAdapter.VIDEO_AD_TYPE.equals(addType)) {
+//                                    MyTextureView textureView = (MyTextureView) inflater.inflate(R.layout.layout_ad_video, null);
+                                    View textureView = new Space(getView().getContext());
 
                                     views.add(textureView);
                                     entity.setMedia_url(file.getAbsolutePath());
                                 }
                             }
                         }
-                        adapter.setViews(views, adsEntities);
-                        adapter.notifyDataSetChanged();
+                        adapter.setDatas(adsEntities);
+                        if (adViewPager == null)
+                            return;
+                        if (adViewPager.getWrapper() != null) {
+                            adViewPager.getWrapper().notifyDataSetChanged();
+                        }
+//                        adapter.notifyDataSetChanged();
                     }
 
                     @Override
@@ -878,7 +883,7 @@ public class PloyhomeFragmentPresenter extends AppBaseFragmentPresenter<Ployhome
                         Log.d("ad12", "跳下一页, 当前页" + currentPage);
 
                         if (adViewPager != null) {
-                            adViewPager.setCurrentItem(currentPage, false);
+                            adViewPager.setCurrentItem(currentPage, false, true);
                         }
                         mIsGetNewAd = true;
                         mAdsEntity = adsEntity;
@@ -925,7 +930,7 @@ public class PloyhomeFragmentPresenter extends AppBaseFragmentPresenter<Ployhome
                 && adsEntities.size() != 0
                 && views.size() == adsEntities.size()) {
             mAdsEntity = adsEntities.get(position);
-            if (mAdsEntity.getMedia_type().equals(VIDEO_AD_TYPE)) {
+            if (mAdsEntity.getMedia_type().equals(AdViewPagerAdapter.VIDEO_AD_TYPE)) {
                 if (currentView != null) {
                     ((MyTextureView) currentView).stop();
                     currentView = null;
@@ -937,10 +942,10 @@ public class PloyhomeFragmentPresenter extends AppBaseFragmentPresenter<Ployhome
 
                 adapter.playVideo(currentView, mAdsEntity.getFile());
             } else {
-                if (currentView != null) {
+                if (currentView != null && currentView instanceof MyTextureView) {
                     ((MyTextureView) currentView).stop();
-                    currentView = null;
                 }
+                    currentView = null;
             }
         }
         currentPage = position;

@@ -3,30 +3,23 @@ package com.techjumper.polyhome.b.home.mvp.p.activity;
 import android.app.AlertDialog;
 import android.content.ComponentName;
 import android.content.Intent;
-import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
-import android.view.Window;
-import android.view.WindowManager;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 
-import com.google.zxing.BarcodeFormat;
-import com.google.zxing.EncodeHintType;
-import com.google.zxing.common.BitMatrix;
-import com.google.zxing.qrcode.QRCodeWriter;
 import com.jakewharton.rxbinding.view.RxView;
 import com.techjumper.commonres.ComConstant;
-import com.techjumper.commonres.entity.UserInfoEntity;
 import com.techjumper.commonres.entity.HeartbeatEntity;
 import com.techjumper.commonres.entity.MedicalEntity;
 import com.techjumper.commonres.entity.TimerClickEntity;
 import com.techjumper.commonres.entity.TrueEntity;
 import com.techjumper.commonres.entity.UserEntity;
+import com.techjumper.commonres.entity.UserInfoEntity;
 import com.techjumper.commonres.entity.event.AdClickEvent;
 import com.techjumper.commonres.entity.event.AdControllerEvent;
 import com.techjumper.commonres.entity.event.AdEvent;
@@ -43,13 +36,10 @@ import com.techjumper.commonres.entity.event.pushevent.NoticePushEvent;
 import com.techjumper.commonres.util.CommonDateUtil;
 import com.techjumper.commonres.util.PluginEngineUtil;
 import com.techjumper.commonres.util.RxUtil;
-import com.techjumper.commonres.util.StringUtil;
-import com.techjumper.corelib.rx.tools.CommonWrap;
 import com.techjumper.corelib.rx.tools.RxBus;
 import com.techjumper.corelib.utils.Utils;
 import com.techjumper.corelib.utils.basic.NumberUtil;
 import com.techjumper.corelib.utils.common.JLog;
-import com.techjumper.corelib.utils.common.RuleUtils;
 import com.techjumper.corelib.utils.window.ToastUtils;
 import com.techjumper.lib2.utils.PicassoHelper;
 import com.techjumper.plugincommunicateengine.IPluginMessageReceiver;
@@ -59,13 +49,12 @@ import com.techjumper.plugincommunicateengine.utils.GsonUtils;
 import com.techjumper.polyhome.b.home.BuildConfig;
 import com.techjumper.polyhome.b.home.R;
 import com.techjumper.polyhome.b.home.UserInfoManager;
+import com.techjumper.polyhome.b.home.adapter.AdViewPagerAdapter;
 import com.techjumper.polyhome.b.home.db.util.AdClickDbUtil;
 import com.techjumper.polyhome.b.home.mvp.m.MainActivityModel;
-import com.techjumper.polyhome.b.home.mvp.p.fragment.PloyhomeFragmentPresenter;
 import com.techjumper.polyhome.b.home.mvp.v.activity.AdDetailActivity;
 import com.techjumper.polyhome.b.home.mvp.v.activity.MainActivity;
 import com.techjumper.polyhome.b.home.mvp.v.activity.QrcodeActivity;
-import com.techjumper.polyhome.b.home.mvp.v.activity.ShoppingActivity;
 import com.techjumper.polyhome.b.home.tool.AlarmManagerUtil;
 import com.techjumper.polyhome.b.home.widget.MyVideoView;
 import com.techjumper.polyhome_b.adlib.entity.AdEntity;
@@ -77,7 +66,6 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.HashMap;
-import java.util.Hashtable;
 import java.util.List;
 import java.util.Map;
 import java.util.TimeZone;
@@ -85,7 +73,6 @@ import java.util.Timer;
 import java.util.TimerTask;
 
 import butterknife.OnClick;
-import rx.Observable;
 import rx.Subscriber;
 import rx.Subscription;
 import rx.android.schedulers.AndroidSchedulers;
@@ -381,7 +368,7 @@ public class MainActivityPresenter extends AppBaseActivityPresenter<MainActivity
                                 AdMainEvent event = (AdMainEvent) o;
                                 if (event.getAdsEntity() != null && event.getFile() != null) {
                                     String addType = event.getAdsEntity().getMedia_type();
-                                    if (addType.equals(PloyhomeFragmentPresenter.IMAGE_AD_TYPE)) {
+                                    if (addType.equals(AdViewPagerAdapter.IMAGE_AD_TYPE)) {
                                         AdWindowManager.getInstance().showImage(event.getAdsEntity(), event.getFile());
                                     } else {
                                         AdWindowManager.getInstance().showVideo(event.getAdsEntity(), event.getFile());
@@ -465,7 +452,7 @@ public class MainActivityPresenter extends AppBaseActivityPresenter<MainActivity
         JLog.d("满屏广告来啦. 本地广告路径:" + file + ", 详细信息: " + adsEntity);
         String addType = adsEntity.getMedia_type();
 
-        if (addType.equals(PloyhomeFragmentPresenter.IMAGE_AD_TYPE)) {
+        if (addType.equals(AdViewPagerAdapter.IMAGE_AD_TYPE)) {
             mainAdImg.setVisibility(View.VISIBLE);
             mainAdVideo.setVisibility(View.INVISIBLE);
 
@@ -480,7 +467,7 @@ public class MainActivityPresenter extends AppBaseActivityPresenter<MainActivity
                         .noPlaceholder()
                         .into(mainAdImg);
             }
-        } else if (addType.equals(PloyhomeFragmentPresenter.VIDEO_AD_TYPE)) {
+        } else if (addType.equals(AdViewPagerAdapter.VIDEO_AD_TYPE)) {
 
             mainAdImg.setVisibility(View.INVISIBLE);
             mainAdVideo.setVisibility(View.VISIBLE);

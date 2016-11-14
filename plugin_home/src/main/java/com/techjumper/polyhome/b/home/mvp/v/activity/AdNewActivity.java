@@ -2,6 +2,7 @@ package com.techjumper.polyhome.b.home.mvp.v.activity;
 
 import android.os.Bundle;
 import android.support.v4.view.ViewPager;
+import android.support.v4.widget.Space;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -20,7 +21,6 @@ import com.techjumper.polyhome.b.home.R;
 import com.techjumper.polyhome.b.home.UserInfoManager;
 import com.techjumper.polyhome.b.home.adapter.AdViewPagerAdapter;
 import com.techjumper.polyhome.b.home.db.util.AdClickDbUtil;
-import com.techjumper.polyhome.b.home.mvp.p.activity.AdActivityPresenter;
 import com.techjumper.polyhome.b.home.mvp.p.activity.AdNewActivityPresenter;
 import com.techjumper.polyhome.b.home.widget.AdViewPager;
 import com.techjumper.polyhome.b.home.widget.MyTextureView;
@@ -60,7 +60,7 @@ public class AdNewActivity extends AppBaseActivity<AdNewActivityPresenter> imple
     private float x1, x2, y1, y2;
 
     private AdController adController;
-    private AdViewPagerAdapter adapter;
+    private AdViewPagerAdapter adapter = new AdViewPagerAdapter();
     private List<View> views = new ArrayList<>();
     private int currentPage = 0;
     private LayoutInflater inflater;
@@ -123,7 +123,7 @@ public class AdNewActivity extends AppBaseActivity<AdNewActivityPresenter> imple
         adController = AdController.getInstance();
         adController.startPolling(this, true);
 
-        adViewPager.setAdapter(adapter = new AdViewPagerAdapter());
+        adViewPager.setAdapter(adapter);
         adViewPager.setOffscreenPageLimit(3);
         adViewPager.addOnPageChangeListener(this);
 
@@ -228,31 +228,39 @@ public class AdNewActivity extends AppBaseActivity<AdNewActivityPresenter> imple
                         if (adsEntities != null && adsEntities.size() > 0) {
                             adsEntities.clear();
                         }
-
                         for (int i = 0; i < allAds.size(); i++) {
-                            AdEntity.AdsEntity adsEntity = allAds.get(i);
-                            File file = adsEntity.getFile();
+                            AdEntity.AdsEntity entity = allAds.get(i);
+                            File file = entity.getFile();
                             if (file.exists()) {
-                                adsEntities.add(adsEntity);
-                                Log.d("ad12", file + ", 详细信息: " + adsEntity);
-                                addType = adsEntity.getMedia_type();
+                                adsEntities.add(entity);
+                                Log.d("ad12", file + ", 详细信息: " + entity);
+                                addType = entity.getMedia_type();
 
-                                if (IMAGE_AD_TYPE.equals(addType)) {
-                                    ImageView imageView = (ImageView) inflater.inflate(R.layout.layout_ad_new_image, null);
+//                                if (adImageView == null || textureView == null)
+//                                    return;
+                                if (AdViewPagerAdapter.IMAGE_AD_TYPE.equals(addType)) {
+//                                    ImageView imageView = (ImageView) inflater.inflate(R.layout.layout_ad_image, null);
+                                    View imageView = new Space(getView().getContext());
 
                                     views.add(imageView);
-                                    adsEntity.setMedia_url(file.getAbsolutePath());
-                                } else if (VIDEO_AD_TYPE.equals(addType)) {
-
-                                    MyTextureView textureView = (MyTextureView) inflater.inflate(R.layout.layout_ad_new_video, null);
+                                    entity.setMedia_url(file.getAbsolutePath());
+                                } else if (AdViewPagerAdapter.VIDEO_AD_TYPE.equals(addType)) {
+//                                    MyTextureView textureView = (MyTextureView) inflater.inflate(R.layout.layout_ad_video, null);
+                                    View textureView = new Space(getView().getContext());
 
                                     views.add(textureView);
-                                    adsEntity.setMedia_url(file.getAbsolutePath());
+                                    entity.setMedia_url(file.getAbsolutePath());
                                 }
                             }
                         }
-                        adapter.setViews(views, adsEntities);
-                        adapter.notifyDataSetChanged();
+//                        adapter.setViews(views, adsEntities);
+                        adapter.setDatas(adsEntities);
+                        if (adViewPager == null)
+                            return;
+                        if (adViewPager.getWrapper() != null) {
+                            adViewPager.getWrapper().notifyDataSetChanged();
+                        }
+//                        adapter.notifyDataSetChanged();
                     }
 
                     @Override
@@ -263,13 +271,13 @@ public class AdNewActivity extends AppBaseActivity<AdNewActivityPresenter> imple
                             } else {
                                 currentPage = 0;
                             }
-                            adViewPager.setCurrentItem(currentPage, false);
+                            adViewPager.setCurrentItem(currentPage, false, true);
                             mAdsEntity = adsEntity;
                             Log.d("ad15", "第一次page:" + currentPage);
                             isFirst = false;
                         } else {
                             Log.d("ad15", "currentPage: " + currentPage);
-                            adViewPager.setCurrentItem(currentPage, false);
+                            adViewPager.setCurrentItem(currentPage, false, true);
 
                             if (currentPage == views.size() - 1) {
                                 currentPage = -1;
@@ -346,7 +354,7 @@ public class AdNewActivity extends AppBaseActivity<AdNewActivityPresenter> imple
 
                 adapter.playVideo(currentView, mAdsEntity.getFile());
             } else {
-                if (currentView != null) {
+                if (currentView != null && currentView instanceof MyTextureView) {
                     ((MyTextureView) currentView).stop();
                     currentView = null;
                 }

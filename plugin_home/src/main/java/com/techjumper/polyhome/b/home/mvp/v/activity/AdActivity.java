@@ -11,8 +11,8 @@ import android.widget.ImageView;
 import com.techjumper.corelib.mvp.factory.Presenter;
 import com.techjumper.lib2.utils.PicassoHelper;
 import com.techjumper.polyhome.b.home.R;
+import com.techjumper.polyhome.b.home.adapter.AdViewPagerAdapter;
 import com.techjumper.polyhome.b.home.mvp.p.activity.AdActivityPresenter;
-import com.techjumper.polyhome.b.home.mvp.p.fragment.PloyhomeFragmentPresenter;
 import com.techjumper.polyhome.b.home.widget.MyTextureView;
 import com.techjumper.polyhome_b.adlib.entity.AdEntity;
 
@@ -70,7 +70,7 @@ public class AdActivity extends AppBaseActivity<AdActivityPresenter> {
             adType = adsEntity.getMedia_type();
         }
 
-        if (adType.equals(PloyhomeFragmentPresenter.IMAGE_AD_TYPE)) {
+        if (adType.equals(AdViewPagerAdapter.IMAGE_AD_TYPE)) {
 
             PicassoHelper.load(new File(adsEntity.getMedia_url()))
                     .noFade()
@@ -99,7 +99,7 @@ public class AdActivity extends AppBaseActivity<AdActivityPresenter> {
                 }
             });
             webView.setWebViewClient(new webViewClient());
-        } else if (adType.equals(PloyhomeFragmentPresenter.VIDEO_AD_TYPE)) {
+        } else if (adType.equals(AdViewPagerAdapter.VIDEO_AD_TYPE)) {
 
         }
     }
