@@ -194,6 +194,22 @@ public class AppUtils {
     }
 
     /**
+     * 是否为oppo r7s
+     */
+    public static boolean isOPPOR7s() {
+        return Build.BOARD.contains("r7s")
+                || Build.BRAND.contains("r7s")
+                || Build.MODEL.contains("r7s")
+                || Build.DEVICE.contains("r7s")
+                || Build.MANUFACTURER.contains("OPPO")
+                || Build.BOARD.contains("R7s")
+                || Build.BRAND.contains("R7s")
+                || Build.MODEL.contains("R7s")
+                || Build.DEVICE.contains("R7s")
+                || Build.MANUFACTURER.contains("OPPO");
+    }
+
+    /**
      * 得到指定路径apk的package info
      */
     public static PackageInfo getPackageInfo(String path) throws RemoteException {
@@ -203,7 +219,7 @@ public class AppUtils {
     /**
      * 路径下的apk是否比系统已安装的版本新
      */
-    public static boolean hasUpdate(String sourcePath)  {
+    public static boolean hasUpdate(String sourcePath) {
         PackageInfo info = null;
         try {
             info = getPackageInfo(sourcePath);
