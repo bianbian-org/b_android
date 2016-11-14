@@ -92,25 +92,50 @@ public class PlacardFragmentModel extends BaseModel<PlacardFragmentPresenter> {
             SimpleDateFormat format = new SimpleDateFormat(getPresenter().getView().getResources().getString(R.string.pattren_M_D));
             String time = format.format(new Date(time_ * 1000));
 
-            //绿色的 12月 那个时间轴
-            PropertyPlacardTimeLineData timeLineData = new PropertyPlacardTimeLineData();
-//            timeLineData.setTime(time.substring(0, 1) + getPresenter().getView().getString(R.string.month));
-            timeLineData.setTime(new SimpleDateFormat("M").format(new Date(time_ * 1000)) + getPresenter().getView().getString(R.string.month));
-            PropertyPlacardTimeLineBean timeLineBean = new PropertyPlacardTimeLineBean(timeLineData);
-            mDataList.add(timeLineBean);
+            //这个判断，主要是为了针对  第一页8条数据，第二页只有一条的情况
+            //如果不加判断，那么第一页8条数据完毕后，如果第二页只有一条，并且第二页的数据刚好和第一页结尾的数据 月份一样
+            //那么依然会增加 时间轴，所以这里多加个判断。
+            if (!lastMonth.equals(new SimpleDateFormat("M").format(new Date(time_ * 1000)))) {//就说明第一个时间区域完结,此时布局需要加载新的时间轴title
 
-            //中间的item
-            PropertyPlacardContentData propertyPlacardContentData = new PropertyPlacardContentData();
-            propertyPlacardContentData.setTitle(title);
-            propertyPlacardContentData.setRead(false);
-            propertyPlacardContentData.setType(type);
-            propertyPlacardContentData.setTime(time);
-            propertyPlacardContentData.setContent(replaceWebTag(content));
-            propertyPlacardContentData.setContent_(content);
-            propertyPlacardContentData.setId(id);
-            PropertyPlacardContentBean contentBean = new PropertyPlacardContentBean(propertyPlacardContentData);
-            mDataList.add(contentBean);
+                //绿色的 12月 那个时间轴
+                PropertyPlacardTimeLineData timeLineData = new PropertyPlacardTimeLineData();
+                timeLineData.setTime(new SimpleDateFormat("M").format(new Date(time_ * 1000)) + getPresenter().getView().getString(R.string.month));
+                PropertyPlacardTimeLineBean timeLineBean = new PropertyPlacardTimeLineBean(timeLineData);
+                mDataList.add(timeLineBean);
 
+                //中间的item
+//            PropertyPlacardContentData propertyPlacardContentData = new PropertyPlacardContentData();
+//            propertyPlacardContentData.setTitle(title);
+//            propertyPlacardContentData.setRead(false);
+//            propertyPlacardContentData.setType(type);
+//            propertyPlacardContentData.setTime(time);
+//            propertyPlacardContentData.setContent(replaceWebTag(content));
+//            propertyPlacardContentData.setContent_(content);
+//            propertyPlacardContentData.setId(id);
+//            PropertyPlacardContentBean contentBean = new PropertyPlacardContentBean(propertyPlacardContentData);
+//            mDataList.add(contentBean);
+                addItem(title, type, time, content, id);
+
+            } else {//就说明第一个时间区域还有数据,需要继续走,此时布局只是连续加载分割线和item
+
+                //短一点的分割线
+                PropertyPlacardDividerData dividerData = new PropertyPlacardDividerData();
+                PropertyPlacardDividerBean dividerBean = new PropertyPlacardDividerBean(dividerData);
+                mDataList.add(dividerBean);
+
+                //中间的item
+//                    PropertyPlacardContentData propertyPlacardContentData = new PropertyPlacardContentData();
+//                    propertyPlacardContentData.setTitle(title);
+//                    propertyPlacardContentData.setRead(false);
+//                    propertyPlacardContentData.setType(type);
+//                    propertyPlacardContentData.setTime(time);
+//                    propertyPlacardContentData.setContent(replaceWebTag(content));
+//                    propertyPlacardContentData.setContent_(content);
+//                    propertyPlacardContentData.setId(id);
+//                    PropertyPlacardContentBean contentBean = new PropertyPlacardContentBean(propertyPlacardContentData);
+//                    mDataList.add(contentBean);
+                addItem(title, type, time, content, id);
+            }
         } else {
             //两条数据或者多条数据的时候
             for (int i = 0; i < notices.size(); i++) {
@@ -132,22 +157,22 @@ public class PlacardFragmentModel extends BaseModel<PlacardFragmentPresenter> {
 
                     //绿色的 12月 那个时间轴
                     PropertyPlacardTimeLineData timeLineData = new PropertyPlacardTimeLineData();
-//                    timeLineData.setTime(time.substring(0, 1) + getPresenter().getView().getString(R.string.month));
                     timeLineData.setTime(new SimpleDateFormat("M").format(new Date(time_ * 1000)) + getPresenter().getView().getString(R.string.month));
                     PropertyPlacardTimeLineBean timeLineBean = new PropertyPlacardTimeLineBean(timeLineData);
                     mDataList.add(timeLineBean);
 
                     //中间的item
-                    PropertyPlacardContentData propertyPlacardContentData = new PropertyPlacardContentData();
-                    propertyPlacardContentData.setTitle(title);
-                    propertyPlacardContentData.setRead(false);
-                    propertyPlacardContentData.setType(type);
-                    propertyPlacardContentData.setTime(time);
-                    propertyPlacardContentData.setContent(replaceWebTag(content));
-                    propertyPlacardContentData.setContent_(content);
-                    propertyPlacardContentData.setId(id);
-                    PropertyPlacardContentBean contentBean = new PropertyPlacardContentBean(propertyPlacardContentData);
-                    mDataList.add(contentBean);
+//                    PropertyPlacardContentData propertyPlacardContentData = new PropertyPlacardContentData();
+//                    propertyPlacardContentData.setTitle(title);
+//                    propertyPlacardContentData.setRead(false);
+//                    propertyPlacardContentData.setType(type);
+//                    propertyPlacardContentData.setTime(time);
+//                    propertyPlacardContentData.setContent(replaceWebTag(content));
+//                    propertyPlacardContentData.setContent_(content);
+//                    propertyPlacardContentData.setId(id);
+//                    PropertyPlacardContentBean contentBean = new PropertyPlacardContentBean(propertyPlacardContentData);
+//                    mDataList.add(contentBean);
+                    addItem(title, type, time, content, id);
 
                 } else {//就说明第一个时间区域还有数据,需要继续走,此时布局只是连续加载分割线和item
 
@@ -157,18 +182,18 @@ public class PlacardFragmentModel extends BaseModel<PlacardFragmentPresenter> {
                     mDataList.add(dividerBean);
 
                     //中间的item
-                    PropertyPlacardContentData propertyPlacardContentData = new PropertyPlacardContentData();
-                    propertyPlacardContentData.setTitle(title);
-                    propertyPlacardContentData.setRead(false);
-                    propertyPlacardContentData.setType(type);
-                    propertyPlacardContentData.setTime(time);
-                    propertyPlacardContentData.setContent(replaceWebTag(content));
-                    propertyPlacardContentData.setContent_(content);
-                    propertyPlacardContentData.setId(id);
-                    PropertyPlacardContentBean contentBean = new PropertyPlacardContentBean(propertyPlacardContentData);
-                    mDataList.add(contentBean);
+//                    PropertyPlacardContentData propertyPlacardContentData = new PropertyPlacardContentData();
+//                    propertyPlacardContentData.setTitle(title);
+//                    propertyPlacardContentData.setRead(false);
+//                    propertyPlacardContentData.setType(type);
+//                    propertyPlacardContentData.setTime(time);
+//                    propertyPlacardContentData.setContent(replaceWebTag(content));
+//                    propertyPlacardContentData.setContent_(content);
+//                    propertyPlacardContentData.setId(id);
+//                    PropertyPlacardContentBean contentBean = new PropertyPlacardContentBean(propertyPlacardContentData);
+//                    mDataList.add(contentBean);
+                    addItem(title, type, time, content, id);
                 }
-//                lastMonth = time.substring(0, 1);
                 lastMonth = new SimpleDateFormat("M").format(new Date(time_ * 1000));
             }
         }
@@ -176,6 +201,20 @@ public class PlacardFragmentModel extends BaseModel<PlacardFragmentPresenter> {
         if (hasMoreData(entity)) {
             increasePage();
         }
+    }
+
+    private void addItem(String title, String type, String time, String content, int id) {
+        //中间的item
+        PropertyPlacardContentData propertyPlacardContentData = new PropertyPlacardContentData();
+        propertyPlacardContentData.setTitle(title);
+        propertyPlacardContentData.setRead(false);
+        propertyPlacardContentData.setType(type);
+        propertyPlacardContentData.setTime(time);
+        propertyPlacardContentData.setContent(replaceWebTag(content));
+        propertyPlacardContentData.setContent_(content);
+        propertyPlacardContentData.setId(id);
+        PropertyPlacardContentBean contentBean = new PropertyPlacardContentBean(propertyPlacardContentData);
+        mDataList.add(contentBean);
     }
 
     //无数据的时候显示的视图
