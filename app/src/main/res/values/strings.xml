@@ -57,13 +57,11 @@
     <string name="error_no_browser">无可用浏览器，请下载后重试</string>
     <string name="new_repair">新增报修</string>
     <string name="repair_device">报修设备</string>
-
     <string name="pop_not_process">未处理</string>
     <string name="pop_reply">已回复</string>
     <string name="pop_processed">已处理</string>
     <string name="pop_closed">已关闭</string>
     <string name="pop_all">全部</string>
-
     <string name="pop_windows">门窗类</string>
     <string name="pop_walls">墙类</string>
     <string name="pop_elevators">电梯类</string>
@@ -397,8 +395,13 @@
     <string name="rename_room">重命名房间</string>
     <string name="error_rename_room">重命名房间失败</string>
     <string name="member_detail">成员详情</string>
-    <string name="set_as_admin">是否设为管理员</string>
     <string name="manageable_room">可管理的房间</string>
+    <string name="transfer_authority_x">是否将管理员权限移交给%1$s</string>
+    <string name="room_dose_not_exist">房间不存在，无法进行此操作</string>
+    <string name="delete_member_success">移除房间成功</string>
+    <string name="add_member_success">添加房间成功</string>
+    <string name="delete_member_failed">移除房间失败</string>
+    <string name="add_member_failed">添加房间失败</string>
 
 
 </resources>

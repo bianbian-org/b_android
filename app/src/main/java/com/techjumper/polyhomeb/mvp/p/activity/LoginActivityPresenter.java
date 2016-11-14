@@ -11,6 +11,7 @@ import com.techjumper.corelib.utils.common.AcHelper;
 import com.techjumper.polyhomeb.R;
 import com.techjumper.polyhomeb.entity.BluetoothLockDoorInfoEntity;
 import com.techjumper.polyhomeb.entity.LoginEntity;
+import com.techjumper.polyhomeb.entity.QueryFamilyEntity;
 import com.techjumper.polyhomeb.entity.event.BLEInfoChangedEvent;
 import com.techjumper.polyhomeb.entity.event.ChangeVillageIdRefreshEvent;
 import com.techjumper.polyhomeb.mvp.m.LoginActivityModel;
@@ -23,10 +24,12 @@ import com.techjumper.polyhomeb.user.UserManager;
 import com.techjumper.polyhomeb.user.event.LoginEvent;
 
 import butterknife.OnClick;
+import rx.Observable;
 import rx.Observer;
 import rx.Subscriber;
 import rx.Subscription;
 import rx.android.schedulers.AndroidSchedulers;
+import rx.functions.Func1;
 
 /**
  * * * * * * * * * * * * * * * * * * * * * * *
@@ -177,26 +180,70 @@ public class LoginActivityPresenter extends AppBaseActivityPresenter<LoginActivi
     private void getBLEDoorInfo() {
         RxUtils.unsubscribeIfNotNull(mSubs2);
         addSubscription(
+//                mSubs2 = mModel.getBLEDoorInfo()
+//                        .subscribe(new Observer<BluetoothLockDoorInfoEntity>() {
+//                            @Override
+//                            public void onCompleted() {
+//                                UserManager.INSTANCE.notifyLoginOrLogoutEvent(true);
+//                            }
+//
+//                            @Override
+//                            public void onError(Throwable e) {
+//                                getView().dismissLoading();
+//                            }
+//
+//                            @Override
+//                            public void onNext(BluetoothLockDoorInfoEntity bluetoothLockDoorInfoEntity) {
+//                                if (!processNetworkResult(bluetoothLockDoorInfoEntity)) return;
+//                                if (bluetoothLockDoorInfoEntity != null
+//                                        && bluetoothLockDoorInfoEntity.getData() != null) {
+//                                    //切换家庭或者小区之后，发送消息给HomeFragment,刷新首页数据
+//                                    RxBus.INSTANCE.send(new BLEInfoChangedEvent());
+//                                    UserManager.INSTANCE.saveBLEInfo(bluetoothLockDoorInfoEntity);
+//                                }
+//                            }
+//                        }));
                 mSubs2 = mModel.getBLEDoorInfo()
-                        .subscribe(new Observer<BluetoothLockDoorInfoEntity>() {
+                        .flatMap(new Func1<BluetoothLockDoorInfoEntity, Observable<QueryFamilyEntity>>() {
                             @Override
-                            public void onCompleted() {
-                                UserManager.INSTANCE.notifyLoginOrLogoutEvent(true);
-                            }
-
-                            @Override
-                            public void onError(Throwable e) {
-                                getView().dismissLoading();
-                            }
-
-                            @Override
-                            public void onNext(BluetoothLockDoorInfoEntity bluetoothLockDoorInfoEntity) {
-                                if (!processNetworkResult(bluetoothLockDoorInfoEntity)) return;
+                            public Observable<QueryFamilyEntity> call(BluetoothLockDoorInfoEntity bluetoothLockDoorInfoEntity) {
+                                if (!processNetworkResult(bluetoothLockDoorInfoEntity)) {
+                                    return Observable.error(new Exception(getView().getString(R.string.error_data)));
+                                }
                                 if (bluetoothLockDoorInfoEntity != null
                                         && bluetoothLockDoorInfoEntity.getData() != null) {
                                     //切换家庭或者小区之后，发送消息给HomeFragment,刷新首页数据
                                     RxBus.INSTANCE.send(new BLEInfoChangedEvent());
                                     UserManager.INSTANCE.saveBLEInfo(bluetoothLockDoorInfoEntity);
+                                } else {
+                                    return Observable.error(new Exception(getView().getString(R.string.error_data)));
+                                }
+                                if (UserManager.INSTANCE.isFamily()) {
+                                    return mModel.getCurrentFamilyAdminUserId();
+                                } else {
+                                    return Observable.empty();
+                                }
+                            }
+                        }).subscribe(new Observer<QueryFamilyEntity>() {
+                            @Override
+                            public void onCompleted() {
+                            }
+
+                            @Override
+                            public void onError(Throwable e) {
+                                getView().showHint(e.toString());
+                            }
+
+                            @Override
+                            public void onNext(QueryFamilyEntity queryFamilyEntity) {
+                                if (!processNetworkResult(queryFamilyEntity)) return;
+                                if (queryFamilyEntity != null && queryFamilyEntity.getData() != null) {
+                                    QueryFamilyEntity.DataEntity data = queryFamilyEntity.getData();
+                                    String manager_id = data.getManager_id();
+                                    UserManager.INSTANCE.saveUserInfo(UserManager.KEY_CURRENT_FAMILY_MANAGER_ID, manager_id);
+                                    UserManager.INSTANCE.notifyLoginOrLogoutEvent(true);
+                                } else {
+                                    getView().showHint(getView().getString(R.string.error_data));
                                 }
                             }
                         }));

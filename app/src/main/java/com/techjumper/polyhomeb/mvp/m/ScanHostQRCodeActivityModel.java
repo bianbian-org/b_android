@@ -6,6 +6,7 @@ import com.techjumper.lib2.utils.RetrofitHelper;
 import com.techjumper.polyhomeb.entity.BaseArgumentsEntity;
 import com.techjumper.polyhomeb.entity.BluetoothLockDoorInfoEntity;
 import com.techjumper.polyhomeb.entity.JoinFamilyEntity;
+import com.techjumper.polyhomeb.entity.QueryFamilyEntity;
 import com.techjumper.polyhomeb.mvp.p.activity.ScanHostQRCodeActivityPresenter;
 import com.techjumper.polyhomeb.net.KeyValueCreator;
 import com.techjumper.polyhomeb.net.NetHelper;
@@ -47,6 +48,17 @@ public class ScanHostQRCodeActivityModel extends BaseModel<ScanHostQRCodeActivit
         Map<String, String> map = NetHelper.createBaseArgumentsMap(keyValuePair);
         return RetrofitHelper.<ServiceAPI>createDefault()
                 .getBLEDoorInfo(map)
+                .compose(CommonWrap.wrap());
+    }
+
+    public Observable<QueryFamilyEntity> getCurrentFamilyAdminUserId() {
+        KeyValuePair keyValuePair = KeyValueCreator.queryFamily(
+                UserManager.INSTANCE.getUserInfo(UserManager.KEY_ID)
+                , UserManager.INSTANCE.getTicket()
+                , UserManager.INSTANCE.getUserInfo(UserManager.KEY_CURRENT_FAMILY_ID));
+        BaseArgumentsEntity entity = NetHelper.createBaseArguments(keyValuePair);
+        return RetrofitHelper.<ServiceAPI>createDefault()
+                .queryFamilyInfo(entity)
                 .compose(CommonWrap.wrap());
     }
 }

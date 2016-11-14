@@ -15,7 +15,9 @@ import com.techjumper.polyhomeb.adapter.recycler_Data.PropertyPlacardDividerLong
 import com.techjumper.polyhomeb.adapter.recycler_ViewHolder.databean.MyVillageFamilyTextBean;
 import com.techjumper.polyhomeb.adapter.recycler_ViewHolder.databean.PropertyPlacardDividerBean;
 import com.techjumper.polyhomeb.adapter.recycler_ViewHolder.databean.PropertyPlacardDividerLongBean;
+import com.techjumper.polyhomeb.entity.BaseArgumentsEntity;
 import com.techjumper.polyhomeb.entity.BluetoothLockDoorInfoEntity;
+import com.techjumper.polyhomeb.entity.QueryFamilyEntity;
 import com.techjumper.polyhomeb.entity.UserFamiliesAndVillagesEntity;
 import com.techjumper.polyhomeb.mvp.p.activity.MyVillageFamilyActivityPresenter;
 import com.techjumper.polyhomeb.net.KeyValueCreator;
@@ -60,6 +62,17 @@ public class MyVillageFamilyActivityModel extends BaseModel<MyVillageFamilyActiv
         Map<String, String> map = NetHelper.createBaseArgumentsMap(keyValuePair);
         return RetrofitHelper.<ServiceAPI>createDefault()
                 .getBLEDoorInfo(map)
+                .compose(CommonWrap.wrap());
+    }
+
+    public Observable<QueryFamilyEntity> getCurrentFamilyAdminUserId() {
+        KeyValuePair keyValuePair = KeyValueCreator.queryFamily(
+                UserManager.INSTANCE.getUserInfo(UserManager.KEY_ID)
+                , UserManager.INSTANCE.getTicket()
+                , UserManager.INSTANCE.getUserInfo(UserManager.KEY_CURRENT_FAMILY_ID));
+        BaseArgumentsEntity entity = NetHelper.createBaseArguments(keyValuePair);
+        return RetrofitHelper.<ServiceAPI>createDefault()
+                .queryFamilyInfo(entity)
                 .compose(CommonWrap.wrap());
     }
 

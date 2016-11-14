@@ -1,6 +1,7 @@
 package com.techjumper.polyhomeb.adapter;
 
 import android.support.v7.widget.SwitchCompat;
+import android.widget.CompoundButton;
 
 import com.steve.creact.library.display.DisplayBean;
 import com.steve.creact.library.viewholder.BaseRecyclerViewHolder;
@@ -17,7 +18,6 @@ import java.util.Map;
  * Date: 2016/11/13
  * * * * * * * * * * * * * * * * * * * * * * *
  **/
-
 public class MemberDetailAdapter extends BaseRecyclerPowerfulAdapter {
 
     private Map<String, Boolean> mCheckedMap = new HashMap<>();
@@ -36,7 +36,7 @@ public class MemberDetailAdapter extends BaseRecyclerPowerfulAdapter {
         sc.setOnCheckedChangeListener((buttonView, isChecked) -> {
             changeCheck(dataBean, isChecked);
             if (sItemCheckedChange != null) {
-                sItemCheckedChange.itemCheckedChange(isChecked, dataBean);
+                sItemCheckedChange.itemCheckedChange(isChecked, dataBean,buttonView);
             }
         });
     }
@@ -54,15 +54,15 @@ public class MemberDetailAdapter extends BaseRecyclerPowerfulAdapter {
     private boolean getChecked(MemberDetailBean dataBean) {
         if (dataBean == null || dataBean.getData() == null) return false;
         Boolean aBoolean = mCheckedMap.get(dataBean.getData().getRoomName() + dataBean.getData().getRoomId());
-        if (aBoolean == null){
-            int manageable = dataBean.getData().getManageable();
-//            if (manageable == 10) return true;
+        if (aBoolean == null) {
+            boolean manageable = dataBean.getData().getManageable();
+            if (manageable) return true;
         }
         return aBoolean == null ? false : aBoolean;
     }
 
     public interface IItemCheckedChange {
-        void itemCheckedChange(boolean isChecked, MemberDetailBean dataBean);
+        void itemCheckedChange(boolean isChecked, MemberDetailBean dataBean, CompoundButton buttonView);
     }
 
     public void setOnCheckedListener(IItemCheckedChange sItemCheckedChange) {

@@ -563,6 +563,9 @@ public interface ServiceAPI {
     @GET("payments")
     Observable<PaymentsEntity> payments(@QueryMap Map<String, String> q);
 
+    /**
+     * 查询家庭信息
+     */
     @POST("family_query")
     Observable<QueryFamilyEntity> queryFamilyInfo(@Body BaseArgumentsEntity entity);
 
@@ -698,6 +701,18 @@ public interface ServiceAPI {
      */
     @POST("family_user_delete")
     Observable<TrueEntity> deleteMember(@Body BaseArgumentsEntity entity);
+
+    /**
+     * 删除房间用户
+     */
+    @POST("room_user_delete")
+    Observable<TrueEntity> deleteMemberFromRoom(@Body BaseArgumentsEntity entity);
+
+    /**
+     * 新增房间用户
+     */
+    @POST("room_user_add")
+    Observable<TrueEntity> addMemberToRoom(@Body BaseArgumentsEntity entity);
 
 }
 

@@ -46,7 +46,10 @@ public class HomeMenuFragmentModel extends BaseModel<HomeMenuFragmentPresenter> 
         displayBeen.add(propertyPlacardDividerLongBean);//细长分割线
         displayBeen.add(newItem(Utils.appContext.getString(R.string.my_village_or_family), rightText, HomeMenuItemData.ItemType.FAMILY));
         displayBeen.add(propertyPlacardDividerBean);//短一些分割线
-        if (UserManager.INSTANCE.isFamily()) {
+        //如果是处于家庭状态下，并且当前登录的用户是当前选中的这个家庭的管理员的话，才有权限进去管理  什么的.
+        if (UserManager.INSTANCE.isFamily()
+                && UserManager.INSTANCE.getUserInfo(UserManager.KEY_CURRENT_FAMILY_MANAGER_ID)
+                .equalsIgnoreCase(UserManager.INSTANCE.getUserInfo(UserManager.KEY_ID))) {
             displayBeen.add(newItem(Utils.appContext.getString(R.string.room_manage), "", HomeMenuItemData.ItemType.ROOM_MANAGE));
             displayBeen.add(propertyPlacardDividerBean);//短一些分割线
             displayBeen.add(newItem(Utils.appContext.getString(R.string.member_manage), "", HomeMenuItemData.ItemType.MEMBER_MANAGE));

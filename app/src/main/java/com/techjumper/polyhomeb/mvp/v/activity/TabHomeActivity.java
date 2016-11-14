@@ -48,7 +48,7 @@ public class TabHomeActivity extends AppBaseActivity<TabHomeActivityPresenter> {
     protected View inflateView(Bundle savedInstanceState) {
         View contentRoot = findViewById(android.R.id.content);
         //适配虚拟按键
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT && !AppUtils.isMeizu()) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT && !AppUtils.isMeizu() && !AppUtils.isOPPOR7s()) {
             contentRoot.setPadding(contentRoot.getLeft(), contentRoot.getPaddingTop(), contentRoot.getRight()
                     , contentRoot.getBottom() + StatusbarHelper.getNavigationBarHeight(this));
         }

@@ -18,6 +18,7 @@ import com.techjumper.corelib.utils.window.ToastUtils;
 import com.techjumper.polyhomeb.R;
 import com.techjumper.polyhomeb.entity.BluetoothLockDoorInfoEntity;
 import com.techjumper.polyhomeb.entity.JoinFamilyEntity;
+import com.techjumper.polyhomeb.entity.QueryFamilyEntity;
 import com.techjumper.polyhomeb.entity.event.BLEInfoChangedEvent;
 import com.techjumper.polyhomeb.mvp.m.ScanHostQRCodeActivityModel;
 import com.techjumper.polyhomeb.mvp.v.activity.ScanHostQRCodeActivity;
@@ -29,6 +30,7 @@ import com.techjumper.zxing.ZXingScannerView;
 import rx.Observable;
 import rx.Observer;
 import rx.Subscription;
+import rx.functions.Func1;
 
 /**
  * * * * * * * * * * * * * * * * * * * * * * *
@@ -49,7 +51,6 @@ public class ScanHostQRCodeActivityPresenter extends AppBaseActivityPresenter<Sc
     public void initData(Bundle savedInstanceState) {
 
     }
-
 
     @Override
     public void onViewInited(Bundle savedInstanceState) {
@@ -123,7 +124,30 @@ public class ScanHostQRCodeActivityPresenter extends AppBaseActivityPresenter<Sc
                             UserManager.INSTANCE.updateFamilyOrVillageInfo(true, family_id + ""
                                     , family_name, village_id + "");
                             return mModel.getBLEDoorInfo(village_id + "");
-                        }).subscribe(new Observer<BluetoothLockDoorInfoEntity>() {
+                        }).flatMap(new Func1<BluetoothLockDoorInfoEntity, Observable<QueryFamilyEntity>>() {
+                            @Override
+                            public Observable<QueryFamilyEntity> call(BluetoothLockDoorInfoEntity bluetoothLockDoorInfoEntity) {
+                                if (!processNetworkResult(bluetoothLockDoorInfoEntity)) {
+                                    return Observable.error(new Exception(getView().getString(R.string.error_data)));
+                                }
+                                if (bluetoothLockDoorInfoEntity != null
+                                        && bluetoothLockDoorInfoEntity.getData() != null) {
+                                    ToastUtils.show(getView().getString(R.string.join_family_success));
+                                    //切换家庭或者小区之后，发送消息给HomeFragment,刷新首页数据
+                                    RxBus.INSTANCE.send(new BLEInfoChangedEvent());
+                                    UserManager.INSTANCE.saveBLEInfo(bluetoothLockDoorInfoEntity);
+                                } else {
+                                    return Observable.error(new Exception(getView().getString(R.string.error_data)));
+                                }
+                                //这里不需要进行判断了，因为这里本身就是扫码加入家庭的，并不是小区
+//                                if (UserManager.INSTANCE.isFamily()) {
+//                                    return mModel.getCurrentFamilyAdminUserId();
+//                                } else {
+//                                    return Observable.empty();
+//                                }
+                                return mModel.getCurrentFamilyAdminUserId();
+                            }
+                        }).subscribe(new Observer<QueryFamilyEntity>() {
                             @Override
                             public void onCompleted() {
                                 getView().dismissLoading();
@@ -136,15 +160,15 @@ public class ScanHostQRCodeActivityPresenter extends AppBaseActivityPresenter<Sc
                             }
 
                             @Override
-                            public void onNext(BluetoothLockDoorInfoEntity bluetoothLockDoorInfoEntity) {
-                                if (!processNetworkResult(bluetoothLockDoorInfoEntity)) return;
-                                if (bluetoothLockDoorInfoEntity != null
-                                        && bluetoothLockDoorInfoEntity.getData() != null) {
-                                    ToastUtils.show(getView().getString(R.string.join_family_success));
-                                    //切换家庭或者小区之后，发送消息给HomeFragment,刷新首页数据
-                                    RxBus.INSTANCE.send(new BLEInfoChangedEvent());
-                                    UserManager.INSTANCE.saveBLEInfo(bluetoothLockDoorInfoEntity);
+                            public void onNext(QueryFamilyEntity queryFamilyEntity) {
+                                if (!processNetworkResult(queryFamilyEntity)) return;
+                                if (queryFamilyEntity != null && queryFamilyEntity.getData() != null) {
+                                    QueryFamilyEntity.DataEntity data = queryFamilyEntity.getData();
+                                    String manager_id = data.getManager_id();
+                                    UserManager.INSTANCE.saveUserInfo(UserManager.KEY_CURRENT_FAMILY_MANAGER_ID, manager_id);
                                     jumpToTabHomeActivity();
+                                } else {
+                                    getView().showHint(getView().getString(R.string.error_data));
                                 }
                             }
                         }));
@@ -175,4 +199,5 @@ public class ScanHostQRCodeActivityPresenter extends AppBaseActivityPresenter<Sc
                 .closeCurrent(true)
                 .start();
     }
+
 }

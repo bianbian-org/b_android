@@ -11,7 +11,7 @@ public class MemberDetailData {
 
     private String roomName;
     private String roomId;
-    private int manageable;
+    private boolean manageable;
 
     public String getRoomId() {
         return roomId;
@@ -29,11 +29,11 @@ public class MemberDetailData {
         this.roomName = roomName;
     }
 
-    public int getManageable() {
+    public boolean getManageable() {
         return manageable;
     }
 
-    public void setManageable(int manageable) {
+    public void setManageable(boolean manageable) {
         this.manageable = manageable;
     }
 }

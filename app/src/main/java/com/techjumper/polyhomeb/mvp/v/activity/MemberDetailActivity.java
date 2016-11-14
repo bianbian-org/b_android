@@ -2,14 +2,16 @@ package com.techjumper.polyhomeb.mvp.v.activity;
 
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.SwitchCompat;
 import android.text.TextUtils;
 import android.view.View;
+import android.widget.TextView;
 
 import com.steve.creact.library.display.DisplayBean;
 import com.techjumper.corelib.mvp.factory.Presenter;
+import com.techjumper.corelib.rx.tools.RxBus;
 import com.techjumper.polyhomeb.R;
 import com.techjumper.polyhomeb.adapter.MemberDetailAdapter;
+import com.techjumper.polyhomeb.entity.event.RequestRoomsAndMembersDataEvent;
 import com.techjumper.polyhomeb.mvp.p.activity.MemberDetailActivityPresenter;
 
 import java.util.List;
@@ -28,8 +30,8 @@ public class MemberDetailActivity extends AppBaseActivity<MemberDetailActivityPr
 
     @Bind(R.id.rv)
     RecyclerViewFinal mRv;
-    @Bind(R.id.switch_admin)
-    SwitchCompat mSwitchAdmin;
+    @Bind(R.id.tv_name)
+    TextView mTvName;
 
     private MemberDetailAdapter mAdapter;
 
@@ -50,14 +52,12 @@ public class MemberDetailActivity extends AppBaseActivity<MemberDetailActivityPr
     }
 
     private void init() {
-
-        // TODO: 2016/11/13 这里要把这个checked的值设置上去
-
-//        mSwitchAdmin.setChecked();
-        mSwitchAdmin.setOnCheckedChangeListener(getPresenter());
+        mTvName.setText(String.format(getString(R.string.transfer_authority_x)
+                , TextUtils.isEmpty(getPresenter().getMemberName())
+                        ? "" : getPresenter().getMemberName()));
         mAdapter = new MemberDetailAdapter();
-        mAdapter.setOnCheckedListener((isChecked, dataBean)
-                -> getPresenter().onItemCheckedChange(isChecked, dataBean));
+        mAdapter.setOnCheckedListener((isChecked, dataBean,buttonView)
+                -> getPresenter().onItemCheckedChange(isChecked, dataBean,buttonView));
         mRv.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
         mRv.setAdapter(mAdapter);
     }
@@ -69,5 +69,21 @@ public class MemberDetailActivity extends AppBaseActivity<MemberDetailActivityPr
 
     public MemberDetailAdapter getAdapter() {
         return mAdapter;
+    }
+
+    @Override
+    public void onBackPressed() {
+        sendRefreshMessage();
+        super.onBackPressed();
+    }
+
+    @Override
+    public void finish() {
+        sendRefreshMessage();
+        super.finish();
+    }
+
+    private void sendRefreshMessage() {
+        RxBus.INSTANCE.send(new RequestRoomsAndMembersDataEvent());
     }
 }

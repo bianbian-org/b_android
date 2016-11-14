@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.text.TextUtils;
 
 import com.steve.creact.library.display.DisplayBean;
+import com.techjumper.corelib.rx.tools.RxBus;
 import com.techjumper.corelib.rx.tools.RxUtils;
 import com.techjumper.corelib.utils.common.AcHelper;
 import com.techjumper.corelib.utils.window.DialogUtils;
@@ -15,6 +16,7 @@ import com.techjumper.polyhomeb.adapter.recycler_ViewHolder.databean.MemberManag
 import com.techjumper.polyhomeb.entity.C_AllMemberEntity;
 import com.techjumper.polyhomeb.entity.C_RoomsByMemberEntity;
 import com.techjumper.polyhomeb.entity.TrueEntity;
+import com.techjumper.polyhomeb.entity.event.RequestRoomsAndMembersDataEvent;
 import com.techjumper.polyhomeb.mvp.m.MemberManageActivityModel;
 import com.techjumper.polyhomeb.mvp.v.activity.MemberDetailActivity;
 import com.techjumper.polyhomeb.mvp.v.activity.MemberManageActivity;
@@ -37,7 +39,7 @@ import rx.functions.Func1;
  **/
 public class MemberManageActivityPresenter extends AppBaseActivityPresenter<MemberManageActivity> {
 
-    private Subscription mSubs1, mSubs2, mSubs3;
+    private Subscription mSubs1, mSubs2, mSubs3, mSubs4;
     private boolean mHasMember = true;
     private boolean mIsEditMode = false;
 
@@ -65,6 +67,17 @@ public class MemberManageActivityPresenter extends AppBaseActivityPresenter<Memb
     public void onViewInited(Bundle savedInstanceState) {
         getView().showLoading();
         getMembersAndTheirRooms();
+        getRxMessages();
+    }
+
+    private void getRxMessages() {
+        addSubscription(
+                mSubs4 = RxBus.INSTANCE.asObservable()
+                        .subscribe(o -> {
+                            if (o instanceof RequestRoomsAndMembersDataEvent) {
+                                getMembersAndTheirRooms();
+                            }
+                        }));
     }
 
     public void onTitleRightClick() {

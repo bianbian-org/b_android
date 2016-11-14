@@ -389,4 +389,20 @@ public class KeyValueCreator {
                 .put("family_id", family_id)
                 .put("delete_user_id", delete_user_id);
     }
+
+    public static KeyValuePair deleteMemberFromRoom(String user_id, String ticket, String delete_room_id, String delete_user_id) {
+        return newPair()
+                .put("user_id", user_id)
+                .put("ticket", ticket)
+                .put("delete_room_id", delete_room_id)
+                .put("delete_user_id", delete_user_id);
+    }
+
+    public static KeyValuePair addMemberToRoom(String user_id, String ticket, String add_user_id, String[] room_ids) {
+        return newPair()
+                .put("user_id", user_id)
+                .put("ticket", ticket)
+                .put("add_user_id", add_user_id)
+                .put("room_id", room_ids);
+    }
 }

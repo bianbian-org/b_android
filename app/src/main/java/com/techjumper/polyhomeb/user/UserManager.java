@@ -57,6 +57,7 @@ public enum UserManager {
     public static final String KEY_CURRENT_FAMILY_ID = "key_current_show_id";
     public static final String KEY_CURRENT_VILLAGE_ID = "key_current_village_id";
     public static final String KEY_CURRENT_SHOW_IS_FAMILY_OR_VILLAGE = "key_current_show_is_family_or_village";
+    public static final String KEY_CURRENT_FAMILY_MANAGER_ID = "key_current_family_manager_id";
 
     public static final String VALUE_IS_FAMILY = "value_is_family";
     public static final String VALUE_IS_VILLAGE = "value_is_village";
@@ -128,6 +129,7 @@ public enum UserManager {
         FileUtils.saveInputstreamToPath(new Buffer().writeUtf8(GsonUtils.toJson(
                 entity.getData().getVillage_infos())).inputStream(), PATH, KEY_ALL_VILLAGES);
     }
+
     /**
      * 更新Ticket
      */
@@ -298,6 +300,7 @@ public enum UserManager {
         PreferenceUtils.save(KEY_CURRENT_SHOW_IS_FAMILY_OR_VILLAGE, "");
         PreferenceUtils.save(KEY_CURRENT_VILLAGE_ID, "");
         PreferenceUtils.save(KEY_IS_CURRENT_COMMUNITY_SUPPORT_BLE_DOOR, "0");
+        PreferenceUtils.save(KEY_CURRENT_FAMILY_MANAGER_ID, "");
         PolyPluginFileManager.getInstance().clearFamilyInfoFile().subscribe();
         clearUserInfo();
         HostIpHelper.getInstance().clear();
