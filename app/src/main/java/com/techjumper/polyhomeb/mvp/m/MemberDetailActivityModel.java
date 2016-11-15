@@ -141,7 +141,7 @@ public class MemberDetailActivityModel extends BaseModel<MemberDetailActivityPre
                 for (int i = 0; i < result.size(); i++) {
                     C_RoomsByMemberEntity.DataEntity.ResultEntity resultEntity = result.get(i);
                     String room_id = resultEntity.getRoom_id();
-                    if (rooms.get(0).getRoom_id().equalsIgnoreCase(room_id)) {
+                    if (rooms.get(0).getRoom_id().equals(room_id)) {
                         manageable = true;
                         break;
                     } else {
@@ -164,7 +164,7 @@ public class MemberDetailActivityModel extends BaseModel<MemberDetailActivityPre
                     List<C_RoomsByMemberEntity.DataEntity.ResultEntity> result = getRooms().getData().getResult();
                     for (int j = 0; j < result.size(); j++) {
                         String room_id = result.get(j).getRoom_id();
-                        if (rooms.get(i).getRoom_id().equalsIgnoreCase(room_id)) {
+                        if (rooms.get(i).getRoom_id().equals(room_id)) {
                             manageable = true;
                             break;
                         } else {

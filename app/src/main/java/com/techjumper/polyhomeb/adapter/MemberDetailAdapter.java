@@ -36,7 +36,7 @@ public class MemberDetailAdapter extends BaseRecyclerPowerfulAdapter {
         sc.setOnCheckedChangeListener((buttonView, isChecked) -> {
             changeCheck(dataBean, isChecked);
             if (sItemCheckedChange != null) {
-                sItemCheckedChange.itemCheckedChange(isChecked, dataBean,buttonView);
+                sItemCheckedChange.itemCheckedChange(isChecked, dataBean, buttonView);
             }
         });
     }
@@ -68,4 +68,5 @@ public class MemberDetailAdapter extends BaseRecyclerPowerfulAdapter {
     public void setOnCheckedListener(IItemCheckedChange sItemCheckedChange) {
         this.sItemCheckedChange = sItemCheckedChange;
     }
+
 }

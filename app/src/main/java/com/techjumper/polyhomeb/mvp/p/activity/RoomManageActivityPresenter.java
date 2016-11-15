@@ -229,66 +229,17 @@ public class RoomManageActivityPresenter extends AppBaseActivityPresenter<RoomMa
                         }));
     }
 
-    /**
-     * 方案2，删除后只是刷新界面，不请求数据(但是分割线没有办法做处理，毕竟分割线也是item)
-     */
-//    private void deleteRoom(String room_id, String room_name) {
-//        RxUtils.unsubscribeIfNotNull(mSubs2);
-//        addSubscription(
-//                mSubs2 = mModel.deleteRoom(room_id)
-//                        .subscribe(new Observer<TrueEntity>() {
-//                            @Override
-//                            public void onCompleted() {
-//
-//                            }
-//
-//                            @Override
-//                            public void onError(Throwable e) {
-//                                getView().showError(e);
-//                            }
-//
-//                            @Override
-//                            public void onNext(TrueEntity trueEntity) {
-//                                if (!processNetworkResult(trueEntity)) return;
-//                                if (trueEntity == null
-//                                        || trueEntity.getData() == null
-//                                        || TextUtils.isEmpty(trueEntity.getData().getResult())) {
-//                                    ToastUtils.show(String.format(getView().getString(R.string.delete_x_failed)
-//                                            , room_name));
-//                                    return;
-//                                }
-//
-//                                if (getView().getAdapter() == null) return;
-//                                RoomManageAdapter adapter = getView().getAdapter();
-//                                List<DisplayBean> data = adapter.getData();
-//                                for (int i = 0; i < data.size(); i++) {
-//                                    DisplayBean bean = data.get(i);
-//                                    if (bean instanceof RoomManageBean) {
-//                                        RoomManageBean manageBean = (RoomManageBean) bean;
-//                                        RoomManageData data1 = manageBean.getData();
-//                                        if (data1.getRoom_id().equalsIgnoreCase(room_id)) {
-//                                            adapter.notifyItemRemoved(i);
-//                                            break;
-//                                        }
-//                                    }
-//                                }
-//                            }
-//                        }));
-//    }
-    private void renameSuccess(String name, String id) {
+    private void renameSuccess(String id, String name) {
         RoomManageAdapter adapter = getView().getAdapter();
         if (adapter == null) return;
         List<DisplayBean> data = adapter.getData();
         for (int i = 0; i < data.size(); i++) {
-            DisplayBean bean = data.get(i);
-            if (bean instanceof RoomManageBean) {
-                RoomManageData manageData = ((RoomManageBean) bean).getData();
-                if (manageData.getRoom_id().equalsIgnoreCase(id)) {
-                    manageData.setRoom_name(name);
-                    adapter.notifyItemChanged(i);
-                    break;
-                }
-            }
+            if (!(data.get(i) instanceof RoomManageBean)) continue;
+            RoomManageData data1 = ((RoomManageBean) data.get(i)).getData();
+            if (!data1.getRoom_id().equals(id)) continue;
+            data1.setRoom_name(name);
+            adapter.notifyItemChanged(i);
+            return;
         }
     }
 }

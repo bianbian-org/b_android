@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.text.TextUtils;
 import android.view.View;
+import android.widget.CompoundButton;
 import android.widget.TextView;
 
 import com.steve.creact.library.display.DisplayBean;
@@ -11,6 +12,7 @@ import com.techjumper.corelib.mvp.factory.Presenter;
 import com.techjumper.corelib.rx.tools.RxBus;
 import com.techjumper.polyhomeb.R;
 import com.techjumper.polyhomeb.adapter.MemberDetailAdapter;
+import com.techjumper.polyhomeb.adapter.recycler_ViewHolder.databean.MemberDetailBean;
 import com.techjumper.polyhomeb.entity.event.RequestRoomsAndMembersDataEvent;
 import com.techjumper.polyhomeb.mvp.p.activity.MemberDetailActivityPresenter;
 
@@ -26,7 +28,8 @@ import cn.finalteam.loadingviewfinal.RecyclerViewFinal;
  * * * * * * * * * * * * * * * * * * * * * * *
  **/
 @Presenter(MemberDetailActivityPresenter.class)
-public class MemberDetailActivity extends AppBaseActivity<MemberDetailActivityPresenter> {
+public class MemberDetailActivity extends AppBaseActivity<MemberDetailActivityPresenter>
+        implements MemberDetailAdapter.IItemCheckedChange {
 
     @Bind(R.id.rv)
     RecyclerViewFinal mRv;
@@ -56,8 +59,7 @@ public class MemberDetailActivity extends AppBaseActivity<MemberDetailActivityPr
                 , TextUtils.isEmpty(getPresenter().getMemberName())
                         ? "" : getPresenter().getMemberName()));
         mAdapter = new MemberDetailAdapter();
-        mAdapter.setOnCheckedListener((isChecked, dataBean,buttonView)
-                -> getPresenter().onItemCheckedChange(isChecked, dataBean,buttonView));
+        mAdapter.setOnCheckedListener(this);
         mRv.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
         mRv.setAdapter(mAdapter);
     }
@@ -85,5 +87,10 @@ public class MemberDetailActivity extends AppBaseActivity<MemberDetailActivityPr
 
     private void sendRefreshMessage() {
         RxBus.INSTANCE.send(new RequestRoomsAndMembersDataEvent());
+    }
+
+    @Override
+    public void itemCheckedChange(boolean isChecked, MemberDetailBean dataBean, CompoundButton buttonView) {
+        getPresenter().onItemCheckedChange(isChecked, dataBean, buttonView);
     }
 }

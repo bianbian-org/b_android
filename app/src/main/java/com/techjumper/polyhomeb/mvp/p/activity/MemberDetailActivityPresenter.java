@@ -168,7 +168,7 @@ public class MemberDetailActivityPresenter extends AppBaseActivityPresenter<Memb
                             public void onError(Throwable e) {
                                 getView().dismissLoading();
                                 getView().showError(e);
-//                                revertView(buttonView, true);
+                                revertView(buttonView, true);
                             }
 
                             @Override
@@ -178,7 +178,7 @@ public class MemberDetailActivityPresenter extends AppBaseActivityPresenter<Memb
                                         || TextUtils.isEmpty(trueEntity.getData().getResult())
                                         || !"true".equals(trueEntity.getData().getResult())) {
                                     ToastUtils.show(getView().getString(R.string.delete_member_failed));
-//                                    revertView(buttonView, true);
+                                    revertView(buttonView, true);
                                     return;
                                 }
                                 ToastUtils.show(getView().getString(R.string.delete_member_success));
@@ -201,7 +201,7 @@ public class MemberDetailActivityPresenter extends AppBaseActivityPresenter<Memb
                             public void onError(Throwable e) {
                                 getView().dismissLoading();
                                 getView().showError(e);
-//                                revertView(buttonView, false);
+                                revertView(buttonView, false);
                             }
 
                             @Override
@@ -211,7 +211,7 @@ public class MemberDetailActivityPresenter extends AppBaseActivityPresenter<Memb
                                         || TextUtils.isEmpty(trueEntity.getData().getResult())
                                         || !"true".equals(trueEntity.getData().getResult())) {
                                     ToastUtils.show(getView().getString(R.string.add_member_failed));
-//                                    revertView(buttonView, false);
+                                    revertView(buttonView, false);
                                     return;
                                 }
                                 ToastUtils.show(getView().getString(R.string.add_member_success));
@@ -219,10 +219,13 @@ public class MemberDetailActivityPresenter extends AppBaseActivityPresenter<Memb
                         }));
     }
 
-//    private void revertView(CompoundButton buttonView, boolean checked) {
-//        if (buttonView != null) {
-//            buttonView.setChecked(checked);
-//        }
-//    }
+    private void revertView(CompoundButton buttonView, boolean checked) {
+
+        if (buttonView != null) {
+            getView().getAdapter().setOnCheckedListener(null);
+            buttonView.setChecked(checked);
+            getView().getAdapter().setOnCheckedListener(getView());
+        }
+    }
 
 }
