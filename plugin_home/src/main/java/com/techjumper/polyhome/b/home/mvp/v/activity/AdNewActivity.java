@@ -12,7 +12,6 @@ import android.webkit.WebChromeClient;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
 
 import com.techjumper.commonres.ComConstant;
@@ -240,13 +239,13 @@ public class AdNewActivity extends AppBaseActivity<AdNewActivityPresenter> imple
 //                                    return;
                                 if (AdViewPagerAdapter.IMAGE_AD_TYPE.equals(addType)) {
 //                                    ImageView imageView = (ImageView) inflater.inflate(R.layout.layout_ad_image, null);
-                                    View imageView = new Space(getView().getContext());
+                                    View imageView = new Space(AdNewActivity.this);
 
                                     views.add(imageView);
                                     entity.setMedia_url(file.getAbsolutePath());
                                 } else if (AdViewPagerAdapter.VIDEO_AD_TYPE.equals(addType)) {
 //                                    MyTextureView textureView = (MyTextureView) inflater.inflate(R.layout.layout_ad_video, null);
-                                    View textureView = new Space(getView().getContext());
+                                    View textureView = new Space(AdNewActivity.this);
 
                                     views.add(textureView);
                                     entity.setMedia_url(file.getAbsolutePath());
@@ -254,12 +253,17 @@ public class AdNewActivity extends AppBaseActivity<AdNewActivityPresenter> imple
                             }
                         }
 //                        adapter.setViews(views, adsEntities);
-                        adapter.setDatas(adsEntities);
+//                        adapter.setDatas(adsEntities);
+//                        if (adViewPager == null)
+//                            return;
+//                        if (adViewPager.getWrapper() != null) {
+//                            adViewPager.getWrapper().notifyDataSetChanged();
+//                        }
                         if (adViewPager == null)
                             return;
-                        if (adViewPager.getWrapper() != null) {
-                            adViewPager.getWrapper().notifyDataSetChanged();
-                        }
+                        adapter = new AdViewPagerAdapter();
+                        adapter.setDatas(adsEntities);
+                        adViewPager.setAdapter(adapter);
 //                        adapter.notifyDataSetChanged();
                     }
 

@@ -865,12 +865,17 @@ public class PloyhomeFragmentPresenter extends AppBaseFragmentPresenter<Ployhome
                                 }
                             }
                         }
-                        adapter.setDatas(adsEntities);
+//                        adapter.setDatas(adsEntities);
+//                        if (adViewPager == null)
+//                            return;
+//                        if (adViewPager.getWrapper() != null) {
+//                            adViewPager.getWrapper().notifyDataSetChanged();
+//                        }
                         if (adViewPager == null)
                             return;
-                        if (adViewPager.getWrapper() != null) {
-                            adViewPager.getWrapper().notifyDataSetChanged();
-                        }
+                        adapter = new AdViewPagerAdapter();
+                        adapter.setDatas(adsEntities);
+                        adViewPager.setAdapter(adapter);
 //                        adapter.notifyDataSetChanged();
                     }
 

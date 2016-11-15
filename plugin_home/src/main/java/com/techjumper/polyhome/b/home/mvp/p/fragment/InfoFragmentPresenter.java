@@ -555,12 +555,15 @@ public class InfoFragmentPresenter extends AppBaseFragmentPresenter<InfoFragment
                             }
                         }
 //                        adapter.setViews(views, adsEntities);
-                        adapter.setDatas(adsEntities);
+//                        adapter.setDatas(adsEntities);
                         if (adViewPager == null)
                             return;
-                        if (adViewPager.getWrapper() != null) {
-                            adViewPager.getWrapper().notifyDataSetChanged();
-                        }
+                        adapter = new AdViewPagerAdapter();
+                        adapter.setDatas(adsEntities);
+                        adViewPager.setAdapter(adapter);
+//                        if (adViewPager.getWrapper() != null) {
+//                            adViewPager.getWrapper().notifyDataSetChanged();
+//                        }
 //                        adapter.notifyDataSetChanged();
                     }
 
