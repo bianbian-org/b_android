@@ -11,6 +11,7 @@ android {
 //            storePassword 'android'
 //        }
 //    }
+
     compileSdkVersion rootProject.compileSdkVersion
     buildToolsVersion rootProject.buildToolsVersion
     defaultConfig {
@@ -19,6 +20,7 @@ android {
         targetSdkVersion rootProject.targetSdkVersion
         versionCode 10002
         versionName "1.0.2"
+        multiDexEnabled true
     }
 
     signingConfigs {
@@ -96,6 +98,7 @@ dependencies {
     compile project (':slide2unlock')
     compile project (':unionpay')
 
+    compile "com.yalantis:ucrop:$rootProject.ucrop"
     compile "com.creact:powerful-adapter-lib-release:$rootProject.recyclerAdapter"
     provided "com.creact:powerful-adapter-annotations-release:$rootProject.recyclerAdapter"
     apt "com.creact:powerful-adapter-complier-release:$rootProject.recyclerAdapter"
