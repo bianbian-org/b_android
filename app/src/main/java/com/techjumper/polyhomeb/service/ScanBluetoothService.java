@@ -40,7 +40,6 @@ public class ScanBluetoothService extends Service {
                 .subscribe(new Observer<Long>() {
                     @Override
                     public void onCompleted() {
-                        RxUtils.unsubscribeIfNotNull(mSubs);
                     }
 
                     @Override
