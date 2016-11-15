@@ -117,7 +117,7 @@ public class PlacardDetailActivity extends AppBaseActivity<PlacardDetailActivity
 
         @Override
         public void onPageFinished(WebView view, String url) {
-            mWebView.requestFocus();
+            view.requestFocus();
         }
 
         @Override
