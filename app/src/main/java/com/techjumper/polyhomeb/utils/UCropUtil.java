@@ -3,14 +3,15 @@ package com.techjumper.polyhomeb.utils;
 import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Bitmap;
-import android.graphics.Color;
 import android.net.Uri;
 import android.provider.MediaStore;
 import android.support.annotation.ColorInt;
 import android.widget.Toast;
 
 import com.techjumper.corelib.utils.common.JLog;
+import com.techjumper.corelib.utils.common.ResourceUtils;
 import com.techjumper.polyhomeb.Config;
+import com.techjumper.polyhomeb.R;
 import com.yalantis.ucrop.UCrop;
 import com.yalantis.ucrop.UCropActivity;
 
@@ -200,10 +201,10 @@ public class UCropUtil {
 
         public
         @ColorInt
-        int toolbarColor = Color.BLUE;
+        int toolbarColor = ResourceUtils.getColorResource(R.color.colorPrimary);
         public
         @ColorInt
-        int statusBarColor = Color.BLUE;
+        int statusBarColor = ResourceUtils.getColorResource(R.color.colorPrimary);
 
 
         public void setAspectRation(int x, int y) {
