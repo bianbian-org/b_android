@@ -1,5 +1,8 @@
 package com.techjumper.polyhomeb.system;
 
+import android.content.Context;
+import android.support.multidex.MultiDex;
+
 import com.github.anrwatchdog.ANRWatchDog;
 import com.techjumper.lib2.others.Lib2Application;
 import com.techjumper.polyhomeb.BuildConfig;
@@ -33,6 +36,12 @@ public class PolyApplication extends Lib2Application {
 
 
 
+    }
+
+    @Override
+    protected void attachBaseContext(Context base) {
+        super.attachBaseContext(base);
+        MultiDex.install(this);
     }
 
     @Override
