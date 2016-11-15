@@ -138,6 +138,9 @@ public class SmartDoorBluetoothManager {
         } catch (Exception e) {
             e.printStackTrace();
             JLog.e(e.toString());
+            ToastUtils.show("解锁失败");
+            JLog.e("\"开门\"这个消息 发送失败 没有执行开门的指令");
+            RxBus.INSTANCE.send(new OpenDoorResult(false));
         }
     }
 
