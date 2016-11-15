@@ -7,12 +7,12 @@ import android.view.View;
 import com.bumptech.glide.Glide;
 import com.steve.creact.library.display.DisplayBean;
 import com.techjumper.corelib.rx.tools.RxBus;
-import com.techjumper.corelib.rx.tools.RxUtils;
 import com.techjumper.corelib.utils.common.AcHelper;
 import com.techjumper.polyhomeb.R;
 import com.techjumper.polyhomeb.entity.event.AvatarEvent;
 import com.techjumper.polyhomeb.entity.event.ChangeEvent;
 import com.techjumper.polyhomeb.entity.event.ChooseFamilyVillageEvent;
+import com.techjumper.polyhomeb.entity.event.RefreshWhenTransformAuthorityEvent;
 import com.techjumper.polyhomeb.mvp.m.HomeMenuFragmentModel;
 import com.techjumper.polyhomeb.mvp.v.activity.UserInfoActivity;
 import com.techjumper.polyhomeb.mvp.v.fragment.HomeMenuFragment;
@@ -43,7 +43,7 @@ public class HomeMenuFragmentPresenter extends AppBaseFragmentPresenter<HomeMenu
 
     @Override
     public void onViewInited(Bundle savedInstanceState) {
-        RxUtils.unsubscribeIfNotNull(mSubs1);
+//        RxUtils.unsubscribeIfNotNull(mSubs1);
         addSubscription(
                 mSubs1 = RxBus.INSTANCE.asObservable().subscribe(o -> {
                     if (o instanceof LoginEvent) {
@@ -70,13 +70,20 @@ public class HomeMenuFragmentPresenter extends AppBaseFragmentPresenter<HomeMenu
     }
 
     private void changeRightText() {
-        RxUtils.unsubscribeIfNotNull(mSubs2);
+//        RxUtils.unsubscribeIfNotNull(mSubs2);
         addSubscription(
                 mSubs2 = RxBus.INSTANCE
                         .asObservable().subscribe(o -> {
                             if (o instanceof ChooseFamilyVillageEvent) {
-                                getView().getAdapter().loadData(getDatas());
-                                getView().getAdapter().notifyDataSetChanged();
+                                if (getView().getAdapter() != null) {
+                                    getView().getAdapter().loadData(getDatas());
+                                    getView().getAdapter().notifyDataSetChanged();
+                                }
+                            }
+                            if (o instanceof RefreshWhenTransformAuthorityEvent) {
+                                if (getView().getAdapter() != null) {
+                                    getView().getAdapter().loadData(getDatas());
+                                }
                             }
                         }));
     }
@@ -113,7 +120,7 @@ public class HomeMenuFragmentPresenter extends AppBaseFragmentPresenter<HomeMenu
     }
 
     private void changeAvatar() {
-        RxUtils.unsubscribeIfNotNull(mSubs3);
+//        RxUtils.unsubscribeIfNotNull(mSubs3);
         addSubscription(
                 mSubs3 = RxBus.INSTANCE.asObservable().subscribe(o -> {
                     if (o instanceof AvatarEvent) {

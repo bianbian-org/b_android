@@ -5,6 +5,7 @@ import android.text.TextUtils;
 import android.view.View;
 import android.widget.CompoundButton;
 
+import com.techjumper.corelib.rx.tools.RxBus;
 import com.techjumper.corelib.rx.tools.RxUtils;
 import com.techjumper.corelib.utils.common.AcHelper;
 import com.techjumper.corelib.utils.window.DialogUtils;
@@ -13,6 +14,7 @@ import com.techjumper.polyhomeb.R;
 import com.techjumper.polyhomeb.adapter.recycler_ViewHolder.databean.MemberDetailBean;
 import com.techjumper.polyhomeb.entity.C_AllRoomEntity;
 import com.techjumper.polyhomeb.entity.TrueEntity;
+import com.techjumper.polyhomeb.entity.event.RefreshWhenTransformAuthorityEvent;
 import com.techjumper.polyhomeb.mvp.m.MemberDetailActivityModel;
 import com.techjumper.polyhomeb.mvp.v.activity.MemberDetailActivity;
 import com.techjumper.polyhomeb.mvp.v.activity.TabHomeActivity;
@@ -142,6 +144,7 @@ public class MemberDetailActivityPresenter extends AppBaseActivityPresenter<Memb
                                 ToastUtils.show(getView().getString(R.string.transfer_authority_success));
                                 UserManager.INSTANCE.saveUserInfo(UserManager.KEY_CURRENT_FAMILY_MANAGER_ID
                                         , mModel.getMemberId());
+                                RxBus.INSTANCE.send(new RefreshWhenTransformAuthorityEvent());
                                 new AcHelper.Builder(getView())
                                         .closeCurrent(true)
                                         .target(TabHomeActivity.class)
