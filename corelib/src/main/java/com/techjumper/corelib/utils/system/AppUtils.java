@@ -197,16 +197,10 @@ public class AppUtils {
      * 是否为oppo r7s
      */
     public static boolean isOPPOR7s() {
-        return Build.BOARD.contains("r7s")
-                || Build.BRAND.contains("r7s")
-                || Build.MODEL.contains("r7s")
-                || Build.DEVICE.contains("r7s")
-                || Build.MANUFACTURER.contains("OPPO")
-                || Build.BOARD.contains("R7s")
-                || Build.BRAND.contains("R7s")
-                || Build.MODEL.contains("R7s")
-                || Build.DEVICE.contains("R7s")
-                || Build.MANUFACTURER.contains("OPPO");
+        return Build.BOARD.contains("OPPO")
+                || Build.BRAND.contains("OPPO")
+                || Build.BOARD.contains("oppo")
+                || Build.BRAND.contains("oppo");
     }
 
     /**
