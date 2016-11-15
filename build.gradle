@@ -35,6 +35,7 @@ ext {
     //app
     recyclerAdapter = '1.0.0'
     anr_whatchDog = '1.2.+'
+    ucrop = '2.2.0'
 
     //corelib
     supportLibraryVersion = '23.2.0'
@@ -53,8 +54,8 @@ ext {
     retrofit = '2.0.0-beta4'
     converter_gson = '2.0.0-beta4'
     adapter_rxjava = '2.0.0-beta4'
-    okhttp = '3.1.2'
-    logging_interceptor = '3.3.1'
+    okhttp = '3.4.1'
+    logging_interceptor = '3.4.1'
     okio = '1.6.0'
     picasso = '2.5.2'
     picasso2_okhttp3_downloader = '1.0.2'
