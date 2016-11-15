@@ -104,16 +104,6 @@ public class PlacardFragmentModel extends BaseModel<PlacardFragmentPresenter> {
                 mDataList.add(timeLineBean);
 
                 //中间的item
-//            PropertyPlacardContentData propertyPlacardContentData = new PropertyPlacardContentData();
-//            propertyPlacardContentData.setTitle(title);
-//            propertyPlacardContentData.setRead(false);
-//            propertyPlacardContentData.setType(type);
-//            propertyPlacardContentData.setTime(time);
-//            propertyPlacardContentData.setContent(replaceWebTag(content));
-//            propertyPlacardContentData.setContent_(content);
-//            propertyPlacardContentData.setId(id);
-//            PropertyPlacardContentBean contentBean = new PropertyPlacardContentBean(propertyPlacardContentData);
-//            mDataList.add(contentBean);
                 addItem(title, type, time, content, id);
 
             } else {//就说明第一个时间区域还有数据,需要继续走,此时布局只是连续加载分割线和item
@@ -124,16 +114,6 @@ public class PlacardFragmentModel extends BaseModel<PlacardFragmentPresenter> {
                 mDataList.add(dividerBean);
 
                 //中间的item
-//                    PropertyPlacardContentData propertyPlacardContentData = new PropertyPlacardContentData();
-//                    propertyPlacardContentData.setTitle(title);
-//                    propertyPlacardContentData.setRead(false);
-//                    propertyPlacardContentData.setType(type);
-//                    propertyPlacardContentData.setTime(time);
-//                    propertyPlacardContentData.setContent(replaceWebTag(content));
-//                    propertyPlacardContentData.setContent_(content);
-//                    propertyPlacardContentData.setId(id);
-//                    PropertyPlacardContentBean contentBean = new PropertyPlacardContentBean(propertyPlacardContentData);
-//                    mDataList.add(contentBean);
                 addItem(title, type, time, content, id);
             }
         } else {
@@ -162,16 +142,6 @@ public class PlacardFragmentModel extends BaseModel<PlacardFragmentPresenter> {
                     mDataList.add(timeLineBean);
 
                     //中间的item
-//                    PropertyPlacardContentData propertyPlacardContentData = new PropertyPlacardContentData();
-//                    propertyPlacardContentData.setTitle(title);
-//                    propertyPlacardContentData.setRead(false);
-//                    propertyPlacardContentData.setType(type);
-//                    propertyPlacardContentData.setTime(time);
-//                    propertyPlacardContentData.setContent(replaceWebTag(content));
-//                    propertyPlacardContentData.setContent_(content);
-//                    propertyPlacardContentData.setId(id);
-//                    PropertyPlacardContentBean contentBean = new PropertyPlacardContentBean(propertyPlacardContentData);
-//                    mDataList.add(contentBean);
                     addItem(title, type, time, content, id);
 
                 } else {//就说明第一个时间区域还有数据,需要继续走,此时布局只是连续加载分割线和item
@@ -182,16 +152,6 @@ public class PlacardFragmentModel extends BaseModel<PlacardFragmentPresenter> {
                     mDataList.add(dividerBean);
 
                     //中间的item
-//                    PropertyPlacardContentData propertyPlacardContentData = new PropertyPlacardContentData();
-//                    propertyPlacardContentData.setTitle(title);
-//                    propertyPlacardContentData.setRead(false);
-//                    propertyPlacardContentData.setType(type);
-//                    propertyPlacardContentData.setTime(time);
-//                    propertyPlacardContentData.setContent(replaceWebTag(content));
-//                    propertyPlacardContentData.setContent_(content);
-//                    propertyPlacardContentData.setId(id);
-//                    PropertyPlacardContentBean contentBean = new PropertyPlacardContentBean(propertyPlacardContentData);
-//                    mDataList.add(contentBean);
                     addItem(title, type, time, content, id);
                 }
                 lastMonth = new SimpleDateFormat("M").format(new Date(time_ * 1000));

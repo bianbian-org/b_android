@@ -7,7 +7,6 @@ import android.net.Uri;
 import android.net.http.SslError;
 import android.os.Bundle;
 import android.text.TextUtils;
-import android.util.DisplayMetrics;
 import android.view.View;
 import android.webkit.DownloadListener;
 import android.webkit.SslErrorHandler;
@@ -21,6 +20,9 @@ import com.techjumper.corelib.mvp.factory.Presenter;
 import com.techjumper.corelib.utils.window.ToastUtils;
 import com.techjumper.polyhomeb.R;
 import com.techjumper.polyhomeb.mvp.p.activity.PlacardDetailActivityPresenter;
+
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
 
 import butterknife.Bind;
 
@@ -81,30 +83,34 @@ public class PlacardDetailActivity extends AppBaseActivity<PlacardDetailActivity
         mWebSettings.setJavaScriptCanOpenWindowsAutomatically(true);
         mWebSettings.setPluginState(WebSettings.PluginState.ON);
 
-        DisplayMetrics metrics = new DisplayMetrics();
-        getWindowManager().getDefaultDisplay().getMetrics(metrics);
-        int mDensity = metrics.densityDpi;
-        if (mDensity == 240) {
-            mWebSettings.setDefaultZoom(WebSettings.ZoomDensity.FAR);
-        } else if (mDensity == 160) {
-            mWebSettings.setDefaultZoom(WebSettings.ZoomDensity.MEDIUM);
-        } else if (mDensity == 120) {
-            mWebSettings.setDefaultZoom(WebSettings.ZoomDensity.CLOSE);
-        } else if (mDensity == DisplayMetrics.DENSITY_XHIGH) {
-            mWebSettings.setDefaultZoom(WebSettings.ZoomDensity.FAR);
-        } else if (mDensity == DisplayMetrics.DENSITY_TV) {
-            mWebSettings.setDefaultZoom(WebSettings.ZoomDensity.FAR);
-        }
-
         mWebView.setWebViewClient(new PolyWebViewClient());
         mWebView.setDownloadListener(new MyWebViewDownLoadListener());
     }
 
-
     public void onDataReceive(String data) {
         if (TextUtils.isEmpty(data)) return;
-        mWebView.loadDataWithBaseURL(null, data, "text/html", "utf-8",
-                null);
+        String tpl = getFromAssets("notice.html");
+        String web = tpl;
+        if (tpl.contains("$content$")) {
+            web = tpl.replace("$content$", data);
+        }
+        mWebView.loadDataWithBaseURL(null, web, "text/html", "utf-8", null);
+    }
+
+    private String getFromAssets(String fileName) {
+        try {
+            InputStreamReader inputReader = new InputStreamReader(
+                    getResources().getAssets().open(fileName));
+            BufferedReader bufReader = new BufferedReader(inputReader);
+            String line;
+            String Result = "";
+            while ((line = bufReader.readLine()) != null)
+                Result += line;
+            return Result;
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return "";
     }
 
     class PolyWebViewClient extends WebViewClient {
