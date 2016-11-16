@@ -44,7 +44,7 @@ public abstract class AppBaseWebViewFragment<T extends AppBaseFragmentPresenter>
         mWebView.addHttpHeader("HTICKET", UserManager.INSTANCE.getTicket());
         mWebView.addHttpHeader("HVILLAGEID", UserManager.INSTANCE.getUserInfo(UserManager.KEY_CURRENT_VILLAGE_ID));
         if (UserManager.INSTANCE.isFamily()) {
-            mWebView.addHttpHeader("family_id", UserManager.INSTANCE.getUserInfo(UserManager.KEY_CURRENT_FAMILY_ID));
+            mWebView.addHttpHeader("HFAMILYID", UserManager.INSTANCE.getUserInfo(UserManager.KEY_CURRENT_FAMILY_ID));
         }
 
         mIsInit = true;
