@@ -72,13 +72,13 @@ public class PlacardDetailActivity extends AppBaseActivity<PlacardDetailActivity
         mWebView.setScrollBarStyle(View.SCROLLBARS_INSIDE_OVERLAY);
         mWebView.getSettings().setCacheMode(WebSettings.LOAD_NO_CACHE);
         WebSettings mWebSettings = mWebView.getSettings();
-        mWebSettings.setBuiltInZoomControls(true);
+        mWebSettings.setBuiltInZoomControls(false);
         mWebSettings.setDisplayZoomControls(false);
-        mWebSettings.setSupportZoom(true);
+        mWebSettings.setSupportZoom(false);
         mWebSettings.setLoadsImagesAutomatically(true);
         mWebSettings.setBlockNetworkImage(false);
         mWebSettings.setUseWideViewPort(true);
-        mWebSettings.setLoadWithOverviewMode(true);
+        mWebSettings.setLoadWithOverviewMode(false);
         mWebSettings.setJavaScriptEnabled(true);
         mWebSettings.setJavaScriptCanOpenWindowsAutomatically(true);
         mWebSettings.setPluginState(WebSettings.PluginState.ON);
