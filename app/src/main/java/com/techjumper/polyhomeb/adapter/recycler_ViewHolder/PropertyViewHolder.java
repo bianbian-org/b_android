@@ -46,10 +46,11 @@ public class PropertyViewHolder extends BaseRecyclerViewHolder<PropertyData> {
                     .start();
         });
 
-        boolean hasAuthority = UserManager.INSTANCE.hasAuthority();
+//        boolean hasAuthority = UserManager.INSTANCE.hasAuthority();
+        boolean family = UserManager.INSTANCE.isFamily();
         //维修
         setOnClickListener(R.id.repair, v -> {
-            if (hasAuthority) {
+            if (family) {
                 Bundle bundle = new Bundle();
                 bundle.putInt(Constant.KEY_CURRENT_BUTTON, Constant.VALUE_REPAIR);
                 new AcHelper.Builder((Activity) getContext())
@@ -63,7 +64,7 @@ public class PropertyViewHolder extends BaseRecyclerViewHolder<PropertyData> {
 
         //投诉
         setOnClickListener(R.id.complaint, v -> {
-            if (hasAuthority) {
+            if (family) {
                 Bundle bundle = new Bundle();
                 bundle.putInt(Constant.KEY_CURRENT_BUTTON, Constant.VALUE_COMPLAINT);
                 new AcHelper.Builder((Activity) getContext())
@@ -77,7 +78,7 @@ public class PropertyViewHolder extends BaseRecyclerViewHolder<PropertyData> {
 
         //缴费
         setOnClickListener(R.id.payment, v -> {
-            if (hasAuthority) {
+            if (family) {
                 Bundle bundle = new Bundle();
                 bundle.putInt(Constant.KEY_CURRENT_BUTTON, Constant.VALUE_PAYMENT);
                 new AcHelper.Builder((Activity) getContext())

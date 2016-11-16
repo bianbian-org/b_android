@@ -46,7 +46,7 @@ public class PropertyDetailActivity extends AppBaseActivity<PropertyDetailActivi
     private int mComeFrom;
     private List<String> mIndicatorTitles = new ArrayList<>();
     private List<AppBaseFragment> mFragments = new ArrayList<>();
-    private boolean mHasAuthority = UserManager.INSTANCE.hasAuthority();
+    private boolean mHasAuthority = UserManager.INSTANCE.isFamily();
 
     @Override
     protected View inflateView(Bundle savedInstanceState) {

@@ -6,7 +6,6 @@ import android.view.View;
 
 import com.steve.creact.library.display.DisplayBean;
 import com.techjumper.corelib.rx.tools.RxBus;
-import com.techjumper.corelib.rx.tools.RxUtils;
 import com.techjumper.corelib.utils.Utils;
 import com.techjumper.corelib.utils.common.AcHelper;
 import com.techjumper.corelib.utils.common.JLog;
@@ -60,12 +59,15 @@ public class HomeFragmentPresenter extends AppBaseFragmentPresenter<HomeFragment
     }
 
     private void changeTitle() {
-        RxUtils.unsubscribeIfNotNull(mSubs1);
+//        RxUtils.unsubscribeIfNotNull(mSubs1);
         addSubscription(
                 mSubs1 = RxBus.INSTANCE
                         .asObservable().subscribe(o -> {
                             if (o instanceof ChooseFamilyVillageEvent) {
                                 getView().getTvTitle().setText(UserManager.INSTANCE.getCurrentTitle());
+                                if (getView().getAdapter()!=null) {
+                                    getView().getAdapter().loadData(getDatas());
+                                }
                             } else if (o instanceof LoginEvent) {  //主要是因为用户1直接点击退出,此时到了登录界面,用户2登陆了.如果不做这个操作,那么就会导致用户2登陆之后显示的依然是用户1的title
                                 //这里和HomeMenuFragmentPresenter中一样的道理
                                 LoginEvent event = (LoginEvent) o;

@@ -7,7 +7,6 @@ import android.webkit.WebResourceRequest;
 import android.webkit.WebResourceResponse;
 import android.webkit.WebView;
 
-import com.techjumper.corelib.utils.common.JLog;
 import com.techjumper.polyhomeb.mvp.p.fragment.AppBaseFragmentPresenter;
 import com.techjumper.polyhomeb.user.UserManager;
 import com.techjumper.polyhomeb.widget.AdvancedWebView;
@@ -44,6 +43,9 @@ public abstract class AppBaseWebViewFragment<T extends AppBaseFragmentPresenter>
         mWebView.addHttpHeader("HUSERID", UserManager.INSTANCE.getUserInfo(UserManager.KEY_ID));
         mWebView.addHttpHeader("HTICKET", UserManager.INSTANCE.getTicket());
         mWebView.addHttpHeader("HVILLAGEID", UserManager.INSTANCE.getUserInfo(UserManager.KEY_CURRENT_VILLAGE_ID));
+        if (UserManager.INSTANCE.isFamily()) {
+            mWebView.addHttpHeader("family_id", UserManager.INSTANCE.getUserInfo(UserManager.KEY_CURRENT_FAMILY_ID));
+        }
 
         mIsInit = true;
 

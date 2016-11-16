@@ -150,17 +150,11 @@ public enum UserManager {
      * 所以使用之前,如果要取家庭的话,就必须要判断isFamily(),如果只是拿小区id的话,则直接拿就行,因为只要你能登陆app,那就说明至少都有小区id,不一定有家庭id
      */
     public void updateFamilyOrVillageInfo(boolean isFamily, String family_id, String name, String village_id) {
-        if (isFamily) {
-            PreferenceUtils.save(UserManager.KEY_CURRENT_FAMILY_ID, family_id);
-            PreferenceUtils.save(UserManager.KEY_CURRENT_SHOW_TITLE_NAME, name);
-            PreferenceUtils.save(UserManager.KEY_CURRENT_VILLAGE_ID, village_id);
-            PreferenceUtils.save(UserManager.KEY_CURRENT_SHOW_IS_FAMILY_OR_VILLAGE, UserManager.VALUE_IS_FAMILY);
-        } else {
-            PreferenceUtils.save(UserManager.KEY_CURRENT_FAMILY_ID, family_id);
-            PreferenceUtils.save(UserManager.KEY_CURRENT_SHOW_TITLE_NAME, name);
-            PreferenceUtils.save(UserManager.KEY_CURRENT_VILLAGE_ID, village_id);
-            PreferenceUtils.save(UserManager.KEY_CURRENT_SHOW_IS_FAMILY_OR_VILLAGE, UserManager.VALUE_IS_VILLAGE);
-        }
+        PreferenceUtils.save(UserManager.KEY_CURRENT_FAMILY_ID, family_id);
+        PreferenceUtils.save(UserManager.KEY_CURRENT_SHOW_TITLE_NAME, name);
+        PreferenceUtils.save(UserManager.KEY_CURRENT_VILLAGE_ID, village_id);
+        PreferenceUtils.save(UserManager.KEY_CURRENT_SHOW_IS_FAMILY_OR_VILLAGE
+                , isFamily ? UserManager.VALUE_IS_FAMILY : UserManager.VALUE_IS_VILLAGE);
     }
 
     /**
@@ -350,37 +344,41 @@ public enum UserManager {
      * <p>如果当前是家庭，默认有权限</p>
      * <p>如果当前是小区，那么得到所有小区的数据，再进行判断：如果当前小区已经有通过审核的房间，那么有权限
      * ，如果当前小区所有的房间均没有通过审核，则无权限</p>
+     *
+     * 2016年11月16日更新:
+     * 将中间部分注释掉，因为新增了一种什么推广小区，所以现在判断权限和以前最开始一样：你是家庭，就有权限，不是家庭就没有权限
      */
     public boolean hasAuthority() {
         if (isFamily()) return true;
-        Gson gson = new Gson();
-        String userAllVillages = getUserAllVillages();
-        if (TextUtils.isEmpty(userAllVillages)) return false;
-        List<LoginEntity.LoginDataEntity.VillagesBean> options
-                = gson.fromJson(userAllVillages, new TypeToken<List<LoginEntity.LoginDataEntity.VillagesBean>>() {
-        }.getType());
-        if (options == null || options.size() == 0) return false;
-        String currentId = getCurrentId();
-
-        boolean hasAuthority = false;
-        for (LoginEntity.LoginDataEntity.VillagesBean bean : options) {
-            int village_id = bean.getVillage_id();
-            if ((village_id + "").equals(currentId)) {
-                //说明就是当前这个选择的小区
-                //然后取出本小区下挂的房间
-                //遍历所有房间，如果有审核过的，那就返回true，如果全都是未审核，则返回false
-                List<LoginEntity.LoginDataEntity.VillagesBean.RoomsBean> rooms = bean.getRooms();
-                for (LoginEntity.LoginDataEntity.VillagesBean.RoomsBean roomBean : rooms) {
-                    int verified = roomBean.getVerified();
-                    if (verified == 1) {  //未审核
-                        hasAuthority = true;
-                        break;
-                    }
-                }
-                break;
-            }
-        }
-        return hasAuthority;
+//        Gson gson = new Gson();
+//        String userAllVillages = getUserAllVillages();
+//        if (TextUtils.isEmpty(userAllVillages)) return false;
+//        List<LoginEntity.LoginDataEntity.VillagesBean> options
+//                = gson.fromJson(userAllVillages, new TypeToken<List<LoginEntity.LoginDataEntity.VillagesBean>>() {
+//        }.getType());
+//        if (options == null || options.size() == 0) return false;
+//        String currentId = getCurrentId();
+//
+//        boolean hasAuthority = false;
+//        for (LoginEntity.LoginDataEntity.VillagesBean bean : options) {
+//            int village_id = bean.getVillage_id();
+//            if ((village_id + "").equals(currentId)) {
+//                //说明就是当前这个选择的小区
+//                //然后取出本小区下挂的房间
+//                //遍历所有房间，如果有审核过的，那就返回true，如果全都是未审核，则返回false
+//                List<LoginEntity.LoginDataEntity.VillagesBean.RoomsBean> rooms = bean.getRooms();
+//                for (LoginEntity.LoginDataEntity.VillagesBean.RoomsBean roomBean : rooms) {
+//                    int verified = roomBean.getVerified();
+//                    if (verified == 1) {  //未审核
+//                        hasAuthority = true;
+//                        break;
+//                    }
+//                }
+//                break;
+//            }
+//        }
+//        return hasAuthority;
+        return false;
     }
 
     /**************************************

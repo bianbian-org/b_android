@@ -106,7 +106,7 @@ public class FriendFragmentPresenter extends AppBaseFragmentPresenter<FriendFrag
 //            ToastUtils.show(getView().getActivity().getString(R.string.no_authority));
 //        }
 
-        if (UserManager.INSTANCE.hasAuthority()) {
+        if (UserManager.INSTANCE.isFamily()) {
             clickAdd();
         } else {
             ToastUtils.show(getView().getActivity().getString(R.string.no_authority));

@@ -103,9 +103,9 @@ public class JoinVillageActivityPresenter extends AppBaseActivityPresenter<JoinV
                                     //此处发送RxBus,目的是为了让用户加入之后,能够实时改变侧边栏和首页的title
                                     RxBus.INSTANCE.send(new ChooseFamilyVillageEvent(mModel.getName(), 1, -1));
                                     //将楼栋号,单元号,房间号,名字,id全都存下来
-                                    UserManager.INSTANCE.saveUserInfo(UserManager.KEY_CURRENT_BUILDING, getView().getEtBuilding().getEditableText().toString());
-                                    UserManager.INSTANCE.saveUserInfo(UserManager.KEY_CURRENT_UNIT, getView().getEtUnit().getEditableText().toString());
-                                    UserManager.INSTANCE.saveUserInfo(UserManager.KEY_CURRENT_ROOM, getView().getEtRoom().getEditableText().toString());
+//                                    UserManager.INSTANCE.saveUserInfo(UserManager.KEY_CURRENT_BUILDING, getView().getEtBuilding().getEditableText().toString());
+//                                    UserManager.INSTANCE.saveUserInfo(UserManager.KEY_CURRENT_UNIT, getView().getEtUnit().getEditableText().toString());
+//                                    UserManager.INSTANCE.saveUserInfo(UserManager.KEY_CURRENT_ROOM, getView().getEtRoom().getEditableText().toString());
                                     UserManager.INSTANCE.updateFamilyOrVillageInfo(false, mModel.getId() + "", mModel.getName(), mModel.getId() + "");
 
 //                                    new AcHelper.Builder(getView())
