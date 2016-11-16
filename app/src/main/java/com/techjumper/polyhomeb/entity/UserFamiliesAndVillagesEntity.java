@@ -64,9 +64,20 @@ public class UserFamiliesAndVillagesEntity extends BaseEntity<UserFamiliesAndVil
         public static class VillageInfosBean {
             private int village_id;
             private String village_name;
+            private String auto_joining;
+
+            public String getAuto_joining() {
+                return auto_joining;
+            }
+
+            public void setAuto_joining(String auto_joining) {
+                this.auto_joining = auto_joining;
+            }
+
             /**
              * room_num : 1-1-102
              * verified : 0
+             * auto_joining : 0
              */
 
             private List<RoomsBean> rooms;
