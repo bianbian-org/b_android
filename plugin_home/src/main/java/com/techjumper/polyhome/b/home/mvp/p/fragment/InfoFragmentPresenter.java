@@ -390,8 +390,14 @@ public class InfoFragmentPresenter extends AppBaseFragmentPresenter<InfoFragment
 
     //获取天气相关
     private void getWeatherInfo() {
+        Log.d("weatherDate", "weather enter");
+        Log.d("weatherDate", "familyId" + UserInfoManager.getFamilyId() == null ? "null" : UserInfoManager.getFamilyId());
+        Log.d("weatherDate", "ticket" + UserInfoManager.getTicket() == null ? "null" : UserInfoManager.getTicket());
+
         if (!UserInfoManager.isLogin())
             return;
+
+        Log.d("weatherDate", "weather begin");
 
         addSubscription(infoFragmentModel.getWeatherInfo()
                 .subscribe(new Subscriber<WeatherEntity>() {
@@ -403,6 +409,9 @@ public class InfoFragmentPresenter extends AppBaseFragmentPresenter<InfoFragment
                     @Override
                     public void onError(Throwable e) {
                         getView().showError(e);
+//                        if (!TextUtils.isEmpty(e.toString())) {
+//                            ToastUtils.showLong(e.toString());
+//                        }
                     }
 
                     @Override
@@ -412,6 +421,10 @@ public class InfoFragmentPresenter extends AppBaseFragmentPresenter<InfoFragment
 
                         if (weatherEntity != null && weatherEntity.getData() != null)
                             getView().getWeatherInfo(weatherEntity.getData());
+
+//                        ToastUtils.showLong("weatherEntity data" + weatherEntity.getData());
+
+                        Log.d("weatherDate", "weather data" + weatherEntity.getData());
                         //发送给主页获取数据
                         RxBus.INSTANCE.send(new WeatherEvent(weatherEntity.getData()));
                     }
@@ -420,6 +433,8 @@ public class InfoFragmentPresenter extends AppBaseFragmentPresenter<InfoFragment
 
     //获取日历相关
     private void getCalendarInfo() {
+        Log.d("weatherDate", "date begin");
+
         addSubscription(infoFragmentModel.getCalendarInfo()
                 .subscribe(new Subscriber<CalendarEntity>() {
                     @Override
@@ -439,6 +454,8 @@ public class InfoFragmentPresenter extends AppBaseFragmentPresenter<InfoFragment
 
                         if (calendarEntity != null && calendarEntity.getData() != null)
                             getView().getCalendarInfo(calendarEntity.getData());
+
+                        Log.d("weatherDate", "date data" + calendarEntity.getData());
                     }
                 }));
     }

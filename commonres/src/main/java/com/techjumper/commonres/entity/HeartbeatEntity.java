@@ -10,6 +10,7 @@ public class HeartbeatEntity extends BaseEntity<HeartbeatEntity.HeartbeatDataEnt
         private String result;
         private long time;
         private String ticket;
+        private int update_ad; //更新广告 0-不更新 1-更新
 
         public String getResult() {
             return result;
@@ -33,6 +34,14 @@ public class HeartbeatEntity extends BaseEntity<HeartbeatEntity.HeartbeatDataEnt
 
         public void setTicket(String ticket) {
             this.ticket = ticket;
+        }
+
+        public int getUpdate_ad() {
+            return update_ad;
+        }
+
+        public void setUpdate_ad(int update_ad) {
+            this.update_ad = update_ad;
         }
     }
 }

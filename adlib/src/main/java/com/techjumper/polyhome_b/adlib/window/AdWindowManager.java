@@ -1,20 +1,24 @@
 package com.techjumper.polyhome_b.adlib.window;
 
+import android.content.ComponentName;
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.PixelFormat;
 import android.graphics.SurfaceTexture;
-import android.util.Log;
 import android.view.Gravity;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 
 import com.squareup.picasso.RequestCreator;
 import com.techjumper.corelib.utils.Utils;
 import com.techjumper.corelib.utils.common.JLog;
 import com.techjumper.lib2.utils.PicassoHelper;
+import com.techjumper.polyhome_b.adlib.R;
 import com.techjumper.polyhome_b.adlib.entity.AdEntity;
 import com.techjumper.polyhome_b.adlib.widget.MyTextureView;
 
@@ -26,9 +30,12 @@ public class AdWindowManager {
     private FrameLayout mContainer;
     private WindowManager.LayoutParams mContainerParams;
     private ImageView mImageView;
+    private FrameLayout callLayout;
     private MyTextureView myVideoView;
     private boolean mIsAttach;
     private IAdWindow iAdWindow;
+
+    private static final int CALL_LAYOUT = 1; //一键呼叫布局
 
     private ParentClickListener mParentClickListener;
 
@@ -36,6 +43,7 @@ public class AdWindowManager {
         mWindowManager = (WindowManager) Utils.appContext.getSystemService(Context.WINDOW_SERVICE);
 
         mContainer = new FrameLayout(Utils.appContext);
+        callLayout = (FrameLayout) LayoutInflater.from(Utils.appContext).inflate(R.layout.layout_sleep_ad, null);
         mContainer.setBackgroundColor(0xFF000000);
         mContainerParams = new WindowManager.LayoutParams();
         mContainerParams.type = WindowManager.LayoutParams.TYPE_PHONE;
@@ -60,11 +68,20 @@ public class AdWindowManager {
         FrameLayout.LayoutParams videoLayoutParams = new FrameLayout.LayoutParams(FrameLayout.LayoutParams.MATCH_PARENT
                 , FrameLayout.LayoutParams.MATCH_PARENT);
         mContainer.addView(myVideoView, videoLayoutParams);
+
+        FrameLayout.LayoutParams callParams = new FrameLayout.LayoutParams(FrameLayout.LayoutParams.MATCH_PARENT
+                , FrameLayout.LayoutParams.MATCH_PARENT);
+        mContainer.addView(callLayout, callParams);
+        callLayout.setTag(CALL_LAYOUT);
     }
 
     public void setOnAdsClickListener(ParentClickListener listener) {
         mParentClickListener = listener;
         mContainer.setOnClickListener(mParentClickListener);
+    }
+
+    public void setOnCallClickListener(View.OnClickListener listener) {
+        callLayout.findViewById(R.id.call_layout).setOnClickListener(listener);
     }
 
     public void unregisterClickListener() {
@@ -173,7 +190,7 @@ public class AdWindowManager {
                 iAdWindow.onAdWindowClose(byUser);
             }
         } catch (Exception e) {
-            JLog.e(e);
+//            JLog.e(e);
         }
     }
 
@@ -185,12 +202,21 @@ public class AdWindowManager {
                     if (inView.getVisibility() != View.VISIBLE) {
                         inView.setVisibility(View.VISIBLE);
                     }
-                } else {
+                } else if (shouldInvisibleView(childView)) {
                     childView.setVisibility(View.GONE);
                 }
             }
         } catch (Exception ignored) {
         }
+    }
+
+    private boolean shouldInvisibleView(View view) {
+        if (view == null)
+            return false;
+        else if (view.getTag() == null || !(view.getTag() instanceof Integer))
+            return true;
+        int type = (int) view.getTag();
+        return CALL_LAYOUT != type;
     }
 
 

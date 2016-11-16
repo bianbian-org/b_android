@@ -13,10 +13,8 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.techjumper.commonres.entity.event.TimeEvent;
 import com.techjumper.commonres.util.CommonDateUtil;
 import com.techjumper.corelib.mvp.factory.Presenter;
-import com.techjumper.corelib.rx.tools.RxBus;
 import com.techjumper.polyhome.b.home.R;
 import com.techjumper.polyhome.b.home.adapter.MyViewPagerAdapter;
 import com.techjumper.polyhome.b.home.mvp.p.activity.MainActivityPresenter;
@@ -27,10 +25,9 @@ import com.techjumper.polyhome.b.home.widget.MyViewPager;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Timer;
-import java.util.TimerTask;
 
 import butterknife.Bind;
+import butterknife.ButterKnife;
 
 @Presenter(MainActivityPresenter.class)
 public class MainActivity extends AppBaseActivity {
@@ -58,10 +55,15 @@ public class MainActivity extends AppBaseActivity {
     FrameLayout mainAdLayout;
     @Bind(R.id.main_content_layout)
     LinearLayout mainContentLayout;
+    @Bind(R.id.qrcode)
+    ImageView qrcode;
+    @Bind(R.id.info_title_layout)
+    LinearLayout infoTitleLayout;
 
     private MyViewPagerAdapter myViewPagerAdapter;
     private List<Fragment> fragments = new ArrayList<Fragment>();
     private HeartbeatReceiver mheartbeatReceiver = new HeartbeatReceiver();
+    private float mLastPositionOffset = 0f;
 
     public MyVideoView getMainAdVideo() {
         return mainAdVideo;
@@ -93,6 +95,10 @@ public class MainActivity extends AppBaseActivity {
 
     public void setMainContentLayout(LinearLayout mainContentLayout) {
         this.mainContentLayout = mainContentLayout;
+    }
+
+    public ImageView getQrcode() {
+        return qrcode;
     }
 
     @Override
@@ -134,19 +140,24 @@ public class MainActivity extends AppBaseActivity {
         viewpager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
             public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
-
+//                if (positionOffset < mLastPositionOffset && positionOffset < 0.9) {
+//                    viewpager.setCurrentItem(position);
+//                } else if (positionOffset > mLastPositionOffset && positionOffset > 0.1) {
+//                    viewpager.setCurrentItem(position + 1);
+//                }
+//                mLastPositionOffset = positionOffset;
             }
 
             @Override
             public void onPageSelected(int position) {
                 if (position == 0) {
                     titleImg.setVisibility(View.VISIBLE);
-                    title.setVisibility(View.GONE);
+                    infoTitleLayout.setVisibility(View.GONE);
                     dotHome.setEnabled(true);
                     dotPoint.setEnabled(false);
                 } else if (position == 1) {
                     titleImg.setVisibility(View.GONE);
-                    title.setVisibility(View.VISIBLE);
+                    infoTitleLayout.setVisibility(View.VISIBLE);
                     dotHome.setEnabled(false);
                     dotPoint.setEnabled(true);
                 }

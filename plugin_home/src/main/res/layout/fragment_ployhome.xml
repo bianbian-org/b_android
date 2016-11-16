@@ -41,7 +41,6 @@
                 app:bg="@drawable/selector_button_0ca9e4"
                 app:content_img="@mipmap/bg_property"
                 app:title_text="@string/title_property" />
-
         </LinearLayout>
 
         <com.techjumper.polyhome.b.home.widget.AdViewPager
@@ -104,10 +103,10 @@
                 android:layout_width="@dimen/dp_160"
                 android:layout_height="@dimen/dp_160"
                 app:bg_color="@color/color_466780"
-                app:content_text="18°"
+                app:content_text="00"
                 app:quarter_img="@mipmap/bg_weather"
                 app:quarter_layout_visible="true"
-                app:title_text="pm2.5 00" />
+                app:title_text="pm2.5" />
 
             <com.techjumper.polyhome.b.home.widget.SquareView
                 android:id="@+id/fp_restrict"
@@ -128,5 +127,4 @@
                 app:title_text="@string/title_shopping" />
         </LinearLayout>
     </LinearLayout>
-
 </LinearLayout>

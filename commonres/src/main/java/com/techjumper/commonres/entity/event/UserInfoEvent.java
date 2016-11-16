@@ -1,6 +1,6 @@
 package com.techjumper.commonres.entity.event;
 
-import com.techjumper.commonres.UserInfoEntity;
+import com.techjumper.commonres.entity.UserInfoEntity;
 
 /**
  * Created by kevin on 16/6/23.

@@ -47,10 +47,11 @@ public class KeyValueCreator {
                 .put("ticket", ticket);
     }
 
-    public static KeyValuePair submitOnline(String family_id, String device_id) {
+    public static KeyValuePair submitOnline(String family_id, String device_id, String version) {
         return newPair()
                 .put("family_id", family_id)
-                .put("device_id", device_id);
+                .put("device_id", device_id)
+                .put("version", version);
     }
 
     public static KeyValuePair submitClicks(String clicks) {
@@ -62,5 +63,10 @@ public class KeyValueCreator {
         return newPair()
                 .put("family_id", family_id)
                 .put("json", timer);
+    }
+
+    public static KeyValuePair getUserInfo(String mac) {
+        return newPair()
+                .put("mac", mac);
     }
 }

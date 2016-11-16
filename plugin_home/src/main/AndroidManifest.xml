@@ -97,6 +97,8 @@
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </receiver>
+
+        <activity android:name=".mvp.v.activity.QrcodeActivity"></activity>
     </application>
 
 </manifest>

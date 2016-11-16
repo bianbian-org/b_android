@@ -10,13 +10,11 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
-import android.view.ViewGroup;
-import android.widget.FrameLayout;
 import android.widget.ImageView;
 
 import com.jakewharton.rxbinding.view.RxView;
 import com.techjumper.commonres.ComConstant;
-import com.techjumper.commonres.UserInfoEntity;
+import com.techjumper.commonres.entity.UserInfoEntity;
 import com.techjumper.commonres.entity.NoticeEntity;
 import com.techjumper.commonres.entity.TimerClickEntity;
 import com.techjumper.commonres.entity.TrueEntity;
@@ -29,7 +27,6 @@ import com.techjumper.commonres.entity.event.AdTemEvent;
 import com.techjumper.commonres.entity.event.HeartbeatTimeEvent;
 import com.techjumper.commonres.entity.event.InfoMediaPlayerEvent;
 import com.techjumper.commonres.entity.event.NoticeEvent;
-import com.techjumper.commonres.entity.event.PropertyActionEvent;
 import com.techjumper.commonres.entity.event.ShowMainAdEvent;
 import com.techjumper.commonres.entity.event.TimerEvent;
 import com.techjumper.commonres.entity.event.UserInfoEvent;
@@ -48,7 +45,6 @@ import com.techjumper.polyhome.b.home.UserInfoManager;
 import com.techjumper.polyhome.b.home.adapter.AdViewPagerAdapter;
 import com.techjumper.polyhome.b.home.db.util.AdClickDbUtil;
 import com.techjumper.polyhome.b.home.mvp.m.PloyhomeFragmentModel;
-import com.techjumper.polyhome.b.home.mvp.v.activity.AdActivity;
 import com.techjumper.polyhome.b.home.mvp.v.activity.AdNewActivity;
 import com.techjumper.polyhome.b.home.mvp.v.activity.JujiaActivity;
 import com.techjumper.polyhome.b.home.mvp.v.activity.ShoppingActivity;
@@ -151,12 +147,12 @@ public class PloyhomeFragmentPresenter extends AppBaseFragmentPresenter<Ployhome
         addSubscription(RxView.clicks(getView().getProperty())
                 .compose(RxUtil.applySchedulers())
                 .subscribe(aVoid -> {
-                    submitTimer(TimerClickEntity.ONCLICK_PROPERTY, heartbeatTime, heartbeatTime);
-                    eventId = TimerClickEntity.STAY_PROPERTY;
-                    long familyId = UserInfoManager.getLongFamilyId();
-                    long userId = UserInfoManager.getLongUserId();
-                    String ticket = UserInfoManager.getTicket();
-                    PluginEngineUtil.startProperty(familyId, userId, ticket);
+                        submitTimer(TimerClickEntity.ONCLICK_PROPERTY, heartbeatTime, heartbeatTime);
+                        eventId = TimerClickEntity.STAY_PROPERTY;
+                        long familyId = UserInfoManager.getLongFamilyId();
+                        long userId = UserInfoManager.getLongUserId();
+                        String ticket = UserInfoManager.getTicket();
+                        PluginEngineUtil.startProperty(familyId, userId, ticket);
                 }));
 
 //        addSubscription(RxView.clicks(getView().getProperty())
@@ -290,6 +286,7 @@ public class PloyhomeFragmentPresenter extends AppBaseFragmentPresenter<Ployhome
                     } else if (o instanceof AdEvent) {
                         Log.d("pluginUserInfo", "推送更新广告");
                         getAd(false);
+                        mIsGetNewAd = false;
                     }
                 }));
 
@@ -303,8 +300,8 @@ public class PloyhomeFragmentPresenter extends AppBaseFragmentPresenter<Ployhome
                         SquareView restrictSv = getView().getFpRestrict();
                         SquareView temperatureSv = getView().getFpTemperature();
 
-                        temperatureSv.showContentText(TextUtils.isEmpty(entity.getTemperature()) ? "0" : entity.getTemperature() + "°");
-                        temperatureSv.showTitleText("pm2.5 " + (TextUtils.isEmpty(entity.getPm25()) ? "0" : entity.getPm25()));
+                        temperatureSv.showContentText(TextUtils.isEmpty(entity.getPm25()) ? "0" : entity.getPm25());
+                        temperatureSv.showTitleText("pm2.5");
 
                         String date = entity.getDate_one();
                         String restrictNo = getRestrictNo(date, entity.getRestrict());

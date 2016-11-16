@@ -11,8 +11,8 @@ android {
         applicationId "com.techjumper.polyhome.b.home"
         minSdkVersion rootProject.minSdkVersion
         targetSdkVersion rootProject.targetSdkVersion
-        versionCode 149
-        versionName "0.1.49"
+        versionCode 150
+        versionName "0.1.50"
     }
     buildTypes {
         debug {
@@ -23,7 +23,7 @@ android {
         release {
             minifyEnabled false
             debuggable false
-            shrinkResources true
+            shrinkResources false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
@@ -44,5 +44,6 @@ dependencies {
     compile project(':corelib')
     compile project(':lib2')
     compile project(':progressdialog')
+    compile project(':zxing')
     compile "com.android.support:support-v4:$rootProject.supportLibraryVersion"
 }

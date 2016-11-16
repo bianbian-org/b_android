@@ -2,8 +2,7 @@ package com.techjumper.polyhome.b.home;
 
 import android.text.TextUtils;
 
-import com.techjumper.commonres.UserInfoEntity;
-import com.techjumper.commonres.util.PluginEngineUtil;
+import com.techjumper.commonres.entity.UserInfoEntity;
 import com.techjumper.corelib.utils.file.PreferenceUtils;
 
 /**

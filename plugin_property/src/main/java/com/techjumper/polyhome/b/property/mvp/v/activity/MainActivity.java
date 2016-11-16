@@ -1,30 +1,21 @@
 package com.techjumper.polyhome.b.property.mvp.v.activity;
 
 import android.os.Bundle;
-import android.provider.Settings;
 import android.text.TextUtils;
 import android.util.Log;
-import android.view.MotionEvent;
 import android.view.View;
-import android.view.inputmethod.InputMethodManager;
-import android.widget.FrameLayout;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.techjumper.commonres.ComConstant;
 import com.techjumper.commonres.PluginConstant;
-import com.techjumper.commonres.UserInfoEntity;
+import com.techjumper.commonres.entity.UserInfoEntity;
 import com.techjumper.commonres.entity.HeartbeatTimeEntity;
 import com.techjumper.commonres.entity.event.HeartbeatEvent;
-import com.techjumper.commonres.entity.event.LoginEvent;
 import com.techjumper.commonres.entity.event.PropertyActionEvent;
 import com.techjumper.commonres.entity.event.PropertyMessageDetailEvent;
-import com.techjumper.commonres.entity.event.TimeEvent;
-import com.techjumper.commonres.util.CommonDateUtil;
 import com.techjumper.commonres.util.PluginEngineUtil;
 import com.techjumper.corelib.mvp.factory.Presenter;
 import com.techjumper.corelib.rx.tools.RxBus;
-import com.techjumper.corelib.utils.window.ToastUtils;
 import com.techjumper.lib2.utils.GsonUtils;
 import com.techjumper.plugincommunicateengine.IPluginMessageReceiver;
 import com.techjumper.plugincommunicateengine.PluginEngine;
@@ -32,12 +23,9 @@ import com.techjumper.plugincommunicateengine.entity.core.SaveInfoEntity;
 import com.techjumper.polyhome.b.property.R;
 import com.techjumper.polyhome.b.property.UserInfoManager;
 import com.techjumper.polyhome.b.property.mvp.p.activity.MainActivityPresenter;
-import com.techjumper.polyhome.b.property.mvp.v.fragment.ActionFragment;
 import com.techjumper.polyhome.b.property.mvp.v.fragment.ListFragment;
 
 import java.util.HashMap;
-import java.util.Timer;
-import java.util.TimerTask;
 
 import butterknife.Bind;
 import rx.android.schedulers.AndroidSchedulers;

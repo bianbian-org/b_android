@@ -1,6 +1,5 @@
 package com.techjumper.polyhome.b.home.mvp.v.activity;
 
-import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
 import android.webkit.WebChromeClient;
@@ -8,22 +7,18 @@ import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.ImageView;
-import android.widget.MediaController;
 
 import com.techjumper.corelib.mvp.factory.Presenter;
-import com.techjumper.corelib.rx.tools.RxBus;
 import com.techjumper.lib2.utils.PicassoHelper;
 import com.techjumper.polyhome.b.home.R;
 import com.techjumper.polyhome.b.home.mvp.p.activity.AdActivityPresenter;
 import com.techjumper.polyhome.b.home.mvp.p.fragment.PloyhomeFragmentPresenter;
 import com.techjumper.polyhome.b.home.widget.MyTextureView;
-import com.techjumper.polyhome.b.home.widget.MyVideoView;
 import com.techjumper.polyhome_b.adlib.entity.AdEntity;
 
 import java.io.File;
 
 import butterknife.Bind;
-import butterknife.ButterKnife;
 
 /**
  * Created by kevin on 16/4/29.
@@ -65,7 +60,7 @@ public class AdActivity extends AppBaseActivity<AdActivityPresenter> {
 
     @Override
     protected View inflateView(Bundle savedInstanceState) {
-        return inflate(R.layout.layout_ad);
+        return inflate(R.layout.layout_sleep_ad);
     }
 
     @Override
