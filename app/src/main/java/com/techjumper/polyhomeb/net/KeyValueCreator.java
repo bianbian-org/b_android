@@ -40,9 +40,10 @@ public class KeyValueCreator {
                 .put("new_password", password);
     }
 
-    public static KeyValuePair propertyNotice(String user_id, String family_id, String ticket, String page, String count) {
+    public static KeyValuePair propertyNotice(String user_id, String village, String family_id, String ticket, String page, String count) {
         return newPair()
                 .put("user_id", user_id)
+                .put("village", village)
                 .put("family_id", family_id)
                 .put("ticket", ticket)
                 .put("page", page)

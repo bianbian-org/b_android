@@ -48,10 +48,20 @@ public class PlacardFragmentModel extends BaseModel<PlacardFragmentPresenter> {
     }
 
     public Observable<PropertyPlacardEntity> getNotice() {
+        boolean family = UserManager.INSTANCE.isFamily();
+        String family_id;
+        String village_id;
+        if (family) {
+            family_id = UserManager.INSTANCE.getUserInfo(UserManager.KEY_CURRENT_FAMILY_ID);
+            village_id = UserManager.INSTANCE.getUserInfo(UserManager.KEY_CURRENT_VILLAGE_ID);
+        } else {
+            village_id = UserManager.INSTANCE.getUserInfo(UserManager.KEY_CURRENT_VILLAGE_ID);
+            family_id = "";
+        }
         KeyValuePair keyValuePair = KeyValueCreator.propertyNotice(
                 UserManager.INSTANCE.getUserInfo(UserManager.KEY_ID)
-//                , UserManager.INSTANCE.getUserInfo(UserManager.KEY_CURRENT_FAMILY_ID)  //家庭id
-                , UserManager.INSTANCE.getCurrentId()  //如果当前是家庭，那么这个id就是家庭id，如果当前是小区，那么这个id就是小区id
+                , village_id
+                , family_id
                 , UserManager.INSTANCE.getTicket()
                 , mCurrentPage + ""
                 , mOnePageCount + "");
