@@ -17,6 +17,7 @@ import com.techjumper.polyhomeb.R;
 import com.techjumper.polyhomeb.adapter.HomePageAdapter;
 import com.techjumper.polyhomeb.adapter.recycler_Data.BluetoothData;
 import com.techjumper.polyhomeb.adapter.recycler_ViewHolder.databean.BluetoothBean;
+import com.techjumper.polyhomeb.adapter.recycler_ViewHolder.databean.PropertyDataBean;
 import com.techjumper.polyhomeb.entity.event.BLEInfoChangedEvent;
 import com.techjumper.polyhomeb.entity.event.ChooseFamilyVillageEvent;
 import com.techjumper.polyhomeb.entity.event.ToggleMenuClickEvent;
@@ -65,9 +66,7 @@ public class HomeFragmentPresenter extends AppBaseFragmentPresenter<HomeFragment
                         .asObservable().subscribe(o -> {
                             if (o instanceof ChooseFamilyVillageEvent) {
                                 getView().getTvTitle().setText(UserManager.INSTANCE.getCurrentTitle());
-                                if (getView().getAdapter()!=null) {
-                                    getView().getAdapter().loadData(getDatas());
-                                }
+                                reloadPropertyData();
                             } else if (o instanceof LoginEvent) {  //主要是因为用户1直接点击退出,此时到了登录界面,用户2登陆了.如果不做这个操作,那么就会导致用户2登陆之后显示的依然是用户1的title
                                 //这里和HomeMenuFragmentPresenter中一样的道理
                                 LoginEvent event = (LoginEvent) o;
@@ -77,6 +76,19 @@ public class HomeFragmentPresenter extends AppBaseFragmentPresenter<HomeFragment
                                 }
                             }
                         }));
+    }
+
+    private void reloadPropertyData() {
+        if (getView().getAdapter() == null) return;
+        HomePageAdapter adapter = getView().getAdapter();
+        List<DisplayBean> data = adapter.getData();
+        if (data == null || data.size() == 0) return;
+        for (int i = 0; i < data.size(); i++) {
+            if (data.get(i) instanceof PropertyDataBean) {
+                adapter.notifyItemChanged(i);
+                break;
+            }
+        }
     }
 
     @OnClick({R.id.iv_left_icon, R.id.right_tv})
