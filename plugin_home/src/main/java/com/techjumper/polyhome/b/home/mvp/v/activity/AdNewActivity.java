@@ -150,6 +150,8 @@ public class AdNewActivity extends AppBaseActivity<AdNewActivityPresenter> imple
                                     webView.setVisibility(View.VISIBLE);
 
                                     webView.loadUrl(adsEntity.getUrl());
+
+                                    AdClickDbUtil.insert(Long.valueOf(adsEntity.getId()), AdController.TYPE_HOME, ComConstant.AD_TYPE_CLICK, time);
                                 }
                             }
                         }

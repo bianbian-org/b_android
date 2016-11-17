@@ -15,6 +15,8 @@ import android.widget.ImageView;
 
 import com.jakewharton.rxbinding.view.RxView;
 import com.techjumper.commonres.ComConstant;
+import com.techjumper.commonres.entity.TimerClickEntity;
+import com.techjumper.commonres.entity.TrueEntity;
 import com.techjumper.commonres.entity.UserInfoEntity;
 import com.techjumper.commonres.entity.NoticeEntity;
 import com.techjumper.commonres.entity.WeatherEntity;
@@ -106,6 +108,10 @@ public class PloyhomeFragmentPresenter extends AppBaseFragmentPresenter<Ployhome
 
     private List<AdEntity.AdsEntity> adsEntities = new ArrayList<>();
 
+    private String eventId = "";
+    private long startTime = 0;
+    private long endTime = 0;
+
     @Override
     public void onDestroy() {
         if (adController != null) {
@@ -143,6 +149,8 @@ public class PloyhomeFragmentPresenter extends AppBaseFragmentPresenter<Ployhome
                 .compose(RxUtil.applySchedulers())
                 .subscribe(aVoid -> {
                     try {
+                        submitTimer(TimerClickEntity.ONCLICK_CALL_SERVICE, heartbeatTime, heartbeatTime);
+                        eventId = TimerClickEntity.ONCLICK_CALL_SERVICE;
                         Intent it = new Intent();
                         ComponentName componentName = new ComponentName("com.dnake.talk", "com.dnake.activity.TalkingActivity");
                         it.setComponent(componentName);
@@ -163,6 +171,8 @@ public class PloyhomeFragmentPresenter extends AppBaseFragmentPresenter<Ployhome
 //                })
 //                .compose(RxUtil.applySchedulers())
 //                .subscribe(aVoid -> {
+//                    submitTimer(TimerClickEntity.ONCLICK_PROPERTY, heartbeatTime, heartbeatTime);
+//                    eventId = TimerClickEntity.STAY_PROPERTY;
 //                    long familyId = UserInfoManager.getLongFamilyId();
 //                    long userId = UserInfoManager.getLongUserId();
 //                    String ticket = UserInfoManager.getTicket();
@@ -180,6 +190,8 @@ public class PloyhomeFragmentPresenter extends AppBaseFragmentPresenter<Ployhome
                 })
                 .compose(RxUtil.applySchedulers())
                 .subscribe(aVoid -> {
+                    submitTimer(TimerClickEntity.ONCLICK_INFO, heartbeatTime, heartbeatTime);
+                    eventId = TimerClickEntity.STAY_INFO;
                     long userId = UserInfoManager.getLongUserId();
                     long familyId = UserInfoManager.getLongFamilyId();
                     String ticket = UserInfoManager.getTicket();
@@ -225,6 +237,8 @@ public class PloyhomeFragmentPresenter extends AppBaseFragmentPresenter<Ployhome
                 })
                 .compose(RxUtil.applySchedulers())
                 .subscribe(aVoid -> {
+                    submitTimer(TimerClickEntity.ONCLICK_SHOPPING, heartbeatTime, heartbeatTime);
+                    eventId = TimerClickEntity.STAY_SHOPPING;
                     Intent intent = new Intent(getView().getActivity(), ShoppingActivity.class);
                     intent.putExtra(ShoppingActivity.TIME, heartbeatTime);
                     getView().startActivity(intent);
@@ -233,6 +247,8 @@ public class PloyhomeFragmentPresenter extends AppBaseFragmentPresenter<Ployhome
         addSubscription(RxView.clicks(getView().getJujia())
                 .compose(RxUtil.applySchedulers())
                 .subscribe(aVoid -> {
+                    submitTimer(TimerClickEntity.ONCLICK_JUJIA, heartbeatTime, heartbeatTime);
+                    eventId = TimerClickEntity.STAY_JUJIA;
                     Intent intent = new Intent(getView().getActivity(), JujiaActivity.class);
                     intent.putExtra(JujiaActivity.TIME, heartbeatTime);
                     getView().startActivity(intent);
@@ -243,6 +259,8 @@ public class PloyhomeFragmentPresenter extends AppBaseFragmentPresenter<Ployhome
         addSubscription(RxView.clicks(getView().getSmarthome())
                 .compose(RxUtil.applySchedulers())
                 .subscribe(aVoid -> {
+                    submitTimer(TimerClickEntity.ONCLICK_SMARTHOME, heartbeatTime, heartbeatTime);
+                    eventId = TimerClickEntity.STAY_SMARTHOME;
                     PluginEngineUtil.startSmartHome();
                 }));
 
@@ -362,7 +380,8 @@ public class PloyhomeFragmentPresenter extends AppBaseFragmentPresenter<Ployhome
                         x2 = event.getX();
                         y2 = event.getY();
                         if (Math.abs(x1 - x2) < 6 && Math.abs(y1 - y2) < 6) {
-                            AdClickDbUtil.insert(Long.valueOf(mAdsEntity.getId()), AdController.TYPE_HOME, ComConstant.AD_TYPE_CLICK, heartbeatTime);
+//                            AdClickDbUtil.insert(Long.valueOf(mAdsEntity.getId()), AdController.TYPE_HOME, ComConstant.AD_TYPE_CLICK, heartbeatTime);
+                            submitTimer(TimerClickEntity.ONCLICK_ONE_AD, heartbeatTime, heartbeatTime);
                             Intent intent = new Intent(getView().getActivity(), AdNewActivity.class);
                             intent.putExtra(AdNewActivity.POSITION, adViewPager.getCurrentItem());
                             intent.putExtra(AdNewActivity.TYPE, AdNewActivity.TYPE_ONE);
@@ -528,6 +547,10 @@ public class PloyhomeFragmentPresenter extends AppBaseFragmentPresenter<Ployhome
             mIsGetAd = false;
             RxBus.INSTANCE.send(new TimerEvent(false));
         }
+
+        if (!TextUtils.isEmpty(eventId) && !UserInfoManager.getFamilyId().equals("-1")) {
+            startTime = heartbeatTime;
+        }
     }
 
     @Override
@@ -552,6 +575,14 @@ public class PloyhomeFragmentPresenter extends AppBaseFragmentPresenter<Ployhome
             getNormalAd(mIsGetNewAd);
             mIsGetAd = true;
         }
+
+        if (!TextUtils.isEmpty(eventId) && !UserInfoManager.getFamilyId().equals("-1") && startTime != 0) {
+            endTime = heartbeatTime;
+            submitTimer(eventId, startTime, endTime);
+        }
+        eventId = "";
+        startTime = 0;
+        endTime = 0;
     }
 
     @Override
@@ -950,7 +981,7 @@ public class PloyhomeFragmentPresenter extends AppBaseFragmentPresenter<Ployhome
                 if (currentView != null && currentView instanceof MyTextureView) {
                     ((MyTextureView) currentView).stop();
                 }
-                    currentView = null;
+                currentView = null;
             }
         }
         currentPage = position;
@@ -961,5 +992,44 @@ public class PloyhomeFragmentPresenter extends AppBaseFragmentPresenter<Ployhome
         if (state == 2 && mAdsEntity != null) {
             AdClickDbUtil.insert(Long.valueOf(mAdsEntity.getId()), AdController.TYPE_HOME, ComConstant.AD_TYPE_SLIDE, heartbeatTime);
         }
+    }
+
+    private void submitTimer(String eventId, long startTime, long endTime) {
+        if (!UserInfoManager.isLogin())
+            return;
+        if (endTime < startTime) {
+            return;
+        }
+        TimerClickEntity entity = new TimerClickEntity();
+        TimerClickEntity.TimerClickItemEntity itemEntity = new TimerClickEntity.TimerClickItemEntity();
+        itemEntity.setEvent_id(eventId);
+        itemEntity.setStart_time(String.valueOf(startTime));
+        itemEntity.setEnd_time(String.valueOf(endTime));
+        List<TimerClickEntity.TimerClickItemEntity> entities = new ArrayList<>();
+        entities.add(itemEntity);
+        entity.setDatas(entities);
+        String timer = com.techjumper.lib2.utils.GsonUtils.toJson(entity);
+        Log.d("timerClick", timer);
+        addSubscription(model.submitTimer(timer)
+                .subscribe(new Subscriber<TrueEntity>() {
+                    @Override
+                    public void onCompleted() {
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        getView().showError(e);
+                    }
+
+                    @Override
+                    public void onNext(TrueEntity trueEntity) {
+                        if (!processNetworkResult(trueEntity, false))
+                            return;
+                        if (trueEntity == null ||
+                                trueEntity.getData() == null)
+                            return;
+                        Log.d("timerClick", "上传成功了");
+                    }
+                }));
     }
 }

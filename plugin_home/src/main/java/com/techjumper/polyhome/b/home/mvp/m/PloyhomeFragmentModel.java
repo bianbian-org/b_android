@@ -56,7 +56,7 @@ public class PloyhomeFragmentModel extends BaseModel<PloyhomeFragmentPresenter> 
         KeyValuePair keyValuePair = KeyValueCreator.submitTimer(UserInfoManager.getFamilyId(), timer);
         BaseArgumentsEntity argument = NetHelper.createBaseArguments(keyValuePair);
         return RetrofitHelper.<ServiceAPI>createDefault()
-                .submitClicks(argument)
+                .submitTimer(argument)
                 .compose(CommonWrap.wrap());
     }
 }
