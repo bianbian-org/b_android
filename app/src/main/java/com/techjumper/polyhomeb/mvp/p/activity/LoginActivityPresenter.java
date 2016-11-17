@@ -140,7 +140,7 @@ public class LoginActivityPresenter extends AppBaseActivityPresenter<LoginActivi
     }
 
     private void login() {
-        getView().showLoading();
+        getView().showLoading(false);
         addSubscription(
                 mModel.login(getView().getPhoneNumber()
                         , getView().getEtPsw().getText().toString())
@@ -227,6 +227,7 @@ public class LoginActivityPresenter extends AppBaseActivityPresenter<LoginActivi
                         }).subscribe(new Observer<QueryFamilyEntity>() {
                             @Override
                             public void onCompleted() {
+                                UserManager.INSTANCE.notifyLoginOrLogoutEvent(true);
                             }
 
                             @Override
@@ -241,7 +242,6 @@ public class LoginActivityPresenter extends AppBaseActivityPresenter<LoginActivi
                                     QueryFamilyEntity.DataEntity data = queryFamilyEntity.getData();
                                     String manager_id = data.getManager_id();
                                     UserManager.INSTANCE.saveUserInfo(UserManager.KEY_CURRENT_FAMILY_MANAGER_ID, manager_id);
-                                    UserManager.INSTANCE.notifyLoginOrLogoutEvent(true);
                                 } else {
                                     getView().showHint(getView().getString(R.string.error_data));
                                 }
