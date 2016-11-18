@@ -64,14 +64,14 @@ public class HomeMenuFragmentModel extends BaseModel<HomeMenuFragmentPresenter> 
         PropertyRepairBigDividerBean propertyRepairBigDividerBean = new PropertyRepairBigDividerBean(propertyRepairBigDividerData);
         displayBeen.add(propertyRepairBigDividerBean);
 
-        //细长分割线
-        displayBeen.add(propertyPlacardDividerLongBean);
-
-        //我的积分
-        displayBeen.add(newItem(Utils.appContext.getString(R.string.my_points), "", HomeMenuItemData.ItemType.POINTS));
-
-        //细的分割线
-        displayBeen.add(propertyPlacardDividerLongBean);
+//        //细长分割线
+//        displayBeen.add(propertyPlacardDividerLongBean);
+//
+//        //我的积分
+//        displayBeen.add(newItem(Utils.appContext.getString(R.string.my_points), "", HomeMenuItemData.ItemType.POINTS));
+//
+//        //细的分割线
+//        displayBeen.add(propertyPlacardDividerLongBean);
 
         //大分割线
         displayBeen.add(propertyRepairBigDividerBean);
