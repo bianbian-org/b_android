@@ -8,6 +8,7 @@ import android.widget.FrameLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.techjumper.corelib.rx.tools.RxBus;
 import com.techjumper.corelib.utils.window.StatusbarHelper;
 
 import java.util.ArrayList;
@@ -15,6 +16,7 @@ import java.util.List;
 
 import me.iwf.photopicker.entity.Photo;
 import me.iwf.photopicker.event.OnItemCheckListener;
+import me.iwf.photopicker.event.PhotoPickerEvent;
 import me.iwf.photopicker.fragment.ImagePagerFragment;
 import me.iwf.photopicker.fragment.PhotoPickerFragment;
 
@@ -260,10 +262,14 @@ public class PhotoPickerActivity extends AppCompatActivity implements View.OnCli
 
         } else if (i == R.id.right_group) {
 
+
             Intent intent = new Intent();
             ArrayList<String> selectedPhotos = pickerFragment.getPhotoGridAdapter().getSelectedPhotoPaths();
             intent.putStringArrayListExtra(KEY_SELECTED_PHOTOS, selectedPhotos);
             setResult(RESULT_OK, intent);
+
+            RxBus.INSTANCE.send(new PhotoPickerEvent(intent));
+
             finish();
 
 

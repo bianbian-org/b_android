@@ -15,6 +15,7 @@ import android.widget.TextView;
 
 import com.jakewharton.rxbinding.widget.RxTextView;
 import com.techjumper.corelib.mvp.factory.Presenter;
+import com.techjumper.corelib.rx.tools.RxBus;
 import com.techjumper.corelib.utils.common.RuleUtils;
 import com.techjumper.polyhomeb.R;
 import com.techjumper.polyhomeb.adapter.NewRepairActivityPhotoAdapter;
@@ -27,7 +28,8 @@ import java.util.List;
 import butterknife.Bind;
 import cn.finalteam.loadingviewfinal.RecyclerViewFinal;
 import me.iwf.photopicker.PhotoPicker;
-import me.iwf.photopicker.PhotoPreview;
+import me.iwf.photopicker.event.PhotoPickerEvent;
+import rx.functions.Action1;
 
 /**
  * * * * * * * * * * * * * * * * * * * * * * *
@@ -97,6 +99,25 @@ public class NewComplainActivity extends AppBaseActivity<NewComplainActivityPres
                 mTvInput.setVisibility(View.INVISIBLE);
             }
         });
+
+        addSubscription(
+                RxBus.INSTANCE.asObservable().subscribe(o -> {
+                    if (o instanceof PhotoPickerEvent) {
+                        PhotoPickerEvent event = (PhotoPickerEvent) o;
+                        Intent intent = event.getIntent();
+                        List<String> photos = null;
+                        if (intent != null) {
+                            photos = intent.getStringArrayListExtra(PhotoPicker.KEY_SELECTED_PHOTOS);
+                        }
+                        mChoosedPhoto.clear();
+                        if (photos != null) {
+                            mChoosedPhoto.addAll(photos);
+                        }
+
+                        mAdapter.loadData(getPresenter().getDatas());
+                        mAdapter.notifyDataSetChanged();
+                    }
+                }));
     }
 
     @Override
@@ -115,24 +136,24 @@ public class NewComplainActivity extends AppBaseActivity<NewComplainActivityPres
         return getResources().getString(R.string.new_complain);
     }
 
-    @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        if (resultCode == RESULT_OK &&
-                (requestCode == PhotoPicker.REQUEST_CODE || requestCode == PhotoPreview.REQUEST_CODE)) {
-            List<String> photos = null;
-            if (data != null) {
-                photos = data.getStringArrayListExtra(PhotoPicker.KEY_SELECTED_PHOTOS);
-            }
-            mChoosedPhoto.clear();
-            if (photos != null) {
-                mChoosedPhoto.addAll(photos);
-            }
-
-            mAdapter.loadData(getPresenter().getDatas());
-            mAdapter.notifyDataSetChanged();
-        }
-    }
+//    @Override
+//    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+//        super.onActivityResult(requestCode, resultCode, data);
+//        if (resultCode == RESULT_OK &&
+//                (requestCode == PhotoPicker.REQUEST_CODE || requestCode == PhotoPreview.REQUEST_CODE)) {
+//            List<String> photos = null;
+//            if (data != null) {
+//                photos = data.getStringArrayListExtra(PhotoPicker.KEY_SELECTED_PHOTOS);
+//            }
+//            mChoosedPhoto.clear();
+//            if (photos != null) {
+//                mChoosedPhoto.addAll(photos);
+//            }
+//
+//            mAdapter.loadData(getPresenter().getDatas());
+//            mAdapter.notifyDataSetChanged();
+//        }
+//    }
 
     //这里被注释了,和下面layoutParams.height被注释道理一样,如果这里返回false,意思是说上面状态栏是假的,是padding,所以这里需要多减去一个高度
 //    @Override
