@@ -56,7 +56,7 @@ public class SplashActivity extends AppBaseActivity<SplashActivityPresenter> {
                 .setListener(new ViewPropertyAnimatorListener() {
                     @Override
                     public void onAnimationStart(View view) {
-                        PicassoHelper.load(R.mipmap.ic_launcher).noFade().into(mIvLogo);
+                        PicassoHelper.load(R.mipmap.splash).noFade().into(mIvLogo);
                     }
 
                     @Override
