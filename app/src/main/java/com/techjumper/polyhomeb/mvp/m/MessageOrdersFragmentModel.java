@@ -127,9 +127,6 @@ public class MessageOrdersFragmentModel extends BaseModel<MessageOrdersFragmentP
                 case 5:
                     rightText = getPresenter().getView().getString(R.string.message_title_property);
                     break;
-                case 6:
-                    rightText = getPresenter().getView().getString(R.string.message_title_friend);
-                    break;
             }
             //第三个item,内容
             MessageAllContentData messageAllContentData = new MessageAllContentData();

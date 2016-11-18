@@ -12,7 +12,6 @@ import com.techjumper.polyhomeb.adapter.IndicatorAdapter;
 import com.techjumper.polyhomeb.mvp.p.activity.MessageCenterActivityPresenter;
 import com.techjumper.polyhomeb.mvp.v.fragment.AppBaseFragment;
 import com.techjumper.polyhomeb.mvp.v.fragment.MessageAllFragment;
-import com.techjumper.polyhomeb.mvp.v.fragment.MessageFriendFragment;
 import com.techjumper.polyhomeb.mvp.v.fragment.MessageOrdersFragment;
 import com.techjumper.polyhomeb.mvp.v.fragment.MessagePropertyFragment;
 import com.techjumper.polyhomeb.mvp.v.fragment.MessageSystemFragment;
@@ -62,7 +61,6 @@ public class MessageCenterActivity extends AppBaseActivity<MessageCenterActivity
         mIndicatorTitles.add(Utils.appContext.getResources().getString(R.string.message_title_all));
         mIndicatorTitles.add(Utils.appContext.getResources().getString(R.string.message_title_system));
         mIndicatorTitles.add(Utils.appContext.getResources().getString(R.string.message_title_orders));
-        mIndicatorTitles.add(Utils.appContext.getResources().getString(R.string.message_title_friend));
         mIndicatorTitles.add(Utils.appContext.getResources().getString(R.string.message_title_property));
         CommonNavigator navigator = new CommonNavigator(this);
         navigator.setAdjustMode(true);
@@ -77,11 +75,10 @@ public class MessageCenterActivity extends AppBaseActivity<MessageCenterActivity
         mFragments.add(MessageAllFragment.getInstance());
         mFragments.add(MessageSystemFragment.getInstance());
         mFragments.add(MessageOrdersFragment.getInstance());
-        mFragments.add(MessageFriendFragment.getInstance());
         mFragments.add(MessagePropertyFragment.getInstance());
         FragmentAdapter adapter = new FragmentAdapter(this, mFragments);
         mViewPager.setAdapter(adapter);
-        mViewPager.setOffscreenPageLimit(5);
+        mViewPager.setOffscreenPageLimit(4);
         mViewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
             public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
