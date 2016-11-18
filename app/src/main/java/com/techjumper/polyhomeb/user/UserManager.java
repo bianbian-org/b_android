@@ -296,6 +296,8 @@ public enum UserManager {
         PreferenceUtils.save(KEY_IS_CURRENT_COMMUNITY_SUPPORT_BLE_DOOR, "0");
         PreferenceUtils.save(KEY_CURRENT_FAMILY_MANAGER_ID, "");
         PolyPluginFileManager.getInstance().clearFamilyInfoFile().subscribe();
+        FileUtils.deleteFileIfExist(Utils.appContext.getFilesDir().getAbsolutePath(), KEY_ALL_FAMILIES);
+        FileUtils.deleteFileIfExist(Utils.appContext.getFilesDir().getAbsolutePath(), KEY_ALL_VILLAGES);
         clearUserInfo();
         HostIpHelper.getInstance().clear();
         if (notify)
@@ -344,7 +346,7 @@ public enum UserManager {
      * <p>如果当前是家庭，默认有权限</p>
      * <p>如果当前是小区，那么得到所有小区的数据，再进行判断：如果当前小区已经有通过审核的房间，那么有权限
      * ，如果当前小区所有的房间均没有通过审核，则无权限</p>
-     *
+     * <p>
      * 2016年11月16日更新:
      * 将中间部分注释掉，因为新增了一种什么推广小区，所以现在判断权限和以前最开始一样：你是家庭，就有权限，不是家庭就没有权限
      */
