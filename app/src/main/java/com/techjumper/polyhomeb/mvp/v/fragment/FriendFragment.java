@@ -284,4 +284,10 @@ public class FriendFragment extends AppBaseWebViewFragment<FriendFragmentPresent
         return mViewRoot;
     }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+        //主要用于返回次洁面的时候同时H5刷新右上角title未读已读状态
+        getWebView().loadUrl("javascript:get_notice_count()");
+    }
 }
