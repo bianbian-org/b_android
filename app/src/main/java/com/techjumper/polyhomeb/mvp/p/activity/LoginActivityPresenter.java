@@ -232,7 +232,7 @@ public class LoginActivityPresenter extends AppBaseActivityPresenter<LoginActivi
 
                             @Override
                             public void onError(Throwable e) {
-                                getView().showHint(e.toString());
+                                getView().showHint(e.getMessage().toString());
                             }
 
                             @Override

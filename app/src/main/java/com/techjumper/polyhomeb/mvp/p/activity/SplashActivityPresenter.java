@@ -215,7 +215,7 @@ public class SplashActivityPresenter extends AppBaseActivityPresenter<SplashActi
 
                             @Override
                             public void onError(Throwable e) {
-                                getView().showHint(e.toString());
+                                getView().showHint(e.getMessage().toString());
                             }
 
                             @Override

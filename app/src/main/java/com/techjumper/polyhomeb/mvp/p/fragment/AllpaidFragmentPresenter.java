@@ -6,6 +6,7 @@ import com.steve.creact.library.display.DisplayBean;
 import com.techjumper.corelib.rx.tools.RxBus;
 import com.techjumper.corelib.rx.tools.RxUtils;
 import com.techjumper.polyhomeb.Constant;
+import com.techjumper.polyhomeb.R;
 import com.techjumper.polyhomeb.entity.OrdersEntity;
 import com.techjumper.polyhomeb.entity.PaymentTypeEntity;
 import com.techjumper.polyhomeb.entity.event.PaymentQueryEvent;
@@ -168,7 +169,7 @@ public class AllpaidFragmentPresenter extends AppBaseFragmentPresenter<AllpaidFr
                                 this.items.clear();
                                 this.items.addAll(items);
                             } else {
-                                return Observable.error(new Exception("获取条目信息失败，请稍后重试- -"));
+                                return Observable.error(new Exception(getView().getString(R.string.error_get_list)));
                             }
                             return mModel.getOrdersInfo(mPayType);
                         })
@@ -182,7 +183,8 @@ public class AllpaidFragmentPresenter extends AppBaseFragmentPresenter<AllpaidFr
                             @Override
                             public void onError(Throwable e) {
                                 getView().dismissLoading();
-                                getView().showError(e);
+//                                getView().showError(e);
+                                getView().showHint(e.getMessage().toString());
                                 loadMoreError();
                                 getView().onOrdersDataReceive(mModel.noData(items));
                                 getView().stopRefresh("");

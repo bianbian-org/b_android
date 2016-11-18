@@ -172,7 +172,8 @@ public class MyVillageFamilyActivityPresenter extends AppBaseActivityPresenter<M
 
                             @Override
                             public void onError(Throwable e) {
-                                getView().showError(e);
+//                                getView().showError(e);
+                                getView().showHint(e.getMessage().toString());
                             }
 
                             @Override

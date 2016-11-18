@@ -156,7 +156,8 @@ public class ScanHostQRCodeActivityPresenter extends AppBaseActivityPresenter<Sc
                             @Override
                             public void onError(Throwable e) {
                                 getView().dismissLoading();
-                                getView().showHint(e.toString());
+//                                getView().showHint(e.toString());
+                                getView().showHint(e.getMessage().toString());
                             }
 
                             @Override

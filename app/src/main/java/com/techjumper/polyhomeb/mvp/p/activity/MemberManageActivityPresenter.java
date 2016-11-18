@@ -123,17 +123,17 @@ public class MemberManageActivityPresenter extends AppBaseActivityPresenter<Memb
                             public Observable<C_AllMemberEntity.DataEntity.UsersEntity> call(C_AllMemberEntity c_allMemberEntity) {
                                 if (!processNetworkResult(c_allMemberEntity)) {
                                     getView().onMembersAndRoomsDataReceive(mModel.noData());
-                                    return Observable.error(new Exception("数据错误"));
+                                    return Observable.error(new Exception(getView().getString(R.string.no_member)));
                                 }
                                 if (c_allMemberEntity == null
                                         || c_allMemberEntity.getData() == null
                                         || c_allMemberEntity.getData().getUsers() == null) {
                                     getView().onMembersAndRoomsDataReceive(mModel.noData());
-                                    return Observable.error(new Exception("数据错误"));
+                                    return Observable.error(new Exception(getView().getString(R.string.no_member)));
                                 }
                                 if (c_allMemberEntity.getData().getUsers().size() == 0) {
                                     getView().onMembersAndRoomsDataReceive(mModel.noData());
-                                    return Observable.error(new Exception("暂无任何成员"));
+                                    return Observable.error(new Exception(getView().getString(R.string.no_member)));
                                 }
                                 saveMemberInfos(c_allMemberEntity.getData().getUsers());
                                 return Observable.from(c_allMemberEntity.getData().getUsers());
@@ -153,7 +153,7 @@ public class MemberManageActivityPresenter extends AppBaseActivityPresenter<Memb
 
                             @Override
                             public void onError(Throwable e) {
-                                getView().showHint(e.toString());
+                                getView().showHint(e.getMessage().toString());
                                 getView().dismissLoading();
                                 mHasMember = false;
                                 mIsEditMode = false;
