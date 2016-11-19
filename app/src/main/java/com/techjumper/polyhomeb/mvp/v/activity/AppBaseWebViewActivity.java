@@ -44,15 +44,7 @@ public abstract class AppBaseWebViewActivity<T extends AppBaseActivityPresenter>
             }
 
         });
-        mWebView.addHttpHeader("HUSERID", UserManager.INSTANCE.getUserInfo(UserManager.KEY_ID));
-        mWebView.addHttpHeader("HTICKET", UserManager.INSTANCE.getTicket());
-        mWebView.addHttpHeader("HVILLAGEID", UserManager.INSTANCE.getUserInfo(UserManager.KEY_CURRENT_VILLAGE_ID));
-        if (UserManager.INSTANCE.isFamily()) {
-            mWebView.addHttpHeader("HFAMILYID", UserManager.INSTANCE.getUserInfo(UserManager.KEY_CURRENT_FAMILY_ID));
-        }else {
-            mWebView.addHttpHeader("HFAMILYID", "");
-        }
-
+        addHttpHeaders();
         mIsInit = true;
     }
 
@@ -72,6 +64,24 @@ public abstract class AppBaseWebViewActivity<T extends AppBaseActivityPresenter>
         if (!mIsInit)
             throw new NullPointerException("no call initWebView()");
         return mWebView;
+    }
+
+    public void addHttpHeaders() {
+        mWebView.addHttpHeader("HUSERID", UserManager.INSTANCE.getUserInfo(UserManager.KEY_ID));
+        mWebView.addHttpHeader("HTICKET", UserManager.INSTANCE.getTicket());
+        mWebView.addHttpHeader("HVILLAGEID", UserManager.INSTANCE.getUserInfo(UserManager.KEY_CURRENT_VILLAGE_ID));
+        if (UserManager.INSTANCE.isFamily()) {
+            mWebView.addHttpHeader("HFAMILYID", UserManager.INSTANCE.getUserInfo(UserManager.KEY_CURRENT_FAMILY_ID));
+        } else {
+            mWebView.addHttpHeader("HFAMILYID", "");
+        }
+    }
+
+    public void removeHttpHeaders() {
+        mWebView.removeHttpHeader("HUSERID");
+        mWebView.removeHttpHeader("HTICKET");
+        mWebView.removeHttpHeader("HVILLAGEID");
+        mWebView.removeHttpHeader("HFAMILYID");
     }
 
     public boolean webViewIsInit() {
