@@ -5,13 +5,13 @@ import com.techjumper.corelib.rx.tools.CommonWrap;
 import com.techjumper.lib2.others.KeyValuePair;
 import com.techjumper.lib2.utils.RetrofitHelper;
 import com.techjumper.polyhomeb.R;
-import com.techjumper.polyhomeb.adapter.recycler_Data.MessageAllContentData;
 import com.techjumper.polyhomeb.adapter.recycler_Data.MessageBigTitleData;
+import com.techjumper.polyhomeb.adapter.recycler_Data.MessagePropertyData;
 import com.techjumper.polyhomeb.adapter.recycler_Data.NoDataData;
 import com.techjumper.polyhomeb.adapter.recycler_Data.PropertyPlacardDividerLongData;
 import com.techjumper.polyhomeb.adapter.recycler_Data.PropertyRepairBigDividerData;
-import com.techjumper.polyhomeb.adapter.recycler_ViewHolder.databean.MessageAllContentBean;
 import com.techjumper.polyhomeb.adapter.recycler_ViewHolder.databean.MessageBigTitleBean;
+import com.techjumper.polyhomeb.adapter.recycler_ViewHolder.databean.MessagePropertyBean;
 import com.techjumper.polyhomeb.adapter.recycler_ViewHolder.databean.NoDataBean;
 import com.techjumper.polyhomeb.adapter.recycler_ViewHolder.databean.PropertyPlacardDividerLongBean;
 import com.techjumper.polyhomeb.adapter.recycler_ViewHolder.databean.PropertyRepairBigDividerBean;
@@ -129,15 +129,15 @@ public class MessagePropertyFragmentModel extends BaseModel<MessagePropertyFragm
                     break;
             }
             //第三个item,内容
-            MessageAllContentData messageAllContentData = new MessageAllContentData();
-            messageAllContentData.setContent(content);
-            messageAllContentData.setRightText(rightText);
-            messageAllContentData.setTime(time);
-            messageAllContentData.setTitle(title);
-            messageAllContentData.setId(id);
-            messageAllContentData.setObj_id(obj_id);
-            MessageAllContentBean messageAllContentBean = new MessageAllContentBean(messageAllContentData);
-            mDataList.add(messageAllContentBean);
+            MessagePropertyData messagePropertyData = new MessagePropertyData();
+            messagePropertyData.setContent(content);
+            messagePropertyData.setType(messagesBean.getTypes());
+            messagePropertyData.setRightText(rightText);
+            messagePropertyData.setTime(time);
+            messagePropertyData.setTitle(title);
+            messagePropertyData.setObj_id(obj_id);
+            MessagePropertyBean messagePropertyBean = new MessagePropertyBean(messagePropertyData);
+            mDataList.add(messagePropertyBean);
 
             //如果物业回复不是空的话,那么在短点的分割线以及物业回复之后再加大的分割线
             //如果当前的listBean是总数据的最后一个,那么就不能加大的分割线了

@@ -45,7 +45,7 @@
     <!--android:textColor="@color/color_3e3e3e"-->
     <!--android:textSize="@dimen/sp_16" />-->
 
-    <WebView
+    <com.techjumper.polyhomeb.widget.AdvancedWebView
         android:id="@+id/wb"
         android:layout_width="match_parent"
         android:layout_height="0dp"
