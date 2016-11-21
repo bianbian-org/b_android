@@ -45,13 +45,13 @@ public class PropertyViewHolder extends BaseRecyclerViewHolder<PropertyData> {
 
     public PropertyViewHolder(View itemView) {
         super(itemView);
-//        removeHandler();
     }
 
     @Override
     public void setData(PropertyData data) {
-//        removeHandler();
         if (data == null) return;
+        //        removeHandler();
+        RxUtils.unsubscribeIfNotNull(mSubs1);
 
         setMarqueeTextData(data.getNotice());
 
