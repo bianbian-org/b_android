@@ -2,8 +2,8 @@
 <html>
 
 <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
     <style>
     html,
     body,
@@ -28,13 +28,18 @@
         margin-bottom: 1.5rem;
         line-height: 1.6;
     }
+
     </style>
+    <script type="text/javascript">
+    window.loadContent = function(content){
+         document.getElementById("Content").innerHTML = content;
+     }
+    </script>
 </head>
 
 <body>
-    <div class="content">
-        $content$
-    </div>
+<div class="content" id="Content">
+</div>
 </body>
 
 </html>

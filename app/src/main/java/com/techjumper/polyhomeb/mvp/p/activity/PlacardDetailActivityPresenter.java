@@ -41,7 +41,7 @@ public class PlacardDetailActivityPresenter extends AppBaseActivityPresenter<Pla
         return mModel.getId();
     }
 
-    public void loading() {
-        getView().onDataReceive(mModel.getContent());
+    public String getContent() {
+        return mModel.getContent();
     }
 }
