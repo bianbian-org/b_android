@@ -18,6 +18,7 @@ import com.techjumper.polyhomeb.entity.event.ShakeToOpenDoorEvent;
 import com.techjumper.polyhomeb.manager.ShakeManager;
 import com.techjumper.polyhomeb.mvp.p.fragment.HomeFragmentPresenter;
 import com.techjumper.polyhomeb.mvp.v.activity.TabHomeActivity;
+import com.techjumper.polyhomeb.net.NetHelper;
 import com.techjumper.polyhomeb.service.ScanBluetoothService;
 import com.techjumper.polyhomeb.user.UserManager;
 import com.techjumper.polyhomeb.widget.HomePtrClassicFrameLayout;
@@ -69,7 +70,8 @@ public class HomeFragment extends AppBaseFragment<HomeFragmentPresenter>
         mPtr.setPtrHandler(new PtrDefaultHandler() {
             @Override
             public void onRefreshBegin(PtrFrameLayout frame) {
-                new Handler().postDelayed(() -> stopRefresh(""), 3000);
+                getPresenter().refreshData();
+                new Handler().postDelayed(() -> stopRefresh(""), NetHelper.GLOBAL_TIMEOUT);
             }
 
             @Override
@@ -84,7 +86,7 @@ public class HomeFragment extends AppBaseFragment<HomeFragmentPresenter>
         return UserManager.INSTANCE.getCurrentTitle();
     }
 
-    private void stopRefresh(String msg) {
+    public void stopRefresh(String msg) {
         if (mPtr != null && mPtr.isRefreshing()) {
             if (!TextUtils.isEmpty(msg))
                 showHint(msg);
