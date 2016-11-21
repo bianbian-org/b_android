@@ -57,7 +57,6 @@
                 android:ellipsize="marquee"
                 android:maxLines="1"
                 android:singleLine="true"
-                android:text="通知:小区里的重要停水公告"
                 android:textColor="@color/color_727272"
                 android:textSize="@dimen/sp_16" />
 

@@ -1,5 +1,7 @@
 package com.techjumper.polyhomeb.adapter.recycler_Data;
 
+import com.techjumper.polyhomeb.entity.MarqueeTextInfoEntity;
+
 /**
  * * * * * * * * * * * * * * * * * * * * * * *
  * Created by lixin
@@ -8,13 +10,13 @@ package com.techjumper.polyhomeb.adapter.recycler_Data;
  **/
 public class PropertyData {
 
-    private String notice;
+    private MarqueeTextInfoEntity notice;
 
-    public String getNotice() {
+    public MarqueeTextInfoEntity getNotice() {
         return notice;
     }
 
-    public void setNotice(String notice) {
+    public void setNotice(MarqueeTextInfoEntity notice) {
         this.notice = notice;
     }
 }

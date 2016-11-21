@@ -10,6 +10,7 @@ import com.techjumper.polyhomeb.entity.C_RoomsByMemberEntity;
 import com.techjumper.polyhomeb.entity.CheckInEntity;
 import com.techjumper.polyhomeb.entity.JoinFamilyEntity;
 import com.techjumper.polyhomeb.entity.LoginEntity;
+import com.techjumper.polyhomeb.entity.MarqueeTextInfoEntity;
 import com.techjumper.polyhomeb.entity.MessageEntity;
 import com.techjumper.polyhomeb.entity.NewRoomEntity;
 import com.techjumper.polyhomeb.entity.OrdersEntity;
@@ -612,6 +613,18 @@ public interface ServiceAPI {
     @GET("estate_orders/estate_items")
     Observable<PaymentTypeEntity> getPaymentType(@QueryMap Map<String, String> map);
 
+    /**
+     * 转交管理员权限
+     */
+    @POST("family/change_manager")
+    Observable<TrueEntity> transferAuthority(@Body BaseArgumentsEntity entity);
+
+    /**
+     * 获取首页滚动文字信息列表
+     */
+    @GET("messages/notices")
+    Observable<MarqueeTextInfoEntity> getMarqueeText(@QueryMap Map<String, String> map);
+
 
 /*********************************************************医疗接口*********************************************************/
 
@@ -714,11 +727,6 @@ public interface ServiceAPI {
     @POST("room_user_add")
     Observable<TrueEntity> addMemberToRoom(@Body BaseArgumentsEntity entity);
 
-    /**
-     * 转交管理员权限
-     */
-    @POST("family/change_manager")
-    Observable<TrueEntity> transferAuthority(@Body BaseArgumentsEntity entity);
 
 }
 

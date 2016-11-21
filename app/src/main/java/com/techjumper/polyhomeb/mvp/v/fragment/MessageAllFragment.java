@@ -44,7 +44,7 @@ public class MessageAllFragment extends AppBaseFragment<MessageAllFragmentPresen
 
     @Override
     protected View inflateView(LayoutInflater inflater, Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.fragment_message_all,null);
+        return inflater.inflate(R.layout.fragment_message_all, null);
     }
 
     @Override
@@ -104,7 +104,7 @@ public class MessageAllFragment extends AppBaseFragment<MessageAllFragmentPresen
         return mAdapter;
     }
 
-    public PtrClassicFrameLayout getPtr(){
+    public PtrClassicFrameLayout getPtr() {
         return mPtr;
     }
 }
