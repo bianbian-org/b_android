@@ -89,7 +89,7 @@ public class AdjustAccountsActivity extends AppBaseActivity<AdjustAccountsActivi
         } else if (sNotLate == getPresenter().getIsLate()) {  //未逾期
             mTvOther.setText(String.format(getString(R.string.surplus_day), getPresenter().getDay()));
         }
-        mTvPayAll.setText(getPresenter().getTotal() + getPresenter().getExpiryPrice() + "");  //合计
+        mTvPayAll.setText(getPresenter().getTotal() + "");  //合计
     }
 
     public ImageView getIvTencentPay() {

@@ -241,7 +241,7 @@ public class AdjustAccountsActivityPresenter extends AppBaseActivityPresenter<Ad
     }
 
     /**
-     * 总价(不包括滞纳金)
+     * 总价(包括滞纳金)
      */
     public double getTotal() {
         return mModel.getTotal();
