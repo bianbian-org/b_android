@@ -50,6 +50,9 @@ public class PlacardDetailActivity extends AppBaseActivity<PlacardDetailActivity
 
     @Override
     public String getLayoutTitle() {
+        if (getPresenter().getType().equals("0")) {
+            return getString(R.string.placard_detail_);
+        }
         return String.format(getResources().getString(R.string.placard_detail), getPresenter().getType());
     }
 

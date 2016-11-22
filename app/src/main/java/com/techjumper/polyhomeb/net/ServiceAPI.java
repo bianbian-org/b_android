@@ -625,6 +625,12 @@ public interface ServiceAPI {
     @GET("messages/notices")
     Observable<MarqueeTextInfoEntity> getMarqueeText(@QueryMap Map<String, String> map);
 
+    /**
+     * 消息已读未读
+     */
+    @POST("message_read")
+    Observable<TrueEntity> updateMessageState(@Body BaseArgumentsEntity entity);
+
 
 /*********************************************************医疗接口*********************************************************/
 

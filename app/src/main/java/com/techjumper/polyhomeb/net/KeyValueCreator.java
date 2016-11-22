@@ -68,10 +68,11 @@ public class KeyValueCreator {
                 .put("count", count);
     }
 
-    public static KeyValuePair newComplain(String user_id, String ticket, String mobile, String types, String content, String[] imgs) {
+    public static KeyValuePair newComplain(String user_id, String ticket, String family_id, String mobile, String types, String content, String[] imgs) {
         return newPair()
                 .put("user_id", user_id)
                 .put("ticket", ticket)
+                .put("family_id", family_id)
                 .put("mobile", mobile)
                 .put("types", types)
                 .put("content", content)
@@ -419,5 +420,12 @@ public class KeyValueCreator {
                 .put("user_id", user_id)
                 .put("ticket", ticket)
                 .put("village_id", village_id);
+    }
+
+    public static KeyValuePair updateMessageState(String user_id, String ticket, String message_id) {
+        return newPair()
+                .put("user_id", user_id)
+                .put("ticket", ticket)
+                .put("message_id", message_id);
     }
 }

@@ -80,6 +80,7 @@ public class NewComplainActivityModel extends BaseModel<NewComplainActivityPrese
         KeyValuePair keyValuePair = KeyValueCreator.newComplain(
                 UserManager.INSTANCE.getUserInfo(UserManager.KEY_ID)
                 , UserManager.INSTANCE.getTicket()
+                , UserManager.INSTANCE.getUserInfo(UserManager.KEY_CURRENT_FAMILY_ID)
                 , getPresenter().getEtPhone().getEditableText().toString().trim()
                 , types
                 , content

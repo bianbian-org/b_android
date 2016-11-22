@@ -406,5 +406,6 @@
     <string name="transfer_authority_success">管理员权限转移成功</string>
     <string name="no_member">暂无任何成员</string>
     <string name="error_get_list">获取条目信息失败，请稍后重试- -</string>
+    <string name="placard_detail_">公告详情</string>
 
 </resources>

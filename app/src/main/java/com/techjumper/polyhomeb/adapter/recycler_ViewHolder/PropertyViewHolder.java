@@ -11,6 +11,7 @@ import com.techjumper.corelib.rx.tools.RxUtils;
 import com.techjumper.corelib.utils.common.AcHelper;
 import com.techjumper.corelib.utils.common.JLog;
 import com.techjumper.corelib.utils.window.ToastUtils;
+import com.techjumper.lightwidget.textview.MarqueeTextView;
 import com.techjumper.polyhomeb.Constant;
 import com.techjumper.polyhomeb.R;
 import com.techjumper.polyhomeb.adapter.recycler_Data.PropertyData;
@@ -114,10 +115,6 @@ public class PropertyViewHolder extends BaseRecyclerViewHolder<PropertyData> {
             setOnClickListener(R.id.btn_checkout_property, null);
         } else {
             List<MarqueeTextInfoEntity.DataBean.MessagesBean> messages = entity.getData().getMessages();
-//            Message message = mHandler.obtainMessage();
-//            message.what = 0;
-//            message.obj = messages;
-//            mHandler.sendMessageDelayed(message, 1000);
             setData(messages.get(0));
             RxUtils.unsubscribeIfNotNull(mSubs1);
             mSubs1 = Observable.interval(10, TimeUnit.SECONDS)
@@ -136,8 +133,6 @@ public class PropertyViewHolder extends BaseRecyclerViewHolder<PropertyData> {
 
                         @Override
                         public void onNext(Long aLong) {
-
-                            JLog.e("" + aLong);
                             MarqueeTextInfoEntity.DataBean.MessagesBean messagesBean
                                     = messages.get((int) (aLong >= messages.size() ? aLong % messages.size() : aLong));
                             setData(messagesBean);
@@ -146,35 +141,10 @@ public class PropertyViewHolder extends BaseRecyclerViewHolder<PropertyData> {
         }
     }
 
-//    private int count = -1;
-
-//    private Handler mHandler = new Handler(new Handler.Callback() {
-//        @Override
-//        public boolean handleMessage(Message msg) {
-//            switch (msg.what) {
-//                case 0:
-//                    count++;
-//                    List<MarqueeTextInfoEntity.DataBean.MessagesBean> beans = (List<MarqueeTextInfoEntity.DataBean.MessagesBean>) msg.obj;
-//                    MarqueeTextInfoEntity.DataBean.MessagesBean messagesBean = beans.get(count >= beans.size() ? count % beans.size() : count);
-//                    mTv.setText("");
-//                    mTv.setText(messagesBean.getContent());
-//                    setOnClickListener(R.id.btn_checkout_property, null);
-//                    setOnClickListener(R.id.btn_checkout_property, v -> {
-//                        jump2Activity(messagesBean);
-//                    });
-//                    Message message = mHandler.obtainMessage();
-//                    message.what = 0;
-//                    message.obj = beans;
-//                    mHandler.sendMessageDelayed(message, 10000);
-//                    break;
-//            }
-//            return false;
-//        }
-//    });
-
     private void setData(MarqueeTextInfoEntity.DataBean.MessagesBean messagesBean) {
-        setText(R.id.tv_notice, "");
-        setText(R.id.tv_notice, messagesBean.getContent());
+        MarqueeTextView view = getView(R.id.tv_notice);
+        view.setText(messagesBean.getContent());
+        view.startFor();
         setOnClickListener(R.id.btn_checkout_property, null);
         setOnClickListener(R.id.btn_checkout_property, v -> {
             jump2Activity(messagesBean);
@@ -192,7 +162,7 @@ public class PropertyViewHolder extends BaseRecyclerViewHolder<PropertyData> {
         if (TextUtils.isEmpty(obj_id)) return;
         //1-系统信息 2-订单信息 4-物业信息
         switch (types) {
-            case 2:
+            case 0:  //此处0是为了区分需不需要调取  已读未读状态，所以把公告详情单独弄成0，不需要调已读未读
                 Bundle bundle2 = new Bundle();
 //                bundle2.putInt(Constant.PLACARD_DETAIL_ID, data.getId());
                 bundle2.putString(Constant.PLACARD_DETAIL_CONTENT, content);
@@ -213,10 +183,4 @@ public class PropertyViewHolder extends BaseRecyclerViewHolder<PropertyData> {
                 break;
         }
     }
-
-//    public void removeHandler() {
-//        if (mHandler == null) return;
-//        mHandler.removeMessages(0);
-//    }
-
 }

@@ -78,7 +78,7 @@ public class AdjustAccountsActivity extends AppBaseActivity<AdjustAccountsActivi
         mTvPayType.setText(getPresenter().getPayTypeString()); //费用类型
         mTvPayObj.setText(getPresenter().getPayObj());    //收费对象
         mTvDeathLine.setText(getPresenter().getDeathLine()); //截止日期
-        mTvNotTotal.setText(getString(R.string.￥) + getPresenter().getTotal()); //总价,不包含滞纳金
+        mTvNotTotal.setText(getString(R.string.￥) + String.format("%.2f", getPresenter().getTotal() - getPresenter().getExpiryPrice())); //总价,不包含滞纳金
         if (sLate == getPresenter().getIsLate()) {   //已经逾期
             String text1 = String.format(getString(R.string.late_x_day), Math.abs(getPresenter().getDay()) + ""); //超过X天
             String text2 = getString(R.string.x_exceed);  //产生
