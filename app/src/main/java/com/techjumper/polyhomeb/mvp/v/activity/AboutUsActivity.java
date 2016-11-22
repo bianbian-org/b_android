@@ -63,4 +63,9 @@ public class AboutUsActivity extends AppBaseWebViewActivity<AboutUsActivityPrese
     public void onTitleRightSecondClick(String rightSecondMethod) {
 
     }
+
+    @Override
+    protected String getPageName() {
+        return null;
+    }
 }

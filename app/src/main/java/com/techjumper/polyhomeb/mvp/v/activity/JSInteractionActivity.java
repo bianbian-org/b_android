@@ -34,6 +34,8 @@ public class JSInteractionActivity extends AppBaseWebViewActivity<JSInteractionA
     @Bind(R.id.left_first_iv)
     ImageView iv;
 
+    WebTitleManager webTitleManager;
+
     @Override
     protected View inflateView(Bundle savedInstanceState) {
         return inflate(R.layout.activity_js_interaction);
@@ -42,10 +44,15 @@ public class JSInteractionActivity extends AppBaseWebViewActivity<JSInteractionA
     @Override
     protected void initView(Bundle savedInstanceState) {
         String url = getPresenter().getUrl();
-        new WebTitleManager(url, mViewRoot, this);
+        webTitleManager = new WebTitleManager(url, mViewRoot, this);
         initWebView((AdvancedWebView) findViewById(R.id.wb));
         getWebView().addJsInterface(this, Constant.JS_NATIVE_BRIDGE);
         getWebView().loadUrl(url);
+    }
+
+    @Override
+    protected String getPageName() {
+        return webTitleManager.getPageName();
     }
 
     @Override
@@ -62,11 +69,15 @@ public class JSInteractionActivity extends AppBaseWebViewActivity<JSInteractionA
     public void onTitleLeftFirstClick(String mLeftFirstMethod) {
         switch (mLeftFirstMethod) {
             case WebTitleHelper.NATIVE_METHOD_RETURN:
-                onBackPressed();
+//                onBackPressed();
+                onJSBackPressed("");
                 break;
             case WebTitleHelper.NATIVE_METHOD_MENU:
                 break;
             case WebTitleHelper.NATIVE_METHOD_NEW_ARTICLE:
+                break;
+            case WebTitleHelper.JS_RETURN:
+                onLineMethod(mLeftFirstMethod);
                 break;
             default:
                 onLineMethod(mLeftFirstMethod);
@@ -78,12 +89,16 @@ public class JSInteractionActivity extends AppBaseWebViewActivity<JSInteractionA
     public void onTitleLeftSecondClick(String mLeftSecondMethod) {
         switch (mLeftSecondMethod) {
             case WebTitleHelper.NATIVE_METHOD_RETURN:
-                onBackPressed();
+//                onBackPressed();
+                onJSBackPressed("");
                 break;
             case WebTitleHelper.NATIVE_METHOD_MENU:
                 RxBus.INSTANCE.send(new ToggleMenuClickEvent());
                 break;
             case WebTitleHelper.NATIVE_METHOD_NEW_ARTICLE:
+                break;
+            case WebTitleHelper.JS_RETURN:
+                onLineMethod(mLeftSecondMethod);
                 break;
             default:
                 onLineMethod(mLeftSecondMethod);
@@ -143,5 +158,10 @@ public class JSInteractionActivity extends AppBaseWebViewActivity<JSInteractionA
         if (TextUtils.isEmpty(order_number)) return;
         getWebView().loadUrl("javascript:" + "refresh_order(" + order_number + ")");
     }
+
+    public void onJSBackPressed(String pageName){
+        onBackPressed(pageName);
+    }
+
 
 }

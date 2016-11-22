@@ -19,9 +19,11 @@ import com.techjumper.polyhomeb.R;
 import com.techjumper.polyhomeb.entity.PayEntity;
 import com.techjumper.polyhomeb.entity.PaymentsEntity;
 import com.techjumper.polyhomeb.entity.TrueEntity;
+import com.techjumper.polyhomeb.entity.event.ChangeVillageIdRefreshEvent;
 import com.techjumper.polyhomeb.entity.event.H5PayEvent;
 import com.techjumper.polyhomeb.entity.event.JSArticleIdEvent;
 import com.techjumper.polyhomeb.entity.event.JSCallPhoneNumberEvent;
+import com.techjumper.polyhomeb.entity.event.PageNameEvent;
 import com.techjumper.polyhomeb.entity.event.RefreshH5PayStateEvent;
 import com.techjumper.polyhomeb.entity.event.RefreshWhenDeleteArticleEvent;
 import com.techjumper.polyhomeb.entity.event.ReloadWebPageEvent;
@@ -54,7 +56,7 @@ public class JSInteractionActivityPresenter extends AppBaseActivityPresenter<JSI
 
     @Override
     public void onViewInited(Bundle savedInstanceState) {
-        RxUtils.unsubscribeIfNotNull(mSubs1);
+//        RxUtils.unsubscribeIfNotNull(mSubs1);
         addSubscription(
                 mSubs1 = RxBus.INSTANCE.asObservable()
                         .subscribe(o -> {
@@ -103,6 +105,17 @@ public class JSInteractionActivityPresenter extends AppBaseActivityPresenter<JSI
                                 refreshH5StateEvent(event.getOrder_number());
                             } else if (o instanceof RefreshWhenDeleteArticleEvent) {
                                 getView().getWebView().reload();
+                            } else if (o instanceof PageNameEvent) {
+                                PageNameEvent event = (PageNameEvent) o;
+                                String pageName = event.getPageName();
+                                getView().onJSBackPressed(pageName);
+                            } else if (o instanceof ChangeVillageIdRefreshEvent) {
+                                //网页403.重新登录成功后刷新页面.
+                                //必须先要移除header再重新add，不然header的数据是最开始add进去的，
+                                //所以后面即使数据变了，这个header也不会变了
+                                getView().removeHttpHeaders();
+                                getView().addHttpHeaders();
+                                getView().getWebView().loadUrl(getUrl());
                             }
                         }));
     }
@@ -212,7 +225,8 @@ public class JSInteractionActivityPresenter extends AppBaseActivityPresenter<JSI
                                     return;
                                 ToastUtils.show(getView().getString(R.string.delete_success));
                                 RxBus.INSTANCE.send(new RefreshWhenDeleteArticleEvent());
-                                getView().finish();
+//                                getView().finish();
+                                getView().onBackPressed();
                             }
                         }));
     }
@@ -312,7 +326,6 @@ public class JSInteractionActivityPresenter extends AppBaseActivityPresenter<JSI
 //            payCancel();
 //        }
 //    }
-
     private void payCancel() {
         ToastUtils.show(getView().getString(R.string.result_pay_cancel));
     }

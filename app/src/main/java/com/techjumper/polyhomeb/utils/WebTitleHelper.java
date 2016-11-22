@@ -19,6 +19,7 @@ import com.techjumper.polyhomeb.R;
 public class WebTitleHelper {
 
     public static final String NATIVE_METHOD_RETURN = "NativeReturn";
+    public static final String JS_RETURN = "JSReturn";
     public static final String NATIVE_METHOD_MENU = "NativeMenu";
     public static final String NATIVE_METHOD_NEW_ARTICLE = "NativeNewArticle";
     public static final String NATIVE_METHOD_PERSON = "person";
@@ -293,7 +294,8 @@ public class WebTitleHelper {
 
         private void processNativeIcon(ImageView imageView, String method) {
             switch (method) {
-                case NATIVE_METHOD_RETURN:   //return
+                case NATIVE_METHOD_RETURN:   //return  原生返回
+                case JS_RETURN:               //调用界面JS的返回
                     PicassoHelper.getDefault().load(R.mipmap.icon_back).into(imageView);
                     break;
                 case NATIVE_METHOD_MENU:   //homeMenu
