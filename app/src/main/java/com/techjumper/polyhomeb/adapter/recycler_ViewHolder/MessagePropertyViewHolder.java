@@ -7,11 +7,13 @@ import android.view.View;
 
 import com.steve.creact.annotation.DataBean;
 import com.steve.creact.library.viewholder.BaseRecyclerViewHolder;
+import com.techjumper.corelib.rx.tools.RxBus;
 import com.techjumper.corelib.utils.common.AcHelper;
 import com.techjumper.corelib.utils.common.ResourceUtils;
 import com.techjumper.polyhomeb.Constant;
 import com.techjumper.polyhomeb.R;
 import com.techjumper.polyhomeb.adapter.recycler_Data.MessagePropertyData;
+import com.techjumper.polyhomeb.entity.event.UpdateMessageStateEvent;
 import com.techjumper.polyhomeb.mvp.v.activity.ComplainDetailActivity;
 import com.techjumper.polyhomeb.mvp.v.activity.RepairDetailActivity;
 
@@ -33,6 +35,7 @@ public class MessagePropertyViewHolder extends BaseRecyclerViewHolder<MessagePro
     @Override
     public void setData(MessagePropertyData data) {
         if (data == null) return;
+        setVisibility(R.id.iv_dot, data.getHas_read() == 0 ? View.VISIBLE : View.INVISIBLE);
         setText(R.id.tv_notice, data.getTitle());
         setText(R.id.btn, data.getRightText());
         setText(R.id.tv_content, data.getContent());
@@ -49,12 +52,18 @@ public class MessagePropertyViewHolder extends BaseRecyclerViewHolder<MessagePro
                 switch (data.getType()) {
                     case "4":
                         Bundle bundle = new Bundle();
+                        bundle.putInt(Constant.KEY_MESSAGE_ID, data.getId());
                         bundle.putInt(Constant.PROPERTY_REPAIR_DATA_ID, Integer.parseInt(data.getObj_id()));
+                        setVisibility(R.id.iv_dot, View.INVISIBLE);
+                        RxBus.INSTANCE.send(new UpdateMessageStateEvent(data.getId()));
                         new AcHelper.Builder((Activity) getContext()).extra(bundle).target(RepairDetailActivity.class).start();
                         break;
                     case "5":
                         Bundle bundle1 = new Bundle();
+                        bundle1.putInt(Constant.KEY_MESSAGE_ID, data.getId());
                         bundle1.putInt(Constant.PROPERTY_COMPLAIN_DATA_ID, Integer.parseInt(data.getObj_id()));
+                        setVisibility(R.id.iv_dot, View.INVISIBLE);
+                        RxBus.INSTANCE.send(new UpdateMessageStateEvent(data.getId()));
                         new AcHelper.Builder((Activity) getContext()).extra(bundle1).target(ComplainDetailActivity.class).start();
                         break;
                 }

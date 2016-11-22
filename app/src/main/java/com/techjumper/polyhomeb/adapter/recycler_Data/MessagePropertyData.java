@@ -15,6 +15,24 @@ public class MessagePropertyData {
     private String time;
     private String type;
     private String obj_id;
+    private int has_read;
+    private int id;
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public int getHas_read() {
+        return has_read;
+    }
+
+    public void setHas_read(int has_read) {
+        this.has_read = has_read;
+    }
 
     public String getType() {
         return type;

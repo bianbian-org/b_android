@@ -23,6 +23,7 @@ import com.techjumper.polyhomeb.entity.MarqueeTextInfoEntity;
 import com.techjumper.polyhomeb.entity.event.BLEInfoChangedEvent;
 import com.techjumper.polyhomeb.entity.event.ChooseFamilyVillageEvent;
 import com.techjumper.polyhomeb.entity.event.ToggleMenuClickEvent;
+import com.techjumper.polyhomeb.entity.event.UpdateMessageStateEvent;
 import com.techjumper.polyhomeb.manager.PolyPluginManager;
 import com.techjumper.polyhomeb.manager.ShakeManager;
 import com.techjumper.polyhomeb.mvp.m.HomeFragmentModel;
@@ -79,6 +80,8 @@ public class HomeFragmentPresenter extends AppBaseFragmentPresenter<HomeFragment
                                 if (login) {
                                     getView().getTvTitle().setText(UserManager.INSTANCE.getCurrentTitle());
                                 }
+                            } else if (o instanceof UpdateMessageStateEvent) {
+                                reloadMarqueeTextInfo();
                             }
                         }));
     }

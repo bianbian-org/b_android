@@ -42,7 +42,7 @@ public class ComplainDetailActivityPresenter extends AppBaseActivityPresenter<Co
 
     private ComplainDetailActivityModel mModel = new ComplainDetailActivityModel(this);
 
-    private Subscription mSubs1, mSubs2, mSubs3, mSubs4, mSubs5;
+    private Subscription mSubs1, mSubs2, mSubs3, mSubs4, mSubs5,mSubs6;
     private String mCurrentUrl = "";
     private int mCurrentMessagePosition = -1;
     private PropertyRepairDetailProprietorContentData mCurrentMessageData;
@@ -57,6 +57,36 @@ public class ComplainDetailActivityPresenter extends AppBaseActivityPresenter<Co
         onPicClicked();
         getComplainDetailData();
         resendMessageSubs();
+        updateMessageState();
+    }
+
+    private void updateMessageState() {
+        if (mModel.getMessageId() == 0) return;
+        RxUtils.unsubscribeIfNotNull(mSubs6);
+        addSubscription(
+                mSubs6 = mModel.updateMessage()
+                        .subscribe(new Observer<TrueEntity>() {
+                            @Override
+                            public void onCompleted() {
+
+                            }
+
+                            @Override
+                            public void onError(Throwable e) {
+
+                            }
+
+                            @Override
+                            public void onNext(TrueEntity trueEntity) {
+                                if (!processNetworkResult(trueEntity)) return;
+                                if (trueEntity == null || trueEntity.getData() == null
+                                        || TextUtils.isEmpty(trueEntity.getData().getResult())
+                                        || !"true".equals(trueEntity.getData().getResult())) {
+                                    return;
+                                }
+
+                            }
+                        }));
     }
 
     public List<DisplayBean> getReplyDatas(List<PropertyComplainDetailEntity.DataBean.RepliesBean> replies) {

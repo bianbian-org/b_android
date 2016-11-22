@@ -12,9 +12,26 @@ public class MessageAllContentData {
     private String content;
     private String rightText;
     private String time;
-
+    private int has_read;
     private int id;
     private String obj_id;
+    private String types;
+
+    public String getTypes() {
+        return types;
+    }
+
+    public void setTypes(String types) {
+        this.types = types;
+    }
+
+    public int getHas_read() {
+        return has_read;
+    }
+
+    public void setHas_read(int has_read) {
+        this.has_read = has_read;
+    }
 
     public int getId() {
         return id;

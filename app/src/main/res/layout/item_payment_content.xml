@@ -33,7 +33,7 @@
                 android:layout_toRightOf="@id/iv_dot"
                 android:orientation="horizontal">
 
-                <com.techjumper.lightwidget.textview.MarqueeTextView
+                <TextView
                     android:id="@+id/tv_notice"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"

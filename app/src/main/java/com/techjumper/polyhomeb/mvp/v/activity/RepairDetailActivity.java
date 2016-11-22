@@ -33,7 +33,8 @@ import cn.finalteam.loadingviewfinal.RecyclerViewFinal;
  * * * * * * * * * * * * * * * * * * * * * * *
  **/
 @Presenter(RepairDetailActivityPresenter.class)
-public class RepairDetailActivity extends AppBaseActivity<RepairDetailActivityPresenter> implements View.OnLayoutChangeListener {
+public class RepairDetailActivity extends AppBaseActivity<RepairDetailActivityPresenter>
+        implements View.OnLayoutChangeListener {
 
     @Bind(R.id.rv)
     RecyclerViewFinal mRv;
@@ -108,7 +109,7 @@ public class RepairDetailActivity extends AppBaseActivity<RepairDetailActivityPr
             mRv.smoothScrollToPosition(mAdapter.getItemCount() + 1);  //mRv跳至最后一个item
         } else if (oldBottom != 0 && bottom != 0 && (bottom - oldBottom > mKeyHeight)) {
             mStaticHead.setVisibility(View.VISIBLE);
-            if (mAdapter!= null) {
+            if (mAdapter != null) {
                 mAdapter.notifyDataSetChanged();
             }
         }

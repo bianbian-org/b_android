@@ -33,7 +33,8 @@ public class PropertyPlacardContentViewHolder extends BaseRecyclerViewHolder<Pro
     public void setData(PropertyPlacardContentData data) {
         if (data == null) return;
         ((MarqueeTextView) getView(R.id.tv_notice)).setText(data.getTitle());
-        setVisibility(R.id.iv_dot, data.isRead() ? View.INVISIBLE : View.VISIBLE);
+//        setVisibility(R.id.iv_dot, data.isRead() ? View.INVISIBLE : View.VISIBLE);
+        setVisibility(R.id.iv_dot, View.INVISIBLE);
         ((Button) getView(R.id.btn)).setText(data.getType());
         setText(R.id.tv_content, data.getContent());
         setText(R.id.tv_time, data.getTime());

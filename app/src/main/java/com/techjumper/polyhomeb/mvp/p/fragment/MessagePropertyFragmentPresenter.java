@@ -2,10 +2,18 @@ package com.techjumper.polyhomeb.mvp.p.fragment;
 
 import android.os.Bundle;
 
+import com.steve.creact.library.display.DisplayBean;
+import com.techjumper.corelib.rx.tools.RxBus;
 import com.techjumper.corelib.rx.tools.RxUtils;
+import com.techjumper.polyhomeb.adapter.MessageAllFragmentAdapter;
+import com.techjumper.polyhomeb.adapter.recycler_Data.MessagePropertyData;
+import com.techjumper.polyhomeb.adapter.recycler_ViewHolder.databean.MessagePropertyBean;
 import com.techjumper.polyhomeb.entity.MessageEntity;
+import com.techjumper.polyhomeb.entity.event.UpdateMessageStateEvent;
 import com.techjumper.polyhomeb.mvp.m.MessagePropertyFragmentModel;
 import com.techjumper.polyhomeb.mvp.v.fragment.MessagePropertyFragment;
+
+import java.util.List;
 
 import rx.Subscriber;
 import rx.Subscription;
@@ -20,7 +28,7 @@ public class MessagePropertyFragmentPresenter extends AppBaseFragmentPresenter<M
 
     private MessagePropertyFragmentModel mModel = new MessagePropertyFragmentModel(this);
 
-    private Subscription mSubs1;
+    private Subscription mSubs1, mSubs2;
 
     @Override
     public void initData(Bundle savedInstanceState) {
@@ -30,6 +38,35 @@ public class MessagePropertyFragmentPresenter extends AppBaseFragmentPresenter<M
     @Override
     public void onViewInited(Bundle savedInstanceState) {
         refreshData();
+        updateMessageState();
+    }
+
+    private void updateMessageState() {
+        addSubscription(
+                RxBus.INSTANCE.asObservable().subscribe(o -> {
+                    if (o instanceof UpdateMessageStateEvent) {
+                        UpdateMessageStateEvent event = (UpdateMessageStateEvent) o;
+                        int id = event.getId();
+                        refreshList(id);
+                    }
+                }));
+    }
+
+    private void refreshList(int id) {
+        MessageAllFragmentAdapter adapter = getView().getAdapter();
+        if (adapter == null) return;
+        List<DisplayBean> data = adapter.getData();
+        for (int i = 0; i < data.size(); i++) {
+            DisplayBean displayBean = data.get(i);
+            if (displayBean instanceof MessagePropertyBean) {
+                MessagePropertyData data1 = ((MessagePropertyBean) displayBean).getData();
+                if (data1.getId() == id) {
+                    data1.setHas_read(1);
+                    adapter.notifyItemChanged(i);
+                    break;
+                }
+            }
+        }
     }
 
     public void getData() {

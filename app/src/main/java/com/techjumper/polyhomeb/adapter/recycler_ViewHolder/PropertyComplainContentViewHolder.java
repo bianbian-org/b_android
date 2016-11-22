@@ -37,7 +37,8 @@ public class PropertyComplainContentViewHolder extends BaseRecyclerViewHolder<Pr
         setText(R.id.btn, data.getBtnName());
         setText(R.id.tv_content, data.getContent());
         setText(R.id.tv_time, data.getTime());
-        setVisibility(R.id.iv_dot, data.isRead() ? View.INVISIBLE : View.VISIBLE);
+//        setVisibility(R.id.iv_dot, data.isRead() ? View.INVISIBLE : View.VISIBLE);
+        setVisibility(R.id.iv_dot, View.INVISIBLE);
 
         switch (data.getStatus()) {
             case 0:   //未处理

@@ -115,6 +115,7 @@ public class MessageAllFragmentModel extends BaseModel<MessageAllFragmentPresent
             long time_ = Long.parseLong(created_at);
             SimpleDateFormat format = new SimpleDateFormat(getPresenter().getView().getResources().getString(R.string.pattren_M_D));
             String time = format.format(new Date(time_ * 1000));  //转换后的时间,只剩下月和日
+            int has_read = messagesBean.getHas_read();
 
             switch (Integer.parseInt(rightText)) {
                 case 1:
@@ -131,10 +132,12 @@ public class MessageAllFragmentModel extends BaseModel<MessageAllFragmentPresent
             //第三个item,内容
             MessageAllContentData messageAllContentData = new MessageAllContentData();
             messageAllContentData.setContent(content);
+            messageAllContentData.setTypes(messagesBean.getTypes());
             messageAllContentData.setRightText(rightText);
             messageAllContentData.setTime(time);
             messageAllContentData.setTitle(title);
             messageAllContentData.setId(id);
+            messageAllContentData.setHas_read(has_read);
             messageAllContentData.setObj_id(obj_id);
             MessageAllContentBean messageAllContentBean = new MessageAllContentBean(messageAllContentData);
             mDataList.add(messageAllContentBean);

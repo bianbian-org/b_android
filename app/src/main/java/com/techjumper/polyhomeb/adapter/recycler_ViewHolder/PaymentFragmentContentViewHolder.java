@@ -9,7 +9,6 @@ import android.widget.TextView;
 import com.steve.creact.annotation.DataBean;
 import com.steve.creact.library.viewholder.BaseRecyclerViewHolder;
 import com.techjumper.corelib.utils.common.AcHelper;
-import com.techjumper.lightwidget.textview.MarqueeTextView;
 import com.techjumper.polyhomeb.Constant;
 import com.techjumper.polyhomeb.R;
 import com.techjumper.polyhomeb.adapter.recycler_Data.PaymentFragmentContentData;
@@ -40,6 +39,8 @@ public class PaymentFragmentContentViewHolder extends BaseRecyclerViewHolder<Pay
     public void setData(PaymentFragmentContentData data) {
         if (data == null) return;
 
+        setVisibility(R.id.iv_dot, View.INVISIBLE);
+
         if (sUnPaid == data.getStatus()) {
             getView(R.id.tv_pay_detail).setVisibility(View.GONE);
             getView(R.id.tv_exceed_day).setVisibility(View.VISIBLE);
@@ -54,7 +55,7 @@ public class PaymentFragmentContentViewHolder extends BaseRecyclerViewHolder<Pay
 
         setText(R.id.tv_price, getContext().getString(R.string.￥) + data.getPrice());
         String btnName = "";
-        ((MarqueeTextView) getView(R.id.tv_notice)).setText(data.getTitle());
+        setText(R.id.tv_notice, data.getTitle());
 //        switch (data.getBtnName()) {
 //            //1-物业费 2-水费 3-电费 4-燃气费 5-其他
 //            case 1:

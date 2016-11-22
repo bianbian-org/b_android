@@ -113,6 +113,7 @@ public class MessagePropertyFragmentModel extends BaseModel<MessagePropertyFragm
             String title = messagesBean.getTitle();  //消息title
             String rightText = messagesBean.getTypes(); // #消息类型 1-系统信息 2-订单信息 4，5-物业信息 6-友邻
             long time_ = Long.parseLong(created_at);
+            int has_read = messagesBean.getHas_read();
             SimpleDateFormat format = new SimpleDateFormat(getPresenter().getView().getResources().getString(R.string.pattren_M_D));
             String time = format.format(new Date(time_ * 1000));  //转换后的时间,只剩下月和日
 
@@ -131,9 +132,11 @@ public class MessagePropertyFragmentModel extends BaseModel<MessagePropertyFragm
             //第三个item,内容
             MessagePropertyData messagePropertyData = new MessagePropertyData();
             messagePropertyData.setContent(content);
+            messagePropertyData.setId(id);
             messagePropertyData.setType(messagesBean.getTypes());
             messagePropertyData.setRightText(rightText);
             messagePropertyData.setTime(time);
+            messagePropertyData.setHas_read(has_read);
             messagePropertyData.setTitle(title);
             messagePropertyData.setObj_id(obj_id);
             MessagePropertyBean messagePropertyBean = new MessagePropertyBean(messagePropertyData);

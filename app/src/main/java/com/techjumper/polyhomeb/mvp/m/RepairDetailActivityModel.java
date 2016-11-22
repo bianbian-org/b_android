@@ -54,6 +54,10 @@ public class RepairDetailActivityModel extends BaseModel<RepairDetailActivityPre
         return getPresenter().getView().getIntent().getExtras().getInt(Constant.PROPERTY_REPAIR_DATA_ID, -1);
     }
 
+    public int getMessageId() {
+        return getPresenter().getView().getIntent().getExtras().getInt(Constant.KEY_MESSAGE_ID, 0);
+    }
+
     public String getRepairType(int types) {
         switch (types) {  //报修类型 1-个人报修 2-公共区域报修
             case 1:
@@ -211,5 +215,16 @@ public class RepairDetailActivityModel extends BaseModel<RepairDetailActivityPre
 
     public List<DisplayBean> getReplyDatas() {
         return mReplyDatas;
+    }
+
+    public Observable<TrueEntity> updateMessage() {
+        KeyValuePair keyValuePair = KeyValueCreator.updateMessageState(
+                UserManager.INSTANCE.getUserInfo(UserManager.KEY_ID)
+                , UserManager.INSTANCE.getTicket()
+                , getMessageId() + "");
+        BaseArgumentsEntity entity = NetHelper.createBaseArguments(keyValuePair);
+        return RetrofitHelper.<ServiceAPI>createDefault().updateMessageState(entity)
+                .compose(CommonWrap.wrap());
+
     }
 }

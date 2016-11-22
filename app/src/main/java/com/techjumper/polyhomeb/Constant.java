@@ -71,6 +71,7 @@ public class Constant {
     public static final int UNION_PAY = 3;
     public static final int YI_PAY = 4;
 
+    public static final String KEY_MESSAGE_ID = "key_message_id";
 
 
     /* ------------------JS -------------------*/

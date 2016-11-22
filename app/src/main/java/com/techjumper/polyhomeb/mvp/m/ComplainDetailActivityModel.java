@@ -54,6 +54,10 @@ public class ComplainDetailActivityModel extends BaseModel<ComplainDetailActivit
         return getPresenter().getView().getIntent().getExtras().getInt(Constant.PROPERTY_COMPLAIN_DATA_ID, -1);
     }
 
+    public int getMessageId() {
+        return getPresenter().getView().getIntent().getExtras().getInt(Constant.KEY_MESSAGE_ID, 0);
+    }
+
     public String getTypes(int types) {
         switch (types) {//1-投诉 2-建议 3-表扬
             case 1:
@@ -197,6 +201,17 @@ public class ComplainDetailActivityModel extends BaseModel<ComplainDetailActivit
 
     public List<DisplayBean> getReplyDatas() {
         return mReplyDatas;
+    }
+
+    public Observable<TrueEntity> updateMessage() {
+        KeyValuePair keyValuePair = KeyValueCreator.updateMessageState(
+                UserManager.INSTANCE.getUserInfo(UserManager.KEY_ID)
+                , UserManager.INSTANCE.getTicket()
+                , getMessageId() + "");
+        BaseArgumentsEntity entity = NetHelper.createBaseArguments(keyValuePair);
+        return RetrofitHelper.<ServiceAPI>createDefault().updateMessageState(entity)
+                .compose(CommonWrap.wrap());
+
     }
 
 }

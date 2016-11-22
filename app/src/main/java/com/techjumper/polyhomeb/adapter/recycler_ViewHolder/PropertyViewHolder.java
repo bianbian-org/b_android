@@ -9,7 +9,6 @@ import com.steve.creact.annotation.DataBean;
 import com.steve.creact.library.viewholder.BaseRecyclerViewHolder;
 import com.techjumper.corelib.rx.tools.RxUtils;
 import com.techjumper.corelib.utils.common.AcHelper;
-import com.techjumper.corelib.utils.common.JLog;
 import com.techjumper.corelib.utils.window.ToastUtils;
 import com.techjumper.lightwidget.textview.MarqueeTextView;
 import com.techjumper.polyhomeb.Constant;
@@ -128,7 +127,7 @@ public class PropertyViewHolder extends BaseRecyclerViewHolder<PropertyData> {
 
                         @Override
                         public void onError(Throwable e) {
-                            JLog.e(e.getMessage().toString());
+//                            JLog.e(e.getMessage().toString());
                         }
 
                         @Override
@@ -143,7 +142,7 @@ public class PropertyViewHolder extends BaseRecyclerViewHolder<PropertyData> {
 
     private void setData(MarqueeTextInfoEntity.DataBean.MessagesBean messagesBean) {
         MarqueeTextView view = getView(R.id.tv_notice);
-        view.setText(messagesBean.getContent());
+        view.setText(messagesBean.getTitle());
         view.startFor();
         setOnClickListener(R.id.btn_checkout_property, null);
         setOnClickListener(R.id.btn_checkout_property, v -> {
@@ -153,8 +152,8 @@ public class PropertyViewHolder extends BaseRecyclerViewHolder<PropertyData> {
 
     private void jump2Activity(MarqueeTextInfoEntity.DataBean.MessagesBean messagesBean) {
         String content = messagesBean.getContent();
-        int has_read = messagesBean.getHas_read();
         String obj_id = messagesBean.getObj_id();
+        int id = messagesBean.getId();
         String title = messagesBean.getTitle();
         int types = messagesBean.getTypes();
         int created_at = messagesBean.getCreated_at();
@@ -173,11 +172,13 @@ public class PropertyViewHolder extends BaseRecyclerViewHolder<PropertyData> {
                 break;
             case 4:
                 Bundle bundle = new Bundle();
+                bundle.putInt(Constant.KEY_MESSAGE_ID, id);
                 bundle.putInt(Constant.PROPERTY_REPAIR_DATA_ID, Integer.parseInt(obj_id));
                 new AcHelper.Builder((Activity) getContext()).extra(bundle).target(RepairDetailActivity.class).start();
                 break;
             case 5:
                 Bundle bundle1 = new Bundle();
+                bundle1.putInt(Constant.KEY_MESSAGE_ID, id);
                 bundle1.putInt(Constant.PROPERTY_COMPLAIN_DATA_ID, Integer.parseInt(obj_id));
                 new AcHelper.Builder((Activity) getContext()).extra(bundle1).target(ComplainDetailActivity.class).start();
                 break;
