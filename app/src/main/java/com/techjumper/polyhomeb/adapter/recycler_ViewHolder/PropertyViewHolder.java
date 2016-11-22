@@ -50,8 +50,6 @@ public class PropertyViewHolder extends BaseRecyclerViewHolder<PropertyData> {
     @Override
     public void setData(PropertyData data) {
         if (data == null) return;
-        //        removeHandler();
-        RxUtils.unsubscribeIfNotNull(mSubs1);
 
         setMarqueeTextData(data.getNotice());
 
@@ -121,6 +119,7 @@ public class PropertyViewHolder extends BaseRecyclerViewHolder<PropertyData> {
 //            message.obj = messages;
 //            mHandler.sendMessageDelayed(message, 1000);
             setData(messages.get(0));
+            RxUtils.unsubscribeIfNotNull(mSubs1);
             mSubs1 = Observable.interval(10, TimeUnit.SECONDS)
                     .observeOn(AndroidSchedulers.mainThread())
                     .subscribeOn(AndroidSchedulers.mainThread())
@@ -137,6 +136,8 @@ public class PropertyViewHolder extends BaseRecyclerViewHolder<PropertyData> {
 
                         @Override
                         public void onNext(Long aLong) {
+
+                            JLog.e("" + aLong);
                             MarqueeTextInfoEntity.DataBean.MessagesBean messagesBean
                                     = messages.get((int) (aLong >= messages.size() ? aLong % messages.size() : aLong));
                             setData(messagesBean);
