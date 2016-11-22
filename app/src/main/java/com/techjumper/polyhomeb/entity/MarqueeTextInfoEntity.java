@@ -39,7 +39,7 @@ public class MarqueeTextInfoEntity extends BaseEntity<MarqueeTextInfoEntity.Data
             private String content;
             private String obj_id;
             private int has_read;
-            private int created_at;
+            private String created_at;
 
             public int getId() {
                 return id;
@@ -89,11 +89,11 @@ public class MarqueeTextInfoEntity extends BaseEntity<MarqueeTextInfoEntity.Data
                 this.has_read = has_read;
             }
 
-            public int getCreated_at() {
+            public String getCreated_at() {
                 return created_at;
             }
 
-            public void setCreated_at(int created_at) {
+            public void setCreated_at(String created_at) {
                 this.created_at = created_at;
             }
         }

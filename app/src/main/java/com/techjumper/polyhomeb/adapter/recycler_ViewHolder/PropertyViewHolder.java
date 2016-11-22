@@ -9,6 +9,7 @@ import com.steve.creact.annotation.DataBean;
 import com.steve.creact.library.viewholder.BaseRecyclerViewHolder;
 import com.techjumper.corelib.rx.tools.RxUtils;
 import com.techjumper.corelib.utils.common.AcHelper;
+import com.techjumper.corelib.utils.common.JLog;
 import com.techjumper.corelib.utils.window.ToastUtils;
 import com.techjumper.lightwidget.textview.MarqueeTextView;
 import com.techjumper.polyhomeb.Constant;
@@ -22,6 +23,8 @@ import com.techjumper.polyhomeb.mvp.v.activity.PropertyDetailActivity;
 import com.techjumper.polyhomeb.mvp.v.activity.RepairDetailActivity;
 import com.techjumper.polyhomeb.user.UserManager;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
@@ -118,6 +121,7 @@ public class PropertyViewHolder extends BaseRecyclerViewHolder<PropertyData> {
             RxUtils.unsubscribeIfNotNull(mSubs1);
             mSubs1 = Observable.interval(10, TimeUnit.SECONDS)
                     .observeOn(AndroidSchedulers.mainThread())
+                    .onBackpressureDrop()
                     .subscribeOn(AndroidSchedulers.mainThread())
                     .subscribe(new Observer<Long>() {
                         @Override
@@ -127,7 +131,7 @@ public class PropertyViewHolder extends BaseRecyclerViewHolder<PropertyData> {
 
                         @Override
                         public void onError(Throwable e) {
-//                            JLog.e(e.getMessage().toString());
+                            JLog.e(e);
                         }
 
                         @Override
@@ -156,16 +160,19 @@ public class PropertyViewHolder extends BaseRecyclerViewHolder<PropertyData> {
         int id = messagesBean.getId();
         String title = messagesBean.getTitle();
         int types = messagesBean.getTypes();
-        int created_at = messagesBean.getCreated_at();
 
         if (TextUtils.isEmpty(obj_id)) return;
         //1-系统信息 2-订单信息 4-物业信息
         switch (types) {
             case 0:  //此处0是为了区分需不需要调取  已读未读状态，所以把公告详情单独弄成0，不需要调已读未读
                 Bundle bundle2 = new Bundle();
+                long time_ = Long.parseLong(messagesBean.getCreated_at());
+                SimpleDateFormat format = new SimpleDateFormat(getContext().getString(R.string.pattren_M_D));
+                String time = format.format(new Date(time_ * 1000));
+
 //                bundle2.putInt(Constant.PLACARD_DETAIL_ID, data.getId());
                 bundle2.putString(Constant.PLACARD_DETAIL_CONTENT, content);
-                bundle2.putString(Constant.PLACARD_DETAIL_TIME, created_at + "");
+                bundle2.putString(Constant.PLACARD_DETAIL_TIME, time);
                 bundle2.putString(Constant.PLACARD_DETAIL_TITLE, title);
                 bundle2.putString(Constant.PLACARD_DETAIL_TYPE, types + "");
                 new AcHelper.Builder((Activity) getContext()).extra(bundle2).target(PlacardDetailActivity.class).start();
