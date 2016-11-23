@@ -33,7 +33,7 @@
                 android:layout_toRightOf="@id/iv_dot"
                 android:orientation="horizontal">
 
-                <com.techjumper.lightwidget.textview.MarqueeTextView
+                <TextView
                     android:id="@+id/tv_notice"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
@@ -41,7 +41,7 @@
                     android:layout_marginLeft="@dimen/dp_10"
                     android:layout_marginRight="@dimen/dp_16"
                     android:layout_weight="1"
-                    android:ellipsize="marquee"
+                    android:ellipsize="end"
                     android:maxLines="1"
                     android:singleLine="true"
                     android:text="个人报修-门窗"

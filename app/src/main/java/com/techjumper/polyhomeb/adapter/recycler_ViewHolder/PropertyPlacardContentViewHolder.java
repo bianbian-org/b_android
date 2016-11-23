@@ -8,7 +8,6 @@ import android.widget.Button;
 import com.steve.creact.annotation.DataBean;
 import com.steve.creact.library.viewholder.BaseRecyclerViewHolder;
 import com.techjumper.corelib.utils.common.AcHelper;
-import com.techjumper.lightwidget.textview.MarqueeTextView;
 import com.techjumper.polyhomeb.Constant;
 import com.techjumper.polyhomeb.R;
 import com.techjumper.polyhomeb.adapter.recycler_Data.PropertyPlacardContentData;
@@ -32,7 +31,7 @@ public class PropertyPlacardContentViewHolder extends BaseRecyclerViewHolder<Pro
     @Override
     public void setData(PropertyPlacardContentData data) {
         if (data == null) return;
-        ((MarqueeTextView) getView(R.id.tv_notice)).setText(data.getTitle());
+        setText(R.id.tv_notice, data.getTitle());
 //        setVisibility(R.id.iv_dot, data.isRead() ? View.INVISIBLE : View.VISIBLE);
         setVisibility(R.id.iv_dot, View.INVISIBLE);
         ((Button) getView(R.id.btn)).setText(data.getType());

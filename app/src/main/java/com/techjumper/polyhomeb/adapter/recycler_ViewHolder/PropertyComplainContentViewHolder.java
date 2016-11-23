@@ -9,7 +9,6 @@ import com.steve.creact.annotation.DataBean;
 import com.steve.creact.library.viewholder.BaseRecyclerViewHolder;
 import com.techjumper.corelib.utils.common.AcHelper;
 import com.techjumper.corelib.utils.common.ResourceUtils;
-import com.techjumper.lightwidget.textview.MarqueeTextView;
 import com.techjumper.polyhomeb.Constant;
 import com.techjumper.polyhomeb.R;
 import com.techjumper.polyhomeb.adapter.recycler_Data.PropertyComplainContentData;
@@ -33,7 +32,7 @@ public class PropertyComplainContentViewHolder extends BaseRecyclerViewHolder<Pr
     @Override
     public void setData(PropertyComplainContentData data) {
         if (data == null) return;
-        ((MarqueeTextView) getView(R.id.tv_notice)).setText(data.getTitle());
+        setText(R.id.tv_notice,data.getTitle());
         setText(R.id.btn, data.getBtnName());
         setText(R.id.tv_content, data.getContent());
         setText(R.id.tv_time, data.getTime());
