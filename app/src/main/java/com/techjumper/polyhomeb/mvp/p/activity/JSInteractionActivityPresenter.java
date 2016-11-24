@@ -11,6 +11,7 @@ import com.tbruyelle.rxpermissions.RxPermissions;
 import com.techjumper.corelib.rx.tools.RxBus;
 import com.techjumper.corelib.rx.tools.RxUtils;
 import com.techjumper.corelib.utils.common.AcHelper;
+import com.techjumper.corelib.utils.common.JLog;
 import com.techjumper.corelib.utils.system.AppUtils;
 import com.techjumper.corelib.utils.window.DialogUtils;
 import com.techjumper.corelib.utils.window.ToastUtils;
@@ -246,12 +247,23 @@ public class JSInteractionActivityPresenter extends AppBaseActivityPresenter<JSI
 
         switch (type) {
             case 1:
-
+                PayEntity.ParamsBean.UrlBean.WxPayBean wxPayBean = url.getWxpay();
+                if (wxPayBean == null) return;
+                PaymentsEntity.DataBean.WxpayBean wxpayBean = new PaymentsEntity.DataBean.WxpayBean();
+                wxpayBean.setAppid(wxpayBean.getAppid());
+                wxpayBean.setNoncestr(wxpayBean.getNoncestr());
+                wxpayBean.setPackageX(wxpayBean.getPackageX());
+                wxpayBean.setPartnerid(wxpayBean.getPartnerid());
+                wxpayBean.setPrepayid(wxpayBean.getPrepayid());
+                wxpayBean.setSign(wxpayBean.getSign());
+                wxpayBean.setTimestamp(wxpayBean.getTimestamp());
+                dataBean.setWxpay(wxpayBean);
+                paymentsEntity.setData(dataBean);
+                JLog.e("hhhhhhhhh");
                 break;
             case 2:
                 PayEntity.ParamsBean.UrlBean.AlipayBean alipay = url.getAlipay();
-                if (alipay == null
-                        || TextUtils.isEmpty(alipay.getParms_str())
+                if (alipay == null || TextUtils.isEmpty(alipay.getParms_str())
                         || TextUtils.isEmpty(alipay.getSign())) return;
                 String parms_str = alipay.getParms_str();
                 String sign = alipay.getSign();

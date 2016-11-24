@@ -1,5 +1,7 @@
 package com.techjumper.polyhomeb.entity;
 
+import com.google.gson.annotations.SerializedName;
+
 /**
  * * * * * * * * * * * * * * * * * * * * * * *
  * Created by lixin
@@ -65,6 +67,15 @@ public class PayEntity {
              */
 
             private AlipayBean alipay;
+            private WxPayBean wxpay;
+
+            public WxPayBean getWxpay() {
+                return wxpay;
+            }
+
+            public void setWxpay(WxPayBean wxpay) {
+                this.wxpay = wxpay;
+            }
 
             public String getOrder_number() {
                 return order_number;
@@ -108,6 +119,73 @@ public class PayEntity {
 
                 public void setParms_str(String parms_str) {
                     this.parms_str = parms_str;
+                }
+
+                public String getSign() {
+                    return sign;
+                }
+
+                public void setSign(String sign) {
+                    this.sign = sign;
+                }
+            }
+
+            public static class WxPayBean{
+                private String appid;
+                private String partnerid;
+                private String prepayid;
+                @SerializedName("package")
+                private String packageX;
+                private String noncestr;
+                private String timestamp;
+                private String sign;
+
+                public String getAppid() {
+                    return appid;
+                }
+
+                public void setAppid(String appid) {
+                    this.appid = appid;
+                }
+
+                public String getPartnerid() {
+                    return partnerid;
+                }
+
+                public void setPartnerid(String partnerid) {
+                    this.partnerid = partnerid;
+                }
+
+                public String getPrepayid() {
+                    return prepayid;
+                }
+
+                public void setPrepayid(String prepayid) {
+                    this.prepayid = prepayid;
+                }
+
+                public String getPackageX() {
+                    return packageX;
+                }
+
+                public void setPackageX(String packageX) {
+                    this.packageX = packageX;
+                }
+
+                public String getNoncestr() {
+                    return noncestr;
+                }
+
+                public void setNoncestr(String noncestr) {
+                    this.noncestr = noncestr;
+                }
+
+                public String getTimestamp() {
+                    return timestamp;
+                }
+
+                public void setTimestamp(String timestamp) {
+                    this.timestamp = timestamp;
                 }
 
                 public String getSign() {
