@@ -12,6 +12,7 @@ import android.widget.TextView;
 
 import com.jakewharton.rxbinding.widget.RxTextView;
 import com.techjumper.corelib.mvp.factory.Presenter;
+import com.techjumper.corelib.rx.tools.RxBus;
 import com.techjumper.corelib.utils.common.ResourceUtils;
 import com.techjumper.corelib.utils.common.RuleUtils;
 import com.techjumper.corelib.utils.window.StatusbarHelper;
@@ -27,6 +28,7 @@ import butterknife.Bind;
 import cn.finalteam.loadingviewfinal.RecyclerViewFinal;
 import me.iwf.photopicker.PhotoPicker;
 import me.iwf.photopicker.PhotoPreview;
+import me.iwf.photopicker.event.PhotoPickerEvent;
 
 /**
  * * * * * * * * * * * * * * * * * * * * * * *
@@ -84,6 +86,28 @@ public class ReplyCommentActivity extends AppBaseActivity<ReplyCommentActivityPr
                 mTvInput.setVisibility(View.INVISIBLE);
             }
         });
+
+        addSubscription(
+                RxBus.INSTANCE.asObservable().subscribe(o -> {
+                    if (o instanceof PhotoPickerEvent) {
+                        PhotoPickerEvent event = (PhotoPickerEvent) o;
+                        Intent intent = event.getIntent();
+                        List<String> photos = null;
+                        if (intent != null) {
+                            photos = intent.getStringArrayListExtra(PhotoPicker.KEY_SELECTED_PHOTOS);
+                        }
+                        mChoosedPhoto.clear();
+                        if (photos != null) {
+                            mChoosedPhoto.addAll(photos);
+                        }
+
+                        mAdapter.loadData(getPresenter().getDatas());
+                        mAdapter.notifyDataSetChanged();
+
+                        changeRightGroup((mChoosedPhoto.size() == 1
+                                || mEtContent.getEditableText().toString().trim().length() != 0) ? true : false);
+                    }
+                }));
     }
 
     @Override
@@ -113,26 +137,26 @@ public class ReplyCommentActivity extends AppBaseActivity<ReplyCommentActivityPr
         onTitleLeftClick();
     }
 
-    @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        if (resultCode == RESULT_OK &&
-                (requestCode == PhotoPicker.REQUEST_CODE || requestCode == PhotoPreview.REQUEST_CODE)) {
-            List<String> photos = null;
-            if (data != null) {
-                photos = data.getStringArrayListExtra(PhotoPicker.KEY_SELECTED_PHOTOS);
-            }
-            mChoosedPhoto.clear();
-            if (photos != null) {
-                mChoosedPhoto.addAll(photos);
-            }
-            mAdapter.loadData(getPresenter().getDatas());
-            mAdapter.notifyDataSetChanged();
-
-            changeRightGroup((mChoosedPhoto.size() == 1
-                    || mEtContent.getEditableText().toString().trim().length() != 0) ? true : false);
-        }
-    }
+//    @Override
+//    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+//        super.onActivityResult(requestCode, resultCode, data);
+//        if (resultCode == RESULT_OK &&
+//                (requestCode == PhotoPicker.REQUEST_CODE || requestCode == PhotoPreview.REQUEST_CODE)) {
+//            List<String> photos = null;
+//            if (data != null) {
+//                photos = data.getStringArrayListExtra(PhotoPicker.KEY_SELECTED_PHOTOS);
+//            }
+//            mChoosedPhoto.clear();
+//            if (photos != null) {
+//                mChoosedPhoto.addAll(photos);
+//            }
+//            mAdapter.loadData(getPresenter().getDatas());
+//            mAdapter.notifyDataSetChanged();
+//
+//            changeRightGroup((mChoosedPhoto.size() == 1
+//                    || mEtContent.getEditableText().toString().trim().length() != 0) ? true : false);
+//        }
+//    }
 
     public void changeRightGroup(boolean hasContent) {
         if (hasContent) {

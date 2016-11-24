@@ -108,7 +108,7 @@ public class NewInvitationActivityPresenter extends AppBaseActivityPresenter<New
             return;
         }
 
-        getView().showLoading();
+        getView().showLoading(false);
         if (getView().getPhotos().size() != 0) {
 //            new Thread(() -> {
 //                transformCode();
