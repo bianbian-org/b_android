@@ -8,7 +8,6 @@ import com.techjumper.corelib.utils.window.ToastUtils;
 import com.techjumper.polyhomeb.R;
 import com.techjumper.polyhomeb.adapter.recycler_Data.ViewPagerData;
 import com.techjumper.polyhomeb.entity.ADEntity;
-import com.techjumper.polyhomeb.other.ADVideoHelper;
 import com.techjumper.polyhomeb.other.viewPager.NetWorkImageHolderView;
 import com.techjumper.polyhomeb.widget.autoScrollViewPager.AutoScrollViewPager;
 import com.techjumper.polyhomeb.widget.autoScrollViewPager.CBViewHolderCreator;
@@ -60,6 +59,5 @@ public class ViewPagerViewHolder extends BaseRecyclerViewHolder<ViewPagerData>
     public void onItemClick(int position, Object object) {
         ADEntity.DataBean.AdInfosBean bean = (ADEntity.DataBean.AdInfosBean) object;
         ToastUtils.show(bean.getUrl());
-        ADVideoHelper helper = new ADVideoHelper();
     }
 }

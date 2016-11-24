@@ -10,6 +10,7 @@ import com.bumptech.glide.Glide;
 import com.techjumper.polyhomeb.Config;
 import com.techjumper.polyhomeb.R;
 import com.techjumper.polyhomeb.entity.ADEntity;
+import com.techjumper.polyhomeb.other.ADVideoHelper;
 import com.techjumper.polyhomeb.widget.autoScrollViewPager.Holder;
 
 /**
@@ -23,14 +24,14 @@ public class NetWorkImageHolderView implements Holder<ADEntity.DataBean.AdInfosB
     private ImageView mImageView;
     private TextureView mTextureView;
 
-
     @Override
     public View createView(Context context, ADEntity.DataBean.AdInfosBean data) {
+        //因为视频在下载或者出问题的时候，还是需要展示占位图，所以控件单独提出来初始化
+        mImageView = new ImageView(context);
+        mImageView.setScaleType(ImageView.ScaleType.FIT_XY);
         switch (data.getMedia_type()) {
             case 1:
             default:
-                mImageView = new ImageView(context);
-                mImageView.setScaleType(ImageView.ScaleType.FIT_XY);
                 return mImageView;
             case 2:
                 mTextureView = new TextureView(context);
@@ -50,6 +51,8 @@ public class NetWorkImageHolderView implements Holder<ADEntity.DataBean.AdInfosB
                         .into(mImageView);
                 break;
             case 2:
+                ADVideoHelper helper = new ADVideoHelper(context, data, mImageView, mTextureView);
+                helper.startWork();
                 break;
         }
     }

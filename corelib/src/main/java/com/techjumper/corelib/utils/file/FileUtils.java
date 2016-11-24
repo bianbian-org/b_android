@@ -561,4 +561,21 @@ public class FileUtils {
         return uri;
     }
 
+    public static File createDirsAndFile_(String path, String fileName) {
+        File file = new File(path);
+        if (!file.exists()) {
+            file.mkdirs();
+        }
+        File dir = new File(path, fileName);
+        if (dir.exists()) {
+            dir.delete();
+        }
+        try {
+            dir.createNewFile();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return dir;
+    }
+
 }

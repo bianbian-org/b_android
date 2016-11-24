@@ -51,6 +51,7 @@ public class Config {
     public static final String sAPKDirName = "apk";
     public static final String sAvatarsDirName = ".avatars";
     public static final String sLogDirName = "log";
+    public static final String sADVideoDirName = "ad_video";
 
     /**
      * 医疗域名
