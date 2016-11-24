@@ -10,7 +10,7 @@ import android.view.View;
  * * * * * * * * * * * * * * * * * * * * * * *
  **/
 public interface Holder<T> {
-    View createView(Context context);
+    View createView(Context context, T t);
 
     void UpdateUI(Context context, int position, T data);
 }

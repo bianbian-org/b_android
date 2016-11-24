@@ -7,5 +7,5 @@ package com.techjumper.polyhomeb.widget.autoScrollViewPager;
  * * * * * * * * * * * * * * * * * * * * * * *
  **/
 public interface OnItemClickListener {
-    void onItemClick(int position);
+    void onItemClick(int position, Object object);
 }

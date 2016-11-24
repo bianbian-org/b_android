@@ -428,4 +428,9 @@ public class KeyValueCreator {
                 .put("ticket", ticket)
                 .put("message_id", message_id);
     }
+
+    public static KeyValuePair getADInfo(String user_id) {
+        return newPair()
+                .put("user_id", user_id);
+    }
 }

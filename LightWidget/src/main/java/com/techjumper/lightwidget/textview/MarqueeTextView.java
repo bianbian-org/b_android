@@ -115,7 +115,7 @@ public class MarqueeTextView extends TextView implements Runnable {
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
         if (isFirstDraw) {
-            getTextWidth();
+            getTextWidth_();
             firstScrollX = getScrollX(); // 获取第一次滑动的X轴距离
             currentScrollX = firstScrollX;
             mWidth = this.getWidth();  // 获取文本宽度，如果文本宽度大于屏幕宽度，则为屏幕宽度，否则为文本宽度
@@ -141,9 +141,13 @@ public class MarqueeTextView extends TextView implements Runnable {
         }
     }
 
-    private void getTextWidth() {
+    private void getTextWidth_() {
         Paint paint = this.getPaint();
         String str = this.getText().toString();
         textWidth = (int) paint.measureText(str);
+    }
+
+    public int getTextWidth() {
+        return textWidth;
     }
 }

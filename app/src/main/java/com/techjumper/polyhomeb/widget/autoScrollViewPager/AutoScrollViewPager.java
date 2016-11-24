@@ -13,12 +13,18 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 
+import com.techjumper.corelib.rx.tools.RxUtils;
 import com.techjumper.polyhomeb.R;
 
-import java.lang.ref.WeakReference;
 import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
+
+import rx.Observable;
+import rx.Observer;
+import rx.Subscription;
+import rx.android.schedulers.AndroidSchedulers;
 
 /**
  * * * * * * * * * * * * * * * * * * * * * * *
@@ -46,7 +52,7 @@ public class AutoScrollViewPager<T> extends LinearLayout {
         ALIGN_PARENT_LEFT, ALIGN_PARENT_RIGHT, CENTER_HORIZONTAL
     }
 
-    private AdSwitchTask adSwitchTask;
+//    private AdSwitchTask adSwitchTask;
 
     public AutoScrollViewPager(Context context) {
         super(context);
@@ -77,29 +83,51 @@ public class AutoScrollViewPager<T> extends LinearLayout {
                 .findViewById(R.id.loPageTurningPoint);
         initViewPagerScroll();
 
-        adSwitchTask = new AdSwitchTask(this);
+//        adSwitchTask = new AdSwitchTask(this);
+        startScroll();
     }
 
-    static class AdSwitchTask implements Runnable {
+//    private static class AdSwitchTask implements Runnable {
+//
+//        private final WeakReference<AutoScrollViewPager> reference;
+//
+//        AdSwitchTask(AutoScrollViewPager AutoScrollViewPager) {
+//            this.reference = new WeakReference<>(AutoScrollViewPager);
+//        }
+//
+//        @Override
+//        public void run() {
+//            AutoScrollViewPager AutoScrollViewPager = reference.get();
+//            if (AutoScrollViewPager == null) return;
+//            if (AutoScrollViewPager.viewPager == null || !AutoScrollViewPager.turning) return;
+//            int page = AutoScrollViewPager.viewPager.getCurrentItem() + 1;
+//            AutoScrollViewPager.viewPager.setCurrentItem(page);
+//            AutoScrollViewPager.postDelayed(AutoScrollViewPager.adSwitchTask, AutoScrollViewPager.autoTurningTime);
+//        }
+//    }
 
-        private final WeakReference<AutoScrollViewPager> reference;
+    private Subscription mSubs1;
 
-        AdSwitchTask(AutoScrollViewPager AutoScrollViewPager) {
-            this.reference = new WeakReference<AutoScrollViewPager>(AutoScrollViewPager);
-        }
+    private void startScroll() {
+        mSubs1 = Observable.interval(autoTurningTime, TimeUnit.MILLISECONDS)
+                .subscribeOn(AndroidSchedulers.mainThread())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Observer<Long>() {
+                    @Override
+                    public void onCompleted() {
+                        RxUtils.unsubscribeIfNotNull(mSubs1);
+                    }
 
-        @Override
-        public void run() {
-            AutoScrollViewPager AutoScrollViewPager = reference.get();
+                    @Override
+                    public void onError(Throwable e) {
+                    }
 
-            if (AutoScrollViewPager != null) {
-                if (AutoScrollViewPager.viewPager != null && AutoScrollViewPager.turning) {
-                    int page = AutoScrollViewPager.viewPager.getCurrentItem() + 1;
-                    AutoScrollViewPager.viewPager.setCurrentItem(page);
-                    AutoScrollViewPager.postDelayed(AutoScrollViewPager.adSwitchTask, AutoScrollViewPager.autoTurningTime);
-                }
-            }
-        }
+                    @Override
+                    public void onNext(Long aLong) {
+                        if (viewPager == null || !turning) return;
+                        viewPager.setCurrentItem(viewPager.getCurrentItem() + 1);
+                    }
+                });
     }
 
     public AutoScrollViewPager setPages(CBViewHolderCreator holderCreator, List<T> datas) {
@@ -194,6 +222,8 @@ public class AutoScrollViewPager<T> extends LinearLayout {
      * @return
      */
     public AutoScrollViewPager startTurning(long autoTurningTime) {
+        //如果数据源大小只有1，那么就不能自动翻页
+        if (mDatas == null || mDatas.size() == 0 || mDatas.size() == 1) return this;
         //如果是正在翻页的话先停掉
         if (turning) {
             stopTurning();
@@ -202,13 +232,15 @@ public class AutoScrollViewPager<T> extends LinearLayout {
         canTurn = true;
         this.autoTurningTime = autoTurningTime;
         turning = true;
-        postDelayed(adSwitchTask, autoTurningTime);
+//        postDelayed(adSwitchTask, autoTurningTime);
+        startScroll();
         return this;
     }
 
     public void stopTurning() {
         turning = false;
-        removeCallbacks(adSwitchTask);
+//        removeCallbacks(adSwitchTask);
+        RxUtils.unsubscribeIfNotNull(mSubs1);
     }
 
     /**
@@ -222,7 +254,6 @@ public class AutoScrollViewPager<T> extends LinearLayout {
         return this;
     }
 
-
     /**
      * 设置ViewPager的滑动速度
      */
@@ -235,11 +266,7 @@ public class AutoScrollViewPager<T> extends LinearLayout {
                     viewPager.getContext());
             mScroller.set(viewPager, scroller);
 
-        } catch (NoSuchFieldException e) {
-            e.printStackTrace();
-        } catch (IllegalArgumentException e) {
-            e.printStackTrace();
-        } catch (IllegalAccessException e) {
+        } catch (NoSuchFieldException | IllegalAccessException | IllegalArgumentException e) {
             e.printStackTrace();
         }
     }
@@ -276,7 +303,7 @@ public class AutoScrollViewPager<T> extends LinearLayout {
     }
 
     //设置当前的页面index
-    public void setcurrentitem(int index) {
+    public void setCurrentItem(int index) {
         if (viewPager != null) {
             viewPager.setCurrentItem(index);
         }

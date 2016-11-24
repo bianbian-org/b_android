@@ -4,7 +4,6 @@ import com.steve.creact.library.display.DisplayBean;
 import com.techjumper.corelib.rx.tools.CommonWrap;
 import com.techjumper.lib2.others.KeyValuePair;
 import com.techjumper.lib2.utils.RetrofitHelper;
-import com.techjumper.polyhomeb.R;
 import com.techjumper.polyhomeb.adapter.recycler_Data.BluetoothData;
 import com.techjumper.polyhomeb.adapter.recycler_Data.PolyHomeData;
 import com.techjumper.polyhomeb.adapter.recycler_Data.PropertyData;
@@ -15,6 +14,7 @@ import com.techjumper.polyhomeb.adapter.recycler_ViewHolder.databean.PolyHomeDat
 import com.techjumper.polyhomeb.adapter.recycler_ViewHolder.databean.PropertyDataBean;
 import com.techjumper.polyhomeb.adapter.recycler_ViewHolder.databean.PropertyRepairBigDividerBean;
 import com.techjumper.polyhomeb.adapter.recycler_ViewHolder.databean.ViewPagerDataBean;
+import com.techjumper.polyhomeb.entity.ADEntity;
 import com.techjumper.polyhomeb.entity.MarqueeTextInfoEntity;
 import com.techjumper.polyhomeb.mvp.p.fragment.HomeFragmentPresenter;
 import com.techjumper.polyhomeb.net.KeyValueCreator;
@@ -51,11 +51,23 @@ public class HomeFragmentModel extends BaseModel<HomeFragmentPresenter> {
 
         //增加ViewPager轮播图数据   item = 0
         ViewPagerData data = new ViewPagerData();
-        List<Integer> list = new ArrayList<>();
-        list.add(R.mipmap.ad1);
-        list.add(R.mipmap.ad2);
-        list.add(R.mipmap.ad3);
-        data.setDrawables(list);
+//        List<Integer> list = new ArrayList<>();
+//        list.add(R.mipmap.ad1);
+//        list.add(R.mipmap.ad2);
+//        list.add(R.mipmap.ad3);
+//        data.setAdInfos(list);
+        ADEntity adEntity1 = new ADEntity();
+        ADEntity.DataBean bean = new ADEntity.DataBean();
+        List<ADEntity.DataBean.AdInfosBean> list = new ArrayList<>();
+        ADEntity.DataBean.AdInfosBean adInfosBean = new ADEntity.DataBean.AdInfosBean();
+        adInfosBean.setUrl(null);
+        adInfosBean.setMedia_type(1);
+        adInfosBean.setMedia_url(null);
+        list.add(adInfosBean);
+        bean.setAd_infos(list);
+        adEntity1.setData(bean);
+        data.setAdInfos(adEntity1);
+
         ViewPagerDataBean viewPagerDataBean = new ViewPagerDataBean(data);
         displayBeans.add(viewPagerDataBean);
 
@@ -102,6 +114,16 @@ public class HomeFragmentModel extends BaseModel<HomeFragmentPresenter> {
         return RetrofitHelper
                 .<ServiceAPI>createDefault()
                 .getMarqueeText(baseArgumentsMap)
+                .compose(CommonWrap.wrap());
+    }
+
+    public Observable<ADEntity> getADInfo() {
+        KeyValuePair keyValuePair = KeyValueCreator.getADInfo(
+                UserManager.INSTANCE.getUserInfo(UserManager.KEY_ID));
+        Map<String, String> map = NetHelper.createBaseArgumentsMap(keyValuePair);
+        return RetrofitHelper
+                .<ServiceAPI>createDefault()
+                .getADInfo(map)
                 .compose(CommonWrap.wrap());
     }
 }

@@ -1,6 +1,7 @@
 package com.techjumper.polyhomeb.net;
 
 
+import com.techjumper.polyhomeb.entity.ADEntity;
 import com.techjumper.polyhomeb.entity.AvatarEntity;
 import com.techjumper.polyhomeb.entity.BaseArgumentsEntity;
 import com.techjumper.polyhomeb.entity.BluetoothLockDoorInfoEntity;
@@ -630,6 +631,13 @@ public interface ServiceAPI {
      */
     @POST("message_read")
     Observable<TrueEntity> updateMessageState(@Body BaseArgumentsEntity entity);
+
+
+    /**
+     * 首页广告
+     */
+    @GET("advertisements")
+    Observable<ADEntity> getADInfo(@QueryMap Map<String, String> map);
 
 
 /*********************************************************医疗接口*********************************************************/

@@ -26,10 +26,10 @@ public class CBLoopViewPager extends ViewPager {
         mAdapter.setViewPager(this);
         super.setAdapter(mAdapter);
 
-        setCurrentItem(getFristItem(), false);
+        setCurrentItem(getFirstItem(), false);
     }
 
-    public int getFristItem() {
+    public int getFirstItem() {
         return canLoop ? mAdapter.getRealCount() : 0;
     }
 
@@ -60,7 +60,7 @@ public class CBLoopViewPager extends ViewPager {
                     case MotionEvent.ACTION_UP:
                         newX = ev.getX();
                         if (Math.abs(oldX - newX) < sens) {
-                            onItemClickListener.onItemClick((getRealItem()));
+                            onItemClickListener.onItemClick(getRealItem(), getData(getRealItem()));
                         }
                         oldX = 0;
                         newX = 0;
@@ -86,6 +86,10 @@ public class CBLoopViewPager extends ViewPager {
 
     public int getRealItem() {
         return mAdapter != null ? mAdapter.toRealPosition(super.getCurrentItem()) : 0;
+    }
+
+    public Object getData(int i) {
+        return mAdapter != null ? mAdapter.getDatas().get(i) : null;
     }
 
     @Override

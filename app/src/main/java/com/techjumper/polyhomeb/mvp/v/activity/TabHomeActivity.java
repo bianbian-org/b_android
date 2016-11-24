@@ -1,10 +1,12 @@
 package com.techjumper.polyhomeb.mvp.v.activity;
 
+import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
 
 import com.techjumper.corelib.mvp.factory.Presenter;
+import com.techjumper.corelib.utils.common.JLog;
 import com.techjumper.corelib.utils.common.RuleUtils;
 import com.techjumper.corelib.utils.system.AppUtils;
 import com.techjumper.corelib.utils.window.StatusbarHelper;
@@ -148,5 +150,11 @@ public class TabHomeActivity extends AppBaseActivity<TabHomeActivityPresenter> {
     protected void onStart() {
         super.onStart();
         mIsTabHomeActivityVisible = true;
+    }
+
+    @Override
+    protected void onNewIntent(Intent intent) {
+        super.onNewIntent(intent);
+        JLog.e("onNewIntent");
     }
 }

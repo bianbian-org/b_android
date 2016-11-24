@@ -147,7 +147,13 @@ public class PropertyViewHolder extends BaseRecyclerViewHolder<PropertyData> {
     private void setData(MarqueeTextInfoEntity.DataBean.MessagesBean messagesBean) {
         MarqueeTextView view = getView(R.id.tv_notice);
         view.setText(messagesBean.getTitle());
-        view.startFor();
+        if (view.getTextWidth() <= view.getMeasuredWidth()) {
+            view.setSpeed(0);
+            view.stopScroll();
+        } else {
+            view.setSpeed(2);
+            view.startFor();
+        }
         setOnClickListener(R.id.btn_checkout_property, null);
         setOnClickListener(R.id.btn_checkout_property, v -> {
             jump2Activity(messagesBean);

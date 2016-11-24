@@ -7,7 +7,9 @@ import com.steve.creact.library.viewholder.BaseRecyclerViewHolder;
 import com.techjumper.corelib.utils.window.ToastUtils;
 import com.techjumper.polyhomeb.R;
 import com.techjumper.polyhomeb.adapter.recycler_Data.ViewPagerData;
-import com.techjumper.polyhomeb.other.viewPager.LocalImageHolderView;
+import com.techjumper.polyhomeb.entity.ADEntity;
+import com.techjumper.polyhomeb.other.ADVideoHelper;
+import com.techjumper.polyhomeb.other.viewPager.NetWorkImageHolderView;
 import com.techjumper.polyhomeb.widget.autoScrollViewPager.AutoScrollViewPager;
 import com.techjumper.polyhomeb.widget.autoScrollViewPager.CBViewHolderCreator;
 import com.techjumper.polyhomeb.widget.autoScrollViewPager.OnItemClickListener;
@@ -34,22 +36,30 @@ public class ViewPagerViewHolder extends BaseRecyclerViewHolder<ViewPagerData>
     public void setData(ViewPagerData data) {
         if (data == null) return;
 
-        List<Integer> mImageList = data.getDrawables();
+        ADEntity adInfos = data.getAdInfos();
+
+        if (adInfos == null) return;
+
+        List<ADEntity.DataBean.AdInfosBean> ad_infos = adInfos.getData().getAd_infos();
+
         AutoScrollViewPager view = getView(R.id.vp);
-        view.setPages(new CBViewHolderCreator<LocalImageHolderView>() {
+        view.setPages(new CBViewHolderCreator<NetWorkImageHolderView>() {
             @Override
-            public LocalImageHolderView createHolder() {
-                return new LocalImageHolderView();
+            public NetWorkImageHolderView createHolder() {
+                return new NetWorkImageHolderView();
             }
-        }, mImageList)
+        }, ad_infos)
+                .startTurning(4500)
                 //设置指示器的方向
-//                .setPageIndicatorAlign(ConvenientBanner.PageIndicatorAlign.ALIGN_PARENT_RIGHT)
-//                .setPageIndicator(new int[]{R.drawable.ic_page_indicator, R.drawable.ic_page_indicator_focused})
+                //.setPageIndicatorAlign(ConvenientBanner.PageIndicatorAlign.ALIGN_PARENT_RIGHT)
+                //.setPageIndicator(new int[]{R.drawable.ic_page_indicator, R.drawable.ic_page_indicator_focused})
                 .setOnItemClickListener(this);
     }
 
     @Override
-    public void onItemClick(int position) {
-        ToastUtils.show("点了第" + position);
+    public void onItemClick(int position, Object object) {
+        ADEntity.DataBean.AdInfosBean bean = (ADEntity.DataBean.AdInfosBean) object;
+        ToastUtils.show(bean.getUrl());
+        ADVideoHelper helper = new ADVideoHelper();
     }
 }

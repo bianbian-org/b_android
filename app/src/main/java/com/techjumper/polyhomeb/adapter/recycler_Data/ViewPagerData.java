@@ -1,6 +1,6 @@
 package com.techjumper.polyhomeb.adapter.recycler_Data;
 
-import java.util.List;
+import com.techjumper.polyhomeb.entity.ADEntity;
 
 /**
  * * * * * * * * * * * * * * * * * * * * * * *
@@ -10,13 +10,13 @@ import java.util.List;
  **/
 public class ViewPagerData {
 
-   private List<Integer> drawables;
+    private ADEntity adInfos;
 
-    public List<Integer> getDrawables() {
-        return drawables;
+    public ADEntity getAdInfos() {
+        return adInfos;
     }
 
-    public void setDrawables(List<Integer> drawables) {
-        this.drawables = drawables;
+    public void setAdInfos(ADEntity adInfos) {
+        this.adInfos = adInfos;
     }
 }

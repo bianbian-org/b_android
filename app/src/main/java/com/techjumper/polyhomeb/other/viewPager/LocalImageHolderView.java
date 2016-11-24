@@ -16,7 +16,7 @@ public class LocalImageHolderView implements Holder<Integer> {
     private ImageView imageView;
 
     @Override
-    public View createView(Context context) {
+    public View createView(Context context, Integer t) {
         imageView = new ImageView(context);
         imageView.setScaleType(ImageView.ScaleType.FIT_XY);
         return imageView;

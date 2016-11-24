@@ -17,8 +17,11 @@ import com.techjumper.polyhomeb.R;
 import com.techjumper.polyhomeb.adapter.HomePageAdapter;
 import com.techjumper.polyhomeb.adapter.recycler_Data.BluetoothData;
 import com.techjumper.polyhomeb.adapter.recycler_Data.PropertyData;
+import com.techjumper.polyhomeb.adapter.recycler_Data.ViewPagerData;
 import com.techjumper.polyhomeb.adapter.recycler_ViewHolder.databean.BluetoothBean;
 import com.techjumper.polyhomeb.adapter.recycler_ViewHolder.databean.PropertyDataBean;
+import com.techjumper.polyhomeb.adapter.recycler_ViewHolder.databean.ViewPagerDataBean;
+import com.techjumper.polyhomeb.entity.ADEntity;
 import com.techjumper.polyhomeb.entity.MarqueeTextInfoEntity;
 import com.techjumper.polyhomeb.entity.event.BLEInfoChangedEvent;
 import com.techjumper.polyhomeb.entity.event.ChooseFamilyVillageEvent;
@@ -33,11 +36,14 @@ import com.techjumper.polyhomeb.service.ScanBluetoothService;
 import com.techjumper.polyhomeb.user.UserManager;
 import com.techjumper.polyhomeb.user.event.LoginEvent;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.OnClick;
+import rx.Observable;
 import rx.Observer;
 import rx.Subscription;
+import rx.functions.Func1;
 
 /**
  * * * * * * * * * * * * * * * * * * * * * * *
@@ -49,7 +55,7 @@ public class HomeFragmentPresenter extends AppBaseFragmentPresenter<HomeFragment
 
     private HomeFragmentModel mModel = new HomeFragmentModel(this);
 
-    private Subscription mSubs1, mSubs2;
+    private Subscription mSubs1, mSubs2, mSubs3;
     private PolyPluginManager mPluginManager;
 
     @Override
@@ -61,7 +67,9 @@ public class HomeFragmentPresenter extends AppBaseFragmentPresenter<HomeFragment
     public void onViewInited(Bundle savedInstanceState) {
         changeTitle();
         bleChangeInfo();
-        getMarqueeTextData();
+//        getMarqueeTextData();
+//        getADInfo();
+        getHomePageInfo();
     }
 
     private void changeTitle() {
@@ -72,13 +80,14 @@ public class HomeFragmentPresenter extends AppBaseFragmentPresenter<HomeFragment
                             if (o instanceof ChooseFamilyVillageEvent) {
                                 getView().getTvTitle().setText(UserManager.INSTANCE.getCurrentTitle());
                                 reloadPropertyData();
-                                reloadMarqueeTextInfo();
+                                reloadHomePageInfo();
                             } else if (o instanceof LoginEvent) {  //主要是因为用户1直接点击退出,此时到了登录界面,用户2登陆了.如果不做这个操作,那么就会导致用户2登陆之后显示的依然是用户1的title
                                 //这里和HomeMenuFragmentPresenter中一样的道理
                                 LoginEvent event = (LoginEvent) o;
                                 boolean login = event.isLogin();
                                 if (login) {
                                     getView().getTvTitle().setText(UserManager.INSTANCE.getCurrentTitle());
+                                    reloadHomePageInfo();
                                 }
                             } else if (o instanceof UpdateMessageStateEvent) {
                                 reloadMarqueeTextInfo();
@@ -97,6 +106,12 @@ public class HomeFragmentPresenter extends AppBaseFragmentPresenter<HomeFragment
                 break;
             }
         }
+    }
+
+    private void reloadHomePageInfo() {
+//        getMarqueeTextData();
+//        getADInfo();
+        getHomePageInfo();
     }
 
     private void reloadMarqueeTextInfo() {
@@ -118,7 +133,9 @@ public class HomeFragmentPresenter extends AppBaseFragmentPresenter<HomeFragment
     }
 
     public void refreshData() {
-        getMarqueeTextData();
+//        getMarqueeTextData();
+//        getADInfo();
+        getHomePageInfo();
     }
 
     public List<DisplayBean> getDatas() {
@@ -237,8 +254,9 @@ public class HomeFragmentPresenter extends AppBaseFragmentPresenter<HomeFragment
         mPluginManager.quit();
     }
 
+    //这个方法本身可以不需要的，但是没办法，在MarqueeText中读了消息之后，这边必须要刷新，单独刷新这个接口数据，所以这里要单独提出来，
+    //不要和广告一起刷新，毕竟读了消息和广告刷新是两回事...
     private void getMarqueeTextData() {
-//        RxUtils.unsubscribeIfNotNull(mSubs2);
         addSubscription(
                 mSubs2 = mModel.getMarqueeText()
                         .subscribe(new Observer<MarqueeTextInfoEntity>() {
@@ -249,7 +267,6 @@ public class HomeFragmentPresenter extends AppBaseFragmentPresenter<HomeFragment
 
                             @Override
                             public void onError(Throwable e) {
-                                JLog.e(e.getMessage().toString());
                                 getView().stopRefresh("");
                             }
 
@@ -258,16 +275,90 @@ public class HomeFragmentPresenter extends AppBaseFragmentPresenter<HomeFragment
                                 if (!processNetworkResult(marqueeTextInfoEntity)) return;
                                 if (marqueeTextInfoEntity == null || marqueeTextInfoEntity.getData() == null
                                         || marqueeTextInfoEntity.getData().getMessages() == null
-                                        || marqueeTextInfoEntity.getData().getMessages().size() == 0)
+                                        || marqueeTextInfoEntity.getData().getMessages().size() == 0) {
+                                    refreshMarqueeTextInfo(null);
                                     return;
+                                }
                                 refreshMarqueeTextInfo(marqueeTextInfoEntity);
                             }
                         }));
     }
 
+    private void getHomePageInfo() {
+        addSubscription(
+                mModel.getADInfo()
+                        .flatMap(new Func1<ADEntity, Observable<MarqueeTextInfoEntity>>() {
+                            @Override
+                            public Observable<MarqueeTextInfoEntity> call(ADEntity adEntity) {
+                                if (!processNetworkResult(adEntity))
+                                    return Observable.error(new Exception(""));
+                                if (adEntity == null || adEntity.getData() == null
+                                        || adEntity.getData().getAd_infos() == null
+                                        || adEntity.getData().getAd_infos().size() == 0) {
+                                    refreshADInfo(null);
+                                    return Observable.error(new Exception(""));
+                                }
+                                refreshADInfo(adEntity);
+                                return mModel.getMarqueeText();
+                            }
+                        }).onErrorResumeNext(throwable -> {
+                    return mModel.getMarqueeText();
+                }).subscribe(new Observer<MarqueeTextInfoEntity>() {
+                    @Override
+                    public void onCompleted() {
+                        getView().stopRefresh("");
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        getView().stopRefresh("");
+                    }
+
+                    @Override
+                    public void onNext(MarqueeTextInfoEntity marqueeTextInfoEntity) {
+                        if (!processNetworkResult(marqueeTextInfoEntity)) return;
+                        if (marqueeTextInfoEntity == null || marqueeTextInfoEntity.getData() == null
+                                || marqueeTextInfoEntity.getData().getMessages() == null
+                                || marqueeTextInfoEntity.getData().getMessages().size() == 0) {
+                            refreshMarqueeTextInfo(null);
+                            return;
+                        }
+                        refreshMarqueeTextInfo(marqueeTextInfoEntity);
+                    }
+                }));
+    }
+
+//    private void getADInfo() {
+//        addSubscription(
+//                mSubs3 = mModel.getADInfo()
+//                        .subscribe(new Observer<ADEntity>() {
+//                            @Override
+//                            public void onCompleted() {
+//                                getView().stopRefresh("");
+//                            }
+//
+//                            @Override
+//                            public void onError(Throwable e) {
+//                                getView().stopRefresh("");
+//                            }
+//
+//                            @Override
+//                            public void onNext(ADEntity adEntity) {
+//                                if (!processNetworkResult(adEntity)) return;
+//                                if (adEntity == null || adEntity.getData() == null
+//                                        || adEntity.getData().getAd_infos() == null
+//                                        || adEntity.getData().getAd_infos().size() == 0) {
+//                                    refreshADInfo(null);
+//                                    return;
+//                                }
+//                                refreshADInfo(adEntity);
+//                            }
+//                        }));
+//    }
+
     private void refreshMarqueeTextInfo(MarqueeTextInfoEntity marqueeTextInfoEntity) {
-        if (getView().getAdapter() == null) return;
         HomePageAdapter adapter = getView().getAdapter();
+        if (getView().getAdapter() == null) return;
         List<DisplayBean> data = adapter.getData();
         if (data == null || data.size() == 0) return;
         for (int i = 0; i < data.size(); i++) {
@@ -275,6 +366,38 @@ public class HomeFragmentPresenter extends AppBaseFragmentPresenter<HomeFragment
             if (displayBean instanceof PropertyDataBean) {
                 PropertyData propertyData = ((PropertyDataBean) displayBean).getData();
                 propertyData.setNotice(marqueeTextInfoEntity);
+                adapter.notifyItemChanged(i);
+                break;
+            }
+        }
+    }
+
+    private void refreshADInfo(ADEntity adEntity) {
+        HomePageAdapter adapter = getView().getAdapter();
+        if (adapter == null) return;
+        List<DisplayBean> data = adapter.getData();
+        if (data == null || data.size() == 0) return;
+        for (int i = 0; i < data.size(); i++) {
+            DisplayBean displayBean = data.get(i);
+            if (displayBean instanceof ViewPagerDataBean) {
+                ViewPagerData data1 = ((ViewPagerDataBean) displayBean).getData();
+                if (adEntity == null) {
+                    //显示app内部自带的默认图片
+                    ADEntity adEntity1 = new ADEntity();
+                    ADEntity.DataBean bean = new ADEntity.DataBean();
+                    List<ADEntity.DataBean.AdInfosBean> list = new ArrayList<>();
+                    ADEntity.DataBean.AdInfosBean adInfosBean = new ADEntity.DataBean.AdInfosBean();
+                    adInfosBean.setUrl(null);
+                    adInfosBean.setMedia_type(1);
+                    adInfosBean.setMedia_url(null);
+                    list.add(adInfosBean);
+                    bean.setAd_infos(list);
+                    adEntity1.setData(bean);
+                    data1.setAdInfos(adEntity1);
+                } else {
+                    //显示投放的广告
+                    data1.setAdInfos(adEntity);
+                }
                 adapter.notifyItemChanged(i);
                 break;
             }

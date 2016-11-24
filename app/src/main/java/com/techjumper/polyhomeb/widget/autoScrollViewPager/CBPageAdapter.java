@@ -29,6 +29,10 @@ public class CBPageAdapter<T> extends PagerAdapter {
         return realPosition;
     }
 
+    public List<T> getDatas() {
+        return mDatas;
+    }
+
     @Override
     public int getCount() {
         return canLoop ? getRealCount() * MULTIPLE_COUNT : getRealCount();
@@ -58,7 +62,7 @@ public class CBPageAdapter<T> extends PagerAdapter {
     public void finishUpdate(ViewGroup container) {
         int position = viewPager.getCurrentItem();
         if (position == 0) {
-            position = viewPager.getFristItem();
+            position = viewPager.getFirstItem();
         } else if (position == getCount() - 1) {
             position = viewPager.getLastItem();
         }
@@ -90,7 +94,7 @@ public class CBPageAdapter<T> extends PagerAdapter {
         Holder holder = null;
         if (view == null) {
             holder = (Holder) holderCreator.createHolder();
-            view = holder.createView(container.getContext());
+            view = holder.createView(container.getContext(), mDatas.get(position));
             view.setTag(R.id.cb_item_tag, holder);
         } else {
             holder = (Holder<T>) view.getTag(R.id.cb_item_tag);
