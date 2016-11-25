@@ -44,17 +44,6 @@ public class ADVideoHelper implements IDownloadError, IDownloadState
     private Surface mSurface;
     private String fullPath;
 
-    //职责有：
-    //获取视频下载地址
-    //截取下载地址中的文件名,比对视频文件夹中的视频文件名,如果已经存在则不用下载,直接播放
-    //如果不存在则立即下载,同时将TextureView替换为ImageView,显示占位图
-    //监听下载进度,下载完成后将ImageView替换为TextureView,并且播放视频
-    //**生命周期控制，回收资源
-    //播放完毕回收资源
-
-    private ADVideoHelper() {
-    }
-
     public ADVideoHelper(Context context, ADEntity.DataBean.AdInfosBean data, ImageView imageView
             , TextureView textureView) {
         this.context = context;
@@ -90,8 +79,7 @@ public class ADVideoHelper implements IDownloadError, IDownloadState
         }
         videoName = split[split.length - 1];
         boolean exists = checkVideoExists();
-        // TODO: 2016/11/24  并且视频大小不等于0KB才播放，否则直接进入下载
-        if (exists) {
+        if (exists && getVideoSizeOnSD() > 0) {
             fullPath = "file://" + videoFilePath + File.separator + videoName;
             showVideo();
             return;
@@ -107,8 +95,15 @@ public class ADVideoHelper implements IDownloadError, IDownloadState
     }
 
     private boolean checkVideoExists() {
-        File filePath = createFilePath();
-        return FileUtils.isFileExist(filePath + File.separator + videoName);
+        return FileUtils.isFileExist(createFilePath() + File.separator + videoName);
+    }
+
+    private long getVideoSizeOnSD() {
+        File f = new File(createFilePath() + File.separator + videoName);
+        if (f.exists() && f.isFile())
+            return f.length();
+        else
+            return 0;
     }
 
     private File createFilePath() {
