@@ -48,10 +48,9 @@ public class ViewPagerViewHolder extends BaseRecyclerViewHolder<ViewPagerData>
                 return new NetWorkImageHolderView();
             }
         }, ad_infos)
-                .startTurning(4500)
-                //设置指示器的方向
-                //.setPageIndicatorAlign(ConvenientBanner.PageIndicatorAlign.ALIGN_PARENT_RIGHT)
-                //.setPageIndicator(new int[]{R.drawable.ic_page_indicator, R.drawable.ic_page_indicator_focused})
+                .startTurning(4000)
+                .setPageIndicatorAlign(AutoScrollViewPager.PageIndicatorAlign.ALIGN_PARENT_RIGHT)
+                .setPageIndicator(new int[]{R.mipmap.icon_dot_grey, R.mipmap.icon_dot_green})
                 .setOnItemClickListener(this);
     }
 

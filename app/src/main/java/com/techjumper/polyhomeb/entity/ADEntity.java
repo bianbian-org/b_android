@@ -28,10 +28,18 @@ public class ADEntity extends BaseEntity<ADEntity.DataBean> {
              * media_url : /upload/files/206.jpg
              * url : http: //www.baidu.com
              */
-
             private int media_type;
             private String media_url;
             private String url;
+            private String running_time;
+
+            public String getRunning_time() {
+                return running_time;
+            }
+
+            public void setRunning_time(String running_time) {
+                this.running_time = running_time;
+            }
 
             public int getMedia_type() {
                 return media_type;
