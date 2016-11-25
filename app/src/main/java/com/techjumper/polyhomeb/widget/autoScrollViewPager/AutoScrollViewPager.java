@@ -45,7 +45,7 @@ public class AutoScrollViewPager<T> extends LinearLayout {
     private CBLoopViewPager viewPager;
     private ViewPagerScroller scroller;
     private ViewGroup loPageTurningPoint;
-    private long autoTurningTime;
+    private long autoTurningTime;   //默认滚动时间
     private boolean turning;
     private boolean canTurn = false;
     private boolean manualPageable = true;
@@ -92,6 +92,9 @@ public class AutoScrollViewPager<T> extends LinearLayout {
     private int mPosition = 0;  //数据源当前的下标
     private int mCurrentADPlayTime = 0;  //当前广告播放时长
 
+    /**
+     *开始滚动，不同图片或者视频根据服务器返回的数据，展示不同的时间
+     */
     private void startScroll() {
         //重置(下拉刷新之后重置为0)
         mPosition = 0;

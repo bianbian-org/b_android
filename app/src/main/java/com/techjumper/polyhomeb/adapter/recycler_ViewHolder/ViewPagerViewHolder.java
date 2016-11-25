@@ -48,7 +48,7 @@ public class ViewPagerViewHolder extends BaseRecyclerViewHolder<ViewPagerData>
                 return new NetWorkImageHolderView();
             }
         }, ad_infos)
-                .startTurning(4000)
+                .startTurning(5000)  //默认滚动时间间隔，如果服务器某个数据没有返回这个字段，那么就采用默认时间
                 .setPageIndicatorAlign(AutoScrollViewPager.PageIndicatorAlign.ALIGN_PARENT_RIGHT)
                 .setPageIndicator(new int[]{R.mipmap.icon_dot_grey, R.mipmap.icon_dot_green})
                 .setOnItemClickListener(this);
