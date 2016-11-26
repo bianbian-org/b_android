@@ -56,7 +56,6 @@ public class CBLoopViewPager extends ViewPager {
                     case MotionEvent.ACTION_DOWN:
                         oldX = ev.getX();
                         break;
-
                     case MotionEvent.ACTION_UP:
                         newX = ev.getX();
                         if (Math.abs(oldX - newX) < sens) {

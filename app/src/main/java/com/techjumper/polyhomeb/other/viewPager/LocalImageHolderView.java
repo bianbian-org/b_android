@@ -23,7 +23,7 @@ public class LocalImageHolderView implements Holder<Integer> {
     }
 
     @Override
-    public void UpdateUI(Context context, int position, Integer data) {
+    public void updateUI(Context context, int position, Integer data) {
         imageView.setImageResource(data);
     }
 }

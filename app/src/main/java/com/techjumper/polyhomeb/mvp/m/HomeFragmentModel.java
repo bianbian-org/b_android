@@ -51,11 +51,6 @@ public class HomeFragmentModel extends BaseModel<HomeFragmentPresenter> {
 
         //增加ViewPager轮播图数据   item = 0
         ViewPagerData data = new ViewPagerData();
-//        List<Integer> list = new ArrayList<>();
-//        list.add(R.mipmap.ad1);
-//        list.add(R.mipmap.ad2);
-//        list.add(R.mipmap.ad3);
-//        data.setAdInfos(list);
         ADEntity adEntity1 = new ADEntity();
         ADEntity.DataBean bean = new ADEntity.DataBean();
         List<ADEntity.DataBean.AdInfosBean> list = new ArrayList<>();

@@ -1,16 +1,16 @@
 package com.techjumper.polyhomeb.widget.autoScrollViewPager;
 
-import android.content.Context;
 import android.view.View;
+
+import com.techjumper.polyhomeb.other.ADVideoHelper;
 
 /**
  * * * * * * * * * * * * * * * * * * * * * * *
  * Created by lixin
- * Date: 2016/11/4
+ * Date: 2016/11/26
  * * * * * * * * * * * * * * * * * * * * * * *
  **/
-public interface Holder<T> {
-    View createView(Context context, T t);
 
-    void updateUI(Context context, int position, T data);
+public interface IItemClickListener {
+    void onClick(int position, Object object, ADVideoHelper mHelper, View mItemView);
 }

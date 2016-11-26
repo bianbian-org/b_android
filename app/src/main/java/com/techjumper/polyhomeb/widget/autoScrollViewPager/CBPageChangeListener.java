@@ -47,4 +47,5 @@ public class CBPageChangeListener implements ViewPager.OnPageChangeListener {
     public void setOnPageChangeListener(ViewPager.OnPageChangeListener onPageChangeListener) {
         this.onPageChangeListener = onPageChangeListener;
     }
+
 }
