@@ -90,9 +90,9 @@ public class SmartDoorBluetoothManager {
             //上下文,扫描到设备立即返回与否,扫描时间,扫描结束后的回调
             int ret = LibDevModel.scanDevice(context, false, 4, callback);
             if (ret == 0x00) {
-                JLog.e("\"扫描\"这个消息 发送成功 开始执行扫描设备的指令");
+                JLog.d("\"扫描\"这个消息 发送成功 开始执行扫描设备的指令");
             } else {
-                JLog.e("\"扫描\"这个消息 发送失败 没有执行扫描设备的指令");
+                JLog.d("\"扫描\"这个消息 发送失败 没有执行扫描设备的指令");
                 processError(ret);
             }
         } catch (Exception e) {
@@ -129,17 +129,17 @@ public class SmartDoorBluetoothManager {
         try {
             int ret = LibDevModel.cleanCard(context, device, callback);
             if (ret == 0x00) {
-                JLog.e("\"开门\"这个消息 发送成功 开始执行开门的指令");
+                JLog.d("\"开门\"这个消息 发送成功 开始执行开门的指令");
             } else {
-                JLog.e("\"开门\"这个消息 发送失败 没有执行开门的指令");
+                JLog.d("\"开门\"这个消息 发送失败 没有执行开门的指令");
                 RxBus.INSTANCE.send(new OpenDoorResult(false));
                 processError(ret);
             }
         } catch (Exception e) {
             e.printStackTrace();
-            JLog.e(e.toString());
+            JLog.d(e.toString());
             ToastUtils.show("解锁失败");
-            JLog.e("\"开门\"这个消息 发送失败 没有执行开门的指令");
+            JLog.d("\"开门\"这个消息 发送失败 没有执行开门的指令");
             RxBus.INSTANCE.send(new OpenDoorResult(false));
         }
     }
