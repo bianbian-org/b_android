@@ -27,7 +27,6 @@ import com.techjumper.polyhomeb.mvp.v.activity.JSInteractionActivity;
 import com.techjumper.polyhomeb.mvp.v.activity.LoginActivity;
 import com.techjumper.polyhomeb.mvp.v.activity.ReplyCommentActivity;
 import com.techjumper.polyhomeb.mvp.v.activity.WebViewShowBigPicActivity;
-import com.techjumper.polyhomeb.user.UserManager;
 
 import java.util.List;
 
@@ -97,12 +96,12 @@ public class JavascriptObject {
                 break;
             case "RefreshNotice":
                 //2016/10/26  友邻网页做判断，如果是家庭权限就能点，如果不是就不能点(客户端做或者H5做都行.最好是客户端做)
-                if (UserManager.INSTANCE.isFamily()) {
-                    JSJavaNotificationEntity jsJavaNotificationEntity = GsonUtils.fromJson(json, JSJavaNotificationEntity.class);
-                    JSJavaNotificationEntity.ParamsBean paramsBean = jsJavaNotificationEntity.getParams();
-                    String result = paramsBean.getResult();
-                    RxBus.INSTANCE.send(new WebViewNotificationEvent(result));
-                }
+//                if (UserManager.INSTANCE.isFamily()) {
+                JSJavaNotificationEntity jsJavaNotificationEntity = GsonUtils.fromJson(json, JSJavaNotificationEntity.class);
+                JSJavaNotificationEntity.ParamsBean paramsBean = jsJavaNotificationEntity.getParams();
+                String result = paramsBean.getResult();
+                RxBus.INSTANCE.send(new WebViewNotificationEvent(result));
+//                }
                 break;
             case "login":
                 Bundle bundle = new Bundle();
