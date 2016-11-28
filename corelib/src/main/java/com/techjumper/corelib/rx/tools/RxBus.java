@@ -58,7 +58,7 @@ public enum RxBus {
     }
 
     public Observable<Object> asObservable() {
-        return _bus.observeOn(AndroidSchedulers.mainThread())
+        return _bus.onBackpressureBuffer().observeOn(AndroidSchedulers.mainThread())
                 .doOnError(JLog::e);
     }
 
