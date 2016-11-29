@@ -194,7 +194,7 @@ public class ADVideoLayout extends RelativeLayout implements IDownloadError, IDo
     private void initMediaPlayer() {
         mMediaPlayer = new MediaPlayer();
         try {
-//            mMediaPlayer.setVolume(0, 0);//静音
+            mMediaPlayer.setVolume(0, 0);//静音
             mMediaPlayer.setLooping(true);
             mMediaPlayer.setSurface(mSurface);
             mMediaPlayer.setDataSource(mFullPath);
