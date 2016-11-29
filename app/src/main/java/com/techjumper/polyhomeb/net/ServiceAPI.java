@@ -40,7 +40,6 @@ import com.techjumper.polyhomeb.entity.medicalEntity.MedicalVerificationCodeEnti
 import java.util.Map;
 
 import okhttp3.MultipartBody;
-import okhttp3.ResponseBody;
 import retrofit2.adapter.rxjava.Result;
 import retrofit2.http.Body;
 import retrofit2.http.GET;
@@ -48,8 +47,6 @@ import retrofit2.http.Header;
 import retrofit2.http.POST;
 import retrofit2.http.Path;
 import retrofit2.http.QueryMap;
-import retrofit2.http.Streaming;
-import retrofit2.http.Url;
 import rx.Observable;
 
 /**
@@ -576,13 +573,6 @@ public interface ServiceAPI {
      */
     @GET("update/apk")
     Observable<UpdateInfoEntity> getAppUpdateInfo(@QueryMap Map<String, String> map);
-
-    /**
-     * 下载新版本apk
-     */
-    @GET
-    @Streaming
-    Observable<ResponseBody> downloadNewApk(@Url String url);
 
     /**
      * 生活服务-联系商家扣费接口
