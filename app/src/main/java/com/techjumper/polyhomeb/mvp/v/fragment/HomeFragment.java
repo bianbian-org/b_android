@@ -14,6 +14,7 @@ import com.techjumper.corelib.rx.tools.RxBus;
 import com.techjumper.corelib.utils.common.JLog;
 import com.techjumper.polyhomeb.R;
 import com.techjumper.polyhomeb.adapter.HomePageAdapter;
+import com.techjumper.polyhomeb.entity.event.LifeCycleEvent;
 import com.techjumper.polyhomeb.entity.event.ShakeToOpenDoorEvent;
 import com.techjumper.polyhomeb.manager.ShakeManager;
 import com.techjumper.polyhomeb.mvp.p.fragment.HomeFragmentPresenter;
@@ -140,6 +141,7 @@ public class HomeFragment extends AppBaseFragment<HomeFragmentPresenter>
 //            getActivity().stopService(new Intent(getActivity(), ScanBluetoothService.class));
             getPresenter().stopService();
             getPresenter().unRegistShakeManager();
+            sendMessage2ADBanner();
         }
         super.onResume();
     }
@@ -153,6 +155,7 @@ public class HomeFragment extends AppBaseFragment<HomeFragmentPresenter>
 //        }
         getPresenter().stopService();
         getPresenter().unRegistShakeManager();
+        sendMessage2ADBanner();
         super.onPause();
     }
 
@@ -177,6 +180,7 @@ public class HomeFragment extends AppBaseFragment<HomeFragmentPresenter>
 //        }
         getPresenter().stopService();
         getPresenter().unRegistShakeManager();
+        sendMessage2ADBanner();
         super.onDestroy();
     }
 
@@ -199,7 +203,12 @@ public class HomeFragment extends AppBaseFragment<HomeFragmentPresenter>
 //                getActivity().stopService(new Intent(getActivity(), ScanBluetoothService.class));
                 getPresenter().stopService();
                 getPresenter().unRegistShakeManager();
+                sendMessage2ADBanner();
             }
         }
+    }
+
+    private void sendMessage2ADBanner() {
+        RxBus.INSTANCE.send(new LifeCycleEvent());
     }
 }

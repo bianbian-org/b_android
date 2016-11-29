@@ -255,6 +255,7 @@ public class ADVideoLayout extends RelativeLayout implements IDownloadError, IDo
             case FINISH:
                 mFullPath = "file://" + downloadFile.getAbsolutePath();
                 showVideoView();
+
                 break;
         }
     }

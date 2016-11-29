@@ -6,12 +6,14 @@ import android.view.ViewGroup;
 
 import com.steve.creact.annotation.DataBean;
 import com.steve.creact.library.viewholder.BaseRecyclerViewHolder;
+import com.techjumper.corelib.rx.tools.RxBus;
 import com.techjumper.corelib.utils.common.RuleUtils;
 import com.techjumper.corelib.utils.window.ToastUtils;
 import com.techjumper.polyhomeb.ADVideoLayout;
 import com.techjumper.polyhomeb.R;
 import com.techjumper.polyhomeb.adapter.recycler_Data.ViewPagerData;
 import com.techjumper.polyhomeb.entity.ADEntity;
+import com.techjumper.polyhomeb.entity.event.LifeCycleEvent;
 import com.techjumper.polyhomeb.widget.autoScrollViewPager.AutoScrollViewPager;
 import com.techjumper.polyhomeb.widget.autoScrollViewPager.CBPageAdapter;
 import com.techjumper.polyhomeb.widget.autoScrollViewPager.OnItemClickListener;
@@ -32,9 +34,16 @@ public class ViewPagerViewHolder extends BaseRecyclerViewHolder<ViewPagerData>
     private List<ADEntity.DataBean.AdInfosBean> ad_infos;
     private AutoScrollViewPager mViewPager;
     private CBPageAdapter mAdapter;
+    private int mCurrentPosition = -1;
 
     public ViewPagerViewHolder(View itemView) {
         super(itemView);
+        //和Fragment的声明周期绑定
+        RxBus.INSTANCE.asObservable().subscribe(o -> {
+            if (o instanceof LifeCycleEvent) {
+                stop(mCurrentPosition);
+            }
+        });
     }
 
     @Override
@@ -61,6 +70,19 @@ public class ViewPagerViewHolder extends BaseRecyclerViewHolder<ViewPagerData>
         rootView.setLayoutParams(layoutParams);
     }
 
+    private void stop(int position) {
+        if (mViewPager == null || mAdapter == null) return;
+        if (ad_infos == null) return;
+        if (position == -1) return;
+        ADEntity.DataBean.AdInfosBean bean = ad_infos.get(mAdapter.toRealPosition(position));
+        switch (bean.getMedia_type()) {
+            case 2:
+                View view = mViewPager.findViewWithTag(mAdapter.toRealPosition(position));
+                ((ADVideoLayout) view).stopWork();
+                break;
+        }
+    }
+
     @Override
     public void onItemClick(int position) {
         ADEntity.DataBean.AdInfosBean bean = ad_infos.get(mAdapter.toRealPosition(position));
@@ -77,18 +99,24 @@ public class ViewPagerViewHolder extends BaseRecyclerViewHolder<ViewPagerData>
 
     @Override
     public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
-
+        if (positionOffset >= 0.7) {
+            stop(position);
+        }
     }
 
     @Override
     public void onPageSelected(int position) {
-        ADEntity.DataBean.AdInfosBean bean = ad_infos.get(mAdapter.toRealPosition(position));
-        switch (bean.getMedia_type()) {
-            case 2:
-                View view = mViewPager.findViewWithTag(mAdapter.toRealPosition(position));
-                ((ADVideoLayout) view).stopWork();
-                break;
-        }
+        mCurrentPosition = position;
+        stop(position);
+//        switch (ad_infos.get(mAdapter.toRealPosition(position)).getMedia_type()) {
+//            case 2:
+//                if (mCurrent !=null) {
+//                    ((ADVideoLayout)mCurrent).stopWork();
+//                    mCurrent = null;
+//                }
+//                mCurrent = mViewPager.findViewWithTag(mAdapter.toRealPosition(position));
+//                break;
+//        }
     }
 
     @Override
