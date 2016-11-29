@@ -1,4 +1,4 @@
-package com.techjumper.polyhomeb;
+package com.techjumper.polyhomeb.widget;
 
 import android.content.Context;
 import android.graphics.SurfaceTexture;
@@ -17,6 +17,8 @@ import com.techjumper.corelib.utils.file.FileUtils;
 import com.techjumper.lib2.downloader.SimpleDownloadBuilder;
 import com.techjumper.lib2.downloader.listener.IDownloadError;
 import com.techjumper.lib2.downloader.listener.IDownloadState;
+import com.techjumper.polyhomeb.Config;
+import com.techjumper.polyhomeb.R;
 import com.techjumper.polyhomeb.entity.ADEntity;
 
 import java.io.File;

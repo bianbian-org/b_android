@@ -8,7 +8,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 
 import com.bumptech.glide.Glide;
-import com.techjumper.polyhomeb.ADVideoLayout;
+import com.techjumper.polyhomeb.widget.ADVideoLayout;
 import com.techjumper.polyhomeb.Config;
 import com.techjumper.polyhomeb.R;
 import com.techjumper.polyhomeb.entity.ADEntity;

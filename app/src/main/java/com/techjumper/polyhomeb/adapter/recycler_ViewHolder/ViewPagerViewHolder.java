@@ -9,7 +9,7 @@ import com.steve.creact.library.viewholder.BaseRecyclerViewHolder;
 import com.techjumper.corelib.rx.tools.RxBus;
 import com.techjumper.corelib.utils.common.RuleUtils;
 import com.techjumper.corelib.utils.window.ToastUtils;
-import com.techjumper.polyhomeb.ADVideoLayout;
+import com.techjumper.polyhomeb.widget.ADVideoLayout;
 import com.techjumper.polyhomeb.R;
 import com.techjumper.polyhomeb.adapter.recycler_Data.ViewPagerData;
 import com.techjumper.polyhomeb.entity.ADEntity;
