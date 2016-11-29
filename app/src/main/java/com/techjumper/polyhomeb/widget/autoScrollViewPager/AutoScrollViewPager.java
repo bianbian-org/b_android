@@ -35,8 +35,8 @@ import rx.android.schedulers.AndroidSchedulers;
  * Date: 2016/11/4
  * * * * * * * * * * * * * * * * * * * * * * *
  **/
-public class AutoScrollViewPager<T> extends LinearLayout {
-    private List<T> mDatas;
+public class AutoScrollViewPager extends LinearLayout {
+    private List<ADEntity.DataBean.AdInfosBean> mDatas;
     private int[] page_indicatorId;
     private ArrayList<ImageView> mPointViews = new ArrayList<ImageView>();
     private CBPageChangeListener pageChangeListener;
@@ -93,7 +93,7 @@ public class AutoScrollViewPager<T> extends LinearLayout {
     private int mCurrentADPlayTime = 0;  //当前广告播放时长
 
     /**
-     *开始滚动，不同图片或者视频根据服务器返回的数据，展示不同的时间
+     * 开始滚动，不同图片或者视频根据服务器返回的数据，展示不同的时间
      */
     private void startScroll() {
         //重置(下拉刷新之后重置为0)
@@ -102,8 +102,7 @@ public class AutoScrollViewPager<T> extends LinearLayout {
         RxUtils.unsubscribeIfNotNull(mSubs1);
         mSubs1 = Observable.interval(0, 1, TimeUnit.SECONDS)
                 .filter(aLong -> {
-                    List<ADEntity.DataBean.AdInfosBean> mDatas = (List<ADEntity.DataBean.AdInfosBean>)
-                            AutoScrollViewPager.this.mDatas;
+                    List<ADEntity.DataBean.AdInfosBean> mDatas = AutoScrollViewPager.this.mDatas;
                     ADEntity.DataBean.AdInfosBean bean = mDatas.get(mPosition >= AutoScrollViewPager.this.mDatas.size()
                             ? mPosition % AutoScrollViewPager.this.mDatas.size() : mPosition);
                     String time = TextUtils.isEmpty(bean.getRunning_time()) ? String.valueOf(autoTurningTime) : bean.getRunning_time();
@@ -130,11 +129,10 @@ public class AutoScrollViewPager<T> extends LinearLayout {
                 });
     }
 
-    public AutoScrollViewPager setPages(CBViewHolderCreator holderCreator, List<T> datas) {
-        this.mDatas = datas;
-        pageAdapter = new CBPageAdapter(holderCreator, mDatas);
+    public AutoScrollViewPager setPages(CBPageAdapter adapter) {
+        pageAdapter = adapter;
+        this.mDatas = adapter.getDatas();
         viewPager.setAdapter(pageAdapter, canLoop);
-
         if (page_indicatorId != null)
             setPageIndicator(page_indicatorId);
         return this;
@@ -364,5 +362,9 @@ public class AutoScrollViewPager<T> extends LinearLayout {
     public void setCanLoop(boolean canLoop) {
         this.canLoop = canLoop;
         viewPager.setCanLoop(canLoop);
+    }
+
+    public void setOffscreenPageLimit(int limit) {
+        viewPager.setOffscreenPageLimit(limit);
     }
 }

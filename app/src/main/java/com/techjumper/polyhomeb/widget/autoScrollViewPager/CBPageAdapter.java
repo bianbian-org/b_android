@@ -1,10 +1,17 @@
 package com.techjumper.polyhomeb.widget.autoScrollViewPager;
 
+import android.content.Context;
 import android.support.v4.view.PagerAdapter;
+import android.text.TextUtils;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 
+import com.bumptech.glide.Glide;
+import com.techjumper.polyhomeb.ADVideoLayout;
+import com.techjumper.polyhomeb.Config;
 import com.techjumper.polyhomeb.R;
+import com.techjumper.polyhomeb.entity.ADEntity;
 
 import java.util.List;
 
@@ -14,9 +21,10 @@ import java.util.List;
  * Date: 2016/11/4
  * * * * * * * * * * * * * * * * * * * * * * *
  **/
-public class CBPageAdapter<T> extends PagerAdapter {
-    protected List<T> mDatas;
-    protected CBViewHolderCreator holderCreator;
+public class CBPageAdapter extends PagerAdapter {
+
+    private Context context;
+    protected List<ADEntity.DataBean.AdInfosBean> mDatas;
     private boolean canLoop = true;
     private CBLoopViewPager viewPager;
     private final int MULTIPLE_COUNT = 300;
@@ -29,7 +37,7 @@ public class CBPageAdapter<T> extends PagerAdapter {
         return realPosition;
     }
 
-    public List<T> getDatas() {
+    public List<ADEntity.DataBean.AdInfosBean> getDatas() {
         return mDatas;
     }
 
@@ -45,9 +53,26 @@ public class CBPageAdapter<T> extends PagerAdapter {
     @Override
     public Object instantiateItem(ViewGroup container, int position) {
         int realPosition = toRealPosition(position);
-
-        View view = getView(realPosition, null, container);
-//        if(onItemClickListener != null) view.setOnClickListener(onItemClickListener);
+        View view = null;
+        switch (mDatas.get(realPosition).getMedia_type()) {
+            case 1:
+                ImageView mImageView = new ImageView(context);
+                mImageView.setScaleType(ImageView.ScaleType.FIT_XY);
+                String media_url = mDatas.get(realPosition).getMedia_url();
+                Glide.with(context)
+                        .load(TextUtils.isEmpty(media_url) ? R.mipmap.ad_no_ad : Config.sHost + media_url)
+                        .placeholder(R.mipmap.ad_place_holder)
+                        .into(mImageView);
+                view = mImageView;
+                break;
+            case 2:
+                ADVideoLayout layout = new ADVideoLayout(context);
+                layout.setData(mDatas.get(realPosition));
+                layout.initVideo();
+                view = layout;
+                break;
+        }
+        view.setTag(realPosition);
         container.addView(view);
         return view;
     }
@@ -85,23 +110,9 @@ public class CBPageAdapter<T> extends PagerAdapter {
         this.viewPager = viewPager;
     }
 
-    public CBPageAdapter(CBViewHolderCreator holderCreator, List<T> datas) {
-        this.holderCreator = holderCreator;
+    public CBPageAdapter(Context context, List<ADEntity.DataBean.AdInfosBean> datas) {
+        this.context = context;
         this.mDatas = datas;
-    }
-
-    public View getView(int position, View view, ViewGroup container) {
-        Holder holder = null;
-        if (view == null) {
-            holder = (Holder) holderCreator.createHolder();
-            view = holder.createView(container.getContext(), mDatas.get(position));
-            view.setTag(R.id.cb_item_tag, holder);
-        } else {
-            holder = (Holder<T>) view.getTag(R.id.cb_item_tag);
-        }
-        if (mDatas != null && !mDatas.isEmpty())
-            holder.updateUI(container.getContext(), position, mDatas.get(position));
-        return view;
     }
 
 }

@@ -1,7 +1,5 @@
 package com.techjumper.polyhomeb.widget.autoScrollViewPager;
 
-import android.view.View;
-
 import com.techjumper.polyhomeb.other.ADVideoHelper;
 
 /**
@@ -12,5 +10,7 @@ import com.techjumper.polyhomeb.other.ADVideoHelper;
  **/
 
 public interface IItemClickListener {
-    void onClick(int position, Object object, ADVideoHelper mHelper, View mItemView);
+    void onClick(int position, ADVideoHelper object);
+
+    void onPageSelected(int position, ADVideoHelper mInflate);
 }

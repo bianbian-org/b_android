@@ -1,7 +1,6 @@
 package com.techjumper.polyhomeb.widget.autoScrollViewPager;
 
 import android.content.Context;
-import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
@@ -20,8 +19,8 @@ public class CBLoopViewPager extends ViewPager {
     private boolean isCanScroll = true;
     private boolean canLoop = true;
 
-    public void setAdapter(PagerAdapter adapter, boolean canLoop) {
-        mAdapter = (CBPageAdapter) adapter;
+    public void setAdapter(CBPageAdapter adapter, boolean canLoop) {
+        mAdapter = adapter;
         mAdapter.setCanLoop(canLoop);
         mAdapter.setViewPager(this);
         super.setAdapter(mAdapter);
@@ -59,7 +58,7 @@ public class CBLoopViewPager extends ViewPager {
                     case MotionEvent.ACTION_UP:
                         newX = ev.getX();
                         if (Math.abs(oldX - newX) < sens) {
-                            onItemClickListener.onItemClick(getRealItem(), getData(getRealItem()));
+                            onItemClickListener.onItemClick(getRealItem());
                         }
                         oldX = 0;
                         newX = 0;
