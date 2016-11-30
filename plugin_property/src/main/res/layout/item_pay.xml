@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/layout_item"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/dp_27"
+        android:gravity="center_vertical">
+
+        <ImageView
+            android:id="@+id/info_isread"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@mipmap/icon_point"
+            android:visibility="gone" />
+
+        <TextView
+            android:id="@+id/name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/color_ffffff"
+            android:textSize="@dimen/sp_20"
+            android:textStyle="bold"
+            tools:text="二月物业费" />
+
+        <TextView
+            android:id="@+id/deadline"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:gravity="bottom|right"
+            android:textColor="@color/color_DDffffff"
+            android:textSize="@dimen/sp_20"
+            tools:text="截止: 10月20日" />
+
+        <TextView
+            android:id="@+id/status_type"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/dp_10"
+            android:background="@drawable/bg_shape_radius_20c3f3"
+            android:gravity="center"
+            android:paddingBottom="@dimen/dp_5"
+            android:paddingLeft="@dimen/dp_12"
+            android:paddingRight="@dimen/dp_12"
+            android:paddingTop="@dimen/dp_5"
+            android:text="@string/property_type_submit"
+            android:textColor="@color/color_ffffff"
+            android:textSize="@dimen/sp_18" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/dp_18"
+        android:gravity="center_vertical">
+
+        <TextView
+            android:id="@+id/object"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/color_DDffffff"
+            android:textSize="@dimen/sp_18"
+            tools:text="收费对象: 四栋1单元401" />
+
+        <TextView
+            android:id="@+id/price"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="center_vertical|right"
+            android:textColor="@color/color_ff6700"
+            android:textSize="@dimen/sp_24"
+            tools:text="¥ 99" />
+
+        <TextView
+            android:id="@+id/date_state"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/dp_10"
+            android:textColor="@color/color_DDffffff"
+            android:textSize="@dimen/sp_18"
+            tools:text="已经超过3天" />
+
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/pay"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/dp_18"
+        android:background="@mipmap/bg_pay"
+        android:gravity="center"
+        android:text="@string/property_new_pay"
+        android:textColor="@color/color_ffffff"
+        android:textSize="@dimen/sp_18" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dp_1"
+        android:layout_marginTop="@dimen/dp_20"
+        android:background="@color/color_1Affffff" />
+</LinearLayout>

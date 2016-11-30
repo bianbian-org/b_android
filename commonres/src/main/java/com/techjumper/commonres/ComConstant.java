@@ -40,4 +40,10 @@ public class ComConstant {
      */
     public static final String AD_TYPE_CLICK = "1";
     public static final String AD_TYPE_SLIDE = "2";
+
+    /**
+     * 支付统计
+     */
+    public static final String PAY_WECHAT = "1";
+    public static final String PAY_ALIPAY = "2";
 }

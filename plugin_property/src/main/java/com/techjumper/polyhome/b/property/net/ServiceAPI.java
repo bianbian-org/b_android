@@ -1,14 +1,17 @@
 package com.techjumper.polyhome.b.property.net;
 
+import com.techjumper.commonres.entity.AlipayEntity;
 import com.techjumper.commonres.entity.AnnouncementEntity;
 import com.techjumper.commonres.entity.BaseArgumentsEntity;
 import com.techjumper.commonres.entity.ComplaintDetailEntity;
 import com.techjumper.commonres.entity.ComplaintEntity;
 import com.techjumper.commonres.entity.HeartbeatEntity;
 import com.techjumper.commonres.entity.InfoEntity;
+import com.techjumper.commonres.entity.PayEntity;
 import com.techjumper.commonres.entity.RepairDetailEntity;
 import com.techjumper.commonres.entity.RepairEntity;
 import com.techjumper.commonres.entity.TrueEntity;
+import com.techjumper.commonres.entity.WxpayEntity;
 
 import java.util.Map;
 
@@ -55,4 +58,13 @@ public interface ServiceAPI {
 
     @POST("module_statistics")
     Observable<TrueEntity> submitTimer(@Body BaseArgumentsEntity entity);
+
+    @GET("estate_orders")
+    Observable<PayEntity> getOrders(@QueryMap Map<String, String> map);
+
+    @GET("payments")
+    Observable<WxpayEntity> getWxpay(@QueryMap Map<String, String> map);
+
+    @GET("payments")
+    Observable<AlipayEntity> getAlipay(@QueryMap Map<String, String> map);
 }

@@ -22,4 +22,10 @@ public class Constant {
     public static final int LR_DEVICE_LOCK = 3; //锁类
     public static final int LR_DEVICE_LIFT = 4; //电梯类
     public static final int LR_DEVICE_WALL = 5; //墙类
+
+    public static final int PAY_PROPERTY = 1;
+    public static final int PAY_WATER = 2;
+    public static final int PAY_ELECTRIC= 3;
+    public static final int PAY_GAS = 4;
+    public static final int PAY_ELSE = 5;
 }

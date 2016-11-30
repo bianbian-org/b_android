@@ -101,7 +101,7 @@
             android:background="@color/color_99020405"
             android:paddingLeft="@dimen/dp_5"
             android:paddingRight="@dimen/dp_5"
-            android:singleLine="true"
+            android:maxLines="1"
             android:textColor="@color/color_ffffff"
             android:textCursorDrawable="@null" />
 

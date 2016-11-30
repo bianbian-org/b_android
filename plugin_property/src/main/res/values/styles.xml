@@ -16,8 +16,31 @@
         <item name="android:background">@drawable/selector_bg_title</item>
     </style>
 
+    <style name="payTitleLeftStyle" parent="android:Widget.Holo.CompoundButton.RadioButton">
+        <item name="android:button">@null</item>
+        <item name="android:textSize">@dimen/sp_20</item>
+        <item name="android:gravity">center</item>
+        <item name="android:textColor">@drawable/selector_color_title</item>
+        <item name="android:background">@drawable/selector_pay_left_title</item>
+    </style>
+
+    <style name="payTitleRightStyle" parent="android:Widget.Holo.CompoundButton.RadioButton">
+        <item name="android:button">@null</item>
+        <item name="android:textSize">@dimen/sp_20</item>
+        <item name="android:gravity">center</item>
+        <item name="android:textColor">@drawable/selector_color_title</item>
+        <item name="android:background">@drawable/selector_pay_right_title</item>
+    </style>
+
     <style name="checkStyle" parent="android:Widget.Holo.CompoundButton.RadioButton">
         <item name="android:button">@drawable/selector_check</item>
+        <item name="android:textSize">@dimen/sp_20</item>
+        <item name="android:gravity">center</item>
+        <item name="android:textColor">@color/color_ffffff</item>
+
+    </style>
+    <style name="payCheckStyle" parent="android:Widget.Holo.CompoundButton.CheckBox">
+        <item name="android:button">@drawable/selector_pay_check</item>
         <item name="android:textSize">@dimen/sp_20</item>
         <item name="android:gravity">center</item>
         <item name="android:textColor">@color/color_ffffff</item>

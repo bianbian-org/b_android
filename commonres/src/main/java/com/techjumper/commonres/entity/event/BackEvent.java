@@ -10,6 +10,8 @@ public class BackEvent {
     public static final int PROPERTY_LIST = 1;
     public static final int FINISH = 2;
     public static final int INFO_LIST = 3;
+    public static final int PAY_RESULT = 4;
+    public static final int PAY_DETAIL = 5;
 
     private int type;
 

@@ -1,0 +1,64 @@
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.techjumper.polyhome.b.property.mvp.v.fragment.PayFragment">
+
+    <LinearLayout
+        android:id="@+id/layout_pay_list"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/dp_20"
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
+
+            <RadioGroup
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@mipmap/bg_check_pay"
+                android:orientation="horizontal">
+
+                <RadioButton
+                    android:id="@+id/rb_no"
+                    style="@style/payTitleLeftStyle"
+                    android:layout_width="160dp"
+                    android:layout_height="40dp"
+                    android:layout_centerVertical="true"
+                    android:checked="true"
+                    android:text="@string/property_pay_no" />
+
+                <RadioButton
+                    android:id="@+id/rb_yes"
+                    style="@style/payTitleRightStyle"
+                    android:layout_width="160dp"
+                    android:layout_height="40dp"
+                    android:layout_centerVertical="true"
+                    android:text="@string/property_pay_yes" />
+            </RadioGroup>
+
+            <TextView
+                android:id="@+id/total_price"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="right"
+                android:text="未缴合计: 0元"
+                android:textColor="@color/color_ffffff"
+                android:textSize="@dimen/sp_18" />
+        </LinearLayout>
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/list"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginTop="@dimen/dp_10" />
+    </LinearLayout>
+
+    <include layout="@layout/layout_pay_detail" />
+
+    <include layout="@layout/layout_pay_result" />
+</FrameLayout>

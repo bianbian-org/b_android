@@ -30,8 +30,8 @@
                 style="@style/checkStyle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:paddingLeft="@dimen/dp_10"
                 android:checked="true"
+                android:paddingLeft="@dimen/dp_10"
                 android:text="@string/property_repair_device_windows" />
 
             <RadioButton
@@ -97,8 +97,8 @@
                 style="@style/checkStyle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:paddingLeft="@dimen/dp_10"
                 android:checked="true"
+                android:paddingLeft="@dimen/dp_10"
                 android:text="@string/property_repair_device_common" />
 
             <RadioButton

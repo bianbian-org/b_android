@@ -5,6 +5,7 @@ import android.util.Log;
 
 import com.techjumper.commonres.entity.event.BackEvent;
 import com.techjumper.commonres.entity.event.HeartbeatEvent;
+import com.techjumper.commonres.entity.event.PayEvent;
 import com.techjumper.commonres.entity.event.PropertyListEvent;
 import com.techjumper.commonres.entity.event.TimeEvent;
 import com.techjumper.commonres.util.CommonDateUtil;
@@ -35,6 +36,10 @@ public class MainActivityPresenter extends AppBaseActivityPresenter<MainActivity
             RxBus.INSTANCE.send(new PropertyListEvent());
         } else if (backType == BackEvent.PROPERTY_LIST) {
             RxBus.INSTANCE.send(new PropertyListEvent());
+        } else if (backType == BackEvent.PAY_RESULT) {
+            RxBus.INSTANCE.send(new PayEvent(PayEvent.RESULT));
+        } else if (backType == BackEvent.PAY_DETAIL) {
+            RxBus.INSTANCE.send(new PayEvent(PayEvent.DETAIL));
         } else {
             getView().finish();
         }

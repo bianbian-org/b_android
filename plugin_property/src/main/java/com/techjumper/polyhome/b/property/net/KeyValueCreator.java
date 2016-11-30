@@ -113,4 +113,32 @@ public class KeyValueCreator {
                 .put("family_id", family_id)
                 .put("json", timer);
     }
+
+    public static KeyValuePair getOrders(String user_id, String family_id, String ticket, String status, String page, String count) {
+        return newPair()
+                .put("user_id", user_id)
+                .put("family_id", family_id)
+                .put("ticket", ticket)
+                .put("status", status)
+                .put("page", page)
+                .put("count", count);
+    }
+
+    public static KeyValuePair getWxpay(String user_id, String ticket, String category, String user_ip, String order_number) {
+        return newPair()
+                .put("user_id", user_id)
+                .put("ticket", ticket)
+                .put("category", category)
+                .put("user_ip", user_ip)
+                .put("order_number", order_number);
+    }
+
+    public static KeyValuePair getAlipay(String user_id, String ticket, String category, String user_ip, String order_number) {
+        return newPair()
+                .put("user_id", user_id)
+                .put("ticket", ticket)
+                .put("category", category)
+                .put("user_ip", user_ip)
+                .put("order_number", order_number);
+    }
 }

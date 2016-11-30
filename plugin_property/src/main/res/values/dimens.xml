@@ -5,4 +5,11 @@
 
 
     <dimen name="dp_77">77dp</dimen>
+    <dimen name="dp_184">184dp</dimen>
+    <dimen name="dp_326">326dp</dimen>
+    <dimen name="dp_472">472dp</dimen>
+    <dimen name="dp_511">511dp</dimen>
+    <dimen name="dp_612">612dp</dimen>
+    <dimen name="dp_654">654dp</dimen>
+    <dimen name="dp_795">795dp</dimen>
 </resources>
