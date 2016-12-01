@@ -1,8 +1,10 @@
 package com.techjumper.polyhomeb.mvp.p.activity;
 
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
+import android.text.TextUtils;
 import android.view.View;
 
 import com.techjumper.corelib.rx.tools.RxUtils;
@@ -174,11 +176,18 @@ public class SettingActivityPresenter extends AppBaseActivityPresenter<SettingAc
     }
 
     private void downloadApk(String url) {
-        Intent intent = new Intent(getView(), UpdateService.class);
-        intent.putExtra(KEY_URL, Config.sHost + url);
-        intent.putExtra(KEY_FILE_PATH, Config.sUpdate_Apk_Path);
-        getView().startService(intent);
-
+        if (TextUtils.isEmpty(url)) return;
+        if (!url.startsWith("/") || !url.contains("http://")) {
+            Intent intent = new Intent();
+            intent.setAction(Intent.ACTION_VIEW);
+            intent.setData(Uri.parse(url));
+            getView().startActivity(intent);
+        } else {
+            Intent intent = new Intent(getView(), UpdateService.class);
+            intent.putExtra(KEY_URL, Config.sHost + url);
+            intent.putExtra(KEY_FILE_PATH, Config.sUpdate_Apk_Path);
+            getView().startService(intent);
+        }
     }
 
 

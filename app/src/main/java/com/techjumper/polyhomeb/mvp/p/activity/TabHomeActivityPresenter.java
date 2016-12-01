@@ -2,9 +2,11 @@ package com.techjumper.polyhomeb.mvp.p.activity;
 
 import android.Manifest;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
+import android.text.TextUtils;
 
 import com.tbruyelle.rxpermissions.RxPermissions;
 import com.techjumper.corelib.rx.tools.RxBus;
@@ -154,10 +156,18 @@ public class TabHomeActivityPresenter extends AppBaseActivityPresenter<TabHomeAc
     }
 
     private void downloadApk(String url) {
-        Intent intent = new Intent(getView(), UpdateService.class);
-        intent.putExtra(KEY_URL, Config.sHost + url);
-        intent.putExtra(KEY_FILE_PATH, Config.sUpdate_Apk_Path);
-        getView().startService(intent);
+        if (TextUtils.isEmpty(url)) return;
+        if (!url.startsWith("/") || !url.contains("http://")) {
+            Intent intent = new Intent();
+            intent.setAction(Intent.ACTION_VIEW);
+            intent.setData(Uri.parse(url));
+            getView().startActivity(intent);
+        } else {
+            Intent intent = new Intent(getView(), UpdateService.class);
+            intent.putExtra(KEY_URL, Config.sHost + url);
+            intent.putExtra(KEY_FILE_PATH, Config.sUpdate_Apk_Path);
+            getView().startService(intent);
+        }
     }
 
     /**
