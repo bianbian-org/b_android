@@ -10,8 +10,8 @@ import android.widget.TextView;
 
 /**
  * * * * * * * * * * * * * * * * * * * * * * *
- * Created by zhaoyiding
- * Date: 16/5/16
+ * Created by lixin
+ * Date: 16/11/20
  * * * * * * * * * * * * * * * * * * * * * * *
  **/
 public class MarqueeTextView extends TextView implements Runnable {

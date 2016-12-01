@@ -5,8 +5,6 @@ import android.text.TextUtils;
 
 import com.techjumper.corelib.rx.tools.CommonWrap;
 import com.techjumper.corelib.utils.Utils;
-import com.techjumper.corelib.utils.window.ToastUtils;
-import com.techjumper.lib2.BuildConfig;
 import com.techjumper.lib2.downloader.exception.PathErrorException;
 import com.techjumper.lib2.downloader.exception.UrlErrorException;
 import com.techjumper.lib2.downloader.listener.IDownloadError;
@@ -186,9 +184,6 @@ public class SimpleDownloader {
         changeStateAndNotify(IDownloadState.State.STOP);
         mLastPercent = 0;
         Utils.mainHandler.post(() -> {
-            if (BuildConfig.DEBUG) {
-                ToastUtils.show("网络错误，下载失败");
-            }
             if (iDownloadError != null)
                 iDownloadError.onDownloadError(e);
         });

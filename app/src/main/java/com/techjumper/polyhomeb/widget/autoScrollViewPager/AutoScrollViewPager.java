@@ -129,12 +129,12 @@ public class AutoScrollViewPager extends LinearLayout {
                 });
     }
 
-    public AutoScrollViewPager setPages(CBPageAdapter adapter) {
+    public AutoScrollViewPager setPages(int realSize, CBPageAdapter adapter) {
         pageAdapter = adapter;
         this.mDatas = adapter.getDatas();
         viewPager.setAdapter(pageAdapter, canLoop);
         if (page_indicatorId != null)
-            setPageIndicator(page_indicatorId);
+            setPageIndicator(realSize, page_indicatorId);
         return this;
     }
 
@@ -142,10 +142,10 @@ public class AutoScrollViewPager extends LinearLayout {
      * 通知数据变化
      * 如果只是增加数据建议使用 notifyDataSetAdd()
      */
-    public void notifyDataSetChanged() {
+    public void notifyDataSetChanged(int realSize) {
         viewPager.getAdapter().notifyDataSetChanged();
         if (page_indicatorId != null)
-            setPageIndicator(page_indicatorId);
+            setPageIndicator(realSize, page_indicatorId);
     }
 
     /**
@@ -161,14 +161,16 @@ public class AutoScrollViewPager extends LinearLayout {
     /**
      * 底部指示器资源图片
      *
+     * @param realSize
      * @param page_indicatorId
      */
-    public AutoScrollViewPager setPageIndicator(int[] page_indicatorId) {
+    public AutoScrollViewPager setPageIndicator(int realSize, int[] page_indicatorId) {
         loPageTurningPoint.removeAllViews();
         mPointViews.clear();
         this.page_indicatorId = page_indicatorId;
         if (mDatas == null) return this;
-        for (int count = 0; count < mDatas.size(); count++) {
+//        for (int count = 0; count < mDatas.size(); count++) {
+        for (int count = 0; count < realSize; count++) {
             // 翻页指示的点
             ImageView pointView = new ImageView(getContext());
             pointView.setPadding(5, 0, 5, 0);
@@ -179,8 +181,7 @@ public class AutoScrollViewPager extends LinearLayout {
             mPointViews.add(pointView);
             loPageTurningPoint.addView(pointView);
         }
-        pageChangeListener = new CBPageChangeListener(mPointViews,
-                page_indicatorId);
+        pageChangeListener = new CBPageChangeListener(realSize, mPointViews, page_indicatorId);
         viewPager.setOnPageChangeListener(pageChangeListener);
         pageChangeListener.onPageSelected(viewPager.getRealItem());
         if (onPageChangeListener != null)
@@ -240,17 +241,6 @@ public class AutoScrollViewPager extends LinearLayout {
     }
 
     /**
-     * 自定义翻页动画效果
-     *
-     * @param transformer
-     * @return
-     */
-    public AutoScrollViewPager setPageTransformer(ViewPager.PageTransformer transformer) {
-        viewPager.setPageTransformer(true, transformer);
-        return this;
-    }
-
-    /**
      * 设置ViewPager的滑动速度
      */
     private void initViewPagerScroll() {
@@ -265,10 +255,6 @@ public class AutoScrollViewPager extends LinearLayout {
         } catch (NoSuchFieldException | IllegalAccessException | IllegalArgumentException e) {
             e.printStackTrace();
         }
-    }
-
-    public boolean isManualPageable() {
-        return viewPager.isCanScroll();
     }
 
     public void setManualPageable(boolean manualPageable) {
@@ -305,15 +291,8 @@ public class AutoScrollViewPager extends LinearLayout {
         }
     }
 
-    public ViewPager.OnPageChangeListener getOnPageChangeListener() {
-        return onPageChangeListener;
-    }
-
     /**
      * 设置翻页监听器
-     *
-     * @param onPageChangeListener
-     * @return
      */
     public AutoScrollViewPager setOnPageChangeListener(ViewPager.OnPageChangeListener onPageChangeListener) {
         this.onPageChangeListener = onPageChangeListener;
@@ -324,14 +303,8 @@ public class AutoScrollViewPager extends LinearLayout {
         return this;
     }
 
-    public boolean isCanLoop() {
-        return viewPager.isCanLoop();
-    }
-
     /**
      * 监听item点击
-     *
-     * @param onItemClickListener
      */
     public AutoScrollViewPager setOnItemClickListener(OnItemClickListener onItemClickListener) {
         if (onItemClickListener == null) {
@@ -344,19 +317,9 @@ public class AutoScrollViewPager extends LinearLayout {
 
     /**
      * 设置ViewPager的滚动速度
-     *
-     * @param scrollDuration
      */
     public void setScrollDuration(int scrollDuration) {
         scroller.setScrollDuration(scrollDuration);
-    }
-
-    public int getScrollDuration() {
-        return scroller.getScrollDuration();
-    }
-
-    public CBLoopViewPager getViewPager() {
-        return viewPager;
     }
 
     public void setCanLoop(boolean canLoop) {

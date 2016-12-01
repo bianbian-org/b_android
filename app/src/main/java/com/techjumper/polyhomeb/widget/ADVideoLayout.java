@@ -53,15 +53,18 @@ public class ADVideoLayout extends RelativeLayout implements IDownloadError, IDo
     private boolean mIsPrepare = false;
 
     public ADVideoLayout(Context context) {
-        this(context, null, 0, 0);
+        super(context);
+        init(context);
     }
 
     public ADVideoLayout(Context context, AttributeSet attrs) {
-        this(context, attrs, 0, 0);
+        super(context, attrs);
+        init(context);
     }
 
     public ADVideoLayout(Context context, AttributeSet attrs, int defStyleAttr) {
-        this(context, attrs, defStyleAttr, 0);
+        super(context, attrs, defStyleAttr);
+        init(context);
     }
 
     public ADVideoLayout(Context context, AttributeSet attrs, int defStyleAttr, int defStyleRes) {
@@ -90,8 +93,8 @@ public class ADVideoLayout extends RelativeLayout implements IDownloadError, IDo
         if (mMediaPlayer == null) return;
         if (mMediaPlayer.isPlaying()) {
             mMediaPlayer.pause();
-            stopVideo();
         }
+        stopVideo();
     }
 
     private void getVideoName() {
@@ -257,7 +260,6 @@ public class ADVideoLayout extends RelativeLayout implements IDownloadError, IDo
             case FINISH:
                 mFullPath = "file://" + downloadFile.getAbsolutePath();
                 showVideoView();
-
                 break;
         }
     }

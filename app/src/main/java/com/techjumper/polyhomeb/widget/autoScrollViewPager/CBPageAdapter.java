@@ -8,10 +8,10 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 
 import com.bumptech.glide.Glide;
-import com.techjumper.polyhomeb.widget.ADVideoLayout;
 import com.techjumper.polyhomeb.Config;
 import com.techjumper.polyhomeb.R;
 import com.techjumper.polyhomeb.entity.ADEntity;
+import com.techjumper.polyhomeb.widget.ADVideoLayout;
 
 import java.util.List;
 
@@ -53,9 +53,10 @@ public class CBPageAdapter extends PagerAdapter {
     @Override
     public Object instantiateItem(ViewGroup container, int position) {
         int realPosition = toRealPosition(position);
-        View view = null;
+        View view;
         switch (mDatas.get(realPosition).getMedia_type()) {
             case 1:
+            default:
                 ImageView mImageView = new ImageView(context);
                 mImageView.setScaleType(ImageView.ScaleType.FIT_XY);
                 String media_url = mDatas.get(realPosition).getMedia_url();

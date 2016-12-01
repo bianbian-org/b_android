@@ -37,6 +37,7 @@ public class UpdateService extends Service
     private static final int NOTIFICATION_ID = 1;
     public static final String KEY_URL = "url";
     public static final String KEY_FILE_PATH = "file_path";
+    private boolean isAlive = false;
 
     @Nullable
     @Override
@@ -46,7 +47,8 @@ public class UpdateService extends Service
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
-
+        if (isAlive) return super.onStartCommand(intent, flags, startId);
+        isAlive = true;
         NotificationCompat.Builder builder = new NotificationCompat.Builder(this);
         builder.setSmallIcon(R.mipmap.ic_launcher)
                 .setTicker(getString(R.string.download_begin))
@@ -70,6 +72,8 @@ public class UpdateService extends Service
     @Override
     public void onDownloadError(Throwable e) {
         ToastUtils.show(getString(R.string.download_error));
+        stopForeground(true);
+        stopSelf();
     }
 
     @Override

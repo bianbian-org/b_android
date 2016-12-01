@@ -15,10 +15,12 @@ public class CBPageChangeListener implements ViewPager.OnPageChangeListener {
     private ArrayList<ImageView> pointViews;
     private int[] page_indicatorId;
     private ViewPager.OnPageChangeListener onPageChangeListener;
+    private int realSize;
 
-    public CBPageChangeListener(ArrayList<ImageView> pointViews, int page_indicatorId[]) {
+    public CBPageChangeListener(int realSize, ArrayList<ImageView> pointViews, int page_indicatorId[]) {
         this.pointViews = pointViews;
         this.page_indicatorId = page_indicatorId;
+        this.realSize = realSize;
     }
 
     @Override
@@ -35,8 +37,8 @@ public class CBPageChangeListener implements ViewPager.OnPageChangeListener {
     @Override
     public void onPageSelected(int index) {
         for (int i = 0; i < pointViews.size(); i++) {
-            pointViews.get(index).setImageResource(page_indicatorId[1]);
-            if (index != i) {
+            pointViews.get(index % realSize).setImageResource(page_indicatorId[1]);
+            if (index % realSize != i) {
                 pointViews.get(i).setImageResource(page_indicatorId[0]);
             }
         }
