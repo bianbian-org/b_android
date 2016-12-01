@@ -109,12 +109,16 @@ public class ViewPagerViewHolder extends BaseRecyclerViewHolder<ViewPagerData>
         ADEntity.DataBean.AdInfosBean bean = ad_infos.get(mAdapter.toRealPosition(position));
         switch (bean.getMedia_type()) {
             case 1:
-                ToastUtils.show(mAdapter.toRealPosition(position) + "..." + bean.getUrl());
+                ToastUtils.show(mAdapter.toRealPosition(position) + "..图片.." + bean.getUrl());
                 break;
             case 2:
                 View view = mViewPager.findViewWithTag(mAdapter.toRealPosition(position));
                 if (view == null) break;
-                ((ADVideoLayout) view).onClick();
+                if (((ADVideoLayout) view).isPlaying()) {
+                    ToastUtils.show(mAdapter.toRealPosition(position) + "..视频.." + bean.getUrl());
+                } else {
+                    ((ADVideoLayout) view).onClick();
+                }
                 break;
         }
     }

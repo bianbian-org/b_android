@@ -90,11 +90,15 @@ public class ADVideoLayout extends RelativeLayout implements IDownloadError, IDo
     }
 
     public void stopWork() {
-        if (mMediaPlayer == null) return;
-        if (mMediaPlayer.isPlaying()) {
-            mMediaPlayer.pause();
+        try {
+            if (mMediaPlayer == null || !mIsPrepare) return;
+            if (mMediaPlayer.isPlaying()) {
+                mMediaPlayer.pause();
+            }
+            stopVideo();
+        } catch (Exception ignored) {
+
         }
-        stopVideo();
     }
 
     private void getVideoName() {
@@ -214,14 +218,19 @@ public class ADVideoLayout extends RelativeLayout implements IDownloadError, IDo
 
     public void onClick() {
         if (mMediaPlayer == null || !mIsPrepare) return;
-        if (mMediaPlayer.isPlaying()) {
-            stopVideo();
-            mMediaPlayer.pause();
-            return;
-        }
+//        if (mMediaPlayer.isPlaying()) {
+//            stopVideo();
+//            mMediaPlayer.pause();
+//            return;
+//        }
         playVideo();
         mMediaPlayer.seekTo(0);
         mMediaPlayer.start();
+    }
+
+    public boolean isPlaying() {
+        if (mMediaPlayer == null || !mIsPrepare) return false;
+        return mMediaPlayer.isPlaying();
     }
 
     @Override
