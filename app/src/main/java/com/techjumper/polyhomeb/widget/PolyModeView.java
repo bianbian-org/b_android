@@ -18,9 +18,6 @@ import com.techjumper.lib2.utils.PicassoHelper;
 import com.techjumper.lightwidget.ratio.RatioFrameLayout;
 import com.techjumper.polyhomeb.R;
 
-import butterknife.Bind;
-import butterknife.ButterKnife;
-
 /**
  * * * * * * * * * * * * * * * * * * * * * * *
  * Created by lixin
@@ -29,13 +26,13 @@ import butterknife.ButterKnife;
  **/
 public class PolyModeView extends RatioFrameLayout {
 
-    @Bind(R.id.iv_icon)
+//    @Bind(R.id.iv_icon)
     ImageView mIvIcon;
 
-    @Bind(R.id.iv_rightTop_icon)
+//    @Bind(R.id.iv_rightTop_icon)
     ImageView mIvRightTopIcon;
 
-    @Bind(R.id.tv_text)
+//    @Bind(R.id.tv_text)
     TextView mTvText;
 
     private View mInflateView;
@@ -73,7 +70,11 @@ public class PolyModeView extends RatioFrameLayout {
         notFirst = true;
         mInflateView = LayoutInflater.from(getContext()).inflate(R.layout.layout_poly_mode, null);
         addView(mInflateView);
-        ButterKnife.bind(this, mInflateView);
+//        ButterKnife.bind(this, mInflateView);
+
+        mIvIcon = (ImageView) mInflateView.findViewById(R.id.iv_icon);
+        mTvText = (TextView) mInflateView.findViewById(R.id.tv_text);
+        mIvRightTopIcon = (ImageView) mInflateView.findViewById(R.id.iv_rightTop_icon);
 
         TypedArray ta = getContext().obtainStyledAttributes(attrs, R.styleable.PolyMode);
         mDrawable = ta.getDrawable(R.styleable.PolyMode_src);
@@ -118,7 +119,7 @@ public class PolyModeView extends RatioFrameLayout {
     @Override
     protected void onDetachedFromWindow() {
         super.onDetachedFromWindow();
-        ButterKnife.unbind(this);
+//        ButterKnife.unbind(this);
         notFirst = false;
     }
 

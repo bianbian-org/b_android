@@ -8,7 +8,6 @@ import android.view.View;
 import com.steve.creact.annotation.DataBean;
 import com.steve.creact.library.viewholder.BaseRecyclerViewHolder;
 import com.techjumper.corelib.utils.common.AcHelper;
-import com.techjumper.corelib.utils.window.ToastUtils;
 import com.techjumper.polyhomeb.Config;
 import com.techjumper.polyhomeb.R;
 import com.techjumper.polyhomeb.adapter.recycler_Data.JuJiaData;
@@ -99,7 +98,6 @@ public class JuJiaViewHolder extends BaseRecyclerViewHolder<JuJiaData> {
     }
 
     private void jump2JujiaPage(String url, String key) {
-        ToastUtils.show("跳转：" + Config.sHost + url);
         Bundle bundle = new Bundle();
         bundle.putString(key, Config.sHost + url);
         new AcHelper.Builder((Activity) getContext()).target(JujiaDetailWebActivity.class).extra(bundle).start();
