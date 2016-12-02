@@ -221,8 +221,7 @@ public class AutoScrollViewPager extends LinearLayout {
      * @return
      */
     public AutoScrollViewPager startTurning(long autoTurningTime) {
-        //如果数据源大小只有1，那么就不能自动翻页
-        if (mDatas == null || mDatas.size() == 0 || mDatas.size() == 1) return this;
+        if (mDatas == null || mDatas.size() == 0) return this;
         //如果是正在翻页的话先停掉
         if (turning) {
             stopTurning();

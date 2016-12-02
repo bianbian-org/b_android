@@ -10,6 +10,7 @@ import com.techjumper.polyhomeb.entity.C_AllRoomEntity;
 import com.techjumper.polyhomeb.entity.C_RoomsByMemberEntity;
 import com.techjumper.polyhomeb.entity.CheckInEntity;
 import com.techjumper.polyhomeb.entity.JoinFamilyEntity;
+import com.techjumper.polyhomeb.entity.JuJiaInfoEntity;
 import com.techjumper.polyhomeb.entity.LoginEntity;
 import com.techjumper.polyhomeb.entity.MarqueeTextInfoEntity;
 import com.techjumper.polyhomeb.entity.MessageEntity;
@@ -622,12 +623,17 @@ public interface ServiceAPI {
     @POST("message_read")
     Observable<TrueEntity> updateMessageState(@Body BaseArgumentsEntity entity);
 
-
     /**
      * 首页广告
      */
     @GET("advertisements")
     Observable<ADEntity> getADInfo(@QueryMap Map<String, String> map);
+
+    /**
+     * 聚家模块数据
+     */
+    @GET("village/server/list")
+    Observable<JuJiaInfoEntity> getJuJiaInfo(@QueryMap Map<String, String> map);
 
 
 /*********************************************************医疗接口*********************************************************/

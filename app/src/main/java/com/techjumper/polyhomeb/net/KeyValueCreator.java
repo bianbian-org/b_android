@@ -433,4 +433,11 @@ public class KeyValueCreator {
         return newPair()
                 .put("user_id", user_id);
     }
+
+    public static KeyValuePair getJuJiaInfo(String user_id, String ticket, String village_id) {
+        return newPair()
+                .put("user_id", user_id)
+                .put("ticket", ticket)
+                .put("village_id", village_id);
+    }
 }

@@ -5,16 +5,19 @@ import com.techjumper.corelib.rx.tools.CommonWrap;
 import com.techjumper.lib2.others.KeyValuePair;
 import com.techjumper.lib2.utils.RetrofitHelper;
 import com.techjumper.polyhomeb.adapter.recycler_Data.BluetoothData;
+import com.techjumper.polyhomeb.adapter.recycler_Data.JuJiaData;
 import com.techjumper.polyhomeb.adapter.recycler_Data.PolyHomeData;
 import com.techjumper.polyhomeb.adapter.recycler_Data.PropertyData;
 import com.techjumper.polyhomeb.adapter.recycler_Data.PropertyRepairBigDividerData;
 import com.techjumper.polyhomeb.adapter.recycler_Data.ViewPagerData;
 import com.techjumper.polyhomeb.adapter.recycler_ViewHolder.databean.BluetoothBean;
+import com.techjumper.polyhomeb.adapter.recycler_ViewHolder.databean.JuJiaDataBean;
 import com.techjumper.polyhomeb.adapter.recycler_ViewHolder.databean.PolyHomeDataBean;
 import com.techjumper.polyhomeb.adapter.recycler_ViewHolder.databean.PropertyDataBean;
 import com.techjumper.polyhomeb.adapter.recycler_ViewHolder.databean.PropertyRepairBigDividerBean;
 import com.techjumper.polyhomeb.adapter.recycler_ViewHolder.databean.ViewPagerDataBean;
 import com.techjumper.polyhomeb.entity.ADEntity;
+import com.techjumper.polyhomeb.entity.JuJiaInfoEntity;
 import com.techjumper.polyhomeb.entity.MarqueeTextInfoEntity;
 import com.techjumper.polyhomeb.mvp.p.fragment.HomeFragmentPresenter;
 import com.techjumper.polyhomeb.net.KeyValueCreator;
@@ -80,13 +83,13 @@ public class HomeFragmentModel extends BaseModel<HomeFragmentPresenter> {
         displayBeans.add(propertyDataBean);
 
         //分割线
-//        displayBeans.add(propertyRepairBigDividerBean);
-//
-//        //增加 聚家 部分的数据    item = 3
-//        JuJiaData juJiaData = new JuJiaData();
-//        juJiaData.setNotice("您有2个快递正在派送中");
-//        JuJiaDataBean juJiaDataBean = new JuJiaDataBean(juJiaData);
-//        displayBeans.add(juJiaDataBean);
+        displayBeans.add(propertyRepairBigDividerBean);
+
+        //增加 聚家 部分的数据    item = 3
+        JuJiaData juJiaData = new JuJiaData();
+        juJiaData.setEntity(null);
+        JuJiaDataBean juJiaDataBean = new JuJiaDataBean(juJiaData);
+        displayBeans.add(juJiaDataBean);
 
         //分割线
         displayBeans.add(propertyRepairBigDividerBean);
@@ -119,6 +122,18 @@ public class HomeFragmentModel extends BaseModel<HomeFragmentPresenter> {
         return RetrofitHelper
                 .<ServiceAPI>createDefault()
                 .getADInfo(map)
+                .compose(CommonWrap.wrap());
+    }
+
+    public Observable<JuJiaInfoEntity> getJuJiaInfo() {
+        KeyValuePair keyValuePair = KeyValueCreator.getJuJiaInfo(
+                UserManager.INSTANCE.getUserInfo(UserManager.KEY_ID)
+                , UserManager.INSTANCE.getTicket()
+                , UserManager.INSTANCE.getUserInfo(UserManager.KEY_CURRENT_VILLAGE_ID));
+        Map<String, String> map = NetHelper.createBaseArgumentsMap(keyValuePair);
+        return RetrofitHelper
+                .<ServiceAPI>createDefault()
+                .getJuJiaInfo(map)
                 .compose(CommonWrap.wrap());
     }
 }

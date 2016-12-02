@@ -1,5 +1,7 @@
 package com.techjumper.polyhomeb.adapter.recycler_Data;
 
+import com.techjumper.polyhomeb.entity.JuJiaInfoEntity;
+
 /**
  * * * * * * * * * * * * * * * * * * * * * * *
  * Created by lixin
@@ -8,13 +10,13 @@ package com.techjumper.polyhomeb.adapter.recycler_Data;
  **/
 public class JuJiaData {
 
-    private String notice;
+    private JuJiaInfoEntity.DataBean entity;
 
-    public String getNotice() {
-        return notice;
+    public JuJiaInfoEntity.DataBean getEntity() {
+        return entity;
     }
 
-    public void setNotice(String notice) {
-        this.notice = notice;
+    public void setEntity(JuJiaInfoEntity.DataBean entity) {
+        this.entity = entity;
     }
 }

@@ -38,9 +38,6 @@
     <string name="information">资讯</string>
     <string name="payment">缴费</string>
     <string name="jujia">聚家</string>
-    <string name="express">快递</string>
-    <string name="laundry">洗衣</string>
-    <string name="taxi">叫车</string>
     <string name="more">更多</string>
     <string name="polyhome">智能家居</string>
     <string name="polyhome_hengwen">恒温模式</string>
@@ -407,5 +404,7 @@
     <string name="no_member">暂无任何成员</string>
     <string name="error_get_list">获取条目信息失败，请稍后重试- -</string>
     <string name="placard_detail_">公告详情</string>
+    <string name="jujia_item_name">聚家服务</string>
+    <string name="close">关闭</string>
 
 </resources>

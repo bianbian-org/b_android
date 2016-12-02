@@ -1,12 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:polymodeview="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/root_view"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:background="@color/color_ffffff"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    android:visibility="visible">
 
     <TextView
+        android:id="@+id/tv_header"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginLeft="@dimen/dp_14"
@@ -15,67 +18,6 @@
         android:textColor="@color/color_727272"
         android:textSize="@dimen/sp_16" />
 
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="@dimen/dp_14"
-        android:layout_marginTop="@dimen/dp_10">
-
-        <TextView
-            android:id="@+id/tv_today"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerVertical="true"
-            android:text="@string/toady"
-            android:textColor="@color/color_acacac"
-            android:textSize="@dimen/sp_16" />
-
-        <ImageView
-            android:id="@+id/iv_shu_xian"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerVertical="true"
-            android:layout_marginLeft="@dimen/dp_8"
-            android:layout_toRightOf="@+id/tv_today"
-            android:src="@mipmap/icon_shu_line" />
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_centerVertical="true"
-            android:layout_toRightOf="@+id/iv_shu_xian"
-            android:orientation="horizontal">
-
-            <com.techjumper.lightwidget.textview.MarqueeTextView
-                android:id="@+id/tv_notice"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_vertical"
-                android:layout_marginLeft="@dimen/dp_8"
-                android:layout_marginRight="@dimen/dp_16"
-                android:layout_weight="1"
-                android:ellipsize="marquee"
-                android:maxLines="1"
-                android:singleLine="true"
-                android:text="您有一个订单正在派送"
-                android:textColor="@color/color_727272"
-                android:textSize="@dimen/sp_16" />
-
-            <Button
-                android:id="@+id/tv_checkout_jujia"
-                android:layout_width="@dimen/dp_54"
-                android:layout_height="@dimen/dp_25"
-                android:layout_gravity="center_vertical"
-                android:layout_marginRight="@dimen/dp_14"
-                android:background="@drawable/bg_button_green"
-                android:text="@string/checkout"
-                android:textColor="@color/color_37a991"
-                android:textSize="@dimen/sp_14" />
-
-        </LinearLayout>
-
-    </RelativeLayout>
-
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -83,43 +25,37 @@
         android:orientation="horizontal">
 
         <com.techjumper.polyhomeb.widget.PolyModeView
-            android:id="@+id/express"
+            android:id="@+id/first"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
             polymodeview:centerIconHeight="60"
             polymodeview:centerIconWidth="60"
             polymodeview:ratio="1.333"
-            polymodeview:src="@mipmap/icon_express"
-            polymodeview:text="@string/express"
             polymodeview:textColor="@color/color_727272"
             polymodeview:textMarginTop="@dimen/dp_5"
             polymodeview:textSize="@dimen/sp_13" />
 
         <com.techjumper.polyhomeb.widget.PolyModeView
-            android:id="@+id/laundry"
+            android:id="@+id/second"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
             polymodeview:centerIconHeight="60"
             polymodeview:centerIconWidth="60"
             polymodeview:ratio="1.333"
-            polymodeview:src="@mipmap/icon_laundry"
-            polymodeview:text="@string/laundry"
             polymodeview:textColor="@color/color_727272"
             polymodeview:textMarginTop="@dimen/dp_5"
             polymodeview:textSize="@dimen/sp_13" />
 
         <com.techjumper.polyhomeb.widget.PolyModeView
-            android:id="@+id/taxi"
+            android:id="@+id/third"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
             polymodeview:centerIconHeight="60"
             polymodeview:centerIconWidth="60"
             polymodeview:ratio="1.333"
-            polymodeview:src="@mipmap/icon_taxi"
-            polymodeview:text="@string/taxi"
             polymodeview:textColor="@color/color_727272"
             polymodeview:textMarginTop="@dimen/dp_5"
             polymodeview:textSize="@dimen/sp_13" />
@@ -139,5 +75,6 @@
             polymodeview:textSize="@dimen/sp_13" />
 
     </LinearLayout>
+
 
 </LinearLayout>

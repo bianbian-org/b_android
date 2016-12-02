@@ -44,7 +44,7 @@ public class RatioFrameLayout extends FrameLayout {
     }
 
     protected boolean init(AttributeSet attrs) {
-        if (notFirst) return false;
+//        if (notFirst) return false;
         if (attrs == null) return false;
         notFirst = true;
         TypedArray ta = getContext().obtainStyledAttributes(attrs, R.styleable.ratio);

@@ -16,12 +16,15 @@ import com.techjumper.polyhome.doormaster.bluetoothEvent.OpenDoorResult;
 import com.techjumper.polyhomeb.R;
 import com.techjumper.polyhomeb.adapter.HomePageAdapter;
 import com.techjumper.polyhomeb.adapter.recycler_Data.BluetoothData;
+import com.techjumper.polyhomeb.adapter.recycler_Data.JuJiaData;
 import com.techjumper.polyhomeb.adapter.recycler_Data.PropertyData;
 import com.techjumper.polyhomeb.adapter.recycler_Data.ViewPagerData;
 import com.techjumper.polyhomeb.adapter.recycler_ViewHolder.databean.BluetoothBean;
+import com.techjumper.polyhomeb.adapter.recycler_ViewHolder.databean.JuJiaDataBean;
 import com.techjumper.polyhomeb.adapter.recycler_ViewHolder.databean.PropertyDataBean;
 import com.techjumper.polyhomeb.adapter.recycler_ViewHolder.databean.ViewPagerDataBean;
 import com.techjumper.polyhomeb.entity.ADEntity;
+import com.techjumper.polyhomeb.entity.JuJiaInfoEntity;
 import com.techjumper.polyhomeb.entity.MarqueeTextInfoEntity;
 import com.techjumper.polyhomeb.entity.event.BLEInfoChangedEvent;
 import com.techjumper.polyhomeb.entity.event.ChooseFamilyVillageEvent;
@@ -67,13 +70,10 @@ public class HomeFragmentPresenter extends AppBaseFragmentPresenter<HomeFragment
     public void onViewInited(Bundle savedInstanceState) {
         changeTitle();
         bleChangeInfo();
-//        getMarqueeTextData();
-//        getADInfo();
         getHomePageInfo();
     }
 
     private void changeTitle() {
-//        RxUtils.unsubscribeIfNotNull(mSubs1);
         addSubscription(
                 mSubs1 = RxBus.INSTANCE
                         .asObservable().subscribe(o -> {
@@ -96,8 +96,8 @@ public class HomeFragmentPresenter extends AppBaseFragmentPresenter<HomeFragment
     }
 
     private void reloadPropertyData() {
-        if (getView().getAdapter() == null) return;
         HomePageAdapter adapter = getView().getAdapter();
+        if (adapter == null) return;
         List<DisplayBean> data = adapter.getData();
         if (data == null || data.size() == 0) return;
         for (int i = 0; i < data.size(); i++) {
@@ -109,8 +109,6 @@ public class HomeFragmentPresenter extends AppBaseFragmentPresenter<HomeFragment
     }
 
     private void reloadHomePageInfo() {
-//        getMarqueeTextData();
-//        getADInfo();
         getHomePageInfo();
     }
 
@@ -133,8 +131,6 @@ public class HomeFragmentPresenter extends AppBaseFragmentPresenter<HomeFragment
     }
 
     public void refreshData() {
-//        getMarqueeTextData();
-//        getADInfo();
         getHomePageInfo();
     }
 
@@ -235,6 +231,7 @@ public class HomeFragmentPresenter extends AppBaseFragmentPresenter<HomeFragment
 
     private void refreshBLEView() {
         HomePageAdapter adapter = getView().getAdapter();
+        if (adapter == null) return;
         List<DisplayBean> data = adapter.getData();
         for (int i = 0; i < data.size(); i++) {
             if (data.get(i) instanceof BluetoothBean) {
@@ -284,24 +281,78 @@ public class HomeFragmentPresenter extends AppBaseFragmentPresenter<HomeFragment
                         }));
     }
 
+//    private void getHomePageInfo() {
+//        addSubscription(
+//                mModel.getADInfo()
+//                        .flatMap(new Func1<ADEntity, Observable<MarqueeTextInfoEntity>>() {
+//                            @Override
+//                            public Observable<MarqueeTextInfoEntity> call(ADEntity adEntity) {
+//                                if (!processNetworkResult(adEntity))
+//                                    return Observable.error(new Exception(""));
+//                                if (adEntity == null || adEntity.getData() == null
+//                                        || adEntity.getData().getAd_infos() == null
+//                                        || adEntity.getData().getAd_infos().size() == 0) {
+//                                    refreshADInfo(null);
+//                                    return Observable.error(new Exception(""));
+//                                }
+//                                refreshADInfo(adEntity);
+//                                return mModel.getMarqueeText();
+//                            }
+//                        }).onErrorResumeNext(throwable -> {
+//                    return mModel.getMarqueeText();
+//                }).subscribe(new Observer<MarqueeTextInfoEntity>() {
+//                    @Override
+//                    public void onCompleted() {
+//                        getView().stopRefresh("");
+//                    }
+//
+//                    @Override
+//                    public void onError(Throwable e) {
+//                        getView().stopRefresh("");
+//                    }
+//
+//                    @Override
+//                    public void onNext(MarqueeTextInfoEntity marqueeTextInfoEntity) {
+//                        if (!processNetworkResult(marqueeTextInfoEntity)) return;
+//                        if (marqueeTextInfoEntity == null || marqueeTextInfoEntity.getData() == null
+//                                || marqueeTextInfoEntity.getData().getMessages() == null
+//                                || marqueeTextInfoEntity.getData().getMessages().size() == 0) {
+//                            refreshMarqueeTextInfo(null);
+//                            return;
+//                        }
+//                        refreshMarqueeTextInfo(marqueeTextInfoEntity);
+//                    }
+//                }));
+//    }
+
     private void getHomePageInfo() {
         addSubscription(
-                mModel.getADInfo()
-                        .flatMap(new Func1<ADEntity, Observable<MarqueeTextInfoEntity>>() {
+                mModel.getJuJiaInfo()
+                        .flatMap(new Func1<JuJiaInfoEntity, Observable<ADEntity>>() {
                             @Override
-                            public Observable<MarqueeTextInfoEntity> call(ADEntity adEntity) {
-                                if (!processNetworkResult(adEntity))
-                                    return Observable.error(new Exception(""));
-                                if (adEntity == null || adEntity.getData() == null
-                                        || adEntity.getData().getAd_infos() == null
-                                        || adEntity.getData().getAd_infos().size() == 0) {
-                                    refreshADInfo(null);
-                                    return Observable.error(new Exception(""));
+                            public Observable<ADEntity> call(JuJiaInfoEntity juJiaInfoEntity) {
+                                if (!processNetworkResult(juJiaInfoEntity) || juJiaInfoEntity == null
+                                        || juJiaInfoEntity.getData() == null || juJiaInfoEntity.getData().getServers() == null
+                                        || juJiaInfoEntity.getData().getServers().size() == 0) {
+                                    refreshJuJiaInfo(null);
+                                    return mModel.getADInfo();
                                 }
-                                refreshADInfo(adEntity);
-                                return mModel.getMarqueeText();
+                                refreshJuJiaInfo(juJiaInfoEntity.getData());
+                                return mModel.getADInfo();
                             }
-                        }).onErrorResumeNext(throwable -> {
+                        }).flatMap(new Func1<ADEntity, Observable<MarqueeTextInfoEntity>>() {
+                    @Override
+                    public Observable<MarqueeTextInfoEntity> call(ADEntity adEntity) {
+                        if (!processNetworkResult(adEntity) || adEntity == null || adEntity.getData() == null
+                                || adEntity.getData().getAd_infos() == null
+                                || adEntity.getData().getAd_infos().size() == 0) {
+                            refreshADInfo(null);
+                            return mModel.getMarqueeText();
+                        }
+                        refreshADInfo(adEntity);
+                        return mModel.getMarqueeText();
+                    }
+                }).onErrorResumeNext(throwable -> {
                     return mModel.getMarqueeText();
                 }).subscribe(new Observer<MarqueeTextInfoEntity>() {
                     @Override
@@ -328,37 +379,9 @@ public class HomeFragmentPresenter extends AppBaseFragmentPresenter<HomeFragment
                 }));
     }
 
-//    private void getADInfo() {
-//        addSubscription(
-//                mSubs3 = mModel.getADInfo()
-//                        .subscribe(new Observer<ADEntity>() {
-//                            @Override
-//                            public void onCompleted() {
-//                                getView().stopRefresh("");
-//                            }
-//
-//                            @Override
-//                            public void onError(Throwable e) {
-//                                getView().stopRefresh("");
-//                            }
-//
-//                            @Override
-//                            public void onNext(ADEntity adEntity) {
-//                                if (!processNetworkResult(adEntity)) return;
-//                                if (adEntity == null || adEntity.getData() == null
-//                                        || adEntity.getData().getAd_infos() == null
-//                                        || adEntity.getData().getAd_infos().size() == 0) {
-//                                    refreshADInfo(null);
-//                                    return;
-//                                }
-//                                refreshADInfo(adEntity);
-//                            }
-//                        }));
-//    }
-
     private void refreshMarqueeTextInfo(MarqueeTextInfoEntity marqueeTextInfoEntity) {
         HomePageAdapter adapter = getView().getAdapter();
-        if (getView().getAdapter() == null) return;
+        if (adapter == null) return;
         List<DisplayBean> data = adapter.getData();
         if (data == null || data.size() == 0) return;
         for (int i = 0; i < data.size(); i++) {
@@ -399,6 +422,28 @@ public class HomeFragmentPresenter extends AppBaseFragmentPresenter<HomeFragment
                     data1.setAdInfos(adEntity);
                 }
                 adapter.notifyItemChanged(i);
+                break;
+            }
+        }
+    }
+
+    private void refreshJuJiaInfo(JuJiaInfoEntity.DataBean entity) {
+        HomePageAdapter adapter = getView().getAdapter();
+        if (adapter == null) return;
+        List<DisplayBean> data = adapter.getData();
+        if (data == null || data.size() == 0) return;
+        for (int i = 0; i < data.size(); i++) {
+            DisplayBean displayBean = data.get(i);
+            if (displayBean instanceof JuJiaDataBean) {
+                JuJiaData juJiaData = ((JuJiaDataBean) displayBean).getData();
+                if (entity != null) {
+                    juJiaData.setEntity(entity);
+                    adapter.notifyItemChanged(i);
+                } else {
+                    juJiaData.setEntity(entity);
+                    adapter.notifyItemRemoved(i);
+                    adapter.notifyItemRangeRemoved(i, adapter.getItemCount());
+                }
                 break;
             }
         }

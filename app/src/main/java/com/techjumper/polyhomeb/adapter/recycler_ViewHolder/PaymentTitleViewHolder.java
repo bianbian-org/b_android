@@ -82,12 +82,6 @@ public class PaymentTitleViewHolder extends BaseRecyclerViewHolder<PaymentTitleD
             String item_name = itemsBean.getItem_name();
             datas.add(item_name);
         }
-//        datas.add(getContext().getResources().getString(R.string.pop_property_pay));
-//        datas.add(getContext().getResources().getString(R.string.pop_water_pay));
-//        datas.add(getContext().getResources().getString(R.string.pop_elec_pay));
-//        datas.add(getContext().getResources().getString(R.string.pop_gas_pay));
-//        datas.add(getContext().getResources().getString(R.string.pop_other));
-//        datas.add(getContext().getResources().getString(R.string.pop_all));
         mPop.initData(datas);
     }
 
@@ -95,33 +89,6 @@ public class PaymentTitleViewHolder extends BaseRecyclerViewHolder<PaymentTitleD
 
         @Override
         public void callBack(int position, String s) {
-            //1-物业费 2-水费 3-电费 4-燃气费 5-其他(查询全部，则为空)
-//            switch (position) {
-//                case 0:
-//                    mPop.thisDismiss(PolyPopupWindow.AnimStyle.ALPHA);
-//                    setText(R.id.tv_type, getContext().getResources().getString(R.string.pop_property_pay));
-//                    break;
-//                case 1:
-//                    mPop.thisDismiss(PolyPopupWindow.AnimStyle.ALPHA);
-//                    setText(R.id.tv_type, getContext().getResources().getString(R.string.pop_water_pay));
-//                    break;
-//                case 2:
-//                    mPop.thisDismiss(PolyPopupWindow.AnimStyle.ALPHA);
-//                    setText(R.id.tv_type, getContext().getResources().getString(R.string.pop_elec_pay));
-//                    break;
-//                case 3:
-//                    mPop.thisDismiss(PolyPopupWindow.AnimStyle.ALPHA);
-//                    setText(R.id.tv_type, getContext().getResources().getString(R.string.pop_gas_pay));
-//                    break;
-//                case 4:
-//                    mPop.thisDismiss(PolyPopupWindow.AnimStyle.ALPHA);
-//                    setText(R.id.tv_type, getContext().getResources().getString(R.string.pop_other));
-//                    break;
-//                case 5:
-//                    mPop.thisDismiss(PolyPopupWindow.AnimStyle.ALPHA);
-//                    setText(R.id.tv_type, getContext().getResources().getString(R.string.pop_all));
-//                    break;
-//            }
             for (int i = 0; i < items.size(); i++) {
                 PaymentTypeEntity.DataBean.ItemsBean itemsBean = items.get(i);
                 String item_name = itemsBean.getItem_name();
@@ -132,7 +99,6 @@ public class PaymentTitleViewHolder extends BaseRecyclerViewHolder<PaymentTitleD
                     break;
                 }
             }
-//            RxBus.INSTANCE.send(new PaymentQueryEvent(position, mWhere)); //点击之后发送消息,然后刷新重新调用接口
         }
     }
 

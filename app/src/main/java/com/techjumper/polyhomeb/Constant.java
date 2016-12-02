@@ -94,4 +94,12 @@ public class Constant {
     public static final String JS_BIG_PIC_INDEX = "js_big_pic_index";
     public static final String JS_BIG_PIC_ARRAY = "js_big_pic_array";
 
+    /**
+     * 聚家跳转网页
+     */
+    public static final String FIRST_PAGE_URL = "first_page_url";
+    public static final String SECOND_PAGE_URL = "second_page_url";
+    public static final String THIRD_PAGE_URL = "third_page_url";
+    public static final String MORE_PAGE_URL = "more_page_url";
+
 }

@@ -3,6 +3,7 @@ package com.techjumper.polyhomeb.widget;
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.graphics.drawable.Drawable;
+import android.text.TextUtils;
 import android.util.AttributeSet;
 import android.util.TypedValue;
 import android.view.LayoutInflater;
@@ -68,7 +69,7 @@ public class PolyModeView extends RatioFrameLayout {
     @Override
     protected boolean init(AttributeSet attrs) {
         super.init(attrs);
-        if (notFirst) return false;
+//        if (notFirst) return false;
         notFirst = true;
         mInflateView = LayoutInflater.from(getContext()).inflate(R.layout.layout_poly_mode, null);
         addView(mInflateView);
@@ -82,7 +83,7 @@ public class PolyModeView extends RatioFrameLayout {
         mIconMargin = -ta.getDimension(R.styleable.PolyMode_iconMarginTop, 0.F);
         mTextMargin = ta.getDimension(R.styleable.PolyMode_textMarginTop, 0.F);
         mTextSize = ta.getDimension(R.styleable.PolyMode_textSize, RuleUtils.dp2Px(14));
-        mIvHeight = ta.getInteger(R.styleable.PolyMode_centerIconHeight, 40);  //layout_poly_mode中iv的大小,就是40
+        mIvHeight = ta.getInteger(R.styleable.PolyMode_centerIconHeight, 40);  //layout_poly_mode中iv的大小就是40
         mIvWidth = ta.getInteger(R.styleable.PolyMode_centerIconWidth, 40);
         ta.recycle();
 
@@ -130,6 +131,12 @@ public class PolyModeView extends RatioFrameLayout {
     public void setIcon(Drawable drawable) {
         if (drawable != null) {
             mIvIcon.setImageDrawable(drawable);
+        }
+    }
+
+    public void setIcon(String url) {
+        if (!TextUtils.isEmpty(url)) {
+            PicassoHelper.load(url).into(mIvIcon);
         }
     }
 
