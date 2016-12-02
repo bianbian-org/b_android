@@ -2,7 +2,6 @@ package com.techjumper.polyhomeb.mvp.m;
 
 import com.steve.creact.library.display.DisplayBean;
 import com.techjumper.corelib.rx.tools.CommonWrap;
-import com.techjumper.corelib.utils.common.JLog;
 import com.techjumper.lib2.others.KeyValuePair;
 import com.techjumper.lib2.utils.RetrofitHelper;
 import com.techjumper.polyhomeb.Constant;
@@ -61,7 +60,6 @@ public class AllpaidFragmentModel extends BaseModel<AllpaidFragmentPresenter> {
                 , mCurrentPage
                 , mOnePageCount);
         Map<String, String> map = NetHelper.createBaseArgumentsMap(keyValuePair);
-        JLog.e(payType);
         return RetrofitHelper.<ServiceAPI>createDefault().getOrdersInfo(map).compose(CommonWrap.wrap());
     }
 
