@@ -82,62 +82,6 @@ public class AllpaidFragmentPresenter extends AppBaseFragmentPresenter<AllpaidFr
                 }));
     }
 
-//    public void getOrdersInfo() {
-//        RxUtils.unsubscribeIfNotNull(mSubs1);
-//        addSubscription(
-//                mSubs1 = mModel.getOrdersInfo(mPayType)
-//                        .subscribe(new Subscriber<OrdersEntity>() {
-//                            @Override
-//                            public void onCompleted() {
-//                                getView().dismissLoading();
-//                                getView().stopRefresh("");
-//                            }
-//
-//                            @Override
-//                            public void onError(Throwable e) {
-//                                getView().dismissLoading();
-//                                getView().showError(e);
-//                                loadMoreError();
-//                                getView().onOrdersDataReceive(mModel.noData());
-//                                getView().stopRefresh("");
-//                            }
-//
-//                            @Override
-//                            public void onNext(OrdersEntity entity) {
-////                                if (!processNetworkResult(entity)) {
-////                                    return;
-////                                }
-////                                if (mModel.getCurrentPage() == 1 && entity.getData().getOrders().size() != 0) {
-////                                    getView().setHasMoreData(true);
-////                                }
-////                                boolean hasMoreData = mModel.hasMoreData(entity);
-////                                getView().setHasMoreData(hasMoreData);
-////
-////                                if (!hasMoreData && mModel.getCurrentPage() == 1) {
-////                                    getView().onOrdersDataReceive(mModel.noData());
-////                                }
-////                                mModel.updateOrdersData(entity);
-////                                getView().onOrdersDataReceive(mModel.getOrdersData());
-//                                if (!processNetworkResult(entity)) {
-//                                    return;
-//                                }
-//                                if (mModel.getCurrentPage() == 1 && entity.getData().getOrders().size() != 0) {
-//                                    getView().setHasMoreData(true);
-//                                }
-//                                boolean hasMoreData = mModel.hasMoreData(entity);
-//                                getView().setHasMoreData(hasMoreData);
-//
-//                                if (entity.getData().getOrders().size() == 0) {
-//                                    getView().onOrdersDataReceive(mModel.noData());
-//                                    return;
-//                                }
-//                                mModel.updateOrdersData(entity);
-//                                getView().onOrdersDataReceive(mModel.getOrdersData());
-//                            }
-//                        })
-//        );
-//    }
-
     private void loadMoreError() {
         if (mModel.getCurrentPage() != 1) {
             getView().showLoadMoreFail();
@@ -167,7 +111,7 @@ public class AllpaidFragmentPresenter extends AppBaseFragmentPresenter<AllpaidFr
                                     && paymentTypeEntity.getData().getItems().size() != 0) {
                                 List<PaymentTypeEntity.DataBean.ItemsBean> items = paymentTypeEntity.getData().getItems();
                                 this.items.clear();
-                                this.items.addAll(items);
+                                this.items.addAll(addSingleItemIn(items));
                             } else {
                                 return Observable.error(new Exception(getView().getString(R.string.error_get_list)));
                             }
@@ -183,7 +127,6 @@ public class AllpaidFragmentPresenter extends AppBaseFragmentPresenter<AllpaidFr
                             @Override
                             public void onError(Throwable e) {
                                 getView().dismissLoading();
-//                                getView().showError(e);
                                 getView().showHint(e.getMessage().toString());
                                 loadMoreError();
                                 getView().onOrdersDataReceive(mModel.noData(items));
@@ -209,6 +152,18 @@ public class AllpaidFragmentPresenter extends AppBaseFragmentPresenter<AllpaidFr
                                 getView().onOrdersDataReceive(mModel.getOrdersData());
                             }
                         }));
+    }
+
+    //服务器不返回"全部"，只好客户端做处理了~实在是low的不行
+    private List<PaymentTypeEntity.DataBean.ItemsBean> addSingleItemIn(List<PaymentTypeEntity.DataBean.ItemsBean> items) {
+        List<PaymentTypeEntity.DataBean.ItemsBean> list = new ArrayList<>();
+        list.addAll(items);
+        //手动加一个进去
+        PaymentTypeEntity.DataBean.ItemsBean lastOne = new PaymentTypeEntity.DataBean.ItemsBean();
+        lastOne.setId(-1);
+        lastOne.setItem_name(getView().getString(R.string.pop_all));
+        list.add(lastOne);
+        return list;
     }
 
     public String getTypeName() {

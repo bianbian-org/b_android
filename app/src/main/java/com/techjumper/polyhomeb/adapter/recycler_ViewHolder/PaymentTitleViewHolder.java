@@ -1,7 +1,6 @@
 package com.techjumper.polyhomeb.adapter.recycler_ViewHolder;
 
 import android.app.Activity;
-import android.text.TextUtils;
 import android.view.View;
 import android.widget.ImageView;
 
@@ -34,7 +33,6 @@ public class PaymentTitleViewHolder extends BaseRecyclerViewHolder<PaymentTitleD
     private ImageView mIvTriangle;
 
     private int mWhere = 0;
-    private List<PaymentTypeEntity.DataBean.ItemsBean> items = new ArrayList<>();
 
     public PaymentTitleViewHolder(View itemView) {
         super(itemView);
@@ -44,21 +42,11 @@ public class PaymentTitleViewHolder extends BaseRecyclerViewHolder<PaymentTitleD
 
     @Override
     public void setData(PaymentTitleData data) {
-        if (data == null) return;
+        if (data == null || data.getItems() == null || data.getItems().size() == 0) return;
         mWhere = data.getWhere();
-        items.clear();
         List<PaymentTypeEntity.DataBean.ItemsBean> items = data.getItems();
-        if (items == null || items.size() == 0) {
-            items = new ArrayList<>();
-        }
-        //手动加一个进去
-        PaymentTypeEntity.DataBean.ItemsBean lastOne = new PaymentTypeEntity.DataBean.ItemsBean();
-        lastOne.setId(-1);
-        lastOne.setItem_name(TextUtils.isEmpty(data.getTypeName()) ? getContext().getResources().getString(R.string.pop_all) : data.getTypeName());
-        items.add(lastOne);
-        this.items.addAll(items);
 
-        initPopup();
+        initPopup(items);
         setText(R.id.tv_title, data.getTitle());
         setText(R.id.tv_total, String.format(getContext().getString(R.string.payment_yuan), data.getTotal()));
         setOnClickListener(R.id.layout_choose_type, v -> {
@@ -72,8 +60,9 @@ public class PaymentTitleViewHolder extends BaseRecyclerViewHolder<PaymentTitleD
         });
     }
 
-    private void initPopup() {
-        mPop = new PolyPopupWindow((Activity) getContext(), R.style.popup_anim, new PopListItemClick(), mRootView, new PopDismiss());
+    private void initPopup(List<PaymentTypeEntity.DataBean.ItemsBean> items) {
+        mPop = new PolyPopupWindow((Activity) getContext(), R.style.popup_anim, new PopListItemClick(items)
+                , mRootView, new PopDismiss());
         mPop.setAnchorView(getView(R.id.tv_type));
         mPop.setXoff(110);
         List<String> datas = new ArrayList<>();
@@ -86,6 +75,12 @@ public class PaymentTitleViewHolder extends BaseRecyclerViewHolder<PaymentTitleD
     }
 
     private class PopListItemClick implements PolyPopupWindow.ItemClickCallBack {
+
+        private List<PaymentTypeEntity.DataBean.ItemsBean> items;
+
+        public PopListItemClick(List<PaymentTypeEntity.DataBean.ItemsBean> items) {
+            this.items = items;
+        }
 
         @Override
         public void callBack(int position, String s) {
