@@ -435,15 +435,10 @@ public class HomeFragmentPresenter extends AppBaseFragmentPresenter<HomeFragment
         for (int i = 0; i < data.size(); i++) {
             DisplayBean displayBean = data.get(i);
             if (displayBean instanceof JuJiaDataBean) {
-                JuJiaData juJiaData = ((JuJiaDataBean) displayBean).getData();
-                if (entity != null) {
-                    juJiaData.setEntity(entity);
-                    adapter.notifyItemChanged(i);
-                } else {
-                    juJiaData.setEntity(entity);
-                    adapter.notifyItemRemoved(i);
-                    adapter.notifyItemRangeRemoved(i, adapter.getItemCount());
-                }
+                JuJiaDataBean bean = (JuJiaDataBean) displayBean;
+                JuJiaData juJiaData = bean.getData();
+                juJiaData.setEntity(entity);
+                adapter.notifyItemChanged(i);
                 break;
             }
         }

@@ -110,26 +110,8 @@ public class JujiaDetailWebActivity extends AppBaseActivity<JujiaDetailWebActivi
     }
 
     private void loadUrl() {
-        String first = getPresenter().getFirstPageUrl();
-        String second = getPresenter().getSecondPageUrl();
-        String third = getPresenter().getThirdPageUrl();
-        String more = getPresenter().getMorePageUrl();
-
-        if (!TextUtils.isEmpty(first)) {
-            mWebView.loadUrl(first, mHttpHeaders);
-            return;
-        }
-        if (!TextUtils.isEmpty(second)) {
-            mWebView.loadUrl(second, mHttpHeaders);
-            return;
-        }
-        if (!TextUtils.isEmpty(third)) {
-            mWebView.loadUrl(third, mHttpHeaders);
-            return;
-        }
-        if (!TextUtils.isEmpty(more)) {
-            mWebView.loadUrl(more, mHttpHeaders);
-            return;
+        if (!TextUtils.isEmpty(getPresenter().getJumpUrl())) {
+            mWebView.loadUrl(getPresenter().getJumpUrl(), mHttpHeaders);
         }
     }
 

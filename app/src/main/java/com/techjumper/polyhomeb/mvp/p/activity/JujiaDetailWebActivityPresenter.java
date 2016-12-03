@@ -60,19 +60,7 @@ public class JujiaDetailWebActivityPresenter extends AppBaseActivityPresenter<Ju
         getView().getWebView().reload();
     }
 
-    public String getFirstPageUrl() {
-        return mModel.getFirstPageUrl();
-    }
-
-    public String getSecondPageUrl() {
-        return mModel.getSecondPageUrl();
-    }
-
-    public String getThirdPageUrl() {
-        return mModel.getThirdPageUrl();
-    }
-
-    public String getMorePageUrl() {
-        return mModel.getMorePageUrl();
+    public String getJumpUrl() {
+        return mModel.getJumpUrl();
     }
 }
