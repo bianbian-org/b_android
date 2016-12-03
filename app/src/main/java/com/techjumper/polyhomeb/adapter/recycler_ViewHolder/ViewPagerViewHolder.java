@@ -40,10 +40,11 @@ public class ViewPagerViewHolder extends BaseRecyclerViewHolder<ViewPagerData>
 
     public ViewPagerViewHolder(View itemView) {
         super(itemView);
-        //和Fragment的声明周期绑定
         RxBus.INSTANCE.asObservable().subscribe(o -> {
-            if (o instanceof LifeCycleEvent) {
+            if (o instanceof LifeCycleEvent) {  //和Fragment的生命周期绑定
                 stop(mCurrentPosition);
+//            } else if (o instanceof VisibleEvent) {  //首页RV滑动，广告item即将不可见时候停止播放
+//                stop(mCurrentPosition);
             }
         });
     }
@@ -76,7 +77,6 @@ public class ViewPagerViewHolder extends BaseRecyclerViewHolder<ViewPagerData>
                 mViewPager.setPageIndicator(ad_infos.size(), ints);
                 break;
         }
-//        mViewPager.setPages(mAdapter)
         mViewPager.startTurning(5000)  //默认滚动时间间隔，如果服务器某个数据没有返回这个字段，那么就采用默认时间
                 .setPageIndicatorAlign(AutoScrollViewPager.PageIndicatorAlign.ALIGN_PARENT_RIGHT)
                 .setOnItemClickListener(this)

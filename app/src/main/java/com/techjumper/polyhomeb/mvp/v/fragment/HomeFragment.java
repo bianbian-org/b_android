@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -69,6 +70,30 @@ public class HomeFragment extends AppBaseFragment<HomeFragmentPresenter>
         mRv.setLayoutManager(mManager);
         mAdapter = new HomePageAdapter();
         mRv.setAdapter(mAdapter);
+        mRv.addOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
+                //0表示停止滑动的状态 SCROLL_STATE_IDLE
+                //1表示正在滚动，用户手指在屏幕上 SCROLL_STATE_TOUCH_SCROLL
+                //2表示正在滑动。用户手指已经离开屏幕 SCROLL_STATE_FLING
+                super.onScrollStateChanged(recyclerView, newState);
+                switch (newState) {
+                    case 1:
+                    case 2:
+                        JLog.e("暂停加载" + newState);
+                        break;
+                    case 0:
+                        JLog.e("恢复加载" + newState);
+                        break;
+                }
+            }
+
+            @Override
+            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+                super.onScrolled(recyclerView, dx, dy);
+                int firstVisibleItemPosition = mManager.findFirstVisibleItemPosition();
+            }
+        });
         mAdapter.loadData(getPresenter().getDatas());
         mAdapter.setClickListener(() -> getPresenter().onSmartHomeClick());
         mPtr.setPtrHandler(new PtrDefaultHandler() {

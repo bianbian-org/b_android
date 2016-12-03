@@ -286,50 +286,6 @@ public class HomeFragmentPresenter extends AppBaseFragmentPresenter<HomeFragment
                         }));
     }
 
-//    private void getHomePageInfo() {
-//        addSubscription(
-//                mModel.getADInfo()
-//                        .flatMap(new Func1<ADEntity, Observable<MarqueeTextInfoEntity>>() {
-//                            @Override
-//                            public Observable<MarqueeTextInfoEntity> call(ADEntity adEntity) {
-//                                if (!processNetworkResult(adEntity))
-//                                    return Observable.error(new Exception(""));
-//                                if (adEntity == null || adEntity.getData() == null
-//                                        || adEntity.getData().getAd_infos() == null
-//                                        || adEntity.getData().getAd_infos().size() == 0) {
-//                                    refreshADInfo(null);
-//                                    return Observable.error(new Exception(""));
-//                                }
-//                                refreshADInfo(adEntity);
-//                                return mModel.getMarqueeText();
-//                            }
-//                        }).onErrorResumeNext(throwable -> {
-//                    return mModel.getMarqueeText();
-//                }).subscribe(new Observer<MarqueeTextInfoEntity>() {
-//                    @Override
-//                    public void onCompleted() {
-//                        getView().stopRefresh("");
-//                    }
-//
-//                    @Override
-//                    public void onError(Throwable e) {
-//                        getView().stopRefresh("");
-//                    }
-//
-//                    @Override
-//                    public void onNext(MarqueeTextInfoEntity marqueeTextInfoEntity) {
-//                        if (!processNetworkResult(marqueeTextInfoEntity)) return;
-//                        if (marqueeTextInfoEntity == null || marqueeTextInfoEntity.getData() == null
-//                                || marqueeTextInfoEntity.getData().getMessages() == null
-//                                || marqueeTextInfoEntity.getData().getMessages().size() == 0) {
-//                            refreshMarqueeTextInfo(null);
-//                            return;
-//                        }
-//                        refreshMarqueeTextInfo(marqueeTextInfoEntity);
-//                    }
-//                }));
-//    }
-
     private void getHomePageInfo() {
         addSubscription(
                 mModel.getJuJiaInfo()
