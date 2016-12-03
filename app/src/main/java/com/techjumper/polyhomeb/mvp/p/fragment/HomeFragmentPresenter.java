@@ -28,6 +28,7 @@ import com.techjumper.polyhomeb.entity.JuJiaInfoEntity;
 import com.techjumper.polyhomeb.entity.MarqueeTextInfoEntity;
 import com.techjumper.polyhomeb.entity.event.BLEInfoChangedEvent;
 import com.techjumper.polyhomeb.entity.event.ChooseFamilyVillageEvent;
+import com.techjumper.polyhomeb.entity.event.LifeCycleEvent;
 import com.techjumper.polyhomeb.entity.event.ToggleMenuClickEvent;
 import com.techjumper.polyhomeb.entity.event.UpdateMessageStateEvent;
 import com.techjumper.polyhomeb.manager.PolyPluginManager;
@@ -249,6 +250,10 @@ public class HomeFragmentPresenter extends AppBaseFragmentPresenter<HomeFragment
     public void onDestroy() {
         super.onDestroy();
         mPluginManager.quit();
+    }
+
+    public void sendMessage2ADBanner() {
+        RxBus.INSTANCE.send(new LifeCycleEvent());
     }
 
     //这个方法本身可以不需要的，但是没办法，在MarqueeText中读了消息之后，这边必须要刷新，单独刷新这个接口数据，所以这里要单独提出来，
