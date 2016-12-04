@@ -13,6 +13,7 @@ import com.techjumper.polyhomeb.R;
 import com.techjumper.polyhomeb.adapter.recycler_Data.ViewPagerData;
 import com.techjumper.polyhomeb.entity.ADEntity;
 import com.techjumper.polyhomeb.entity.event.LifeCycleEvent;
+import com.techjumper.polyhomeb.entity.event.RVScrollEvent;
 import com.techjumper.polyhomeb.widget.ADVideoLayout;
 import com.techjumper.polyhomeb.widget.autoScrollViewPager.AutoScrollViewPager;
 import com.techjumper.polyhomeb.widget.autoScrollViewPager.CBPageAdapter;
@@ -41,10 +42,10 @@ public class ViewPagerViewHolder extends BaseRecyclerViewHolder<ViewPagerData>
     public ViewPagerViewHolder(View itemView) {
         super(itemView);
         RxBus.INSTANCE.asObservable().subscribe(o -> {
-            if (o instanceof LifeCycleEvent) {  //和Fragment的生命周期绑定
+            //和Fragment的生命周期绑定
+            //首页RV滑动，广告item即将不可见时候停止播放
+            if (o instanceof LifeCycleEvent || o instanceof RVScrollEvent) {
                 stop(mCurrentPosition);
-//            } else if (o instanceof VisibleEvent) {  //首页RV滑动，广告item即将不可见时候停止播放
-//                stop(mCurrentPosition);
             }
         });
     }

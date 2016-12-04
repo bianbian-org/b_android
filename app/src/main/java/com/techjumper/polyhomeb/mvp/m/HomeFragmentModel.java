@@ -82,9 +82,7 @@ public class HomeFragmentModel extends BaseModel<HomeFragmentPresenter> {
         PropertyDataBean propertyDataBean = new PropertyDataBean(propertyData);
         displayBeans.add(propertyDataBean);
 
-        //分割线
-//        displayBeans.add(propertyRepairBigDividerBean);
-
+        //分割线在聚家视图中已经处理了
         //增加 聚家 部分的数据    item = 3
         JuJiaData juJiaData = new JuJiaData();
         juJiaData.setEntity(null);

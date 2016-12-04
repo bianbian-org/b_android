@@ -54,6 +54,11 @@ public class HomeFragment extends AppBaseFragment<HomeFragmentPresenter>
 
     private long mLastClickTime;
 
+    /**
+     * RV在Y轴上的滑动偏移量
+     */
+    private int mRvScrollYOffsetNew = 0;
+
     public static HomeFragment getInstance() {
         return new HomeFragment();
     }
@@ -91,7 +96,21 @@ public class HomeFragment extends AppBaseFragment<HomeFragmentPresenter>
             @Override
             public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
                 super.onScrolled(recyclerView, dx, dy);
+
                 int firstVisibleItemPosition = mManager.findFirstVisibleItemPosition();
+
+                //position=0是因为设计稿上ViewPager就在第一个,定死的不会变,所以这里直接用0,否则需要根据数据来取位置
+                int height = mManager.getChildAt(0).getHeight();
+
+                mRvScrollYOffsetNew += dy;
+
+                //发送停止播放的消息前提是：
+                //滑动偏移量 == View高度 * 50%;此时发送RxBus，Item接收之后处理接下来的逻辑.
+                //注意一个问题：以上条件满足的话，可能有两种情况，一种是向下滑，一种是向上滑，而像上滑的情况下是不需要发送RxBus
+                if (dy > 0 && firstVisibleItemPosition == 0 && mRvScrollYOffsetNew > height * 0.5) {
+                    getPresenter().sendMessage2ADBannerWhenRVScroll();
+                }
+
             }
         });
         mAdapter.loadData(getPresenter().getDatas());
@@ -110,6 +129,13 @@ public class HomeFragment extends AppBaseFragment<HomeFragmentPresenter>
         });
     }
 
+    /**
+     * 重置RV在Y轴上的滑动偏移量.因为rv在item数量变化的时候，这个值会产生偏差，所以一旦item数目发生变化后，需要将此值重置
+     */
+    private void resetRvScrollYOffset() {
+        mRvScrollYOffsetNew = 0;
+    }
+
     @Override
     public String getTitle() {
         return UserManager.INSTANCE.getCurrentTitle();
@@ -121,6 +147,12 @@ public class HomeFragment extends AppBaseFragment<HomeFragmentPresenter>
                 showHint(msg);
             mPtr.refreshComplete();
         }
+    }
+
+    public void notifyItemChanged(int position) {
+        if (mAdapter != null)
+            mAdapter.notifyItemChanged(position);
+        resetRvScrollYOffset();
     }
 
     public TextView getTvTitle() {

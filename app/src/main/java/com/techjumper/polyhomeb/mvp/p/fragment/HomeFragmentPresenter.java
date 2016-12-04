@@ -29,6 +29,7 @@ import com.techjumper.polyhomeb.entity.MarqueeTextInfoEntity;
 import com.techjumper.polyhomeb.entity.event.BLEInfoChangedEvent;
 import com.techjumper.polyhomeb.entity.event.ChooseFamilyVillageEvent;
 import com.techjumper.polyhomeb.entity.event.LifeCycleEvent;
+import com.techjumper.polyhomeb.entity.event.RVScrollEvent;
 import com.techjumper.polyhomeb.entity.event.ToggleMenuClickEvent;
 import com.techjumper.polyhomeb.entity.event.UpdateMessageStateEvent;
 import com.techjumper.polyhomeb.manager.PolyPluginManager;
@@ -103,7 +104,7 @@ public class HomeFragmentPresenter extends AppBaseFragmentPresenter<HomeFragment
         if (data == null || data.size() == 0) return;
         for (int i = 0; i < data.size(); i++) {
             if (data.get(i) instanceof PropertyDataBean) {
-                adapter.notifyItemChanged(i);
+                getView().notifyItemChanged(i);
                 break;
             }
         }
@@ -240,7 +241,7 @@ public class HomeFragmentPresenter extends AppBaseFragmentPresenter<HomeFragment
                 BluetoothData data1 = bluetoothBean.getData();
                 data1.setInfosBeen(UserManager.INSTANCE.getBLEInfo());
                 data1.setCommunitySupportBleDoor(UserManager.INSTANCE.isCurrentCommunitySupportBLEDoor());
-                adapter.notifyItemChanged(i);
+                getView().notifyItemChanged(i);
                 break;
             }
         }
@@ -252,8 +253,19 @@ public class HomeFragmentPresenter extends AppBaseFragmentPresenter<HomeFragment
         mPluginManager.quit();
     }
 
+    /**
+     * Fragment声明周和ViewPager播放视频暂停视频绑定起来
+     */
     public void sendMessage2ADBanner() {
         RxBus.INSTANCE.send(new LifeCycleEvent());
+    }
+
+    /**
+     * RV在Y方向上的滑动偏移量和ViewPager播放视频暂停视频相关
+     */
+
+    public void sendMessage2ADBannerWhenRVScroll() {
+        RxBus.INSTANCE.send(new RVScrollEvent());
     }
 
     //这个方法本身可以不需要的，但是没办法，在MarqueeText中读了消息之后，这边必须要刷新，单独刷新这个接口数据，所以这里要单独提出来，
@@ -350,7 +362,7 @@ public class HomeFragmentPresenter extends AppBaseFragmentPresenter<HomeFragment
             if (displayBean instanceof PropertyDataBean) {
                 PropertyData propertyData = ((PropertyDataBean) displayBean).getData();
                 propertyData.setNotice(marqueeTextInfoEntity);
-                adapter.notifyItemChanged(i);
+                getView().notifyItemChanged(i);
                 break;
             }
         }
@@ -382,7 +394,7 @@ public class HomeFragmentPresenter extends AppBaseFragmentPresenter<HomeFragment
                     //显示投放的广告
                     data1.setAdInfos(adEntity);
                 }
-                adapter.notifyItemChanged(i);
+                getView().notifyItemChanged(i);
                 break;
             }
         }
@@ -399,7 +411,7 @@ public class HomeFragmentPresenter extends AppBaseFragmentPresenter<HomeFragment
                 JuJiaDataBean bean = (JuJiaDataBean) displayBean;
                 JuJiaData juJiaData = bean.getData();
                 juJiaData.setEntity(entity);
-                adapter.notifyItemChanged(i);
+                getView().notifyItemChanged(i);
                 break;
             }
         }
