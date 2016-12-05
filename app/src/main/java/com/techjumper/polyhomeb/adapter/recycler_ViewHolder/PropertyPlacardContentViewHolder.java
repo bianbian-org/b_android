@@ -44,6 +44,7 @@ public class PropertyPlacardContentViewHolder extends BaseRecyclerViewHolder<Pro
             bundle.putString(Constant.PLACARD_DETAIL_TIME, data.getTime());
             bundle.putString(Constant.PLACARD_DETAIL_TITLE, data.getTitle());
             bundle.putString(Constant.PLACARD_DETAIL_TYPE, data.getType());
+            bundle.putString(Constant.PLACARD_DETAIL_COME_FROM, "2");
             new AcHelper.Builder((Activity) getContext()).extra(bundle).target(PlacardDetailActivity.class).start();
         });
     }

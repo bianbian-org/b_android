@@ -25,6 +25,7 @@ public class Constant {
     public static final String PLACARD_DETAIL_TYPE = "placard_detail_type";
     public static final String PLACARD_DETAIL_CONTENT = "placard_detail_content";
     public static final String PLACARD_DETAIL_TIME = "placard_detail_time";
+    public static final String PLACARD_DETAIL_COME_FROM = "placard_detail_come_from";
 
     public static final String TRUE_ENTITY_RESULT = "true";
     public static final String FALSE_ENTITY_RESULT = "false";

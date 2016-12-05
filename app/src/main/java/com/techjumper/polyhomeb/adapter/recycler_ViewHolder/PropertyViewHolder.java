@@ -8,6 +8,7 @@ import android.view.View;
 import com.steve.creact.annotation.DataBean;
 import com.steve.creact.library.viewholder.BaseRecyclerViewHolder;
 import com.techjumper.corelib.rx.tools.RxUtils;
+import com.techjumper.corelib.utils.basic.NumberUtil;
 import com.techjumper.corelib.utils.common.AcHelper;
 import com.techjumper.corelib.utils.common.JLog;
 import com.techjumper.corelib.utils.window.ToastUtils;
@@ -175,12 +176,12 @@ public class PropertyViewHolder extends BaseRecyclerViewHolder<PropertyData> {
                 long time_ = Long.parseLong(messagesBean.getCreated_at());
                 SimpleDateFormat format = new SimpleDateFormat(getContext().getString(R.string.pattren_M_D));
                 String time = format.format(new Date(time_ * 1000));
-
-//                bundle2.putInt(Constant.PLACARD_DETAIL_ID, data.getId());
+                bundle2.putInt(Constant.PLACARD_DETAIL_ID, NumberUtil.convertToint(obj_id, -1));
                 bundle2.putString(Constant.PLACARD_DETAIL_CONTENT, content);
                 bundle2.putString(Constant.PLACARD_DETAIL_TIME, time);
                 bundle2.putString(Constant.PLACARD_DETAIL_TITLE, title);
                 bundle2.putString(Constant.PLACARD_DETAIL_TYPE, types + "");
+                bundle2.putString(Constant.PLACARD_DETAIL_COME_FROM, "1");
                 new AcHelper.Builder((Activity) getContext()).extra(bundle2).target(PlacardDetailActivity.class).start();
                 break;
             case 4:

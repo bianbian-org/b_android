@@ -42,7 +42,11 @@ public class PlacardDetailActivity extends AppBaseActivity<PlacardDetailActivity
 
     @Override
     protected void initView(Bundle savedInstanceState) {
-        setUpView();
+
+    }
+
+    public void setUp(String content) {
+        setUpView(content);
         mTvTitle.setText(getPresenter().getTitle());
         mBtnType.setText(getPresenter().getType());
         mTvTime.setText(getPresenter().getTime());
@@ -57,13 +61,13 @@ public class PlacardDetailActivity extends AppBaseActivity<PlacardDetailActivity
     }
 
     @SuppressLint("SetJavaScriptEnabled")
-    private void setUpView() {
+    private void setUpView(String content) {
         WebSettings mWebSettings = mWebView.getSettings();
         mWebSettings.setJavaScriptEnabled(true);
         mWebView.setWebViewClient(new WebViewClient() {
             @Override
             public void onPageFinished(WebView view, String url) {
-                view.loadUrl("javascript:loadContent('" + getPresenter().getContent() + "')");
+                view.loadUrl("javascript:loadContent('" + content + "')");
                 super.onPageFinished(view, url);
             }
 

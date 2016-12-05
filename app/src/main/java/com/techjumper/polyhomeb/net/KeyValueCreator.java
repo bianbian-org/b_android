@@ -440,4 +440,11 @@ public class KeyValueCreator {
                 .put("ticket", ticket)
                 .put("village_id", village_id);
     }
+
+    public static KeyValuePair getNoticeDetail(String user_id, String ticket, String id) {
+        return newPair()
+                .put("user_id", user_id)
+                .put("ticket", ticket)
+                .put("id", id);
+    }
 }

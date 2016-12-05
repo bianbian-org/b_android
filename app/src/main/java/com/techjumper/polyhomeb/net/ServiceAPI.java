@@ -15,6 +15,7 @@ import com.techjumper.polyhomeb.entity.LoginEntity;
 import com.techjumper.polyhomeb.entity.MarqueeTextInfoEntity;
 import com.techjumper.polyhomeb.entity.MessageEntity;
 import com.techjumper.polyhomeb.entity.NewRoomEntity;
+import com.techjumper.polyhomeb.entity.NoticeDetailEntity;
 import com.techjumper.polyhomeb.entity.OrdersEntity;
 import com.techjumper.polyhomeb.entity.PaymentTypeEntity;
 import com.techjumper.polyhomeb.entity.PaymentsEntity;
@@ -635,6 +636,11 @@ public interface ServiceAPI {
     @GET("village/server/list")
     Observable<JuJiaInfoEntity> getJuJiaInfo(@QueryMap Map<String, String> map);
 
+    /**
+     * 公告详情
+     */
+    @GET("notices/show")
+    Observable<NoticeDetailEntity> getNoticeDetail(@QueryMap Map<String, String> map);
 
 /*********************************************************医疗接口*********************************************************/
 
