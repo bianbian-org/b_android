@@ -185,7 +185,7 @@ public class PropertyViewHolder extends BaseRecyclerViewHolder<PropertyData> {
                 bundle2.putString(Constant.PLACARD_DETAIL_COME_FROM, "1");
                 new AcHelper.Builder((Activity) getContext()).extra(bundle2).target(PlacardDetailActivity.class).start();
                 break;
-            case 3:
+            case 2:
                 Bundle bundle3 = new Bundle();
                 bundle3.putInt(Constant.KEY_ORDER_ID, id);
                 bundle3.putString(Constant.KEY_ORDER_MESSAGE_ID, obj_id);
