@@ -33,9 +33,6 @@ public class PolyApplication extends Lib2Application {
 //        }
 //        JPushInterface.init(this);            // 初始化 JPush
         com.techjumper.lib2.Config.sIsDebug = BuildConfig.DEBUG; //控制lib2是否开启 debug ( debug 模式下会打印 http-log 等等)
-
-
-
     }
 
     @Override
