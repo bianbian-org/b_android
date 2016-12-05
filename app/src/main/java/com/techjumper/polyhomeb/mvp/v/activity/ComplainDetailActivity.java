@@ -33,7 +33,8 @@ import cn.finalteam.loadingviewfinal.RecyclerViewFinal;
  * * * * * * * * * * * * * * * * * * * * * * *
  **/
 @Presenter(ComplainDetailActivityPresenter.class)
-public class ComplainDetailActivity extends AppBaseActivity<ComplainDetailActivityPresenter> implements View.OnLayoutChangeListener {
+public class ComplainDetailActivity extends AppBaseActivity<ComplainDetailActivityPresenter>
+        implements View.OnLayoutChangeListener {
 
     @Bind(R.id.rv)
     RecyclerViewFinal mRv;

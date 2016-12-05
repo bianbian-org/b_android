@@ -19,6 +19,7 @@ import com.techjumper.polyhomeb.entity.PropertyComplainDetailEntity;
 import com.techjumper.polyhomeb.entity.TrueEntity;
 import com.techjumper.polyhomeb.entity.event.PhotoViewEvent;
 import com.techjumper.polyhomeb.entity.event.ResendMessageEvent;
+import com.techjumper.polyhomeb.entity.event.UpdateMessageStateEvent;
 import com.techjumper.polyhomeb.mvp.m.ComplainDetailActivityModel;
 import com.techjumper.polyhomeb.mvp.v.activity.ComplainDetailActivity;
 import com.techjumper.polyhomeb.mvp.v.activity.PicViewActivity;
@@ -42,7 +43,7 @@ public class ComplainDetailActivityPresenter extends AppBaseActivityPresenter<Co
 
     private ComplainDetailActivityModel mModel = new ComplainDetailActivityModel(this);
 
-    private Subscription mSubs1, mSubs2, mSubs3, mSubs4, mSubs5,mSubs6;
+    private Subscription mSubs1, mSubs2, mSubs3, mSubs4, mSubs5, mSubs6;
     private String mCurrentUrl = "";
     private int mCurrentMessagePosition = -1;
     private PropertyRepairDetailProprietorContentData mCurrentMessageData;
@@ -84,7 +85,7 @@ public class ComplainDetailActivityPresenter extends AppBaseActivityPresenter<Co
                                         || !"true".equals(trueEntity.getData().getResult())) {
                                     return;
                                 }
-
+                                RxBus.INSTANCE.send(new UpdateMessageStateEvent(mModel.getMessageId()));
                             }
                         }));
     }

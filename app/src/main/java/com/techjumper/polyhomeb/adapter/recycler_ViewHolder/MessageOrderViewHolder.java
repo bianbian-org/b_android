@@ -7,13 +7,11 @@ import android.view.View;
 
 import com.steve.creact.annotation.DataBean;
 import com.steve.creact.library.viewholder.BaseRecyclerViewHolder;
-import com.techjumper.corelib.rx.tools.RxBus;
 import com.techjumper.corelib.utils.common.AcHelper;
 import com.techjumper.corelib.utils.common.ResourceUtils;
 import com.techjumper.polyhomeb.Constant;
 import com.techjumper.polyhomeb.R;
 import com.techjumper.polyhomeb.adapter.recycler_Data.MessageOrderData;
-import com.techjumper.polyhomeb.entity.event.UpdateMessageStateEvent;
 import com.techjumper.polyhomeb.mvp.v.activity.OrderDetailActivity;
 
 /**
@@ -54,7 +52,7 @@ public class MessageOrderViewHolder extends BaseRecyclerViewHolder<MessageOrderD
                         bundle2.putInt(Constant.KEY_ORDER_ID, data.getId());
                         bundle2.putString(Constant.KEY_ORDER_MESSAGE_ID, data.getObj_id());
                         setVisibility(R.id.iv_dot, View.INVISIBLE);
-                        RxBus.INSTANCE.send(new UpdateMessageStateEvent(data.getId()));
+//                        RxBus.INSTANCE.send(new UpdateMessageStateEvent(data.getId()));
                         new AcHelper.Builder((Activity) getContext()).extra(bundle2).target(OrderDetailActivity.class).start();
                         break;
                 }

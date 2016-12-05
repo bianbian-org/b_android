@@ -3,8 +3,10 @@ package com.techjumper.polyhomeb.mvp.p.activity;
 import android.os.Bundle;
 import android.text.TextUtils;
 
+import com.techjumper.corelib.rx.tools.RxBus;
 import com.techjumper.corelib.rx.tools.RxUtils;
 import com.techjumper.polyhomeb.entity.TrueEntity;
+import com.techjumper.polyhomeb.entity.event.UpdateMessageStateEvent;
 import com.techjumper.polyhomeb.mvp.m.OrderDetailActivityModel;
 import com.techjumper.polyhomeb.mvp.v.activity.OrderDetailActivity;
 
@@ -62,7 +64,7 @@ public class OrderDetailActivityPresenter extends AppBaseActivityPresenter<Order
                                         || !"true".equals(trueEntity.getData().getResult())) {
                                     return;
                                 }
-
+                                RxBus.INSTANCE.send(new UpdateMessageStateEvent(mModel.getOrderId()));
                             }
                         }));
     }

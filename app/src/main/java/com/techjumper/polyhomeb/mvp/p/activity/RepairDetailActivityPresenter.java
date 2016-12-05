@@ -19,6 +19,7 @@ import com.techjumper.polyhomeb.entity.PropertyRepairDetailEntity;
 import com.techjumper.polyhomeb.entity.TrueEntity;
 import com.techjumper.polyhomeb.entity.event.PhotoViewEvent;
 import com.techjumper.polyhomeb.entity.event.ResendMessageEvent;
+import com.techjumper.polyhomeb.entity.event.UpdateMessageStateEvent;
 import com.techjumper.polyhomeb.mvp.m.RepairDetailActivityModel;
 import com.techjumper.polyhomeb.mvp.v.activity.PicViewActivity;
 import com.techjumper.polyhomeb.mvp.v.activity.RepairDetailActivity;
@@ -84,7 +85,7 @@ public class RepairDetailActivityPresenter extends AppBaseActivityPresenter<Repa
                                         || !"true".equals(trueEntity.getData().getResult())) {
                                     return;
                                 }
-
+                                RxBus.INSTANCE.send(new UpdateMessageStateEvent(mModel.getMessageId()));
                             }
                         }));
     }
