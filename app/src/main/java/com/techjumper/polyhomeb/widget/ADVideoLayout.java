@@ -23,6 +23,10 @@ import com.techjumper.polyhomeb.entity.ADEntity;
 
 import java.io.File;
 
+import rx.Observable;
+import rx.Observer;
+import rx.schedulers.Schedulers;
+
 import static android.os.Environment.getExternalStorageDirectory;
 
 /**
@@ -210,12 +214,14 @@ public class ADVideoLayout extends RelativeLayout implements IDownloadError, IDo
                 mIsPrepare = true;
                 showFirstFrame();
             });
-            mMediaPlayer.prepare();
+            mMediaPlayer.prepareAsync();   //此处使用异步加载，可以防止首页滑动时候卡顿
+//            mMediaPlayer.prepare();
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
 
+    //注释的原因是为了让点击第一次就播放，再次点击则不暂停了，而是提取携带的URL，跳转
     public void onClick() {
         if (mMediaPlayer == null || !mIsPrepare) return;
 //        if (mMediaPlayer.isPlaying()) {
@@ -248,8 +254,27 @@ public class ADVideoLayout extends RelativeLayout implements IDownloadError, IDo
     public boolean onSurfaceTextureDestroyed(SurfaceTexture surface) {
         mSurface = null;
         mTextureView = null;
-        mMediaPlayer.stop();
-        mMediaPlayer.release();
+        //在子线程释放资源
+        Observable.just(null)
+                .observeOn(Schedulers.io())
+                .subscribe(new Observer<Object>() {
+                    @Override
+                    public void onCompleted() {
+
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+
+                    }
+
+                    @Override
+                    public void onNext(Object o) {
+                        mMediaPlayer.stop();
+                        mMediaPlayer.release();
+                        mMediaPlayer = null;
+                    }
+                });
         return true;
     }
 
