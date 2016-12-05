@@ -82,15 +82,15 @@ public class HomeFragment extends AppBaseFragment<HomeFragmentPresenter>
                 //1表示正在滚动，用户手指在屏幕上 SCROLL_STATE_TOUCH_SCROLL
                 //2表示正在滑动。用户手指已经离开屏幕 SCROLL_STATE_FLING
                 super.onScrollStateChanged(recyclerView, newState);
-                switch (newState) {
-                    case 1:
-                    case 2:
-                        JLog.e("暂停加载" + newState);
-                        break;
-                    case 0:
-                        JLog.e("恢复加载" + newState);
-                        break;
-                }
+//                switch (newState) {
+//                    case 1:
+//                    case 2:
+//                        JLog.e("暂停加载" + newState);
+//                        break;
+//                    case 0:
+//                        JLog.e("恢复加载" + newState);
+//                        break;
+//                }
             }
 
             @Override
