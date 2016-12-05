@@ -12,37 +12,34 @@ import com.techjumper.corelib.utils.common.AcHelper;
 import com.techjumper.corelib.utils.common.ResourceUtils;
 import com.techjumper.polyhomeb.Constant;
 import com.techjumper.polyhomeb.R;
-import com.techjumper.polyhomeb.adapter.recycler_Data.MessageAllContentData;
+import com.techjumper.polyhomeb.adapter.recycler_Data.MessageOrderData;
 import com.techjumper.polyhomeb.entity.event.UpdateMessageStateEvent;
-import com.techjumper.polyhomeb.mvp.v.activity.ComplainDetailActivity;
 import com.techjumper.polyhomeb.mvp.v.activity.OrderDetailActivity;
-import com.techjumper.polyhomeb.mvp.v.activity.RepairDetailActivity;
 
 /**
  * * * * * * * * * * * * * * * * * * * * * * *
  * Created by lixin
- * Date: 16/8/31
+ * Date: 2016/12/5
  * * * * * * * * * * * * * * * * * * * * * * *
  **/
-@DataBean(data = MessageAllContentData.class, beanName = "MessageAllContentBean")
-public class MessageAllContentViewHolder extends BaseRecyclerViewHolder<MessageAllContentData> {
+@DataBean(beanName = "MessageOrderBean", data = MessageOrderData.class)
+public class MessageOrderViewHolder extends BaseRecyclerViewHolder<MessageOrderData> {
 
     public static final int LAYOUT_ID = R.layout.item_message_all_content;
 
-    public MessageAllContentViewHolder(View itemView) {
+    public MessageOrderViewHolder(View itemView) {
         super(itemView);
     }
 
     @Override
-    public void setData(MessageAllContentData data) {
+    public void setData(MessageOrderData data) {
         if (data == null) return;
+        setVisibility(R.id.iv_dot, data.getHas_read() == 0 ? View.VISIBLE : View.INVISIBLE);
         setText(R.id.tv_notice, data.getTitle());
         setText(R.id.btn, data.getRightText());
         setText(R.id.tv_content, data.getContent());
         setText(R.id.tv_time, data.getTime());
         View view = getView(R.id.root);
-
-        setVisibility(R.id.iv_dot, data.getHas_read() == 0 ? View.VISIBLE : View.INVISIBLE);
 
         if (TextUtils.isEmpty(data.getObj_id())) {
             view.setBackgroundColor(ResourceUtils.getColorResource(R.color.color_acacac));
@@ -59,22 +56,6 @@ public class MessageAllContentViewHolder extends BaseRecyclerViewHolder<MessageA
                         setVisibility(R.id.iv_dot, View.INVISIBLE);
                         RxBus.INSTANCE.send(new UpdateMessageStateEvent(data.getId()));
                         new AcHelper.Builder((Activity) getContext()).extra(bundle2).target(OrderDetailActivity.class).start();
-                        break;
-                    case "4":
-                        Bundle bundle = new Bundle();
-                        bundle.putInt(Constant.KEY_MESSAGE_ID, data.getId());
-                        bundle.putInt(Constant.PROPERTY_REPAIR_DATA_ID, Integer.parseInt(data.getObj_id()));
-                        setVisibility(R.id.iv_dot, View.INVISIBLE);
-                        RxBus.INSTANCE.send(new UpdateMessageStateEvent(data.getId()));
-                        new AcHelper.Builder((Activity) getContext()).extra(bundle).target(RepairDetailActivity.class).start();
-                        break;
-                    case "5":
-                        Bundle bundle1 = new Bundle();
-                        bundle1.putInt(Constant.KEY_MESSAGE_ID, data.getId());
-                        bundle1.putInt(Constant.PROPERTY_COMPLAIN_DATA_ID, Integer.parseInt(data.getObj_id()));
-                        setVisibility(R.id.iv_dot, View.INVISIBLE);
-                        RxBus.INSTANCE.send(new UpdateMessageStateEvent(data.getId()));
-                        new AcHelper.Builder((Activity) getContext()).extra(bundle1).target(ComplainDetailActivity.class).start();
                         break;
                 }
             });

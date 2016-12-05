@@ -32,6 +32,8 @@ public class Constant {
 
     public static final String PROPERTY_COMPLAIN_DATA_ID = "property_complain_data_id";
     public static final String PROPERTY_REPAIR_DATA_ID = "property_repair_data_id";
+    public static final String KEY_ORDER_MESSAGE_ID = "key_order_message_id";
+    public static final String KEY_ORDER_ID = "key_order_id";
 
     public static final String PROPERTY_COMPLAIN_STATUS = "property_complain_status";
     public static final String PROPERTY_REPAIR_STATUS = "property_repair_status";

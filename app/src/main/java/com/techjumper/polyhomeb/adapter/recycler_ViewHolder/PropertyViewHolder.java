@@ -18,6 +18,7 @@ import com.techjumper.polyhomeb.R;
 import com.techjumper.polyhomeb.adapter.recycler_Data.PropertyData;
 import com.techjumper.polyhomeb.entity.MarqueeTextInfoEntity;
 import com.techjumper.polyhomeb.mvp.v.activity.ComplainDetailActivity;
+import com.techjumper.polyhomeb.mvp.v.activity.OrderDetailActivity;
 import com.techjumper.polyhomeb.mvp.v.activity.PaymentActivity;
 import com.techjumper.polyhomeb.mvp.v.activity.PlacardDetailActivity;
 import com.techjumper.polyhomeb.mvp.v.activity.PropertyDetailActivity;
@@ -183,6 +184,12 @@ public class PropertyViewHolder extends BaseRecyclerViewHolder<PropertyData> {
                 bundle2.putString(Constant.PLACARD_DETAIL_TYPE, types + "");
                 bundle2.putString(Constant.PLACARD_DETAIL_COME_FROM, "1");
                 new AcHelper.Builder((Activity) getContext()).extra(bundle2).target(PlacardDetailActivity.class).start();
+                break;
+            case 3:
+                Bundle bundle3 = new Bundle();
+                bundle3.putInt(Constant.KEY_ORDER_ID, id);
+                bundle3.putString(Constant.KEY_ORDER_MESSAGE_ID, obj_id);
+                new AcHelper.Builder((Activity) getContext()).extra(bundle3).target(OrderDetailActivity.class).start();
                 break;
             case 4:
                 Bundle bundle = new Bundle();
