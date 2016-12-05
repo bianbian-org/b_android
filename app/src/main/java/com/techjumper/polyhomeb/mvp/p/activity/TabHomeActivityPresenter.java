@@ -157,7 +157,7 @@ public class TabHomeActivityPresenter extends AppBaseActivityPresenter<TabHomeAc
 
     private void downloadApk(String url) {
         if (TextUtils.isEmpty(url)) return;
-        if (!url.startsWith("/") || !url.contains("http://")) {
+        if (!url.startsWith("/") && url.contains("http://")) {
             Intent intent = new Intent();
             intent.setAction(Intent.ACTION_VIEW);
             intent.setData(Uri.parse(url));
