@@ -36,7 +36,7 @@ public class ViewPagerViewHolder extends BaseRecyclerViewHolder<ViewPagerData>
     private List<ADEntity.DataBean.AdInfosBean> ad_infos = new ArrayList<>();
     private AutoScrollViewPager mViewPager;
     private CBPageAdapter mAdapter;
-    private int mCurrentPosition = -1;
+    private int mCurrentPosition = 0;
     private int[] ints = {R.mipmap.icon_dot_grey, R.mipmap.icon_dot_green};
 
     public ViewPagerViewHolder(View itemView) {

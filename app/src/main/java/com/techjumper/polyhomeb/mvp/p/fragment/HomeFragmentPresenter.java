@@ -254,7 +254,7 @@ public class HomeFragmentPresenter extends AppBaseFragmentPresenter<HomeFragment
     }
 
     /**
-     * Fragment声明周和ViewPager播放视频暂停视频绑定起来
+     * Fragment生命周期和ViewPager播放视频暂停视频绑定起来
      */
     public void sendMessage2ADBanner() {
         RxBus.INSTANCE.send(new LifeCycleEvent());
