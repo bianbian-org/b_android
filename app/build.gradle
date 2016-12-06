@@ -18,8 +18,8 @@ android {
         applicationId "com.techjumper.polyhomeb"
         minSdkVersion rootProject.minSdkVersion
         targetSdkVersion rootProject.targetSdkVersion
-        versionCode 10018
-        versionName "1.1.8"
+        versionCode 10019
+        versionName "1.1.9"
         multiDexEnabled true
     }
 
