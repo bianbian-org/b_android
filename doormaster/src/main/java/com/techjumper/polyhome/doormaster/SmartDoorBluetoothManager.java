@@ -101,6 +101,50 @@ public class SmartDoorBluetoothManager {
         }
     }
 
+//    public void unlock(final Activity context, String sn, String mac, String ekey) {
+//        if (isFastOpen()) return;
+//        LibInterface.ManagerCallback callback = new LibInterface.ManagerCallback() {
+//            @Override
+//            public void setResult(final int result, Bundle bundle) {
+//                context.runOnUiThread(new Runnable() {
+//                    @Override
+//                    public void run() {
+//                        if (result == 0x00) {
+//                            //开门成功
+//                            RxBus.INSTANCE.send(new OpenDoorResult(true));
+//                        } else {
+//                            //开门失败
+//                            RxBus.INSTANCE.send(new OpenDoorResult(false));
+//                            processError(result);
+//                        }
+//                    }
+//                });
+//            }
+//        };
+//        LibDevModel device = new LibDevModel();
+//        device.devSn = sn;
+//        device.devType = 0;
+//        device.devMac = mac;
+//        device.eKey = ekey;
+//        try {
+//            int ret = LibDevModel.cleanCard(context, device, callback);
+//            if (ret == 0x00) {
+//                JLog.d("\"开门\"这个消息 发送成功 开始执行开门的指令");
+//            } else {
+//                JLog.d("\"开门\"这个消息 发送失败 没有执行开门的指令");
+//                RxBus.INSTANCE.send(new OpenDoorResult(false));
+//                processError(ret);
+//            }
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//            JLog.d(e.toString());
+//            ToastUtils.show("解锁失败");
+//            JLog.d("\"开门\"这个消息 发送失败 没有执行开门的指令");
+//            RxBus.INSTANCE.send(new OpenDoorResult(false));
+//        }
+//    }
+
+
     public void unlock(final Activity context, String sn, String mac, String ekey) {
         if (isFastOpen()) return;
         LibInterface.ManagerCallback callback = new LibInterface.ManagerCallback() {
@@ -121,13 +165,15 @@ public class SmartDoorBluetoothManager {
                 });
             }
         };
+
         LibDevModel device = new LibDevModel();
         device.devSn = sn;
-        device.devType = 0;
+        device.devType = 5;
         device.devMac = mac;
         device.eKey = ekey;
+
         try {
-            int ret = LibDevModel.cleanCard(context, device, callback);
+            int ret = LibDevModel.controlDevice(context, 0x00, device, null, callback);
             if (ret == 0x00) {
                 JLog.d("\"开门\"这个消息 发送成功 开始执行开门的指令");
             } else {
