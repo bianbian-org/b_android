@@ -127,6 +127,7 @@ public class PolyPluginManager {
 
                     @Override
                     public void onError(Throwable e) {
+                        JLog.d(e);
                         ToastUtils.show(Utils.appContext.getString(R.string.error_to_get_family_info));
                         if (sIStartPluginListener != null)
                             sIStartPluginListener.onPluginError(e);
