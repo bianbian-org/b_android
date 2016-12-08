@@ -150,7 +150,7 @@ public class SmartDoorBluetoothManager {
 //            RxBus.INSTANCE.send(new OpenDoorResult(false));
 //        }
 //    }
-    
+
     public void unlock(final Activity context, String sn, String mac, String ekey) {
         if (isFastOpen()) return;
         LibInterface.ManagerCallback callback = new LibInterface.ManagerCallback() {
