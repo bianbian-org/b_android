@@ -61,22 +61,29 @@ public class SmartDoorBluetoothManager {
                     public void run() {
                         //1将扫描完后所有被扫描到的设备装进map
                         //得到scanDevices
+                        JLog.d("搜索到的设备有" + deviceList.size() + "个");
                         for (int i = 0; i < deviceList.size(); i++) {
                             scanDevices.put(deviceList.get(i), rssis.get(i));
+                            JLog.d("第" + (i + 1) + "个设备信号强度是" + rssis.get(i).toString());
                         }
+
                         //2将用户已有的(sp)数据遍历，比对刚才的map中的sn;如果有sn相同，说明用户能开扫到的这把锁，反之则不能开
                         //得到canOpenDevices
                         for (LibDevModel model : existsDatas) {
                             for (String scanDevice : scanDevices.keySet()) {
                                 if (model.devSn.equalsIgnoreCase(scanDevice)) {
                                     canOpenDevices.put(scanDevice, scanDevices.get(scanDevice));
+                                    JLog.d("能开的锁的sn是:" + model.devSn);
                                 }
                             }
                         }
+
                         //3将所有能开的锁存下来，拿去比对信号强弱，得到信号最强的那把锁的sn，则就是距离用户最近的锁.
                         //得到距离用户最近的门锁的sn
                         String closedDevice = getClosedDeviceSn();
                         RxBus.INSTANCE.send(new BLEScanResultEvent(!TextUtils.isEmpty(closedDevice), closedDevice));
+
+                        JLog.d("距离最近的一把门锁sn是:" + closedDevice);
                     }
                 });
             }
