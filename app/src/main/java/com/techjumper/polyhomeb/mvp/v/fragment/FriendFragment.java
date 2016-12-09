@@ -179,7 +179,7 @@ public class FriendFragment extends AppBaseWebViewFragment<FriendFragmentPresent
     }
 
     public void reload() {
-//        initWebView((AdvancedWebView) mViewRoot.findViewById(R.id.wb));
+        initWebView((AdvancedWebView) mViewRoot.findViewById(R.id.wb));
         getWebView().loadUrl(Config.sFriend);
     }
 
