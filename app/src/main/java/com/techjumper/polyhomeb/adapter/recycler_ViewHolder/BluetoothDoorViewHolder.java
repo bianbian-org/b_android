@@ -1,5 +1,6 @@
 package com.techjumper.polyhomeb.adapter.recycler_ViewHolder;
 
+import android.Manifest;
 import android.app.Activity;
 import android.content.Intent;
 import android.view.View;
@@ -7,6 +8,7 @@ import android.view.View;
 import com.intelligoo.sdk.LibDevModel;
 import com.steve.creact.annotation.DataBean;
 import com.steve.creact.library.viewholder.BaseRecyclerViewHolder;
+import com.tbruyelle.rxpermissions.RxPermissions;
 import com.techjumper.corelib.rx.tools.RxBus;
 import com.techjumper.corelib.rx.tools.RxUtils;
 import com.techjumper.corelib.utils.common.JLog;
@@ -217,7 +219,18 @@ public class BluetoothDoorViewHolder extends BaseRecyclerViewHolder<BluetoothDat
 
     public void startDeviceScan(List<LibDevModel> list) {
         if (!AppUtils.isCellPhoneSupportBLE(getContext())) return;
-        SmartDoorBluetoothManager.with().scanBLEDevices((Activity) getContext(), list);
+        requestPermission(list);
     }
 
+    private void requestPermission(List<LibDevModel> list) {
+        RxPermissions.getInstance(getContext())
+                .request(Manifest.permission.ACCESS_COARSE_LOCATION)
+                .subscribe(granted -> {
+                    if (granted) {
+                        SmartDoorBluetoothManager.with().scanBLEDevices((Activity) getContext(), list);
+                    } else {
+                        ToastUtils.show(getContext().getString(R.string.no_ble_permission));
+                    }
+                });
+    }
 }
