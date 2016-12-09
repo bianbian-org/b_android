@@ -111,7 +111,7 @@ public class BluetoothDoorViewHolder extends BaseRecyclerViewHolder<BluetoothDat
                     model.eKey = bean.getEkey();
                     model.devMac = bean.getMac();
                     model.devSn = bean.getSn();
-                    model.devType = 0;
+                    model.devType = 5;
                     list.add(model);
                 }
 //                SmartDoorBluetoothManager.with().scanBLEDevices((Activity) getContext(), list);
@@ -147,7 +147,7 @@ public class BluetoothDoorViewHolder extends BaseRecyclerViewHolder<BluetoothDat
             model.eKey = bean.getEkey();
             model.devMac = bean.getMac();
             model.devSn = bean.getSn();
-            model.devType = 0;
+            model.devType = 5;
             list.add(model);
         }
 //        SmartDoorBluetoothManager.with().scanBLEDevices((Activity) getContext(), list);
