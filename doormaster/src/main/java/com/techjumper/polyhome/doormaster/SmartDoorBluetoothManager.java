@@ -67,6 +67,17 @@ public class SmartDoorBluetoothManager {
                             JLog.d("第" + (i + 1) + "个设备信号强度是" + rssis.get(i).toString());
                         }
 
+                            JLog.d("-----------新增调试信息开始-------------");
+                            for (LibDevModel model : existsDatas) {
+                                JLog.d("服务器返回的门锁mac信息：" + model.devMac);
+                                JLog.d("服务器返回的门锁sn信息：" + model.devSn);
+                            }
+                            JLog.d("--------------------------");
+                            for (String d : deviceList) {
+                                JLog.d("扫描到的门锁信息：" + d.toString());
+                            }
+                            JLog.d("------------新增调试信息结束------------");
+
                         //2将用户已有的(sp)数据遍历，比对刚才的map中的sn;如果有sn相同，说明用户能开扫到的这把锁，反之则不能开
                         //得到canOpenDevices
                         for (LibDevModel model : existsDatas) {
