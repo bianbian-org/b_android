@@ -64,7 +64,7 @@ public class JavascriptObject {
      */
     @JavascriptInterface
     public void postMessage(String json) {
-        JLog.e(json);
+        JLog.e(json+"");
         if (TextUtils.isEmpty(json)) return;
         JSJavaBaseEntity baseEntity = GsonUtils.fromJson(json, JSJavaBaseEntity.class);
         if (baseEntity == null) return;
