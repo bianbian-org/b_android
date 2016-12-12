@@ -34,6 +34,9 @@ public class JSInteractionActivity extends AppBaseWebViewActivity<JSInteractionA
     @Bind(R.id.left_first_iv)
     ImageView iv;
 
+    private WebTitleManager mWebTitleManager;
+    private String mUrl = "";
+
     @Override
     protected View inflateView(Bundle savedInstanceState) {
         return inflate(R.layout.activity_js_interaction);
@@ -41,11 +44,11 @@ public class JSInteractionActivity extends AppBaseWebViewActivity<JSInteractionA
 
     @Override
     protected void initView(Bundle savedInstanceState) {
-        String url = getPresenter().getUrl();
-        new WebTitleManager(url, mViewRoot, this);
+        mUrl = getPresenter().getUrl();
+        mWebTitleManager = new WebTitleManager(mUrl, mViewRoot, this);
         initWebView((AdvancedWebView) findViewById(R.id.wb));
         getWebView().addJsInterface(this, Constant.JS_NATIVE_BRIDGE);
-        getWebView().loadUrl(url);
+        getWebView().loadUrl(mUrl);
     }
 
     @Override
@@ -125,6 +128,19 @@ public class JSInteractionActivity extends AppBaseWebViewActivity<JSInteractionA
             default:
                 onLineMethod(mRightSecondMethod);
                 break;
+        }
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        if (mWebTitleManager == null)
+            mWebTitleManager = new WebTitleManager(mUrl, mViewRoot, this);
+        if (!TextUtils.isEmpty(mWebTitleManager.getPageName())
+                && mWebTitleManager.getPageName().equals("mypl")) {
+            //说明这个页面是商城的 "我的" 页面
+            //刷新当前页面，使页面数据更新
+            getWebView().reload();
         }
     }
 
