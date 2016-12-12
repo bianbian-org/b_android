@@ -28,6 +28,7 @@ public class WebTitleManager {
     //title=帖子详情&left=::NativeReturn&right=
 
     //pageName=mypl,作用是判断商城当前在不在"我的"界面，如果在，就有这个字段，并且值为mypl，反之则没有这个字段和值.
+    //pageReturn,作用是判断商城当前在不在"结算"界面，如果在就有这个字段，并且值为home，反之则没有这个字段和值.
 
     private static final int LEFT_FIRST = 1;
     private static final int LEFT_SECOND = 2;
@@ -40,6 +41,7 @@ public class WebTitleManager {
     private IWebViewTitleClick mIWebViewTitleClick;
     private WebTitleHelper.Builder mWebTitleBuilder;
     private String mPageName = "";
+    private String mPageReturn = "";
 
     /**
      * 图片icon地址
@@ -116,6 +118,15 @@ public class WebTitleManager {
             if (splits[i].contains("pageName=")) {
                 String tag = splits[i];
                 mPageName = tag.replace("pageName=", "");
+                break;
+            }
+        }
+
+        //处理pageReturn
+        for (int i = 0; i < splits.length; i++) {
+            if (splits[i].contains("pageReturn=")) {
+                String tag = splits[i];
+                mPageReturn = tag.replace("pageReturn=", "");
                 break;
             }
         }
@@ -467,6 +478,10 @@ public class WebTitleManager {
 
     public String getPageName() {
         return mPageName;
+    }
+
+    public String getPageReturn() {
+        return mPageReturn;
     }
 
 }

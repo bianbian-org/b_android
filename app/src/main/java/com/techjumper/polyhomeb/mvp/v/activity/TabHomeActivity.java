@@ -152,6 +152,7 @@ public class TabHomeActivity extends AppBaseActivity<TabHomeActivityPresenter> {
         mIsTabHomeActivityVisible = true;
     }
 
+    //此Activity从栈中被拉回到栈顶时候调用
     @Override
     protected void onNewIntent(Intent intent) {
         super.onNewIntent(intent);

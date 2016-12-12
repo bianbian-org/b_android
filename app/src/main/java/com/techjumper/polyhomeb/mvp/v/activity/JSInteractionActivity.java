@@ -7,6 +7,7 @@ import android.widget.ImageView;
 
 import com.techjumper.corelib.mvp.factory.Presenter;
 import com.techjumper.corelib.rx.tools.RxBus;
+import com.techjumper.corelib.utils.common.AcHelper;
 import com.techjumper.polyhomeb.Constant;
 import com.techjumper.polyhomeb.R;
 import com.techjumper.polyhomeb.entity.event.ToggleMenuClickEvent;
@@ -137,7 +138,7 @@ public class JSInteractionActivity extends AppBaseWebViewActivity<JSInteractionA
         if (mWebTitleManager == null)
             mWebTitleManager = new WebTitleManager(mUrl, mViewRoot, this);
         if (!TextUtils.isEmpty(mWebTitleManager.getPageName())
-                && mWebTitleManager.getPageName().equals("mypl")) {
+                && mWebTitleManager.getPageName().equalsIgnoreCase("mypl")) {
             //说明这个页面是商城的 "我的" 页面
             //刷新当前页面，使页面数据更新
             getWebView().reload();
@@ -158,5 +159,19 @@ public class JSInteractionActivity extends AppBaseWebViewActivity<JSInteractionA
     public void refreshH5StateEvent(String order_number) {
         if (TextUtils.isEmpty(order_number)) return;
         getWebView().loadUrl("javascript:" + "refresh_order(" + order_number + ")");
+    }
+
+    @Override
+    public void onBackPressed() {
+        if (mWebTitleManager == null)
+            mWebTitleManager = new WebTitleManager(mUrl, mViewRoot, this);
+        if (!TextUtils.isEmpty(mWebTitleManager.getPageReturn())
+                && mWebTitleManager.getPageReturn().equalsIgnoreCase("home")) {
+            //如果在商城"结算"界面，那么返回直接回到商城首页
+            new AcHelper.Builder(this).closeCurrent(true).target(TabHomeActivity.class).start();
+        } else {
+            //如果不在商城的"结算"界面，那么返回操作就是默认处理方式
+            super.onBackPressed();
+        }
     }
 }
