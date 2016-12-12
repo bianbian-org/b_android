@@ -105,7 +105,8 @@ public class HomeFragmentModel extends BaseModel<HomeFragmentPresenter> {
         KeyValuePair keyValuePair = KeyValueCreator.getMarqueeText(
                 UserManager.INSTANCE.getUserInfo(UserManager.KEY_ID)
                 , UserManager.INSTANCE.getTicket()
-                , UserManager.INSTANCE.getUserInfo(UserManager.KEY_CURRENT_VILLAGE_ID));
+                , UserManager.INSTANCE.getUserInfo(UserManager.KEY_CURRENT_VILLAGE_ID)
+                , UserManager.INSTANCE.getUserInfo(UserManager.KEY_CURRENT_FAMILY_ID));
         Map<String, String> baseArgumentsMap = NetHelper.createBaseArgumentsMap(keyValuePair);
         return RetrofitHelper
                 .<ServiceAPI>createDefault()

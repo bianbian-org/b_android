@@ -415,11 +415,12 @@ public class KeyValueCreator {
                 .put("new_user_id", new_user_id);
     }
 
-    public static KeyValuePair getMarqueeText(String user_id, String ticket, String village_id) {
+    public static KeyValuePair getMarqueeText(String user_id, String ticket, String village_id, String family_id) {
         return newPair()
                 .put("user_id", user_id)
                 .put("ticket", ticket)
-                .put("village_id", village_id);
+                .put("village_id", village_id)
+                .put("family_id", family_id);
     }
 
     public static KeyValuePair updateMessageState(String user_id, String ticket, String message_id) {
