@@ -392,9 +392,6 @@ public class WebTitleManager {
                     case WebTitleHelper.NATIVE_METHOD_RETURN:
                         mLeftFirstMethod = WebTitleHelper.NATIVE_METHOD_RETURN;
                         break;
-                    case WebTitleHelper.JS_RETURN:
-                        mLeftFirstMethod = WebTitleHelper.JS_RETURN;
-                        break;
                     case WebTitleHelper.NATIVE_METHOD_MENU:
                         mLeftFirstMethod = WebTitleHelper.NATIVE_METHOD_MENU;
                         break;
@@ -410,9 +407,6 @@ public class WebTitleManager {
                 switch (method) {
                     case WebTitleHelper.NATIVE_METHOD_RETURN:
                         mLeftSecondMethod = WebTitleHelper.NATIVE_METHOD_RETURN;
-                        break;
-                    case WebTitleHelper.JS_RETURN:
-                        mLeftSecondMethod = WebTitleHelper.JS_RETURN;
                         break;
                     case WebTitleHelper.NATIVE_METHOD_MENU:
                         mLeftSecondMethod = WebTitleHelper.NATIVE_METHOD_MENU;
