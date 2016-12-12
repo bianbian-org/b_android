@@ -20,7 +20,6 @@ import com.techjumper.polyhomeb.entity.PayEntity;
 import com.techjumper.polyhomeb.entity.event.H5PayEvent;
 import com.techjumper.polyhomeb.entity.event.JSArticleIdEvent;
 import com.techjumper.polyhomeb.entity.event.JSCallPhoneNumberEvent;
-import com.techjumper.polyhomeb.entity.event.PageNameEvent;
 import com.techjumper.polyhomeb.entity.event.WebViewNotificationEvent;
 import com.techjumper.polyhomeb.mvp.p.activity.LoginActivityPresenter;
 import com.techjumper.polyhomeb.mvp.v.activity.JSInteractionActivity;
@@ -176,13 +175,6 @@ public class JavascriptObject {
                 bundle.putString(Constant.JS_REPLY_ARTICLE_ID, article_id);
                 bundle.putString(Constant.JS_REPLY_COMMENT_ID, comment_id);
                 new AcHelper.Builder(mActivity).extra(bundle).target(ReplyCommentActivity.class).start();
-            } else if (url.indexOf("NativePageNameJump") > 0) {
-                String[] split = url.split("\\=");
-                if (split.length <= 0) return;
-                if (split.length > 1) {
-                    String pageName = split[1];
-                    RxBus.INSTANCE.send(new PageNameEvent(pageName));
-                }
             }
         }
     }

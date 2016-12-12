@@ -23,7 +23,6 @@ import com.techjumper.polyhomeb.entity.event.ChangeVillageIdRefreshEvent;
 import com.techjumper.polyhomeb.entity.event.H5PayEvent;
 import com.techjumper.polyhomeb.entity.event.JSArticleIdEvent;
 import com.techjumper.polyhomeb.entity.event.JSCallPhoneNumberEvent;
-import com.techjumper.polyhomeb.entity.event.PageNameEvent;
 import com.techjumper.polyhomeb.entity.event.RefreshH5PayStateEvent;
 import com.techjumper.polyhomeb.entity.event.RefreshWhenDeleteArticleEvent;
 import com.techjumper.polyhomeb.entity.event.ReloadWebPageEvent;
@@ -105,10 +104,6 @@ public class JSInteractionActivityPresenter extends AppBaseActivityPresenter<JSI
                                 refreshH5StateEvent(event.getOrder_number());
                             } else if (o instanceof RefreshWhenDeleteArticleEvent) {
                                 getView().getWebView().reload();
-                            } else if (o instanceof PageNameEvent) {
-                                PageNameEvent event = (PageNameEvent) o;
-                                String pageName = event.getPageName();
-                                getView().onJSBackPressed(pageName);
                             } else if (o instanceof ChangeVillageIdRefreshEvent) {
                                 //网页403.重新登录成功后刷新页面.
                                 //必须先要移除header再重新add，不然header的数据是最开始add进去的，
@@ -225,8 +220,8 @@ public class JSInteractionActivityPresenter extends AppBaseActivityPresenter<JSI
                                     return;
                                 ToastUtils.show(getView().getString(R.string.delete_success));
                                 RxBus.INSTANCE.send(new RefreshWhenDeleteArticleEvent());
-//                                getView().finish();
-                                getView().onBackPressed();
+                                getView().finish();
+//                                getView().onBackPressed();
                             }
                         }));
     }

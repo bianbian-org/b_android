@@ -26,7 +26,6 @@ public class WebTitleManager {
     //title=帖子详情&left=::NativeReturn,::&right=呵呵::,呵呵::
     //当title没有某个View的时候,比如没有右边第二个,右边第一个,左边第二个,实际格式如下
     //title=帖子详情&left=::NativeReturn&right=
-    //pageName代表跳转的页面的唯一tag
 
     private static final int LEFT_FIRST = 1;
     private static final int LEFT_SECOND = 2;
@@ -38,7 +37,6 @@ public class WebTitleManager {
     private View mViewRoot;
     private IWebViewTitleClick mIWebViewTitleClick;
     private WebTitleHelper.Builder mWebTitleBuilder;
-    private String mPageName = "";
 
     /**
      * 图片icon地址
@@ -110,14 +108,14 @@ public class WebTitleManager {
             }
         }
 
-        //处理pageName
-        for (int i = 0; i < splits.length; i++) {
-            if (splits[i].contains("pageName")) {
-                String tag = splits[i];
-                mPageName = tag.replace("pageName=", "");
-                break;
-            }
-        }
+//        //处理pageName
+//        for (int i = 0; i < splits.length; i++) {
+//            if (splits[i].contains("pageName")) {
+//                String tag = splits[i];
+//                mPageName = tag.replace("pageName=", "");
+//                break;
+//            }
+//        }
     }
 
     //left=左1:url:NativeReturn,左2:url:NativeMenu
@@ -468,10 +466,6 @@ public class WebTitleManager {
 
     public String getRealUrl() {
         return mRealUrl;
-    }
-
-    public String getPageName() {
-        return mPageName;
     }
 
 }

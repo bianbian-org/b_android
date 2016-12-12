@@ -1,21 +1,15 @@
 package com.techjumper.polyhomeb.mvp.v.activity;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Bitmap;
-import android.os.Bundle;
-import android.text.TextUtils;
 import android.webkit.WebChromeClient;
 import android.webkit.WebResourceRequest;
 import android.webkit.WebResourceResponse;
 import android.webkit.WebView;
 
 import com.techjumper.polyhomeb.mvp.p.activity.AppBaseActivityPresenter;
-import com.techjumper.polyhomeb.other.H5ActivityAndTheirNameModel;
 import com.techjumper.polyhomeb.user.UserManager;
 import com.techjumper.polyhomeb.widget.AdvancedWebView;
-
-import java.util.LinkedList;
 
 /**
  * * * * * * * * * * * * * * * * * * * * * * *
@@ -47,18 +41,6 @@ public abstract class AppBaseWebViewActivity<T extends AppBaseActivityPresenter>
         addHttpHeaders();
         mIsInit = true;
     }
-
-    private static LinkedList<H5ActivityAndTheirNameModel> sActivityList = new LinkedList<>();
-
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        sActivityList.add(new H5ActivityAndTheirNameModel(TextUtils.isEmpty(getPageName())
-                ? String.valueOf(System.currentTimeMillis()) : getPageName(), this));
-    }
-
-    protected abstract String getPageName();
-
 
     public AdvancedWebView getWebView() {
         if (!mIsInit)
@@ -119,34 +101,6 @@ public abstract class AppBaseWebViewActivity<T extends AppBaseActivityPresenter>
         super.onActivityResult(requestCode, resultCode, intent);
         if (webViewIsInit()) {
             mWebView.onActivityResult(requestCode, resultCode, intent);
-        }
-    }
-
-    public void onBackPressed(String pageName) {
-        if (TextUtils.isEmpty(pageName)) {
-            sActivityList.removeLast();
-            super.onBackPressed();
-        } else {
-            for (int i = 0; i < sActivityList.size(); i++) {
-                H5ActivityAndTheirNameModel h5ActivityAndTheirNameModel = sActivityList.get(i);
-                Activity activity = h5ActivityAndTheirNameModel.getActivity();
-                String name = h5ActivityAndTheirNameModel.getName();
-                if (pageName.equals(name)) {
-                    if (i != sActivityList.size() - 1) {   //此页面不是集合中的最后一个页面
-                        for (int j = sActivityList.size() - 1; j > i; j--) {
-                            H5ActivityAndTheirNameModel h5ActivityAndTheirNameModel1 = sActivityList.get(j);
-                            h5ActivityAndTheirNameModel1.getActivity().finish();
-                            sActivityList.remove(j);
-                        }
-                        return;
-                    }
-                } else {
-                    if (activity != null) {
-                        sActivityList.removeLast();
-                        activity.finish();
-                    }
-                }
-            }
         }
     }
 
