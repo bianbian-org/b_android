@@ -58,13 +58,13 @@ public class JSInteractionActivityPresenter extends AppBaseActivityPresenter<JSI
     private boolean isFastClick() {
         long time = System.currentTimeMillis();
         long timeD = time - mLastClick;
-        if (0 < timeD && timeD < 2500) {
+        if (0 < timeD && timeD < 1000) {
             return true;
         }
         mLastClick = time;
         return false;
     }
-    
+
     @Override
     public void onViewInited(Bundle savedInstanceState) {
 //        RxUtils.unsubscribeIfNotNull(mSubs1);
