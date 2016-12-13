@@ -185,7 +185,7 @@ public class AdjustAccountsActivityPresenter extends AppBaseActivityPresenter<Ad
                     JSONObject resultJson = new JSONObject(result);
                     String sign = resultJson.getString("sign");
                     String dataOrg = resultJson.getString("data");
-                    boolean ret = verify(dataOrg, sign, "01");
+                    boolean ret = verify(dataOrg, sign, "00");
                     if (ret) {
                         paySuccess();
                     } else {
