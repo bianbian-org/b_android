@@ -53,6 +53,18 @@ public class JSInteractionActivityPresenter extends AppBaseActivityPresenter<JSI
 
     }
 
+    private long mLastClick;
+
+    private boolean isFastClick() {
+        long time = System.currentTimeMillis();
+        long timeD = time - mLastClick;
+        if (0 < timeD && timeD < 2500) {
+            return true;
+        }
+        mLastClick = time;
+        return false;
+    }
+    
     @Override
     public void onViewInited(Bundle savedInstanceState) {
 //        RxUtils.unsubscribeIfNotNull(mSubs1);
@@ -78,7 +90,9 @@ public class JSInteractionActivityPresenter extends AppBaseActivityPresenter<JSI
                                 //即使收到了消息，也不能创建对话框，所以哈希值相同的情况下，能证明我在JSInteractionActivity1中的JavascriptObject
                                 //发消息出来，JSInteractionActivity1收到了，就弹出对话框.
                                 if (event.getHashCode() != getView().hashCode()) return;
-                                showCallNumDialog(event);
+                                if(!isFastClick()) {
+                                    showCallNumDialog(event);
+                                }
                             } else if (o instanceof JSArticleIdEvent) {
                                 //需要删除的文章的id
                                 JSArticleIdEvent event = (JSArticleIdEvent) o;
