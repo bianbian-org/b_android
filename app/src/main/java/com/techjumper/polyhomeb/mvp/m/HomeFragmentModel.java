@@ -102,11 +102,21 @@ public class HomeFragmentModel extends BaseModel<HomeFragmentPresenter> {
     }
 
     public Observable<MarqueeTextInfoEntity> getMarqueeText() {
+        boolean family = UserManager.INSTANCE.isFamily();
+        String family_id;
+        String village_id;
+        if (family) {
+            family_id = UserManager.INSTANCE.getUserInfo(UserManager.KEY_CURRENT_FAMILY_ID);
+            village_id = UserManager.INSTANCE.getUserInfo(UserManager.KEY_CURRENT_VILLAGE_ID);
+        } else {
+            village_id = UserManager.INSTANCE.getUserInfo(UserManager.KEY_CURRENT_VILLAGE_ID);
+            family_id = "";
+        }
         KeyValuePair keyValuePair = KeyValueCreator.getMarqueeText(
                 UserManager.INSTANCE.getUserInfo(UserManager.KEY_ID)
                 , UserManager.INSTANCE.getTicket()
-                , UserManager.INSTANCE.getUserInfo(UserManager.KEY_CURRENT_VILLAGE_ID)
-                , UserManager.INSTANCE.getUserInfo(UserManager.KEY_CURRENT_FAMILY_ID));
+                , village_id
+                , family_id);
         Map<String, String> baseArgumentsMap = NetHelper.createBaseArgumentsMap(keyValuePair);
         return RetrofitHelper
                 .<ServiceAPI>createDefault()
