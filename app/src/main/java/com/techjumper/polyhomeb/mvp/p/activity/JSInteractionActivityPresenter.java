@@ -32,6 +32,9 @@ import com.techjumper.polyhomeb.mvp.v.activity.JSInteractionActivity;
 import com.techjumper.polyhomeb.mvp.v.activity.TabHomeActivity;
 import com.techjumper.polyhomeb.user.UserManager;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import rx.Observer;
 import rx.Subscription;
 
@@ -47,6 +50,8 @@ public class JSInteractionActivityPresenter extends AppBaseActivityPresenter<JSI
 
     private Subscription mSubs1, mSubs2, mSubs3;
     private String mArticleId;
+    private String mBack_type;
+    private String mOrder_number;
 
     @Override
     public void initData(Bundle savedInstanceState) {
@@ -90,7 +95,7 @@ public class JSInteractionActivityPresenter extends AppBaseActivityPresenter<JSI
                                 //即使收到了消息，也不能创建对话框，所以哈希值相同的情况下，能证明我在JSInteractionActivity1中的JavascriptObject
                                 //发消息出来，JSInteractionActivity1收到了，就弹出对话框.
                                 if (event.getHashCode() != getView().hashCode()) return;
-                                if(!isFastClick()) {
+                                if (!isFastClick()) {
                                     showCallNumDialog(event);
                                 }
                             } else if (o instanceof JSArticleIdEvent) {
@@ -246,9 +251,9 @@ public class JSInteractionActivityPresenter extends AppBaseActivityPresenter<JSI
         if (bean == null) return;
         PayEntity.ParamsBean.UrlBean url = bean.getUrl();
         if (url == null) return;
-        String back_type = url.getBack_type();
+        mBack_type = url.getBack_type();
         int type = url.getType();
-        String order_number = url.getOrder_number();
+        mOrder_number = url.getOrder_number();
 
         PaymentsEntity paymentsEntity = new PaymentsEntity();
         PaymentsEntity.DataBean dataBean = new PaymentsEntity.DataBean();
@@ -281,6 +286,13 @@ public class JSInteractionActivityPresenter extends AppBaseActivityPresenter<JSI
                 paymentsEntity.setData(dataBean);
                 break;
             case 3:
+                PayEntity.ParamsBean.UrlBean.UnionpayBean unionpay = url.getUnionpay();
+                if (unionpay == null || TextUtils.isEmpty(unionpay.getTn())) return;
+                String tn = unionpay.getTn();
+                PaymentsEntity.DataBean.UnionBean unionBean = new PaymentsEntity.DataBean.UnionBean();
+                unionBean.setTn(tn);
+                dataBean.setUnion(unionBean);
+                paymentsEntity.setData(dataBean);
                 break;
             case 4:
                 break;
@@ -291,7 +303,7 @@ public class JSInteractionActivityPresenter extends AppBaseActivityPresenter<JSI
         PayManager.with().loadPay(new OnPayListener() {
             @Override
             public void onSuccess() {
-                paySuccess(back_type, order_number);
+                paySuccess();
             }
 
             @Override
@@ -314,37 +326,38 @@ public class JSInteractionActivityPresenter extends AppBaseActivityPresenter<JSI
     /**
      * 银联支付之后的结果回调
      */
-//    @Override
-//    public void onActivityResult(int requestCode, int resultCode, Intent data) {
-//        if (data == null) {
-//            return;
-//        }
-//        String msg = "";
-//        String str = data.getExtras().getString("pay_result");
-//        if (str.equalsIgnoreCase("success")) {
-//            if (data.hasExtra("result_data")) {
-//                String result = data.getExtras().getString("result_data");
-//                try {
-//                    JSONObject resultJson = new JSONObject(result);
-//                    String sign = resultJson.getString("sign");
-//                    String dataOrg = resultJson.getString("data");
-//                    boolean ret = verify(dataOrg, sign, mMode);
-//                    if (ret) {
-//                        paySuccess();
-//                    } else {
-//                        payFailed();
-//                    }
-//                } catch (JSONException e) {
-//                }
-//            } else {
-//                paySuccess();
-//            }
-//        } else if (str.equalsIgnoreCase("fail")) {
-//            payFailed();
-//        } else if (str.equalsIgnoreCase("cancel")) {
-//            payCancel();
-//        }
-//    }
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (data == null) {
+            return;
+        }
+        String msg = "";
+        String str = data.getExtras().getString("pay_result");
+        if (str.equalsIgnoreCase("success")) {
+            if (data.hasExtra("result_data")) {
+                String result = data.getExtras().getString("result_data");
+                try {
+                    JSONObject resultJson = new JSONObject(result);
+                    String sign = resultJson.getString("sign");
+                    String dataOrg = resultJson.getString("data");
+                    boolean ret = verify(dataOrg, sign, "00");
+                    if (ret) {
+                        paySuccess();
+                    } else {
+                        payFailed();
+                    }
+                } catch (JSONException e) {
+                }
+            } else {
+                paySuccess();
+            }
+        } else if (str.equalsIgnoreCase("fail")) {
+            payFailed();
+        } else if (str.equalsIgnoreCase("cancel")) {
+            payCancel();
+        }
+    }
+
     private void payCancel() {
         ToastUtils.show(getView().getString(R.string.result_pay_cancel));
     }
@@ -353,20 +366,20 @@ public class JSInteractionActivityPresenter extends AppBaseActivityPresenter<JSI
         ToastUtils.show(getView().getString(R.string.result_pay_failed));
     }
 
-    private void paySuccess(String back_type, String order_number) {
+    private void paySuccess() {
         ToastUtils.show(getView().getString(R.string.result_pay_success));
         new Handler().postDelayed(() -> {
             if (getView() != null) {
                 //如果这个字段不是空的，就关闭当前Activity，返回上一页
                 // (需验证其他支付方式的界面，再支付完毕之后会不会回到 选择支付方式的界面，如果不回去，则需要另寻出路)
-                if (TextUtils.isEmpty(back_type)) {
+                if (TextUtils.isEmpty(mBack_type)) {
                     new AcHelper.Builder(getView())
                             .closeCurrent(true)
                             .exitAnim(R.anim.fade_out)
                             .target(TabHomeActivity.class)
                             .start();
                 } else {
-                    RxBus.INSTANCE.send(new RefreshH5PayStateEvent(order_number));
+                    RxBus.INSTANCE.send(new RefreshH5PayStateEvent(mOrder_number));
                     getView().finish();
                 }
             }

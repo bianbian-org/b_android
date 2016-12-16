@@ -76,7 +76,6 @@ public class JavascriptObject {
                 JSJavaPageJumpEntity.ParamsBean params = jsJavaPageJumpEntity.getParams();
                 String url = params.getUrl();
                 if (!isFastDoubleClick(url)) {
-                    JLog.e("..................");
                     pageJump(url);
                 }
                 break;

@@ -68,6 +68,15 @@ public class PayEntity {
 
             private AlipayBean alipay;
             private WxPayBean wxpay;
+            private UnionpayBean unionpay;
+
+            public UnionpayBean getUnionpay() {
+                return unionpay;
+            }
+
+            public void setUnionpay(UnionpayBean unionpay) {
+                this.unionpay = unionpay;
+            }
 
             public WxPayBean getWxpay() {
                 return wxpay;
@@ -130,7 +139,7 @@ public class PayEntity {
                 }
             }
 
-            public static class WxPayBean{
+            public static class WxPayBean {
                 private String appid;
                 private String partnerid;
                 private String prepayid;
@@ -194,6 +203,18 @@ public class PayEntity {
 
                 public void setSign(String sign) {
                     this.sign = sign;
+                }
+            }
+
+            public static class UnionpayBean {
+                private String tn;
+
+                public String getTn() {
+                    return tn;
+                }
+
+                public void setTn(String tn) {
+                    this.tn = tn;
                 }
             }
         }
