@@ -43,7 +43,7 @@ public class KeyValueCreator {
     public static KeyValuePair propertyNotice(String user_id, String village, String family_id, String ticket, String page, String count) {
         return newPair()
                 .put("user_id", user_id)
-                .put("village", village)
+                .put("village_id", village)
                 .put("family_id", family_id)
                 .put("ticket", ticket)
                 .put("page", page)
