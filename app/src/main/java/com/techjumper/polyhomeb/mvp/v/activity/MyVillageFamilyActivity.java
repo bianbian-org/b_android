@@ -30,7 +30,7 @@ public class MyVillageFamilyActivity extends AppBaseActivity<MyVillageFamilyActi
 
     private MyVillageFamilyActivityAdapter mAdapter;
 
-    private List<DisplayBean> list = new ArrayList<>();
+    private List<DisplayBean> mList = new ArrayList<>();
 
     @Override
     protected View inflateView(Bundle savedInstanceState) {
@@ -61,9 +61,9 @@ public class MyVillageFamilyActivity extends AppBaseActivity<MyVillageFamilyActi
     }
 
     public void showData(List<DisplayBean> displayBeen) {
-        list.clear();
-        list.addAll(displayBeen);
-        mAdapter.loadData(list);
+        mList.clear();
+        mList.addAll(displayBeen);
+        mAdapter.loadData(mList);
     }
 
     public MyVillageFamilyActivityAdapter getAdapter() {
