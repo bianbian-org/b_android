@@ -49,7 +49,7 @@ public class JavascriptObject {
         long time = System.currentTimeMillis();
         long timeD = time - lastClickTime;
         boolean flag = this.url.equalsIgnoreCase(url);
-        if (0 < timeD && timeD < 800 && flag) {
+        if (0 < timeD && timeD < 300 && flag) {
             this.url = url;
             return true;
         }
