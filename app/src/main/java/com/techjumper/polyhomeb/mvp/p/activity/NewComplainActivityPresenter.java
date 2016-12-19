@@ -181,7 +181,7 @@ public class NewComplainActivityPresenter extends AppBaseActivityPresenter<NewCo
                 mSubs3 = Observable
 //                        .from(mBase64List)
                         .from(getView().getPhotos())
-                        .flatMap(s -> mModel.uploadPic(s))
+                        .concatMap(s -> mModel.uploadPic(s))
                         .map(uploadPicEntity -> {
                             mUrls.add(uploadPicEntity.getData().getUrl());
                             return uploadPicEntity;

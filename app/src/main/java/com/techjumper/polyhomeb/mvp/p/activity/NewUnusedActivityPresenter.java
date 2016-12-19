@@ -34,13 +34,9 @@ public class NewUnusedActivityPresenter extends AppBaseActivityPresenter<NewUnus
 
     private NewUnusedActivityModel mModel = new NewUnusedActivityModel(this);
 
-    //    private Map<Integer, String> mSectionMap = new HashMap<>();
     private Subscription mSubs1, mSubs2, mSubs3, mSubs4;
     private List<String> mUrls = new ArrayList<>();
     private List<String> mBase64List = new ArrayList<>();
-    private int mSection = -1;
-    //    private PolyPopupWindow mPop;
-//    public boolean isFirstRequestSuccess = false;
     private boolean alreadyReCalculate = false;
 
     private int mDiscount = 1;
@@ -52,7 +48,6 @@ public class NewUnusedActivityPresenter extends AppBaseActivityPresenter<NewUnus
 
     @Override
     public void onViewInited(Bundle savedInstanceState) {
-//        getSections();
         RxUtils.unsubscribeIfNotNull(mSubs2);
         addSubscription(
                 mSubs2 = RxBus.INSTANCE.asObservable().subscribe(o -> {
@@ -79,31 +74,7 @@ public class NewUnusedActivityPresenter extends AppBaseActivityPresenter<NewUnus
         }
     }
 
-//    @OnClick(R.id.layout_type)
-//    public void onClick(View view) {
-//        switch (view.getId()) {
-//            case R.id.layout_type:
-//                if (mPop != null) {
-//                    ObjectAnimator animator = ObjectAnimator.ofFloat(getView().getIvTriangle(), "rotation", 0f, 90f);
-//                    animator.setDuration(300);
-//                    animator.start();
-//                    if (mPop.isShowing()) {
-//                        mPop.dismiss();
-//                    }
-//                    mPop.show(PolyPopupWindow.AnimStyle.ALPHA);
-//                    KeyboardUtils.closeKeyboard(getView().getEtContent());
-//                } else {
-//                    ToastUtils.show(getView().getString(R.string.get_sections));
-//                }
-//                break;
-//        }
-//    }
-
     public void onTitleRightClick() {
-//        if (mSection == -1) {
-//            ToastUtils.show(getView().getString(R.string.please_choose_sections));
-//            return;
-//        }
         if (TextUtils.isEmpty(getView().getEtTitle().getEditableText().toString().trim())) {
             ToastUtils.show(getView().getString(R.string.please_input_your_title));
             return;
@@ -119,57 +90,11 @@ public class NewUnusedActivityPresenter extends AppBaseActivityPresenter<NewUnus
 
         getView().showLoading();
         if (getView().getPhotos().size() != 0) {
-//            new Thread(() -> {
-//                transformCode();
-//                if (mBase64List.size() == getView().getPhotos().size()) {
-//                    getView().runOnUiThread(() -> uploadPic());
-//                }
-//            }).start();
             uploadPic();
         } else if (getView().getPhotos().size() == 0) {
             uploadData();
         }
     }
-
-//    private void initPop() {
-//        mPop = new PolyPopupWindow(getView(), R.style.popup_anim, new DevicePopListItemClick(), getView().getRootView(), new DevicePopDismiss());
-//        mPop.setAnchorView(getView().getTvType());
-//        mPop.setXoff(80);
-//        if (!isFirstRequestSuccess) {
-//            getSections();
-//            return;
-//        }
-//        List<String> datas = new ArrayList<>();
-//        for (String name : mSectionMap.values()) {
-//            datas.add(name);
-//        }
-//        mPop.initData(datas);
-//    }
-
-//    private class DevicePopListItemClick implements PolyPopupWindow.ItemClickCallBack {
-//
-//        @Override
-//        public void callBack(int position, String s) {
-//            getView().getTvType().setTextDefault(s);
-//            mPop.thisDismiss(PolyPopupWindow.AnimStyle.ALPHA);
-//            for (Map.Entry<Integer, String> entry : mSectionMap.entrySet()) {
-//                if (entry.getValue().equals(s)) {
-//                    mSection = entry.getKey();
-//                    break;
-//                }
-//            }
-//        }
-//    }
-//
-//    private class DevicePopDismiss implements PolyPopupWindow.OnPopDismiss {
-//
-//        @Override
-//        public void onDismiss() {
-//            ObjectAnimator animator = ObjectAnimator.ofFloat(getView().getIvTriangle(), "rotation", 90f, 0f);
-//            animator.setDuration(300);
-//            animator.start();
-//        }
-//    }
 
     private void uploadData() {
         String originPrice;
@@ -219,39 +144,12 @@ public class NewUnusedActivityPresenter extends AppBaseActivityPresenter<NewUnus
                         }));
     }
 
-//    private void getSections() {
-//        RxUtils.unsubscribeIfNotNull(mSubs1);
-//        addSubscription(
-//                mSubs1 = mModel.getSections()
-//                        .subscribe(new Observer<SectionsEntity>() {
-//                            @Override
-//                            public void onCompleted() {
-//                                initPop();
-//                            }
-//
-//                            @Override
-//                            public void onReceivedError(Throwable e) {
-//                                isFirstRequestSuccess = false;
-//                                ToastUtils.show(getView().getString(R.string.get_sections));
-//                            }
-//
-//                            @Override
-//                            public void onNext(SectionsEntity sectionsEntity) {
-//                                if (!processNetworkResult(sectionsEntity)) return;
-//                                String[][] result = sectionsEntity.getData().getResult();
-//                                onSectionsReceive(result);
-//                                isFirstRequestSuccess = true;
-//                            }
-//                        }));
-//    }
-
     private void uploadPic() {
         RxUtils.unsubscribeIfNotNull(mSubs3);
         addSubscription(
                 mSubs3 = Observable
-//                        .from(mBase64List)
                         .from(getView().getPhotos())
-                        .flatMap(s -> mModel.uploadPic(s))
+                        .switchMap(s -> mModel.uploadPic(s))
                         .map(uploadPicEntity -> {
                             mUrls.add(uploadPicEntity.getData().getUrl());
                             return uploadPicEntity;
@@ -277,33 +175,6 @@ public class NewUnusedActivityPresenter extends AppBaseActivityPresenter<NewUnus
                         }));
 
     }
-
-//    /**
-//     * 将图片转换为base64编码
-//     */
-//    private void transformCode() {
-//        mBase64List.clear();
-//        ArrayList<String> photos = getView().getPhotos();
-//        for (int i = 0; i < photos.size(); i++) {
-//            String base64 = UploadPicUtil.bitmapPath2Base64(photos.get(i));
-//            mBase64List.add(base64);
-//        }
-//    }
-
-//    private void onSectionsReceive(String[][] result) {
-//        mSectionMap.clear();
-//        for (int i = 0; i < result.length; i++) {
-//            String[] strings = result[i];
-//            String index = strings[0];  //index
-//            String name = strings[1];   //name
-//            int convert2int = NumberUtil.convertToint(index, -1);
-//            if (convert2int == -1) {
-//                mSectionMap.put(Integer.parseInt(name), name);
-//            } else {
-//                mSectionMap.put(Integer.parseInt(index), name);
-//            }
-//        }
-//    }
 
     public List<DisplayBean> getDatas() {
         return mModel.getDatas();

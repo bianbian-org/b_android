@@ -87,17 +87,6 @@ public class NewInvitationActivityModel extends BaseModel<NewInvitationActivityP
         return displayBeen;
     }
 
-//    public Observable<UploadPicEntity> uploadPic(String base64) {
-//        KeyValuePair keyValuePair = KeyValueCreator.uploadPic(
-//                UserManager.INSTANCE.getUserInfo(UserManager.KEY_ID)
-//                , UserManager.INSTANCE.getTicket()
-//                , base64);
-//        BaseArgumentsEntity entity = NetHelper.createBaseArguments(keyValuePair);
-//        return RetrofitHelper.<ServiceAPI>createDefault()
-//                .uploadPic(entity)
-//                .compose(CommonWrap.wrap());
-//    }
-
     public Observable<UploadPicEntity> uploadPic(String filePath) {
 //        File file = new File("/storage/emulated/0/DCIM/Camera/IMG_20161108_161909_HDR.jpg");
         File file = new File(filePath);
