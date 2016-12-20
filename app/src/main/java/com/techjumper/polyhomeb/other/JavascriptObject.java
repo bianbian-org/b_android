@@ -202,7 +202,6 @@ public class JavascriptObject {
 
         RxBus.INSTANCE.send(new H5PayEvent(mActivity.hashCode(), payEntity));
 
-
     }
 
     //网页上点击拨打电话

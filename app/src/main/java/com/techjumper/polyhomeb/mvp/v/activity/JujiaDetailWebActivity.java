@@ -14,8 +14,10 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.techjumper.corelib.mvp.factory.Presenter;
+import com.techjumper.polyhomeb.Constant;
 import com.techjumper.polyhomeb.R;
 import com.techjumper.polyhomeb.mvp.p.activity.JujiaDetailWebActivityPresenter;
+import com.techjumper.polyhomeb.other.JavascriptObject;
 import com.techjumper.polyhomeb.user.UserManager;
 import com.techjumper.polyhomeb.widget.AdvancedWebView;
 
@@ -74,6 +76,7 @@ public class JujiaDetailWebActivity extends AppBaseActivity<JujiaDetailWebActivi
         mWebSettings.setLoadsImagesAutomatically(true);
 
         mWebSettings.setJavaScriptEnabled(true);
+        mWebView.addJavascriptInterface(new JavascriptObject(this), Constant.JS_NATIVE_BRIDGE);
 
         mWebView.setWebViewClient(new WebViewClient() {
             @Override
