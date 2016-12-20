@@ -12,15 +12,20 @@ import java.io.File;
  **/
 public class Config {
 
+    public static String sHost;
+
     /**
      * 是否是调试环境
      */
-    public static final boolean DEBUG = true;
+    public static final boolean DEBUG = false;
 
     /**
      * polyhome域名
      */
-    public static String sHost = "http://poly.techjumper.com";
+
+    static {
+        sHost = DEBUG ? "http://poly.techjumper.com" : "http://api.ourjujia.com";
+    }
 
     /**
      * polyhome接口地址
