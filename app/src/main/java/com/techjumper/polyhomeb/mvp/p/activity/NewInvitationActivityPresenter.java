@@ -22,7 +22,7 @@ import com.techjumper.polyhomeb.mvp.v.activity.NewInvitationActivity;
 import com.techjumper.polyhomeb.widget.PolyPopupWindow;
 
 import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -41,7 +41,7 @@ public class NewInvitationActivityPresenter extends AppBaseActivityPresenter<New
 
     private NewInvitationActivityModel mModel = new NewInvitationActivityModel(this);
 
-    private Map<Integer, String> mSectionMap = new HashMap<>();
+    private LinkedHashMap<Integer, String> mSectionMap = new LinkedHashMap<>();
     private Subscription mSubs1, mSubs2, mSubs3, mSubs4;
     private List<String> mUrls = new ArrayList<>();
     private List<String> mBase64List = new ArrayList<>();
