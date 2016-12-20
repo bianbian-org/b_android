@@ -2,23 +2,19 @@ package com.techjumper.polyhomeb.mvp.p.activity;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.Handler;
 import android.text.TextUtils;
 import android.view.View;
 
 import com.techjumper.corelib.rx.tools.RxBus;
-import com.techjumper.corelib.utils.common.AcHelper;
 import com.techjumper.corelib.utils.window.ToastUtils;
 import com.techjumper.polyhome.paycorelib.OnPayListener;
 import com.techjumper.polyhomeb.R;
 import com.techjumper.polyhomeb.entity.PayEntity;
 import com.techjumper.polyhomeb.entity.PaymentsEntity;
 import com.techjumper.polyhomeb.entity.event.H5PayEvent;
-import com.techjumper.polyhomeb.entity.event.RefreshH5PayStateEvent;
 import com.techjumper.polyhomeb.manager.PayManager;
 import com.techjumper.polyhomeb.mvp.m.JujiaDetailWebModel;
 import com.techjumper.polyhomeb.mvp.v.activity.JujiaDetailWebActivity;
-import com.techjumper.polyhomeb.mvp.v.activity.TabHomeActivity;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -211,22 +207,7 @@ public class JujiaDetailWebActivityPresenter extends AppBaseActivityPresenter<Ju
 
     private void paySuccess() {
         ToastUtils.show(getView().getString(R.string.result_pay_success));
-        new Handler().postDelayed(() -> {
-            if (getView() != null) {
-                //如果这个字段不是空的，就关闭当前Activity，返回上一页
-                // (需验证其他支付方式的界面，再支付完毕之后会不会回到 选择支付方式的界面，如果不回去，则需要另寻出路)
-                if (TextUtils.isEmpty(mBack_type)) {
-                    new AcHelper.Builder(getView())
-                            .closeCurrent(true)
-                            .exitAnim(R.anim.fade_out)
-                            .target(TabHomeActivity.class)
-                            .start();
-                } else {
-                    RxBus.INSTANCE.send(new RefreshH5PayStateEvent(mOrder_number));
-                    getView().finish();
-                }
-            }
-        }, 1500);
+        goBack();
     }
 
     /**
