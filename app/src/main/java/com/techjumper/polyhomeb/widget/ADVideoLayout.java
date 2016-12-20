@@ -1,9 +1,11 @@
 package com.techjumper.polyhomeb.widget;
 
+import android.annotation.TargetApi;
 import android.content.Context;
 import android.graphics.SurfaceTexture;
 import android.media.AudioManager;
 import android.media.MediaPlayer;
+import android.os.Build;
 import android.text.TextUtils;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
@@ -71,6 +73,7 @@ public class ADVideoLayout extends RelativeLayout implements IDownloadError, IDo
         init(context);
     }
 
+    @TargetApi(Build.VERSION_CODES.LOLLIPOP)
     public ADVideoLayout(Context context, AttributeSet attrs, int defStyleAttr, int defStyleRes) {
         super(context, attrs, defStyleAttr, defStyleRes);
         init(context);
@@ -203,8 +206,8 @@ public class ADVideoLayout extends RelativeLayout implements IDownloadError, IDo
     }
 
     private void initMediaPlayer() {
-        mMediaPlayer = new MediaPlayer();
         try {
+            mMediaPlayer = new MediaPlayer();
             mMediaPlayer.setVolume(0, 0);//静音
             mMediaPlayer.setLooping(true);
             mMediaPlayer.setSurface(mSurface);
@@ -270,9 +273,11 @@ public class ADVideoLayout extends RelativeLayout implements IDownloadError, IDo
 
                     @Override
                     public void onNext(Object o) {
-                        mMediaPlayer.stop();
-                        mMediaPlayer.release();
-                        mMediaPlayer = null;
+                        if (mMediaPlayer != null) {
+                            mMediaPlayer.stop();
+                            mMediaPlayer.release();
+                            mMediaPlayer = null;
+                        }
                     }
                 });
         return true;
