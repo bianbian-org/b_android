@@ -30,7 +30,6 @@ public class PayManager {
 
     private static PayManager sPayManager;
     private OnPayListener onPayListener;
-    private Activity context;
     private AliPay aliPay;
     private WeChatPay weChatPay;
 
@@ -49,16 +48,15 @@ public class PayManager {
     public void loadPay(OnPayListener onPayListener, Activity context,
                         int mCurrentPayment, PaymentsEntity paymentsEntity) {
         this.onPayListener = onPayListener;
-        this.context = context;
         switch (mCurrentPayment) {
             case Constant.TENCENT_PAY:
-                weChatPay(paymentsEntity);
+                weChatPay(paymentsEntity,context);
                 break;
             case Constant.ALIPAY:
-                aliPay(paymentsEntity);
+                aliPay(paymentsEntity,context);
                 break;
             case Constant.UNION_PAY:
-                unionPay(paymentsEntity);
+                unionPay(paymentsEntity,context);
                 break;
             case Constant.YI_PAY:
                 break;
@@ -68,7 +66,7 @@ public class PayManager {
     /**
      * 支付宝支付
      */
-    private void aliPay(PaymentsEntity paymentsEntity) {
+    private void aliPay(PaymentsEntity paymentsEntity, Activity context) {
         if (paymentsEntity.getData().getAlipay() == null
                 || TextUtils.isEmpty(paymentsEntity.getData().getAlipay().getParms_str())
                 || TextUtils.isEmpty(paymentsEntity.getData().getAlipay().getSign())) {
@@ -83,17 +81,17 @@ public class PayManager {
         } catch (UnsupportedEncodingException e) {
             e.printStackTrace();
         }
-        aliPay = new AliPay(context, parms_str + "&sign=" + signs);
+        aliPay = new AliPay(parms_str + "&sign=" + signs);
         if (onPayListener != null) {
             aliPay.setListener(onPayListener);
         }
-        aliPay.pay();
+        aliPay.pay(context);
     }
 
     /**
      * 微信支付
      */
-    private void weChatPay(PaymentsEntity paymentsEntity) {
+    private void weChatPay(PaymentsEntity paymentsEntity, Activity context) {
         if (paymentsEntity.getData().getWxpay() == null
                 || TextUtils.isEmpty(paymentsEntity.getData().getWxpay().getAppid())) {
             ToastUtils.show(context.getString(R.string.pay_order_info));
@@ -139,7 +137,7 @@ public class PayManager {
     /**
      * 银联支付
      */
-    private void unionPay(PaymentsEntity paymentsEntity) {
+    private void unionPay(PaymentsEntity paymentsEntity, Activity context) {
         if (paymentsEntity.getData().getUnion() == null) {
             ToastUtils.show(context.getString(R.string.pay_order_info));
             return;

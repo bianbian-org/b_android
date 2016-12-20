@@ -208,6 +208,7 @@ public class JujiaDetailWebActivityPresenter extends AppBaseActivityPresenter<Ju
     private void paySuccess() {
         ToastUtils.show(getView().getString(R.string.result_pay_success));
         goBack();
+        getView().getWebView().reload();
     }
 
     /**

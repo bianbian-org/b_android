@@ -21,12 +21,10 @@ public class AliPay {
 
     private static final int SDK_PAY_FLAG = 1;
 
-    private Activity mActivity;
     private OnPayListener mListener;
     private String mOrderInfo;
 
-    public AliPay(Activity activity, String orderInfo) {
-        mActivity = activity;
+    public AliPay(String orderInfo) {
         mOrderInfo = orderInfo;
     }
 
@@ -66,21 +64,24 @@ public class AliPay {
     /**
      * 支付
      */
-    public void pay() {
-
-        Runnable payRunnable = new Runnable() {
-            @Override
-            public void run() {
-                PayTask alipay = new PayTask(mActivity);
-                Map<String, String> result = alipay.payV2(mOrderInfo, true);
-                Message msg = new Message();
-                msg.what = SDK_PAY_FLAG;
-                msg.obj = result;
-                mHandler.sendMessage(msg);
-            }
-        };
-        Thread payThread = new Thread(payRunnable);
-        payThread.start();
+    public void pay(final Activity activity) {
+        try {
+            Runnable payRunnable = new Runnable() {
+                @Override
+                public void run() {
+                    PayTask alipay = new PayTask(activity);
+                    Map<String, String> result = alipay.payV2(mOrderInfo, true);
+                    Message msg = new Message();
+                    msg.what = SDK_PAY_FLAG;
+                    msg.obj = result;
+                    mHandler.sendMessage(msg);
+                }
+            };
+            Thread payThread = new Thread(payRunnable);
+            payThread.start();
+        } catch (NullPointerException e) {
+            e.printStackTrace();
+        }
     }
 
     public void setListener(OnPayListener listener) {
