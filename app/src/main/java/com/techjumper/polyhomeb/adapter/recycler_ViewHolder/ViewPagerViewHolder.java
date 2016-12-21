@@ -8,7 +8,6 @@ import com.steve.creact.annotation.DataBean;
 import com.steve.creact.library.viewholder.BaseRecyclerViewHolder;
 import com.techjumper.corelib.rx.tools.RxBus;
 import com.techjumper.corelib.utils.common.RuleUtils;
-import com.techjumper.corelib.utils.window.ToastUtils;
 import com.techjumper.polyhomeb.R;
 import com.techjumper.polyhomeb.adapter.recycler_Data.ViewPagerData;
 import com.techjumper.polyhomeb.entity.ADEntity;
@@ -110,13 +109,13 @@ public class ViewPagerViewHolder extends BaseRecyclerViewHolder<ViewPagerData>
         ADEntity.DataBean.AdInfosBean bean = ad_infos.get(mAdapter.toRealPosition(position));
         switch (bean.getMedia_type()) {
             case 1:
-                ToastUtils.show(mAdapter.toRealPosition(position) + "..图片.." + bean.getUrl());
+//                ToastUtils.show(mAdapter.toRealPosition(position) + "..图片.." + bean.getUrl());
                 break;
             case 2:
                 View view = mViewPager.findViewWithTag(mAdapter.toRealPosition(position));
                 if (view == null) break;
                 if (((ADVideoLayout) view).isPlaying()) {
-                    ToastUtils.show(mAdapter.toRealPosition(position) + "..视频.." + bean.getUrl());
+//                    ToastUtils.show(mAdapter.toRealPosition(position) + "..视频.." + bean.getUrl());
                 } else {
                     ((ADVideoLayout) view).onClick();
                 }
