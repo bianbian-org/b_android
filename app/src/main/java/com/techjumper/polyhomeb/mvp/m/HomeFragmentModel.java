@@ -17,6 +17,7 @@ import com.techjumper.polyhomeb.adapter.recycler_ViewHolder.databean.PropertyDat
 import com.techjumper.polyhomeb.adapter.recycler_ViewHolder.databean.PropertyRepairBigDividerBean;
 import com.techjumper.polyhomeb.adapter.recycler_ViewHolder.databean.ViewPagerDataBean;
 import com.techjumper.polyhomeb.entity.ADEntity;
+import com.techjumper.polyhomeb.entity.BluetoothLockDoorInfoEntity;
 import com.techjumper.polyhomeb.entity.JuJiaInfoEntity;
 import com.techjumper.polyhomeb.entity.MarqueeTextInfoEntity;
 import com.techjumper.polyhomeb.mvp.p.fragment.HomeFragmentPresenter;
@@ -143,6 +144,17 @@ public class HomeFragmentModel extends BaseModel<HomeFragmentPresenter> {
         return RetrofitHelper
                 .<ServiceAPI>createDefault()
                 .getJuJiaInfo(map)
+                .compose(CommonWrap.wrap());
+    }
+
+    public Observable<BluetoothLockDoorInfoEntity> getBLEDoorInfo() {
+        KeyValuePair keyValuePair = KeyValueCreator.getBLEDoorInfo(
+                UserManager.INSTANCE.getUserInfo(UserManager.KEY_ID)
+                , UserManager.INSTANCE.getTicket()
+                , UserManager.INSTANCE.getUserInfo(UserManager.KEY_CURRENT_VILLAGE_ID));
+        Map<String, String> map = NetHelper.createBaseArgumentsMap(keyValuePair);
+        return RetrofitHelper.<ServiceAPI>createDefault()
+                .getBLEDoorInfo(map)
                 .compose(CommonWrap.wrap());
     }
 }

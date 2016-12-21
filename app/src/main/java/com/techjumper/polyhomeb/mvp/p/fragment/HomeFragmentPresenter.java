@@ -24,6 +24,7 @@ import com.techjumper.polyhomeb.adapter.recycler_ViewHolder.databean.JuJiaDataBe
 import com.techjumper.polyhomeb.adapter.recycler_ViewHolder.databean.PropertyDataBean;
 import com.techjumper.polyhomeb.adapter.recycler_ViewHolder.databean.ViewPagerDataBean;
 import com.techjumper.polyhomeb.entity.ADEntity;
+import com.techjumper.polyhomeb.entity.BluetoothLockDoorInfoEntity;
 import com.techjumper.polyhomeb.entity.JuJiaInfoEntity;
 import com.techjumper.polyhomeb.entity.MarqueeTextInfoEntity;
 import com.techjumper.polyhomeb.entity.event.BLEInfoChangedEvent;
@@ -60,7 +61,7 @@ public class HomeFragmentPresenter extends AppBaseFragmentPresenter<HomeFragment
 
     private HomeFragmentModel mModel = new HomeFragmentModel(this);
 
-    private Subscription mSubs1, mSubs2, mSubs3;
+    private Subscription mSubs1, mSubs2, mSubs3, mSubs4;
     private PolyPluginManager mPluginManager;
 
     @Override
@@ -134,6 +135,7 @@ public class HomeFragmentPresenter extends AppBaseFragmentPresenter<HomeFragment
 
     public void refreshData() {
         getHomePageInfo();
+        getBleInfo();
     }
 
     public List<DisplayBean> getDatas() {
@@ -417,4 +419,28 @@ public class HomeFragmentPresenter extends AppBaseFragmentPresenter<HomeFragment
         }
     }
 
+    public void getBleInfo() {
+        addSubscription(
+                mSubs4 = mModel.getBLEDoorInfo()
+                        .subscribe(new Observer<BluetoothLockDoorInfoEntity>() {
+                            @Override
+                            public void onCompleted() {
+                            }
+
+                            @Override
+                            public void onError(Throwable e) {
+                            }
+
+                            @Override
+                            public void onNext(BluetoothLockDoorInfoEntity bluetoothLockDoorInfoEntity) {
+                                if (!processNetworkResult(bluetoothLockDoorInfoEntity)) return;
+                                if (bluetoothLockDoorInfoEntity != null
+                                        && bluetoothLockDoorInfoEntity.getData() != null) {
+                                    //切换家庭或者小区之后，发送消息给HomeFragment,刷新首页数据，以及下拉刷新
+                                    RxBus.INSTANCE.send(new BLEInfoChangedEvent());
+                                    UserManager.INSTANCE.saveBLEInfo(bluetoothLockDoorInfoEntity);
+                                }
+                            }
+                        }));
+    }
 }
