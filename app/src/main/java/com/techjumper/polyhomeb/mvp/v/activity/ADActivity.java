@@ -76,7 +76,7 @@ public class ADActivity extends AppBaseActivity<ADActivityPresenter> {
         });
     }
 
-    public void showTitle(String title) {
+    private void showTitle(String title) {
         mTitle.setText(TextUtils.isEmpty(title) ? "" : title);
     }
 

@@ -158,4 +158,8 @@ public class TabHomeActivity extends AppBaseActivity<TabHomeActivityPresenter> {
         super.onNewIntent(intent);
         JLog.e("onNewIntent");
     }
+
+    public PolyTab getTab() {
+        return mTab;
+    }
 }

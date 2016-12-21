@@ -35,7 +35,7 @@ public class Config {
         sJuJia = DEBUG ? "http://pl.techjumper.com" : "http://m.ourjujia.com";
     }
 
-    public static final String AD_URL="title=&left=::NativeReturn&right=%E8%B4%AD%E7%89%A9%E8%BD%A6::shop_cart";
+    public static final String AD_URL="?title=&left=::NativeReturn&right=%E8%B4%AD%E7%89%A9%E8%BD%A6::shop_cart";
 
     /**
      * polyhome接口地址

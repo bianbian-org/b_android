@@ -21,6 +21,7 @@ public abstract class AppBaseWebViewActivity<T extends AppBaseActivityPresenter>
         implements AdvancedWebView.Listener {
     private AdvancedWebView mWebView;
     private boolean mIsInit;
+    private String mTitle;
 
     protected void initWebView(AdvancedWebView webView) {
         mWebView = webView;
@@ -34,12 +35,17 @@ public abstract class AppBaseWebViewActivity<T extends AppBaseActivityPresenter>
             @Override
             public void onReceivedTitle(WebView view, String title) {
                 super.onReceivedTitle(view, title);
+                mTitle = title;
                 AppBaseWebViewActivity.this.onReceivedTitle(view, title);
             }
 
         });
         addHttpHeaders();
         mIsInit = true;
+    }
+
+    public String getUrlTitle() {
+        return mTitle;
     }
 
     public AdvancedWebView getWebView() {

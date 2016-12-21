@@ -47,6 +47,7 @@ import com.techjumper.polyhomeb.service.ScanBluetoothService;
 import com.techjumper.polyhomeb.user.UserManager;
 import com.techjumper.polyhomeb.user.event.LoginEvent;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -92,7 +93,7 @@ public class HomeFragmentPresenter extends AppBaseFragmentPresenter<HomeFragment
                         if (url.startsWith("ad")) {
                             String[] split = url.split("ad://");
                             if (split.length != 2) return;
-                            String newUrl = split[1] + Config.AD_URL;
+                            String newUrl = Config.sHost + File.separator + split[1] + Config.AD_URL;
                             TabHomeActivity activity = (TabHomeActivity) getView().getActivity();
                             if (activity != null) {
                                 activity.getPresenter().adJump2Shopping(newUrl);

@@ -3,7 +3,10 @@ package com.techjumper.polyhomeb.mvp.v.activity;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.View;
+import android.webkit.WebView;
+import android.webkit.WebViewClient;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.techjumper.corelib.mvp.factory.Presenter;
 import com.techjumper.corelib.rx.tools.RxBus;
@@ -34,6 +37,8 @@ public class JSInteractionActivity extends AppBaseWebViewActivity<JSInteractionA
 
     @Bind(R.id.left_first_iv)
     ImageView iv;
+    @Bind(R.id.tv_title)
+    TextView mTitle;
 
     private WebTitleManager mWebTitleManager;
     private String mUrl = "";
@@ -45,16 +50,34 @@ public class JSInteractionActivity extends AppBaseWebViewActivity<JSInteractionA
 
     @Override
     protected void initView(Bundle savedInstanceState) {
+
+        initWebView((AdvancedWebView) findViewById(R.id.wb));
+        getWebView().addJsInterface(this, Constant.JS_NATIVE_BRIDGE);
+
         //如果广告url不为null，那么证明是从广告来的
         if (!TextUtils.isEmpty(getPresenter().getADUrl())) {
             mUrl = getPresenter().getADUrl();
+            getWebView().setWebViewClient(new WebViewClient() {
+                @Override
+                public boolean shouldOverrideUrlLoading(WebView view, String url) {
+                    view.loadUrl(url);
+                    return true;
+                }
+                @Override
+                public void onPageFinished(WebView view, String url) {
+                    super.onPageFinished(view, url);
+                    showTitle(view.getTitle());
+                }
+            });
         } else {
             mUrl = getPresenter().getUrl();
         }
         mWebTitleManager = new WebTitleManager(mUrl, mViewRoot, this);
-        initWebView((AdvancedWebView) findViewById(R.id.wb));
-        getWebView().addJsInterface(this, Constant.JS_NATIVE_BRIDGE);
         getWebView().loadUrl(mUrl);
+    }
+
+    private void showTitle(String title) {
+        mTitle.setText(TextUtils.isEmpty(title) ? "" : title);
     }
 
     @Override

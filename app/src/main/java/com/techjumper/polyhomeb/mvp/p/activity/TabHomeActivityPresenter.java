@@ -105,6 +105,7 @@ public class TabHomeActivityPresenter extends AppBaseActivityPresenter<TabHomeAc
     public void adJump2Shopping(String url) {
         if (getView() == null || getView().getHomeViewPager() == null) return;
         getView().getHomeViewPager().setCurrentItem(2, false);
+        getView().getTab().check(2);
         Bundle bundle = new Bundle();
         bundle.putString("url", url);
         new AcHelper.Builder(getView()).extra(bundle).target(JSInteractionActivity.class).start();
