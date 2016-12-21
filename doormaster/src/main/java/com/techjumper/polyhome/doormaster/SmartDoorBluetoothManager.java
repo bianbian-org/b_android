@@ -173,10 +173,12 @@ public class SmartDoorBluetoothManager {
                         if (result == 0x00) {
                             //开门成功
                             RxBus.INSTANCE.send(new OpenDoorResult(true));
+                            JLog.d("开门成功~");
                         } else {
                             //开门失败
                             RxBus.INSTANCE.send(new OpenDoorResult(false));
                             processError(result);
+                            JLog.d("开门失败~");
                         }
                     }
                 });
