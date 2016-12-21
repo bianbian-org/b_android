@@ -5,7 +5,6 @@ import android.text.TextUtils;
 
 import com.techjumper.corelib.rx.tools.RxBus;
 import com.techjumper.corelib.rx.tools.RxUtils;
-import com.techjumper.corelib.utils.common.JLog;
 import com.techjumper.corelib.utils.window.ToastUtils;
 import com.techjumper.polyhome.alipay.AliPay;
 import com.techjumper.polyhome.paycorelib.OnPayListener;
@@ -48,7 +47,7 @@ public class PayManager {
 
     public void loadPay(OnPayListener onPayListener, Activity context,
                         int mCurrentPayment, PaymentsEntity paymentsEntity) {
-        JLog.e(context == null ? "空" : "不是空");
+        if (context == null) return;
         this.onPayListener = onPayListener;
         switch (mCurrentPayment) {
             case Constant.TENCENT_PAY:
