@@ -2,6 +2,7 @@ package com.techjumper.polyhomeb.mvp.p.fragment;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.view.View;
 
 import com.steve.creact.library.display.DisplayBean;
@@ -13,6 +14,7 @@ import com.techjumper.corelib.utils.system.AppUtils;
 import com.techjumper.corelib.utils.window.ToastUtils;
 import com.techjumper.polyhome.doormaster.bluetoothEvent.BLEScanResultEvent;
 import com.techjumper.polyhome.doormaster.bluetoothEvent.OpenDoorResult;
+import com.techjumper.polyhomeb.Config;
 import com.techjumper.polyhomeb.R;
 import com.techjumper.polyhomeb.adapter.HomePageAdapter;
 import com.techjumper.polyhomeb.adapter.recycler_Data.BluetoothData;
@@ -27,6 +29,7 @@ import com.techjumper.polyhomeb.entity.ADEntity;
 import com.techjumper.polyhomeb.entity.BluetoothLockDoorInfoEntity;
 import com.techjumper.polyhomeb.entity.JuJiaInfoEntity;
 import com.techjumper.polyhomeb.entity.MarqueeTextInfoEntity;
+import com.techjumper.polyhomeb.entity.event.ADClickEvent;
 import com.techjumper.polyhomeb.entity.event.BLEInfoChangedEvent;
 import com.techjumper.polyhomeb.entity.event.ChooseFamilyVillageEvent;
 import com.techjumper.polyhomeb.entity.event.LifeCycleEvent;
@@ -36,7 +39,9 @@ import com.techjumper.polyhomeb.entity.event.UpdateMessageStateEvent;
 import com.techjumper.polyhomeb.manager.PolyPluginManager;
 import com.techjumper.polyhomeb.manager.ShakeManager;
 import com.techjumper.polyhomeb.mvp.m.HomeFragmentModel;
+import com.techjumper.polyhomeb.mvp.v.activity.ADActivity;
 import com.techjumper.polyhomeb.mvp.v.activity.CheckInActivity;
+import com.techjumper.polyhomeb.mvp.v.activity.TabHomeActivity;
 import com.techjumper.polyhomeb.mvp.v.fragment.HomeFragment;
 import com.techjumper.polyhomeb.service.ScanBluetoothService;
 import com.techjumper.polyhomeb.user.UserManager;
@@ -74,6 +79,32 @@ public class HomeFragmentPresenter extends AppBaseFragmentPresenter<HomeFragment
         changeTitle();
         bleChangeInfo();
         getHomePageInfo();
+        processADJump();
+    }
+
+    private void processADJump() {
+        addSubscription(
+                RxBus.INSTANCE.asObservable().subscribe(o -> {
+                    if (o instanceof ADClickEvent) {
+                        ADClickEvent event = (ADClickEvent) o;
+                        String url = event.getUrl();
+                        if (TextUtils.isEmpty(url)) return;
+                        if (url.startsWith("ad")) {
+                            String[] split = url.split("ad://");
+                            if (split.length != 2) return;
+                            String newUrl = split[1] + Config.AD_URL;
+                            TabHomeActivity activity = (TabHomeActivity) getView().getActivity();
+                            if (activity != null) {
+                                activity.getPresenter().adJump2Shopping(newUrl);
+                            }
+                        } else if (url.startsWith("http")) {
+                            Bundle bundle = new Bundle();
+                            bundle.putString("url", url);
+                            new AcHelper.Builder(getView().getActivity())
+                                    .extra(bundle).target(ADActivity.class).start();
+                        }
+                    }
+                }));
     }
 
     private void changeTitle() {

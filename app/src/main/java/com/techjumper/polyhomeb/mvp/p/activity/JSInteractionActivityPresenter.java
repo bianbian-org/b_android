@@ -138,6 +138,10 @@ public class JSInteractionActivityPresenter extends AppBaseActivityPresenter<JSI
         return mModel.getUrl();
     }
 
+    public String getADUrl() {
+        return mModel.getADUrl();
+    }
+
     private void showCallNumDialog(JSCallPhoneNumberEvent event) {
         String tel = event.getTel();
         DialogUtils.getBuilder(getView())

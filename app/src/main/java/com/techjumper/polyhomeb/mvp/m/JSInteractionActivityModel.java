@@ -36,6 +36,10 @@ public class JSInteractionActivityModel extends BaseModel<JSInteractionActivityP
         return getExtras().getString(Constant.JS_PAGE_JUMP_URL, "");
     }
 
+    public String getADUrl() {
+        return getExtras().getString("url","");
+    }
+
     public Observable<TrueEntity> deductionWhenCall(String store_id, String user_tel
             , String shop_service_id) {
         return RetrofitHelper.<ServiceAPI>createDefault()

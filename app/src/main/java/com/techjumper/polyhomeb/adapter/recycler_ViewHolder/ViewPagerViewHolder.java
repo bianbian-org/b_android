@@ -11,6 +11,7 @@ import com.techjumper.corelib.utils.common.RuleUtils;
 import com.techjumper.polyhomeb.R;
 import com.techjumper.polyhomeb.adapter.recycler_Data.ViewPagerData;
 import com.techjumper.polyhomeb.entity.ADEntity;
+import com.techjumper.polyhomeb.entity.event.ADClickEvent;
 import com.techjumper.polyhomeb.entity.event.LifeCycleEvent;
 import com.techjumper.polyhomeb.entity.event.RVScrollEvent;
 import com.techjumper.polyhomeb.widget.ADVideoLayout;
@@ -110,12 +111,14 @@ public class ViewPagerViewHolder extends BaseRecyclerViewHolder<ViewPagerData>
         switch (bean.getMedia_type()) {
             case 1:
 //                ToastUtils.show(mAdapter.toRealPosition(position) + "..图片.." + bean.getUrl());
+                RxBus.INSTANCE.send(new ADClickEvent(bean.getUrl() + ""));
                 break;
             case 2:
                 View view = mViewPager.findViewWithTag(mAdapter.toRealPosition(position));
                 if (view == null) break;
                 if (((ADVideoLayout) view).isPlaying()) {
 //                    ToastUtils.show(mAdapter.toRealPosition(position) + "..视频.." + bean.getUrl());
+                    RxBus.INSTANCE.send(new ADClickEvent(bean.getUrl() + ""));
                 } else {
                     ((ADVideoLayout) view).onClick();
                 }

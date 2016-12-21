@@ -45,7 +45,12 @@ public class JSInteractionActivity extends AppBaseWebViewActivity<JSInteractionA
 
     @Override
     protected void initView(Bundle savedInstanceState) {
-        mUrl = getPresenter().getUrl();
+        //如果广告url不为null，那么证明是从广告来的
+        if (!TextUtils.isEmpty(getPresenter().getADUrl())) {
+            mUrl = getPresenter().getADUrl();
+        } else {
+            mUrl = getPresenter().getUrl();
+        }
         mWebTitleManager = new WebTitleManager(mUrl, mViewRoot, this);
         initWebView((AdvancedWebView) findViewById(R.id.wb));
         getWebView().addJsInterface(this, Constant.JS_NATIVE_BRIDGE);

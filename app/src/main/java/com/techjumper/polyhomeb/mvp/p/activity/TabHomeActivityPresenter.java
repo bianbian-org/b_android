@@ -11,6 +11,7 @@ import android.text.TextUtils;
 import com.tbruyelle.rxpermissions.RxPermissions;
 import com.techjumper.corelib.rx.tools.RxBus;
 import com.techjumper.corelib.rx.tools.RxUtils;
+import com.techjumper.corelib.utils.common.AcHelper;
 import com.techjumper.corelib.utils.file.FileUtils;
 import com.techjumper.corelib.utils.window.DialogUtils;
 import com.techjumper.corelib.utils.window.ToastUtils;
@@ -19,6 +20,7 @@ import com.techjumper.polyhomeb.R;
 import com.techjumper.polyhomeb.entity.UpdateInfoEntity;
 import com.techjumper.polyhomeb.entity.event.ToggleMenuClickEvent;
 import com.techjumper.polyhomeb.mvp.m.TabHomeActivityModel;
+import com.techjumper.polyhomeb.mvp.v.activity.JSInteractionActivity;
 import com.techjumper.polyhomeb.mvp.v.activity.TabHomeActivity;
 import com.techjumper.polyhomeb.service.UpdateService;
 import com.techjumper.polyhomeb.widget.PolyTab;
@@ -93,6 +95,19 @@ public class TabHomeActivityPresenter extends AppBaseActivityPresenter<TabHomeAc
 
         getView().supportFinishAfterTransition();
 
+    }
+
+    /**
+     * 首页广告点击之后跳转商城的逻辑
+     *
+     * @param url
+     */
+    public void adJump2Shopping(String url) {
+        if (getView() == null || getView().getHomeViewPager() == null) return;
+        getView().getHomeViewPager().setCurrentItem(2, false);
+        Bundle bundle = new Bundle();
+        bundle.putString("url", url);
+        new AcHelper.Builder(getView()).extra(bundle).target(JSInteractionActivity.class).start();
     }
 
     private void requestPermission() {

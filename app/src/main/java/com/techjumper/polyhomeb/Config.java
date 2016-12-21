@@ -25,7 +25,7 @@ public class Config {
      * polyhome域名
      */
     static {
-        sHost = DEBUG ? "http://poly.techjumper.com" : "http://polyhome.techjumper.com";
+        sHost = DEBUG ? "http://pl.techjumper.com" : "http://polyhome.techjumper.com";
     }
 
     /**
@@ -34,6 +34,8 @@ public class Config {
     static {
         sJuJia = DEBUG ? "http://pl.techjumper.com" : "http://m.ourjujia.com";
     }
+
+    public static final String AD_URL="title=&left=::NativeReturn&right=%E8%B4%AD%E7%89%A9%E8%BD%A6::shop_cart";
 
     /**
      * polyhome接口地址
