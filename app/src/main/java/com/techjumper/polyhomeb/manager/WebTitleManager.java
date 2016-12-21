@@ -89,7 +89,11 @@ public class WebTitleManager {
         for (int i = 0; i < splits.length; i++) {
             if (splits[i].contains("title=")) {
                 try {
-                    mTitle = URLDecoder.decode(splits[i].replace("title=", ""), "UTF-8");
+                    if (TextUtils.isEmpty(splits[i].replace("title=", ""))) {
+                        mTitle = "";
+                    } else {
+                        mTitle = URLDecoder.decode(splits[i].replace("title=", ""), "UTF-8");
+                    }
                 } catch (UnsupportedEncodingException e) {
                     e.printStackTrace();
                 }
