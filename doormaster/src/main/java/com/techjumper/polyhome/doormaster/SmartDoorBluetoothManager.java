@@ -111,7 +111,7 @@ public class SmartDoorBluetoothManager {
                 JLog.d("\"扫描\"这个消息 发送成功 开始执行扫描设备的指令");
             } else {
                 JLog.d("\"扫描\"这个消息 发送失败 没有执行扫描设备的指令");
-                processError(ret);
+//                processError(ret);
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -177,7 +177,7 @@ public class SmartDoorBluetoothManager {
                         } else {
                             //开门失败
                             RxBus.INSTANCE.send(new OpenDoorResult(false));
-                            processError(result);
+//                            processError(result);
                             JLog.d("开门失败~");
                         }
                     }
@@ -198,7 +198,7 @@ public class SmartDoorBluetoothManager {
             } else {
                 JLog.d("\"开门\"这个消息 发送失败 没有执行开门的指令");
                 RxBus.INSTANCE.send(new OpenDoorResult(false));
-                processError(ret);
+//                processError(ret);
             }
         } catch (Exception e) {
             e.printStackTrace();
