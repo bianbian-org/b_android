@@ -62,7 +62,7 @@ public class UpdateService extends Service
                 .setListener(this, this, this)
                 .setName(Config.sAPK_NAME)
                 .setNotifyPercent(2)
-                .setPath(Config.sUpdate_Apk_Path)
+                .setPath(intent.getStringExtra(KEY_FILE_PATH))
                 .setUrl(intent.getStringExtra(KEY_URL))
                 .download();
 
@@ -72,6 +72,9 @@ public class UpdateService extends Service
     @Override
     public void onDownloadError(Throwable e) {
         ToastUtils.show(getString(R.string.download_error));
+        if (e != null) {
+            JLog.e(e.getMessage() + "");
+        }
         stopForeground(true);
         stopSelf();
     }

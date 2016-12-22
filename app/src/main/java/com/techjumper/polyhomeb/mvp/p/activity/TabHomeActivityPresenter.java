@@ -11,6 +11,7 @@ import android.text.TextUtils;
 import com.tbruyelle.rxpermissions.RxPermissions;
 import com.techjumper.corelib.rx.tools.RxBus;
 import com.techjumper.corelib.rx.tools.RxUtils;
+import com.techjumper.corelib.utils.Utils;
 import com.techjumper.corelib.utils.common.AcHelper;
 import com.techjumper.corelib.utils.file.FileUtils;
 import com.techjumper.corelib.utils.window.DialogUtils;
@@ -174,26 +175,53 @@ public class TabHomeActivityPresenter extends AppBaseActivityPresenter<TabHomeAc
     private void downloadApk(String url) {
         if (TextUtils.isEmpty(url)) return;
         if (url.startsWith("/")) {
-            Intent intent = new Intent(getView(), UpdateService.class);
-            intent.putExtra(KEY_URL, Config.sHost + url);
-            intent.putExtra(KEY_FILE_PATH, Config.sUpdate_Apk_Path);
-            getView().startService(intent);
-            return;
-        }
-        if (url.contains("http")) {
+            downLoadFromServer(url);
+        } else if (url.contains("http")) {
             Intent intent = new Intent();
             intent.setAction(Intent.ACTION_VIEW);
             intent.setData(Uri.parse(url));
             getView().startActivity(intent);
-            return;
         }
+    }
+
+    private void downLoadFromServer(String url) {
+        addSubscription(
+                RxPermissions.getInstance(getView())
+                        .request(Manifest.permission.WRITE_EXTERNAL_STORAGE
+                                , Manifest.permission.READ_EXTERNAL_STORAGE)
+                        .subscribe(granted -> {
+                            if (granted) {
+                                Intent intent = new Intent(getView(), UpdateService.class);
+                                intent.putExtra(KEY_URL, Config.sHost + url);
+                                intent.putExtra(KEY_FILE_PATH, Config.sUpdate_Apk_Path);
+                                getView().startService(intent);
+                            } else {
+                                Intent intent = new Intent(getView(), UpdateService.class);
+                                intent.putExtra(KEY_URL, Config.sHost + url);
+                                intent.putExtra(KEY_FILE_PATH, Utils.appContext.getFilesDir().getAbsolutePath());
+                                getView().startService(intent);
+                            }
+                        }));
     }
 
     /**
      * 检查xxx路径下是否有apk更新包，有的话就删除，没有就不管啦
      */
     private void checkOldApkIsExists() {
-        FileUtils.deleteFileIfExist(Config.sUpdate_Apk_Path, Config.sAPK_NAME);
+        addSubscription(
+                RxPermissions.getInstance(getView())
+                        .request(Manifest.permission.WRITE_EXTERNAL_STORAGE
+                                , Manifest.permission.READ_EXTERNAL_STORAGE)
+                        .subscribe(granted -> {
+                            if (granted) {
+                                FileUtils.deleteFileIfExist(Config.sUpdate_Apk_Path, Config.sAPK_NAME);
+                                FileUtils.deleteFileIfExist(Utils.appContext.getFilesDir().getAbsolutePath()
+                                        , Config.sAPK_NAME);
+                            } else {
+                                FileUtils.deleteFileIfExist(Utils.appContext.getFilesDir().getAbsolutePath()
+                                        , Config.sAPK_NAME);
+                            }
+                        }));
     }
 
 }

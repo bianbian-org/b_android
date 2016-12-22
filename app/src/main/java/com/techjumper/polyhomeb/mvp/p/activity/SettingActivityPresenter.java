@@ -1,5 +1,6 @@
 package com.techjumper.polyhomeb.mvp.p.activity;
 
+import android.Manifest;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
@@ -7,7 +8,9 @@ import android.os.Environment;
 import android.text.TextUtils;
 import android.view.View;
 
+import com.tbruyelle.rxpermissions.RxPermissions;
 import com.techjumper.corelib.rx.tools.RxUtils;
+import com.techjumper.corelib.utils.Utils;
 import com.techjumper.corelib.utils.common.AcHelper;
 import com.techjumper.corelib.utils.file.FileUtils;
 import com.techjumper.corelib.utils.window.DialogUtils;
@@ -178,19 +181,33 @@ public class SettingActivityPresenter extends AppBaseActivityPresenter<SettingAc
     private void downloadApk(String url) {
         if (TextUtils.isEmpty(url)) return;
         if (url.startsWith("/")) {
-            Intent intent = new Intent(getView(), UpdateService.class);
-            intent.putExtra(KEY_URL, Config.sHost + url);
-            intent.putExtra(KEY_FILE_PATH, Config.sUpdate_Apk_Path);
-            getView().startService(intent);
-            return;
-        }
-        if (url.contains("http")) {
+            downLoadFromServer(url);
+        } else if (url.contains("http")) {
             Intent intent = new Intent();
             intent.setAction(Intent.ACTION_VIEW);
             intent.setData(Uri.parse(url));
             getView().startActivity(intent);
-            return;
         }
+    }
+
+    private void downLoadFromServer(String url) {
+        addSubscription(
+                RxPermissions.getInstance(getView())
+                        .request(Manifest.permission.WRITE_EXTERNAL_STORAGE
+                                , Manifest.permission.READ_EXTERNAL_STORAGE)
+                        .subscribe(granted -> {
+                            if (granted) {
+                                Intent intent = new Intent(getView(), UpdateService.class);
+                                intent.putExtra(KEY_URL, Config.sHost + url);
+                                intent.putExtra(KEY_FILE_PATH, Config.sUpdate_Apk_Path);
+                                getView().startService(intent);
+                            } else {
+                                Intent intent = new Intent(getView(), UpdateService.class);
+                                intent.putExtra(KEY_URL, Config.sHost + url);
+                                intent.putExtra(KEY_FILE_PATH, Utils.appContext.getFilesDir().getAbsolutePath());
+                                getView().startService(intent);
+                            }
+                        }));
     }
 
 
