@@ -12,6 +12,7 @@ import com.tbruyelle.rxpermissions.RxPermissions;
 import com.techjumper.corelib.rx.tools.RxUtils;
 import com.techjumper.corelib.utils.Utils;
 import com.techjumper.corelib.utils.common.AcHelper;
+import com.techjumper.corelib.utils.common.JLog;
 import com.techjumper.corelib.utils.file.FileUtils;
 import com.techjumper.corelib.utils.window.DialogUtils;
 import com.techjumper.corelib.utils.window.ToastUtils;
@@ -187,6 +188,7 @@ public class SettingActivityPresenter extends AppBaseActivityPresenter<SettingAc
             intent.setAction(Intent.ACTION_VIEW);
             intent.setData(Uri.parse(url));
             getView().startActivity(intent);
+            JLog.d("启动浏览器下载apk");
         }
     }
 
@@ -201,14 +203,14 @@ public class SettingActivityPresenter extends AppBaseActivityPresenter<SettingAc
                                 intent.putExtra(KEY_URL, Config.sHost + url);
                                 intent.putExtra(KEY_FILE_PATH, Config.sUpdate_Apk_Path);
                                 getView().startService(intent);
+                                JLog.d("启动服务下载apk---SD卡");
                             } else {
                                 Intent intent = new Intent(getView(), UpdateService.class);
                                 intent.putExtra(KEY_URL, Config.sHost + url);
                                 intent.putExtra(KEY_FILE_PATH, Utils.appContext.getFilesDir().getAbsolutePath());
                                 getView().startService(intent);
+                                JLog.d("启动服务下载apk---内部存储");
                             }
                         }));
     }
-
-
 }

@@ -13,6 +13,7 @@ import com.techjumper.corelib.rx.tools.RxBus;
 import com.techjumper.corelib.rx.tools.RxUtils;
 import com.techjumper.corelib.utils.Utils;
 import com.techjumper.corelib.utils.common.AcHelper;
+import com.techjumper.corelib.utils.common.JLog;
 import com.techjumper.corelib.utils.file.FileUtils;
 import com.techjumper.corelib.utils.window.DialogUtils;
 import com.techjumper.corelib.utils.window.ToastUtils;
@@ -24,6 +25,7 @@ import com.techjumper.polyhomeb.mvp.m.TabHomeActivityModel;
 import com.techjumper.polyhomeb.mvp.v.activity.JSInteractionActivity;
 import com.techjumper.polyhomeb.mvp.v.activity.TabHomeActivity;
 import com.techjumper.polyhomeb.service.UpdateService;
+import com.techjumper.polyhomeb.utils.ServiceUtil;
 import com.techjumper.polyhomeb.widget.PolyTab;
 
 import java.util.List;
@@ -181,6 +183,7 @@ public class TabHomeActivityPresenter extends AppBaseActivityPresenter<TabHomeAc
             intent.setAction(Intent.ACTION_VIEW);
             intent.setData(Uri.parse(url));
             getView().startActivity(intent);
+            JLog.d("启动浏览器下载apk");
         }
     }
 
@@ -195,11 +198,13 @@ public class TabHomeActivityPresenter extends AppBaseActivityPresenter<TabHomeAc
                                 intent.putExtra(KEY_URL, Config.sHost + url);
                                 intent.putExtra(KEY_FILE_PATH, Config.sUpdate_Apk_Path);
                                 getView().startService(intent);
+                                JLog.d("启动服务下载apk---SD卡");
                             } else {
                                 Intent intent = new Intent(getView(), UpdateService.class);
                                 intent.putExtra(KEY_URL, Config.sHost + url);
                                 intent.putExtra(KEY_FILE_PATH, Utils.appContext.getFilesDir().getAbsolutePath());
                                 getView().startService(intent);
+                                JLog.d("启动服务下载apk---内部存储");
                             }
                         }));
     }
@@ -208,20 +213,27 @@ public class TabHomeActivityPresenter extends AppBaseActivityPresenter<TabHomeAc
      * 检查xxx路径下是否有apk更新包，有的话就删除，没有就不管啦
      */
     private void checkOldApkIsExists() {
-        addSubscription(
-                RxPermissions.getInstance(getView())
-                        .request(Manifest.permission.WRITE_EXTERNAL_STORAGE
-                                , Manifest.permission.READ_EXTERNAL_STORAGE)
-                        .subscribe(granted -> {
-                            if (granted) {
-                                FileUtils.deleteFileIfExist(Config.sUpdate_Apk_Path, Config.sAPK_NAME);
-                                FileUtils.deleteFileIfExist(Utils.appContext.getFilesDir().getAbsolutePath()
-                                        , Config.sAPK_NAME);
-                            } else {
-                                FileUtils.deleteFileIfExist(Utils.appContext.getFilesDir().getAbsolutePath()
-                                        , Config.sAPK_NAME);
-                            }
-                        }));
+        if (ServiceUtil.isServiceRunning(getView(), UpdateService.class.getName())) {
+            JLog.d("当前正通过服务下载apk，进入app的时候不删除apk");
+        } else {
+            JLog.d("当前没有通过服务下载apk，进入app的时候检查删除安装包");
+            addSubscription(
+                    RxPermissions.getInstance(getView())
+                            .request(Manifest.permission.WRITE_EXTERNAL_STORAGE
+                                    , Manifest.permission.READ_EXTERNAL_STORAGE)
+                            .subscribe(granted -> {
+                                if (granted) {
+                                    FileUtils.deleteFileIfExist(Config.sUpdate_Apk_Path, Config.sAPK_NAME);
+                                    FileUtils.deleteFileIfExist(Utils.appContext.getFilesDir().getAbsolutePath()
+                                            , Config.sAPK_NAME);
+                                    JLog.d("删除SD卡apk和内部存储apk");
+                                } else {
+                                    FileUtils.deleteFileIfExist(Utils.appContext.getFilesDir().getAbsolutePath()
+                                            , Config.sAPK_NAME);
+                                    JLog.d("删除内部存储apk");
+                                }
+                            }));
+        }
     }
 
 }

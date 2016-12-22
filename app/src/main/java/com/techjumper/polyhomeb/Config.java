@@ -19,7 +19,7 @@ public class Config {
     /**
      * 是否是调试环境
      */
-    public static final boolean DEBUG = false;
+    public static final boolean DEBUG = true;
 
     /**
      * polyhome域名
