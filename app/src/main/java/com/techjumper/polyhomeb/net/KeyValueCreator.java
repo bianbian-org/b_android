@@ -59,11 +59,12 @@ public class KeyValueCreator {
                 .put("count", count);
     }
 
-    public static KeyValuePair propertyRepair(String user_id, String ticket, String status, String page, String count) {
+    public static KeyValuePair propertyRepair(String user_id, String ticket, String status, String family_id, String page, String count) {
         return newPair()
                 .put("user_id", user_id)
                 .put("ticket", ticket)
                 .put("status", status)
+                .put("family_id", family_id)
                 .put("page", page)
                 .put("count", count);
     }

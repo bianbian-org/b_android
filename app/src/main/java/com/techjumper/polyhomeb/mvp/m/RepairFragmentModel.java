@@ -59,6 +59,7 @@ public class RepairFragmentModel extends BaseModel<RepairFragmentPresenter> {
                 UserManager.INSTANCE.getUserInfo(UserManager.KEY_ID)
                 , UserManager.INSTANCE.getTicket()
                 , status
+                , UserManager.INSTANCE.getUserInfo(UserManager.KEY_CURRENT_FAMILY_ID)
                 , mCurrentPage + ""
                 , mOnePageCount + "");
         Map<String, String> baseArgumentsMap = NetHelper.createBaseArgumentsMap(keyValuePair);
