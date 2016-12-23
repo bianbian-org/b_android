@@ -13,6 +13,7 @@ import com.techjumper.polyhomeb.Config;
 import com.techjumper.polyhomeb.entity.BluetoothLockDoorInfoEntity;
 import com.techjumper.polyhomeb.entity.LoginEntity;
 import com.techjumper.polyhomeb.entity.UserFamiliesAndVillagesEntity;
+import com.techjumper.polyhomeb.entity.VillageLockEntity;
 import com.techjumper.polyhomeb.entity.medicalEntity.MedicalAllUserEntity;
 import com.techjumper.polyhomeb.entity.medicalEntity.MedicalUserLoginEntity;
 import com.techjumper.polyhomeb.manager.PolyPluginFileManager;
@@ -64,6 +65,8 @@ public enum UserManager {
 
     public static final String KEY_IS_CURRENT_COMMUNITY_SUPPORT_BLE_DOOR = "is_current_community_support_ble_door";
     public static final String KEY_CURRENT_COMMUNITY_BLE_DOOR_INFO = "current_community_ble_door_info";
+
+    public static final String KEY_IS_CURRENT_COMMUNITY_SUPPORT_DNAKE_DOOR = "is_current_community_support_dnake_door";
 
     private static final String PATH = Utils.appContext.getFilesDir().getAbsolutePath() + "_" + "userinfo";
 
@@ -249,6 +252,33 @@ public enum UserManager {
     }
 
     /**
+     * 存储当前小区/家庭的dnake门锁信息
+     * 0是支持
+     * 1是不支持
+     */
+    public void saveDnakeInfo(VillageLockEntity villageLockEntity) {
+        if (villageLockEntity != null && villageLockEntity.getData() != null) {
+            boolean hasOutdoor = false;
+            boolean hasUnitdoor = false;
+            if (villageLockEntity.getData().getOutdoor_locks() != null
+                    && villageLockEntity.getData().getOutdoor_locks().size() != 0) {
+                hasOutdoor = true;
+            }
+            if (villageLockEntity.getData().getUnit_locks() != null
+                    && villageLockEntity.getData().getUnit_locks().size() != 0) {
+                hasUnitdoor = true;
+            }
+            if (hasOutdoor || hasUnitdoor) {
+                PreferenceUtils.save(KEY_IS_CURRENT_COMMUNITY_SUPPORT_DNAKE_DOOR, "0");
+            } else {
+                PreferenceUtils.save(KEY_IS_CURRENT_COMMUNITY_SUPPORT_DNAKE_DOOR, "0");
+            }
+        } else {
+            PreferenceUtils.save(KEY_IS_CURRENT_COMMUNITY_SUPPORT_DNAKE_DOOR, "1");
+        }
+    }
+
+    /**
      * 得到当前小区/家庭的蓝牙门锁信息
      */
     public List<BluetoothLockDoorInfoEntity.DataBean.InfosBean> getBLEInfo() {
@@ -267,6 +297,13 @@ public enum UserManager {
      */
     public boolean isCurrentCommunitySupportBLEDoor() {
         return PreferenceUtils.get(KEY_IS_CURRENT_COMMUNITY_SUPPORT_BLE_DOOR, "0").equals("1");
+    }
+
+    /**
+     * 当前小区/家庭是否支持Dnake门锁
+     */
+    public boolean isCurrentCommunitySupportDnakeDoor() {
+        return PreferenceUtils.get(KEY_IS_CURRENT_COMMUNITY_SUPPORT_DNAKE_DOOR, "0").equals("1");
     }
 
     /**
@@ -294,6 +331,7 @@ public enum UserManager {
         PreferenceUtils.save(KEY_CURRENT_SHOW_IS_FAMILY_OR_VILLAGE, "");
         PreferenceUtils.save(KEY_CURRENT_VILLAGE_ID, "");
         PreferenceUtils.save(KEY_IS_CURRENT_COMMUNITY_SUPPORT_BLE_DOOR, "0");
+        PreferenceUtils.save(KEY_IS_CURRENT_COMMUNITY_SUPPORT_DNAKE_DOOR, "0");
         PreferenceUtils.save(KEY_CURRENT_FAMILY_MANAGER_ID, "");
         PolyPluginFileManager.getInstance().clearFamilyInfoFile().subscribe();
         FileUtils.deleteFileIfExist(Utils.appContext.getFilesDir().getAbsolutePath(), KEY_ALL_FAMILIES);

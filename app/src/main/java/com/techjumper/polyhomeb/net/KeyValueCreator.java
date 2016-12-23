@@ -449,4 +449,18 @@ public class KeyValueCreator {
                 .put("ticket", ticket)
                 .put("id", id);
     }
+
+    public static KeyValuePair getVillageLocks(String user_id, String ticket, String village_id) {
+        return newPair()
+                .put("user_id", user_id)
+                .put("ticket", ticket)
+                .put("village_id", village_id);
+    }
+
+    public static KeyValuePair unLock(String user_id, String ticket, int lock_id) {
+        return newPair()
+                .put("user_id", user_id)
+                .put("ticket", ticket)
+                .put("lock_id", lock_id);
+    }
 }

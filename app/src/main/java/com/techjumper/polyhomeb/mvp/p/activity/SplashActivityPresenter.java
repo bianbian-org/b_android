@@ -11,6 +11,7 @@ import com.techjumper.polyhomeb.R;
 import com.techjumper.polyhomeb.entity.BluetoothLockDoorInfoEntity;
 import com.techjumper.polyhomeb.entity.QueryFamilyEntity;
 import com.techjumper.polyhomeb.entity.UserFamiliesAndVillagesEntity;
+import com.techjumper.polyhomeb.entity.VillageLockEntity;
 import com.techjumper.polyhomeb.entity.event.BLEInfoChangedEvent;
 import com.techjumper.polyhomeb.mvp.m.SplashActivityModel;
 import com.techjumper.polyhomeb.mvp.v.activity.ChooseVillageFamilyActivity;
@@ -36,7 +37,7 @@ public class SplashActivityPresenter extends AppBaseActivityPresenter<SplashActi
 
     private SplashActivityModel mModel = new SplashActivityModel(this);
 
-    private Subscription mSubs1, mSubs2;
+    private Subscription mSubs1, mSubs2, mSubs3;
 
     @Override
     public void initData(Bundle savedInstanceState) {
@@ -238,5 +239,27 @@ public class SplashActivityPresenter extends AppBaseActivityPresenter<SplashActi
     //splash之后，如果去了首页，也做了请求处理.
     //splash之后，如果去了注册界面，注册完毕后一定是要先选小区或者家庭，所以也就走了A或者B的逻辑.
     //另外在侧边栏切换的时候也做了处理，如果用户想要新加入家庭或者小区，走的界面还是上面 A和B的逻辑，相当于也是做了处理.
+
+    private void getDnakeInfo() {
+        RxUtils.unsubscribeIfNotNull(mSubs3);
+        addSubscription(
+                mSubs3 = mModel.getVillageLocks()
+                        .subscribe(new Observer<VillageLockEntity>() {
+                            @Override
+                            public void onCompleted() {
+
+                            }
+
+                            @Override
+                            public void onError(Throwable e) {
+
+                            }
+
+                            @Override
+                            public void onNext(VillageLockEntity villageLockEntity) {
+
+                            }
+                        }));
+    }
 }
 

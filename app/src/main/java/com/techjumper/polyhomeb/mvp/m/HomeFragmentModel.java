@@ -5,12 +5,14 @@ import com.techjumper.corelib.rx.tools.CommonWrap;
 import com.techjumper.lib2.others.KeyValuePair;
 import com.techjumper.lib2.utils.RetrofitHelper;
 import com.techjumper.polyhomeb.adapter.recycler_Data.BluetoothData;
+import com.techjumper.polyhomeb.adapter.recycler_Data.DnakeData;
 import com.techjumper.polyhomeb.adapter.recycler_Data.JuJiaData;
 import com.techjumper.polyhomeb.adapter.recycler_Data.PolyHomeData;
 import com.techjumper.polyhomeb.adapter.recycler_Data.PropertyData;
 import com.techjumper.polyhomeb.adapter.recycler_Data.PropertyRepairBigDividerData;
 import com.techjumper.polyhomeb.adapter.recycler_Data.ViewPagerData;
 import com.techjumper.polyhomeb.adapter.recycler_ViewHolder.databean.BluetoothBean;
+import com.techjumper.polyhomeb.adapter.recycler_ViewHolder.databean.DnakeBean;
 import com.techjumper.polyhomeb.adapter.recycler_ViewHolder.databean.JuJiaDataBean;
 import com.techjumper.polyhomeb.adapter.recycler_ViewHolder.databean.PolyHomeDataBean;
 import com.techjumper.polyhomeb.adapter.recycler_ViewHolder.databean.PropertyDataBean;
@@ -76,6 +78,12 @@ public class HomeFragmentModel extends BaseModel<HomeFragmentPresenter> {
         bluetoothData.setCommunitySupportBleDoor(UserManager.INSTANCE.isCurrentCommunitySupportBLEDoor());
         BluetoothBean bluetoothBean = new BluetoothBean(bluetoothData);
         displayBeans.add(bluetoothBean);
+
+        //Dnake开锁部分item
+        DnakeData dnakeData = new DnakeData();
+        dnakeData.setCommunitySupportDnakeDoor(UserManager.INSTANCE.isCurrentCommunitySupportDnakeDoor());
+        DnakeBean dnakeBean = new DnakeBean(dnakeData);
+        displayBeans.add(dnakeBean);
 
         //增加 物业 部分的数据    item = 2
         PropertyData propertyData = new PropertyData();

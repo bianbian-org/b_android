@@ -32,6 +32,7 @@ import com.techjumper.polyhomeb.entity.UpdateInfoEntity;
 import com.techjumper.polyhomeb.entity.UploadPicEntity;
 import com.techjumper.polyhomeb.entity.UserFamiliesAndVillagesEntity;
 import com.techjumper.polyhomeb.entity.VillageEntity;
+import com.techjumper.polyhomeb.entity.VillageLockEntity;
 import com.techjumper.polyhomeb.entity.medicalEntity.BaseArgumentsMedicalEntity;
 import com.techjumper.polyhomeb.entity.medicalEntity.MedicalChangeAccountEntity;
 import com.techjumper.polyhomeb.entity.medicalEntity.MedicalMainEntity;
@@ -641,6 +642,19 @@ public interface ServiceAPI {
      */
     @GET("notices/show")
     Observable<NoticeDetailEntity> getNoticeDetail(@QueryMap Map<String, String> map);
+
+    /**
+     * 获取小区门锁列表
+     */
+    @GET("outdoor_pads/lock_list")
+    Observable<VillageLockEntity> getVillageLocks(@QueryMap Map<String, String> map);
+
+    /**
+     * 小区门锁解锁
+     */
+    @POST("outdoor_pads/unlock")
+    Observable<TrueEntity> unLock(@Body BaseArgumentsEntity entity);
+
 
 /*********************************************************医疗接口*********************************************************/
 

@@ -35,7 +35,7 @@ public class Config {
         sJuJia = DEBUG ? "http://pl.techjumper.com" : "http://m.ourjujia.com";
     }
 
-    public static final String AD_URL="?title=&left=::NativeReturn&right=%E8%B4%AD%E7%89%A9%E8%BD%A6::shop_cart";
+    public static final String AD_URL = "?title=&left=::NativeReturn&right=%E8%B4%AD%E7%89%A9%E8%BD%A6::shop_cart";
 
     /**
      * polyhome接口地址
@@ -53,11 +53,11 @@ public class Config {
     /**
      * 友邻和商城链接
      */
-    public static String sFriend = "http://polyhome.techjumper.com/neighbor?title=友邻&left=::NativeMenu&right=::NativeNewArticle,::NativeNotification";
-    public static String sShopping = "http://polyhome.techjumper.com/shop/mobile?title=商城&left=::NativeMenu&right=::person";
-    public static String sFriendNotification = "http://polyhome.techjumper.com/neighbor/user/notices?title=通知&left=::NativeReturn&right=";
-    public static String sService = "http://polyhome.techjumper.com/life?title=生活服务&left=::NativeMenu&right=";
-    public static String sAboutUs = "http://polyhome.techjumper.com/content/sp/bphone_about?title=关于我们&left=::NativeReturn&right=";
+    public static String sFriend = sHost + "/neighbor?title=友邻&left=::NativeMenu&right=::NativeNewArticle,::NativeNotification";
+    public static String sShopping = sHost + "/shop/mobile?title=商城&left=::NativeMenu&right=::person";
+    public static String sFriendNotification = sHost + "/neighbor/user/notices?title=通知&left=::NativeReturn&right=";
+    public static String sService = sHost + "/life?title=生活服务&left=::NativeMenu&right=";
+    public static String sAboutUs = sHost + "/content/sp/bphone_about?title=关于我们&left=::NativeReturn&right=";
 
     /**
      * 在SD空间的文件夹名字,以及文件夹内部的头像文件夹名称以及log文件夹名称

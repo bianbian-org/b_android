@@ -407,5 +407,10 @@
     <string name="jujia_item_name">聚家科技</string>
     <string name="close">关闭</string>
     <string name="no_ble_permission">没有ble权限</string>
-
+    <string name="unlock">解锁</string>
+    <string name="out_door">小区单门</string>
+    <string name="unit_door">楼栋门</string>
+    <string name="open_x_success">打开%1$s成功</string>
+    <string name="choose_door_to_open">选择需要打开的小区门</string>
+    <string name="no_dnake_lock">暂无任何门锁</string>
 </resources>

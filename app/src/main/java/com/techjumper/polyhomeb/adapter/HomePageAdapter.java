@@ -32,4 +32,5 @@ public class HomePageAdapter extends BaseRecyclerPowerfulAdapter {
     public interface IListener {
         void onSmartHomeClick();
     }
+
 }
