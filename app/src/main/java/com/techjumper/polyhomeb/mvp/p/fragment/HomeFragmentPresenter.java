@@ -19,10 +19,12 @@ import com.techjumper.polyhomeb.Config;
 import com.techjumper.polyhomeb.R;
 import com.techjumper.polyhomeb.adapter.HomePageAdapter;
 import com.techjumper.polyhomeb.adapter.recycler_Data.BluetoothData;
+import com.techjumper.polyhomeb.adapter.recycler_Data.DnakeData;
 import com.techjumper.polyhomeb.adapter.recycler_Data.JuJiaData;
 import com.techjumper.polyhomeb.adapter.recycler_Data.PropertyData;
 import com.techjumper.polyhomeb.adapter.recycler_Data.ViewPagerData;
 import com.techjumper.polyhomeb.adapter.recycler_ViewHolder.databean.BluetoothBean;
+import com.techjumper.polyhomeb.adapter.recycler_ViewHolder.databean.DnakeBean;
 import com.techjumper.polyhomeb.adapter.recycler_ViewHolder.databean.JuJiaDataBean;
 import com.techjumper.polyhomeb.adapter.recycler_ViewHolder.databean.PropertyDataBean;
 import com.techjumper.polyhomeb.adapter.recycler_ViewHolder.databean.ViewPagerDataBean;
@@ -191,6 +193,7 @@ public class HomeFragmentPresenter extends AppBaseFragmentPresenter<HomeFragment
                                 unRegistShakeManager();
                             }
                             refreshBLEView();
+                            refreshDnakeView();
                         }
                     } else if (o instanceof OpenDoorResult) {
                         JLog.d("ViewHolder发来的消息：解锁成功了，需要注册摇一摇或者开启定时扫描服务-------");
@@ -277,6 +280,21 @@ public class HomeFragmentPresenter extends AppBaseFragmentPresenter<HomeFragment
                 BluetoothData data1 = bluetoothBean.getData();
                 data1.setInfosBeen(UserManager.INSTANCE.getBLEInfo());
                 data1.setCommunitySupportBleDoor(UserManager.INSTANCE.isCurrentCommunitySupportBLEDoor());
+                getView().notifyItemChanged(i);
+                break;
+            }
+        }
+    }
+
+    private void refreshDnakeView() {
+        HomePageAdapter adapter = getView().getAdapter();
+        if (adapter == null) return;
+        List<DisplayBean> data = adapter.getData();
+        for (int i = 0; i < data.size(); i++) {
+            if (data.get(i) instanceof DnakeBean) {
+                DnakeBean dnakeBean = (DnakeBean) data.get(i);
+                DnakeData data1 = dnakeBean.getData();
+                data1.setCommunitySupportDnakeDoor(UserManager.INSTANCE.isCurrentCommunitySupportDnakeDoor());
                 getView().notifyItemChanged(i);
                 break;
             }

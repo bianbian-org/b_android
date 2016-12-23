@@ -28,7 +28,6 @@ public class DnakeDoorViewHolder extends BaseRecyclerViewHolder<DnakeData> {
     @Override
     public void setData(DnakeData data) {
         if (data == null) return;
-
         if (!data.isCommunitySupportDnakeDoor()) {
             setVisibility(R.id.root, View.GONE);
         } else {
