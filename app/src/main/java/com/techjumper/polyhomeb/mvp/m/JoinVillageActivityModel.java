@@ -9,6 +9,7 @@ import com.techjumper.polyhomeb.Constant;
 import com.techjumper.polyhomeb.entity.BaseArgumentsEntity;
 import com.techjumper.polyhomeb.entity.BluetoothLockDoorInfoEntity;
 import com.techjumper.polyhomeb.entity.TrueEntity;
+import com.techjumper.polyhomeb.entity.VillageLockEntity;
 import com.techjumper.polyhomeb.mvp.p.activity.JoinVillageActivityPresenter;
 import com.techjumper.polyhomeb.net.KeyValueCreator;
 import com.techjumper.polyhomeb.net.NetHelper;
@@ -65,6 +66,17 @@ public class JoinVillageActivityModel extends BaseModel<JoinVillageActivityPrese
         Map<String, String> map = NetHelper.createBaseArgumentsMap(keyValuePair);
         return RetrofitHelper.<ServiceAPI>createDefault()
                 .getBLEDoorInfo(map)
+                .compose(CommonWrap.wrap());
+    }
+
+    public Observable<VillageLockEntity> getVillageLocks() {
+        KeyValuePair keyValuePair = KeyValueCreator.getVillageLocks(
+                UserManager.INSTANCE.getUserInfo(UserManager.KEY_ID)
+                , UserManager.INSTANCE.getTicket()
+                , UserManager.INSTANCE.getUserInfo(UserManager.KEY_CURRENT_VILLAGE_ID));
+        Map<String, String> map = NetHelper.createBaseArgumentsMap(keyValuePair);
+        return RetrofitHelper.<ServiceAPI>createDefault()
+                .getVillageLocks(map)
                 .compose(CommonWrap.wrap());
     }
 }

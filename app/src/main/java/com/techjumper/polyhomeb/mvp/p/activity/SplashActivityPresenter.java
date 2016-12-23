@@ -197,8 +197,11 @@ public class SplashActivityPresenter extends AppBaseActivityPresenter<SplashActi
                                 if (bluetoothLockDoorInfoEntity != null
                                         && bluetoothLockDoorInfoEntity.getData() != null) {
                                     //切换家庭或者小区之后，发送消息给HomeFragment,刷新首页数据
-                                    RxBus.INSTANCE.send(new BLEInfoChangedEvent());
                                     UserManager.INSTANCE.saveBLEInfo(bluetoothLockDoorInfoEntity);
+                                    RxBus.INSTANCE.send(new BLEInfoChangedEvent());
+                                    if (!UserManager.INSTANCE.isCurrentCommunitySupportBLEDoor()) {
+                                        getDnakeInfo();
+                                    }
                                 } else {
                                     return Observable.error(new Exception(getView().getString(R.string.error_data)));
                                 }
@@ -216,7 +219,7 @@ public class SplashActivityPresenter extends AppBaseActivityPresenter<SplashActi
 
                             @Override
                             public void onError(Throwable e) {
-                                getView().showHint(e.getMessage().toString());
+//                                getView().showHint(e.getMessage().toString());
                             }
 
                             @Override
@@ -257,7 +260,8 @@ public class SplashActivityPresenter extends AppBaseActivityPresenter<SplashActi
 
                             @Override
                             public void onNext(VillageLockEntity villageLockEntity) {
-
+                                if (!processNetworkResult(villageLockEntity)) return;
+                                UserManager.INSTANCE.saveDnakeInfo(villageLockEntity);
                             }
                         }));
     }

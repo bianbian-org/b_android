@@ -12,6 +12,7 @@ import com.techjumper.polyhomeb.adapter.databean.MyVillageFamilyBean;
 import com.techjumper.polyhomeb.entity.BluetoothLockDoorInfoEntity;
 import com.techjumper.polyhomeb.entity.QueryFamilyEntity;
 import com.techjumper.polyhomeb.entity.UserFamiliesAndVillagesEntity;
+import com.techjumper.polyhomeb.entity.VillageLockEntity;
 import com.techjumper.polyhomeb.entity.event.BLEInfoChangedEvent;
 import com.techjumper.polyhomeb.entity.event.ChangeVillageIdRefreshEvent;
 import com.techjumper.polyhomeb.entity.event.ChooseFamilyVillageEvent;
@@ -37,7 +38,7 @@ public class MyVillageFamilyActivityPresenter extends AppBaseActivityPresenter<M
 
     private MyVillageFamilyActivityModel mModel = new MyVillageFamilyActivityModel(this);
 
-    private Subscription mSubs1, mSubs2, mSubs3;
+    private Subscription mSubs1, mSubs2, mSubs3, mSubs4;
 
     @Override
     public void initData(Bundle savedInstanceState) {
@@ -153,8 +154,11 @@ public class MyVillageFamilyActivityPresenter extends AppBaseActivityPresenter<M
                                 if (bluetoothLockDoorInfoEntity != null
                                         && bluetoothLockDoorInfoEntity.getData() != null) {
                                     //切换家庭或者小区之后，发送消息给HomeFragment,刷新首页数据
-                                    RxBus.INSTANCE.send(new BLEInfoChangedEvent());
                                     UserManager.INSTANCE.saveBLEInfo(bluetoothLockDoorInfoEntity);
+                                    RxBus.INSTANCE.send(new BLEInfoChangedEvent());
+                                    if (!UserManager.INSTANCE.isCurrentCommunitySupportBLEDoor()) {
+                                        getDnakeInfo();
+                                    }
                                 } else {
                                     return Observable.error(new Exception(getView().getString(R.string.error_data)));
                                 }
@@ -191,5 +195,26 @@ public class MyVillageFamilyActivityPresenter extends AppBaseActivityPresenter<M
                         }));
     }
 
+    private void getDnakeInfo() {
+        RxUtils.unsubscribeIfNotNull(mSubs4);
+        addSubscription(
+                mSubs4 = mModel.getVillageLocks()
+                        .subscribe(new Observer<VillageLockEntity>() {
+                            @Override
+                            public void onCompleted() {
+                            }
+
+                            @Override
+                            public void onError(Throwable e) {
+                                getView().dismissLoading();
+                            }
+
+                            @Override
+                            public void onNext(VillageLockEntity villageLockEntity) {
+                                if (!processNetworkResult(villageLockEntity)) return;
+                                UserManager.INSTANCE.saveDnakeInfo(villageLockEntity);
+                            }
+                        }));
+    }
 
 }

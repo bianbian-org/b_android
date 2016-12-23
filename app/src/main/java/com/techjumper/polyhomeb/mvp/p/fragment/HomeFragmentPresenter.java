@@ -7,6 +7,7 @@ import android.view.View;
 
 import com.steve.creact.library.display.DisplayBean;
 import com.techjumper.corelib.rx.tools.RxBus;
+import com.techjumper.corelib.rx.tools.RxUtils;
 import com.techjumper.corelib.utils.Utils;
 import com.techjumper.corelib.utils.common.AcHelper;
 import com.techjumper.corelib.utils.common.JLog;
@@ -29,6 +30,7 @@ import com.techjumper.polyhomeb.entity.ADEntity;
 import com.techjumper.polyhomeb.entity.BluetoothLockDoorInfoEntity;
 import com.techjumper.polyhomeb.entity.JuJiaInfoEntity;
 import com.techjumper.polyhomeb.entity.MarqueeTextInfoEntity;
+import com.techjumper.polyhomeb.entity.VillageLockEntity;
 import com.techjumper.polyhomeb.entity.event.ADClickEvent;
 import com.techjumper.polyhomeb.entity.event.BLEInfoChangedEvent;
 import com.techjumper.polyhomeb.entity.event.ChooseFamilyVillageEvent;
@@ -469,10 +471,37 @@ public class HomeFragmentPresenter extends AppBaseFragmentPresenter<HomeFragment
                                 if (bluetoothLockDoorInfoEntity != null
                                         && bluetoothLockDoorInfoEntity.getData() != null) {
                                     //切换家庭或者小区之后，发送消息给HomeFragment,刷新首页数据，以及下拉刷新
-                                    RxBus.INSTANCE.send(new BLEInfoChangedEvent());
                                     UserManager.INSTANCE.saveBLEInfo(bluetoothLockDoorInfoEntity);
+                                    RxBus.INSTANCE.send(new BLEInfoChangedEvent());
+                                    if (!UserManager.INSTANCE.isCurrentCommunitySupportBLEDoor()) {
+                                        getDnakeInfo();
+                                    }
                                 }
                             }
                         }));
     }
+
+    private void getDnakeInfo() {
+        RxUtils.unsubscribeIfNotNull(mSubs3);
+        addSubscription(
+                mSubs3 = mModel.getVillageLocks()
+                        .subscribe(new Observer<VillageLockEntity>() {
+                            @Override
+                            public void onCompleted() {
+
+                            }
+
+                            @Override
+                            public void onError(Throwable e) {
+
+                            }
+
+                            @Override
+                            public void onNext(VillageLockEntity villageLockEntity) {
+                                if (!processNetworkResult(villageLockEntity)) return;
+                                UserManager.INSTANCE.saveDnakeInfo(villageLockEntity);
+                            }
+                        }));
+    }
+
 }

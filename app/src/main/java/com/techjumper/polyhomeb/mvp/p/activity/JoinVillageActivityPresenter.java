@@ -12,6 +12,7 @@ import com.techjumper.polyhomeb.Constant;
 import com.techjumper.polyhomeb.R;
 import com.techjumper.polyhomeb.entity.BluetoothLockDoorInfoEntity;
 import com.techjumper.polyhomeb.entity.TrueEntity;
+import com.techjumper.polyhomeb.entity.VillageLockEntity;
 import com.techjumper.polyhomeb.entity.event.BLEInfoChangedEvent;
 import com.techjumper.polyhomeb.entity.event.ChooseFamilyVillageEvent;
 import com.techjumper.polyhomeb.mvp.m.JoinVillageActivityModel;
@@ -33,7 +34,7 @@ public class JoinVillageActivityPresenter extends AppBaseActivityPresenter<JoinV
 
     private JoinVillageActivityModel mModel = new JoinVillageActivityModel(this);
 
-    private Subscription mSubs1, mSubs2;
+    private Subscription mSubs1, mSubs2, mSubs3;
 
     @Override
     public void initData(Bundle savedInstanceState) {
@@ -127,6 +128,45 @@ public class JoinVillageActivityPresenter extends AppBaseActivityPresenter<JoinV
                         .subscribe(new Observer<BluetoothLockDoorInfoEntity>() {
                             @Override
                             public void onCompleted() {
+                                if (UserManager.INSTANCE.isCurrentCommunitySupportBLEDoor()) {
+                                    getView().dismissLoading();
+                                    new AcHelper.Builder(getView())
+                                            .closeCurrent(true)
+                                            .enterAnim(R.anim.fade_in)
+                                            .exitAnim(R.anim.fade_out)
+                                            .target(TabHomeActivity.class)
+                                            .start();
+                                }
+                            }
+
+                            @Override
+                            public void onError(Throwable e) {
+                                getView().dismissLoading();
+                            }
+
+                            @Override
+                            public void onNext(BluetoothLockDoorInfoEntity bluetoothLockDoorInfoEntity) {
+                                if (!processNetworkResult(bluetoothLockDoorInfoEntity)) return;
+                                if (bluetoothLockDoorInfoEntity != null
+                                        && bluetoothLockDoorInfoEntity.getData() != null) {
+                                    //切换家庭或者小区之后，发送消息给HomeFragment,刷新首页数据
+                                    UserManager.INSTANCE.saveBLEInfo(bluetoothLockDoorInfoEntity);
+                                    RxBus.INSTANCE.send(new BLEInfoChangedEvent());
+                                    if (!UserManager.INSTANCE.isCurrentCommunitySupportBLEDoor()) {
+                                        getDnakeInfo();
+                                    }
+                                }
+                            }
+                        }));
+    }
+
+    private void getDnakeInfo() {
+        RxUtils.unsubscribeIfNotNull(mSubs3);
+        addSubscription(
+                mSubs3 = mModel.getVillageLocks()
+                        .subscribe(new Observer<VillageLockEntity>() {
+                            @Override
+                            public void onCompleted() {
                                 getView().dismissLoading();
                                 new AcHelper.Builder(getView())
                                         .closeCurrent(true)
@@ -142,15 +182,11 @@ public class JoinVillageActivityPresenter extends AppBaseActivityPresenter<JoinV
                             }
 
                             @Override
-                            public void onNext(BluetoothLockDoorInfoEntity bluetoothLockDoorInfoEntity) {
-                                if (!processNetworkResult(bluetoothLockDoorInfoEntity)) return;
-                                if (bluetoothLockDoorInfoEntity != null
-                                        && bluetoothLockDoorInfoEntity.getData() != null) {
-                                    //切换家庭或者小区之后，发送消息给HomeFragment,刷新首页数据
-                                    RxBus.INSTANCE.send(new BLEInfoChangedEvent());
-                                    UserManager.INSTANCE.saveBLEInfo(bluetoothLockDoorInfoEntity);
-                                }
+                            public void onNext(VillageLockEntity villageLockEntity) {
+                                if (!processNetworkResult(villageLockEntity)) return;
+                                UserManager.INSTANCE.saveDnakeInfo(villageLockEntity);
                             }
                         }));
     }
+
 }

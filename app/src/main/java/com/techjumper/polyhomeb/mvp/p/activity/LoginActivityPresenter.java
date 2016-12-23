@@ -12,6 +12,7 @@ import com.techjumper.polyhomeb.R;
 import com.techjumper.polyhomeb.entity.BluetoothLockDoorInfoEntity;
 import com.techjumper.polyhomeb.entity.LoginEntity;
 import com.techjumper.polyhomeb.entity.QueryFamilyEntity;
+import com.techjumper.polyhomeb.entity.VillageLockEntity;
 import com.techjumper.polyhomeb.entity.event.BLEInfoChangedEvent;
 import com.techjumper.polyhomeb.entity.event.ChangeVillageIdRefreshEvent;
 import com.techjumper.polyhomeb.mvp.m.LoginActivityModel;
@@ -43,7 +44,7 @@ public class LoginActivityPresenter extends AppBaseActivityPresenter<LoginActivi
     public static final String KEY_COME_FROM = "key_come_from";
     public static final String VALUE_COME_FROM_WEBVIEW = "key_come_from_webview";
 
-    private Subscription mSubs1, mSubs2;
+    private Subscription mSubs1, mSubs2, mSubs3;
     private String mPhoneNumber;
 
     private LoginActivityModel mModel = new LoginActivityModel(this);
@@ -213,8 +214,11 @@ public class LoginActivityPresenter extends AppBaseActivityPresenter<LoginActivi
                                 if (bluetoothLockDoorInfoEntity != null
                                         && bluetoothLockDoorInfoEntity.getData() != null) {
                                     //切换家庭或者小区之后，发送消息给HomeFragment,刷新首页数据
-                                    RxBus.INSTANCE.send(new BLEInfoChangedEvent());
                                     UserManager.INSTANCE.saveBLEInfo(bluetoothLockDoorInfoEntity);
+                                    RxBus.INSTANCE.send(new BLEInfoChangedEvent());
+                                    if (!UserManager.INSTANCE.isCurrentCommunitySupportBLEDoor()) {
+                                        getDnakeInfo();
+                                    }
                                 } else {
                                     return Observable.error(new Exception(getView().getString(R.string.error_data)));
                                 }
@@ -245,6 +249,29 @@ public class LoginActivityPresenter extends AppBaseActivityPresenter<LoginActivi
                                 } else {
                                     getView().showHint(getView().getString(R.string.error_data));
                                 }
+                            }
+                        }));
+    }
+
+    private void getDnakeInfo() {
+        RxUtils.unsubscribeIfNotNull(mSubs3);
+        addSubscription(
+                mSubs3 = mModel.getVillageLocks()
+                        .subscribe(new Observer<VillageLockEntity>() {
+                            @Override
+                            public void onCompleted() {
+
+                            }
+
+                            @Override
+                            public void onError(Throwable e) {
+
+                            }
+
+                            @Override
+                            public void onNext(VillageLockEntity villageLockEntity) {
+                                if (!processNetworkResult(villageLockEntity)) return;
+                                UserManager.INSTANCE.saveDnakeInfo(villageLockEntity);
                             }
                         }));
     }
