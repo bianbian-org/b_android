@@ -115,6 +115,7 @@ public class PropertyViewHolder extends BaseRecyclerViewHolder<PropertyData> {
 
     private void setMarqueeTextData(MarqueeTextInfoEntity entity) {
         if (entity == null) {
+            RxUtils.unsubscribeIfNotNull(mSubs1);
             setText(R.id.tv_notice, getContext().getString(R.string.im_no_message));
             setOnClickListener(R.id.btn_checkout_property, null);
         } else {
