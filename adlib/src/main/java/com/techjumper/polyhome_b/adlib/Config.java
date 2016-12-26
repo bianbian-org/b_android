@@ -16,31 +16,27 @@ public class Config {
     public static String sJujia;
     public static String sShopping;
     public static String sShoppingLogin;
+    public static String sShoppingBase;
     public static String sShoppingShow;
 
     static {
-        sHost = DEBUG ? "http://poly.techjumper.com" : "http://api.ourjujia.com";
+
+        sHost = DEBUG ? "http://poly.techjumper.com" : "http://api.polyhome.com";
+
+        sJujia = DEBUG ? "http://pl.techjumper.com/jujia/pad" : "http://www.ourjujia.com/pad";
+
+        sShoppingBase = DEBUG ? "http://pl.techjumper.com" : "http://service.polyhome.com";
+
+        sShopping = DEBUG ? "http://pl.techjumper.com/shop/pad" : "http://service.polyhome.com/shop/pad";
+
+        sShoppingLogin = sShopping + "/login";
+
+        sShoppingShow = sShopping + "/order/show/";
     }
 
 //    static {
 //        sJujia = DEBUG ? "http://jujia.techjumper.com" : "http://www.ourjujia.com";
 //    }
-
-    static {
-        sJujia = DEBUG ? "http://pl.techjumper.com/jujia/pad" : "http://www.ourjujia.com/pad";
-    }
-
-    static {
-        sShopping = DEBUG ? "http://pl.techjumper.com/shop/pad" : "http://polyhome.techjumper.com/shop/pad";
-    }
-
-    static {
-        sShoppingLogin = sShopping + "/login";
-    }
-
-    static {
-        sShoppingShow = sShopping + "/order/show/";
-    }
 
     /**
      * 默认接口地址
