@@ -18,8 +18,8 @@ android {
         applicationId "com.techjumper.polyhomeb"
         minSdkVersion rootProject.minSdkVersion
         targetSdkVersion rootProject.targetSdkVersion
-        versionCode 10030
-        versionName "1.3.0"
+        versionCode 10002
+        versionName "1.0.2"
         multiDexEnabled true
     }
 
@@ -95,9 +95,9 @@ dependencies {
     compile project(':alipay')
     compile project(':doormaster')
     compile project(':wechatpay')
-    compile project (':paycorelib')
-    compile project (':slide2unlock')
-    compile project (':unionpay')
+    compile project(':paycorelib')
+    compile project(':slide2unlock')
+    compile project(':unionpay')
 
     compile "com.yalantis:ucrop:$rootProject.ucrop"
     compile "com.creact:powerful-adapter-lib-release:$rootProject.recyclerAdapter"
