@@ -12,27 +12,26 @@ import java.io.File;
  **/
 public class Config {
 
+    /**
+     * 接口地址
+     */
     public static String sHost;
-
-    public static String sJuJia;
 
     /**
      * 是否是调试环境
      */
-    public static final boolean DEBUG = true;
+    public static final boolean DEBUG = false;
+    public static String HTTP;
+
+    static {
+        HTTP = DEBUG ? "http" : "https";
+    }
 
     /**
      * polyhome域名
      */
     static {
-        sHost = DEBUG ? "http://pl.techjumper.com" : "http://polyhome.techjumper.com";
-    }
-
-    /**
-     * 首页聚家域名
-     */
-    static {
-        sJuJia = DEBUG ? "http://pl.techjumper.com" : "http://m.ourjujia.com";
+        sHost = DEBUG ? "http://pl.techjumper.com" : "https://service.polyhome.com";
     }
 
     public static final String AD_URL = "?title=&left=::NativeReturn&right=%E8%B4%AD%E7%89%A9%E8%BD%A6::shop_cart";

@@ -11,6 +11,7 @@ import android.widget.ImageView;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.RequestManager;
+import com.techjumper.polyhomeb.Config;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -41,7 +42,7 @@ public class PicViewAdapter extends PagerAdapter {
 
         final String path = paths.get(position);
         final Uri uri;
-        if (path.startsWith("http")) {
+        if (path.startsWith(Config.HTTP)) {
             uri = Uri.parse(path);
         } else {
             uri = Uri.fromFile(new File(path));

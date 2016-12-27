@@ -178,7 +178,7 @@ public class TabHomeActivityPresenter extends AppBaseActivityPresenter<TabHomeAc
         if (TextUtils.isEmpty(url)) return;
         if (url.startsWith("/")) {
             downLoadFromServer(url);
-        } else if (url.contains("http")) {
+        } else if (url.contains(Config.HTTP)) {
             Intent intent = new Intent();
             intent.setAction(Intent.ACTION_VIEW);
             intent.setData(Uri.parse(url));

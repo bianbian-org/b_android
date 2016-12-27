@@ -9,6 +9,7 @@ import com.techjumper.corelib.rx.tools.RxBus;
 import com.techjumper.corelib.utils.common.AcHelper;
 import com.techjumper.corelib.utils.common.JLog;
 import com.techjumper.lib2.utils.GsonUtils;
+import com.techjumper.polyhomeb.Config;
 import com.techjumper.polyhomeb.Constant;
 import com.techjumper.polyhomeb.entity.JSJavaBaseEntity;
 import com.techjumper.polyhomeb.entity.JSJavaContactShopEntity;
@@ -131,7 +132,7 @@ public class JavascriptObject {
     //http://www.baidu.com?id=11&type=1
     //pay://order_num=11111&total=11.0
     private void pageJump(String url) {
-        if (url.startsWith("http")) {
+        if (url.startsWith(Config.HTTP)) {
             Bundle bundle = new Bundle();
             bundle.putString(Constant.JS_PAGE_JUMP_URL, url);
             new AcHelper.Builder(mActivity).extra(bundle).target(JSInteractionActivity.class).start();

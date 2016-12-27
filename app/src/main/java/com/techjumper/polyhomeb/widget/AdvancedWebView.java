@@ -522,34 +522,6 @@ public class AdvancedWebView extends WebView {
             @Override
             public boolean shouldOverrideUrlLoading(final WebView view, final String url) {
 
-//                if (!TextUtils.isEmpty(url) && url.startsWith("tel:")) {
-//                    RxPermissions.getInstance(context)
-//                            .request(Manifest.permission.CALL_PHONE)
-//                            .subscribe(aBoolean -> {
-//                                if (aBoolean) {
-//                                    String[] split = url.split("tel:");
-//                                    if (split.length == 2 && !TextUtils.isEmpty(split[1])) {
-//                                        DialogUtils.getBuilder((Activity) context)
-//                                                .content(String.format(context.getString(R.string.confirm_call_x)
-//                                                        , url.replace("tel:", "")))
-//                                                .positiveText(R.string.ok)
-//                                                .negativeText(R.string.cancel)
-//                                                .onAny((dialog, which) -> {
-//                                                    switch (which) {
-//                                                        case POSITIVE:
-//                                                            Intent intent = new Intent();
-//                                                            intent.setAction(Intent.ACTION_CALL);
-//                                                            intent.setData(Uri.parse(url));
-//                                                            context.startActivity(intent);
-//                                                            break;
-//                                                    }
-//                                                })
-//                                                .show();
-//                                    }
-//                                }
-//                            });
-//                    return true;
-//                }
                 // if the hostname may not be accessed
                 if (!isHostnameAllowed(url)) {
                     // if a listener is available
@@ -592,15 +564,8 @@ public class AdvancedWebView extends WebView {
             public WebResourceResponse shouldInterceptRequest(WebView view, String url) {
                 if (Build.VERSION.SDK_INT >= 11) {
                     if (mCustomWebViewClient != null) {
-
-//                        WebResourceResponse resourceResponse = mCustomWebViewClient.shouldInterceptRequest(view, url);
-//                        int statusCode = resourceResponse.getStatusCode();
-//                        JLog.e(statusCode + "呵呵");
                         return mCustomWebViewClient.shouldInterceptRequest(view, url);
                     } else {
-//                        WebResourceResponse resourceResponse = super.shouldInterceptRequest(view, url);
-//                        int statusCode = resourceResponse.getStatusCode();
-//                        JLog.e(statusCode + "哈哈");
                         return super.shouldInterceptRequest(view, url);
                     }
                 } else {
@@ -613,18 +578,8 @@ public class AdvancedWebView extends WebView {
             public WebResourceResponse shouldInterceptRequest(WebView view, WebResourceRequest request) {
                 if (Build.VERSION.SDK_INT >= 21) {
                     if (mCustomWebViewClient != null) {
-
-//                        WebResourceResponse resourceResponse = mCustomWebViewClient.shouldInterceptRequest(view, request);
-//                        int statusCode = resourceResponse.getStatusCode();
-//                        JLog.e(statusCode + "嘿嘿");
-
                         return mCustomWebViewClient.shouldInterceptRequest(view, request);
                     } else {
-
-//                        WebResourceResponse resourceResponse = mCustomWebViewClient.shouldInterceptRequest(view, request);
-//                        int statusCode = resourceResponse.getStatusCode();
-//                        JLog.e(statusCode + "恩恩");
-
                         return super.shouldInterceptRequest(view, request);
                     }
                 } else {
@@ -652,11 +607,12 @@ public class AdvancedWebView extends WebView {
 
             @Override
             public void onReceivedSslError(WebView view, SslErrorHandler handler, SslError error) {
-                if (mCustomWebViewClient != null) {
-                    mCustomWebViewClient.onReceivedSslError(view, handler, error);
-                } else {
-                    super.onReceivedSslError(view, handler, error);
-                }
+                handler.proceed();
+//                if (mCustomWebViewClient != null) {
+//                    mCustomWebViewClient.onReceivedSslError(view, handler, error);
+//                } else {
+//                    super.onReceivedSslError(view, handler, error);
+//                }
             }
 
             @SuppressLint("NewApi")

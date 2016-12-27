@@ -103,7 +103,7 @@ public class JuJiaViewHolder extends BaseRecyclerViewHolder<JuJiaData> {
 
     private void jump2JujiaPage(String url) {
         Bundle bundle = new Bundle();
-        bundle.putString(KEY_JUJIA_JUMP_URL, Config.sJuJia + url);
+        bundle.putString(KEY_JUJIA_JUMP_URL, Config.sHost + url);
         new AcHelper.Builder((Activity) getContext())
                 .target(JujiaDetailWebActivity.class)
                 .extra(bundle)
