@@ -30,6 +30,9 @@
         <meta-data
             android:name="UMENG_CHANNEL"
             android:value="test"/>
+        <meta-data
+            android:name="com.techjumper.polyhomeb.glide.UnsafeOkHttpGlideModule"
+            android:value="GlideModule"/>
 
         <activity
             android:name=".mvp.v.activity.SplashActivity"
