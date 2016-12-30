@@ -24,6 +24,7 @@ import com.techjumper.polyhomeb.mvp.m.SettingActivityModel;
 import com.techjumper.polyhomeb.mvp.v.activity.AboutUsActivity;
 import com.techjumper.polyhomeb.mvp.v.activity.LoginActivity;
 import com.techjumper.polyhomeb.mvp.v.activity.SettingActivity;
+import com.techjumper.polyhomeb.mvp.v.activity.UserAgreementActivity;
 import com.techjumper.polyhomeb.service.UpdateService;
 import com.techjumper.polyhomeb.user.UserManager;
 
@@ -61,7 +62,8 @@ public class SettingActivityPresenter extends AppBaseActivityPresenter<SettingAc
 
     }
 
-    @OnClick({R.id.tv_logout, R.id.layout_cache, R.id.tv_uninstall_smarthome, R.id.tv_about, R.id.layout_version_info})
+    @OnClick({R.id.tv_logout, R.id.layout_cache, R.id.tv_uninstall_smarthome, R.id.tv_about
+            , R.id.layout_version_info, R.id.tv_user_agreement})
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.layout_version_info:
@@ -78,6 +80,9 @@ public class SettingActivityPresenter extends AppBaseActivityPresenter<SettingAc
                 break;
             case R.id.tv_about:
                 aboutUs();
+                break;
+            case R.id.tv_user_agreement:
+                userAgreement();
                 break;
         }
     }
@@ -128,6 +133,10 @@ public class SettingActivityPresenter extends AppBaseActivityPresenter<SettingAc
 
     private void aboutUs() {
         new AcHelper.Builder(getView()).target(AboutUsActivity.class).start();
+    }
+
+    private void userAgreement() {
+        new AcHelper.Builder(getView()).target(UserAgreementActivity.class).start();
     }
 
     private void checkVersionInfo() {

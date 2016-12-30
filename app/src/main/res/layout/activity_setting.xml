@@ -126,6 +126,25 @@
         <View
             android:layout_width="match_parent"
             android:layout_height="0.5dp"
+            android:layout_marginLeft="@dimen/dp_14"
+            android:background="@color/color_ceced2" />
+
+        <TextView
+            android:id="@+id/tv_user_agreement"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/dp_50"
+            android:drawableRight="@mipmap/icon_right_arrow"
+            android:gravity="center|left"
+            android:paddingLeft="@dimen/dp_14"
+            android:paddingRight="@dimen/dp_14"
+            android:singleLine="true"
+            android:text="@string/user_agreement"
+            android:textColor="@color/color_a8a8a8"
+            android:textSize="@dimen/sp_14" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="0.5dp"
             android:background="@color/color_ceced2" />
 
     </LinearLayout>

@@ -22,6 +22,7 @@ import com.techjumper.polyhomeb.entity.event.CountdownEvent;
 import com.techjumper.polyhomeb.mvp.m.RegistActivityModel;
 import com.techjumper.polyhomeb.mvp.v.activity.ChooseVillageFamilyActivity;
 import com.techjumper.polyhomeb.mvp.v.activity.RegistActivity;
+import com.techjumper.polyhomeb.mvp.v.activity.UserAgreementActivity;
 import com.techjumper.polyhomeb.service.CountdownService;
 import com.techjumper.polyhomeb.user.UserManager;
 import com.techjumper.polyhomeb.user.event.LoginEvent;
@@ -188,7 +189,7 @@ public class RegistActivityPresenter extends AppBaseActivityPresenter<RegistActi
         return mModel.getPhoneNumber();
     }
 
-    @OnClick({R.id.tv_regist, R.id.tv_get_verification_code})
+    @OnClick({R.id.tv_regist, R.id.tv_get_verification_code, R.id.tv_user_agreement})
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.tv_regist:
@@ -197,7 +198,14 @@ public class RegistActivityPresenter extends AppBaseActivityPresenter<RegistActi
             case R.id.tv_get_verification_code:
                 sendVerificationCode();
                 break;
+            case R.id.tv_user_agreement:
+                userAgreement();
+                break;
         }
+    }
+
+    private void userAgreement() {
+        new AcHelper.Builder(getView()).target(UserAgreementActivity.class).start();
     }
 
     private void sendVerificationCode() {
