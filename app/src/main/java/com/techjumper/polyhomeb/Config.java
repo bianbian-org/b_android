@@ -57,7 +57,7 @@ public class Config {
     public static String sFriendNotification = sHost + "/neighbor/user/notices?title=通知&left=::NativeReturn&right=";
     public static String sService = sHost + "/life?title=生活服务&left=::NativeMenu&right=";
     public static String sAboutUs = sHost + "/content/sp/bphone_about?title=关于我们&left=::NativeReturn&right=";
-    public static String sUserAgreement = sHost + "/bphone_useragreement?title=用户协议&left=::NativeReturn&right=";
+    public static String sUserAgreement = sHost + "/content/sp/bphone_useragreement?title=用户协议&left=::NativeReturn&right=";
 
     /**
      * 在SD空间的文件夹名字,以及文件夹内部的头像文件夹名称以及log文件夹名称
