@@ -1,11 +1,13 @@
 package com.techjumper.polyhomeb.mvp.v.activity;
 
+import android.net.http.SslError;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.webkit.JavascriptInterface;
+import android.webkit.SslErrorHandler;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
@@ -90,6 +92,11 @@ public class JujiaDetailWebActivity extends AppBaseActivity<JujiaDetailWebActivi
                 super.onPageFinished(view, url);
                 showTitle(view.getTitle());
                 canGoBack(view.canGoBack());
+            }
+
+            @Override
+            public void onReceivedSslError(WebView view, SslErrorHandler handler, SslError error) {
+                handler.proceed();
             }
         });
 

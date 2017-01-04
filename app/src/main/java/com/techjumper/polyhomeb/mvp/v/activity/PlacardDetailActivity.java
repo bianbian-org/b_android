@@ -2,8 +2,10 @@ package com.techjumper.polyhomeb.mvp.v.activity;
 
 import android.annotation.SuppressLint;
 import android.graphics.Bitmap;
+import android.net.http.SslError;
 import android.os.Bundle;
 import android.view.View;
+import android.webkit.SslErrorHandler;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
@@ -74,6 +76,11 @@ public class PlacardDetailActivity extends AppBaseActivity<PlacardDetailActivity
             @Override
             public void onPageStarted(WebView view, String url, Bitmap favicon) {
                 super.onPageStarted(view, url, favicon);
+            }
+
+            @Override
+            public void onReceivedSslError(WebView view, SslErrorHandler handler, SslError error) {
+                handler.proceed();
             }
         });
         mWebView.loadUrl("file:///android_asset/notice.html");

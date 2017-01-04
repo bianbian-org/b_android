@@ -1,8 +1,10 @@
 package com.techjumper.polyhomeb.mvp.v.activity;
 
+import android.net.http.SslError;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.View;
+import android.webkit.SslErrorHandler;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.ImageView;
@@ -63,10 +65,16 @@ public class JSInteractionActivity extends AppBaseWebViewActivity<JSInteractionA
                     view.loadUrl(url);
                     return true;
                 }
+
                 @Override
                 public void onPageFinished(WebView view, String url) {
                     super.onPageFinished(view, url);
                     showTitle(view.getTitle());
+                }
+
+                @Override
+                public void onReceivedSslError(WebView view, SslErrorHandler handler, SslError error) {
+                    handler.proceed();
                 }
             });
         } else {
