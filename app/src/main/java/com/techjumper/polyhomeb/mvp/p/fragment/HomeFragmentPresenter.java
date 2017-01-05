@@ -102,7 +102,7 @@ public class HomeFragmentPresenter extends AppBaseFragmentPresenter<HomeFragment
                             if (activity != null) {
                                 activity.getPresenter().adJump2Shopping(newUrl);
                             }
-                        } else if (url.startsWith(Config.HTTP)) {
+                        } else if (url.startsWith("http") || url.startsWith("https")) {
                             Bundle bundle = new Bundle();
                             bundle.putString("url", url);
                             new AcHelper.Builder(getView().getActivity())

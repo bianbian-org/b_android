@@ -192,7 +192,7 @@ public class SettingActivityPresenter extends AppBaseActivityPresenter<SettingAc
         if (TextUtils.isEmpty(url)) return;
         if (url.startsWith("/")) {
             downLoadFromServer(url);
-        } else if (url.contains(Config.HTTP)) {
+        } else if (url.contains("http") || url.contains("https")) {
             Intent intent = new Intent();
             intent.setAction(Intent.ACTION_VIEW);
             intent.setData(Uri.parse(url));
