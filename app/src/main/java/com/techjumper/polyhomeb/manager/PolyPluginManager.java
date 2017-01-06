@@ -28,7 +28,7 @@ import rx.android.schedulers.AndroidSchedulers;
 
 public class PolyPluginManager {
 
-    public static final String C_PACKAGE_NAME = "com.techjumper.plugin.polyhome";
+    public static final String C_PACKAGE_NAME = "com.techjumper.polyhome";
     private static final String C_MAIN_ACTIVITY = "com.techjumper.polyhome.mvp.v.activity.TabHomeActivity";
     private static final String C_MAIN_ACTION = "com.techjumper.plugin.polyhome.ACTION_MAIN";
 
