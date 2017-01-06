@@ -47,6 +47,9 @@ import android.webkit.WebStorage.QuotaUpdater;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 
+import com.techjumper.corelib.utils.common.JLog;
+import com.techjumper.polyhomeb.user.UserManager;
+
 import java.io.UnsupportedEncodingException;
 import java.lang.ref.WeakReference;
 import java.util.Arrays;
@@ -1001,7 +1004,21 @@ public class AdvancedWebView extends WebView {
         if (mHttpHeaders.size() > 0) {
             super.loadUrl(url, mHttpHeaders);
         } else {
-            super.loadUrl(url);
+            addHttpHeaders();
+            super.loadUrl(url, mHttpHeaders);
+        }
+
+        JLog.e("httpheades.size()=" + mHttpHeaders.size());
+    }
+
+    public void addHttpHeaders() {
+        addHttpHeader("HUSERID", UserManager.INSTANCE.getUserInfo(UserManager.KEY_ID));
+        addHttpHeader("HTICKET", UserManager.INSTANCE.getTicket());
+        addHttpHeader("HVILLAGEID", UserManager.INSTANCE.getUserInfo(UserManager.KEY_CURRENT_VILLAGE_ID));
+        if (UserManager.INSTANCE.isFamily()) {
+            addHttpHeader("HFAMILYID", UserManager.INSTANCE.getUserInfo(UserManager.KEY_CURRENT_FAMILY_ID));
+        } else {
+            addHttpHeader("HFAMILYID", "");
         }
     }
 

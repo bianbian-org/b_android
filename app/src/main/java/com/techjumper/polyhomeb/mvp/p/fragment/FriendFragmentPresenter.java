@@ -75,8 +75,9 @@ public class FriendFragmentPresenter extends AppBaseFragmentPresenter<FriendFrag
 //                        getView().getWebView().reload();
                             } else if (o instanceof RefreshStopEvent) {  //此方法没有任何用了.之前是在JS中通知停止刷新
                                 getView().stopRefresh("");
-                            } else if (o instanceof ChangeVillageIdRefreshEvent
-                                    || o instanceof RefreshWhenDeleteArticleEvent) {
+                            } else if (o instanceof ChangeVillageIdRefreshEvent) {
+                                getView().reload();
+                            } else if (o instanceof RefreshWhenDeleteArticleEvent) {
                                 getView().reload();
                             }
                         }));
