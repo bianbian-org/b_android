@@ -19,7 +19,7 @@ android {
         minSdkVersion rootProject.minSdkVersion
         targetSdkVersion rootProject.targetSdkVersion
         versionCode 10032
-        versionName "1.3.2"
+        versionName "1.3.2" 
         multiDexEnabled true
     }
 
