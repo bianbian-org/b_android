@@ -303,7 +303,7 @@ public enum UserManager {
      * 当前小区/家庭是否支持Dnake门锁
      */
     public boolean isCurrentCommunitySupportDnakeDoor() {
-        return PreferenceUtils.get(KEY_IS_CURRENT_COMMUNITY_SUPPORT_DNAKE_DOOR, "0").equals("1");
+        return PreferenceUtils.get(KEY_IS_CURRENT_COMMUNITY_SUPPORT_DNAKE_DOOR, "0").equals("0");
     }
 
     /**
