@@ -14,8 +14,8 @@ public class Config {
 
     /**
      * 接口地址
-     */ 
-    public static String sHost; 
+     */
+    public static String sHost;
 
     /**
      * 是否是调试环境
