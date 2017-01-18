@@ -82,7 +82,10 @@ public class HomeFragmentModel extends BaseModel<HomeFragmentPresenter> {
 
         //Dnake开锁部分item
         DnakeData dnakeData = new DnakeData();
-        dnakeData.setCommunitySupportDnakeDoor(UserManager.INSTANCE.isCurrentCommunitySupportDnakeDoor());
+        boolean blue = UserManager.INSTANCE.isCurrentCommunitySupportBLEDoor();
+        boolean dnake = UserManager.INSTANCE.isCurrentCommunitySupportDnakeDoor();
+        boolean show = blue ? !blue : dnake;
+        dnakeData.setCommunitySupportDnakeDoor(show);
         DnakeBean dnakeBean = new DnakeBean(dnakeData);
         displayBeans.add(dnakeBean);
 

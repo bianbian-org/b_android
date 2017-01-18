@@ -262,6 +262,7 @@ public class SplashActivityPresenter extends AppBaseActivityPresenter<SplashActi
                             public void onNext(VillageLockEntity villageLockEntity) {
                                 if (!processNetworkResult(villageLockEntity)) return;
                                 UserManager.INSTANCE.saveDnakeInfo(villageLockEntity);
+                                RxBus.INSTANCE.send(new BLEInfoChangedEvent());
                             }
                         }));
     }

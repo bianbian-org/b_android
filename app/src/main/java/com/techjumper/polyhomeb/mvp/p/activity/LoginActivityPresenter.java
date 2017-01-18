@@ -272,6 +272,7 @@ public class LoginActivityPresenter extends AppBaseActivityPresenter<LoginActivi
                             public void onNext(VillageLockEntity villageLockEntity) {
                                 if (!processNetworkResult(villageLockEntity)) return;
                                 UserManager.INSTANCE.saveDnakeInfo(villageLockEntity);
+                                RxBus.INSTANCE.send(new BLEInfoChangedEvent());
                             }
                         }));
     }

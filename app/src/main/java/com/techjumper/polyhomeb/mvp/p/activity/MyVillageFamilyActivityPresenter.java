@@ -213,6 +213,7 @@ public class MyVillageFamilyActivityPresenter extends AppBaseActivityPresenter<M
                             public void onNext(VillageLockEntity villageLockEntity) {
                                 if (!processNetworkResult(villageLockEntity)) return;
                                 UserManager.INSTANCE.saveDnakeInfo(villageLockEntity);
+                                RxBus.INSTANCE.send(new BLEInfoChangedEvent());
                             }
                         }));
     }

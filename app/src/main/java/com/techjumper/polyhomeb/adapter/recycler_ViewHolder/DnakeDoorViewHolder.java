@@ -32,9 +32,8 @@ public class DnakeDoorViewHolder extends BaseRecyclerViewHolder<DnakeData> {
             setVisibility(R.id.root, View.GONE);
         } else {
             setVisibility(R.id.root, View.VISIBLE);
+            setOnClickListener(R.id.root, v ->
+                    new AcHelper.Builder((Activity) getContext()).target(DnakeLockActivity.class).start());
         }
-
-        setOnClickListener(R.id.root, v ->
-                new AcHelper.Builder((Activity) getContext()).target(DnakeLockActivity.class).start());
     }
 }
