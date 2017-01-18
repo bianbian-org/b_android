@@ -294,7 +294,10 @@ public class HomeFragmentPresenter extends AppBaseFragmentPresenter<HomeFragment
             if (data.get(i) instanceof DnakeBean) {
                 DnakeBean dnakeBean = (DnakeBean) data.get(i);
                 DnakeData data1 = dnakeBean.getData();
-                data1.setCommunitySupportDnakeDoor(UserManager.INSTANCE.isCurrentCommunitySupportDnakeDoor());
+                boolean blue = UserManager.INSTANCE.isCurrentCommunitySupportBLEDoor();
+                boolean dnake = UserManager.INSTANCE.isCurrentCommunitySupportDnakeDoor();
+                boolean show = blue ? !blue : dnake;
+                data1.setCommunitySupportDnakeDoor(show);
                 getView().notifyItemChanged(i);
                 break;
             }
