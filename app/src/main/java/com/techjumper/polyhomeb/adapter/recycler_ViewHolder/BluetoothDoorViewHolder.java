@@ -56,8 +56,10 @@ public class BluetoothDoorViewHolder extends BaseRecyclerViewHolder<BluetoothDat
         mView.setOnUnLockViewStateListener(this);
         mView.setDelayTime(700);
         mView.setWaitTime(4000);
-        mView.setTextUnusable(getContext().getString(R.string.ble_scan_no_device));
-        mView.setTextDefault(getContext().getString(R.string.ble_scan_no_device));
+        mView.setTextUnusable(AppUtils.isCellPhoneSupportBLE(getContext()) ?
+                getContext().getString(R.string.ble_scan_no_device) : getContext().getString(R.string.ble_not_support));
+        mView.setTextDefault(AppUtils.isCellPhoneSupportBLE(getContext()) ?
+                getContext().getString(R.string.ble_scan_no_device) : getContext().getString(R.string.ble_not_support));
         mView.setTextSuccess(getContext().getString(R.string.ble_unlock_success));
         mView.setTextFailed(getContext().getString(R.string.ble_unlock_failed));
         mView.postDelayed(() -> {
@@ -139,6 +141,9 @@ public class BluetoothDoorViewHolder extends BaseRecyclerViewHolder<BluetoothDat
         } else {
             if (!phoneSupportBLE) {
                 mView.setTextDefault(getContext().getString(R.string.ble_not_support));
+            }
+            if (!mView.isBluEnable()) {//蓝牙没有打开时，默认让其不可用（也让其圆形图标变灰；有时圆形图标是可用到图标;小艾）
+                mView.setUsable(false);
             }
             mView.setVisibility(View.VISIBLE);
         }

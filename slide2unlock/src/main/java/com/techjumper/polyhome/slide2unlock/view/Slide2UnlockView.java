@@ -3,6 +3,7 @@ package com.techjumper.polyhome.slide2unlock.view;
 import android.animation.Animator;
 import android.animation.ObjectAnimator;
 import android.animation.ValueAnimator;
+import android.bluetooth.BluetoothAdapter;
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.graphics.Bitmap;
@@ -19,6 +20,7 @@ import android.text.TextUtils;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
 import android.view.View;
+
 import com.techjumper.polyhome.slide2unlock.R;
 import com.techjumper.polyhome.slide2unlock.interfaces.IUnLockViewState;
 import com.techjumper.polyhome.slide2unlock.interpolator.Easing;
@@ -636,7 +638,7 @@ public class Slide2UnlockView extends View {
         return mIsUsable;
     }
 
-    public void autoUnlock(long time,Easing easing) {
+    public void autoUnlock(long time, Easing easing) {
         if (mLockPicSuccess == -1)
             throw new RuntimeException("并没有设置解锁成功后的圆圈图片");
         if (mLockPicFailed == -1)
@@ -697,7 +699,11 @@ public class Slide2UnlockView extends View {
     public void unLockResult(LockViewResult result) {
         mHandler.postDelayed(() -> {
             resetState();
-            processDefault();
+            if (isBluEnable()) {//判断蓝牙是否打开状态（如果突然关掉蓝牙，这里判断后，会直接返回不可用状态；小艾）
+                processDefault();
+            } else {
+                setUsable(false);
+            }
         }, mDelayTime);
         mIsCalledResultMethod = !mFlag;
         switch (result) {
@@ -746,4 +752,17 @@ public class Slide2UnlockView extends View {
         mTextDefault = mText;
         getBitmap(mLockPicDefault);
     }
+
+    /**
+     * 判断蓝牙是否打开（小艾）
+     *
+     * @return
+     */
+    public boolean isBluEnable() {
+        BluetoothAdapter blueadapter = BluetoothAdapter.getDefaultAdapter();
+        if (blueadapter == null) return false;
+
+        return blueadapter.isEnabled();
+    }
+
 }

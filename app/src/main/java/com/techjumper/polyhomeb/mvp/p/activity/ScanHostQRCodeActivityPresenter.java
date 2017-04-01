@@ -21,6 +21,7 @@ import com.techjumper.polyhomeb.entity.JoinFamilyEntity;
 import com.techjumper.polyhomeb.entity.QueryFamilyEntity;
 import com.techjumper.polyhomeb.entity.VillageLockEntity;
 import com.techjumper.polyhomeb.entity.event.BLEInfoChangedEvent;
+import com.techjumper.polyhomeb.entity.event.ChooseFamilyVillageEvent;
 import com.techjumper.polyhomeb.mvp.m.ScanHostQRCodeActivityModel;
 import com.techjumper.polyhomeb.mvp.v.activity.ScanHostQRCodeActivity;
 import com.techjumper.polyhomeb.mvp.v.activity.TabHomeActivity;
@@ -124,6 +125,7 @@ public class ScanHostQRCodeActivityPresenter extends AppBaseActivityPresenter<Sc
                             int village_id = data.getVillage_id();
                             UserManager.INSTANCE.updateFamilyOrVillageInfo(true, family_id + ""
                                     , family_name, village_id + "");
+                            RxBus.INSTANCE.send(new ChooseFamilyVillageEvent(family_name, 0, -1));//扫描添加家庭成功后，变成默认家庭，且界面更新（小艾）
                             return mModel.getBLEDoorInfo(village_id + "");
                         }).flatMap(new Func1<BluetoothLockDoorInfoEntity, Observable<QueryFamilyEntity>>() {
                             @Override

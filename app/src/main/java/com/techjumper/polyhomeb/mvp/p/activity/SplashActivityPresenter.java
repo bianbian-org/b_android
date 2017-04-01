@@ -105,6 +105,10 @@ public class SplashActivityPresenter extends AppBaseActivityPresenter<SplashActi
                                         || (userFamiliesAndVillagesEntity.getData().getVillage_infos() != null
                                         && userFamiliesAndVillagesEntity.getData().getVillage_infos().size() != 0))
                                         && !TextUtils.isEmpty(UserManager.INSTANCE.getCurrentTitle())) {
+                                    /**
+                                     *判断当前家庭或者小区是否被删除（小艾）
+                                     */
+                                    mModel.currentFamilyOrVillageIsDelete(userFamiliesAndVillagesEntity);
                                     jumpToTabHomeActivity();
                                     return;
                                 }
