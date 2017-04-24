@@ -1,6 +1,7 @@
 package com.techjumper.polyhomeb.mvp.p.activity;
 
 import android.Manifest;
+import android.content.ComponentName;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Build;
@@ -78,8 +79,28 @@ public class TabHomeActivityPresenter extends AppBaseActivityPresenter<TabHomeAc
 
     @Override
     public void onTabClick(int index) {
-        if (getView().getHomeViewPager().getCurrentItem() == index) return;
-        getView().getHomeViewPager().setCurrentItem(index, false);
+        if (index == 2) {
+            Intent mIntent = new Intent();
+            ComponentName mComp = new ComponentName("com.dnake.ihome", "com.dnake.HomeActivity");
+            mIntent.setComponent(mComp);
+            getView().startActivity(mIntent);
+            return;
+        }
+
+        if (index == 3 || index == 4) {
+            if (getView().getHomeViewPager().getCurrentItem() == index - 1) {
+                JLog.e("已在当前界面43");
+                return;
+            }
+            getView().getHomeViewPager().setCurrentItem(index - 1, false);
+        } else {
+            if (getView().getHomeViewPager().getCurrentItem() == index) {
+                JLog.e("已在当前界面12");
+                return;
+            }
+            getView().getHomeViewPager().setCurrentItem(index, false);
+        }
+
     }
 
     public void onBackPressed() {
