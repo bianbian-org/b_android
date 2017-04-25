@@ -97,8 +97,8 @@ public class PolyTab extends RatioFrameLayout {
                 check(1);
                 break;
             case R.id.tab_3:
-//                if (mCurrIndex == 2)
-//                    break;
+                if (mCurrIndex == 2)
+                    break;
                 check(2);
                 break;
             case R.id.tab_4:
@@ -169,7 +169,6 @@ public class PolyTab extends RatioFrameLayout {
     }
 
     private void changeTextColor(int currIndex) {
-
         mPolyViewList.get(currIndex).setTextColor(ResourceUtils.getColorResource(R.color.color_37a991));
         for (int i = 0; i < mPolyViewList.size(); i++) {
             if (i == currIndex) continue;

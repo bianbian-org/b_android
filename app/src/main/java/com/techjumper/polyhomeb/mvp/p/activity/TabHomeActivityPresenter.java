@@ -1,13 +1,13 @@
 package com.techjumper.polyhomeb.mvp.p.activity;
 
 import android.Manifest;
-import android.content.ComponentName;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.text.TextUtils;
+import android.view.View;
 
 import com.tbruyelle.rxpermissions.RxPermissions;
 import com.techjumper.corelib.rx.tools.RxBus;
@@ -21,6 +21,7 @@ import com.techjumper.corelib.utils.window.ToastUtils;
 import com.techjumper.polyhomeb.Config;
 import com.techjumper.polyhomeb.R;
 import com.techjumper.polyhomeb.entity.UpdateInfoEntity;
+import com.techjumper.polyhomeb.entity.event.PolyTabShowEvent;
 import com.techjumper.polyhomeb.entity.event.ToggleMenuClickEvent;
 import com.techjumper.polyhomeb.mvp.m.TabHomeActivityModel;
 import com.techjumper.polyhomeb.mvp.v.activity.JSInteractionActivity;
@@ -73,33 +74,40 @@ public class TabHomeActivityPresenter extends AppBaseActivityPresenter<TabHomeAc
                                 if (getView().getSlidingMenu() != null) {
                                     getView().toggleMenu();
                                 }
+                            } else if (o instanceof PolyTabShowEvent) {
+                                getView().getTab().setVisibility(View.VISIBLE);
                             }
                         }));
     }
 
     @Override
     public void onTabClick(int index) {
+//        if (index == 2) {//跳转到绿地集团界面
+//            new AcHelper.Builder(getView())
+//                    .target(LvDiActivity.class)
+//                    .start();
+//            return;
+//        }
+//
+//        if (index == 3 || index == 4) {
+//            if (getView().getHomeViewPager().getCurrentItem() == index - 1) {
+//                return;
+//            }
+//            getView().getHomeViewPager().setCurrentItem(index - 1, false);
+//        } else {
+//            if (getView().getHomeViewPager().getCurrentItem() == index) {
+//                return;
+//            }
+//            getView().getHomeViewPager().setCurrentItem(index, false);
+//        }
+
         if (index == 2) {
-            Intent mIntent = new Intent();
-            ComponentName mComp = new ComponentName("com.dnake.ihome", "com.dnake.HomeActivity");
-            mIntent.setComponent(mComp);
-            getView().startActivity(mIntent);
+            getView().getTab().setVisibility(View.GONE);
+        }
+        if (getView().getHomeViewPager().getCurrentItem() == index) {
             return;
         }
-
-        if (index == 3 || index == 4) {
-            if (getView().getHomeViewPager().getCurrentItem() == index - 1) {
-                JLog.e("已在当前界面43");
-                return;
-            }
-            getView().getHomeViewPager().setCurrentItem(index - 1, false);
-        } else {
-            if (getView().getHomeViewPager().getCurrentItem() == index) {
-                JLog.e("已在当前界面12");
-                return;
-            }
-            getView().getHomeViewPager().setCurrentItem(index, false);
-        }
+        getView().getHomeViewPager().setCurrentItem(index, false);
 
     }
 

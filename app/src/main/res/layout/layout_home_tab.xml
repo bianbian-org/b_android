@@ -59,7 +59,7 @@
         android:layout_marginBottom="@dimen/dp_5"
         android:layout_weight="1"
         app:src="@mipmap/icon_shopping"
-        app:text="绿地"
+        app:text="@string/lv_di_title"
         app:textColor="@color/color_acacac"
         app:textSize="@dimen/sp_12" />
 

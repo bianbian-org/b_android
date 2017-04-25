@@ -17,6 +17,7 @@ import com.techjumper.polyhomeb.mvp.v.fragment.AppBaseFragment;
 import com.techjumper.polyhomeb.mvp.v.fragment.FriendFragment;
 import com.techjumper.polyhomeb.mvp.v.fragment.HomeFragment;
 import com.techjumper.polyhomeb.mvp.v.fragment.HomeMenuFragment;
+import com.techjumper.polyhomeb.mvp.v.fragment.LvDiFragment;
 import com.techjumper.polyhomeb.mvp.v.fragment.ServiceFragment;
 import com.techjumper.polyhomeb.mvp.v.fragment.ShoppingFragment;
 import com.techjumper.polyhomeb.widget.HomeViewPager;
@@ -92,13 +93,14 @@ public class TabHomeActivity extends AppBaseActivity<TabHomeActivityPresenter> {
 
         mFragments.add(HomeFragment.getInstance());
         mFragments.add(FriendFragment.getInstance());
+        mFragments.add(LvDiFragment.getInstance());
         mFragments.add(ShoppingFragment.getInstance());
         mFragments.add(ServiceFragment.getInstance());
 
         FragmentAdapter adapter = new FragmentAdapter(this, mFragments);
         mVp.setAdapter(adapter);
         mVp.setScanScroll(false);
-        mVp.setOffscreenPageLimit(4);
+        mVp.setOffscreenPageLimit(5);
     }
 
     public void toggleMenu() {

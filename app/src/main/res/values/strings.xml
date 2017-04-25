@@ -416,4 +416,6 @@
     <string name="no_dnake_lock">暂无任何门锁</string>
     <string name="user_agreement1">注册代表你同意</string>
     <string name="user_agreement2">用户使用协议</string>
+
+    <string name="lv_di_title">绿地</string>
 </resources>

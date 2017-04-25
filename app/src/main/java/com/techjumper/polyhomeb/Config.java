@@ -96,4 +96,9 @@ public class Config {
      */
     public static final String sAPK_NAME = "temp.apk";
 
+    /**
+     * 绿地项目链接
+     */
+
+
 }
