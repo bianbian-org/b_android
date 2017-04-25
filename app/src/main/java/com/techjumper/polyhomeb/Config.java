@@ -99,6 +99,7 @@ public class Config {
     /**
      * 绿地项目链接
      */
+    public static final String LV_DI_URL = "https://app.greenlandfs.com/www/index.html?&linkType=IOS&appVersion=10401&channel=1103&goState＝1";
 
 
 }
