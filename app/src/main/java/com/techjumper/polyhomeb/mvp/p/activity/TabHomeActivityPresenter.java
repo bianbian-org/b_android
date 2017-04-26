@@ -7,7 +7,6 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.text.TextUtils;
-import android.view.View;
 
 import com.tbruyelle.rxpermissions.RxPermissions;
 import com.techjumper.corelib.rx.tools.RxBus;
@@ -21,10 +20,10 @@ import com.techjumper.corelib.utils.window.ToastUtils;
 import com.techjumper.polyhomeb.Config;
 import com.techjumper.polyhomeb.R;
 import com.techjumper.polyhomeb.entity.UpdateInfoEntity;
-import com.techjumper.polyhomeb.entity.event.PolyTabShowEvent;
 import com.techjumper.polyhomeb.entity.event.ToggleMenuClickEvent;
 import com.techjumper.polyhomeb.mvp.m.TabHomeActivityModel;
 import com.techjumper.polyhomeb.mvp.v.activity.JSInteractionActivity;
+import com.techjumper.polyhomeb.mvp.v.activity.LvDiActivity;
 import com.techjumper.polyhomeb.mvp.v.activity.TabHomeActivity;
 import com.techjumper.polyhomeb.service.UpdateService;
 import com.techjumper.polyhomeb.utils.ServiceUtil;
@@ -74,41 +73,30 @@ public class TabHomeActivityPresenter extends AppBaseActivityPresenter<TabHomeAc
                                 if (getView().getSlidingMenu() != null) {
                                     getView().toggleMenu();
                                 }
-                            } else if (o instanceof PolyTabShowEvent) {
-                                getView().getTab().setVisibility(View.VISIBLE);
                             }
                         }));
     }
 
     @Override
     public void onTabClick(int index) {
-//        if (index == 2) {//跳转到绿地集团界面
-//            new AcHelper.Builder(getView())
-//                    .target(LvDiActivity.class)
-//                    .start();
-//            return;
-//        }
-//
-//        if (index == 3 || index == 4) {
-//            if (getView().getHomeViewPager().getCurrentItem() == index - 1) {
-//                return;
-//            }
-//            getView().getHomeViewPager().setCurrentItem(index - 1, false);
-//        } else {
-//            if (getView().getHomeViewPager().getCurrentItem() == index) {
-//                return;
-//            }
-//            getView().getHomeViewPager().setCurrentItem(index, false);
-//        }
-
-        if (index == 2) {
-            getView().getTab().setVisibility(View.GONE);
-        }
-        if (getView().getHomeViewPager().getCurrentItem() == index) {
+        if (index == 2) {//跳转到绿地集团界面
+            new AcHelper.Builder(getView())
+                    .target(LvDiActivity.class)
+                    .start();
             return;
         }
-        getView().getHomeViewPager().setCurrentItem(index, false);
 
+        if (index == 3 || index == 4) {
+            if (getView().getHomeViewPager().getCurrentItem() == index - 1) {
+                return;
+            }
+            getView().getHomeViewPager().setCurrentItem(index - 1, false);
+        } else {
+            if (getView().getHomeViewPager().getCurrentItem() == index) {
+                return;
+            }
+            getView().getHomeViewPager().setCurrentItem(index, false);
+        }
     }
 
     public void onBackPressed() {
@@ -137,7 +125,7 @@ public class TabHomeActivityPresenter extends AppBaseActivityPresenter<TabHomeAc
     public void adJump2Shopping(String url) {
         if (getView() == null || getView().getHomeViewPager() == null) return;
         getView().getHomeViewPager().setCurrentItem(2, false);
-        getView().getTab().check(2);
+        getView().getTab().check(3);//商城变成3啦（小艾）
         Bundle bundle = new Bundle();
         bundle.putString("url", url);
         new AcHelper.Builder(getView()).extra(bundle).target(JSInteractionActivity.class).start();

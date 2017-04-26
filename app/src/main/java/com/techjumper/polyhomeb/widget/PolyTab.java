@@ -78,7 +78,9 @@ public class PolyTab extends RatioFrameLayout {
     }
 
     public void check(int index, boolean notify) {
-        mCurrIndex = index;
+        if (index != 2) {
+            mCurrIndex = index;
+        }
         if (notify && iTabClick != null) iTabClick.onTabClick(index);
         changeTextColorAndIcon(index);
     }
@@ -123,7 +125,9 @@ public class PolyTab extends RatioFrameLayout {
     }
 
     private void changeTextColorAndIcon(int currIndex) {
-        mCurrIndex = currIndex;
+        if (currIndex != 2) {
+            mCurrIndex = currIndex;
+        }
         changeIcon(currIndex);
         changeTextColor(currIndex);
     }
@@ -144,12 +148,12 @@ public class PolyTab extends RatioFrameLayout {
                 mPolyViewList.get(3).setIcon(R.mipmap.icon_shopping);
                 mPolyViewList.get(4).setIcon(R.mipmap.icon_service);
                 break;
-            case 2:
-                getCurrItem().setIcon(R.mipmap.icon_lvdi_choose);
-                mPolyViewList.get(0).setIcon(R.mipmap.icon_home);
-                mPolyViewList.get(1).setIcon(R.mipmap.icon_friend);
-                mPolyViewList.get(3).setIcon(R.mipmap.icon_shopping);
-                mPolyViewList.get(4).setIcon(R.mipmap.icon_service);
+            case 2://绿地图标不换(小艾)
+//                getCurrItem().setIcon(R.mipmap.icon_lvdi_choose);
+//                mPolyViewList.get(0).setIcon(R.mipmap.icon_home);
+//                mPolyViewList.get(1).setIcon(R.mipmap.icon_friend);
+//                mPolyViewList.get(3).setIcon(R.mipmap.icon_shopping);
+//                mPolyViewList.get(4).setIcon(R.mipmap.icon_service);
                 break;
             case 3:
                 getCurrItem().setIcon(R.mipmap.icon_shopping_choose);
@@ -169,6 +173,7 @@ public class PolyTab extends RatioFrameLayout {
     }
 
     private void changeTextColor(int currIndex) {
+        if (currIndex == 2) return;//绿地颜色不变(小艾)
         mPolyViewList.get(currIndex).setTextColor(ResourceUtils.getColorResource(R.color.color_37a991));
         for (int i = 0; i < mPolyViewList.size(); i++) {
             if (i == currIndex) continue;
