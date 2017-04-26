@@ -65,7 +65,9 @@ public class HomeFragment extends AppBaseFragment<HomeFragmentPresenter>
 
     @Override
     protected View inflateView(LayoutInflater inflater, Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.fragment_home, null);
+        View view = inflater.inflate(R.layout.fragment_home, null);
+        view.findViewById(R.id.title_group).setBackgroundResource(R.color.color_2681d0);//(状态栏颜色)
+        return view;
     }
 
     @Override

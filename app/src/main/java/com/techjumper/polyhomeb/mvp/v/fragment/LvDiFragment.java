@@ -25,7 +25,6 @@ public class LvDiFragment extends AppBaseWebViewFragment<LvDiFragmentPresenter> 
     protected View inflateView(LayoutInflater inflater, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_lvdi, null);
         initWebView((AdvancedWebView) view.findViewById(wb));
-        view.findViewById(R.id.title_group).setBackgroundResource(R.color.color_a8a8a8);
         return view;
     }
 
