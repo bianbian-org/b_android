@@ -50,9 +50,9 @@
         </RelativeLayout>
 
         <View
-            android:layout_marginLeft="@dimen/dp_14"
             android:layout_width="match_parent"
             android:layout_height="0.5dp"
+            android:layout_marginLeft="@dimen/dp_14"
             android:background="@color/color_ceced2" />
 
         <RelativeLayout
@@ -121,13 +121,15 @@
             android:singleLine="true"
             android:text="@string/about"
             android:textColor="@color/color_a8a8a8"
-            android:textSize="@dimen/sp_14" />
+            android:textSize="@dimen/sp_14"
+            android:visibility="gone" />
 
         <View
             android:layout_width="match_parent"
             android:layout_height="0.5dp"
             android:layout_marginLeft="@dimen/dp_14"
-            android:background="@color/color_ceced2" />
+            android:background="@color/color_ceced2"
+            android:visibility="gone" />
 
         <TextView
             android:id="@+id/tv_user_agreement"
@@ -140,7 +142,8 @@
             android:singleLine="true"
             android:text="@string/user_agreement"
             android:textColor="@color/color_a8a8a8"
-            android:textSize="@dimen/sp_14" />
+            android:textSize="@dimen/sp_14"
+            android:visibility="gone" />
 
         <View
             android:layout_width="match_parent"
