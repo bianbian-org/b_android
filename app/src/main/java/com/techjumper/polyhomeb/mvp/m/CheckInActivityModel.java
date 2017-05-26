@@ -263,32 +263,33 @@ public class CheckInActivityModel extends BaseModel<CheckInActivityPresenter> {
     }
 
     /**
-     * 计算日历的行数
+     * 计算日历的行数(更改逻辑，一个月有几周就又几行   小艾)
      */
     private int calculateLines(int year, int month) {
-        int days = getCurrentMonthDays();            //得到X月的天数
-        String date = year + "-" + month + "-" + 1;  //得到字符串xxxx-xx-1,即2016-9-9;
-        String week = "";
-        try {
-            SimpleDateFormat myFormatter = new SimpleDateFormat("yyyy-MM-dd");
-            Date myDate = myFormatter.parse(date);
-            SimpleDateFormat formatter = new SimpleDateFormat("E");
-            week = formatter.format(myDate);   //得到具体的 "周四" 或者可能是Tuesday或者是Tue
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
-        int weekPlace = getWeekInteger(week);  //得到周X在日历表中的位置.0是周日(从左往右第一个,position为0),1是周一从(左往右第2个,position为1),2是周二,...
-
-        if (days == 28 && weekPlace == 0) { //当某年的2月只有28天,并且2月1号是周日,那么就意味着,,,这个日历表只有4行
-            return 4;
-        }
-        if (days == 31 && (weekPlace == 5 || weekPlace == 6)) {//当某年的X月有31天,并且X月1号是周五或者周六,那么就意味着,,,这个日历表有6行
-            return 6;
-        }
-        if (days == 31 && weekPlace == 6) {//当某年的X月有30天,并且X月1号是周六,那么就意味着,,,这个日历表有6行
-            return 6;
-        }
-        return 5; //除此之外,日历表都是5行
+        return Calendar.getInstance().getActualMaximum(Calendar.WEEK_OF_MONTH);
+//        int days = getCurrentMonthDays();            //得到X月的天数
+//        String date = year + "-" + month + "-" + 1;  //得到字符串xxxx-xx-1,即2016-9-9;
+//        String week = "";
+//        try {
+//            SimpleDateFormat myFormatter = new SimpleDateFormat("yyyy-MM-dd");
+//            Date myDate = myFormatter.parse(date);
+//            SimpleDateFormat formatter = new SimpleDateFormat("E");
+//            week = formatter.format(myDate);   //得到具体的 "周四" 或者可能是Tuesday或者是Tue
+//        } catch (ParseException e) {
+//            e.printStackTrace();
+//        }
+//        int weekPlace = getWeekInteger(week);  //得到周X在日历表中的位置.0是周日(从左往右第一个,position为0),1是周一从(左往右第2个,position为1),2是周二,...
+//
+//        if (days == 28 && weekPlace == 0) { //当某年的2月只有28天,并且2月1号是周日,那么就意味着,,,这个日历表只有4行
+//            return 4;
+//        }
+//        if (days == 31 && (weekPlace == 5 || weekPlace == 6)) {//当某年的X月有31天,并且X月1号是周五或者周六,那么就意味着,,,这个日历表有6行
+//            return 6;
+//        }
+//        if (days == 31 && weekPlace == 6) {//当某年的X月有30天,并且X月1号是周六,那么就意味着,,,这个日历表有6行
+//            return 6;
+//        }
+//        return 5; //除此之外,日历表都是5行
     }
 
     /**
