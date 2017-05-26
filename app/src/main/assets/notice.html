@@ -1,0 +1,53 @@
+<!doctype html>
+<html>
+
+<head>
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+    <style>
+    html,
+    body,
+    p,
+    img {
+        margin: 0;
+        padding: 0;
+    }
+    
+    body {
+        background: #f1f1f1;
+        font-size: 100%;
+    }
+
+    .content p img {
+        max-width: 100%;
+        height: auto;
+        display: block;
+        text-align: center;
+    }
+
+    .content {
+        background: #fff;
+        color: #2f3339;
+        padding: 1.5rem;
+    }
+    
+    .content p {
+        margin-bottom: 1.5rem;
+        line-height: 1.6;
+    }
+
+    </style>
+    <script type="text/javascript">
+    window.loadContent = function(content){
+         document.getElementById("Content").innerHTML = content;
+     }
+
+    </script>
+</head>
+
+<body>
+<div class="content" id="Content">
+</div>
+</body>
+
+</html>

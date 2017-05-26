@@ -1,0 +1,142 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:polymodeview="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/color_ffffff"
+    android:orientation="vertical">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/dp_14"
+        android:layout_marginTop="@dimen/dp_20"
+        android:text="@string/property"
+        android:textColor="@color/color_727272"
+        android:textSize="@dimen/sp_16" />
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/dp_14"
+        android:layout_marginTop="@dimen/dp_10">
+
+        <TextView
+            android:id="@+id/tv_today"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:text="@string/toady"
+            android:textColor="@color/color_acacac"
+            android:textSize="@dimen/sp_16" />
+
+        <ImageView
+            android:id="@+id/iv_shu_xian"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="@dimen/dp_8"
+            android:layout_toRightOf="@+id/tv_today"
+            android:src="@mipmap/icon_shu_line" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_toRightOf="@+id/iv_shu_xian"
+            android:orientation="horizontal">
+
+            <com.techjumper.lightwidget.textview.MarqueeTextView
+                android:id="@+id/tv_notice"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_marginLeft="@dimen/dp_8"
+                android:layout_marginRight="@dimen/dp_16"
+                android:layout_weight="1"
+                android:ellipsize="marquee"
+                android:maxLines="1"
+                android:singleLine="true"
+                android:textColor="@color/color_727272"
+                android:textSize="@dimen/sp_16" />
+
+            <Button
+                android:id="@+id/btn_checkout_property"
+                android:layout_width="@dimen/dp_54"
+                android:layout_height="@dimen/dp_25"
+                android:layout_gravity="center_vertical"
+                android:layout_marginRight="@dimen/dp_14"
+                android:background="@drawable/bg_button_green"
+                android:text="@string/checkout"
+                android:textColor="@color/color_37a991"
+                android:textSize="@dimen/sp_14" />
+
+        </LinearLayout>
+
+    </RelativeLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/dp_7"
+        android:orientation="horizontal">
+
+        <com.techjumper.polyhomeb.widget.PolyModeView
+            android:id="@+id/repair"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            polymodeview:centerIconHeight="60"
+            polymodeview:centerIconWidth="60"
+            polymodeview:ratio="1.333"
+            polymodeview:src="@mipmap/icon_repair"
+            polymodeview:text="@string/repair"
+            polymodeview:textColor="@color/color_727272"
+            polymodeview:textMarginTop="5dp"
+            polymodeview:textSize="@dimen/sp_13" />
+
+        <com.techjumper.polyhomeb.widget.PolyModeView
+            android:id="@+id/complaint"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            polymodeview:centerIconHeight="60"
+            polymodeview:centerIconWidth="60"
+            polymodeview:ratio="1.333"
+            polymodeview:src="@mipmap/icon_complaint"
+            polymodeview:text="@string/complain"
+            polymodeview:textColor="@color/color_727272"
+            polymodeview:textMarginTop="5dp"
+            polymodeview:textSize="@dimen/sp_13" />
+
+        <com.techjumper.polyhomeb.widget.PolyModeView
+            android:id="@+id/placard"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            polymodeview:centerIconHeight="60"
+            polymodeview:centerIconWidth="60"
+            polymodeview:ratio="1.333"
+            polymodeview:src="@mipmap/icon_placard"
+            polymodeview:text="@string/placard"
+            polymodeview:textColor="@color/color_727272"
+            polymodeview:textMarginTop="5dp"
+            polymodeview:textSize="@dimen/sp_13" />
+
+        <com.techjumper.polyhomeb.widget.PolyModeView
+            android:id="@+id/payment"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            polymodeview:centerIconHeight="60"
+            polymodeview:centerIconWidth="60"
+            polymodeview:ratio="1.333"
+            polymodeview:src="@mipmap/icon_payment"
+            polymodeview:text="@string/payment"
+            polymodeview:textColor="@color/color_727272"
+            polymodeview:textMarginTop="5dp"
+            polymodeview:textSize="@dimen/sp_13" />
+
+    </LinearLayout>
+
+</LinearLayout>

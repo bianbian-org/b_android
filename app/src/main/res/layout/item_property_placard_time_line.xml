@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="@dimen/dp_47"
+    android:background="@color/color_ededed"
+    android:orientation="vertical">
+
+    <RelativeLayout
+        android:layout_width="@dimen/dp_30"
+        android:layout_height="@dimen/dp_47"
+        android:layout_marginLeft="@dimen/dp_3">
+
+        <View
+            android:id="@+id/view_top"
+            android:layout_width="@dimen/dp_2"
+            android:layout_height="wrap_content"
+            android:layout_above="@+id/tv_time"
+            android:layout_centerHorizontal="true"
+            android:background="@color/color_0536a990" />
+
+        <TextView
+            android:id="@+id/tv_time"
+            android:layout_width="@dimen/dp_30"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:background="@drawable/shape_time_line"
+            android:gravity="center"
+            android:padding="@dimen/dp_2"
+            android:text="12月"
+            android:textColor="@color/color_ffffff"
+            android:textSize="@dimen/sp_11" />
+
+        <View
+            android:layout_width="@dimen/dp_2"
+            android:layout_height="@dimen/dp_13_5"
+            android:layout_below="@+id/tv_time"
+            android:layout_centerHorizontal="true"
+            android:background="@color/color_0536a990" />
+
+    </RelativeLayout>
+</LinearLayout>

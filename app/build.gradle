@@ -1,0 +1,118 @@
+apply plugin: 'com.android.application'
+apply plugin: 'me.tatarka.retrolambda'
+apply plugin: 'com.neenbedankt.android-apt'
+
+android {
+//    signingConfigs {
+//        debug {
+//            keyAlias 'androiddebugkey'
+//            keyPassword 'android'
+//            storeFile file(project.DEBUG_KEY_PATH)
+//            storePassword 'android'
+//        }
+//    }
+
+    android.applicationVariants.all { variant ->
+        variant.outputs.each { output ->
+            output.outputFile = new File(output.outputFile.parent, "博力云社区" + "-v" +
+                    defaultConfig.versionName + ".apk");
+        }
+    }
+
+    compileSdkVersion rootProject.compileSdkVersion
+    buildToolsVersion rootProject.buildToolsVersion
+    defaultConfig {
+        applicationId "com.techjumper.polyhomeb"
+        minSdkVersion rootProject.minSdkVersion
+        targetSdkVersion rootProject.targetSdkVersion
+        versionCode 10006
+        versionName "1.0.6"
+        multiDexEnabled true
+    }
+
+    signingConfigs {
+        release {
+            storeFile file('../sign/release.jks')
+            storePassword "hidejumper"
+            keyAlias "TechJumper"
+            keyPassword "hidejumper"
+        }
+    }
+
+    buildTypes {
+        release {
+            signingConfig signingConfigs.release
+            minifyEnabled false
+            proguardFile 'jumper_proguard.pro'
+        }
+        debug {
+            signingConfig signingConfigs.release
+            minifyEnabled false
+            proguardFile 'jumper_proguard.pro'
+        }
+    }
+
+//    sourceSets {
+//        main {
+//            manifest.srcFile 'AndroidManifest.xml'
+//            java.srcDirs = ['src']
+//            resources.srcDirs = ['src']
+//            aidl.srcDirs = ['src']
+//            renderscript.srcDirs = ['src']
+//            res.srcDirs = ['res']
+//            assets.srcDirs = ['assets']
+//            jniLibs.srcDirs = ['libs']
+//        }
+
+    // Move the tests to tests/java, tests/res, etc...
+//        instrumentTest.setRoot('tests')
+
+    // Move the build types to build-types/<type>
+    // For instance, build-types/debug/java, build-types/debug/AndroidManifest.xml, ...
+    // This moves them out of them default location under src/<type>/... which would
+    // conflict with src/ being used by the main source set.
+    // Adding new build types or product flavors should be accompanied
+    // by a similar customization.
+//        debug.setRoot('build-types/debug')
+//        release.setRoot('build-types/release')
+//    }
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+    packagingOptions {
+        exclude 'META-INF/services/javax.annotation.processing.Processor'
+    }
+}
+
+dependencies {
+    compile fileTree(include: ['*.jar'], dir: 'libs')
+    testCompile 'junit:junit:4.12'
+    compile project(':lib2')
+    compile project(':LightWidget')
+    compile project(':progressdialog')
+    compile project(':corelib')
+    compile project(':ptr_lib')
+    compile project(':loading-more-view')
+    compile project(':slidingmenulib')
+    compile project(':magicindicator')
+    compile project(':PhotoPicker')
+    compile project(':zxing')
+    compile project(':alipay')
+    compile project(':doormaster')
+    compile project(':wechatpay')
+    compile project(':paycorelib')
+    compile project(':slide2unlock')
+    compile project(':unionpay')
+
+    compile "com.yalantis:ucrop:$rootProject.ucrop"
+    compile "com.creact:powerful-adapter-lib-release:$rootProject.recyclerAdapter"
+    provided "com.creact:powerful-adapter-annotations-release:$rootProject.recyclerAdapter"
+    apt "com.creact:powerful-adapter-complier-release:$rootProject.recyclerAdapter"
+    compile 'com.umeng.analytics:analytics:latest.integration'
+    compile "com.github.anrwatchdog:anrwatchdog:$rootProject.anr_whatchDog"
+//    compile 'com.r0adkll:slidableactivity:2.0.5'
+    compile 'me.imid.swipebacklayout.lib:library:1.0.0'
+
+}

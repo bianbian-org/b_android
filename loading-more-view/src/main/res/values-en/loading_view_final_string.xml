@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="loading_view_click_loading_more">click to load more</string>
+    <string name="loading_view_no_more">- end -</string>
+    <string name="loading_view_loading">loading…</string>
+    <string name="loading_view_net_error">load failed, click to try again</string>
+</resources>

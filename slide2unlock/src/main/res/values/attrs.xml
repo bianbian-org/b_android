@@ -1,0 +1,57 @@
+<resources>
+    <declare-styleable name="Slide2UnlockView">
+        <!-- 滑动解锁的中心默认图片 -->
+        <attr name="lock_pic_default" format="reference" />
+        <!-- 滑动解锁的中心成功图片 -->
+        <attr name="lock_pic_success" format="reference" />
+        <!-- 滑动解锁的中心失败图片 -->
+        <attr name="lock_pic_failed" format="reference" />
+        <!-- 滑动解锁的中心不可用时图片 -->
+        <attr name="lock_pic_unusable" format="reference" />
+        <!-- 内圈和外圈的padding间距 -->
+        <attr name="lock_inside_padding" format="dimension|reference" />
+        <!-- 内圈默认背景色,右边 -->
+        <attr name="lock_inside_right_bg_color_default" format="color|reference" />
+        <!-- 内圈成功背景色,右边 -->
+        <attr name="lock_inside_right_bg_color_success" format="color|reference" />
+        <!-- 内圈失败背景色,右边 -->
+        <attr name="lock_inside_right_bg_color_failed" format="color|reference" />
+        <!-- 内圈默认背景色,左边 -->
+        <attr name="lock_inside_left_bg_color_default" format="color|reference" />
+        <!-- 内圈成功背景色,左边 -->
+        <attr name="lock_inside_left_bg_color_success" format="color|reference" />
+        <!-- 内圈失败背景色,左边 -->
+        <attr name="lock_inside_left_bg_color_failed" format="color|reference" />
+        <!-- 外圈默认背景色 -->
+        <attr name="lock_outside_bg_color_default" format="color|reference" />
+        <!-- 外圈成功背景色 -->
+        <attr name="lock_outside_bg_color_success" format="color|reference" />
+        <!-- 外圈失败背景色 -->
+        <attr name="lock_outside_bg_color_failed" format="color|reference" />
+        <!-- 外圈描边粗细 -->
+        <attr name="lock_outside_stroke_width" format="dimension|reference" />
+        <!-- 外圈默认描边颜色 -->
+        <attr name="lock_outside_stroke_color_default" format="color|reference" />
+        <!-- 外圈成功描边颜色 -->
+        <attr name="lock_outside_stroke_color_success" format="color|reference" />
+        <!-- 外圈失败描边颜色 -->
+        <attr name="lock_outside_stroke_color_failed" format="color|reference" />
+        <!-- 文字内容 -->
+        <attr name="lock_text" format="string|reference" />
+        <!-- 默认文字颜色 -->
+        <attr name="lock_text_color_default" format="color|reference" />
+        <!-- 成功文字颜色 -->
+        <attr name="lock_text_color_success" format="color|reference" />
+        <!-- 失败文字颜色 -->
+        <attr name="lock_text_color_failed" format="color|reference" />
+        <!-- 文字大小 -->
+        <attr name="lock_text_size" format="dimension|reference" />
+        <!-- 当前状态下此控件是否可用 -->
+        <attr name="lock_is_usable" format="boolean" />
+        <!-- 从开始解锁算起,等待多久才自动调用解锁成功or失败方法.或者可以理解为超时时间.超过mWaitTime之后还没主动调用解锁成功or失败的这段时间 -->
+        <attr name="lock_wait_time" format="integer" />
+        <!-- 解锁成功or失败之后,停留几秒重置回到左边 -->
+        <attr name="lock_delay_time" format="integer" />
+    </declare-styleable>
+
+</resources>
