@@ -5,8 +5,6 @@ import android.app.Activity;
 
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.afollestad.materialdialogs.Theme;
-import com.techjumper.corelib.R;
-import com.techjumper.corelib.utils.Utils;
 
 /**
  * <h2>Utility methods used to show a quick pop-up dialog.</h2>
@@ -34,8 +32,6 @@ public class DialogUtils {
         } catch (Exception e) {
             e.printStackTrace();
         }
-
-
     }
 
     public static MaterialDialog.Builder getBuilder(Activity context) {
@@ -47,8 +43,6 @@ public class DialogUtils {
                 .dividerColor(0xFF1DE9B6)
                 .contentColorRes(android.R.color.white)
                 .theme(Theme.DARK);
-
     }
-
 
 }

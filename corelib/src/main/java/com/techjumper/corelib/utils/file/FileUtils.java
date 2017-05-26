@@ -7,6 +7,7 @@ import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.drawable.Drawable;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Environment;
 import android.os.StatFs;
@@ -30,7 +31,7 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Method;
-import java.nio.charset.Charset;
+import java.text.DecimalFormat;
 import java.util.Map;
 
 public class FileUtils {
@@ -48,6 +49,33 @@ public class FileUtils {
             return Environment.getExternalStorageDirectory().getAbsolutePath();
         }
         return null;
+    }
+
+    public static void deleteDir(String path) {
+        File file = new File(path);
+        if (!file.exists()) {
+            JLog.d(file + " 不存在");
+            return;
+        }
+        if (file.isFile()) {
+            JLog.d("删除文件: " + file + " " + (file.delete() ? "成功" : "失败"));
+            return;
+        }
+
+        String[] files = file.list();
+        if (files == null || files.length == 0) {
+            JLog.d("文件夹 " + file + " 为空, 直接删除: " + (file.delete() ? "成功" : "失败"));
+            return;
+        }
+        JLog.d("文件夹 " + file + " 有文件 " + files.length + " 个");
+        for (String fileName : files) {
+            deleteDir(file.getAbsolutePath() + File.separator + fileName);
+        }
+        try {
+            JLog.d("删除 文件夹 " + file + " " + (file.delete() ? "成功" : "失败"));
+        } catch (Exception ignored) {
+        }
+
     }
 
     // 分情况得到缓存目录
@@ -253,6 +281,13 @@ public class FileUtils {
         return result;
     }
 
+    public static boolean copyFileToOtherPath(String oldPath, String name, String targetPath) throws FileNotFoundException {
+        File file = new File(oldPath + File.separator + name);
+        if (!file.exists()) return false;
+        file = new File(targetPath + File.separator + name);
+        if (file.exists()) file.delete();
+        return saveInputstreamToPath(new FileInputStream(oldPath + File.separator + name), targetPath, name);
+    }
 
     public static boolean saveInputstreamToPath(InputStream is, String sdPath, String name) {
         boolean result = true;
@@ -277,38 +312,6 @@ public class FileUtils {
             result = false;
         }
         return result;
-    }
-
-    public static String loadInputStreamToString(InputStream is) {
-        BufferedInputStream bis = new BufferedInputStream(is);
-        ByteArrayOutputStream bos = new ByteArrayOutputStream();
-
-        byte[] buffer = new byte[8000];
-        try {
-            for (int count; (count = bis.read(buffer)) != -1; ) {
-                bos.write(buffer, 0, count);
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
-            JLog.e(e);
-        } finally {
-            try {
-                bis.close();
-                bos.close();
-            } catch (IOException e) {
-                e.printStackTrace();
-                JLog.e(e);
-            }
-        }
-        return new String(bos.toByteArray(), Charset.forName("UTF-8"));
-    }
-
-    public static boolean copyFileToOtherPath(String oldPath, String name, String targetPath) throws FileNotFoundException {
-        File file = new File(oldPath + File.separator + name);
-        if (!file.exists()) return false;
-        file = new File(targetPath + File.separator + name);
-        if (file.exists()) file.delete();
-        return saveInputstreamToPath(new FileInputStream(oldPath + File.separator + name), targetPath, name);
     }
 
     // 从sdcard中删除文件
@@ -458,4 +461,121 @@ public class FileUtils {
         bin.close();
         out.close();
     }
+
+    /**
+     * 获取文件夹大小
+     *
+     * @param file File实例
+     * @return long 单位为M
+     * @throws Exception
+     */
+    public static long getFolderSize(File file) throws Exception {
+        long size = 0;
+        File[] fileList = file.listFiles();
+        for (File aFileList : fileList) {
+            if (aFileList.isDirectory()) {
+                size = size + getFolderSize(aFileList);
+            } else {
+                size = size + aFileList.length();
+            }
+        }
+        return size;
+    }
+
+    /**
+     * 删除指定目录下文件及目录
+     *
+     * @param filePath       文件路径
+     * @param isDeleteFolder 是否删除目录
+     * @throws IOException
+     */
+    public static void deleteFolderFile(String filePath, boolean isDeleteFolder)
+            throws IOException {
+        if (!TextUtils.isEmpty(filePath)) {
+            File file = new File(filePath);
+
+            if (file.isDirectory()) {// 处理目录
+                File files[] = file.listFiles();
+                for (File file1 : files) {
+                    deleteFolderFile(file1.getAbsolutePath(), isDeleteFolder);
+                }
+                if (isDeleteFolder && file.listFiles().length == 0) {// 目录下没有文件或者目录，删除
+                    file.delete();
+                }
+            } else {
+                file.delete();
+            }
+        }
+    }
+
+    /**
+     * 格式化文件大小，以B、K、M、G的格式显示
+     */
+    public static String formatFileSize(long size) {
+        StringBuilder sb = new StringBuilder();
+
+        //将数字格式化，""里面填写规则。 #代表小数点前。小数点后面几个0就代表保留几个小数
+        DecimalFormat df = new DecimalFormat("#.00");
+
+        if (size < 1) {  //如果是空的,显示0M
+            sb.append(0);
+            sb.append("M");
+        } else if (size < 1024) {//显示B
+            sb.append(size / 1024.0);
+            sb.append("M");
+        } else if (size < 1024 * 1024) {  //显示KB
+            sb.append(df.format(size / 1024.0));
+            sb.append("K");
+        } else if (size < 1024.0 * 1024 * 1024) {  //显示MB
+            sb.append(df.format(size / 1024.0 / 1024));
+            sb.append("M");
+        } else {  //显示G
+            sb.append(df.format(size / 1024 / 1024.0 / 1024));
+            sb.append("G");
+        }
+        return sb.toString();
+    }
+
+    /**
+     * 根据路径和文件，创建文件夹以及文件
+     * 如果文件已经存在，那么先删除再创建
+     * 如果文件或者路径不存在，那么直接创建
+     * 最后返回Uri
+     */
+    public static Uri createDirsAndFile(String path, String fileName) {
+        Uri uri;
+        File file = new File(path);
+        if (!file.exists()) {
+            file.mkdirs();
+        }
+        File dir = new File(path, fileName);
+        if (dir.exists()) {
+            dir.delete();
+        }
+        try {
+            dir.createNewFile();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        uri = Uri.fromFile(new File(path, fileName));
+        return uri;
+    }
+
+    public static File createDirsAndFile_(String path, String fileName) {
+        File file = new File(path);
+        if (!file.exists()) {
+            file.mkdirs();
+        }
+        File dir = new File(path, fileName);
+        if (dir.exists()) {
+            dir.delete();
+        }
+        try {
+            dir.createNewFile();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return dir;
+    }
+
 }

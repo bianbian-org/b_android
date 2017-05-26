@@ -1,8 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<resources>
-    <declare-styleable name="PayCheckView">
-        <attr name="pay_icon" format="reference" />
-        <attr name="pay_text" format="string" />
-        <attr name="isCheck" format="boolean" />
-    </declare-styleable>
-</resources>

@@ -1,9 +1,0 @@
-<resources>
-    <string name="app_name">adlib</string>
-    <string name="error_to_connect_server">网络连接失败!</string>
-    <string name="error_no_connection">无网络连接!</string>
-    <string name="error_timeout">连接主机超时</string>
-    <string name="error_to_connect_host_try_again_later">无法连接主机，请稍后重试</string>
-    <string name="error_send">发送失败</string>
-    <string name="error_no_data">暂无任何内容</string>
-</resources>

@@ -1,13 +1,7 @@
 package com.techjumper.corelib.utils.common;
 
-import android.content.Context;
 import android.util.DisplayMetrics;
 import android.util.TypedValue;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.BaseAdapter;
-import android.widget.ListAdapter;
-import android.widget.ListView;
 
 import com.techjumper.corelib.utils.Utils;
 
@@ -56,5 +50,4 @@ public class RuleUtils {
         DisplayMetrics metrics = Utils.appContext.getResources().getDisplayMetrics();
         return (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_SP, sp, metrics);
     }
-
 }

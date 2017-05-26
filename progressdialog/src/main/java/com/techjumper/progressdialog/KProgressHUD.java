@@ -110,6 +110,7 @@ public class KProgressHUD {
         return this;
     }
 
+
     /**
      * Specify the dim area around the HUD, like in Dialog
      *
@@ -294,19 +295,16 @@ public class KProgressHUD {
         protected void onCreate(Bundle savedInstanceState) {
             super.onCreate(savedInstanceState);
             requestWindowFeature(Window.FEATURE_NO_TITLE);
-
+            setContentView(R.layout.kprogresshud_hud);
 
             Window window = getWindow();
             window.setBackgroundDrawable(new ColorDrawable(0));
-            window.clearFlags(WindowManager.LayoutParams.FLAG_DIM_BEHIND);
-            window.addFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
+            window.addFlags(WindowManager.LayoutParams.FLAG_DIM_BEHIND);
             WindowManager.LayoutParams layoutParams = window.getAttributes();
-            layoutParams.dimAmount = 0.F;
+            layoutParams.dimAmount = mDimAmount;
             layoutParams.gravity = Gravity.CENTER;
-            layoutParams.systemUiVisibility = View.SYSTEM_UI_FLAG_HIDE_NAVIGATION;
             window.setAttributes(layoutParams);
 
-            setContentView(R.layout.kprogresshud_hud);
             setCanceledOnTouchOutside(false);
 
             initViews();

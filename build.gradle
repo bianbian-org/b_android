@@ -5,10 +5,10 @@ buildscript {
         jcenter()
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:2.2.2'
+        classpath 'com.android.tools.build:gradle:2.2.3'
         classpath 'me.tatarka:gradle-retrolambda:3.2.5'
         classpath 'com.neenbedankt.gradle.plugins:android-apt:1.8'
-        classpath 'com.squareup.sqldelight:gradle-plugin:0.5.1'
+
         // NOTE: Do not place your application dependencies here; they belong
         // in the individual module build.gradle files
     }
@@ -27,38 +27,37 @@ task clean(type: Delete) {
 }
 
 ext {
-    minSdkVersion = 17
-    targetSdkVersion = 18
+    minSdkVersion = 16
+    targetSdkVersion = 23
     compileSdkVersion = 23
-    buildToolsVersion = '23.0.3'
+    buildToolsVersion = '23.0.2'
+
+    //app
+    recyclerAdapter = '1.0.0'
+    anr_whatchDog = '1.2.+'
+    ucrop = '2.2.0'
 
     //corelib
-    supportLibraryVersion = '23.3.0'
-    rxJava = '1.1.0'
-    rxAndroid = '1.1.0'
+    supportLibraryVersion = '23.2.0'
+    rxJava = '1.1.4'
+    rxAndroid = '1.2.0'
     rxBinding = '0.3.0'
     rxReceivers = '0.1.0'
     materialDialogs = '0.8.5.6'
     threetenabp = '1.0.3'
     butterKnife = '7.0.1'
     rxProguardRules = '1.1.0.0'
-    rxPermissions = "0.5.2@aar"
+    rxPermissions = "0.7.0@aar"
 
     //lib2
     gson = '2.6.1'
     retrofit = '2.0.0-beta4'
     converter_gson = '2.0.0-beta4'
     adapter_rxjava = '2.0.0-beta4'
-    okhttp = '3.1.2'
+    okhttp = '3.4.1'
+    logging_interceptor = '3.4.1'
     okio = '1.6.0'
     picasso = '2.5.2'
     picasso2_okhttp3_downloader = '1.0.2'
-    logging_interceptor = '3.3.1'
-    sqlbrite = '0.7.0'
-    auto_value = '1.2'
-    jake_auto_value = '1.2-update1'
 
-    //commonres
-    powerfulAdapter = '1.0.0'
 }
-

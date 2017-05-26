@@ -2,18 +2,18 @@ package com.techjumper.corelib.ui.activity;
 
 import android.annotation.SuppressLint;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.text.TextUtils;
 import android.util.SparseArray;
 
-import com.techjumper.corelib.R;
 import com.techjumper.corelib.entity.BaseFragmentActivitySaveEntity;
 import com.techjumper.corelib.mvp.interfaces.IBaseActivityPresenter;
 import com.techjumper.corelib.ui.fragment.BaseFragment;
 import com.techjumper.corelib.utils.common.AcHelper;
-import com.techjumper.corelib.utils.window.KeyboardUtils;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -55,6 +55,7 @@ public abstract class BaseFragmentActivity<P extends IBaseActivityPresenter> ext
      */
     private String mNoStackFragmentTag;
 
+    private Handler mHandler = new Handler(Looper.getMainLooper());
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -145,7 +146,7 @@ public abstract class BaseFragmentActivity<P extends IBaseActivityPresenter> ext
         FragmentTransaction ft = fManager.beginTransaction();
 
         hideFragmentFromTagNoCommit(fManager, ft, lastFragmentTag, anim);
-        showOrAddFragmentNoCommit(fManager, ft, containerId, fragment, addToBackStack, anim);
+        showOrAddFragmentNoCommit(fManager, ft, containerId, fragment, lastFragmentTag, addToBackStack, anim);
         ft.commitAllowingStateLoss();
     }
 
@@ -153,13 +154,14 @@ public abstract class BaseFragmentActivity<P extends IBaseActivityPresenter> ext
         addNewFragmentToSet(fragment);
         setCurrFragmentTag(containerId, fragment);
         mNoStackFragmentTag = getFragmentSignature(fragment);
-        getSupportFragmentManager().beginTransaction().replace(containerId, fragment).commitAllowingStateLoss();
+        getSupportFragmentManager().beginTransaction().replace(containerId, fragment, fragment.getFragmentSignature())
+                .commitAllowingStateLoss();
     }
-
+//
 
     @SuppressLint("CommitTransaction")
     private void showOrAddFragmentNoCommit(FragmentManager fManager, FragmentTransaction ft
-            , int containerId, BaseFragment fragment, boolean addToBackStack, boolean anim) {
+            , int containerId, BaseFragment fragment, String lastFragmentTag, boolean addToBackStack, boolean anim) {
         if (anim) {
             ft.setCustomAnimations(AcHelper.defaultStartAnimEnter
                     , AcHelper.defaultStartAnimExit
@@ -177,6 +179,9 @@ public abstract class BaseFragmentActivity<P extends IBaseActivityPresenter> ext
                 baseFragment.startAnimation(AcHelper.defaultStartAnimEnter, true);
             }
         } else {
+            if (!TextUtils.isEmpty(lastFragmentTag) && lastFragmentTag.equals(getFragmentSignature(fragment))) {
+                return;
+            }
             ft.add(containerId, fragment, getFragmentSignature(fragment));
             if (addToBackStack) {
                 ft.addToBackStack(getFragmentSignature(fragment));
@@ -248,10 +253,12 @@ public abstract class BaseFragmentActivity<P extends IBaseActivityPresenter> ext
     }
 
     public void removeFragment(BaseFragment fragment) {
-        Fragment f = getSupportFragmentManager().findFragmentByTag(fragment.getFragmentSignature());
-        if (f != null) {
-            getSupportFragmentManager().beginTransaction().remove(f).commitAllowingStateLoss();
-        }
+        mHandler.post(() -> {
+            Fragment f = getSupportFragmentManager().findFragmentByTag(fragment.getFragmentSignature());
+            if (f != null) {
+                getSupportFragmentManager().beginTransaction().remove(f).commitAllowingStateLoss();
+            }
+        });
     }
 
     private void addNewFragmentToSet(BaseFragment fragment) {

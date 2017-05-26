@@ -1,7 +1,5 @@
 apply plugin: 'com.android.library'
 apply plugin: 'me.tatarka.retrolambda'
-apply plugin: 'com.neenbedankt.android-apt'
-apply plugin: 'com.squareup.sqldelight'
 
 android {
     compileSdkVersion rootProject.compileSdkVersion
@@ -34,8 +32,4 @@ dependencies {
     compile "com.squareup.okio:okio:$rootProject.okio"
     compile "com.squareup.picasso:picasso:$rootProject.picasso"
     compile "com.jakewharton.picasso:picasso2-okhttp3-downloader:$rootProject.picasso2_okhttp3_downloader"
-    compile "com.squareup.sqlbrite:sqlbrite:$rootProject.sqlbrite"
-    apt "com.google.auto.value:auto-value:$rootProject.auto_value"
-    compile "com.google.auto.value:auto-value:$rootProject.auto_value"
-    provided "com.jakewharton.auto.value:auto-value-annotations:$rootProject.jake_auto_value"
 }

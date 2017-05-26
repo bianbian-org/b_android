@@ -1,5 +1,7 @@
 package com.techjumper.corelib.rx.tools;
 
+import com.techjumper.corelib.utils.common.JLog;
+
 import rx.Observable;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.subjects.PublishSubject;
@@ -43,7 +45,7 @@ public enum RxBus {
 
     // If multiple threads are going to emit events to this
     // then it must be made thread-safe like this instead
-    private static final Subject<Object, Object> _bus = new SerializedSubject<>(PublishSubject.create());
+    private final Subject<Object, Object> _bus = new SerializedSubject<>(PublishSubject.create());
 
     public void send(Object o) {
         if (hasObservers()) {
@@ -56,7 +58,8 @@ public enum RxBus {
     }
 
     public Observable<Object> asObservable() {
-        return _bus.observeOn(AndroidSchedulers.mainThread());
+        return _bus.onBackpressureBuffer().observeOn(AndroidSchedulers.mainThread())
+                .doOnError(JLog::e);
     }
 
     public boolean hasObservers() {

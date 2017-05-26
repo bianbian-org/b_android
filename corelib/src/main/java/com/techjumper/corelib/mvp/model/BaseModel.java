@@ -1,7 +1,5 @@
 package com.techjumper.corelib.mvp.model;
 
-import android.app.Activity;
-
 import com.techjumper.corelib.mvp.interfaces.IPresenter;
 
 /**

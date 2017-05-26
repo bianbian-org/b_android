@@ -3,7 +3,6 @@ package com.techjumper.corelib.rx.tools;
 import java.util.concurrent.TimeUnit;
 
 import rx.Observable;
-import rx.android.schedulers.AndroidSchedulers;
 
 /**
  * * * * * * * * * * * * * * * * * * * * * * *

@@ -35,8 +35,13 @@ public abstract class BaseActivity extends AppCompatActivity {
         sActivityList.add(this);
         mThis = this;
         mUi = UI.create(this);
-
         initData(savedInstanceState);
+//        View contentRoot = findViewById(android.R.id.content);
+//        //适配虚拟按键
+//        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT && !AppUtils.isMeizu()) {
+//            contentRoot.setPadding(contentRoot.getLeft(), contentRoot.getPaddingTop(), contentRoot.getRight()
+//                    , contentRoot.getBottom() + StatusbarHelper.getNavigationBarHeight(this));
+//        }
         mViewRoot = inflateView(savedInstanceState);
         if (mViewRoot == null) {
             mViewRoot = new View(this);
@@ -48,14 +53,16 @@ public abstract class BaseActivity extends AppCompatActivity {
 
         initView(savedInstanceState);
 
-        StatusbarHelper.Builder statusbarBuidler = StatusbarHelper.from(this)
-                .noActionBar(true)
-                .setLightStatusBar(false)
-                .setTransparentStatusbar(true)
+        if (useStatusBarTransform()) {
+            StatusbarHelper.Builder statusbarBuidler = StatusbarHelper.from(this)
+                    .noActionBar(true)
+                    .setLightStatusBar(false) // 改变状态栏颜色true,状态栏字体颜色是黑色,false是白色
+                    .setTransparentStatusbar(true)
 //                .setLayoutRoot(findViewById(android.R.id.content))
-                ;
+                    ;
 
-        onStatusbarTransform(statusbarBuidler).process();
+            onStatusbarTransform(statusbarBuidler).process();
+        }
         find(android.R.id.content).post(() -> onViewInited(savedInstanceState));
 
     }
@@ -117,6 +124,10 @@ public abstract class BaseActivity extends AppCompatActivity {
      * 界面初始化完毕,此时控件已获得宽高,可以弹对话框等等
      */
     protected abstract void onViewInited(Bundle savedInstanceState);
+
+    protected boolean useStatusBarTransform() {
+        return true;
+    }
 
 
 }

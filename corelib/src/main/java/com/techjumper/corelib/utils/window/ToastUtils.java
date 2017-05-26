@@ -28,7 +28,6 @@ public class ToastUtils {
                 mTvContent = (TextView) view.findViewById(R.id.tv_content);
                 mToast.setView(view);
             }
-
             mTvContent.setText(text);
             mToast.show();
         });
@@ -45,7 +44,6 @@ public class ToastUtils {
             } else {
                 mToast.setDuration(Toast.LENGTH_LONG);
             }
-
 
             mTvContent.setText(text);
             mToast.show();

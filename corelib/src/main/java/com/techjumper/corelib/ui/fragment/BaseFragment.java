@@ -4,7 +4,6 @@ import android.os.Bundle;
 import android.os.Parcelable;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentActivity;
 import android.util.SparseArray;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -48,7 +47,6 @@ public abstract class BaseFragment extends Fragment {
         if (getArguments() == null)
             setArguments(new Bundle());
     }
-
 
     @Override
     public void onCreate(final Bundle savedInstanceState) {

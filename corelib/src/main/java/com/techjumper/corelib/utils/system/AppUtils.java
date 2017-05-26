@@ -6,7 +6,10 @@ import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.net.wifi.WifiInfo;
+import android.net.wifi.WifiManager;
 import android.os.Build;
+import android.os.RemoteException;
 import android.provider.Settings;
 import android.telephony.TelephonyManager;
 import android.text.TextUtils;
@@ -116,6 +119,16 @@ public class AppUtils {
         return activeNetworkInfo != null && activeNetworkInfo.isConnected();
     }
 
+    public static NetworkInfo getActiveNetworkInfo() {
+        ConnectivityManager connectivityManager = (ConnectivityManager) Utils.appContext.getSystemService(Context.CONNECTIVITY_SERVICE);
+        return connectivityManager.getActiveNetworkInfo();
+    }
+
+    public static WifiInfo getWifiInfo() {
+        WifiManager wifiManager = (WifiManager) Utils.appContext.getSystemService(Context.WIFI_SERVICE);
+        return wifiManager.getConnectionInfo();
+    }
+
     /**
      * Checks to see if the user has rotation enabled/disabled in their phone settings.
      *
@@ -180,5 +193,46 @@ public class AppUtils {
                 || Build.BRAND.contains("Meizu");
     }
 
+    /**
+     * 是否为oppo r7s
+     */
+    public static boolean isOPPOR7s() {
+        return Build.BOARD.contains("OPPO")
+                || Build.BRAND.contains("OPPO")
+                || Build.BOARD.contains("oppo")
+                || Build.BRAND.contains("oppo");
+    }
+
+    /**
+     * 得到指定路径apk的package info
+     */
+    public static PackageInfo getPackageInfo(String path) throws RemoteException {
+        return Utils.appContext.getPackageManager().getPackageArchiveInfo(path, 0);
+    }
+
+    /**
+     * 路径下的apk是否比系统已安装的版本新
+     */
+    public static boolean hasUpdate(String sourcePath) {
+        PackageInfo info = null;
+        try {
+            info = getPackageInfo(sourcePath);
+        } catch (RemoteException ignored) {
+        }
+        if (info == null)
+            return false;
+        PackageInfo installedInfo = null;
+        try {
+            installedInfo = Utils.appContext.getPackageManager().getPackageInfo(info.packageName, 0);
+        } catch (PackageManager.NameNotFoundException ignored) {
+        }
+        return installedInfo == null || info.versionCode > installedInfo.versionCode;
+    }
+
+    public static boolean isCellPhoneSupportBLE(Context context) {
+        //如果android版本大于=4.3  &蓝牙版本是4.0以上才行
+        return (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR2)
+                && context.getPackageManager().hasSystemFeature("android.hardware.bluetooth_le");
+    }
 
 }

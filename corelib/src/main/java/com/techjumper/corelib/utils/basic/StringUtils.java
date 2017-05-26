@@ -14,8 +14,11 @@ public class StringUtils {
     /**
      * 正则: 电话号码
      */
+//    public static final Pattern PATTERN_MOBILE = Pattern.compile(
+//            "(^(13\\d|14[57]|15[^4,\\D]|17[678]|18\\d)\\d{8}|170[059]\\d{7})$"
+//    );
     public static final Pattern PATTERN_MOBILE = Pattern.compile(
-            "(^(13\\d|14[57]|15[^4,\\D]|17[678]|18\\d)\\d{8}|170[059]\\d{7})$"
+            "\\d{11}"
     );
 
     /**
@@ -85,5 +88,34 @@ public class StringUtils {
      */
     public static boolean isValidURL(String url) {
         return url != null && Patterns.WEB_URL.matcher(url).matches();
+    }
+
+    /**
+     * 截取字符串,右后往前
+     *
+     * @param str
+     * @param stripChars
+     * @return
+     */
+    public static String stripEnd(String str, String stripChars) {
+        if (str == null) {
+            return null;
+        }
+        int end = str.length();
+        if (end == 0) {
+            return str;
+        }
+        if (stripChars == null) {
+            while ((end != 0) && Character.isWhitespace(str.charAt(end - 1))) {
+                end--;
+            }
+        } else if (stripChars.length() == 0) {
+            return str;
+        } else {
+            while ((end != 0) && (stripChars.indexOf(str.charAt(end - 1)) != -1)) {
+                end--;
+            }
+        }
+        return str.substring(0, end);
     }
 }

@@ -26,20 +26,21 @@ public class RetrofitHelper {
         return retrofit.create(cls);
     }
 
-    public static <T> T createWithNew(String api, Class<T> cls) {
-        return new Retrofit.Builder()
-                .addConverterFactory(GsonConverterFactory.create())
-                .addCallAdapterFactory(RxJavaCallAdapterFactory.create())
-                .client(OkHttpHelper.create())
-                .baseUrl(api)
-                .build()
-                .create(cls);
-    }
-
-
     @SuppressWarnings("unchecked")
     public static <T> T createDefault() {
         Retrofit retrofit = mRetrofit.baseUrl(Config.sDefaultBaseUrl).build();
+        return (T) retrofit.create(sDefaultInterface);
+    }
+
+    @SuppressWarnings("unchecked")
+    public static <T> T createCAPPDefault() {
+        Retrofit retrofit = mRetrofit.baseUrl(Config.sCAPPBaseUrl).build();
+        return (T) retrofit.create(sDefaultInterface);
+    }
+
+    @SuppressWarnings("unchecked")
+    public static <T> T createMedicalConnection() {
+        Retrofit retrofit = mRetrofit.baseUrl(Config.sMedicalBaseUrl).build();
         return (T) retrofit.create(sDefaultInterface);
     }
 
