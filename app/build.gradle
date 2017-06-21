@@ -25,8 +25,8 @@ android {
         applicationId "com.techjumper.polyhomeb"
         minSdkVersion rootProject.minSdkVersion
         targetSdkVersion rootProject.targetSdkVersion
-        versionCode 10007
-        versionName "1.0.7"
+        versionCode 10008
+        versionName "1.0.8"
         multiDexEnabled true
     }
 
@@ -88,7 +88,6 @@ android {
 
 dependencies {
     compile fileTree(include: ['*.jar'], dir: 'libs')
-    testCompile 'junit:junit:4.12'
     compile project(':lib2')
     compile project(':LightWidget')
     compile project(':progressdialog')
@@ -110,9 +109,16 @@ dependencies {
     compile "com.creact:powerful-adapter-lib-release:$rootProject.recyclerAdapter"
     provided "com.creact:powerful-adapter-annotations-release:$rootProject.recyclerAdapter"
     apt "com.creact:powerful-adapter-complier-release:$rootProject.recyclerAdapter"
-    compile 'com.umeng.analytics:analytics:latest.integration'
     compile "com.github.anrwatchdog:anrwatchdog:$rootProject.anr_whatchDog"
 //    compile 'com.r0adkll:slidableactivity:2.0.5'
-    compile 'me.imid.swipebacklayout.lib:library:1.0.0'
+    compile(project(':org.eclipse.paho.android.service')) {
+        //exclude module: "org.eclipse.paho.client.mqttv3"
+        transitive = true
+    }
 
+    compile 'com.umeng.analytics:analytics:latest.integration'
+    compile 'me.imid.swipebacklayout.lib:library:1.0.0'
+    compile 'com.android.support.constraint:constraint-layout:1.0.2'
+    testCompile 'junit:junit:4.12'
 }
+configurations.compile.exclude module: 'org.eclipse.paho.client.mqttv3'

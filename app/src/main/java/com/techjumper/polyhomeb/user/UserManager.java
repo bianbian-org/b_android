@@ -69,6 +69,10 @@ public enum UserManager {
     public static final String KEY_IS_CURRENT_COMMUNITY_SUPPORT_DNAKE_DOOR = "is_current_community_support_dnake_door";
 
     private static final String PATH = Utils.appContext.getFilesDir().getAbsolutePath() + "_" + "userinfo";
+    /**
+     * 保存主题到本地
+     */
+    public static final String EMQTT_TOPIC = "emqtt_topic";
 
     /**
      * 通过LoginEntity将用户信息同步到本地

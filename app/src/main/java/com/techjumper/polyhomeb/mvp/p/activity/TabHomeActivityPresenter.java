@@ -24,6 +24,7 @@ import com.techjumper.polyhomeb.entity.event.ToggleMenuClickEvent;
 import com.techjumper.polyhomeb.mvp.m.TabHomeActivityModel;
 import com.techjumper.polyhomeb.mvp.v.activity.JSInteractionActivity;
 import com.techjumper.polyhomeb.mvp.v.activity.TabHomeActivity;
+import com.techjumper.polyhomeb.service.EmqttService;
 import com.techjumper.polyhomeb.service.UpdateService;
 import com.techjumper.polyhomeb.utils.ServiceUtil;
 import com.techjumper.polyhomeb.widget.PolyTab;
@@ -61,6 +62,7 @@ public class TabHomeActivityPresenter extends AppBaseActivityPresenter<TabHomeAc
         checkVersionInfo();
         requestPermission();
         onToggleMenuClick();
+        getView().startService(new Intent(getView(), EmqttService.class));
     }
 
     private void onToggleMenuClick() {

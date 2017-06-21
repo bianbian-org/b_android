@@ -5,8 +5,10 @@ import android.os.Bundle;
 import com.steve.creact.library.display.DisplayBean;
 import com.techjumper.corelib.rx.tools.RxBus;
 import com.techjumper.corelib.rx.tools.RxUtils;
+import com.techjumper.corelib.utils.common.JLog;
 import com.techjumper.polyhomeb.Constant;
 import com.techjumper.polyhomeb.entity.PropertyComplainEntity;
+import com.techjumper.polyhomeb.entity.emqtt.PropertyEmqttUpdateEvent;
 import com.techjumper.polyhomeb.entity.event.ComplainStatusEvent;
 import com.techjumper.polyhomeb.entity.event.RefreshComplainListDataEvent;
 import com.techjumper.polyhomeb.mvp.m.ComplainFragmentModel;
@@ -58,6 +60,12 @@ public class ComplainFragmentPresenter extends AppBaseFragmentPresenter<Complain
                                 int complainStatus = event.getComplainStatus();
                                 if (Constant.STATUS_ALL == complainStatus || Constant.STATUS_NOT_PROCESS == complainStatus) {
                                     getView().getPtr().autoRefresh();
+                                }
+                            } else if (o instanceof PropertyEmqttUpdateEvent) {
+                                PropertyEmqttUpdateEvent event = (PropertyEmqttUpdateEvent) o;
+                                if (event.getPosition() == 2) {
+                                    JLog.d("推送消息为 【投诉、建议信息】");
+                                    refreshData();
                                 }
                             }
                         }));

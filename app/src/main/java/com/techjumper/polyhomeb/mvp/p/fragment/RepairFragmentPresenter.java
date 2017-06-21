@@ -5,8 +5,10 @@ import android.os.Bundle;
 import com.steve.creact.library.display.DisplayBean;
 import com.techjumper.corelib.rx.tools.RxBus;
 import com.techjumper.corelib.rx.tools.RxUtils;
+import com.techjumper.corelib.utils.common.JLog;
 import com.techjumper.polyhomeb.Constant;
 import com.techjumper.polyhomeb.entity.PropertyRepairEntity;
+import com.techjumper.polyhomeb.entity.emqtt.PropertyEmqttUpdateEvent;
 import com.techjumper.polyhomeb.entity.event.RefreshRepairListDataEvent;
 import com.techjumper.polyhomeb.entity.event.RepairStatusEvent;
 import com.techjumper.polyhomeb.mvp.m.RepairFragmentModel;
@@ -58,6 +60,12 @@ public class RepairFragmentPresenter extends AppBaseFragmentPresenter<RepairFrag
                                 int repairStatus = event.getRepairStatus();
                                 if (Constant.STATUS_ALL == repairStatus || Constant.STATUS_NOT_PROCESS == repairStatus) {
                                     getView().getPtr().autoRefresh();
+                                }
+                            } else if (o instanceof PropertyEmqttUpdateEvent) {
+                                PropertyEmqttUpdateEvent event = (PropertyEmqttUpdateEvent) o;
+                                if (event.getPosition() == 1) {
+                                    JLog.d("推送消息为 【维修信息】");
+                                    refreshData();
                                 }
                             }
                         }));

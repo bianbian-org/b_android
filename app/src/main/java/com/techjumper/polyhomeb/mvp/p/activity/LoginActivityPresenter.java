@@ -1,5 +1,6 @@
 package com.techjumper.polyhomeb.mvp.p.activity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.EditText;
@@ -21,6 +22,7 @@ import com.techjumper.polyhomeb.mvp.v.activity.FindPasswordActivity;
 import com.techjumper.polyhomeb.mvp.v.activity.LoginActivity;
 import com.techjumper.polyhomeb.mvp.v.activity.RegistActivity;
 import com.techjumper.polyhomeb.mvp.v.activity.TabHomeActivity;
+import com.techjumper.polyhomeb.service.EmqttService;
 import com.techjumper.polyhomeb.user.UserManager;
 import com.techjumper.polyhomeb.user.event.LoginEvent;
 
@@ -51,7 +53,6 @@ public class LoginActivityPresenter extends AppBaseActivityPresenter<LoginActivi
 
     @Override
     public void initData(Bundle savedInstanceState) {
-
     }
 
     public void onTitleLeftClick() {
@@ -84,6 +85,7 @@ public class LoginActivityPresenter extends AppBaseActivityPresenter<LoginActivi
                                                     .exitAnim(R.anim.fade_out)
                                                     .start();
                                             getView().dismissLoading();
+                                            getView().startService(new Intent(getView(), EmqttService.class));
                                         }
                                     } else {
                                         new AcHelper.Builder(getView())

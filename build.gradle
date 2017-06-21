@@ -60,4 +60,13 @@ ext {
     picasso = '2.5.2'
     picasso2_okhttp3_downloader = '1.0.2'
 
+    //emqtt
+    group = 'org.eclipse.paho'
+    sampleArchivesBaseName = 'org.eclipse.paho.android.sample'
+    sampleVersion = '1.1.1'
+    serviceArchivesBaseName = 'org.eclipse.paho.android.service'
+    serviceVersion = '1.1.1'
+    clientVersion = '1.1.0'
+    mavenUrl = "https://repo.eclipse.org/content/repositories/paho-releases/"
+
 }

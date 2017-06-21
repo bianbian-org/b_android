@@ -3,8 +3,11 @@ package com.techjumper.polyhomeb.mvp.p.fragment;
 import android.os.Bundle;
 
 import com.steve.creact.library.display.DisplayBean;
+import com.techjumper.corelib.rx.tools.RxBus;
 import com.techjumper.corelib.rx.tools.RxUtils;
+import com.techjumper.corelib.utils.common.JLog;
 import com.techjumper.polyhomeb.entity.PropertyPlacardEntity;
+import com.techjumper.polyhomeb.entity.emqtt.PropertyEmqttUpdateEvent;
 import com.techjumper.polyhomeb.mvp.m.PlacardFragmentModel;
 import com.techjumper.polyhomeb.mvp.v.fragment.PlacardFragment;
 
@@ -23,6 +26,7 @@ public class PlacardFragmentPresenter extends AppBaseFragmentPresenter<PlacardFr
 
     private PlacardFragmentModel mModel = new PlacardFragmentModel(this);
     private Subscription mSubs1;
+    private Subscription mSubs2;
 
     @Override
     public void initData(Bundle savedInstanceState) {
@@ -33,6 +37,7 @@ public class PlacardFragmentPresenter extends AppBaseFragmentPresenter<PlacardFr
     public void onViewInited(Bundle savedInstanceState) {
         getView().showLoading();
         refreshData();
+        initEvent();
     }
 
     public void getNoticeData() {
@@ -95,6 +100,22 @@ public class PlacardFragmentPresenter extends AppBaseFragmentPresenter<PlacardFr
 
     public List<DisplayBean> noData() {
         return mModel.noData();
+    }
+
+    private void initEvent() {
+        RxUtils.unsubscribeIfNotNull(mSubs2);
+        addSubscription(
+                mSubs2 = RxBus.INSTANCE
+                        .asObservable()
+                        .subscribe(o -> {
+                            if (o instanceof PropertyEmqttUpdateEvent) {
+                                PropertyEmqttUpdateEvent event = (PropertyEmqttUpdateEvent) o;
+                                if (event.getPosition() == 0) {
+                                    JLog.d("推送消息为 【公告信息】");
+                                    refreshData();
+                                }
+                            }
+                        }));
     }
 
 }

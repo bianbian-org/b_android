@@ -1,16 +1,20 @@
 package com.techjumper.polyhomeb.mvp.v.activity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.view.ViewPager;
 import android.view.View;
 import android.widget.FrameLayout;
 
 import com.techjumper.corelib.mvp.factory.Presenter;
+import com.techjumper.corelib.rx.tools.RxBus;
 import com.techjumper.corelib.utils.Utils;
+import com.techjumper.corelib.utils.common.JLog;
 import com.techjumper.polyhomeb.Constant;
 import com.techjumper.polyhomeb.R;
 import com.techjumper.polyhomeb.adapter.FragmentAdapter;
 import com.techjumper.polyhomeb.adapter.IndicatorAdapter;
+import com.techjumper.polyhomeb.entity.emqtt.PropertyEmqttUpdateEvent;
 import com.techjumper.polyhomeb.mvp.p.activity.PropertyDetailActivityPresenter;
 import com.techjumper.polyhomeb.mvp.v.fragment.AppBaseFragment;
 import com.techjumper.polyhomeb.mvp.v.fragment.ComplainFragment;
@@ -122,5 +126,15 @@ public class PropertyDetailActivity extends AppBaseActivity<PropertyDetailActivi
 
     public NonScrollViewPager getViewPager() {
         return mViewPager;
+    }
+
+    @Override
+    protected void onNewIntent(Intent intent) {
+        super.onNewIntent(intent);
+        if (mViewPager == null) return;
+        int position = intent.getExtras().getInt(Constant.KEY_CURRENT_BUTTON);
+        JLog.d("传递到那个界面  ---->" + position);
+        mViewPager.setCurrentItem(position);
+        RxBus.INSTANCE.send(new PropertyEmqttUpdateEvent(position));
     }
 }
