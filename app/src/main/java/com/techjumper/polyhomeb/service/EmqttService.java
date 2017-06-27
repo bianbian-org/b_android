@@ -128,7 +128,7 @@ public class EmqttService extends Service {
 
                 if (reconnect) {
                     JLog.d("重新连接  ---->" + serverURI);
-                    subscribeTopic=getTopic();
+                    subscribeTopic = getTopic();
                     subscribeToTopic();
                 } else {
                     JLog.d("连接  ---->" + serverURI);
