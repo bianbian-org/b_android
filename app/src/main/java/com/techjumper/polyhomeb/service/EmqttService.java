@@ -437,8 +437,8 @@ public class EmqttService extends Service {
         PendingIntent pendingIntent = PendingIntent.getActivity(Utils.appContext, 0, it, PendingIntent.FLAG_UPDATE_CURRENT);
         builder.setContentIntent(pendingIntent);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            builder.setVisibility(Notification.VISIBILITY_PUBLIC);// 随时
-            builder.setFullScreenIntent(pendingIntent, true);// 横幅
+//            builder.setVisibility(Notification.VISIBILITY_PUBLIC);// 随时
+//            builder.setFullScreenIntent(pendingIntent, true);// 横幅
         }
         Notification notification = builder.build();
         notification.defaults = Notification.DEFAULT_SOUND;// 设置为默认的声音
