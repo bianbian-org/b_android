@@ -16,11 +16,12 @@ public class Config {
      * 接口地址
      */
     public static String sHost;
+    public static String MQTT_URI;
 
     /**
      * 是否是调试环境
      */
-    public static final boolean DEBUG = true;
+    public static final boolean DEBUG = false;
 
     public static String HTTP;
 
@@ -33,6 +34,10 @@ public class Config {
      */
     static {
         sHost = DEBUG ? "http://test.poly.ourjujia.com" : "https://service.polyhome.com";
+    }
+
+    static {
+        MQTT_URI = DEBUG ? "tcp://123.57.139.200:1883" : "tcp://101.201.76.220:1883";
     }
 
     public static final String AD_URL = "?title=&left=::NativeReturn&right=%E8%B4%AD%E7%89%A9%E8%BD%A6::shop_cart";

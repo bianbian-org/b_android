@@ -45,7 +45,7 @@ import java.util.TreeMap;
 public class EmqttService extends Service {
 
     public static MqttAndroidClient mqttAndroidClient;
-    private final String serverUri = "tcp://123.57.139.200:1883";//服务器地址
+    private final String serverUri = Config.MQTT_URI;
     private String subscribeTopic = "";//订阅的主题
     private static int NOTIFY = 0;//notification通知的标识符
 
@@ -185,6 +185,7 @@ public class EmqttService extends Service {
             disconnectedBufferOptions.setPersistBuffer(false);
             disconnectedBufferOptions.setDeleteOldestMessages(false);
             mqttAndroidClient.setBufferOpts(disconnectedBufferOptions);
+
             /**
              * 连接成功订阅
              */
