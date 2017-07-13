@@ -26,7 +26,6 @@ import com.techjumper.polyhomeb.mvp.v.activity.PropertyDetailActivity;
 import com.techjumper.polyhomeb.user.UserManager;
 
 import org.eclipse.paho.android.service.MqttAndroidClient;
-import org.eclipse.paho.client.mqttv3.DisconnectedBufferOptions;
 import org.eclipse.paho.client.mqttv3.IMqttActionListener;
 import org.eclipse.paho.client.mqttv3.IMqttDeliveryToken;
 import org.eclipse.paho.client.mqttv3.IMqttToken;
@@ -179,12 +178,12 @@ public class EmqttService extends Service {
         @Override
         public void onSuccess(IMqttToken asyncActionToken) {
             JLog.d("isConnected  ---->" + isConnected());
-            DisconnectedBufferOptions disconnectedBufferOptions = new DisconnectedBufferOptions();
-            disconnectedBufferOptions.setBufferEnabled(true);
-            disconnectedBufferOptions.setBufferSize(100);
-            disconnectedBufferOptions.setPersistBuffer(false);
-            disconnectedBufferOptions.setDeleteOldestMessages(false);
-            mqttAndroidClient.setBufferOpts(disconnectedBufferOptions);
+//            DisconnectedBufferOptions disconnectedBufferOptions = new DisconnectedBufferOptions();
+//            disconnectedBufferOptions.setBufferEnabled(true);
+//            disconnectedBufferOptions.setBufferSize(100);
+//            disconnectedBufferOptions.setPersistBuffer(false);
+//            disconnectedBufferOptions.setDeleteOldestMessages(false);
+//            mqttAndroidClient.setBufferOpts(disconnectedBufferOptions);
 
             /**
              * 连接成功订阅
